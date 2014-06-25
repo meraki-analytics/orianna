@@ -1,0 +1,47 @@
+<project name="orianna" basedir="." default="help">
+  <property name="build.sysclasspath" value="last" />
+  
+  <property name="src.dir"     value="src" />
+  <property name="build.dir"   value="build" />
+  <property name="classes.dir" value="${build.dir}/classes" />
+  <property name="jar.dir"     value="${build.dir}/jar" />
+  <property name="doc.dir"     value="doc" />
+  <property name="lib.dir"     value="lib" />
+
+  <target name="help">
+    <echo message="Common build targets:" />
+    <echo message="build       - Same as clean + jar" />
+    <echo message="clean       - Remove all *.class and easyjava.jar" />
+    <echo message="jar         - Builds orianna.jar" />
+    <echo message="compile     - Compiles Orianna classes" />
+    <echo message="doc         - Generates JavaDoc" />
+  </target>
+
+  <target name="clean">
+    <delete dir="${build.dir}" />
+  </target>
+
+  <target name="compile">
+    <mkdir dir="${classes.dir}" />
+    <javac srcdir="${src.dir}" destdir="${classes.dir}">
+    	<classpath>
+    		<pathelement path="${lib.dir}/json-simple-1.1.1.jar"/>
+    		<pathelement path="${lib.dir}/easyjava-rest.jar"/>
+    	</classpath>
+   	</javac>
+  </target>
+
+  <target name="doc">
+  	<delete dir="${doc.dir}"/>
+    <javadoc sourcepath="${src.dir}" destdir="${doc.dir}"/>
+  </target>
+
+  <target name="jar" depends="compile">
+    <mkdir dir="${jar.dir}" />
+    <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
+    	<zipgroupfileset dir="${lib.dir}" includes="*.jar" /> 
+   	</jar>
+  </target>
+
+  <target name="build" depends="clean,jar" />
+</project>
