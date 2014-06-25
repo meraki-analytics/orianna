@@ -12,7 +12,7 @@ A Java adaptation of the Riot Games LoL API (http://developer.riotgames.com/)
  
 ## Setup
 
-Just [Download](https://github.com/robrua/Orianna/releases) the latest .jar and add it to your project's build path.
+Just [download](https://github.com/robrua/Orianna/releases) the latest .jar and add it to your project's build path.
  
 To do this in eclipse, I recommend creating a lib/ directory in your project's root directory and putting the .jar there. Then just right click the .jar in eclipse and click Build Path -> Add to Build Path.
  
@@ -60,6 +60,9 @@ If you choose to use JSON.simple then JSONConverter can help convert data to the
 
 ## Questions/Contributions
 Feel free to send pull requests or to contact me via github or email (robrua@alumni.cmu.edu).
+
+## Bugs
+There's probably typos or some data missing somewhere in the project. Let me know about any of them you run into.
 
 ## Disclaimer
 This product is not endorsed, certified or otherwise approved in any way by Riot Games, Inc. or any of its affiliates.
