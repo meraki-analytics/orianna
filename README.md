@@ -1,6 +1,6 @@
-#Orianna
+# Orianna
 
-A Java adaptation of the Riot Games LoL API (http://developer.riotgames.com/)
+A Java adaptation of the Riot Games LoL API (http://developer.riotgames.com/). Requires Java 8.
 
 ## Features
 
@@ -54,6 +54,9 @@ public class Example {
 
 You can also use the JSONRiotAPI if for some reason you'd like to do the JSON parsing yourself. I use JSON.simple for JSON parsing (https://code.google.com/p/json-simple/).
 If you choose to use JSON.simple then JSONConverter can help convert data to the Orianna type system.
+
+## JavaDoc
+[Found Here](http://robrua.github.io/Orianna/)
 
 ## Download
 [Check Releases](https://github.com/robrua/Orianna/releases)
