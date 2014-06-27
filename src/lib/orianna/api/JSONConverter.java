@@ -95,11 +95,11 @@ public class JSONConverter {
     }
 
     private static List<Integer> getIntegerList(final JSONArray list) {
-        return getList(list, i -> convertInteger(i));
+        return getList(list, JSONConverter::convertInteger);
     }
 
     private static List<Integer> getIntegerList(final JSONObject object, final String key) {
-        return getList(object, key, i -> convertInteger(i));
+        return getList(object, key, JSONConverter::convertInteger);
     }
 
     protected static <T> List<T> getList(final JSONArray list, final Function<Object, T> mapper) {
