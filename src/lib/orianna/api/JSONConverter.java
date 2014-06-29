@@ -1,7 +1,9 @@
 package lib.orianna.api;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -12,6 +14,7 @@ import java.util.function.Function;
 
 import lib.orianna.type.champion.ChampionStatus;
 import lib.orianna.type.game.Game;
+import lib.orianna.type.game.GameMap;
 import lib.orianna.type.game.GameMode;
 import lib.orianna.type.game.GameType;
 import lib.orianna.type.game.Player;
@@ -70,6 +73,9 @@ import org.json.simple.JSONObject;
  * @author Rob Rua (FatalElement - NA) (robrua@alumni.cmu.edu)
  */
 public class JSONConverter {
+    // It scares me that this is the best way to get a local offset right now...
+    private static final ZoneOffset timeZone = ZoneOffset.from(ZonedDateTime.now(ZoneId.systemDefault()));
+
     private static Integer convertInteger(final Object object) {
         final Long longVersion = (Long)object;
         if(longVersion == null) {
@@ -83,7 +89,7 @@ public class JSONConverter {
         if(epoch == null) {
             return null;
         }
-        return LocalDateTime.ofEpochSecond((Long)object.get(key), 0, ZoneOffset.UTC);
+        return LocalDateTime.ofEpochSecond(epoch / 1000, 0, timeZone);
     }
 
     private static List<Double> getDoubleList(final JSONObject object, final String key) {
@@ -162,6 +168,27 @@ public class JSONConverter {
         }
 
         return getListFromMap(map, mapper, sorter);
+    }
+
+    private static GameMap getMap(final Integer ID) {
+        switch(ID) {
+            case 1:
+                return GameMap.SUMMONERS_RIFT_SUMMER;
+            case 2:
+                return GameMap.SUMMONERS_RIFT_AUTUMN;
+            case 3:
+                return GameMap.PROVING_GROUNDS;
+            case 4:
+                return GameMap.TWISTED_TREELINE_ORIGINAL;
+            case 8:
+                return GameMap.CRYSTAL_SCAR;
+            case 10:
+                return GameMap.TWISTED_TREELINE;
+            case 12:
+                return GameMap.HOWLING_ABYSS;
+            default:
+                return null;
+        }
     }
 
     protected static <T> Map<Object, T> getMapFromList(final JSONArray list, final Function<Object, T> mapper) {
@@ -769,14 +796,14 @@ public class JSONConverter {
         final Boolean invalid = (Boolean)gameInfo.get("invalid");
         final Integer IPEarned = getInteger(gameInfo, "ipEarned");
         final Integer level = getInteger(gameInfo, "level");
-        final Integer mapID = getInteger(gameInfo, "mapId");
+        final GameMap map = getMap(getInteger(gameInfo, "mapId"));
         final SummonerSpell spell1 = API.getSummonerSpell(getInteger(gameInfo, "spell1"));
         final SummonerSpell spell2 = API.getSummonerSpell(getInteger(gameInfo, "spell2"));
         final RawStats stats = getRawStatsFromJSON((JSONObject)gameInfo.get("stats"));
         final Side team = getSide(gameInfo, "teamId");
         final List<Player> fellowPlayers = getAllPlayersFromJSON((JSONArray)gameInfo.get("fellowPlayers"));
 
-        return new Game(champion, createDate, fellowPlayers, ID, gameMode, gameType, invalid, IPEarned, level, mapID, spell1, spell2, stats, subType, team);
+        return new Game(champion, createDate, fellowPlayers, gameMode, gameType, ID, invalid, IPEarned, level, map, spell1, spell2, stats, subType, team);
     }
 
     private Game getGameFromJSON(final Map<Long, Summoner> players, final JSONObject gameInfo) {
@@ -793,14 +820,14 @@ public class JSONConverter {
         final Boolean invalid = (Boolean)gameInfo.get("invalid");
         final Integer IPEarned = getInteger(gameInfo, "ipEarned");
         final Integer level = getInteger(gameInfo, "level");
-        final Integer mapID = getInteger(gameInfo, "mapId");
+        final GameMap map = getMap(getInteger(gameInfo, "mapId"));
         final SummonerSpell spell1 = API.getSummonerSpell(getInteger(gameInfo, "spell1"));
         final SummonerSpell spell2 = API.getSummonerSpell(getInteger(gameInfo, "spell2"));
         final RawStats stats = getRawStatsFromJSON((JSONObject)gameInfo.get("stats"));
         final Side team = getSide(gameInfo, "teamId");
         final List<Player> fellowPlayers = getAllPlayersFromJSON(players, (JSONArray)gameInfo.get("fellowPlayers"));
 
-        return new Game(champion, createDate, fellowPlayers, ID, gameMode, gameType, invalid, IPEarned, level, mapID, spell1, spell2, stats, subType, team);
+        return new Game(champion, createDate, fellowPlayers, gameMode, gameType, ID, invalid, IPEarned, level, map, spell1, spell2, stats, subType, team);
     }
 
     public Gold getGoldFromJSON(final JSONObject goldInfo) {
@@ -1064,7 +1091,7 @@ public class JSONConverter {
         final Integer assists = getInteger(matchHistorySummaryInfo, "assists");
         final Integer deaths = getInteger(matchHistorySummaryInfo, "deaths");
         final Integer kills = getInteger(matchHistorySummaryInfo, "kills");
-        final Integer mapID = getInteger(matchHistorySummaryInfo, "mapId");
+        final GameMap map = getMap(getInteger(matchHistorySummaryInfo, "mapId"));
         final Integer opposingTeamKills = getInteger(matchHistorySummaryInfo, "opposingTeamKills");
         final LocalDateTime date = getDateTime(matchHistorySummaryInfo, "date");
         final Long gameID = (Long)matchHistorySummaryInfo.get("gameId");
@@ -1073,7 +1100,7 @@ public class JSONConverter {
         final Boolean invalid = (Boolean)matchHistorySummaryInfo.get("invalid");
         final Boolean win = (Boolean)matchHistorySummaryInfo.get("win");
 
-        return new MatchHistorySummary(assists, deaths, kills, mapID, opposingTeamKills, date, gameID, gameMode, opposingTeamName, invalid, win);
+        return new MatchHistorySummary(assists, deaths, kills, opposingTeamKills, map, date, gameID, gameMode, opposingTeamName, invalid, win);
     }
 
     public MetaData getMetaDataFromJSON(final JSONObject metaDataInfo) {

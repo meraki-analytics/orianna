@@ -8,7 +8,7 @@ import lib.orianna.type.staticdata.Champion;
 import lib.orianna.type.staticdata.SummonerSpell;
 
 public class Game implements Serializable {
-    private static final long serialVersionUID = 3674949585372440265L;
+    private static final long serialVersionUID = -8516946488824820992L;
     public final Champion champion;
     public final LocalDateTime createDate;
     public final List<Player> fellowPlayers;
@@ -16,25 +16,26 @@ public class Game implements Serializable {
     public final GameType gameType;
     public final Long ID;
     public final Boolean invalid;
-    public final Integer IPEarned, level, mapID;
+    public final Integer IPEarned, level;
+    public final GameMap map;
     public final SummonerSpell spell1, spell2;
     public final RawStats stats;
     public final SubType subType;
     public final Side team;
 
-    public Game(final Champion champion, final LocalDateTime createDate, final List<Player> fellowPlayers, final Long ID, final GameMode gameMode,
-            final GameType gameType, final Boolean invalid, final Integer IPEarned, final Integer level, final Integer mapID, final SummonerSpell spell1,
+    public Game(final Champion champion, final LocalDateTime createDate, final List<Player> fellowPlayers, final GameMode gameMode, final GameType gameType,
+            final Long ID, final Boolean invalid, final Integer IPEarned, final Integer level, final GameMap map, final SummonerSpell spell1,
             final SummonerSpell spell2, final RawStats stats, final SubType subType, final Side team) {
         this.champion = champion;
         this.createDate = createDate;
         this.fellowPlayers = fellowPlayers;
-        this.ID = ID;
         this.gameMode = gameMode;
         this.gameType = gameType;
+        this.ID = ID;
         this.invalid = invalid;
         this.IPEarned = IPEarned;
         this.level = level;
-        this.mapID = mapID;
+        this.map = map;
         this.spell1 = spell1;
         this.spell2 = spell2;
         this.stats = stats;

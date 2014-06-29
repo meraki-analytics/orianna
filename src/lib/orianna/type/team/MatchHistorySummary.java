@@ -3,21 +3,24 @@ package lib.orianna.type.team;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import lib.orianna.type.game.GameMap;
+
 public class MatchHistorySummary implements Serializable {
-    private static final long serialVersionUID = 7447356548072009554L;
-    public final Integer assists, deaths, kills, mapID, opposingTeamKills;
+    private static final long serialVersionUID = 4352310540648854805L;
+    public final Integer assists, deaths, kills, opposingTeamKills;
     public final LocalDateTime date;
     public final Long gameID;
     public final String gameMode, opposingTeamName;
     public final Boolean invalid, win;
+    public final GameMap map;
 
-    public MatchHistorySummary(final Integer assists, final Integer deaths, final Integer kills, final Integer mapID, final Integer opposingTeamKills,
+    public MatchHistorySummary(final Integer assists, final Integer deaths, final Integer kills, final Integer opposingTeamKills, final GameMap map,
             final LocalDateTime date, final Long gameID, final String gameMode, final String opposingTeamName, final Boolean invalid, final Boolean win) {
         this.assists = assists;
         this.deaths = deaths;
         this.kills = kills;
-        this.mapID = mapID;
         this.opposingTeamKills = opposingTeamKills;
+        this.map = map;
         this.date = date;
         this.gameID = gameID;
         this.gameMode = gameMode;
@@ -94,12 +97,7 @@ public class MatchHistorySummary implements Serializable {
         else if(!kills.equals(other.kills)) {
             return false;
         }
-        if(mapID == null) {
-            if(other.mapID != null) {
-                return false;
-            }
-        }
-        else if(!mapID.equals(other.mapID)) {
+        if(map != other.map) {
             return false;
         }
         if(opposingTeamKills == null) {
@@ -140,7 +138,7 @@ public class MatchHistorySummary implements Serializable {
         result = prime * result + (gameMode == null ? 0 : gameMode.hashCode());
         result = prime * result + (invalid == null ? 0 : invalid.hashCode());
         result = prime * result + (kills == null ? 0 : kills.hashCode());
-        result = prime * result + (mapID == null ? 0 : mapID.hashCode());
+        result = prime * result + (map == null ? 0 : map.hashCode());
         result = prime * result + (opposingTeamKills == null ? 0 : opposingTeamKills.hashCode());
         result = prime * result + (opposingTeamName == null ? 0 : opposingTeamName.hashCode());
         result = prime * result + (win == null ? 0 : win.hashCode());
