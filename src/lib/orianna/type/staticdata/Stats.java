@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Stats implements Serializable {
     private static final long serialVersionUID = 8261789180245619L;
     public final Double armor, armorPerLevel, attackDamage, attackDamagePerLevel, attackRange, attackSpeedOffset, attackSpeedPerLevel, crit, critPerLevel, HP,
-            HPPerLevel, HPRegen, HPRegenPerLevel, moveSpeed, MP, MPPerLevel, MPRegen, MPRegenPerLevel, spellBlock, spellBlockPerLevel;
+    HPPerLevel, HPRegen, HPRegenPerLevel, moveSpeed, MP, MPPerLevel, MPRegen, MPRegenPerLevel, spellBlock, spellBlockPerLevel;
 
     public Stats(final Double armor, final Double armorPerLevel, final Double attackDamage, final Double attackDamagePerLevel, final Double attackRange,
             final Double attackSpeedOffset, final Double attackSpeedPerLevel, final Double crit, final Double critPerLevel, final Double HP,

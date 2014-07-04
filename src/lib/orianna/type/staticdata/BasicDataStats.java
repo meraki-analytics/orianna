@@ -5,16 +5,16 @@ import java.io.Serializable;
 public class BasicDataStats implements Serializable {
     private static final long serialVersionUID = 7938949129500009774L;
     public final Double flatArmorMod, flatAttackSpeedMod, flatBlockMod, flatCritChanceMod, flatCritDamageMod, flatEXPBonus, flatEnergyPoolMod,
-            flatEnergyRegenMod, flatHPPoolMod, flatHPRegenMod, flatMPPoolMod, flatMPRegenMod, flatMagicDamageMod, flatMovementSpeedMod, flatPhysicalDamageMod,
-            flatSpellBlockMod, percentArmorMod, percentAttackSpeedMod, percentBlockMod, percentCritChanceMod, percentCritDamageMod, percentDodgeMod,
-            percentEXPBonus, percentHPPoolMod, percentHPRegenMod, percentLifeStealMod, percentMPPoolMod, percentMPRegenMod, percentMagicDamageMod,
-            percentMovementSpeedMod, percentPhysicalDamageMod, percentSpellBlockMod, percentSpellVampMod, rFlatArmorModPerLevel, rFlatArmorPenetrationMod,
-            rFlatArmorPenetrationModPerLevel, rFlatCritChanceModPerLevel, rFlatCritDamageModPerLevel, rFlatDodgeMod, rFlatDodgeModPerLevel,
-            rFlatEnergyModPerLevel, rFlatEnergyRegenModPerLevel, rFlatGoldPer10Mod, rFlatHPModPerLevel, rFlatHPRegenModPerLevel, rFlatMPModPerLevel,
-            rFlatMPRegenModPerLevel, rFlatMagicDamageModPerLevel, rFlatMagicPenetrationMod, rFlatMagicPenetrationModPerLevel, rFlatMovementSpeedModPerLevel,
-            rFlatPhysicalDamageModPerLevel, rFlatSpellBlockModPerLevel, rFlatTimeDeadMod, rFlatTimeDeadModPerLevel, rPercentArmorPenetrationMod,
-            rPercentArmorPenetrationModPerLevel, rPercentAttackSpeedModPerLevel, rPercentCooldownMod, rPercentCooldownModPerLevel, rPercentMagicPenetrationMod,
-            rPercentMagicPenetrationModPerLevel, rPercentMovementSpeedModPerLevel, rPercentTimeDeadMod, rPercentTimeDeadModPerLevel;
+    flatEnergyRegenMod, flatHPPoolMod, flatHPRegenMod, flatMPPoolMod, flatMPRegenMod, flatMagicDamageMod, flatMovementSpeedMod, flatPhysicalDamageMod,
+    flatSpellBlockMod, percentArmorMod, percentAttackSpeedMod, percentBlockMod, percentCritChanceMod, percentCritDamageMod, percentDodgeMod,
+    percentEXPBonus, percentHPPoolMod, percentHPRegenMod, percentLifeStealMod, percentMPPoolMod, percentMPRegenMod, percentMagicDamageMod,
+    percentMovementSpeedMod, percentPhysicalDamageMod, percentSpellBlockMod, percentSpellVampMod, rFlatArmorModPerLevel, rFlatArmorPenetrationMod,
+    rFlatArmorPenetrationModPerLevel, rFlatCritChanceModPerLevel, rFlatCritDamageModPerLevel, rFlatDodgeMod, rFlatDodgeModPerLevel,
+    rFlatEnergyModPerLevel, rFlatEnergyRegenModPerLevel, rFlatGoldPer10Mod, rFlatHPModPerLevel, rFlatHPRegenModPerLevel, rFlatMPModPerLevel,
+    rFlatMPRegenModPerLevel, rFlatMagicDamageModPerLevel, rFlatMagicPenetrationMod, rFlatMagicPenetrationModPerLevel, rFlatMovementSpeedModPerLevel,
+    rFlatPhysicalDamageModPerLevel, rFlatSpellBlockModPerLevel, rFlatTimeDeadMod, rFlatTimeDeadModPerLevel, rPercentArmorPenetrationMod,
+    rPercentArmorPenetrationModPerLevel, rPercentAttackSpeedModPerLevel, rPercentCooldownMod, rPercentCooldownModPerLevel, rPercentMagicPenetrationMod,
+    rPercentMagicPenetrationModPerLevel, rPercentMovementSpeedModPerLevel, rPercentTimeDeadMod, rPercentTimeDeadModPerLevel;
 
     public BasicDataStats(final Double flatArmorMod, final Double flatAttackSpeedMod, final Double flatBlockMod, final Double flatCritChanceMod,
             final Double flatCritDamageMod, final Double flatEXPBonus, final Double flatEnergyPoolMod, final Double flatEnergyRegenMod,

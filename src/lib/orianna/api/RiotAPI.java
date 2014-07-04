@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import lib.orianna.api.queryspecs.ChampionData;
 import lib.orianna.api.queryspecs.ItemData;
@@ -223,6 +224,152 @@ public class RiotAPI {
         getMasteries();
         getRunes();
         getSummonerSpells();
+    }
+
+    /**
+     * @param summoner
+     *            the summoner to get information for
+     * @return the summoner's active mastery page
+     * @see <a href="http://developer.riotgames.com/api/methods#!/620/1933">LoL
+     *      API Specification</a>
+     */
+    public MasteryPage getActiveMasteryPage(final Summoner summoner) {
+        return getActiveMasteryPageByID(summoner.ID);
+    }
+
+    /**
+     * @param summonerID
+     *            the summoner to get information for
+     * @return the summoner's active mastery page
+     * @see <a href="http://developer.riotgames.com/api/methods#!/620/1933">LoL
+     *      API Specification</a>
+     */
+    public MasteryPage getActiveMasteryPageByID(final long summonerID) {
+        return getMasteryPagesByID(summonerID).parallelStream().filter((page) -> page.current).findAny().get();
+    }
+
+    /**
+     * @param summonerName
+     *            the summoner to get information for
+     * @return the summoner's active mastery page
+     * @see <a href="http://developer.riotgames.com/api/methods#!/620/1933">LoL
+     *      API Specification</a>
+     */
+    public MasteryPage getActiveMasteryPageByName(final String summonerName) {
+        return getActiveMasteryPage(getSummoner(summonerName));
+    }
+
+    /**
+     * @param summoners
+     *            the summoners to get information for
+     * @return the summoners' active mastery pages
+     * @see <a href="http://developer.riotgames.com/api/methods#!/620/1933">LoL
+     *      API Specification</a>
+     */
+    public Map<Summoner, MasteryPage> getActiveMasteryPages(final List<Summoner> summoners) {
+        final Map<Long, MasteryPage> allPages = getActiveMasteryPagesByIDs(getIDsFromSummoners(summoners));
+        return summonerMapFromID(summoners, allPages);
+    }
+
+    /**
+     * @param summonerIDs
+     *            the summoners to get information for
+     * @return the summoners' active mastery pages
+     * @see <a href="http://developer.riotgames.com/api/methods#!/620/1933">LoL
+     *      API Specification</a>
+     */
+    public Map<Long, MasteryPage> getActiveMasteryPagesByIDs(final List<Long> summonerIDs) {
+        final Map<Long, List<MasteryPage>> pages = getMasteryPagesByIDs(summonerIDs);
+        return pages
+                .entrySet()
+                .parallelStream()
+                .collect(
+                        Collectors.toMap((entry) -> entry.getKey(), (entry) -> entry.getValue().parallelStream().filter((page) -> page.current).findAny().get()));
+    }
+
+    /**
+     * @param summonerNames
+     *            the summoners to get information for
+     * @return the summoners' active mastery pages
+     * @see <a href="http://developer.riotgames.com/api/methods#!/620/1933">LoL
+     *      API Specification</a>
+     */
+    public Map<Summoner, MasteryPage> getActiveMasteryPagesByNames(final List<String> summonerNames) {
+        final List<Summoner> summoners = getSummoners(summonerNames);
+        return getActiveMasteryPages(summoners);
+    }
+
+    /**
+     * @param summoner
+     *            the summoner to get information for
+     * @return the summoner's active rune page
+     * @see <a href="http://developer.riotgames.com/api/methods#!/620/1932">LoL
+     *      API Specification</a>
+     */
+    public RunePage getActiveRunePage(final Summoner summoner) {
+        return getActiveRunePageByID(summoner.ID);
+    }
+
+    /**
+     * @param summonerID
+     *            the summoner to get information for
+     * @return the summoner's active rune page
+     * @see <a href="http://developer.riotgames.com/api/methods#!/620/1932">LoL
+     *      API Specification</a>
+     */
+    public RunePage getActiveRunePageByID(final long summonerID) {
+        return getRunePagesByID(summonerID).parallelStream().filter((page) -> page.current).findAny().get();
+    }
+
+    /**
+     * @param summonerName
+     *            the summoner to get information for
+     * @return the summoner's active rune page
+     * @see <a href="http://developer.riotgames.com/api/methods#!/620/1932">LoL
+     *      API Specification</a>
+     */
+    public RunePage getActiveRunePageByName(final String summonerName) {
+        return getActiveRunePage(getSummoner(summonerName));
+    }
+
+    /**
+     * @param summoners
+     *            the summoners to get information for
+     * @return the summoners' active rune pages
+     * @see <a href="http://developer.riotgames.com/api/methods#!/620/1932">LoL
+     *      API Specification</a>
+     */
+    public Map<Summoner, RunePage> getActiveRunePages(final List<Summoner> summoners) {
+        final Map<Long, RunePage> allPages = getActiveRunePagesByIDs(getIDsFromSummoners(summoners));
+        return summonerMapFromID(summoners, allPages);
+    }
+
+    /**
+     * @param summonerIDs
+     *            the summoners to get information for
+     * @return the summoners' active rune pages
+     * @see <a href="http://developer.riotgames.com/api/methods#!/620/1932">LoL
+     *      API Specification</a>
+     */
+    public Map<Long, RunePage> getActiveRunePagesByIDs(final List<Long> summonerIDs) {
+        final Map<Long, List<RunePage>> pages = getRunePagesByIDs(summonerIDs);
+        return pages
+                .entrySet()
+                .parallelStream()
+                .collect(
+                        Collectors.toMap((entry) -> entry.getKey(), (entry) -> entry.getValue().parallelStream().filter((page) -> page.current).findAny().get()));
+    }
+
+    /**
+     * @param summonerNames
+     *            the summoners to get information for
+     * @return the summoners' active rune pages
+     * @see <a href="http://developer.riotgames.com/api/methods#!/620/1932">LoL
+     *      API Specification</a>
+     */
+    public Map<Summoner, RunePage> getActiveRunePagesByNames(final List<String> summonerNames) {
+        final List<Summoner> summoners = getSummoners(summonerNames);
+        return getActiveRunePages(summoners);
     }
 
     /**

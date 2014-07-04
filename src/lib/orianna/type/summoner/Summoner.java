@@ -55,6 +55,28 @@ public class Summoner implements Serializable {
     /**
      * @param API
      *            the API to get the data with
+     * @return the summoner's active mastery page
+     * @see <a href="http://developer.riotgames.com/api/methods#!/620/1933">LoL
+     *      API Specification</a>
+     */
+    public MasteryPage getActiveMasteryPage(final RiotAPI API) {
+        return API.getActiveMasteryPage(this);
+    }
+
+    /**
+     * @param API
+     *            the API to get the data with
+     * @return the summoner's active rune page
+     * @see <a href="http://developer.riotgames.com/api/methods#!/620/1932">LoL
+     *      API Specification</a>
+     */
+    public RunePage getActiveRunePage(final RiotAPI API) {
+        return API.getActiveRunePage(this);
+    }
+
+    /**
+     * @param API
+     *            the API to get the data with
      * @return the summoner's leagues
      * @see <a href="http://developer.riotgames.com/api/methods#!/741/2641">LoL
      *      API Specification</a>
