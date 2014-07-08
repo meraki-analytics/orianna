@@ -8,7 +8,7 @@ public class SummonerSpell implements Serializable {
     public final List<Double> cooldown;
     public final String cooldownBurn, costBurn, costType, description, key, name, rangeBurn, resource, sanitizedDescription, sanitizedTooltip, tooltip;
     public final List<Integer> cost, range;
-    public final List<List<Integer>> effect;
+    public final List<List<Double>> effect;
     public final List<String> effectBurn, modes;
     public final Integer ID, maxRank, summonerLevel;
     public final Image image;
@@ -17,7 +17,7 @@ public class SummonerSpell implements Serializable {
 
     public SummonerSpell(final String cooldownBurn, final String costBurn, final String costType, final String description, final String key,
             final String name, final String rangeBurn, final String resource, final String sanitizedDescription, final String sanitizedTooltip,
-            final String tooltip, final List<Double> cooldown, final List<Integer> cost, final List<Integer> range, final List<List<Integer>> effect,
+            final String tooltip, final List<Double> cooldown, final List<Integer> cost, final List<Integer> range, final List<List<Double>> effect,
             final List<String> effectBurn, final List<String> modes, final Integer ID, final Integer maxRank, final Integer summonerLevel, final Image image,
             final LevelTip levelTip, final List<SpellVariables> vars) {
         this.cooldownBurn = cooldownBurn;

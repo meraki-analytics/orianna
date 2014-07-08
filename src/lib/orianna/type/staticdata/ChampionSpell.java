@@ -9,7 +9,7 @@ public class ChampionSpell implements Serializable {
     public final List<Double> cooldown;
     public final String cooldownBurn, costBurn, costType, description, key, name, rangeBurn, resource, sanitizedDescription, sanitizedTooltip, tooltip;
     public final List<Integer> cost, range;
-    public final List<List<Integer>> effect;
+    public final List<List<Double>> effect;
     public final List<String> effectBurn;
     public final Image image;
     public final LevelTip levelTip;
@@ -18,7 +18,7 @@ public class ChampionSpell implements Serializable {
 
     public ChampionSpell(final List<Image> altImages, final List<Double> cooldown, final String cooldownBurn, final String costBurn, final String costType,
             final String description, final String key, final String name, final String rangeBurn, final String resource, final String sanitizedDescription,
-            final String sanitizedTooltip, final String tooltip, final List<Integer> cost, final List<Integer> range, final List<List<Integer>> effect,
+            final String sanitizedTooltip, final String tooltip, final List<Integer> cost, final List<Integer> range, final List<List<Double>> effect,
             final List<String> effectBurn, final Image image, final LevelTip levelTip, final Integer maxRank, final List<SpellVariables> vars) {
         this.altImages = altImages;
         this.cooldown = cooldown;

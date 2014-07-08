@@ -92,6 +92,10 @@ public class JSONConverter {
         return LocalDateTime.ofEpochSecond(epoch / 1000, 0, timeZone);
     }
 
+    private static List<Double> getDoubleList(final JSONArray list) {
+        return getList(list, d -> (Double)d);
+    }
+
     private static List<Double> getDoubleList(final JSONObject object, final String key) {
         return getList(object, key, d -> (Double)d);
     }
@@ -734,7 +738,7 @@ public class JSONConverter {
         final LevelTip levelTip = getLevelTipFromJSON((JSONObject)championSpellInfo.get("leveltip"));
         final List<Image> altImages = getList(championSpellInfo, "altimages", i -> getImageFromJSON((JSONObject)i));
         final List<SpellVariables> vars = getList(championSpellInfo, "vars", v -> getSpellVariablesFromJSON((JSONObject)v));
-        final List<List<Integer>> effect = getList(championSpellInfo, "effect", l -> getIntegerList((JSONArray)l));
+        final List<List<Double>> effect = getList(championSpellInfo, "effect", l -> getDoubleList((JSONArray)l));
 
         List<Integer> range;
         final Object val = championSpellInfo.get("range");
@@ -1478,7 +1482,7 @@ public class JSONConverter {
         final String sanitizedTooltip = (String)summonerSpellInfo.get("sanitizedTooltip");
         final String tooltip = (String)summonerSpellInfo.get("tooltip");
         final List<Integer> cost = getIntegerList(summonerSpellInfo, "cost");
-        final List<List<Integer>> effect = getList(summonerSpellInfo, "effect", l -> getIntegerList((JSONArray)l));
+        final List<List<Double>> effect = getList(summonerSpellInfo, "effect", l -> getDoubleList((JSONArray)l));
         final List<String> effectBurn = getStringList(summonerSpellInfo, "effectBurn");
         final List<String> modes = getStringList(summonerSpellInfo, "modes");
         final Integer ID = getInteger(summonerSpellInfo, "id");

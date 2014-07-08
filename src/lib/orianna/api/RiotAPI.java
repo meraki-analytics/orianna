@@ -76,19 +76,11 @@ public class RiotAPI {
     private final static JSONParser parser = new JSONParser();
 
     private static List<Long> getIDsFromSummoners(final List<Summoner> summoners) {
-        final List<Long> summonerIDs = new ArrayList<Long>();
-        for(final Summoner summoner : summoners) {
-            summonerIDs.add(summoner.ID);
-        }
-        return summonerIDs;
+        return summoners.parallelStream().map((summoner) -> summoner.ID).collect(Collectors.toList());
     }
 
     private static List<String> getIDsFromTeams(final List<Team> teams) {
-        final List<String> teamIDs = new ArrayList<String>();
-        for(final Team team : teams) {
-            teamIDs.add(team.ID);
-        }
-        return teamIDs;
+        return teams.parallelStream().map((team) -> team.ID).collect(Collectors.toList());
     }
 
     @SuppressWarnings("unchecked")
@@ -144,17 +136,13 @@ public class RiotAPI {
 
     private static <T> Map<Summoner, T> summonerMapFromID(final List<Summoner> summoners, final Map<Long, T> IDMap) {
         final Map<Summoner, T> map = new HashMap<Summoner, T>();
-        for(final Summoner summoner : summoners) {
-            map.put(summoner, IDMap.get(summoner.ID));
-        }
+        summoners.forEach((summoner) -> map.put(summoner, IDMap.get(summoner.ID)));
         return Collections.unmodifiableMap(map);
     }
 
     private static <T> Map<Team, T> teamMapFromID(final List<Team> teams, final Map<String, T> IDMap) {
         final Map<Team, T> map = new HashMap<Team, T>();
-        for(final Team team : teams) {
-            map.put(team, IDMap.get(team.ID));
-        }
+        teams.forEach((team) -> map.put(team, IDMap.get(team.ID)));
         return Collections.unmodifiableMap(map);
     }
 
