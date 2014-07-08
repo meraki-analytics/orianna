@@ -1,17 +1,42 @@
 package lib.orianna.type.summoner;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import lib.orianna.type.staticdata.Rune;
+import lib.orianna.type.staticdata.RuneType;
 
 public class RuneSlot implements Serializable {
-    private static final long serialVersionUID = -6140176326830028668L;
+    private static final long serialVersionUID = 2655649709582724355L;
+    private static final Map<Integer, RuneType> TYPES = getTypeMap();
+
+    private static Map<Integer, RuneType> getTypeMap() {
+        final Map<Integer, RuneType> types = new HashMap<Integer, RuneType>();
+        for(int i = 1; i <= 9; i++) {
+            types.put(i, RuneType.MARK);
+        }
+        for(int i = 10; i <= 18; i++) {
+            types.put(i, RuneType.SEAL);
+        }
+        for(int i = 19; i <= 27; i++) {
+            types.put(i, RuneType.GLYPH);
+        }
+        for(int i = 28; i <= 30; i++) {
+            types.put(i, RuneType.QUINTESSENCE);
+        }
+
+        return types;
+    }
+
     public final Integer ID;
     public final Rune rune;
+    public final RuneType type;
 
     public RuneSlot(final Integer ID, final Rune rune) {
         this.ID = ID;
         this.rune = rune;
+        type = TYPES.get(ID);
     }
 
     @Override

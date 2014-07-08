@@ -3,11 +3,12 @@ package lib.orianna.type.staticdata;
 import java.io.Serializable;
 
 public class MetaData implements Serializable {
-    private static final long serialVersionUID = 3844745172323940595L;
+    private static final long serialVersionUID = -3481055934576447450L;
     public final Boolean isRune;
-    public final String tier, type;
+    public final String tier;
+    public final RuneType type;
 
-    public MetaData(final Boolean isRune, final String tier, final String type) {
+    public MetaData(final Boolean isRune, final String tier, final RuneType type) {
         this.isRune = isRune;
         this.tier = tier;
         this.type = type;

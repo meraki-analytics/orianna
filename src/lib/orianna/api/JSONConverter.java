@@ -45,6 +45,7 @@ import lib.orianna.type.staticdata.Passive;
 import lib.orianna.type.staticdata.Realm;
 import lib.orianna.type.staticdata.Recommended;
 import lib.orianna.type.staticdata.Rune;
+import lib.orianna.type.staticdata.RuneType;
 import lib.orianna.type.staticdata.Skin;
 import lib.orianna.type.staticdata.SpellVariables;
 import lib.orianna.type.staticdata.Stats;
@@ -1029,7 +1030,7 @@ public class JSONConverter {
         return new Mastery(description, sanitizedDescription, ID, ranks, image, name, prereq);
     }
 
-    public MasteryPage getMasteryPageFromJSON(final JSONObject masteryPageInfo) {
+    public MasteryPage getMasteryPageFromJSON(final JSONObject masteryPageInfo, final MasteryTree masteryTree) {
         if(masteryPageInfo == null) {
             return null;
         }
@@ -1037,12 +1038,12 @@ public class JSONConverter {
         final Long ID = (Long)masteryPageInfo.get("id");
         final Boolean current = (Boolean)masteryPageInfo.get("current");
         final String name = (String)masteryPageInfo.get("name");
-        final List<MasterySlot> masteries = getList(masteryPageInfo, "masteries", m -> getMasterySlotFromJSON((JSONObject)m));
+        final List<MasterySlot> masteries = getList(masteryPageInfo, "masteries", m -> getMasterySlotFromJSON((JSONObject)m, masteryTree));
 
         return new MasteryPage(current, ID, masteries, name);
     }
 
-    public MasterySlot getMasterySlotFromJSON(final JSONObject masterySlotInfo) {
+    public MasterySlot getMasterySlotFromJSON(final JSONObject masterySlotInfo, final MasteryTree masteryTree) {
         if(masterySlotInfo == null) {
             return null;
         }
@@ -1051,7 +1052,7 @@ public class JSONConverter {
         final Integer ID = getInteger(masterySlotInfo, "id");
         final Mastery mastery = API.getMastery(ID);
 
-        return new MasterySlot(rank, mastery);
+        return new MasterySlot(mastery, rank, masteryTree.typeOf(mastery));
     }
 
     public MasteryTree getMasteryTreeFromJSON(final JSONObject masteryTreeInfo) {
@@ -1116,7 +1117,7 @@ public class JSONConverter {
         final String tier = (String)metaDataInfo.get("tier");
         final String type = (String)metaDataInfo.get("type");
 
-        return new MetaData(isRune, tier, type);
+        return new MetaData(isRune, tier, RuneType.fromString(type));
     }
 
     public MiniSeries getMiniSeriesFromJSON(final JSONObject miniSeriesInfo) {

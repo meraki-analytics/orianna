@@ -3,20 +3,18 @@ package lib.orianna.type.summoner;
 import java.io.Serializable;
 
 import lib.orianna.type.staticdata.Mastery;
+import lib.orianna.type.staticdata.MasteryType;
 
 public class MasterySlot implements Serializable {
     private static final long serialVersionUID = 754727306705168514L;
     public final Mastery mastery;
     public final Integer rank;
+    public final MasteryType type;
 
-    public MasterySlot(final int rank, final Mastery mastery) {
-        this.rank = rank;
-        this.mastery = mastery;
-    }
-
-    public MasterySlot(final Mastery mastery, final Integer rank) {
+    public MasterySlot(final Mastery mastery, final Integer rank, final MasteryType type) {
         this.mastery = mastery;
         this.rank = rank;
+        this.type = type;
     }
 
     @Override

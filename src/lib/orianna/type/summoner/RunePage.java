@@ -1,10 +1,14 @@
 package lib.orianna.type.summoner;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import lib.orianna.type.staticdata.RuneType;
 
 public class RunePage implements Serializable {
-    private static final long serialVersionUID = -1233047466640527128L;
+    private static final long serialVersionUID = 3237362434900206119L;
     public final Boolean current;
     public final Long ID;
     public final String name;
@@ -64,6 +68,15 @@ public class RunePage implements Serializable {
         return true;
     }
 
+    /**
+     * Gets only the blue rune slots
+     *
+     * @return the blue rune slots
+     */
+    public List<RuneSlot> glyphSlots() {
+        return Collections.unmodifiableList(slots.stream().filter((slot) -> slot.type == RuneType.GLYPH).collect(Collectors.toList()));
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -73,6 +86,33 @@ public class RunePage implements Serializable {
         result = prime * result + (name == null ? 0 : name.hashCode());
         result = prime * result + (slots == null ? 0 : slots.hashCode());
         return result;
+    }
+
+    /**
+     * Gets only the red rune slots
+     *
+     * @return the red rune slots
+     */
+    public List<RuneSlot> markSlots() {
+        return Collections.unmodifiableList(slots.stream().filter((slot) -> slot.type == RuneType.MARK).collect(Collectors.toList()));
+    }
+
+    /**
+     * Gets only the quintessence rune slots
+     *
+     * @return the quintessence rune slots
+     */
+    public List<RuneSlot> quintessenceSlots() {
+        return Collections.unmodifiableList(slots.stream().filter((slot) -> slot.type == RuneType.QUINTESSENCE).collect(Collectors.toList()));
+    }
+
+    /**
+     * Gets only the yellow rune slots
+     *
+     * @return the yellow rune slots
+     */
+    public List<RuneSlot> sealSlots() {
+        return Collections.unmodifiableList(slots.stream().filter((slot) -> slot.type == RuneType.SEAL).collect(Collectors.toList()));
     }
 
     @Override

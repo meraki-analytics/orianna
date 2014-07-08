@@ -64,6 +64,7 @@ public class RiotAPI {
         public boolean itemsFilled = false;
         public final Map<Integer, Mastery> masteries = new ConcurrentHashMap<Integer, Mastery>();
         public boolean masteriesFilled = false;
+        public MasteryTree masteryTree = null;
         public final Map<Integer, Rune> runes = new ConcurrentHashMap<Integer, Rune>();
         public boolean runesFilled = false;
         public final Map<Long, Summoner> summonerIDs = new ConcurrentHashMap<Long, Summoner>();
@@ -883,6 +884,7 @@ public class RiotAPI {
         for(final Mastery mastery : masteries) {
             cache.masteries.put(mastery.ID, mastery);
         }
+        cache.masteryTree = converter.getMasteryTreeFromJSON((JSONObject)masteryList.get("tree"));
         cache.masteriesFilled = true;
 
         return masteries;
@@ -948,6 +950,7 @@ public class RiotAPI {
     public List<MasteryPage> getMasteryPagesByID(final long summonerID) {
         if(!cache.masteriesFilled) {
             getMasteries(); // Cache in bulk to minimize API calls
+            // Necessary to get mastery tree as well
         }
 
         final String json = API.getSummonerMasteriesByID(summonerID);
@@ -960,7 +963,7 @@ public class RiotAPI {
         }
         final JSONObject summonerObj = (JSONObject)summonerList.get(Long.toString(summonerID));
 
-        return JSONConverter.getList(summonerObj, "pages", p -> converter.getMasteryPageFromJSON((JSONObject)p));
+        return JSONConverter.getList(summonerObj, "pages", p -> converter.getMasteryPageFromJSON((JSONObject)p, cache.masteryTree));
     }
 
     /**
@@ -973,6 +976,7 @@ public class RiotAPI {
     public Map<Long, List<MasteryPage>> getMasteryPagesByIDs(final List<Long> summonerIDs) {
         if(!cache.masteriesFilled) {
             getMasteries(); // Cache in bulk to minimize API calls
+            // Necessary to get mastery tree as well
         }
 
         final JSONObject summonerList = handleIDCountLimit(summonerIDs, (IDs) -> API.getSummonersMasteriesByID(IDs));
@@ -981,7 +985,8 @@ public class RiotAPI {
         for(final Long summonerID : summonerIDs) {
             final JSONObject summonerObj = (JSONObject)summonerList.get(Long.toString(summonerID));
 
-            final List<MasteryPage> masteryPages = JSONConverter.getList(summonerObj, "pages", p -> converter.getMasteryPageFromJSON((JSONObject)p));
+            final List<MasteryPage> masteryPages = JSONConverter.getList(summonerObj, "pages",
+                    p -> converter.getMasteryPageFromJSON((JSONObject)p, cache.masteryTree));
             allPages.put(summonerID, masteryPages);
         }
         return Collections.unmodifiableMap(allPages);
@@ -1016,39 +1021,27 @@ public class RiotAPI {
      *      API Specification</a>
      */
     public MasteryTree getMasteryTree() {
-        JSONObject masteryList;
         if(!cache.masteriesFilled) {
             final Set<MasteryData> masteryData = new HashSet<MasteryData>();
             masteryData.add(MasteryData.all);
 
             final String json = API.getMasteries(masteryData);
             try {
-                masteryList = (JSONObject)parser.parse(json);
-            }
-            catch(final ParseException e) {
-                throw handleParseException(e);
-            }
+                final JSONObject masteryList = (JSONObject)parser.parse(json);
 
-            final List<Mastery> masteries = JSONConverter.getListFromMap(masteryList, "data", m -> converter.getMasteryFromJSON((JSONObject)m));
-            for(final Mastery mastery : masteries) {
-                cache.masteries.put(mastery.ID, mastery);
-            }
-            cache.masteriesFilled = true;
-        }
-        else {
-            final Set<MasteryData> masteryData = new HashSet<MasteryData>();
-            masteryData.add(MasteryData.tree);
-
-            final String json = API.getMasteries(masteryData);
-            try {
-                masteryList = (JSONObject)parser.parse(json);
+                final List<Mastery> masteries = JSONConverter.getListFromMap(masteryList, "data", m -> converter.getMasteryFromJSON((JSONObject)m));
+                for(final Mastery mastery : masteries) {
+                    cache.masteries.put(mastery.ID, mastery);
+                }
+                cache.masteryTree = converter.getMasteryTreeFromJSON((JSONObject)masteryList.get("tree"));
+                cache.masteriesFilled = true;
             }
             catch(final ParseException e) {
                 throw handleParseException(e);
             }
         }
 
-        return converter.getMasteryTreeFromJSON((JSONObject)masteryList.get("tree"));
+        return cache.masteryTree;
     }
 
     /**

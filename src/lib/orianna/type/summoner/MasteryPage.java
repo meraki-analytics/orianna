@@ -1,10 +1,14 @@
 package lib.orianna.type.summoner;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import lib.orianna.type.staticdata.MasteryType;
 
 public class MasteryPage implements Serializable {
-    private static final long serialVersionUID = -8858192509700749701L;
+    private static final long serialVersionUID = -7504309025175797747L;
     public final Boolean current;
     public final Long ID;
     public final List<MasterySlot> masteries;
@@ -15,6 +19,15 @@ public class MasteryPage implements Serializable {
         this.ID = ID;
         this.masteries = masteries;
         this.name = name;
+    }
+
+    /**
+     * Gets only the defensive slots
+     *
+     * @return the defense slots
+     */
+    public List<MasterySlot> defenseSlots() {
+        return Collections.unmodifiableList(masteries.stream().filter((slot) -> slot.type == MasteryType.DEFENSE).collect(Collectors.toList()));
     }
 
     @Override
@@ -48,8 +61,26 @@ public class MasteryPage implements Serializable {
         return result;
     }
 
+    /**
+     * Gets only the offensive slots
+     *
+     * @return the offense slots
+     */
+    public List<MasterySlot> offenseSlots() {
+        return Collections.unmodifiableList(masteries.stream().filter((slot) -> slot.type == MasteryType.OFFENSE).collect(Collectors.toList()));
+    }
+
     @Override
     public String toString() {
         return "MasteryPage [name=" + name + "]";
+    }
+
+    /**
+     * Gets only the utility slots
+     *
+     * @return the utility slots
+     */
+    public List<MasterySlot> utilitySlots() {
+        return Collections.unmodifiableList(masteries.stream().filter((slot) -> slot.type == MasteryType.UTILITY).collect(Collectors.toList()));
     }
 }
