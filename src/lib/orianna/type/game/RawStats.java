@@ -1,20 +1,23 @@
 package lib.orianna.type.game;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import lib.orianna.type.staticdata.Item;
 
 public class RawStats implements Serializable {
-    private static final long serialVersionUID = -8604137571187419055L;
+    private static final long serialVersionUID = -1930582534273638691L;
     public final Integer assists, barracksKilled, championsKilled, combatPlayerScore, consumablesPurchased, damageDealtPlayer, doubleKills, firstBlood, gold,
-    goldEarned, goldSpent, itemsPurchased, killingSprees, largestCriticalStrike, largestKillingSpree, largestMultiKill, legendaryItemsCreated, level,
-    magicDamageDealtPlayer, magicDamageDealtToChampions, magicDamageTaken, minionsDenied, minionsKilled, neutralMinionsKilled,
-    neutralMinionsKilledEnemyJungle, neutralMinionsKilledYourJungle, nodeCapture, nodeCaptureAssist, nodeNeutralize, nodeNeutralizeAssist, numDeaths,
-    numItemsBought, objectivePlayerScore, pentaKills, physicalDamageDealtPlayer, physicalDamageDealtToChampions, physicalDamageTaken, quadraKills,
-    sightWardsBought, spell1Cast, spell2Cast, spell3Cast, spell4Cast, summonSpell1Cast, summonSpell2Cast, superMonsterKilled, team, teamObjective,
-    timePlayed, totalDamageDealt, totalDamageDealtToChampions, totalDamageTaken, totalHeal, totalPlayerScore, totalScoreRank,
-    totalTimeCrowdControlDealt, totalUnitsHealed, tripleKills, trueDamageDealtPlayer, trueDamageDealtToChampions, trueDamageTaken, turretsKilled,
-    unrealKills, victoryPointTotal, visionWardsBought, wardKilled, wardPlaced;
+            goldEarned, goldSpent, itemsPurchased, killingSprees, largestCriticalStrike, largestKillingSpree, largestMultiKill, legendaryItemsCreated, level,
+            magicDamageDealtPlayer, magicDamageDealtToChampions, magicDamageTaken, minionsDenied, minionsKilled, neutralMinionsKilled,
+            neutralMinionsKilledEnemyJungle, neutralMinionsKilledYourJungle, nodeCapture, nodeCaptureAssist, nodeNeutralize, nodeNeutralizeAssist, numDeaths,
+            numItemsBought, objectivePlayerScore, pentaKills, physicalDamageDealtPlayer, physicalDamageDealtToChampions, physicalDamageTaken, quadraKills,
+            sightWardsBought, spell1Cast, spell2Cast, spell3Cast, spell4Cast, summonSpell1Cast, summonSpell2Cast, superMonsterKilled, team, teamObjective,
+            timePlayed, totalDamageDealt, totalDamageDealtToChampions, totalDamageTaken, totalHeal, totalPlayerScore, totalScoreRank,
+            totalTimeCrowdControlDealt, totalUnitsHealed, tripleKills, trueDamageDealtPlayer, trueDamageDealtToChampions, trueDamageTaken, turretsKilled,
+            unrealKills, victoryPointTotal, visionWardsBought, wardKilled, wardPlaced;
     public final Item item0, item1, item2, item3, item4, item5, item6;
     public final Boolean nexusKilled, win;
 
@@ -818,6 +821,218 @@ public class RawStats implements Serializable {
         result = prime * result + (wardPlaced == null ? 0 : wardPlaced.hashCode());
         result = prime * result + (win == null ? 0 : win.hashCode());
         return result;
+    }
+
+    /**
+     * Gets only the stats which weren't null (from the Integer fields)
+     *
+     * @return the non-null stats
+     */
+    public Map<String, Integer> nonNullStats() {
+        final Map<String, Integer> nonNull = new HashMap<String, Integer>();
+        if(assists != null) {
+            nonNull.put("assists", assists);
+        }
+        if(barracksKilled != null) {
+            nonNull.put("barracksKilled", barracksKilled);
+        }
+        if(championsKilled != null) {
+            nonNull.put("championsKilled", championsKilled);
+        }
+        if(combatPlayerScore != null) {
+            nonNull.put("combatPlayerScore", combatPlayerScore);
+        }
+        if(consumablesPurchased != null) {
+            nonNull.put("consumablesPurchased", consumablesPurchased);
+        }
+        if(damageDealtPlayer != null) {
+            nonNull.put("damageDealtPlayer", damageDealtPlayer);
+        }
+        if(doubleKills != null) {
+            nonNull.put("doubleKills", doubleKills);
+        }
+        if(firstBlood != null) {
+            nonNull.put("firstBlood", firstBlood);
+        }
+        if(gold != null) {
+            nonNull.put("gold", gold);
+        }
+        if(goldEarned != null) {
+            nonNull.put("goldEarned", goldEarned);
+        }
+        if(goldSpent != null) {
+            nonNull.put("goldSpent", goldSpent);
+        }
+        if(itemsPurchased != null) {
+            nonNull.put("itemsPurchased", itemsPurchased);
+        }
+        if(killingSprees != null) {
+            nonNull.put("killingSprees", killingSprees);
+        }
+        if(largestCriticalStrike != null) {
+            nonNull.put("largestCriticalStrike", largestCriticalStrike);
+        }
+        if(largestKillingSpree != null) {
+            nonNull.put("largestKillingSpree", largestKillingSpree);
+        }
+        if(largestMultiKill != null) {
+            nonNull.put("largestMultiKill", largestMultiKill);
+        }
+        if(legendaryItemsCreated != null) {
+            nonNull.put("legendaryItemsCreated", legendaryItemsCreated);
+        }
+        if(level != null) {
+            nonNull.put("level", level);
+        }
+        if(magicDamageDealtPlayer != null) {
+            nonNull.put("magicDamageDealtPlayer", magicDamageDealtPlayer);
+        }
+        if(magicDamageDealtToChampions != null) {
+            nonNull.put("magicDamageDealtToChampions", magicDamageDealtToChampions);
+        }
+        if(magicDamageTaken != null) {
+            nonNull.put("magicDamageTaken", magicDamageTaken);
+        }
+        if(minionsDenied != null) {
+            nonNull.put("minionsDenied", minionsDenied);
+        }
+        if(minionsKilled != null) {
+            nonNull.put("minionsKilled", minionsKilled);
+        }
+        if(neutralMinionsKilled != null) {
+            nonNull.put("neutralMinionsKilled", neutralMinionsKilled);
+        }
+        if(neutralMinionsKilledEnemyJungle != null) {
+            nonNull.put("neutralMinionsKilledEnemyJungle", neutralMinionsKilledEnemyJungle);
+        }
+        if(neutralMinionsKilledYourJungle != null) {
+            nonNull.put("neutralMinionsKilledYourJungle", neutralMinionsKilledYourJungle);
+        }
+        if(nodeCapture != null) {
+            nonNull.put("nodeCapture", nodeCapture);
+        }
+        if(nodeCaptureAssist != null) {
+            nonNull.put("nodeCaptureAssist", nodeCaptureAssist);
+        }
+        if(nodeNeutralize != null) {
+            nonNull.put("nodeNeutralize", nodeNeutralize);
+        }
+        if(nodeNeutralizeAssist != null) {
+            nonNull.put("nodeNeutralizeAssist", nodeNeutralizeAssist);
+        }
+        if(numDeaths != null) {
+            nonNull.put("numDeaths", numDeaths);
+        }
+        if(numItemsBought != null) {
+            nonNull.put("numItemsBought", numItemsBought);
+        }
+        if(objectivePlayerScore != null) {
+            nonNull.put("objectivePlayerScore", objectivePlayerScore);
+        }
+        if(pentaKills != null) {
+            nonNull.put("pentaKills", pentaKills);
+        }
+        if(physicalDamageDealtPlayer != null) {
+            nonNull.put("physicalDamageDealtPlayer", physicalDamageDealtPlayer);
+        }
+        if(physicalDamageDealtToChampions != null) {
+            nonNull.put("physicalDamageDealtToChampions", physicalDamageDealtToChampions);
+        }
+        if(physicalDamageTaken != null) {
+            nonNull.put("physicalDamageTaken", physicalDamageTaken);
+        }
+        if(quadraKills != null) {
+            nonNull.put("quadraKills", quadraKills);
+        }
+        if(sightWardsBought != null) {
+            nonNull.put("sightWardsBought", sightWardsBought);
+        }
+        if(spell1Cast != null) {
+            nonNull.put("spell1Cast", spell1Cast);
+        }
+        if(spell2Cast != null) {
+            nonNull.put("spell2Cast", spell2Cast);
+        }
+        if(spell3Cast != null) {
+            nonNull.put("spell3Cast", spell3Cast);
+        }
+        if(spell4Cast != null) {
+            nonNull.put("spell4Cast", spell4Cast);
+        }
+        if(summonSpell1Cast != null) {
+            nonNull.put("summonSpell1Cast", summonSpell1Cast);
+        }
+        if(summonSpell2Cast != null) {
+            nonNull.put("summonSpell2Cast", summonSpell2Cast);
+        }
+        if(superMonsterKilled != null) {
+            nonNull.put("superMonsterKilled", superMonsterKilled);
+        }
+        if(team != null) {
+            nonNull.put("team", team);
+        }
+        if(teamObjective != null) {
+            nonNull.put("teamObjective", teamObjective);
+        }
+        if(timePlayed != null) {
+            nonNull.put("timePlayed", timePlayed);
+        }
+        if(totalDamageDealt != null) {
+            nonNull.put("totalDamageDealt", totalDamageDealt);
+        }
+        if(totalDamageDealtToChampions != null) {
+            nonNull.put("totalDamageDealtToChampions", totalDamageDealtToChampions);
+        }
+        if(totalDamageTaken != null) {
+            nonNull.put("totalDamageTaken", totalDamageTaken);
+        }
+        if(totalHeal != null) {
+            nonNull.put("totalHeal", totalHeal);
+        }
+        if(totalPlayerScore != null) {
+            nonNull.put("totalPlayerScore", totalPlayerScore);
+        }
+        if(totalScoreRank != null) {
+            nonNull.put("totalScoreRank", totalScoreRank);
+        }
+        if(totalTimeCrowdControlDealt != null) {
+            nonNull.put("totalTimeCrowdControlDealt", totalTimeCrowdControlDealt);
+        }
+        if(totalUnitsHealed != null) {
+            nonNull.put("totalUnitsHealed", totalUnitsHealed);
+        }
+        if(tripleKills != null) {
+            nonNull.put("tripleKills", tripleKills);
+        }
+        if(trueDamageDealtPlayer != null) {
+            nonNull.put("trueDamageDealtPlayer", trueDamageDealtPlayer);
+        }
+        if(trueDamageDealtToChampions != null) {
+            nonNull.put("trueDamageDealtToChampions", trueDamageDealtToChampions);
+        }
+        if(trueDamageTaken != null) {
+            nonNull.put("trueDamageTaken", trueDamageTaken);
+        }
+        if(turretsKilled != null) {
+            nonNull.put("turretsKilled", turretsKilled);
+        }
+        if(unrealKills != null) {
+            nonNull.put("unrealKills", unrealKills);
+        }
+        if(victoryPointTotal != null) {
+            nonNull.put("victoryPointTotal", victoryPointTotal);
+        }
+        if(visionWardsBought != null) {
+            nonNull.put("visionWardsBought", visionWardsBought);
+        }
+        if(wardKilled != null) {
+            nonNull.put("wardKilled", wardKilled);
+        }
+        if(wardPlaced != null) {
+            nonNull.put("wardPlaced", wardPlaced);
+        }
+
+        return Collections.unmodifiableMap(nonNull);
     }
 
     @Override

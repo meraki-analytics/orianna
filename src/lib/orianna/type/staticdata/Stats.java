@@ -1,11 +1,14 @@
 package lib.orianna.type.staticdata;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Stats implements Serializable {
-    private static final long serialVersionUID = 8261789180245619L;
+    private static final long serialVersionUID = -7213420625079322003L;
     public final Double armor, armorPerLevel, attackDamage, attackDamagePerLevel, attackRange, attackSpeedOffset, attackSpeedPerLevel, crit, critPerLevel, HP,
-    HPPerLevel, HPRegen, HPRegenPerLevel, moveSpeed, MP, MPPerLevel, MPRegen, MPRegenPerLevel, spellBlock, spellBlockPerLevel;
+            HPPerLevel, HPRegen, HPRegenPerLevel, moveSpeed, MP, MPPerLevel, MPRegen, MPRegenPerLevel, spellBlock, spellBlockPerLevel;
 
     public Stats(final Double armor, final Double armorPerLevel, final Double attackDamage, final Double attackDamagePerLevel, final Double attackRange,
             final Double attackSpeedOffset, final Double attackSpeedPerLevel, final Double crit, final Double critPerLevel, final Double HP,
@@ -233,6 +236,77 @@ public class Stats implements Serializable {
         result = prime * result + (spellBlock == null ? 0 : spellBlock.hashCode());
         result = prime * result + (spellBlockPerLevel == null ? 0 : spellBlockPerLevel.hashCode());
         return result;
+    }
+
+    /**
+     * Gets only the stats which weren't null
+     *
+     * @return the non-null stats
+     */
+    public Map<String, Double> nonNullStats() {
+        final Map<String, Double> nonNull = new HashMap<String, Double>();
+        if(armor != null) {
+            nonNull.put("armor", armor);
+        }
+        if(armorPerLevel != null) {
+            nonNull.put("armorPerLevel", armorPerLevel);
+        }
+        if(attackDamage != null) {
+            nonNull.put("attackDamage", attackDamage);
+        }
+        if(attackDamagePerLevel != null) {
+            nonNull.put("attackDamagePerLevel", attackDamagePerLevel);
+        }
+        if(attackRange != null) {
+            nonNull.put("attackRange", attackRange);
+        }
+        if(attackSpeedOffset != null) {
+            nonNull.put("attackSpeedOffset", attackSpeedOffset);
+        }
+        if(attackSpeedPerLevel != null) {
+            nonNull.put("attackSpeedPerLevel", attackSpeedPerLevel);
+        }
+        if(crit != null) {
+            nonNull.put("crit", crit);
+        }
+        if(critPerLevel != null) {
+            nonNull.put("critPerLevel", critPerLevel);
+        }
+        if(HP != null) {
+            nonNull.put("HP", HP);
+        }
+        if(HPPerLevel != null) {
+            nonNull.put("HPPerLevel", HPPerLevel);
+        }
+        if(HPRegen != null) {
+            nonNull.put("HPRegen", HPRegen);
+        }
+        if(HPRegenPerLevel != null) {
+            nonNull.put("HPRegenPerLevel", HPRegenPerLevel);
+        }
+        if(moveSpeed != null) {
+            nonNull.put("moveSpeed", moveSpeed);
+        }
+        if(MP != null) {
+            nonNull.put("MP", MP);
+        }
+        if(MPPerLevel != null) {
+            nonNull.put("MPPerLevel", MPPerLevel);
+        }
+        if(MPRegen != null) {
+            nonNull.put("MPRegen", MPRegen);
+        }
+        if(MPRegenPerLevel != null) {
+            nonNull.put("MPRegenPerLevel", MPRegenPerLevel);
+        }
+        if(spellBlock != null) {
+            nonNull.put("spellBlock", spellBlock);
+        }
+        if(spellBlockPerLevel != null) {
+            nonNull.put("spellBlockPerLevel", spellBlockPerLevel);
+        }
+
+        return Collections.unmodifiableMap(nonNull);
     }
 
     @Override

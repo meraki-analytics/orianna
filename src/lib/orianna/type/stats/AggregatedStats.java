@@ -1,9 +1,12 @@
 package lib.orianna.type.stats;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AggregatedStats implements Serializable {
-    private static final long serialVersionUID = -7544362489574797839L;
+    private static final long serialVersionUID = -3459235144300883382L;
     public final Integer averageAssists, averageChampionsKilled, averageCombatPlayerScore, averageNodeCapture, averageNodeCaptureAssist, averageNodeNeutralize,
             averageNodeNeutralizeAssist, averageNumDeaths, averageObjectivePlayerScore, averageTeamObjective, averageTotalPlayerScore, botGamesPlayed,
             killingSpree, maxAssists, maxChampionsKilled, maxCombatPlayerScore, maxLargestCriticalStrike, maxLargestKillingSpree, maxNodeCapture,
@@ -601,6 +604,182 @@ public class AggregatedStats implements Serializable {
         result = prime * result + (totalTurretsKilled == null ? 0 : totalTurretsKilled.hashCode());
         result = prime * result + (totalUnrealKills == null ? 0 : totalUnrealKills.hashCode());
         return result;
+    }
+
+    /**
+     * Gets only the stats which weren't null
+     *
+     * @return the non-null stats
+     */
+    public Map<String, Integer> nonNullStats() {
+        final Map<String, Integer> nonNull = new HashMap<String, Integer>();
+        if(averageAssists != null) {
+            nonNull.put("averageAssists", averageAssists);
+        }
+        if(averageChampionsKilled != null) {
+            nonNull.put("averageChampionsKilled", averageChampionsKilled);
+        }
+        if(averageCombatPlayerScore != null) {
+            nonNull.put("averageCombatPlayerScore", averageCombatPlayerScore);
+        }
+        if(averageNodeCapture != null) {
+            nonNull.put("averageNodeCapture", averageNodeCapture);
+        }
+        if(averageNodeCaptureAssist != null) {
+            nonNull.put("averageNodeCaptureAssist", averageNodeCaptureAssist);
+        }
+        if(averageNodeNeutralize != null) {
+            nonNull.put("averageNodeNeutralize", averageNodeNeutralize);
+        }
+        if(averageNodeNeutralizeAssist != null) {
+            nonNull.put("averageNodeNeutralizeAssist", averageNodeNeutralizeAssist);
+        }
+        if(averageNumDeaths != null) {
+            nonNull.put("averageNumDeaths", averageNumDeaths);
+        }
+        if(averageObjectivePlayerScore != null) {
+            nonNull.put("averageObjectivePlayerScore", averageObjectivePlayerScore);
+        }
+        if(averageTeamObjective != null) {
+            nonNull.put("averageTeamObjective", averageTeamObjective);
+        }
+        if(averageTotalPlayerScore != null) {
+            nonNull.put("averageTotalPlayerScore", averageTotalPlayerScore);
+        }
+        if(botGamesPlayed != null) {
+            nonNull.put("botGamesPlayed", botGamesPlayed);
+        }
+        if(killingSpree != null) {
+            nonNull.put("killingSpree", killingSpree);
+        }
+        if(maxAssists != null) {
+            nonNull.put("maxAssists", maxAssists);
+        }
+        if(maxChampionsKilled != null) {
+            nonNull.put("maxChampionsKilled", maxChampionsKilled);
+        }
+        if(maxCombatPlayerScore != null) {
+            nonNull.put("maxCombatPlayerScore", maxCombatPlayerScore);
+        }
+        if(maxLargestCriticalStrike != null) {
+            nonNull.put("maxLargestCriticalStrike", maxLargestCriticalStrike);
+        }
+        if(maxLargestKillingSpree != null) {
+            nonNull.put("maxLargestKillingSpree", maxLargestKillingSpree);
+        }
+        if(maxNodeCapture != null) {
+            nonNull.put("maxNodeCapture", maxNodeCapture);
+        }
+        if(maxNodeCaputreAssist != null) {
+            nonNull.put("maxNodeCaputreAssist", maxNodeCaputreAssist);
+        }
+        if(maxNodeNeutralize != null) {
+            nonNull.put("maxNodeNeutralize", maxNodeNeutralize);
+        }
+        if(maxNodeNeutralizeAssist != null) {
+            nonNull.put("maxNodeNeutralizeAssist", maxNodeNeutralizeAssist);
+        }
+        if(maxNumDeaths != null) {
+            nonNull.put("maxNumDeaths", maxNumDeaths);
+        }
+        if(maxObjectivePlayerScore != null) {
+            nonNull.put("maxObjectivePlayerScore", maxObjectivePlayerScore);
+        }
+        if(maxTeamObjective != null) {
+            nonNull.put("maxTeamObjective", maxTeamObjective);
+        }
+        if(maxTimePlayed != null) {
+            nonNull.put("maxTimePlayed", maxTimePlayed);
+        }
+        if(maxTimeSpentLiving != null) {
+            nonNull.put("maxTimeSpentLiving", maxTimeSpentLiving);
+        }
+        if(maxTotalPlayerScore != null) {
+            nonNull.put("maxTotalPlayerScore", maxTotalPlayerScore);
+        }
+        if(mostChampionKillsPerSession != null) {
+            nonNull.put("mostChampionKillsPerSession", mostChampionKillsPerSession);
+        }
+        if(mostSpellsCast != null) {
+            nonNull.put("mostSpellsCast", mostSpellsCast);
+        }
+        if(normalGamesPlayed != null) {
+            nonNull.put("normalGamesPlayed", normalGamesPlayed);
+        }
+        if(rankedPremadeGamesPlayed != null) {
+            nonNull.put("rankedPremadeGamesPlayed", rankedPremadeGamesPlayed);
+        }
+        if(rankedSoloGamesPlayed != null) {
+            nonNull.put("rankedSoloGamesPlayed", rankedSoloGamesPlayed);
+        }
+        if(totalAssists != null) {
+            nonNull.put("totalAssists", totalAssists);
+        }
+        if(totalChampionKills != null) {
+            nonNull.put("totalChampionKills", totalChampionKills);
+        }
+        if(totalDamageDealt != null) {
+            nonNull.put("totalDamageDealt", totalDamageDealt);
+        }
+        if(totalDamageTaken != null) {
+            nonNull.put("totalDamageTaken", totalDamageTaken);
+        }
+        if(totalDeathsPerSession != null) {
+            nonNull.put("totalDeathsPerSession", totalDeathsPerSession);
+        }
+        if(totalDoubleKills != null) {
+            nonNull.put("totalDoubleKills", totalDoubleKills);
+        }
+        if(totalFirstBlood != null) {
+            nonNull.put("totalFirstBlood", totalFirstBlood);
+        }
+        if(totalGoldEarned != null) {
+            nonNull.put("totalGoldEarned", totalGoldEarned);
+        }
+        if(totalHeal != null) {
+            nonNull.put("totalHeal", totalHeal);
+        }
+        if(totalMagicDamageDealt != null) {
+            nonNull.put("totalMagicDamageDealt", totalMagicDamageDealt);
+        }
+        if(totalMinionKills != null) {
+            nonNull.put("totalMinionKills", totalMinionKills);
+        }
+        if(totalNeutralMinionsKilled != null) {
+            nonNull.put("totalNeutralMinionsKilled", totalNeutralMinionsKilled);
+        }
+        if(totalNodeCapture != null) {
+            nonNull.put("totalNodeCapture", totalNodeCapture);
+        }
+        if(totalNodeNeutralize != null) {
+            nonNull.put("totalNodeNeutralize", totalNodeNeutralize);
+        }
+        if(totalPentaKills != null) {
+            nonNull.put("totalPentaKills", totalPentaKills);
+        }
+        if(totalPhysicalDamageDealt != null) {
+            nonNull.put("totalPhysicalDamageDealt", totalPhysicalDamageDealt);
+        }
+        if(totalQuadraKills != null) {
+            nonNull.put("totalQuadraKills", totalQuadraKills);
+        }
+        if(totalSessionsLost != null) {
+            nonNull.put("totalSessionsLost", totalSessionsLost);
+        }
+        if(totalSessionsWon != null) {
+            nonNull.put("totalSessionsWon", totalSessionsWon);
+        }
+        if(totalTripleKills != null) {
+            nonNull.put("totalTripleKills", totalTripleKills);
+        }
+        if(totalTurretsKilled != null) {
+            nonNull.put("totalTurretsKilled", totalTurretsKilled);
+        }
+        if(totalUnrealKills != null) {
+            nonNull.put("totalUnrealKills", totalUnrealKills);
+        }
+
+        return Collections.unmodifiableMap(nonNull);
     }
 
     @Override

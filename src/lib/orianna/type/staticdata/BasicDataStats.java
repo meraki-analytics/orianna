@@ -1,20 +1,23 @@
 package lib.orianna.type.staticdata;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BasicDataStats implements Serializable {
-    private static final long serialVersionUID = 7938949129500009774L;
+    private static final long serialVersionUID = 1594413878340877864L;
     public final Double flatArmorMod, flatAttackSpeedMod, flatBlockMod, flatCritChanceMod, flatCritDamageMod, flatEXPBonus, flatEnergyPoolMod,
-    flatEnergyRegenMod, flatHPPoolMod, flatHPRegenMod, flatMPPoolMod, flatMPRegenMod, flatMagicDamageMod, flatMovementSpeedMod, flatPhysicalDamageMod,
-    flatSpellBlockMod, percentArmorMod, percentAttackSpeedMod, percentBlockMod, percentCritChanceMod, percentCritDamageMod, percentDodgeMod,
-    percentEXPBonus, percentHPPoolMod, percentHPRegenMod, percentLifeStealMod, percentMPPoolMod, percentMPRegenMod, percentMagicDamageMod,
-    percentMovementSpeedMod, percentPhysicalDamageMod, percentSpellBlockMod, percentSpellVampMod, rFlatArmorModPerLevel, rFlatArmorPenetrationMod,
-    rFlatArmorPenetrationModPerLevel, rFlatCritChanceModPerLevel, rFlatCritDamageModPerLevel, rFlatDodgeMod, rFlatDodgeModPerLevel,
-    rFlatEnergyModPerLevel, rFlatEnergyRegenModPerLevel, rFlatGoldPer10Mod, rFlatHPModPerLevel, rFlatHPRegenModPerLevel, rFlatMPModPerLevel,
-    rFlatMPRegenModPerLevel, rFlatMagicDamageModPerLevel, rFlatMagicPenetrationMod, rFlatMagicPenetrationModPerLevel, rFlatMovementSpeedModPerLevel,
-    rFlatPhysicalDamageModPerLevel, rFlatSpellBlockModPerLevel, rFlatTimeDeadMod, rFlatTimeDeadModPerLevel, rPercentArmorPenetrationMod,
-    rPercentArmorPenetrationModPerLevel, rPercentAttackSpeedModPerLevel, rPercentCooldownMod, rPercentCooldownModPerLevel, rPercentMagicPenetrationMod,
-    rPercentMagicPenetrationModPerLevel, rPercentMovementSpeedModPerLevel, rPercentTimeDeadMod, rPercentTimeDeadModPerLevel;
+            flatEnergyRegenMod, flatHPPoolMod, flatHPRegenMod, flatMPPoolMod, flatMPRegenMod, flatMagicDamageMod, flatMovementSpeedMod, flatPhysicalDamageMod,
+            flatSpellBlockMod, percentArmorMod, percentAttackSpeedMod, percentBlockMod, percentCritChanceMod, percentCritDamageMod, percentDodgeMod,
+            percentEXPBonus, percentHPPoolMod, percentHPRegenMod, percentLifeStealMod, percentMPPoolMod, percentMPRegenMod, percentMagicDamageMod,
+            percentMovementSpeedMod, percentPhysicalDamageMod, percentSpellBlockMod, percentSpellVampMod, rFlatArmorModPerLevel, rFlatArmorPenetrationMod,
+            rFlatArmorPenetrationModPerLevel, rFlatCritChanceModPerLevel, rFlatCritDamageModPerLevel, rFlatDodgeMod, rFlatDodgeModPerLevel,
+            rFlatEnergyModPerLevel, rFlatEnergyRegenModPerLevel, rFlatGoldPer10Mod, rFlatHPModPerLevel, rFlatHPRegenModPerLevel, rFlatMPModPerLevel,
+            rFlatMPRegenModPerLevel, rFlatMagicDamageModPerLevel, rFlatMagicPenetrationMod, rFlatMagicPenetrationModPerLevel, rFlatMovementSpeedModPerLevel,
+            rFlatPhysicalDamageModPerLevel, rFlatSpellBlockModPerLevel, rFlatTimeDeadMod, rFlatTimeDeadModPerLevel, rPercentArmorPenetrationMod,
+            rPercentArmorPenetrationModPerLevel, rPercentAttackSpeedModPerLevel, rPercentCooldownMod, rPercentCooldownModPerLevel, rPercentMagicPenetrationMod,
+            rPercentMagicPenetrationModPerLevel, rPercentMovementSpeedModPerLevel, rPercentTimeDeadMod, rPercentTimeDeadModPerLevel;
 
     public BasicDataStats(final Double flatArmorMod, final Double flatAttackSpeedMod, final Double flatBlockMod, final Double flatCritChanceMod,
             final Double flatCritDamageMod, final Double flatEXPBonus, final Double flatEnergyPoolMod, final Double flatEnergyRegenMod,
@@ -706,6 +709,212 @@ public class BasicDataStats implements Serializable {
         result = prime * result + (rPercentTimeDeadMod == null ? 0 : rPercentTimeDeadMod.hashCode());
         result = prime * result + (rPercentTimeDeadModPerLevel == null ? 0 : rPercentTimeDeadModPerLevel.hashCode());
         return result;
+    }
+
+    /**
+     * Gets only the stats which weren't null
+     *
+     * @return the non-null stats
+     */
+    public Map<String, Double> nonNullStats() {
+        final Map<String, Double> nonNull = new HashMap<String, Double>();
+        if(flatArmorMod != null) {
+            nonNull.put("flatArmorMod", flatArmorMod);
+        }
+        if(flatAttackSpeedMod != null) {
+            nonNull.put("flatAttackSpeedMod", flatAttackSpeedMod);
+        }
+        if(flatBlockMod != null) {
+            nonNull.put("flatBlockMod", flatBlockMod);
+        }
+        if(flatCritChanceMod != null) {
+            nonNull.put("flatCritChanceMod", flatCritChanceMod);
+        }
+        if(flatCritDamageMod != null) {
+            nonNull.put("flatCritDamageMod", flatCritDamageMod);
+        }
+        if(flatEXPBonus != null) {
+            nonNull.put("flatEXPBonus", flatEXPBonus);
+        }
+        if(flatEnergyPoolMod != null) {
+            nonNull.put("flatEnergyPoolMod", flatEnergyPoolMod);
+        }
+        if(flatEnergyRegenMod != null) {
+            nonNull.put("flatEnergyRegenMod", flatEnergyRegenMod);
+        }
+        if(flatHPPoolMod != null) {
+            nonNull.put("flatHPPoolMod", flatHPPoolMod);
+        }
+        if(flatHPRegenMod != null) {
+            nonNull.put("flatHPRegenMod", flatHPRegenMod);
+        }
+        if(flatMPPoolMod != null) {
+            nonNull.put("flatMPPoolMod", flatMPPoolMod);
+        }
+        if(flatMPRegenMod != null) {
+            nonNull.put("flatMPRegenMod", flatMPRegenMod);
+        }
+        if(flatMagicDamageMod != null) {
+            nonNull.put("flatMagicDamageMod", flatMagicDamageMod);
+        }
+        if(flatMovementSpeedMod != null) {
+            nonNull.put("flatMovementSpeedMod", flatMovementSpeedMod);
+        }
+        if(flatPhysicalDamageMod != null) {
+            nonNull.put("flatPhysicalDamageMod", flatPhysicalDamageMod);
+        }
+        if(flatSpellBlockMod != null) {
+            nonNull.put("flatSpellBlockMod", flatSpellBlockMod);
+        }
+        if(percentArmorMod != null) {
+            nonNull.put("percentArmorMod", percentArmorMod);
+        }
+        if(percentAttackSpeedMod != null) {
+            nonNull.put("percentAttackSpeedMod", percentAttackSpeedMod);
+        }
+        if(percentBlockMod != null) {
+            nonNull.put("percentBlockMod", percentBlockMod);
+        }
+        if(percentCritChanceMod != null) {
+            nonNull.put("percentCritChanceMod", percentCritChanceMod);
+        }
+        if(percentCritDamageMod != null) {
+            nonNull.put("percentCritDamageMod", percentCritDamageMod);
+        }
+        if(percentDodgeMod != null) {
+            nonNull.put("percentDodgeMod", percentDodgeMod);
+        }
+        if(percentEXPBonus != null) {
+            nonNull.put("percentEXPBonus", percentEXPBonus);
+        }
+        if(percentHPPoolMod != null) {
+            nonNull.put("percentHPPoolMod", percentHPPoolMod);
+        }
+        if(percentHPRegenMod != null) {
+            nonNull.put("percentHPRegenMod", percentHPRegenMod);
+        }
+        if(percentLifeStealMod != null) {
+            nonNull.put("percentLifeStealMod", percentLifeStealMod);
+        }
+        if(percentMPPoolMod != null) {
+            nonNull.put("percentMPPoolMod", percentMPPoolMod);
+        }
+        if(percentMPRegenMod != null) {
+            nonNull.put("percentMPRegenMod", percentMPRegenMod);
+        }
+        if(percentMagicDamageMod != null) {
+            nonNull.put("percentMagicDamageMod", percentMagicDamageMod);
+        }
+        if(percentMovementSpeedMod != null) {
+            nonNull.put("percentMovementSpeedMod", percentMovementSpeedMod);
+        }
+        if(percentPhysicalDamageMod != null) {
+            nonNull.put("percentPhysicalDamageMod", percentPhysicalDamageMod);
+        }
+        if(percentSpellBlockMod != null) {
+            nonNull.put("percentSpellBlockMod", percentSpellBlockMod);
+        }
+        if(percentSpellVampMod != null) {
+            nonNull.put("percentSpellVampMod", percentSpellVampMod);
+        }
+        if(rFlatArmorModPerLevel != null) {
+            nonNull.put("rFlatArmorModPerLevel", rFlatArmorModPerLevel);
+        }
+        if(rFlatArmorPenetrationMod != null) {
+            nonNull.put("rFlatArmorPenetrationMod", rFlatArmorPenetrationMod);
+        }
+        if(rFlatArmorPenetrationModPerLevel != null) {
+            nonNull.put("rFlatArmorPenetrationModPerLevel", rFlatArmorPenetrationModPerLevel);
+        }
+        if(rFlatCritChanceModPerLevel != null) {
+            nonNull.put("rFlatCritChanceModPerLevel", rFlatCritChanceModPerLevel);
+        }
+        if(rFlatCritDamageModPerLevel != null) {
+            nonNull.put("rFlatCritDamageModPerLevel", rFlatCritDamageModPerLevel);
+        }
+        if(rFlatDodgeMod != null) {
+            nonNull.put("rFlatDodgeMod", rFlatDodgeMod);
+        }
+        if(rFlatDodgeModPerLevel != null) {
+            nonNull.put("rFlatDodgeModPerLevel", rFlatDodgeModPerLevel);
+        }
+        if(rFlatEnergyModPerLevel != null) {
+            nonNull.put("rFlatEnergyModPerLevel", rFlatEnergyModPerLevel);
+        }
+        if(rFlatEnergyRegenModPerLevel != null) {
+            nonNull.put("rFlatEnergyRegenModPerLevel", rFlatEnergyRegenModPerLevel);
+        }
+        if(rFlatGoldPer10Mod != null) {
+            nonNull.put("rFlatGoldPer10Mod", rFlatGoldPer10Mod);
+        }
+        if(rFlatHPModPerLevel != null) {
+            nonNull.put("rFlatHPModPerLevel", rFlatHPModPerLevel);
+        }
+        if(rFlatHPRegenModPerLevel != null) {
+            nonNull.put("rFlatHPRegenModPerLevel", rFlatHPRegenModPerLevel);
+        }
+        if(rFlatMPModPerLevel != null) {
+            nonNull.put("rFlatMPModPerLevel", rFlatMPModPerLevel);
+        }
+        if(rFlatMPRegenModPerLevel != null) {
+            nonNull.put("rFlatMPRegenModPerLevel", rFlatMPRegenModPerLevel);
+        }
+        if(rFlatMagicDamageModPerLevel != null) {
+            nonNull.put("rFlatMagicDamageModPerLevel", rFlatMagicDamageModPerLevel);
+        }
+        if(rFlatMagicPenetrationMod != null) {
+            nonNull.put("rFlatMagicPenetrationMod", rFlatMagicPenetrationMod);
+        }
+        if(rFlatMagicPenetrationModPerLevel != null) {
+            nonNull.put("rFlatMagicPenetrationModPerLevel", rFlatMagicPenetrationModPerLevel);
+        }
+        if(rFlatMovementSpeedModPerLevel != null) {
+            nonNull.put("rFlatMovementSpeedModPerLevel", rFlatMovementSpeedModPerLevel);
+        }
+        if(rFlatPhysicalDamageModPerLevel != null) {
+            nonNull.put("rFlatPhysicalDamageModPerLevel", rFlatPhysicalDamageModPerLevel);
+        }
+        if(rFlatSpellBlockModPerLevel != null) {
+            nonNull.put("rFlatSpellBlockModPerLevel", rFlatSpellBlockModPerLevel);
+        }
+        if(rFlatTimeDeadMod != null) {
+            nonNull.put("rFlatTimeDeadMod", rFlatTimeDeadMod);
+        }
+        if(rFlatTimeDeadModPerLevel != null) {
+            nonNull.put("rFlatTimeDeadModPerLevel", rFlatTimeDeadModPerLevel);
+        }
+        if(rPercentArmorPenetrationMod != null) {
+            nonNull.put("rPercentArmorPenetrationMod", rPercentArmorPenetrationMod);
+        }
+        if(rPercentArmorPenetrationModPerLevel != null) {
+            nonNull.put("rPercentArmorPenetrationModPerLevel", rPercentArmorPenetrationModPerLevel);
+        }
+        if(rPercentAttackSpeedModPerLevel != null) {
+            nonNull.put("rPercentAttackSpeedModPerLevel", rPercentAttackSpeedModPerLevel);
+        }
+        if(rPercentCooldownMod != null) {
+            nonNull.put("rPercentCooldownMod", rPercentCooldownMod);
+        }
+        if(rPercentCooldownModPerLevel != null) {
+            nonNull.put("rPercentCooldownModPerLevel", rPercentCooldownModPerLevel);
+        }
+        if(rPercentMagicPenetrationMod != null) {
+            nonNull.put("rPercentMagicPenetrationMod", rPercentMagicPenetrationMod);
+        }
+        if(rPercentMagicPenetrationModPerLevel != null) {
+            nonNull.put("rPercentMagicPenetrationModPerLevel", rPercentMagicPenetrationModPerLevel);
+        }
+        if(rPercentMovementSpeedModPerLevel != null) {
+            nonNull.put("rPercentMovementSpeedModPerLevel", rPercentMovementSpeedModPerLevel);
+        }
+        if(rPercentTimeDeadMod != null) {
+            nonNull.put("rPercentTimeDeadMod", rPercentTimeDeadMod);
+        }
+        if(rPercentTimeDeadModPerLevel != null) {
+            nonNull.put("rPercentTimeDeadModPerLevel", rPercentTimeDeadModPerLevel);
+        }
+
+        return Collections.unmodifiableMap(nonNull);
     }
 
     @Override
