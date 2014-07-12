@@ -1045,6 +1045,8 @@ public class RiotAPI {
     }
 
     /**
+     * Entries are by champion name, include "All Champions" for totals.
+     * 
      * @param summonerID
      *            the summoner to get information for
      * @return the summoner's ranked stats
@@ -1056,6 +1058,8 @@ public class RiotAPI {
     }
 
     /**
+     * Entries are by champion name, include "All Champions" for totals.
+     * 
      * @param summonerID
      *            the summoner to get information for
      * @param season
@@ -1095,6 +1099,8 @@ public class RiotAPI {
     }
 
     /**
+     * Entries are by champion name, include "All Champions" for totals.
+     * 
      * @param summonerName
      *            the summoner to get information for
      * @return the summoner's ranked stats
@@ -1106,6 +1112,8 @@ public class RiotAPI {
     }
 
     /**
+     * Entries are by champion name, include "All Champions" for totals.
+     * 
      * @param summonerName
      *            the summoner to get information for
      * @param season
@@ -1119,6 +1127,8 @@ public class RiotAPI {
     }
 
     /**
+     * Entries are by champion name, include "All Champions" for totals.
+     * 
      * @param summoner
      *            the summoner to get information for
      * @return the summoner's ranked stats
@@ -1130,6 +1140,8 @@ public class RiotAPI {
     }
 
     /**
+     * Entries are by champion name, include "All Champions" for totals.
+     * 
      * @param summoner
      *            the summoner to get information for
      * @param season
