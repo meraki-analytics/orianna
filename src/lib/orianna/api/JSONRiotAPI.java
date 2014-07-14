@@ -1,6 +1,8 @@
 package lib.orianna.api;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +52,15 @@ public class JSONRiotAPI {
         return string.substring(1);
     }
 
+    private static String getNameCollectionString(final Collection<String> names) {
+        final StringBuilder string = new StringBuilder();
+        for(final String name : names) {
+            string.append("," + name.toLowerCase().replaceAll("\\s", ""));
+        }
+
+        return string.substring(1);
+    }
+
     private static APIException handleIOException(final IOException e) {
         final Matcher matcher = IOEXCEPTION_PATTERN.matcher(e.getMessage());
         if(matcher.find()) {
@@ -72,6 +83,7 @@ public class JSONRiotAPI {
                     return new APIException(APIException.Type.UNKNOWN, URL, e);
             }
         }
+        e.printStackTrace();
         return new APIException(APIException.Type.UNKNOWN, e);
     }
 
@@ -670,7 +682,12 @@ public class JSONRiotAPI {
      * @see <a href="http://developer.riotgames.com/api/methods#!/620/1930">LoL
      *      API Specification</a>
      */
-    public String getSummoner(final String summonerName) {
+    public String getSummoner(String summonerName) {
+        try {
+            summonerName = URLEncoder.encode(summonerName, "UTF-8").replace("+", "%20");
+        }
+        catch(final UnsupportedEncodingException e) {}
+
         return waitForRateLimiter(APIVersions.get("summoner") + "/summoner/by-name/" + summonerName, baseParams());
     }
 
@@ -799,7 +816,7 @@ public class JSONRiotAPI {
      *      API Specification</a>
      */
     public String getSummoners(final List<String> summonerNames) {
-        return waitForRateLimiter(APIVersions.get("summoner") + "/summoner/by-name/" + getCollectionString(summonerNames), baseParams());
+        return waitForRateLimiter(APIVersions.get("summoner") + "/summoner/by-name/" + getNameCollectionString(summonerNames), baseParams());
     }
 
     /**

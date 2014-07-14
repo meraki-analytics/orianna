@@ -109,7 +109,7 @@ public class Summoner implements Serializable {
 
     /**
      * Entries are by champion name, include "All Champions" for totals.
-     * 
+     *
      * @param API
      *            the API to get the data with
      * @return the summoner's ranked stats

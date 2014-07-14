@@ -1046,7 +1046,7 @@ public class RiotAPI {
 
     /**
      * Entries are by champion name, include "All Champions" for totals.
-     * 
+     *
      * @param summonerID
      *            the summoner to get information for
      * @return the summoner's ranked stats
@@ -1059,7 +1059,7 @@ public class RiotAPI {
 
     /**
      * Entries are by champion name, include "All Champions" for totals.
-     * 
+     *
      * @param summonerID
      *            the summoner to get information for
      * @param season
@@ -1100,7 +1100,7 @@ public class RiotAPI {
 
     /**
      * Entries are by champion name, include "All Champions" for totals.
-     * 
+     *
      * @param summonerName
      *            the summoner to get information for
      * @return the summoner's ranked stats
@@ -1113,7 +1113,7 @@ public class RiotAPI {
 
     /**
      * Entries are by champion name, include "All Champions" for totals.
-     * 
+     *
      * @param summonerName
      *            the summoner to get information for
      * @param season
@@ -1128,7 +1128,7 @@ public class RiotAPI {
 
     /**
      * Entries are by champion name, include "All Champions" for totals.
-     * 
+     *
      * @param summoner
      *            the summoner to get information for
      * @return the summoner's ranked stats
@@ -1141,7 +1141,7 @@ public class RiotAPI {
 
     /**
      * Entries are by champion name, include "All Champions" for totals.
-     * 
+     *
      * @param summoner
      *            the summoner to get information for
      * @param season
@@ -1391,7 +1391,7 @@ public class RiotAPI {
             catch(final ParseException e) {
                 throw handleParseException(e);
             }
-            final JSONObject summonerInfo = (JSONObject)list.get(summonerName.toLowerCase());
+            final JSONObject summonerInfo = (JSONObject)list.get(summonerName.toLowerCase().replaceAll("\\s", ""));
 
             summoner = converter.getSummonerFromJSON(summonerInfo);
             cache.summonerNames.put(summoner.name, summoner);
@@ -1484,7 +1484,7 @@ public class RiotAPI {
             final JSONObject list = handleIDCountLimit(summonerNamesLeft, (names) -> API.getSummoners(names));
 
             for(final String summonerName : summonerNamesLeft) {
-                final JSONObject summonerInfo = (JSONObject)list.get(summonerName.toLowerCase());
+                final JSONObject summonerInfo = (JSONObject)list.get(summonerName.toLowerCase().replaceAll("\\s", ""));
                 if(summonerInfo != null) {
                     final Summoner summoner = converter.getSummonerFromJSON(summonerInfo);
                     cache.summonerNames.put(summoner.name, summoner);
