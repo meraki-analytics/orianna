@@ -1,6 +1,7 @@
 package lib.orianna.api;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -261,6 +262,17 @@ public class RiotAPI {
     }
 
     /**
+     * @param summoners
+     *            the summoners to get information for
+     * @return the summoners' active mastery pages
+     * @see <a href="http://developer.riotgames.com/api/methods#!/620/1933">LoL
+     *      API Specification</a>
+     */
+    public Map<Summoner, MasteryPage> getActiveMasteryPages(final Summoner... summoners) {
+        return getActiveMasteryPages(Arrays.asList(summoners));
+    }
+
+    /**
      * @param summonerIDs
      *            the summoners to get information for
      * @return the summoners' active mastery pages
@@ -277,6 +289,17 @@ public class RiotAPI {
     }
 
     /**
+     * @param summonerIDs
+     *            the summoners to get information for
+     * @return the summoners' active mastery pages
+     * @see <a href="http://developer.riotgames.com/api/methods#!/620/1933">LoL
+     *      API Specification</a>
+     */
+    public Map<Long, MasteryPage> getActiveMasteryPagesByIDs(final Long... summonerIDs) {
+        return getActiveMasteryPagesByIDs(Arrays.asList(summonerIDs));
+    }
+
+    /**
      * @param summonerNames
      *            the summoners to get information for
      * @return the summoners' active mastery pages
@@ -286,6 +309,17 @@ public class RiotAPI {
     public Map<Summoner, MasteryPage> getActiveMasteryPagesByNames(final List<String> summonerNames) {
         final List<Summoner> summoners = getSummoners(summonerNames);
         return getActiveMasteryPages(summoners);
+    }
+
+    /**
+     * @param summonerNames
+     *            the summoners to get information for
+     * @return the summoners' active mastery pages
+     * @see <a href="http://developer.riotgames.com/api/methods#!/620/1933">LoL
+     *      API Specification</a>
+     */
+    public Map<Summoner, MasteryPage> getActiveMasteryPagesByNames(final String... summonerNames) {
+        return getActiveMasteryPagesByNames(Arrays.asList(summonerNames));
     }
 
     /**
@@ -334,6 +368,17 @@ public class RiotAPI {
     }
 
     /**
+     * @param summoners
+     *            the summoners to get information for
+     * @return the summoners' active rune pages
+     * @see <a href="http://developer.riotgames.com/api/methods#!/620/1932">LoL
+     *      API Specification</a>
+     */
+    public Map<Summoner, RunePage> getActiveRunePages(final Summoner... summoners) {
+        return getActiveRunePages(Arrays.asList(summoners));
+    }
+
+    /**
      * @param summonerIDs
      *            the summoners to get information for
      * @return the summoners' active rune pages
@@ -350,6 +395,17 @@ public class RiotAPI {
     }
 
     /**
+     * @param summonerIDs
+     *            the summoners to get information for
+     * @return the summoners' active rune pages
+     * @see <a href="http://developer.riotgames.com/api/methods#!/620/1932">LoL
+     *      API Specification</a>
+     */
+    public Map<Long, RunePage> getActiveRunePagesByIDs(final Long... summonerIDs) {
+        return getActiveRunePagesByIDs(Arrays.asList(summonerIDs));
+    }
+
+    /**
      * @param summonerNames
      *            the summoners to get information for
      * @return the summoners' active rune pages
@@ -359,6 +415,17 @@ public class RiotAPI {
     public Map<Summoner, RunePage> getActiveRunePagesByNames(final List<String> summonerNames) {
         final List<Summoner> summoners = getSummoners(summonerNames);
         return getActiveRunePages(summoners);
+    }
+
+    /**
+     * @param summonerNames
+     *            the summoners to get information for
+     * @return the summoners' active rune pages
+     * @see <a href="http://developer.riotgames.com/api/methods#!/620/1932">LoL
+     *      API Specification</a>
+     */
+    public Map<Summoner, RunePage> getActiveRunePagesByNames(final String... summonerNames) {
+        return getActiveRunePagesByNames(Arrays.asList(summonerNames));
     }
 
     /**
@@ -621,6 +688,17 @@ public class RiotAPI {
     }
 
     /**
+     * @param summonerIDs
+     *            the summoners to get information for
+     * @return the summoners' leagues
+     * @see <a href="http://developer.riotgames.com/api/methods#!/741/2641">LoL
+     *      API Specification</a>
+     */
+    public Map<Long, List<League>> getLeagueEntriesBySummonerIDs(final Long... summonerIDs) {
+        return getLeagueEntriesBySummonerIDs(Arrays.asList(summonerIDs));
+    }
+
+    /**
      * @param summonerName
      *            the summoner to get information for
      * @return the summoner's leagues
@@ -644,6 +722,17 @@ public class RiotAPI {
     }
 
     /**
+     * @param summonerNames
+     *            the summoners to get information for
+     * @return the summoners' leagues
+     * @see <a href="http://developer.riotgames.com/api/methods#!/741/2641">LoL
+     *      API Specification</a>
+     */
+    public Map<Summoner, List<League>> getLeagueEntriesBySummonerNames(final String... summonerNames) {
+        return getLeagueEntriesBySummonerNames(Arrays.asList(summonerNames));
+    }
+
+    /**
      * @param summoners
      *            the summoners to get information for
      * @return the summoners' leagues
@@ -653,6 +742,17 @@ public class RiotAPI {
     public Map<Summoner, List<League>> getLeagueEntriesBySummoners(final List<Summoner> summoners) {
         final Map<Long, List<League>> byID = getLeagueEntriesBySummonerIDs(getIDsFromSummoners(summoners));
         return summonerMapFromID(summoners, byID);
+    }
+
+    /**
+     * @param summoners
+     *            the summoners to get information for
+     * @return the summoners' leagues
+     * @see <a href="http://developer.riotgames.com/api/methods#!/741/2641">LoL
+     *      API Specification</a>
+     */
+    public Map<Summoner, List<League>> getLeagueEntriesBySummoners(final Summoner... summoners) {
+        return getLeagueEntriesBySummoners(Arrays.asList(summoners));
     }
 
     /**
@@ -703,6 +803,17 @@ public class RiotAPI {
     }
 
     /**
+     * @param teamIDs
+     *            the teams to get information for
+     * @return the teams' leagues
+     * @see <a href="http://developer.riotgames.com/api/methods#!/741/2638">LoL
+     *      API Specification</a>
+     */
+    public Map<String, List<League>> getLeagueEntriesByTeamIDs(final String... teamIDs) {
+        return getLeagueEntriesByTeamIDs(Arrays.asList(teamIDs));
+    }
+
+    /**
      * @param teams
      *            the teams to get information about
      * @return the teams' leagues
@@ -712,6 +823,17 @@ public class RiotAPI {
     public Map<Team, List<League>> getLeagueEntriesByTeams(final List<Team> teams) {
         final Map<String, List<League>> byID = getLeagueEntriesByTeamIDs(getIDsFromTeams(teams));
         return teamMapFromID(teams, byID);
+    }
+
+    /**
+     * @param teams
+     *            the teams to get information about
+     * @return the teams' leagues
+     * @see <a href="http://developer.riotgames.com/api/methods#!/741/2638">LoL
+     *      API Specification</a>
+     */
+    public Map<Team, List<League>> getLeagueEntriesByTeams(final Team... teams) {
+        return getLeagueEntriesByTeams(Arrays.asList(teams));
     }
 
     /**
@@ -763,6 +885,17 @@ public class RiotAPI {
     }
 
     /**
+     * @param summonerIDs
+     *            the summoners to get information for
+     * @return the summoners' leagues
+     * @see <a href="http://developer.riotgames.com/api/methods#!/741/2640">LoL
+     *      API Specification</a>
+     */
+    public Map<Long, List<League>> getLeaguesBySummonerIDs(final Long... summonerIDs) {
+        return getLeaguesBySummonerIDs(Arrays.asList(summonerIDs));
+    }
+
+    /**
      * @param summonerName
      *            the summoner to get information for
      * @return the summoner's leagues
@@ -786,6 +919,17 @@ public class RiotAPI {
     }
 
     /**
+     * @param summonerNames
+     *            the summoners to get information for
+     * @return the summoners' leagues
+     * @see <a href="http://developer.riotgames.com/api/methods#!/741/2640">LoL
+     *      API Specification</a>
+     */
+    public Map<Summoner, List<League>> getLeaguesBySummonerNames(final String... summonerNames) {
+        return getLeaguesBySummonerNames(Arrays.asList(summonerNames));
+    }
+
+    /**
      * @param summoners
      *            the summoners to get information for
      * @return the summoners' leagues
@@ -795,6 +939,17 @@ public class RiotAPI {
     public Map<Summoner, List<League>> getLeaguesBySummoners(final List<Summoner> summoners) {
         final Map<Long, List<League>> byID = getLeaguesBySummonerIDs(getIDsFromSummoners(summoners));
         return summonerMapFromID(summoners, byID);
+    }
+
+    /**
+     * @param summoners
+     *            the summoners to get information for
+     * @return the summoners' leagues
+     * @see <a href="http://developer.riotgames.com/api/methods#!/741/2640">LoL
+     *      API Specification</a>
+     */
+    public Map<Summoner, List<League>> getLeaguesBySummoners(final Summoner... summoners) {
+        return getLeaguesBySummoners(Arrays.asList(summoners));
     }
 
     /**
@@ -845,6 +1000,17 @@ public class RiotAPI {
     }
 
     /**
+     * @param teamIDs
+     *            the teams to get information for
+     * @return the teams' leagues
+     * @see <a href="http://developer.riotgames.com/api/methods#!/741/2639">LoL
+     *      API Specification</a>
+     */
+    public Map<String, List<League>> getLeaguesByTeamIDs(final String... teamIDs) {
+        return getLeaguesByTeamIDs(Arrays.asList(teamIDs));
+    }
+
+    /**
      * @param teams
      *            the teams to get information about
      * @return the teams' leagues
@@ -854,6 +1020,17 @@ public class RiotAPI {
     public Map<Team, List<League>> getLeaguesByTeams(final List<Team> teams) {
         final Map<String, List<League>> byID = getLeaguesByTeamIDs(getIDsFromTeams(teams));
         return teamMapFromID(teams, byID);
+    }
+
+    /**
+     * @param teams
+     *            the teams to get information about
+     * @return the teams' leagues
+     * @see <a href="http://developer.riotgames.com/api/methods#!/741/2639">LoL
+     *      API Specification</a>
+     */
+    public Map<Team, List<League>> getLeaguesByTeams(final Team... teams) {
+        return getLeaguesByTeams(Arrays.asList(teams));
     }
 
     /**
@@ -930,6 +1107,17 @@ public class RiotAPI {
     }
 
     /**
+     * @param summoners
+     *            the summoners to get information for
+     * @return the summoners' mastery pages
+     * @see <a href="http://developer.riotgames.com/api/methods#!/620/1933">LoL
+     *      API Specification</a>
+     */
+    public Map<Summoner, List<MasteryPage>> getMasteryPages(final Summoner... summoners) {
+        return getMasteryPages(Arrays.asList(summoners));
+    }
+
+    /**
      * @param summoner
      *            the summoner to get information for
      * @return the summoner's mastery pages
@@ -993,6 +1181,17 @@ public class RiotAPI {
     }
 
     /**
+     * @param summonerIDs
+     *            the summoners to get information for
+     * @return the summoners' mastery pages
+     * @see <a href="http://developer.riotgames.com/api/methods#!/620/1933">LoL
+     *      API Specification</a>
+     */
+    public Map<Long, List<MasteryPage>> getMasteryPagesByIDs(final Long... summonerIDs) {
+        return getMasteryPagesByIDs(Arrays.asList(summonerIDs));
+    }
+
+    /**
      * @param summonerName
      *            the summoner to get information for
      * @return the summoner's mastery pages
@@ -1013,6 +1212,17 @@ public class RiotAPI {
     public Map<Summoner, List<MasteryPage>> getMasteryPagesByNames(final List<String> summonerNames) {
         final List<Summoner> summoners = getSummoners(summonerNames);
         return getMasteryPages(summoners);
+    }
+
+    /**
+     * @param summonerNames
+     *            the summoners to get information for
+     * @return the summoners' mastery pages
+     * @see <a href="http://developer.riotgames.com/api/methods#!/620/1933">LoL
+     *      API Specification</a>
+     */
+    public Map<Summoner, List<MasteryPage>> getMasteryPagesByNames(final String... summonerNames) {
+        return getMasteryPagesByNames(Arrays.asList(summonerNames));
     }
 
     /**
@@ -1258,6 +1468,17 @@ public class RiotAPI {
     }
 
     /**
+     * @param summoners
+     *            the summoners to get information for
+     * @return the summoners' rune pages
+     * @see <a href="http://developer.riotgames.com/api/methods#!/620/1932">LoL
+     *      API Specification</a>
+     */
+    public Map<Summoner, List<RunePage>> getRunePages(final Summoner... summoners) {
+        return getRunePages(summoners);
+    }
+
+    /**
      * @param summoner
      *            the summoner to get information for
      * @return the summoner's rune pages
@@ -1317,6 +1538,17 @@ public class RiotAPI {
     }
 
     /**
+     * @param summonerIDs
+     *            the summoners to get information for
+     * @return the summoners' rune pages
+     * @see <a href="http://developer.riotgames.com/api/methods#!/620/1932">LoL
+     *      API Specification</a>
+     */
+    public Map<Long, List<RunePage>> getRunePagesByIDs(final Long... summonerIDs) {
+        return getRunePagesByIDs(summonerIDs);
+    }
+
+    /**
      * @param summonerName
      *            the summoner to get information for
      * @return the summoner's rune pages
@@ -1337,6 +1569,17 @@ public class RiotAPI {
     public Map<Summoner, List<RunePage>> getRunePagesByNames(final List<String> summonerNames) {
         final List<Summoner> summoners = getSummoners(summonerNames);
         return getRunePages(summoners);
+    }
+
+    /**
+     * @param summonerNames
+     *            the summoners to get information for
+     * @return the summoners' rune pages
+     * @see <a href="http://developer.riotgames.com/api/methods#!/620/1932">LoL
+     *      API Specification</a>
+     */
+    public Map<Summoner, List<RunePage>> getRunePagesByNames(final String... summonerNames) {
+        return getRunePagesByNames(Arrays.asList(summonerNames));
     }
 
     /**
@@ -1470,6 +1713,17 @@ public class RiotAPI {
     }
 
     /**
+     * @param summonerIDs
+     *            the summoners to get information for
+     * @return the summoners' names
+     * @see <a href="http://developer.riotgames.com/api/methods#!/620/1934">LoL
+     *      API Specification</a>
+     */
+    public List<String> getSummonerNames(final Long... summonerIDs) {
+        return getSummonerNames(Arrays.asList(summonerIDs));
+    }
+
+    /**
      * @param summonerNames
      *            the summoners to get information for
      * @return the summoners
@@ -1501,6 +1755,17 @@ public class RiotAPI {
     }
 
     /**
+     * @param summonerNames
+     *            the summoners to get information for
+     * @return the summoners
+     * @see <a href="http://developer.riotgames.com/api/methods#!/620/1930">LoL
+     *      API Specification</a>
+     */
+    public List<Summoner> getSummoners(final String... summonerNames) {
+        return getSummoners(Arrays.asList(summonerNames));
+    }
+
+    /**
      * @param summonerIDs
      *            the summoners to get information for
      * @return the summoners
@@ -1529,6 +1794,17 @@ public class RiotAPI {
             summoners.add(cache.summonerIDs.get(summonerID));
         }
         return Collections.unmodifiableList(summoners);
+    }
+
+    /**
+     * @param summonerIDs
+     *            the summoners to get information for
+     * @return the summoners
+     * @see <a href="http://developer.riotgames.com/api/methods#!/620/1931">LoL
+     *      API Specification</a>
+     */
+    public List<Summoner> getSummonersByID(final Long... summonerIDs) {
+        return getSummonersByID(Arrays.asList(summonerIDs));
     }
 
     /**
@@ -1715,6 +1991,17 @@ public class RiotAPI {
     }
 
     /**
+     * @param teamIDs
+     *            the teams to get information for
+     * @return the teams
+     * @see <a href="http://developer.riotgames.com/api/methods#!/743/2645">LoL
+     *      API Specification</a>
+     */
+    public List<Team> getTeams(final String... teamIDs) {
+        return getTeams(Arrays.asList(teamIDs));
+    }
+
+    /**
      * @param summoner
      *            the summoner to get information for
      * @return the summoner's teams
@@ -1755,6 +2042,17 @@ public class RiotAPI {
     }
 
     /**
+     * @param summonerIDs
+     *            the summoners to get information for
+     * @return the summoners' teams
+     * @see <a href="http://developer.riotgames.com/api/methods#!/743/2644">LoL
+     *      API Specification</a>
+     */
+    public Map<Long, List<Team>> getTeamsBySummonerIDs(final Long... summonerIDs) {
+        return getTeamsBySummonerIDs(Arrays.asList(summonerIDs));
+    }
+
+    /**
      * @param summonerName
      *            the summoner to get information for
      * @return the summoner's teams
@@ -1778,6 +2076,17 @@ public class RiotAPI {
     }
 
     /**
+     * @param summonerNames
+     *            the summoners to get information for
+     * @return the summoners' teams
+     * @see <a href="http://developer.riotgames.com/api/methods#!/743/2644">LoL
+     *      API Specification</a>
+     */
+    public Map<Summoner, List<Team>> getTeamsBySummonerNames(final String... summonerNames) {
+        return getTeamsBySummonerNames(Arrays.asList(summonerNames));
+    }
+
+    /**
      * @param summoners
      *            the summoners to get information for
      * @return the summoners' teams
@@ -1787,6 +2096,17 @@ public class RiotAPI {
     public Map<Summoner, List<Team>> getTeamsBySummoners(final List<Summoner> summoners) {
         final Map<Long, List<Team>> byID = getTeamsBySummonerIDs(getIDsFromSummoners(summoners));
         return summonerMapFromID(summoners, byID);
+    }
+
+    /**
+     * @param summoners
+     *            the summoners to get information for
+     * @return the summoners' teams
+     * @see <a href="http://developer.riotgames.com/api/methods#!/743/2644">LoL
+     *      API Specification</a>
+     */
+    public Map<Summoner, List<Team>> getTeamsBySummoners(final Summoner... summoners) {
+        return getTeamsBySummoners(Arrays.asList(summoners));
     }
 
     /**
