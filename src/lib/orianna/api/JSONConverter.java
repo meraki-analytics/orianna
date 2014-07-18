@@ -1,9 +1,7 @@
 package lib.orianna.api;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -74,9 +72,6 @@ import org.json.simple.JSONObject;
  * @author Rob Rua (FatalElement - NA) (robrua@alumni.cmu.edu)
  */
 public class JSONConverter {
-    // It scares me that this is the best way to get a local offset right now...
-    private static final ZoneOffset timeZone = ZoneOffset.from(ZonedDateTime.now(ZoneId.systemDefault()));
-
     private static Integer convertInteger(final Object object) {
         final Long longVersion = (Long)object;
         if(longVersion == null) {
@@ -90,7 +85,7 @@ public class JSONConverter {
         if(epoch == null) {
             return null;
         }
-        return LocalDateTime.ofEpochSecond(epoch / 1000, 0, timeZone);
+        return LocalDateTime.ofEpochSecond(epoch / 1000, 0, ZoneOffset.UTC);
     }
 
     private static List<Double> getDoubleList(final JSONArray list) {
