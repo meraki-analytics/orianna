@@ -6,37 +6,39 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BasicDataStats implements Serializable {
-    private static final long serialVersionUID = 1594413878340877864L;
+    private static final long serialVersionUID = -2608389900646702437L;
     public final Double flatArmorMod, flatAttackSpeedMod, flatBlockMod, flatCritChanceMod, flatCritDamageMod, flatEXPBonus, flatEnergyPoolMod,
             flatEnergyRegenMod, flatHPPoolMod, flatHPRegenMod, flatMPPoolMod, flatMPRegenMod, flatMagicDamageMod, flatMovementSpeedMod, flatPhysicalDamageMod,
-            flatSpellBlockMod, percentArmorMod, percentAttackSpeedMod, percentBlockMod, percentCritChanceMod, percentCritDamageMod, percentDodgeMod,
-            percentEXPBonus, percentHPPoolMod, percentHPRegenMod, percentLifeStealMod, percentMPPoolMod, percentMPRegenMod, percentMagicDamageMod,
-            percentMovementSpeedMod, percentPhysicalDamageMod, percentSpellBlockMod, percentSpellVampMod, rFlatArmorModPerLevel, rFlatArmorPenetrationMod,
-            rFlatArmorPenetrationModPerLevel, rFlatCritChanceModPerLevel, rFlatCritDamageModPerLevel, rFlatDodgeMod, rFlatDodgeModPerLevel,
-            rFlatEnergyModPerLevel, rFlatEnergyRegenModPerLevel, rFlatGoldPer10Mod, rFlatHPModPerLevel, rFlatHPRegenModPerLevel, rFlatMPModPerLevel,
-            rFlatMPRegenModPerLevel, rFlatMagicDamageModPerLevel, rFlatMagicPenetrationMod, rFlatMagicPenetrationModPerLevel, rFlatMovementSpeedModPerLevel,
-            rFlatPhysicalDamageModPerLevel, rFlatSpellBlockModPerLevel, rFlatTimeDeadMod, rFlatTimeDeadModPerLevel, rPercentArmorPenetrationMod,
-            rPercentArmorPenetrationModPerLevel, rPercentAttackSpeedModPerLevel, rPercentCooldownMod, rPercentCooldownModPerLevel, rPercentMagicPenetrationMod,
-            rPercentMagicPenetrationModPerLevel, rPercentMovementSpeedModPerLevel, rPercentTimeDeadMod, rPercentTimeDeadModPerLevel;
+            flatSpellBlockMod, percentArmorMod, percentAttackSpeedMod, percentBlockMod, percentCooldownMod, percentCritChanceMod, percentCritDamageMod,
+            percentDodgeMod, percentEXPBonus, percentHPPoolMod, percentHPRegenMod, percentLifeStealMod, percentMPPoolMod, percentMPRegenMod,
+            percentMagicDamageMod, percentMovementSpeedMod, percentPhysicalDamageMod, percentSpellBlockMod, percentSpellVampMod, rFlatArmorModPerLevel,
+            rFlatArmorPenetrationMod, rFlatArmorPenetrationModPerLevel, rFlatCritChanceModPerLevel, rFlatCritDamageModPerLevel, rFlatDodgeMod,
+            rFlatDodgeModPerLevel, rFlatEnergyModPerLevel, rFlatEnergyRegenModPerLevel, rFlatGoldPer10Mod, rFlatHPModPerLevel, rFlatHPRegenModPerLevel,
+            rFlatMPModPerLevel, rFlatMPRegenModPerLevel, rFlatMagicDamageModPerLevel, rFlatMagicPenetrationMod, rFlatMagicPenetrationModPerLevel,
+            rFlatMovementSpeedModPerLevel, rFlatPhysicalDamageModPerLevel, rFlatSpellBlockModPerLevel, rFlatTimeDeadMod, rFlatTimeDeadModPerLevel,
+            rPercentArmorPenetrationMod, rPercentArmorPenetrationModPerLevel, rPercentAttackSpeedModPerLevel, rPercentCooldownMod, rPercentCooldownModPerLevel,
+            rPercentMagicPenetrationMod, rPercentMagicPenetrationModPerLevel, rPercentMovementSpeedModPerLevel, rPercentTimeDeadMod,
+            rPercentTimeDeadModPerLevel;
 
     public BasicDataStats(final Double flatArmorMod, final Double flatAttackSpeedMod, final Double flatBlockMod, final Double flatCritChanceMod,
             final Double flatCritDamageMod, final Double flatEXPBonus, final Double flatEnergyPoolMod, final Double flatEnergyRegenMod,
             final Double flatHPPoolMod, final Double flatHPRegenMod, final Double flatMPPoolMod, final Double flatMPRegenMod, final Double flatMagicDamageMod,
             final Double flatMovementSpeedMod, final Double flatPhysicalDamageMod, final Double flatSpellBlockMod, final Double percentArmorMod,
-            final Double percentAttackSpeedMod, final Double percentBlockMod, final Double percentCritChanceMod, final Double percentCritDamageMod,
-            final Double percentDodgeMod, final Double percentEXPBonus, final Double percentHPPoolMod, final Double percentHPRegenMod,
-            final Double percentLifeStealMod, final Double percentMPPoolMod, final Double percentMPRegenMod, final Double percentMagicDamageMod,
-            final Double percentMovementSpeedMod, final Double percentPhysicalDamageMod, final Double percentSpellBlockMod, final Double percentSpellVampMod,
-            final Double rFlatArmorModPerLevel, final Double rFlatArmorPenetrationMod, final Double rFlatArmorPenetrationModPerLevel,
-            final Double rFlatCritChanceModPerLevel, final Double rFlatCritDamageModPerLevel, final Double rFlatDodgeMod, final Double rFlatDodgeModPerLevel,
-            final Double rFlatEnergyModPerLevel, final Double rFlatEnergyRegenModPerLevel, final Double rFlatGoldPer10Mod, final Double rFlatHPModPerLevel,
-            final Double rFlatHPRegenModPerLevel, final Double rFlatMPModPerLevel, final Double rFlatMPRegenModPerLevel,
-            final Double rFlatMagicDamageModPerLevel, final Double rFlatMagicPenetrationMod, final Double rFlatMagicPenetrationModPerLevel,
-            final Double rFlatMovementSpeedModPerLevel, final Double rFlatPhysicalDamageModPerLevel, final Double rFlatSpellBlockModPerLevel,
-            final Double rFlatTimeDeadMod, final Double rFlatTimeDeadModPerLevel, final Double rPercentArmorPenetrationMod,
-            final Double rPercentArmorPenetrationModPerLevel, final Double rPercentAttackSpeedModPerLevel, final Double rPercentCooldownMod,
-            final Double rPercentCooldownModPerLevel, final Double rPercentMagicPenetrationMod, final Double rPercentMagicPenetrationModPerLevel,
-            final Double rPercentMovementSpeedModPerLevel, final Double rPercentTimeDeadMod, final Double rPercentTimeDeadModPerLevel) {
+            final Double percentAttackSpeedMod, final Double percentBlockMod, final Double percentCooldownMod, final Double percentCritChanceMod,
+            final Double percentCritDamageMod, final Double percentDodgeMod, final Double percentEXPBonus, final Double percentHPPoolMod,
+            final Double percentHPRegenMod, final Double percentLifeStealMod, final Double percentMPPoolMod, final Double percentMPRegenMod,
+            final Double percentMagicDamageMod, final Double percentMovementSpeedMod, final Double percentPhysicalDamageMod, final Double percentSpellBlockMod,
+            final Double percentSpellVampMod, final Double rFlatArmorModPerLevel, final Double rFlatArmorPenetrationMod,
+            final Double rFlatArmorPenetrationModPerLevel, final Double rFlatCritChanceModPerLevel, final Double rFlatCritDamageModPerLevel,
+            final Double rFlatDodgeMod, final Double rFlatDodgeModPerLevel, final Double rFlatEnergyModPerLevel, final Double rFlatEnergyRegenModPerLevel,
+            final Double rFlatGoldPer10Mod, final Double rFlatHPModPerLevel, final Double rFlatHPRegenModPerLevel, final Double rFlatMPModPerLevel,
+            final Double rFlatMPRegenModPerLevel, final Double rFlatMagicDamageModPerLevel, final Double rFlatMagicPenetrationMod,
+            final Double rFlatMagicPenetrationModPerLevel, final Double rFlatMovementSpeedModPerLevel, final Double rFlatPhysicalDamageModPerLevel,
+            final Double rFlatSpellBlockModPerLevel, final Double rFlatTimeDeadMod, final Double rFlatTimeDeadModPerLevel,
+            final Double rPercentArmorPenetrationMod, final Double rPercentArmorPenetrationModPerLevel, final Double rPercentAttackSpeedModPerLevel,
+            final Double rPercentCooldownMod, final Double rPercentCooldownModPerLevel, final Double rPercentMagicPenetrationMod,
+            final Double rPercentMagicPenetrationModPerLevel, final Double rPercentMovementSpeedModPerLevel, final Double rPercentTimeDeadMod,
+            final Double rPercentTimeDeadModPerLevel) {
         this.flatArmorMod = flatArmorMod;
         this.flatAttackSpeedMod = flatAttackSpeedMod;
         this.flatBlockMod = flatBlockMod;
@@ -56,6 +58,7 @@ public class BasicDataStats implements Serializable {
         this.percentArmorMod = percentArmorMod;
         this.percentAttackSpeedMod = percentAttackSpeedMod;
         this.percentBlockMod = percentBlockMod;
+        this.percentCooldownMod = percentCooldownMod;
         this.percentCritChanceMod = percentCritChanceMod;
         this.percentCritDamageMod = percentCritDamageMod;
         this.percentDodgeMod = percentDodgeMod;
@@ -266,6 +269,14 @@ public class BasicDataStats implements Serializable {
             }
         }
         else if(!percentBlockMod.equals(other.percentBlockMod)) {
+            return false;
+        }
+        if(percentCooldownMod == null) {
+            if(other.percentCooldownMod != null) {
+                return false;
+            }
+        }
+        else if(!percentCooldownMod.equals(other.percentCooldownMod)) {
             return false;
         }
         if(percentCritChanceMod == null) {
@@ -662,6 +673,7 @@ public class BasicDataStats implements Serializable {
         result = prime * result + (percentArmorMod == null ? 0 : percentArmorMod.hashCode());
         result = prime * result + (percentAttackSpeedMod == null ? 0 : percentAttackSpeedMod.hashCode());
         result = prime * result + (percentBlockMod == null ? 0 : percentBlockMod.hashCode());
+        result = prime * result + (percentCooldownMod == null ? 0 : percentCooldownMod.hashCode());
         result = prime * result + (percentCritChanceMod == null ? 0 : percentCritChanceMod.hashCode());
         result = prime * result + (percentCritDamageMod == null ? 0 : percentCritDamageMod.hashCode());
         result = prime * result + (percentDodgeMod == null ? 0 : percentDodgeMod.hashCode());
@@ -774,6 +786,9 @@ public class BasicDataStats implements Serializable {
         }
         if(percentBlockMod != null) {
             nonNull.put("percentBlockMod", percentBlockMod);
+        }
+        if(percentCooldownMod != null) {
+            nonNull.put("percentCooldownMod", percentCooldownMod);
         }
         if(percentCritChanceMod != null) {
             nonNull.put("percentCritChanceMod", percentCritChanceMod);
