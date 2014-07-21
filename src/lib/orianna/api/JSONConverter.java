@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import lib.orianna.type.champion.ChampionStatus;
 import lib.orianna.type.game.Game;
@@ -72,6 +74,8 @@ import org.json.simple.JSONObject;
  * @author Rob Rua (FatalElement - NA) (robrua@alumni.cmu.edu)
  */
 public class JSONConverter {
+    private static final Pattern ITEM_CDR_PATTERN = Pattern.compile("\\+(\\d+)% Cooldown Reduction *(<br>|</stats>|$)");
+
     private static Integer convertInteger(final Object object) {
         final Long longVersion = (Long)object;
         if(longVersion == null) {
@@ -590,6 +594,7 @@ public class JSONConverter {
         final Double percentArmorMod = (Double)basicDataStatsInfo.get("PercentArmorMod");
         final Double percentAttackSpeedMod = (Double)basicDataStatsInfo.get("PercentAttackSpeedMod");
         final Double percentBlockMod = (Double)basicDataStatsInfo.get("PercentBlockMod");
+        final Double percentCooldownMod = (Double)basicDataStatsInfo.get("PercentCooldownMod");
         final Double percentCritChanceMod = (Double)basicDataStatsInfo.get("PercentCritChanceMod");
         final Double percentCritDamageMod = (Double)basicDataStatsInfo.get("PercentCritDamageMod");
         final Double percentDodgeMod = (Double)basicDataStatsInfo.get("PercentDodgeMod");
@@ -639,16 +644,16 @@ public class JSONConverter {
 
         return new BasicDataStats(flatArmorMod, flatAttackSpeedMod, flatBlockMod, flatCritChanceMod, flatCritDamageMod, flatEXPBonus, flatEnergyPoolMod,
                 flatEnergyRegenMod, flatHPPoolMod, flatHPRegenMod, flatMPPoolMod, flatMPRegenMod, flatMagicDamageMod, flatMovementSpeedMod,
-                flatPhysicalDamageMod, flatSpellBlockMod, percentArmorMod, percentAttackSpeedMod, percentBlockMod, percentCritChanceMod, percentCritDamageMod,
-                percentDodgeMod, percentEXPBonus, percentHPPoolMod, percentHPRegenMod, percentLifeStealMod, percentMPPoolMod, percentMPRegenMod,
-                percentMagicDamageMod, percentMovementSpeedMod, percentPhysicalDamageMod, percentSpellBlockMod, percentSpellVampMod, rFlatArmorModPerLevel,
-                rFlatArmorPenetrationMod, rFlatArmorPenetrationModPerLevel, rFlatCritChanceModPerLevel, rFlatCritDamageModPerLevel, rFlatDodgeMod,
-                rFlatDodgeModPerLevel, rFlatEnergyModPerLevel, rFlatEnergyRegenModPerLevel, rFlatGoldPer10Mod, rFlatHPModPerLevel, rFlatHPRegenModPerLevel,
-                rFlatMPModPerLevel, rFlatMPRegenModPerLevel, rFlatMagicDamageModPerLevel, rFlatMagicPenetrationMod, rFlatMagicPenetrationModPerLevel,
-                rFlatMovementSpeedModPerLevel, rFlatPhysicalDamageModPerLevel, rFlatSpellBlockModPerLevel, rFlatTimeDeadMod, rFlatTimeDeadModPerLevel,
-                rPercentArmorPenetrationMod, rPercentArmorPenetrationModPerLevel, rPercentAttackSpeedModPerLevel, rPercentCooldownMod,
-                rPercentCooldownModPerLevel, rPercentMagicPenetrationMod, rPercentMagicPenetrationModPerLevel, rPercentMovementSpeedModPerLevel,
-                rPercentTimeDeadMod, rPercentTimeDeadModPerLevel);
+                flatPhysicalDamageMod, flatSpellBlockMod, percentArmorMod, percentAttackSpeedMod, percentBlockMod, percentCooldownMod, percentCritChanceMod,
+                percentCritDamageMod, percentDodgeMod, percentEXPBonus, percentHPPoolMod, percentHPRegenMod, percentLifeStealMod, percentMPPoolMod,
+                percentMPRegenMod, percentMagicDamageMod, percentMovementSpeedMod, percentPhysicalDamageMod, percentSpellBlockMod, percentSpellVampMod,
+                rFlatArmorModPerLevel, rFlatArmorPenetrationMod, rFlatArmorPenetrationModPerLevel, rFlatCritChanceModPerLevel, rFlatCritDamageModPerLevel,
+                rFlatDodgeMod, rFlatDodgeModPerLevel, rFlatEnergyModPerLevel, rFlatEnergyRegenModPerLevel, rFlatGoldPer10Mod, rFlatHPModPerLevel,
+                rFlatHPRegenModPerLevel, rFlatMPModPerLevel, rFlatMPRegenModPerLevel, rFlatMagicDamageModPerLevel, rFlatMagicPenetrationMod,
+                rFlatMagicPenetrationModPerLevel, rFlatMovementSpeedModPerLevel, rFlatPhysicalDamageModPerLevel, rFlatSpellBlockModPerLevel, rFlatTimeDeadMod,
+                rFlatTimeDeadModPerLevel, rPercentArmorPenetrationMod, rPercentArmorPenetrationModPerLevel, rPercentAttackSpeedModPerLevel,
+                rPercentCooldownMod, rPercentCooldownModPerLevel, rPercentMagicPenetrationMod, rPercentMagicPenetrationModPerLevel,
+                rPercentMovementSpeedModPerLevel, rPercentTimeDeadMod, rPercentTimeDeadModPerLevel);
     }
 
     public Block getBlockFromJSON(final JSONObject blockInfo) {
@@ -905,7 +910,6 @@ public class JSONConverter {
         final Gold gold = getGoldFromJSON((JSONObject)itemInfo.get("gold"));
         final Image image = getImageFromJSON((JSONObject)itemInfo.get("image"));
         final MetaData rune = getMetaDataFromJSON((JSONObject)itemInfo.get("rune"));
-        final BasicDataStats stats = getBasicDataStatsFromJSON((JSONObject)itemInfo.get("stats"));
         final List<String> from = getStringList(itemInfo, "from");
         final List<String> into = getStringList(itemInfo, "into");
         final List<String> tags = getStringList(itemInfo, "tags");
@@ -913,6 +917,18 @@ public class JSONConverter {
         if(maps != null) {
             maps = Collections.unmodifiableMap(maps);
         }
+
+        final JSONObject statsObj = (JSONObject)itemInfo.get("stats");
+        /*
+         * Riot doesn't send CDR for items as a stat yet, so we have to parse it
+         * out of the description and add it ourselves.
+         */
+        // TODO: Remove this after rito fixes it.
+        final Matcher matcher = ITEM_CDR_PATTERN.matcher(description);
+        if(matcher.find()) {
+            statsObj.put("PercentCooldownMod", new Double(matcher.group(1)));
+        }
+        final BasicDataStats stats = getBasicDataStatsFromJSON((JSONObject)itemInfo.get("stats"));
 
         return new Item(colloq, description, group, name, plaintext, requiredChampion, sanitizedDescription, consumeOnFull, consumed, hideFromAll, inStore,
                 depth, ID, specialRecipe, stacks, from, into, tags, gold, image, maps, rune, stats);
