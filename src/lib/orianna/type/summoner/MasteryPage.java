@@ -50,6 +50,30 @@ public class MasteryPage implements Serializable {
         else if(!ID.equals(other.ID)) {
             return false;
         }
+        if(current == null) {
+            if(other.current != null) {
+                return false;
+            }
+        }
+        else if(!current.equals(other.current)) {
+            return false;
+        }
+        if(masteries == null) {
+            if(other.masteries != null) {
+                return false;
+            }
+        }
+        else if(!masteries.equals(other.masteries)) {
+            return false;
+        }
+        if(name == null) {
+            if(other.name != null) {
+                return false;
+            }
+        }
+        else if(!name.equals(other.name)) {
+            return false;
+        }
         return true;
     }
 
@@ -58,6 +82,9 @@ public class MasteryPage implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + (ID == null ? 0 : ID.hashCode());
+        result = prime * result + (current == null ? 0 : current.hashCode());
+        result = prime * result + (masteries == null ? 0 : masteries.hashCode());
+        result = prime * result + (name == null ? 0 : name.hashCode());
         return result;
     }
 
