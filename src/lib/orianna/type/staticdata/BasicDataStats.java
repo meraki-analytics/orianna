@@ -1,45 +1,46 @@
 package lib.orianna.type.staticdata;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 public class BasicDataStats implements Serializable {
-    private static final long serialVersionUID = -2608389900646702437L;
-    public final Double flatArmorMod, flatAttackSpeedMod, flatBlockMod, flatCritChanceMod, flatCritDamageMod, flatEXPBonus, flatEnergyPoolMod,
-            flatEnergyRegenMod, flatHPPoolMod, flatHPRegenMod, flatMPPoolMod, flatMPRegenMod, flatMagicDamageMod, flatMovementSpeedMod, flatPhysicalDamageMod,
-            flatSpellBlockMod, percentArmorMod, percentAttackSpeedMod, percentBlockMod, percentCooldownMod, percentCritChanceMod, percentCritDamageMod,
-            percentDodgeMod, percentEXPBonus, percentHPPoolMod, percentHPRegenMod, percentLifeStealMod, percentMPPoolMod, percentMPRegenMod,
-            percentMagicDamageMod, percentMovementSpeedMod, percentPhysicalDamageMod, percentSpellBlockMod, percentSpellVampMod, rFlatArmorModPerLevel,
-            rFlatArmorPenetrationMod, rFlatArmorPenetrationModPerLevel, rFlatCritChanceModPerLevel, rFlatCritDamageModPerLevel, rFlatDodgeMod,
-            rFlatDodgeModPerLevel, rFlatEnergyModPerLevel, rFlatEnergyRegenModPerLevel, rFlatGoldPer10Mod, rFlatHPModPerLevel, rFlatHPRegenModPerLevel,
-            rFlatMPModPerLevel, rFlatMPRegenModPerLevel, rFlatMagicDamageModPerLevel, rFlatMagicPenetrationMod, rFlatMagicPenetrationModPerLevel,
-            rFlatMovementSpeedModPerLevel, rFlatPhysicalDamageModPerLevel, rFlatSpellBlockModPerLevel, rFlatTimeDeadMod, rFlatTimeDeadModPerLevel,
-            rPercentArmorPenetrationMod, rPercentArmorPenetrationModPerLevel, rPercentAttackSpeedModPerLevel, rPercentCooldownMod, rPercentCooldownModPerLevel,
-            rPercentMagicPenetrationMod, rPercentMagicPenetrationModPerLevel, rPercentMovementSpeedModPerLevel, rPercentTimeDeadMod,
-            rPercentTimeDeadModPerLevel;
+    private static final long serialVersionUID = -3892233449766313123L;
+    public final Double flatArmorMod, flatArmorPenetrationMod, flatAttackSpeedMod, flatBlockMod, flatCritChanceMod, flatCritDamageMod, flatEXPBonus,
+            flatEnergyPoolMod, flatEnergyRegenMod, flatGoldPer10Mod, flatHPPoolMod, flatHPRegenMod, flatMPPoolMod, flatMPRegenMod, flatMagicDamageMod,
+            flatMagicPenetrationMod, flatMovementSpeedMod, flatPhysicalDamageMod, flatSpellBlockMod, percentArmorMod, percentArmorPenetrationMod,
+            percentAttackSpeedMod, percentBlockMod, percentCooldownMod, percentCritChanceMod, percentCritDamageMod, percentDodgeMod, percentEXPBonus,
+            percentHPPoolMod, percentHPRegenMod, percentLifeStealMod, percentMPPoolMod, percentMPRegenMod, percentMagicDamageMod, percentMagicPenetrationMod,
+            percentMovementSpeedMod, percentPhysicalDamageMod, percentSpellBlockMod, percentSpellVampMod, rFlatArmorModPerLevel, rFlatArmorPenetrationMod,
+            rFlatArmorPenetrationModPerLevel, rFlatCritChanceModPerLevel, rFlatCritDamageModPerLevel, rFlatDodgeMod, rFlatDodgeModPerLevel,
+            rFlatEnergyModPerLevel, rFlatEnergyRegenModPerLevel, rFlatGoldPer10Mod, rFlatHPModPerLevel, rFlatHPRegenModPerLevel, rFlatMPModPerLevel,
+            rFlatMPRegenModPerLevel, rFlatMagicDamageModPerLevel, rFlatMagicPenetrationMod, rFlatMagicPenetrationModPerLevel, rFlatMovementSpeedModPerLevel,
+            rFlatPhysicalDamageModPerLevel, rFlatSpellBlockModPerLevel, rFlatTimeDeadMod, rFlatTimeDeadModPerLevel, rPercentArmorPenetrationMod,
+            rPercentArmorPenetrationModPerLevel, rPercentAttackSpeedModPerLevel, rPercentCooldownMod, rPercentCooldownModPerLevel, rPercentMagicPenetrationMod,
+            rPercentMagicPenetrationModPerLevel, rPercentMovementSpeedModPerLevel, rPercentTimeDeadMod, rPercentTimeDeadModPerLevel;
 
-    public BasicDataStats(final Double flatArmorMod, final Double flatAttackSpeedMod, final Double flatBlockMod, final Double flatCritChanceMod,
-            final Double flatCritDamageMod, final Double flatEXPBonus, final Double flatEnergyPoolMod, final Double flatEnergyRegenMod,
-            final Double flatHPPoolMod, final Double flatHPRegenMod, final Double flatMPPoolMod, final Double flatMPRegenMod, final Double flatMagicDamageMod,
+    public BasicDataStats(final Double flatArmorMod, final Double flatArmorPenetrationMod, final Double flatAttackSpeedMod, final Double flatBlockMod,
+            final Double flatCritChanceMod, final Double flatCritDamageMod, final Double flatEXPBonus, final Double flatEnergyPoolMod,
+            final Double flatEnergyRegenMod, final Double flatGoldPer10Mod, final Double flatHPPoolMod, final Double flatHPRegenMod,
+            final Double flatMPPoolMod, final Double flatMPRegenMod, final Double flatMagicDamageMod, final Double flatMagicPenetrationMod,
             final Double flatMovementSpeedMod, final Double flatPhysicalDamageMod, final Double flatSpellBlockMod, final Double percentArmorMod,
-            final Double percentAttackSpeedMod, final Double percentBlockMod, final Double percentCooldownMod, final Double percentCritChanceMod,
-            final Double percentCritDamageMod, final Double percentDodgeMod, final Double percentEXPBonus, final Double percentHPPoolMod,
-            final Double percentHPRegenMod, final Double percentLifeStealMod, final Double percentMPPoolMod, final Double percentMPRegenMod,
-            final Double percentMagicDamageMod, final Double percentMovementSpeedMod, final Double percentPhysicalDamageMod, final Double percentSpellBlockMod,
-            final Double percentSpellVampMod, final Double rFlatArmorModPerLevel, final Double rFlatArmorPenetrationMod,
-            final Double rFlatArmorPenetrationModPerLevel, final Double rFlatCritChanceModPerLevel, final Double rFlatCritDamageModPerLevel,
-            final Double rFlatDodgeMod, final Double rFlatDodgeModPerLevel, final Double rFlatEnergyModPerLevel, final Double rFlatEnergyRegenModPerLevel,
-            final Double rFlatGoldPer10Mod, final Double rFlatHPModPerLevel, final Double rFlatHPRegenModPerLevel, final Double rFlatMPModPerLevel,
-            final Double rFlatMPRegenModPerLevel, final Double rFlatMagicDamageModPerLevel, final Double rFlatMagicPenetrationMod,
-            final Double rFlatMagicPenetrationModPerLevel, final Double rFlatMovementSpeedModPerLevel, final Double rFlatPhysicalDamageModPerLevel,
-            final Double rFlatSpellBlockModPerLevel, final Double rFlatTimeDeadMod, final Double rFlatTimeDeadModPerLevel,
-            final Double rPercentArmorPenetrationMod, final Double rPercentArmorPenetrationModPerLevel, final Double rPercentAttackSpeedModPerLevel,
-            final Double rPercentCooldownMod, final Double rPercentCooldownModPerLevel, final Double rPercentMagicPenetrationMod,
-            final Double rPercentMagicPenetrationModPerLevel, final Double rPercentMovementSpeedModPerLevel, final Double rPercentTimeDeadMod,
-            final Double rPercentTimeDeadModPerLevel) {
+            final Double percentArmorPenetrationMod, final Double percentAttackSpeedMod, final Double percentBlockMod, final Double percentCooldownMod,
+            final Double percentCritChanceMod, final Double percentCritDamageMod, final Double percentDodgeMod, final Double percentEXPBonus,
+            final Double percentHPPoolMod, final Double percentHPRegenMod, final Double percentLifeStealMod, final Double percentMPPoolMod,
+            final Double percentMPRegenMod, final Double percentMagicDamageMod, final Double percentMagicPenetrationMod, final Double percentMovementSpeedMod,
+            final Double percentPhysicalDamageMod, final Double percentSpellBlockMod, final Double percentSpellVampMod, final Double rFlatArmorModPerLevel,
+            final Double rFlatArmorPenetrationMod, final Double rFlatArmorPenetrationModPerLevel, final Double rFlatCritChanceModPerLevel,
+            final Double rFlatCritDamageModPerLevel, final Double rFlatDodgeMod, final Double rFlatDodgeModPerLevel, final Double rFlatEnergyModPerLevel,
+            final Double rFlatEnergyRegenModPerLevel, final Double rFlatGoldPer10Mod, final Double rFlatHPModPerLevel, final Double rFlatHPRegenModPerLevel,
+            final Double rFlatMPModPerLevel, final Double rFlatMPRegenModPerLevel, final Double rFlatMagicDamageModPerLevel,
+            final Double rFlatMagicPenetrationMod, final Double rFlatMagicPenetrationModPerLevel, final Double rFlatMovementSpeedModPerLevel,
+            final Double rFlatPhysicalDamageModPerLevel, final Double rFlatSpellBlockModPerLevel, final Double rFlatTimeDeadMod,
+            final Double rFlatTimeDeadModPerLevel, final Double rPercentArmorPenetrationMod, final Double rPercentArmorPenetrationModPerLevel,
+            final Double rPercentAttackSpeedModPerLevel, final Double rPercentCooldownMod, final Double rPercentCooldownModPerLevel,
+            final Double rPercentMagicPenetrationMod, final Double rPercentMagicPenetrationModPerLevel, final Double rPercentMovementSpeedModPerLevel,
+            final Double rPercentTimeDeadMod, final Double rPercentTimeDeadModPerLevel) {
         this.flatArmorMod = flatArmorMod;
+        this.flatArmorPenetrationMod = flatArmorPenetrationMod;
         this.flatAttackSpeedMod = flatAttackSpeedMod;
         this.flatBlockMod = flatBlockMod;
         this.flatCritChanceMod = flatCritChanceMod;
@@ -47,15 +48,18 @@ public class BasicDataStats implements Serializable {
         this.flatEXPBonus = flatEXPBonus;
         this.flatEnergyPoolMod = flatEnergyPoolMod;
         this.flatEnergyRegenMod = flatEnergyRegenMod;
+        this.flatGoldPer10Mod = flatGoldPer10Mod;
         this.flatHPPoolMod = flatHPPoolMod;
         this.flatHPRegenMod = flatHPRegenMod;
         this.flatMPPoolMod = flatMPPoolMod;
         this.flatMPRegenMod = flatMPRegenMod;
         this.flatMagicDamageMod = flatMagicDamageMod;
+        this.flatMagicPenetrationMod = flatMagicPenetrationMod;
         this.flatMovementSpeedMod = flatMovementSpeedMod;
         this.flatPhysicalDamageMod = flatPhysicalDamageMod;
         this.flatSpellBlockMod = flatSpellBlockMod;
         this.percentArmorMod = percentArmorMod;
+        this.percentArmorPenetrationMod = percentArmorPenetrationMod;
         this.percentAttackSpeedMod = percentAttackSpeedMod;
         this.percentBlockMod = percentBlockMod;
         this.percentCooldownMod = percentCooldownMod;
@@ -69,6 +73,7 @@ public class BasicDataStats implements Serializable {
         this.percentMPPoolMod = percentMPPoolMod;
         this.percentMPRegenMod = percentMPRegenMod;
         this.percentMagicDamageMod = percentMagicDamageMod;
+        this.percentMagicPenetrationMod = percentMagicPenetrationMod;
         this.percentMovementSpeedMod = percentMovementSpeedMod;
         this.percentPhysicalDamageMod = percentPhysicalDamageMod;
         this.percentSpellBlockMod = percentSpellBlockMod;
@@ -127,6 +132,14 @@ public class BasicDataStats implements Serializable {
         else if(!flatArmorMod.equals(other.flatArmorMod)) {
             return false;
         }
+        if(flatArmorPenetrationMod == null) {
+            if(other.flatArmorPenetrationMod != null) {
+                return false;
+            }
+        }
+        else if(!flatArmorPenetrationMod.equals(other.flatArmorPenetrationMod)) {
+            return false;
+        }
         if(flatAttackSpeedMod == null) {
             if(other.flatAttackSpeedMod != null) {
                 return false;
@@ -183,6 +196,14 @@ public class BasicDataStats implements Serializable {
         else if(!flatEnergyRegenMod.equals(other.flatEnergyRegenMod)) {
             return false;
         }
+        if(flatGoldPer10Mod == null) {
+            if(other.flatGoldPer10Mod != null) {
+                return false;
+            }
+        }
+        else if(!flatGoldPer10Mod.equals(other.flatGoldPer10Mod)) {
+            return false;
+        }
         if(flatHPPoolMod == null) {
             if(other.flatHPPoolMod != null) {
                 return false;
@@ -223,6 +244,14 @@ public class BasicDataStats implements Serializable {
         else if(!flatMagicDamageMod.equals(other.flatMagicDamageMod)) {
             return false;
         }
+        if(flatMagicPenetrationMod == null) {
+            if(other.flatMagicPenetrationMod != null) {
+                return false;
+            }
+        }
+        else if(!flatMagicPenetrationMod.equals(other.flatMagicPenetrationMod)) {
+            return false;
+        }
         if(flatMovementSpeedMod == null) {
             if(other.flatMovementSpeedMod != null) {
                 return false;
@@ -253,6 +282,14 @@ public class BasicDataStats implements Serializable {
             }
         }
         else if(!percentArmorMod.equals(other.percentArmorMod)) {
+            return false;
+        }
+        if(percentArmorPenetrationMod == null) {
+            if(other.percentArmorPenetrationMod != null) {
+                return false;
+            }
+        }
+        else if(!percentArmorPenetrationMod.equals(other.percentArmorPenetrationMod)) {
             return false;
         }
         if(percentAttackSpeedMod == null) {
@@ -357,6 +394,14 @@ public class BasicDataStats implements Serializable {
             }
         }
         else if(!percentMagicDamageMod.equals(other.percentMagicDamageMod)) {
+            return false;
+        }
+        if(percentMagicPenetrationMod == null) {
+            if(other.percentMagicPenetrationMod != null) {
+                return false;
+            }
+        }
+        else if(!percentMagicPenetrationMod.equals(other.percentMagicPenetrationMod)) {
             return false;
         }
         if(percentMovementSpeedMod == null) {
@@ -655,6 +700,7 @@ public class BasicDataStats implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + (flatArmorMod == null ? 0 : flatArmorMod.hashCode());
+        result = prime * result + (flatArmorPenetrationMod == null ? 0 : flatArmorPenetrationMod.hashCode());
         result = prime * result + (flatAttackSpeedMod == null ? 0 : flatAttackSpeedMod.hashCode());
         result = prime * result + (flatBlockMod == null ? 0 : flatBlockMod.hashCode());
         result = prime * result + (flatCritChanceMod == null ? 0 : flatCritChanceMod.hashCode());
@@ -662,15 +708,18 @@ public class BasicDataStats implements Serializable {
         result = prime * result + (flatEXPBonus == null ? 0 : flatEXPBonus.hashCode());
         result = prime * result + (flatEnergyPoolMod == null ? 0 : flatEnergyPoolMod.hashCode());
         result = prime * result + (flatEnergyRegenMod == null ? 0 : flatEnergyRegenMod.hashCode());
+        result = prime * result + (flatGoldPer10Mod == null ? 0 : flatGoldPer10Mod.hashCode());
         result = prime * result + (flatHPPoolMod == null ? 0 : flatHPPoolMod.hashCode());
         result = prime * result + (flatHPRegenMod == null ? 0 : flatHPRegenMod.hashCode());
         result = prime * result + (flatMPPoolMod == null ? 0 : flatMPPoolMod.hashCode());
         result = prime * result + (flatMPRegenMod == null ? 0 : flatMPRegenMod.hashCode());
         result = prime * result + (flatMagicDamageMod == null ? 0 : flatMagicDamageMod.hashCode());
+        result = prime * result + (flatMagicPenetrationMod == null ? 0 : flatMagicPenetrationMod.hashCode());
         result = prime * result + (flatMovementSpeedMod == null ? 0 : flatMovementSpeedMod.hashCode());
         result = prime * result + (flatPhysicalDamageMod == null ? 0 : flatPhysicalDamageMod.hashCode());
         result = prime * result + (flatSpellBlockMod == null ? 0 : flatSpellBlockMod.hashCode());
         result = prime * result + (percentArmorMod == null ? 0 : percentArmorMod.hashCode());
+        result = prime * result + (percentArmorPenetrationMod == null ? 0 : percentArmorPenetrationMod.hashCode());
         result = prime * result + (percentAttackSpeedMod == null ? 0 : percentAttackSpeedMod.hashCode());
         result = prime * result + (percentBlockMod == null ? 0 : percentBlockMod.hashCode());
         result = prime * result + (percentCooldownMod == null ? 0 : percentCooldownMod.hashCode());
@@ -684,6 +733,7 @@ public class BasicDataStats implements Serializable {
         result = prime * result + (percentMPPoolMod == null ? 0 : percentMPPoolMod.hashCode());
         result = prime * result + (percentMPRegenMod == null ? 0 : percentMPRegenMod.hashCode());
         result = prime * result + (percentMagicDamageMod == null ? 0 : percentMagicDamageMod.hashCode());
+        result = prime * result + (percentMagicPenetrationMod == null ? 0 : percentMagicPenetrationMod.hashCode());
         result = prime * result + (percentMovementSpeedMod == null ? 0 : percentMovementSpeedMod.hashCode());
         result = prime * result + (percentPhysicalDamageMod == null ? 0 : percentPhysicalDamageMod.hashCode());
         result = prime * result + (percentSpellBlockMod == null ? 0 : percentSpellBlockMod.hashCode());
@@ -733,6 +783,9 @@ public class BasicDataStats implements Serializable {
         if(flatArmorMod != null) {
             nonNull.put("flatArmorMod", flatArmorMod);
         }
+        if(flatArmorPenetrationMod != null) {
+            nonNull.put("flatArmorPenetrationMod", flatArmorPenetrationMod);
+        }
         if(flatAttackSpeedMod != null) {
             nonNull.put("flatAttackSpeedMod", flatAttackSpeedMod);
         }
@@ -754,6 +807,9 @@ public class BasicDataStats implements Serializable {
         if(flatEnergyRegenMod != null) {
             nonNull.put("flatEnergyRegenMod", flatEnergyRegenMod);
         }
+        if(flatGoldPer10Mod != null) {
+            nonNull.put("flatGoldPer10Mod", flatGoldPer10Mod);
+        }
         if(flatHPPoolMod != null) {
             nonNull.put("flatHPPoolMod", flatHPPoolMod);
         }
@@ -769,6 +825,9 @@ public class BasicDataStats implements Serializable {
         if(flatMagicDamageMod != null) {
             nonNull.put("flatMagicDamageMod", flatMagicDamageMod);
         }
+        if(flatMagicPenetrationMod != null) {
+            nonNull.put("flatMagicPenetrationMod", flatMagicPenetrationMod);
+        }
         if(flatMovementSpeedMod != null) {
             nonNull.put("flatMovementSpeedMod", flatMovementSpeedMod);
         }
@@ -780,6 +839,9 @@ public class BasicDataStats implements Serializable {
         }
         if(percentArmorMod != null) {
             nonNull.put("percentArmorMod", percentArmorMod);
+        }
+        if(percentArmorPenetrationMod != null) {
+            nonNull.put("percentArmorPenetrationMod", percentArmorPenetrationMod);
         }
         if(percentAttackSpeedMod != null) {
             nonNull.put("percentAttackSpeedMod", percentAttackSpeedMod);
@@ -819,6 +881,9 @@ public class BasicDataStats implements Serializable {
         }
         if(percentMagicDamageMod != null) {
             nonNull.put("percentMagicDamageMod", percentMagicDamageMod);
+        }
+        if(percentMagicPenetrationMod != null) {
+            nonNull.put("percentMagicPenetrationMod", percentMagicPenetrationMod);
         }
         if(percentMovementSpeedMod != null) {
             nonNull.put("percentMovementSpeedMod", percentMovementSpeedMod);
@@ -929,7 +994,7 @@ public class BasicDataStats implements Serializable {
             nonNull.put("rPercentTimeDeadModPerLevel", rPercentTimeDeadModPerLevel);
         }
 
-        return Collections.unmodifiableMap(nonNull);
+        return nonNull;
     }
 
     @Override

@@ -74,8 +74,6 @@ import org.json.simple.JSONObject;
  * @author Rob Rua (FatalElement - NA) (robrua@alumni.cmu.edu)
  */
 public class JSONConverter {
-    private static final Pattern ITEM_CDR_PATTERN = Pattern.compile("\\+(\\d+)% Cooldown Reduction *(<br>|</stats>|$)");
-
     private static Integer convertInteger(final Object object) {
         final Long longVersion = (Long)object;
         if(longVersion == null) {
@@ -212,6 +210,18 @@ public class JSONConverter {
         }
 
         return getMapFromList(list, mapper);
+    }
+
+    private static Map<String, Pattern> getScrapedStatPatterns() {
+        final Map<String, Pattern> patterns = new HashMap<String, Pattern>();
+        patterns.put("PercentCooldownMod", Pattern.compile("\\+(\\d+) *% Cooldown Reduction *(<br>|</stats>|</passive>|$)"));
+        patterns.put("FlatArmorPenetrationMod", Pattern.compile("\\+(\\d+) *Armor Penetration *(<br>|</stats>|</passive>|$)"));
+        patterns.put("PercentArmorPenetrationMod", Pattern.compile("ignores (\\d+)% of the target's Armor"));
+        patterns.put("FlatMagicPenetrationMod", Pattern.compile("\\+(\\d+) *Magic Penetration *(<br>|</stats>|</passive>|$)"));
+        patterns.put("PercentMagicPenetrationMod", Pattern.compile("ignores (\\d+)% of the target's Magic Resist"));
+        patterns.put("FlatGoldPer10Mod", Pattern.compile("\\+(\\d+) *Gold per 10 seconds *(<br>|</stats>|</passive>|$)"));
+
+        return patterns;
     }
 
     private static Side getSide(final JSONObject object, final String key) {
@@ -576,6 +586,7 @@ public class JSONConverter {
         }
 
         final Double flatArmorMod = (Double)basicDataStatsInfo.get("FlatArmorMod");
+        final Double flatArmorPenetrationMod = (Double)basicDataStatsInfo.get("FlatArmorPenetrationMod");
         final Double flatAttackSpeedMod = (Double)basicDataStatsInfo.get("FlatAttackSpeedMod");
         final Double flatBlockMod = (Double)basicDataStatsInfo.get("FlatBlockMod");
         final Double flatCritChanceMod = (Double)basicDataStatsInfo.get("FlatCritChanceMod");
@@ -583,15 +594,18 @@ public class JSONConverter {
         final Double flatEXPBonus = (Double)basicDataStatsInfo.get("FlatEXPBonus");
         final Double flatEnergyPoolMod = (Double)basicDataStatsInfo.get("FlatEnergyPoolMod");
         final Double flatEnergyRegenMod = (Double)basicDataStatsInfo.get("FlatEnergyRegenMod");
+        final Double flatGoldPer10Mod = (Double)basicDataStatsInfo.get("FlatGoldPer10Mod");
         final Double flatHPPoolMod = (Double)basicDataStatsInfo.get("FlatHPPoolMod");
         final Double flatHPRegenMod = (Double)basicDataStatsInfo.get("FlatHPRegenMod");
         final Double flatMPPoolMod = (Double)basicDataStatsInfo.get("FlatMPPoolMod");
         final Double flatMPRegenMod = (Double)basicDataStatsInfo.get("FlatMPRegenMod");
         final Double flatMagicDamageMod = (Double)basicDataStatsInfo.get("FlatMagicDamageMod");
+        final Double flatMagicPenetrationMod = (Double)basicDataStatsInfo.get("FlatMagicPenetrationMod");
         final Double flatMovementSpeedMod = (Double)basicDataStatsInfo.get("FlatMovementSpeedMod");
         final Double flatPhysicalDamageMod = (Double)basicDataStatsInfo.get("FlatPhysicalDamageMod");
         final Double flatSpellBlockMod = (Double)basicDataStatsInfo.get("FlatSpellBlockMod");
         final Double percentArmorMod = (Double)basicDataStatsInfo.get("PercentArmorMod");
+        final Double percentArmorPenetrationMod = (Double)basicDataStatsInfo.get("PercentArmorPenetrationMod");
         final Double percentAttackSpeedMod = (Double)basicDataStatsInfo.get("PercentAttackSpeedMod");
         final Double percentBlockMod = (Double)basicDataStatsInfo.get("PercentBlockMod");
         final Double percentCooldownMod = (Double)basicDataStatsInfo.get("PercentCooldownMod");
@@ -605,6 +619,7 @@ public class JSONConverter {
         final Double percentMPPoolMod = (Double)basicDataStatsInfo.get("PercentMPPoolMod");
         final Double percentMPRegenMod = (Double)basicDataStatsInfo.get("PercentMPRegenMod");
         final Double percentMagicDamageMod = (Double)basicDataStatsInfo.get("PercentMagicDamageMod");
+        final Double percentMagicPenetrationMod = (Double)basicDataStatsInfo.get("PercentMagicPenetrationMod");
         final Double percentMovementSpeedMod = (Double)basicDataStatsInfo.get("PercentMovementSpeedMod");
         final Double percentPhysicalDamageMod = (Double)basicDataStatsInfo.get("PercentPhysicalDamageMod");
         final Double percentSpellBlockMod = (Double)basicDataStatsInfo.get("PercentSpellBlockMod");
@@ -642,11 +657,12 @@ public class JSONConverter {
         final Double rPercentTimeDeadMod = (Double)basicDataStatsInfo.get("rPercentTimeDeadMod");
         final Double rPercentTimeDeadModPerLevel = (Double)basicDataStatsInfo.get("rPercentTimeDeadModPerLevel");
 
-        return new BasicDataStats(flatArmorMod, flatAttackSpeedMod, flatBlockMod, flatCritChanceMod, flatCritDamageMod, flatEXPBonus, flatEnergyPoolMod,
-                flatEnergyRegenMod, flatHPPoolMod, flatHPRegenMod, flatMPPoolMod, flatMPRegenMod, flatMagicDamageMod, flatMovementSpeedMod,
-                flatPhysicalDamageMod, flatSpellBlockMod, percentArmorMod, percentAttackSpeedMod, percentBlockMod, percentCooldownMod, percentCritChanceMod,
-                percentCritDamageMod, percentDodgeMod, percentEXPBonus, percentHPPoolMod, percentHPRegenMod, percentLifeStealMod, percentMPPoolMod,
-                percentMPRegenMod, percentMagicDamageMod, percentMovementSpeedMod, percentPhysicalDamageMod, percentSpellBlockMod, percentSpellVampMod,
+        return new BasicDataStats(flatArmorMod, flatArmorPenetrationMod, flatAttackSpeedMod, flatBlockMod, flatCritChanceMod, flatCritDamageMod, flatEXPBonus,
+                flatEnergyPoolMod, flatEnergyRegenMod, flatGoldPer10Mod, flatHPPoolMod, flatHPRegenMod, flatMPPoolMod, flatMPRegenMod, flatMagicDamageMod,
+                flatMagicPenetrationMod, flatMovementSpeedMod, flatPhysicalDamageMod, flatSpellBlockMod, percentArmorMod, percentArmorPenetrationMod,
+                percentAttackSpeedMod, percentBlockMod, percentCooldownMod, percentCritChanceMod, percentCritDamageMod, percentDodgeMod, percentEXPBonus,
+                percentHPPoolMod, percentHPRegenMod, percentLifeStealMod, percentMPPoolMod, percentMPRegenMod, percentMagicDamageMod,
+                percentMagicPenetrationMod, percentMovementSpeedMod, percentPhysicalDamageMod, percentSpellBlockMod, percentSpellVampMod,
                 rFlatArmorModPerLevel, rFlatArmorPenetrationMod, rFlatArmorPenetrationModPerLevel, rFlatCritChanceModPerLevel, rFlatCritDamageModPerLevel,
                 rFlatDodgeMod, rFlatDodgeModPerLevel, rFlatEnergyModPerLevel, rFlatEnergyRegenModPerLevel, rFlatGoldPer10Mod, rFlatHPModPerLevel,
                 rFlatHPRegenModPerLevel, rFlatMPModPerLevel, rFlatMPRegenModPerLevel, rFlatMagicDamageModPerLevel, rFlatMagicPenetrationMod,
@@ -918,17 +934,21 @@ public class JSONConverter {
             maps = Collections.unmodifiableMap(maps);
         }
 
-        final JSONObject statsObj = (JSONObject)itemInfo.get("stats");
         /*
-         * Riot doesn't send CDR for items as a stat yet, so we have to parse it
-         * out of the description and add it ourselves.
+         * There's a few things Riot doesn't send as stats yet, so we have to
+         * parse them out of the description and add them ourselves.
          */
         // TODO: Remove this after rito fixes it.
-        final Matcher matcher = ITEM_CDR_PATTERN.matcher(description);
-        if(matcher.find()) {
-            statsObj.put("PercentCooldownMod", new Double(matcher.group(1)));
-        }
-        final BasicDataStats stats = getBasicDataStatsFromJSON((JSONObject)itemInfo.get("stats"));
+        final JSONObject statsObj = (JSONObject)itemInfo.get("stats");
+        final Map<String, Pattern> patterns = getScrapedStatPatterns();
+        patterns.keySet().parallelStream().forEach((stat) -> {
+            final Matcher matcher = patterns.get(stat).matcher(description);
+            if(matcher.find()) {
+                statsObj.put(stat, new Double(matcher.group(1)));
+            }
+        });
+
+        final BasicDataStats stats = getBasicDataStatsFromJSON(statsObj);
 
         return new Item(colloq, description, group, name, plaintext, requiredChampion, sanitizedDescription, consumeOnFull, consumed, hideFromAll, inStore,
                 depth, ID, specialRecipe, stacks, from, into, tags, gold, image, maps, rune, stats);
