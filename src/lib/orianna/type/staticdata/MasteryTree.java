@@ -18,9 +18,21 @@ public class MasteryTree implements Serializable {
         this.utility = utility;
         types = new HashMap<Mastery, MasteryType>();
 
-        offense.forEach((list) -> list.masteryTreeItems.forEach((item) -> types.put(item.mastery, MasteryType.OFFENSE)));
-        defense.forEach((list) -> list.masteryTreeItems.forEach((item) -> types.put(item.mastery, MasteryType.DEFENSE)));
-        utility.forEach((list) -> list.masteryTreeItems.forEach((item) -> types.put(item.mastery, MasteryType.UTILITY)));
+        offense.forEach((list) -> list.masteryTreeItems.forEach((item) -> {
+            if(item != null) {
+                types.put(item.mastery, MasteryType.OFFENSE);
+            }
+        }));
+        defense.forEach((list) -> list.masteryTreeItems.forEach((item) -> {
+            if(item != null) {
+                types.put(item.mastery, MasteryType.DEFENSE);
+            }
+        }));
+        utility.forEach((list) -> list.masteryTreeItems.forEach((item) -> {
+            if(item != null) {
+                types.put(item.mastery, MasteryType.UTILITY);
+            }
+        }));
     }
 
     /**
