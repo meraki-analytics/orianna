@@ -78,11 +78,11 @@ public class RiotAPI {
     private final static JSONParser parser = new JSONParser();
 
     private static List<Long> getIDsFromSummoners(final List<Summoner> summoners) {
-        return summoners.parallelStream().map((summoner) -> summoner.ID).collect(Collectors.toList());
+        return summoners.stream().map((summoner) -> summoner.ID).collect(Collectors.toList());
     }
 
     private static List<String> getIDsFromTeams(final List<Team> teams) {
-        return teams.parallelStream().map((team) -> team.ID).collect(Collectors.toList());
+        return teams.stream().map((team) -> team.ID).collect(Collectors.toList());
     }
 
     @SuppressWarnings("unchecked")
@@ -235,7 +235,7 @@ public class RiotAPI {
      *      API Specification</a>
      */
     public MasteryPage getActiveMasteryPageByID(final long summonerID) {
-        return getMasteryPagesByID(summonerID).parallelStream().filter((page) -> page.current).findAny().get();
+        return getMasteryPagesByID(summonerID).stream().filter((page) -> page.current).findAny().get();
     }
 
     /**
@@ -285,7 +285,7 @@ public class RiotAPI {
                 .entrySet()
                 .parallelStream()
                 .collect(
-                        Collectors.toMap((entry) -> entry.getKey(), (entry) -> entry.getValue().parallelStream().filter((page) -> page.current).findAny().get()));
+                        Collectors.toMap((entry) -> entry.getKey(), (entry) -> entry.getValue().stream().filter((page) -> page.current).findAny().get()));
     }
 
     /**
@@ -341,7 +341,7 @@ public class RiotAPI {
      *      API Specification</a>
      */
     public RunePage getActiveRunePageByID(final long summonerID) {
-        return getRunePagesByID(summonerID).parallelStream().filter((page) -> page.current).findAny().get();
+        return getRunePagesByID(summonerID).stream().filter((page) -> page.current).findAny().get();
     }
 
     /**
@@ -391,7 +391,7 @@ public class RiotAPI {
                 .entrySet()
                 .parallelStream()
                 .collect(
-                        Collectors.toMap((entry) -> entry.getKey(), (entry) -> entry.getValue().parallelStream().filter((page) -> page.current).findAny().get()));
+                        Collectors.toMap((entry) -> entry.getKey(), (entry) -> entry.getValue().stream().filter((page) -> page.current).findAny().get()));
     }
 
     /**
