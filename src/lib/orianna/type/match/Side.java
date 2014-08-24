@@ -1,4 +1,4 @@
-package lib.orianna.type.game;
+package lib.orianna.type.match;
 
 public enum Side {
     BLUE, PURPLE

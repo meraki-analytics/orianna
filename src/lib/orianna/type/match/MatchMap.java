@@ -1,5 +1,5 @@
-package lib.orianna.type.game;
+package lib.orianna.type.match;
 
-public enum GameMap {
+public enum MatchMap {
     CRYSTAL_SCAR, HOWLING_ABYSS, PROVING_GROUNDS, SUMMONERS_RIFT_AUTUMN, SUMMONERS_RIFT_SUMMER, TWISTED_TREELINE, TWISTED_TREELINE_ORIGINAL
 }

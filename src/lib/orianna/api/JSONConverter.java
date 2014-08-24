@@ -1,7 +1,10 @@
 package lib.orianna.api;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,21 +14,46 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
+import lib.orianna.api.queryspecs.Region;
+import lib.orianna.api.queryspecs.Season;
 import lib.orianna.type.champion.ChampionStatus;
 import lib.orianna.type.game.Game;
-import lib.orianna.type.game.GameMap;
 import lib.orianna.type.game.GameMode;
+import lib.orianna.type.game.GamePlayer;
 import lib.orianna.type.game.GameType;
-import lib.orianna.type.game.Player;
 import lib.orianna.type.game.RawStats;
-import lib.orianna.type.game.Side;
 import lib.orianna.type.game.SubType;
 import lib.orianna.type.league.League;
 import lib.orianna.type.league.LeagueEntry;
 import lib.orianna.type.league.LeagueType;
 import lib.orianna.type.league.MiniSeries;
 import lib.orianna.type.league.Tier;
+import lib.orianna.type.match.BannedChampion;
+import lib.orianna.type.match.BuildingType;
+import lib.orianna.type.match.Event;
+import lib.orianna.type.match.EventType;
+import lib.orianna.type.match.Frame;
+import lib.orianna.type.match.Lane;
+import lib.orianna.type.match.LaneType;
+import lib.orianna.type.match.MatchMap;
+import lib.orianna.type.match.MatchSummary;
+import lib.orianna.type.match.MatchTeam;
+import lib.orianna.type.match.MatchTimeline;
+import lib.orianna.type.match.MonsterType;
+import lib.orianna.type.match.Participant;
+import lib.orianna.type.match.ParticipantFrame;
+import lib.orianna.type.match.ParticipantStats;
+import lib.orianna.type.match.ParticipantTimeline;
+import lib.orianna.type.match.ParticipantTimelineData;
+import lib.orianna.type.match.Player;
+import lib.orianna.type.match.Position;
+import lib.orianna.type.match.QueueType;
+import lib.orianna.type.match.Role;
+import lib.orianna.type.match.Side;
+import lib.orianna.type.match.TowerType;
+import lib.orianna.type.match.WardType;
 import lib.orianna.type.staticdata.BasicDataStats;
 import lib.orianna.type.staticdata.Block;
 import lib.orianna.type.staticdata.BlockItem;
@@ -96,6 +124,14 @@ public class JSONConverter {
 
     private static List<Double> getDoubleList(final JSONObject object, final String key) {
         return getList(object, key, d -> (Double)d);
+    }
+
+    private static Duration getDuration(final JSONObject object, final String key, final TemporalUnit unit) {
+        final Long amt = (Long)object.get(key);
+        if(amt == null) {
+            return null;
+        }
+        return Duration.of(amt, unit);
     }
 
     private static Integer getInteger(final JSONObject object, final String key) {
@@ -172,22 +208,22 @@ public class JSONConverter {
         return getListFromMap(map, mapper, sorter);
     }
 
-    private static GameMap getMap(final Integer ID) {
+    private static MatchMap getMap(final Integer ID) {
         switch(ID) {
             case 1:
-                return GameMap.SUMMONERS_RIFT_SUMMER;
+                return MatchMap.SUMMONERS_RIFT_SUMMER;
             case 2:
-                return GameMap.SUMMONERS_RIFT_AUTUMN;
+                return MatchMap.SUMMONERS_RIFT_AUTUMN;
             case 3:
-                return GameMap.PROVING_GROUNDS;
+                return MatchMap.PROVING_GROUNDS;
             case 4:
-                return GameMap.TWISTED_TREELINE_ORIGINAL;
+                return MatchMap.TWISTED_TREELINE_ORIGINAL;
             case 8:
-                return GameMap.CRYSTAL_SCAR;
+                return MatchMap.CRYSTAL_SCAR;
             case 10:
-                return GameMap.TWISTED_TREELINE;
+                return MatchMap.TWISTED_TREELINE;
             case 12:
-                return GameMap.HOWLING_ABYSS;
+                return MatchMap.HOWLING_ABYSS;
             default:
                 return null;
         }
@@ -326,6 +362,35 @@ public class JSONConverter {
                 totalSessionsLost, totalSessionsWon, totalTripleKills, totalTurretsKilled, totalUnrealKills);
     }
 
+    private List<GamePlayer> getAllGamePlayersFromJSON(final JSONArray playerList) {
+        if(playerList == null) {
+            return null;
+        }
+
+        final List<Long> summonerIDs = getList(playerList, m -> (Long)((JSONObject)m).get("summonerId"));
+        final List<Summoner> summoners = API.getSummonersByID(summonerIDs);
+        final Map<Long, Summoner> mapping = new HashMap<Long, Summoner>();
+        for(final Summoner summoner : summoners) {
+            mapping.put(summoner.ID, summoner);
+        }
+
+        return getList(playerList, p -> {
+            final JSONObject player = (JSONObject)p;
+            return getGamePlayerFromJSON(mapping.get(player.get("summonerId")), player);
+        });
+    }
+
+    private List<GamePlayer> getAllGamePlayersFromJSON(final Map<Long, Summoner> players, final JSONArray playerList) {
+        if(playerList == null) {
+            return null;
+        }
+
+        return getList(playerList, p -> {
+            final JSONObject player = (JSONObject)p;
+            return getGamePlayerFromJSON(players.get(player.get("summonerId")), player);
+        });
+    }
+
     protected List<Game> getAllGamesFromJSON(final JSONArray gameList) {
         if(gameList == null) {
             return null;
@@ -401,35 +466,6 @@ public class JSONConverter {
                 return getLeagueEntryFromJSON(mapping.get(entry.get("playerOrTeamId")), entry);
             });
         }
-    }
-
-    private List<Player> getAllPlayersFromJSON(final JSONArray playerList) {
-        if(playerList == null) {
-            return null;
-        }
-
-        final List<Long> summonerIDs = getList(playerList, m -> (Long)((JSONObject)m).get("summonerId"));
-        final List<Summoner> summoners = API.getSummonersByID(summonerIDs);
-        final Map<Long, Summoner> mapping = new HashMap<Long, Summoner>();
-        for(final Summoner summoner : summoners) {
-            mapping.put(summoner.ID, summoner);
-        }
-
-        return getList(playerList, p -> {
-            final JSONObject player = (JSONObject)p;
-            return getPlayerFromJSON(mapping.get(player.get("summonerId")), player);
-        });
-    }
-
-    private List<Player> getAllPlayersFromJSON(final Map<Long, Summoner> players, final JSONArray playerList) {
-        if(playerList == null) {
-            return null;
-        }
-
-        return getList(playerList, p -> {
-            final JSONObject player = (JSONObject)p;
-            return getPlayerFromJSON(players.get(player.get("summonerId")), player);
-        });
     }
 
     protected Map<Long, List<Team>> getAllSummonersTeamsFromJSON(final JSONObject teamList, final List<Long> IDs) {
@@ -578,6 +614,18 @@ public class JSONConverter {
             teams.add(getTeamFromJSON(rosters.get(team), team));
         }
         return Collections.unmodifiableList(teams);
+    }
+
+    public BannedChampion getBannedChampionFromJSON(final JSONObject bannedChampionInfo) {
+        if(bannedChampionInfo == null) {
+            return null;
+        }
+
+        final Champion champion = API.getChampion(getInteger(bannedChampionInfo, "championId"));
+        final Integer pickTurn = getInteger(bannedChampionInfo, "pickTurn");
+        final Side team = getSide(bannedChampionInfo, "teamId");
+
+        return new BannedChampion(champion, pickTurn, team);
     }
 
     public BasicDataStats getBasicDataStatsFromJSON(final JSONObject basicDataStatsInfo) {
@@ -803,6 +851,66 @@ public class JSONConverter {
         return new ChampionStatus(active, botEnabled, botMmEnabled, freeToPlay, rankedPlayEnabled, champion);
     }
 
+    public Event getEventFromJSON(final JSONObject eventInfo, final Map<Integer, Participant> participants, final Map<Side, MatchTeam> teams) {
+        if(eventInfo == null) {
+            return null;
+        }
+
+        String typeName = (String)eventInfo.get("buildingType");
+        final BuildingType buildingType = typeName == null ? null : BuildingType.valueOf(typeName);
+        typeName = (String)eventInfo.get("eventType");
+        final EventType eventType = typeName == null ? null : EventType.valueOf(typeName);
+        typeName = (String)eventInfo.get("laneType");
+        final LaneType laneType = typeName == null ? null : LaneType.valueOf(typeName);
+        typeName = (String)eventInfo.get("monsterType");
+        final MonsterType monsterType = typeName == null ? null : MonsterType.valueOf(typeName);
+        typeName = (String)eventInfo.get("towerType");
+        final TowerType towerType = typeName == null ? null : TowerType.valueOf(typeName);
+        typeName = (String)eventInfo.get("wardType");
+        final WardType wardType = typeName == null ? null : WardType.valueOf(typeName);
+
+        final Position position = getPositionFromJSON((JSONObject)eventInfo.get("position"));
+        final Duration timestamp = getDuration(eventInfo, "timestamp", ChronoUnit.MILLIS);
+        final Participant creator = participants.get(getInteger(eventInfo, "creatorId"));
+        final Participant killer = participants.get(getInteger(eventInfo, "killerId"));
+        final Participant victim = participants.get(getInteger(eventInfo, "victimId"));
+        final MatchTeam team = teams.get(getSide(eventInfo, "teamId"));
+
+        final List<Integer> participantIDs = getIntegerList(eventInfo, "assistingParticipantIds");
+        final List<Participant> assistingParticipants = participantIDs == null ? null : participantIDs.stream().map((ID) -> participants.get(ID))
+                .collect(Collectors.toList());
+
+        return new Event(assistingParticipants, creator, killer, victim, team, timestamp, position, eventType, buildingType, laneType, monsterType, towerType,
+                wardType);
+    }
+
+    @SuppressWarnings("unchecked")
+    public Frame getFrameFromJSON(final JSONObject frameInfo, final Map<Integer, Participant> participants, final Map<Side, MatchTeam> teams) {
+        if(frameInfo == null) {
+            return null;
+        }
+
+        final List<Event> events = getList(frameInfo, "events", (e) -> getEventFromJSON((JSONObject)e, participants, teams));
+        final Duration timestamp = getDuration(frameInfo, "timestamp", ChronoUnit.MILLIS);
+
+        Map<Participant, ParticipantFrame> participantFrames;
+
+        final Map<String, JSONObject> pFrames = (Map<String, JSONObject>)frameInfo.get("participantFrames");
+        if(pFrames == null) {
+            participantFrames = null;
+        }
+        else {
+            participantFrames = pFrames
+                    .entrySet()
+                    .stream()
+                    .collect(
+                            Collectors.toMap((entry) -> participants.get(new Integer(entry.getKey())),
+                                    (entry) -> getParticipantFrameFromJSON(entry.getValue(), participants.get(new Integer(entry.getKey())))));
+        }
+
+        return new Frame(events, participantFrames, timestamp);
+    }
+
     public Game getGameFromJSON(final JSONObject gameInfo) {
         if(gameInfo == null) {
             return null;
@@ -817,12 +925,12 @@ public class JSONConverter {
         final Boolean invalid = (Boolean)gameInfo.get("invalid");
         final Integer IPEarned = getInteger(gameInfo, "ipEarned");
         final Integer level = getInteger(gameInfo, "level");
-        final GameMap map = getMap(getInteger(gameInfo, "mapId"));
+        final MatchMap map = getMap(getInteger(gameInfo, "mapId"));
         final SummonerSpell spell1 = API.getSummonerSpell(getInteger(gameInfo, "spell1"));
         final SummonerSpell spell2 = API.getSummonerSpell(getInteger(gameInfo, "spell2"));
         final RawStats stats = getRawStatsFromJSON((JSONObject)gameInfo.get("stats"));
         final Side team = getSide(gameInfo, "teamId");
-        final List<Player> fellowPlayers = getAllPlayersFromJSON((JSONArray)gameInfo.get("fellowPlayers"));
+        final List<GamePlayer> fellowPlayers = getAllGamePlayersFromJSON((JSONArray)gameInfo.get("fellowPlayers"));
 
         return new Game(champion, createDate, fellowPlayers, gameMode, gameType, ID, invalid, IPEarned, level, map, spell1, spell2, stats, subType, team);
     }
@@ -841,14 +949,37 @@ public class JSONConverter {
         final Boolean invalid = (Boolean)gameInfo.get("invalid");
         final Integer IPEarned = getInteger(gameInfo, "ipEarned");
         final Integer level = getInteger(gameInfo, "level");
-        final GameMap map = getMap(getInteger(gameInfo, "mapId"));
+        final MatchMap map = getMap(getInteger(gameInfo, "mapId"));
         final SummonerSpell spell1 = API.getSummonerSpell(getInteger(gameInfo, "spell1"));
         final SummonerSpell spell2 = API.getSummonerSpell(getInteger(gameInfo, "spell2"));
         final RawStats stats = getRawStatsFromJSON((JSONObject)gameInfo.get("stats"));
         final Side team = getSide(gameInfo, "teamId");
-        final List<Player> fellowPlayers = getAllPlayersFromJSON(players, (JSONArray)gameInfo.get("fellowPlayers"));
+        final List<GamePlayer> fellowPlayers = getAllGamePlayersFromJSON(players, (JSONArray)gameInfo.get("fellowPlayers"));
 
         return new Game(champion, createDate, fellowPlayers, gameMode, gameType, ID, invalid, IPEarned, level, map, spell1, spell2, stats, subType, team);
+    }
+
+    public lib.orianna.type.game.GamePlayer getGamePlayerFromJSON(final JSONObject playerInfo) {
+        if(playerInfo == null) {
+            return null;
+        }
+
+        final Champion champion = API.getChampion(getInteger(playerInfo, "championId"));
+        final Summoner summoner = API.getSummonerByID((Long)playerInfo.get("summonerId"));
+        final Side team = getSide(playerInfo, "teamId");
+
+        return new GamePlayer(champion, summoner, team);
+    }
+
+    public GamePlayer getGamePlayerFromJSON(final Summoner summoner, final JSONObject playerInfo) {
+        if(playerInfo == null) {
+            return null;
+        }
+
+        final Champion champion = API.getChampion(getInteger(playerInfo, "championId"));
+        final Side team = getSide(playerInfo, "teamId");
+
+        return new GamePlayer(champion, summoner, team);
     }
 
     public Gold getGoldFromJSON(final JSONObject goldInfo) {
@@ -1119,6 +1250,29 @@ public class JSONConverter {
         return new MasteryTreeList(masteryTreeItems);
     }
 
+    public List<MatchSummary> getMatchHistoryFromJSON(final JSONArray matchHistoryInfo) {
+        if(matchHistoryInfo == null) {
+            return null;
+        }
+
+        final List<String> summonerNames = new ArrayList<String>();
+        for(final Object msi : matchHistoryInfo) {
+            final JSONObject matchSummaryInfo = (JSONObject)msi;
+            final JSONArray participantIdentityList = (JSONArray)matchSummaryInfo.get("participantIdentities");
+            final List<JSONObject> plrs = getList(participantIdentityList, p -> (JSONObject)((JSONObject)p).get("player"));
+            final List<String> names = plrs.stream().map((plr) -> (String)plr.get("summonerName")).collect(Collectors.toList());
+            summonerNames.addAll(names);
+        }
+
+        final List<Summoner> summoners = API.getSummoners(summonerNames);
+        final Map<String, Summoner> mapping = new HashMap<String, Summoner>();
+        for(final Summoner summoner : summoners) {
+            mapping.put(summoner.name, summoner);
+        }
+
+        return getList(matchHistoryInfo, (m) -> getMatchSummaryFromJSON(mapping, (JSONObject)m));
+    }
+
     public MatchHistorySummary getMatchHistorySummaryFromJSON(final JSONObject matchHistorySummaryInfo) {
         if(matchHistorySummaryInfo == null) {
             return null;
@@ -1127,7 +1281,7 @@ public class JSONConverter {
         final Integer assists = getInteger(matchHistorySummaryInfo, "assists");
         final Integer deaths = getInteger(matchHistorySummaryInfo, "deaths");
         final Integer kills = getInteger(matchHistorySummaryInfo, "kills");
-        final GameMap map = getMap(getInteger(matchHistorySummaryInfo, "mapId"));
+        final MatchMap map = getMap(getInteger(matchHistorySummaryInfo, "mapId"));
         final Integer opposingTeamKills = getInteger(matchHistorySummaryInfo, "opposingTeamKills");
         final LocalDateTime date = getDateTime(matchHistorySummaryInfo, "date");
         final Long gameID = (Long)matchHistorySummaryInfo.get("gameId");
@@ -1137,6 +1291,126 @@ public class JSONConverter {
         final Boolean win = (Boolean)matchHistorySummaryInfo.get("win");
 
         return new MatchHistorySummary(assists, deaths, kills, opposingTeamKills, map, date, gameID, gameMode, opposingTeamName, invalid, win);
+    }
+
+    public MatchSummary getMatchSummaryFromJSON(final JSONObject matchSummaryInfo) {
+        if(matchSummaryInfo == null) {
+            return null;
+        }
+
+        final MatchMap map = getMap(getInteger(matchSummaryInfo, "mapId"));
+        final LocalDateTime creation = getDateTime(matchSummaryInfo, "matchCreation");
+        final Duration duration = getDuration(matchSummaryInfo, "matchDuration", ChronoUnit.SECONDS);
+        final Long ID = (Long)matchSummaryInfo.get("matchId");
+        final String version = (String)matchSummaryInfo.get("matchVersion");
+        final QueueType queueType = QueueType.valueOf((String)matchSummaryInfo.get("queueType"));
+        final Region region = Region.valueOf((String)matchSummaryInfo.get("region"));
+        final Season season = Season.valueOf((String)matchSummaryInfo.get("season"));
+        final List<MatchTeam> teams = getList(matchSummaryInfo, "teams", (t) -> getMatchTeamFromJSON((JSONObject)t));
+
+        final Map<Side, MatchTeam> teamColors = teams.stream().collect(Collectors.toMap((team) -> team.side, (team) -> team));
+
+        final JSONArray identities = (JSONArray)matchSummaryInfo.get("participantIdentities");
+        final Map<Integer, Player> participantPlayers = new HashMap<Integer, Player>();
+        for(final Object iden : identities) {
+            final JSONObject identity = (JSONObject)iden;
+            participantPlayers.put(getInteger(identity, "participantId"), getPlayerFromJSON((JSONObject)identity.get("player")));
+        }
+
+        final List<Participant> participants = getList(matchSummaryInfo, "participants",
+                (p) -> getParticipantFromJSON((JSONObject)p, teamColors, participantPlayers));
+
+        final Map<Integer, Participant> participantIDs = participants.stream().collect(
+                Collectors.toMap((participant) -> participant.ID, (participant) -> participant));
+
+        final MatchTimeline timeline = getMatchTimelineFromJSON((JSONObject)matchSummaryInfo.get("timeline"), participantIDs, teamColors);
+
+        final JSONArray participantIdentityList = (JSONArray)matchSummaryInfo.get("participantIdentities");
+        final List<JSONObject> plrs = getList(participantIdentityList, p -> (JSONObject)((JSONObject)p).get("player"));
+
+        final boolean haveIdentities = plrs.size() > 0 && plrs.get(0) != null;
+
+        final Map<String, Summoner> mapping = new HashMap<String, Summoner>();
+        if(haveIdentities) {
+            final List<String> summonerNames = plrs.stream().map((plr) -> (String)plr.get("summonerName")).collect(Collectors.toList());
+
+            final List<Summoner> summoners = API.getSummoners(summonerNames);
+            for(final Summoner summoner : summoners) {
+                mapping.put(summoner.name, summoner);
+            }
+        }
+
+        return new MatchSummary(creation, duration, ID, map, participants, queueType, region, season, teams, timeline, version);
+    }
+
+    private MatchSummary getMatchSummaryFromJSON(final Map<String, Summoner> summoners, final JSONObject matchSummaryInfo) {
+        if(matchSummaryInfo == null) {
+            return null;
+        }
+
+        final MatchMap map = getMap(getInteger(matchSummaryInfo, "mapId"));
+        final LocalDateTime creation = getDateTime(matchSummaryInfo, "matchCreation");
+        final Duration duration = getDuration(matchSummaryInfo, "matchDuration", ChronoUnit.SECONDS);
+        final Long ID = (Long)matchSummaryInfo.get("matchId");
+        final String version = (String)matchSummaryInfo.get("matchVersion");
+        final QueueType queueType = QueueType.valueOf((String)matchSummaryInfo.get("queueType"));
+        final Region region = Region.valueOf((String)matchSummaryInfo.get("region"));
+        final Season season = Season.valueOf((String)matchSummaryInfo.get("season"));
+        final List<MatchTeam> teams = getList(matchSummaryInfo, "teams", (t) -> getMatchTeamFromJSON((JSONObject)t));
+
+        final Map<Side, MatchTeam> teamColors = teams == null ? null : teams.stream().collect(Collectors.toMap((team) -> team.side, (team) -> team));
+
+        final JSONArray identities = (JSONArray)matchSummaryInfo.get("participantIdentities");
+        final Map<Integer, Player> participantPlayers = new HashMap<Integer, Player>();
+        for(final Object iden : identities) {
+            final JSONObject identity = (JSONObject)iden;
+            participantPlayers.put(getInteger(identity, "participantId"), getPlayerFromJSON((JSONObject)identity.get("player")));
+        }
+
+        final List<Participant> participants = getList(matchSummaryInfo, "participants",
+                (p) -> getParticipantFromJSON((JSONObject)p, teamColors, participantPlayers));
+
+        final Map<Integer, Participant> participantIDs = participants.stream().collect(
+                Collectors.toMap((participant) -> participant.ID, (participant) -> participant));
+
+        final MatchTimeline timeline = getMatchTimelineFromJSON((JSONObject)matchSummaryInfo.get("timeline"), participantIDs, teamColors);
+
+        return new MatchSummary(creation, duration, ID, map, participants, queueType, region, season, teams, timeline, version);
+    }
+
+    public MatchTeam getMatchTeamFromJSON(final JSONObject matchTeamInfo) {
+        if(matchTeamInfo == null) {
+            return null;
+        }
+
+        final List<BannedChampion> bans = getList(matchTeamInfo, "bans", (b) -> getBannedChampionFromJSON((JSONObject)b));
+        final Integer baronKills = getInteger(matchTeamInfo, "baronKills");
+        final Integer dragonKills = getInteger(matchTeamInfo, "dragonKills");
+        final Integer inhibitorKills = getInteger(matchTeamInfo, "inhibitorKills");
+        final Integer towerKills = getInteger(matchTeamInfo, "towerKills");
+        final Integer vilemawKills = getInteger(matchTeamInfo, "vilemawKills");
+        final Boolean firstBaron = (Boolean)matchTeamInfo.get("firstBaron");
+        final Boolean firstBlood = (Boolean)matchTeamInfo.get("firstBlood");
+        final Boolean firstDragon = (Boolean)matchTeamInfo.get("firstDragon");
+        final Boolean firstInhibitor = (Boolean)matchTeamInfo.get("firstInhibitor");
+        final Boolean firstTower = (Boolean)matchTeamInfo.get("firstTower");
+        final Boolean winner = (Boolean)matchTeamInfo.get("winner");
+        final Side side = getSide(matchTeamInfo, "teamId");
+
+        return new MatchTeam(bans, dragonKills, baronKills, inhibitorKills, towerKills, vilemawKills, firstBaron, firstBlood, firstDragon, firstInhibitor,
+                firstTower, winner, side);
+    }
+
+    public MatchTimeline getMatchTimelineFromJSON(final JSONObject matchTimelineInfo, final Map<Integer, Participant> participants,
+            final Map<Side, MatchTeam> teams) {
+        if(matchTimelineInfo == null) {
+            return null;
+        }
+
+        final Duration frameInterval = getDuration(matchTimelineInfo, "frameInterval", ChronoUnit.MILLIS);
+        final List<Frame> frames = getList(matchTimelineInfo, "frames", (f) -> getFrameFromJSON((JSONObject)f, participants, teams));
+
+        return new MatchTimeline(frameInterval, frames);
     }
 
     public MetaData getMetaDataFromJSON(final JSONObject metaDataInfo) {
@@ -1164,6 +1438,203 @@ public class JSONConverter {
         return new MiniSeries(losses, target, wins, progress);
     }
 
+    public ParticipantFrame getParticipantFrameFromJSON(final JSONObject participantFrameInfo, final Participant participant) {
+        if(participantFrameInfo == null) {
+            return null;
+        }
+
+        final Position position = getPositionFromJSON((JSONObject)participantFrameInfo.get("position"));
+        final Integer currentGold = getInteger(participantFrameInfo, "currentGold");
+        final Integer jungleMinionsKilled = getInteger(participantFrameInfo, "jungleMinionsKilled");
+        final Integer level = getInteger(participantFrameInfo, "level");
+        final Integer minionsKilled = getInteger(participantFrameInfo, "minionsKilled");
+        final Integer totalGold = getInteger(participantFrameInfo, "totalGold");
+        final Integer XP = getInteger(participantFrameInfo, "xp");
+
+        return new ParticipantFrame(currentGold, jungleMinionsKilled, level, minionsKilled, totalGold, XP, participant, position);
+    }
+
+    public Participant getParticipantFromJSON(final JSONObject participantInfo, final Map<Side, MatchTeam> teams, final Map<Integer, Player> players) {
+        if(participantInfo == null) {
+            return null;
+        }
+
+        final Champion champion = API.getChampion(getInteger(participantInfo, "championId"));
+        final Integer ID = getInteger(participantInfo, "participantId");
+        final SummonerSpell spell1 = API.getSummonerSpell(getInteger(participantInfo, "spell1Id"));
+        final SummonerSpell spell2 = API.getSummonerSpell(getInteger(participantInfo, "spell2Id"));
+        final ParticipantStats stats = getParticipantStatsFromJSON((JSONObject)participantInfo.get("stats"));
+        final ParticipantTimeline timeline = getParticipantTimelineFromJSON((JSONObject)participantInfo.get("timeline"));
+        final MatchTeam team = teams == null ? null : teams.get(getSide(participantInfo, "teamId"));
+
+        if(team != null) {
+            return new Participant(champion, ID, spell1, spell2, stats, team, timeline, players.get(ID));
+        }
+        else {
+            return new Participant(champion, ID, spell1, spell2, stats, getSide(participantInfo, "teamId"), timeline, players.get(ID));
+        }
+    }
+
+    public ParticipantStats getParticipantStatsFromJSON(final JSONObject participantStatsInfo) {
+        if(participantStatsInfo == null) {
+            return null;
+        }
+
+        final Long assists = (Long)participantStatsInfo.get("assists");
+        final Long champLevel = (Long)participantStatsInfo.get("champLevel");
+        final Long combatPlayerScore = (Long)participantStatsInfo.get("combatPlayerScore");
+        final Long deaths = (Long)participantStatsInfo.get("deaths");
+        final Long doubleKills = (Long)participantStatsInfo.get("doubleKills");
+        final Long goldEarned = (Long)participantStatsInfo.get("goldEarned");
+        final Long goldSpent = (Long)participantStatsInfo.get("goldSpent");
+        final Long inhibitorKills = (Long)participantStatsInfo.get("inhibitorKills");
+        final Long killingSpress = (Long)participantStatsInfo.get("killingSpress");
+        final Long kills = (Long)participantStatsInfo.get("kills");
+        final Long largestCriticalStrike = (Long)participantStatsInfo.get("largestCriticalStrike");
+        final Long largestKillingSpree = (Long)participantStatsInfo.get("largestKillingSpree");
+        final Long largestMultiKill = (Long)participantStatsInfo.get("largestMultiKill");
+        final Long magicDamageDealt = (Long)participantStatsInfo.get("magicDamageDealt");
+        final Long magicDamageDealtToChampions = (Long)participantStatsInfo.get("magicDamageDealtToChampions");
+        final Long magicDamageTaken = (Long)participantStatsInfo.get("magicDamageTaken");
+        final Long minionsKilled = (Long)participantStatsInfo.get("minionsKilled");
+        final Long neutralMinionsKilled = (Long)participantStatsInfo.get("neutralMinionsKilled");
+        final Long neutralMinionsKilledEnemyJungle = (Long)participantStatsInfo.get("neutralMinionsKilledEnemyJungle");
+        final Long neutralMinionsKilledTeamJungle = (Long)participantStatsInfo.get("neutralMinionsKilledTeamJungle");
+        final Long nodeCapture = (Long)participantStatsInfo.get("nodeCapture");
+        final Long nodeCaptureAssist = (Long)participantStatsInfo.get("nodeCaptureAssist");
+        final Long nodeNeutralize = (Long)participantStatsInfo.get("nodeNeutralize");
+        final Long nodeNeutralizeAssist = (Long)participantStatsInfo.get("nodeNeutralizeAssist");
+        final Long objectivePlayerScore = (Long)participantStatsInfo.get("objectivePlayerScore");
+        final Long pentaKills = (Long)participantStatsInfo.get("pentaKills");
+        final Long physicalDamageDealt = (Long)participantStatsInfo.get("physicalDamageDealt");
+        final Long physicalDamageDealtToChampions = (Long)participantStatsInfo.get("physicalDamageDealtToChampions");
+        final Long physicalDamageTaken = (Long)participantStatsInfo.get("physicalDamageTaken");
+        final Long quadraKills = (Long)participantStatsInfo.get("quadraKills");
+        final Long sightWardsBoughtInGame = (Long)participantStatsInfo.get("sightWardsBoughtInGame");
+        final Long teamObjective = (Long)participantStatsInfo.get("teamObjective");
+        final Long totalDamageDealt = (Long)participantStatsInfo.get("totalDamageDealt");
+        final Long totalDamageDealtToChampions = (Long)participantStatsInfo.get("totalDamageDealtToChampions");
+        final Long totalDamageTaken = (Long)participantStatsInfo.get("totalDamageTaken");
+        final Long totalHeal = (Long)participantStatsInfo.get("totalHeal");
+        final Long totalPlayerScore = (Long)participantStatsInfo.get("totalPlayerScore");
+        final Long totalScoreRank = (Long)participantStatsInfo.get("totalScoreRank");
+        final Long totalTimeCrowdControlDealt = (Long)participantStatsInfo.get("totalTimeCrowdControlDealt");
+        final Long totalUnitsHealed = (Long)participantStatsInfo.get("totalUnitsHealed");
+        final Long towerKills = (Long)participantStatsInfo.get("towerKills");
+        final Long tripleKills = (Long)participantStatsInfo.get("tripleKills");
+        final Long trueDamageDealt = (Long)participantStatsInfo.get("trueDamageDealt");
+        final Long trueDamageDealtToChampions = (Long)participantStatsInfo.get("trueDamageDealtToChampions");
+        final Long trueDamageTaken = (Long)participantStatsInfo.get("trueDamageTaken");
+        final Long unrealKills = (Long)participantStatsInfo.get("unrealKills");
+        final Long visionWardsBoughtInGame = (Long)participantStatsInfo.get("visionWardsBoughtInGame");
+        final Long wardsKilled = (Long)participantStatsInfo.get("wardsKilled");
+        final Long wardsPlaced = (Long)participantStatsInfo.get("wardsPlaced");
+        final Boolean firstBloodAssist = (Boolean)participantStatsInfo.get("firstBloodAssist");
+        final Boolean firstBloodKill = (Boolean)participantStatsInfo.get("firstBloodKill");
+        final Boolean firstInhibitorAssist = (Boolean)participantStatsInfo.get("firstInhibitorAssist");
+        final Boolean firstInhibitorKill = (Boolean)participantStatsInfo.get("firstInhibitorKill");
+        final Boolean firstTowerAssist = (Boolean)participantStatsInfo.get("firstTowerAssist");
+        final Boolean firstTowerKill = (Boolean)participantStatsInfo.get("firstTowerKill");
+        final Boolean winner = (Boolean)participantStatsInfo.get("winner");
+
+        Integer itemID = getInteger(participantStatsInfo, "item0");
+        final Item item0 = itemID == 0 ? null : API.getItem(itemID);
+        itemID = getInteger(participantStatsInfo, "item1");
+        final Item item1 = itemID == 0 ? null : API.getItem(itemID);
+        itemID = getInteger(participantStatsInfo, "item2");
+        final Item item2 = itemID == 0 ? null : API.getItem(itemID);
+        itemID = getInteger(participantStatsInfo, "item3");
+        final Item item3 = itemID == 0 ? null : API.getItem(itemID);
+        itemID = getInteger(participantStatsInfo, "item4");
+        final Item item4 = itemID == 0 ? null : API.getItem(itemID);
+        itemID = getInteger(participantStatsInfo, "item5");
+        final Item item5 = itemID == 0 ? null : API.getItem(itemID);
+        itemID = getInteger(participantStatsInfo, "item6");
+        final Item item6 = itemID == 0 ? null : API.getItem(itemID);
+
+        return new ParticipantStats(assists, champLevel, combatPlayerScore, deaths, doubleKills, goldEarned, goldSpent, inhibitorKills, killingSpress, kills,
+                largestCriticalStrike, largestKillingSpree, largestMultiKill, magicDamageDealt, magicDamageDealtToChampions, magicDamageTaken, minionsKilled,
+                neutralMinionsKilled, neutralMinionsKilledEnemyJungle, neutralMinionsKilledTeamJungle, nodeCapture, nodeCaptureAssist, nodeNeutralize,
+                nodeNeutralizeAssist, objectivePlayerScore, pentaKills, physicalDamageDealt, physicalDamageDealtToChampions, physicalDamageTaken, quadraKills,
+                sightWardsBoughtInGame, teamObjective, totalDamageDealt, totalDamageDealtToChampions, totalDamageTaken, totalHeal, totalPlayerScore,
+                totalScoreRank, totalTimeCrowdControlDealt, totalUnitsHealed, towerKills, tripleKills, trueDamageDealt, trueDamageDealtToChampions,
+                trueDamageTaken, unrealKills, visionWardsBoughtInGame, wardsKilled, wardsPlaced, winner, firstBloodAssist, firstBloodKill,
+                firstInhibitorAssist, firstInhibitorKill, firstTowerAssist, firstTowerKill, item0, item1, item2, item3, item4, item5, item6);
+    }
+
+    public ParticipantTimelineData getParticipantTimelineDataFromJSON(final JSONObject participantTimelineDataInfo) {
+        if(participantTimelineDataInfo == null) {
+            return null;
+        }
+
+        final Double tenToTwenty = (Double)participantTimelineDataInfo.get("tenToTwenty");
+        final Double thirtyToEnd = (Double)participantTimelineDataInfo.get("thirtyToEnd");
+        final Double twentyToThirty = (Double)participantTimelineDataInfo.get("twentyToThirty");
+        final Double zeroToTen = (Double)participantTimelineDataInfo.get("zeroToTen");
+
+        return new ParticipantTimelineData(tenToTwenty, thirtyToEnd, twentyToThirty, zeroToTen);
+    }
+
+    public ParticipantTimeline getParticipantTimelineFromJSON(final JSONObject participantTimelineInfo) {
+        if(participantTimelineInfo == null) {
+            return null;
+        }
+
+        final ParticipantTimelineData ancientGolemAssistsPerMinCounts = getParticipantTimelineDataFromJSON((JSONObject)participantTimelineInfo
+                .get("ancientGolemAssistsPerMinCounts"));
+        final ParticipantTimelineData ancientGolemKillsPerMinCounts = getParticipantTimelineDataFromJSON((JSONObject)participantTimelineInfo
+                .get("ancientGolemKillsPerMinCounts"));
+        final ParticipantTimelineData assistedLaneDeathsPerMinDeltas = getParticipantTimelineDataFromJSON((JSONObject)participantTimelineInfo
+                .get("assistedLaneDeathsPerMinDeltas"));
+        final ParticipantTimelineData assistedLaneKillsPerMinDeltas = getParticipantTimelineDataFromJSON((JSONObject)participantTimelineInfo
+                .get("assistedLaneKillsPerMinDeltas"));
+        final ParticipantTimelineData baronAssistsPerMinCounts = getParticipantTimelineDataFromJSON((JSONObject)participantTimelineInfo
+                .get("baronAssistsPerMinCounts"));
+        final ParticipantTimelineData baronKillsPerMinCounts = getParticipantTimelineDataFromJSON((JSONObject)participantTimelineInfo
+                .get("baronKillsPerMinCounts"));
+        final ParticipantTimelineData creepsPerMinDeltas = getParticipantTimelineDataFromJSON((JSONObject)participantTimelineInfo.get("creepsPerMinDeltas"));
+        final ParticipantTimelineData CSDiffPerMinDeltas = getParticipantTimelineDataFromJSON((JSONObject)participantTimelineInfo.get("csDiffPerMinDeltas"));
+        final ParticipantTimelineData damageTakenDiffPerMinDeltas = getParticipantTimelineDataFromJSON((JSONObject)participantTimelineInfo
+                .get("damageTakenDiffPerMinDeltas"));
+        final ParticipantTimelineData damageTakenPerMinDeltas = getParticipantTimelineDataFromJSON((JSONObject)participantTimelineInfo
+                .get("damageTakenPerMinDeltas"));
+        final ParticipantTimelineData dragonAssistsPerMinCounts = getParticipantTimelineDataFromJSON((JSONObject)participantTimelineInfo
+                .get("dragonAssistsPerMinCounts"));
+        final ParticipantTimelineData dragonKillsPerMinCounts = getParticipantTimelineDataFromJSON((JSONObject)participantTimelineInfo
+                .get("dragonKillsPerMinCounts"));
+        final ParticipantTimelineData elderLizardAssistsPerMinCounts = getParticipantTimelineDataFromJSON((JSONObject)participantTimelineInfo
+                .get("elderLizardAssistsPerMinCounts"));
+        final ParticipantTimelineData elderLizardKillsPerMinCounts = getParticipantTimelineDataFromJSON((JSONObject)participantTimelineInfo
+                .get("elderLizardKillsPerMinCounts"));
+        final ParticipantTimelineData goldPerMinDeltas = getParticipantTimelineDataFromJSON((JSONObject)participantTimelineInfo.get("goldPerMinDeltas"));
+        final ParticipantTimelineData inhibitorAssistsPerMinCounts = getParticipantTimelineDataFromJSON((JSONObject)participantTimelineInfo
+                .get("inhibitorAssistsPerMinCounts"));
+        final ParticipantTimelineData inhibitorKillsPerMinCounts = getParticipantTimelineDataFromJSON((JSONObject)participantTimelineInfo
+                .get("inhibitorKillsPerMinCounts"));
+        final ParticipantTimelineData towerAssistsPerMinCounts = getParticipantTimelineDataFromJSON((JSONObject)participantTimelineInfo
+                .get("towerAssistsPerMinCounts"));
+        final ParticipantTimelineData towerKillsPerMinCounts = getParticipantTimelineDataFromJSON((JSONObject)participantTimelineInfo
+                .get("towerKillsPerMinCounts"));
+        final ParticipantTimelineData towerKillsPerMinDeltas = getParticipantTimelineDataFromJSON((JSONObject)participantTimelineInfo
+                .get("towerKillsPerMinDeltas"));
+        final ParticipantTimelineData vilemawAssistsPerMinCounts = getParticipantTimelineDataFromJSON((JSONObject)participantTimelineInfo
+                .get("vilemawAssistsPerMinCounts"));
+        final ParticipantTimelineData vilemawKillsPerMinCounts = getParticipantTimelineDataFromJSON((JSONObject)participantTimelineInfo
+                .get("vilemawKillsPerMinCounts"));
+        final ParticipantTimelineData wardsPerMinDeltas = getParticipantTimelineDataFromJSON((JSONObject)participantTimelineInfo.get("wardsPerMinDeltas"));
+        final ParticipantTimelineData XPDiffPerMinDeltas = getParticipantTimelineDataFromJSON((JSONObject)participantTimelineInfo.get("xpDiffPerMinDeltas"));
+        final ParticipantTimelineData XPPerMinDeltas = getParticipantTimelineDataFromJSON((JSONObject)participantTimelineInfo.get("xpPerMinDeltas"));
+        final Lane lane = Lane.valueOf((String)participantTimelineInfo.get("lane"));
+        final Role role = Role.valueOf((String)participantTimelineInfo.get("role"));
+
+        return new ParticipantTimeline(ancientGolemAssistsPerMinCounts, ancientGolemKillsPerMinCounts, assistedLaneDeathsPerMinDeltas,
+                assistedLaneKillsPerMinDeltas, baronAssistsPerMinCounts, baronKillsPerMinCounts, creepsPerMinDeltas, CSDiffPerMinDeltas,
+                damageTakenDiffPerMinDeltas, damageTakenPerMinDeltas, dragonAssistsPerMinCounts, dragonKillsPerMinCounts, elderLizardAssistsPerMinCounts,
+                elderLizardKillsPerMinCounts, goldPerMinDeltas, inhibitorAssistsPerMinCounts, inhibitorKillsPerMinCounts, towerAssistsPerMinCounts,
+                towerKillsPerMinCounts, towerKillsPerMinDeltas, vilemawAssistsPerMinCounts, vilemawKillsPerMinCounts, wardsPerMinDeltas, XPDiffPerMinDeltas,
+                XPPerMinDeltas, lane, role);
+    }
+
     public Passive getPassiveFromJSON(final JSONObject passiveInfo) {
         if(passiveInfo == null) {
             return null;
@@ -1182,22 +1653,11 @@ public class JSONConverter {
             return null;
         }
 
-        final Champion champion = API.getChampion(getInteger(playerInfo, "championId"));
-        final Summoner summoner = API.getSummonerByID((Long)playerInfo.get("summonerId"));
-        final Side team = getSide(playerInfo, "teamId");
+        final String matchHistoryURI = (String)playerInfo.get("matchHistoryUri");
+        final Integer profileIconID = getInteger(playerInfo, "profileIcon");
+        final Summoner summoner = API.getSummoner((String)playerInfo.get("summonerName"));
 
-        return new Player(champion, summoner, team);
-    }
-
-    public Player getPlayerFromJSON(final Summoner summoner, final JSONObject playerInfo) {
-        if(playerInfo == null) {
-            return null;
-        }
-
-        final Champion champion = API.getChampion(getInteger(playerInfo, "championId"));
-        final Side team = getSide(playerInfo, "teamId");
-
-        return new Player(champion, summoner, team);
+        return new Player(matchHistoryURI, summoner, profileIconID);
     }
 
     public PlayerStatsSummary getPlayerStatsSummaryFromJSON(final JSONObject playerStatsSummaryInfo) {
@@ -1212,6 +1672,17 @@ public class JSONConverter {
         final PlayerStatsSummaryType playerStatSummaryType = PlayerStatsSummaryType.valueOf((String)playerStatsSummaryInfo.get("playerStatSummaryType"));
 
         return new PlayerStatsSummary(aggregatedStats, playerStatSummaryType, modifyDate, wins, losses);
+    }
+
+    public Position getPositionFromJSON(final JSONObject positionInfo) {
+        if(positionInfo == null) {
+            return null;
+        }
+
+        final Integer x = getInteger(positionInfo, "x");
+        final Integer y = getInteger(positionInfo, "y");
+
+        return new Position(x, y);
     }
 
     public RawStats getRawStatsFromJSON(final JSONObject rawStatsInfo) {

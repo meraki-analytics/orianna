@@ -1,6 +1,7 @@
 package lib.orianna.type.match;
 
 import java.io.Serializable;
+import java.time.Duration;
 import java.util.List;
 
 public class Event implements Serializable {
@@ -13,12 +14,12 @@ public class Event implements Serializable {
     public final MonsterType monsterType;
     public final Position position;
     public final MatchTeam team;
-    public final Long timestamp;
+    public final Duration timestamp;
     public final TowerType towerType;
     public final WardType wardType;
 
     public Event(final List<Participant> assistingParticipants, final Participant creator, final Participant killer, final Participant victim,
-            final MatchTeam team, final Long timestamp, final Position position, final EventType eventType, final BuildingType buildingType,
+            final MatchTeam team, final Duration timestamp, final Position position, final EventType eventType, final BuildingType buildingType,
             final LaneType laneType, final MonsterType monsterType, final TowerType towerType, final WardType wardType) {
         this.assistingParticipants = assistingParticipants;
         this.creator = creator;

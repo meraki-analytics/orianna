@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class ParticipantTimeline implements Serializable {
     private static final long serialVersionUID = -8759068502582128430L;
     public final ParticipantTimelineData ancientGolemAssistsPerMinCounts, ancientGolemKillsPerMinCounts, assistedLaneDeathsPerMinDeltas,
-            assistedLaneKillsPerMinDeltas, baronAssistsPerMinCounts, baronKillsPerMinCounts, creepsPerMinDeltas, csDiffPerMinDeltas,
+            assistedLaneKillsPerMinDeltas, baronAssistsPerMinCounts, baronKillsPerMinCounts, creepsPerMinDeltas, CSDiffPerMinDeltas,
             damageTakenDiffPerMinDeltas, damageTakenPerMinDeltas, dragonAssistsPerMinCounts, dragonKillsPerMinCounts, elderLizardAssistsPerMinCounts,
             elderLizardKillsPerMinCounts, goldPerMinDeltas, inhibitorAssistsPerMinCounts, inhibitorKillsPerMinCounts, towerAssistsPerMinCounts,
             towerKillsPerMinCounts, towerKillsPerMinDeltas, vilemawAssistsPerMinCounts, vilemawKillsPerMinCounts, wardsPerMinDeltas, XPDiffPerMinDeltas,
@@ -16,7 +16,7 @@ public class ParticipantTimeline implements Serializable {
     public ParticipantTimeline(final ParticipantTimelineData ancientGolemAssistsPerMinCounts, final ParticipantTimelineData ancientGolemKillsPerMinCounts,
             final ParticipantTimelineData assistedLaneDeathsPerMinDeltas, final ParticipantTimelineData assistedLaneKillsPerMinDeltas,
             final ParticipantTimelineData baronAssistsPerMinCounts, final ParticipantTimelineData baronKillsPerMinCounts,
-            final ParticipantTimelineData creepsPerMinDeltas, final ParticipantTimelineData csDiffPerMinDeltas,
+            final ParticipantTimelineData creepsPerMinDeltas, final ParticipantTimelineData CSDiffPerMinDeltas,
             final ParticipantTimelineData damageTakenDiffPerMinDeltas, final ParticipantTimelineData damageTakenPerMinDeltas,
             final ParticipantTimelineData dragonAssistsPerMinCounts, final ParticipantTimelineData dragonKillsPerMinCounts,
             final ParticipantTimelineData elderLizardAssistsPerMinCounts, final ParticipantTimelineData elderLizardKillsPerMinCounts,
@@ -33,7 +33,7 @@ public class ParticipantTimeline implements Serializable {
         this.baronAssistsPerMinCounts = baronAssistsPerMinCounts;
         this.baronKillsPerMinCounts = baronKillsPerMinCounts;
         this.creepsPerMinDeltas = creepsPerMinDeltas;
-        this.csDiffPerMinDeltas = csDiffPerMinDeltas;
+        this.CSDiffPerMinDeltas = CSDiffPerMinDeltas;
         this.damageTakenDiffPerMinDeltas = damageTakenDiffPerMinDeltas;
         this.damageTakenPerMinDeltas = damageTakenPerMinDeltas;
         this.dragonAssistsPerMinCounts = dragonAssistsPerMinCounts;
@@ -139,12 +139,12 @@ public class ParticipantTimeline implements Serializable {
         else if(!creepsPerMinDeltas.equals(other.creepsPerMinDeltas)) {
             return false;
         }
-        if(csDiffPerMinDeltas == null) {
-            if(other.csDiffPerMinDeltas != null) {
+        if(CSDiffPerMinDeltas == null) {
+            if(other.CSDiffPerMinDeltas != null) {
                 return false;
             }
         }
-        else if(!csDiffPerMinDeltas.equals(other.csDiffPerMinDeltas)) {
+        else if(!CSDiffPerMinDeltas.equals(other.CSDiffPerMinDeltas)) {
             return false;
         }
         if(damageTakenDiffPerMinDeltas == null) {
@@ -289,7 +289,7 @@ public class ParticipantTimeline implements Serializable {
         result = prime * result + (baronAssistsPerMinCounts == null ? 0 : baronAssistsPerMinCounts.hashCode());
         result = prime * result + (baronKillsPerMinCounts == null ? 0 : baronKillsPerMinCounts.hashCode());
         result = prime * result + (creepsPerMinDeltas == null ? 0 : creepsPerMinDeltas.hashCode());
-        result = prime * result + (csDiffPerMinDeltas == null ? 0 : csDiffPerMinDeltas.hashCode());
+        result = prime * result + (CSDiffPerMinDeltas == null ? 0 : CSDiffPerMinDeltas.hashCode());
         result = prime * result + (damageTakenDiffPerMinDeltas == null ? 0 : damageTakenDiffPerMinDeltas.hashCode());
         result = prime * result + (damageTakenPerMinDeltas == null ? 0 : damageTakenPerMinDeltas.hashCode());
         result = prime * result + (dragonAssistsPerMinCounts == null ? 0 : dragonAssistsPerMinCounts.hashCode());

@@ -1,16 +1,17 @@
 package lib.orianna.type.match;
 
 import java.io.Serializable;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
 public class Frame implements Serializable {
-    private static final long serialVersionUID = 8641966743667411629L;
+    private static final long serialVersionUID = 7583700737371189522L;
     public final List<Event> events;
     public final Map<Participant, ParticipantFrame> participantFrames;
-    public final Long timestamp;
+    public final Duration timestamp;
 
-    public Frame(final List<Event> events, final Map<Participant, ParticipantFrame> participantFrames, final Long timestamp) {
+    public Frame(final List<Event> events, final Map<Participant, ParticipantFrame> participantFrames, final Duration timestamp) {
         this.events = events;
         this.participantFrames = participantFrames;
         this.timestamp = timestamp;

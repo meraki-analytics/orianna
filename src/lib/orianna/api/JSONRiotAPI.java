@@ -38,6 +38,8 @@ public class JSONRiotAPI {
         APIVersions.put("game", "v1.3");
         APIVersions.put("league", "v2.4");
         APIVersions.put("static-data", "v1.2");
+        APIVersions.put("match", "v2.2");
+        APIVersions.put("matchhistory", "v2.2");
         APIVersions.put("stats", "v1.3");
         APIVersions.put("summoner", "v1.4");
         APIVersions.put("team", "v2.3");
@@ -554,6 +556,33 @@ public class JSONRiotAPI {
     }
 
     /**
+     * @param ID
+     *            the ID to get information for
+     * @return the API's JSON formatted response
+     * @see <a href="https://developer.riotgames.com/api/methods#!/806/2848">LoL
+     *      API Specification</a>
+     */
+    public String getMatch(final long ID) {
+        return getMatch(ID, true);
+    }
+
+    /**
+     * @param ID
+     *            the ID to get information for
+     * @param includeTimeline
+     *            whether to include the timeline
+     * @return the API's JSON formatted response
+     * @see <a href="https://developer.riotgames.com/api/methods#!/806/2848">LoL
+     *      API Specification</a>
+     */
+    public String getMatch(final long ID, final boolean includeTimeline) {
+        final Map<String, String> params = baseParams();
+        params.put("includeTimeline", Boolean.toString(includeTimeline));
+
+        return waitForRateLimiter(APIVersions.get("match") + "/match/" + ID, params);
+    }
+
+    /**
      * @return the API's JSON formatted response
      * @see <a href="http://developer.riotgames.com/api/methods#!/710/2528">LoL
      *      API Specification</a>
@@ -744,6 +773,17 @@ public class JSONRiotAPI {
      */
     public String getSummonerMasteriesByID(final long summonerID) {
         return waitForRateLimiter(APIVersions.get("summoner") + "/summoner/" + summonerID + "/masteries", baseParams());
+    }
+
+    /**
+     * @param summonerID
+     *            the ID to get information for
+     * @return the API's JSON formatted response
+     * @see <a href="https://developer.riotgames.com/api/methods#!/805/2847">LoL
+     *      API Specification</a>
+     */
+    public String getSummonerMatchHistory(final long summonerID) {
+        return waitForRateLimiter(APIVersions.get("matchhistory") + "/matchhistory/" + summonerID, baseParams());
     }
 
     /**

@@ -1,14 +1,15 @@
 package lib.orianna.type.match;
 
 import java.io.Serializable;
+import java.time.Duration;
 import java.util.List;
 
 public class MatchTimeline implements Serializable {
     private static final long serialVersionUID = -2915742245908144161L;
-    public final Long frameInterval;
+    public final Duration frameInterval;
     public final List<Frame> frames;
 
-    public MatchTimeline(final Long frameInterval, final List<Frame> frames) {
+    public MatchTimeline(final Duration frameInterval, final List<Frame> frames) {
         this.frameInterval = frameInterval;
         this.frames = frames;
     }
