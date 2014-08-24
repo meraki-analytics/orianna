@@ -3,7 +3,7 @@ package lib.orianna.type.team;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import lib.orianna.type.game.GameMap;
+import lib.orianna.type.match.MatchMap;
 
 public class MatchHistorySummary implements Serializable {
     private static final long serialVersionUID = 4352310540648854805L;
@@ -12,9 +12,9 @@ public class MatchHistorySummary implements Serializable {
     public final Long gameID;
     public final String gameMode, opposingTeamName;
     public final Boolean invalid, win;
-    public final GameMap map;
+    public final MatchMap map;
 
-    public MatchHistorySummary(final Integer assists, final Integer deaths, final Integer kills, final Integer opposingTeamKills, final GameMap map,
+    public MatchHistorySummary(final Integer assists, final Integer deaths, final Integer kills, final Integer opposingTeamKills, final MatchMap map,
             final LocalDateTime date, final Long gameID, final String gameMode, final String opposingTeamName, final Boolean invalid, final Boolean win) {
         this.assists = assists;
         this.deaths = deaths;

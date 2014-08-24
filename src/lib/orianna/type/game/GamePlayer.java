@@ -2,16 +2,17 @@ package lib.orianna.type.game;
 
 import java.io.Serializable;
 
+import lib.orianna.type.match.Side;
 import lib.orianna.type.staticdata.Champion;
 import lib.orianna.type.summoner.Summoner;
 
-public class Player implements Serializable {
+public class GamePlayer implements Serializable {
     private static final long serialVersionUID = -4282238671983411505L;
     public final Champion champion;
     public final Summoner summoner;
     public final Side team;
 
-    public Player(final Champion champion, final Summoner summoner, final Side team) {
+    public GamePlayer(final Champion champion, final Summoner summoner, final Side team) {
         this.champion = champion;
         this.summoner = summoner;
         this.team = team;
@@ -25,10 +26,10 @@ public class Player implements Serializable {
         if(obj == null) {
             return false;
         }
-        if(!(obj instanceof Player)) {
+        if(!(obj instanceof GamePlayer)) {
             return false;
         }
-        final Player other = (Player)obj;
+        final GamePlayer other = (GamePlayer)obj;
         if(champion == null) {
             if(other.champion != null) {
                 return false;

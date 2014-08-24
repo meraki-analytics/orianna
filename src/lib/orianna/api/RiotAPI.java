@@ -23,6 +23,7 @@ import lib.orianna.type.champion.ChampionStatus;
 import lib.orianna.type.game.Game;
 import lib.orianna.type.league.League;
 import lib.orianna.type.league.LeagueType;
+import lib.orianna.type.match.MatchSummary;
 import lib.orianna.type.staticdata.Champion;
 import lib.orianna.type.staticdata.Item;
 import lib.orianna.type.staticdata.Mastery;
@@ -149,7 +150,7 @@ public class RiotAPI {
     }
 
     private final JSONRiotAPI API;
-    private final Cache cache;
+    private Cache cache;
     private final JSONConverter converter;
 
     /**
@@ -217,6 +218,13 @@ public class RiotAPI {
     }
 
     /**
+     * Clears all cached information
+     */
+    public void clearCache() {
+        cache = new Cache();
+    }
+
+    /**
      * @param summoner
      *            the summoner to get information for
      * @return the summoner's active mastery page
@@ -281,11 +289,8 @@ public class RiotAPI {
      */
     public Map<Long, MasteryPage> getActiveMasteryPagesByIDs(final List<Long> summonerIDs) {
         final Map<Long, List<MasteryPage>> pages = getMasteryPagesByIDs(summonerIDs);
-        return pages
-                .entrySet()
-                .parallelStream()
-                .collect(
-                        Collectors.toMap((entry) -> entry.getKey(), (entry) -> entry.getValue().stream().filter((page) -> page.current).findAny().get()));
+        return pages.entrySet().stream()
+                .collect(Collectors.toMap((entry) -> entry.getKey(), (entry) -> entry.getValue().stream().filter((page) -> page.current).findAny().get()));
     }
 
     /**
@@ -387,11 +392,8 @@ public class RiotAPI {
      */
     public Map<Long, RunePage> getActiveRunePagesByIDs(final List<Long> summonerIDs) {
         final Map<Long, List<RunePage>> pages = getRunePagesByIDs(summonerIDs);
-        return pages
-                .entrySet()
-                .parallelStream()
-                .collect(
-                        Collectors.toMap((entry) -> entry.getKey(), (entry) -> entry.getValue().stream().filter((page) -> page.current).findAny().get()));
+        return pages.entrySet().stream()
+                .collect(Collectors.toMap((entry) -> entry.getKey(), (entry) -> entry.getValue().stream().filter((page) -> page.current).findAny().get()));
     }
 
     /**
@@ -1252,6 +1254,75 @@ public class RiotAPI {
         }
 
         return cache.masteryTree;
+    }
+
+    /**
+     * @param ID
+     *            the match to get information for
+     * @return the match
+     * @see <a href="https://developer.riotgames.com/api/methods#!/806/2848">LoL
+     *      API Specification</a>
+     */
+    public MatchSummary getMatch(final long ID) {
+        return getMatch(ID, true);
+    }
+
+    /**
+     * @param ID
+     *            the match to get information for
+     * @param includeTimeline
+     *            whether to include the match timeline
+     * @return the match
+     * @see <a href="https://developer.riotgames.com/api/methods#!/806/2848">LoL
+     *      API Specification</a>
+     */
+    public MatchSummary getMatch(final long ID, final boolean includeTimeline) {
+        final String json = API.getMatch(ID, includeTimeline);
+        try {
+            return converter.getMatchSummaryFromJSON((JSONObject)parser.parse(json));
+        }
+        catch(final ParseException e) {
+            throw handleParseException(e);
+        }
+    }
+
+    /**
+     * @param summonerID
+     *            the summoner to get match history for
+     * @return the summoner's match history
+     * @see <a href="https://developer.riotgames.com/api/methods#!/805/2847">LoL
+     *      API Specification</a>
+     */
+    public List<MatchSummary> getMatchHistory(final long summonerID) {
+        final String json = API.getSummonerMatchHistory(summonerID);
+        try {
+            return converter.getMatchHistoryFromJSON((JSONArray)((JSONObject)parser.parse(json)).get("matches"));
+        }
+        catch(final ParseException e) {
+            throw handleParseException(e);
+        }
+    }
+
+    /**
+     * @param summonerName
+     *            the summoner to get match history for
+     * @return the summoner's match history
+     * @see <a href="https://developer.riotgames.com/api/methods#!/805/2847">LoL
+     *      API Specification</a>
+     */
+    public List<MatchSummary> getMatchHistory(final String summonerName) {
+        return getMatchHistory(getSummoner(summonerName));
+    }
+
+    /**
+     * @param summoner
+     *            the summoner to get match history for
+     * @return the summoner's match history
+     * @see <a href="https://developer.riotgames.com/api/methods#!/805/2847">LoL
+     *      API Specification</a>
+     */
+    public List<MatchSummary> getMatchHistory(final Summoner summoner) {
+        return getMatchHistory(summoner.ID);
     }
 
     /**

@@ -8,9 +8,9 @@ public class BannedChampion implements Serializable {
     private static final long serialVersionUID = -8938325018346686698L;
     public final Champion champion;
     public final Integer pickTurn;
-    public final MatchTeam team;
+    public final Side team;
 
-    public BannedChampion(final Champion champion, final Integer pickTurn, final MatchTeam team) {
+    public BannedChampion(final Champion champion, final Integer pickTurn, final Side team) {
         this.champion = champion;
         this.pickTurn = pickTurn;
         this.team = team;

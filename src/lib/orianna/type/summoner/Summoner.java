@@ -9,6 +9,7 @@ import lib.orianna.api.RiotAPI;
 import lib.orianna.api.queryspecs.Season;
 import lib.orianna.type.game.Game;
 import lib.orianna.type.league.League;
+import lib.orianna.type.match.MatchSummary;
 import lib.orianna.type.stats.ChampionStats;
 import lib.orianna.type.stats.PlayerStatsSummary;
 import lib.orianna.type.stats.PlayerStatsSummaryType;
@@ -105,6 +106,17 @@ public class Summoner implements Serializable {
      */
     public List<MasteryPage> getMasteryPages(final RiotAPI API) {
         return API.getMasteryPages(this);
+    }
+
+    /**
+     * @param API
+     *            the API to get the data with
+     * @return the summoner's match history
+     * @see <a href="https://developer.riotgames.com/api/methods#!/805/2847">LoL
+     *      API Specification</a>
+     */
+    public List<MatchSummary> getMatchHistory(final RiotAPI API) {
+        return API.getMatchHistory(this);
     }
 
     /**

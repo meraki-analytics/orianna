@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import lib.orianna.type.match.MatchMap;
+import lib.orianna.type.match.Side;
 import lib.orianna.type.staticdata.Champion;
 import lib.orianna.type.staticdata.SummonerSpell;
 
@@ -11,21 +13,21 @@ public class Game implements Serializable {
     private static final long serialVersionUID = -8516946488824820992L;
     public final Champion champion;
     public final LocalDateTime createDate;
-    public final List<Player> fellowPlayers;
+    public final List<GamePlayer> fellowPlayers;
     public final GameMode gameMode;
     public final GameType gameType;
     public final Long ID;
     public final Boolean invalid;
     public final Integer IPEarned, level;
-    public final GameMap map;
+    public final MatchMap map;
     public final SummonerSpell spell1, spell2;
     public final RawStats stats;
     public final SubType subType;
     public final Side team;
 
-    public Game(final Champion champion, final LocalDateTime createDate, final List<Player> fellowPlayers, final GameMode gameMode, final GameType gameType,
-            final Long ID, final Boolean invalid, final Integer IPEarned, final Integer level, final GameMap map, final SummonerSpell spell1,
-            final SummonerSpell spell2, final RawStats stats, final SubType subType, final Side team) {
+    public Game(final Champion champion, final LocalDateTime createDate, final List<GamePlayer> fellowPlayers, final GameMode gameMode,
+            final GameType gameType, final Long ID, final Boolean invalid, final Integer IPEarned, final Integer level, final MatchMap map,
+            final SummonerSpell spell1, final SummonerSpell spell2, final RawStats stats, final SubType subType, final Side team) {
         this.champion = champion;
         this.createDate = createDate;
         this.fellowPlayers = fellowPlayers;

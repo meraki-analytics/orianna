@@ -7,15 +7,13 @@ import java.util.List;
 
 import lib.orianna.api.queryspecs.Region;
 import lib.orianna.api.queryspecs.Season;
-import lib.orianna.type.game.GameMap;
 
-public class Match implements Serializable {
+public class MatchSummary implements Serializable {
     private static final long serialVersionUID = 8123251024401619484L;
     public final LocalDateTime creation;
     public final Duration duration;
     public final Long ID;
-    public final GameMap map;
-    public final List<ParticipantIdentity> participantIdentities;
+    public final MatchMap map;
     public final List<Participant> participants;
     public final QueueType queueType;
     public final Region region;
@@ -24,14 +22,12 @@ public class Match implements Serializable {
     public final MatchTimeline timeline;
     public final String version;
 
-    public Match(final LocalDateTime creation, final Duration duration, final Long ID, final GameMap map,
-            final List<ParticipantIdentity> participantIdentities, final List<Participant> participants, final QueueType queueType, final Region region,
-            final Season season, final List<MatchTeam> teams, final MatchTimeline timeline, final String version) {
+    public MatchSummary(final LocalDateTime creation, final Duration duration, final Long ID, final MatchMap map, final List<Participant> participants,
+            final QueueType queueType, final Region region, final Season season, final List<MatchTeam> teams, final MatchTimeline timeline, final String version) {
         this.creation = creation;
         this.duration = duration;
         this.ID = ID;
         this.map = map;
-        this.participantIdentities = participantIdentities;
         this.participants = participants;
         this.queueType = queueType;
         this.region = region;
@@ -49,10 +45,10 @@ public class Match implements Serializable {
         if(obj == null) {
             return false;
         }
-        if(!(obj instanceof Match)) {
+        if(!(obj instanceof MatchSummary)) {
             return false;
         }
-        final Match other = (Match)obj;
+        final MatchSummary other = (MatchSummary)obj;
         if(ID == null) {
             if(other.ID != null) {
                 return false;
