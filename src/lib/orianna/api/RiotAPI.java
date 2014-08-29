@@ -75,8 +75,9 @@ public class RiotAPI {
         public boolean summonerSpellsFilled = false;
     }
 
-    private final static int ID_COUNT_LIMIT = 40;
+    private final static int LEAGUE_TEAM_ID_LIMIT = 10;
     private final static JSONParser parser = new JSONParser();
+    private final static int STANDARD_ID_LIMIT = 40;
 
     private static List<Long> getIDsFromSummoners(final List<Summoner> summoners) {
         return summoners.stream().map((summoner) -> summoner.ID).collect(Collectors.toList());
@@ -87,10 +88,10 @@ public class RiotAPI {
     }
 
     @SuppressWarnings("unchecked")
-    private static <T> JSONObject handleIDCountLimit(final List<T> IDs, final Function<List<T>, String> APICall) {
-        if(IDs.size() > ID_COUNT_LIMIT) {
+    private static <T> JSONObject handleIDCountLimit(final List<T> IDs, final Function<List<T>, String> APICall, final int limitPerCall) {
+        if(IDs.size() > limitPerCall) {
             final JSONObject allIDs = new JSONObject();
-            final List<List<T>> splitIDs = splitIDList(IDs);
+            final List<List<T>> splitIDs = splitIDList(IDs, limitPerCall);
             for(final List<T> IDBatch : splitIDs) {
                 final String json = APICall.apply(IDBatch);
                 try {
@@ -120,14 +121,14 @@ public class RiotAPI {
         return new APIException(APIException.Type.PARSE_FAILURE, e);
     }
 
-    private static <T> List<List<T>> splitIDList(final List<T> IDs) {
-        final int numRequests = (IDs.size() - 1) / ID_COUNT_LIMIT + 1;
+    private static <T> List<List<T>> splitIDList(final List<T> IDs, final int maxSize) {
+        final int numRequests = (IDs.size() - 1) / maxSize + 1;
         final List<List<T>> splitIDs = new ArrayList<List<T>>(numRequests);
         for(int i = 0; i < numRequests; i++) {
             final List<T> IDBatch = new ArrayList<T>();
 
-            final int start = i * ID_COUNT_LIMIT;
-            for(int j = start; j < start + ID_COUNT_LIMIT && j < IDs.size(); j++) {
+            final int start = i * maxSize;
+            for(int j = start; j < start + maxSize && j < IDs.size(); j++) {
                 IDBatch.add(IDs.get(j));
             }
 
@@ -678,7 +679,7 @@ public class RiotAPI {
      *      API Specification</a>
      */
     public Map<Long, List<League>> getLeagueEntriesBySummonerIDs(final List<Long> summonerIDs) {
-        final JSONObject summonerList = handleIDCountLimit(summonerIDs, (IDs) -> API.getSummonersLeagueEntriesByID(IDs));
+        final JSONObject summonerList = handleIDCountLimit(summonerIDs, (IDs) -> API.getSummonersLeagueEntriesByID(IDs), LEAGUE_TEAM_ID_LIMIT);
 
         final Map<Long, List<League>> allLeagues = new HashMap<Long, List<League>>();
         for(final Long summonerID : summonerIDs) {
@@ -793,7 +794,7 @@ public class RiotAPI {
      *      API Specification</a>
      */
     public Map<String, List<League>> getLeagueEntriesByTeamIDs(final List<String> teamIDs) {
-        final JSONObject teamList = handleIDCountLimit(teamIDs, (IDs) -> API.getTeamsLeagueEntriesByID(IDs));
+        final JSONObject teamList = handleIDCountLimit(teamIDs, (IDs) -> API.getTeamsLeagueEntriesByID(IDs), LEAGUE_TEAM_ID_LIMIT);
 
         final Map<String, List<League>> allLeagues = new HashMap<String, List<League>>();
         for(final String teamID : teamIDs) {
@@ -874,7 +875,7 @@ public class RiotAPI {
      *      API Specification</a>
      */
     public Map<Long, List<League>> getLeaguesBySummonerIDs(final List<Long> summonerIDs) {
-        final JSONObject summonerList = handleIDCountLimit(summonerIDs, (IDs) -> API.getSummonersLeaguesByID(IDs));
+        final JSONObject summonerList = handleIDCountLimit(summonerIDs, (IDs) -> API.getSummonersLeaguesByID(IDs), LEAGUE_TEAM_ID_LIMIT);
 
         final Map<Long, List<League>> allLeagues = new HashMap<Long, List<League>>();
         for(final Long summonerID : summonerIDs) {
@@ -990,7 +991,7 @@ public class RiotAPI {
      *      API Specification</a>
      */
     public Map<String, List<League>> getLeaguesByTeamIDs(final List<String> teamIDs) {
-        final JSONObject teamList = handleIDCountLimit(teamIDs, (IDs) -> API.getTeamsLeaguesByID(IDs));
+        final JSONObject teamList = handleIDCountLimit(teamIDs, (IDs) -> API.getTeamsLeaguesByID(IDs), LEAGUE_TEAM_ID_LIMIT);
 
         final Map<String, List<League>> allLeagues = new HashMap<String, List<League>>();
         for(final String teamID : teamIDs) {
@@ -1169,7 +1170,7 @@ public class RiotAPI {
             // Necessary to get mastery tree as well
         }
 
-        final JSONObject summonerList = handleIDCountLimit(summonerIDs, (IDs) -> API.getSummonersMasteriesByID(IDs));
+        final JSONObject summonerList = handleIDCountLimit(summonerIDs, (IDs) -> API.getSummonersMasteriesByID(IDs), STANDARD_ID_LIMIT);
 
         final Map<Long, List<MasteryPage>> allPages = new HashMap<Long, List<MasteryPage>>();
         for(final Long summonerID : summonerIDs) {
@@ -1597,7 +1598,7 @@ public class RiotAPI {
             getRunes(); // Cache in bulk to minimize API calls
         }
 
-        final JSONObject summonerList = handleIDCountLimit(summonerIDs, (IDs) -> API.getSummonersRunesByID(IDs));
+        final JSONObject summonerList = handleIDCountLimit(summonerIDs, (IDs) -> API.getSummonersRunesByID(IDs), STANDARD_ID_LIMIT);
         final Map<Long, List<RunePage>> allPages = new HashMap<Long, List<RunePage>>();
         for(final Long summonerID : summonerIDs) {
             final JSONObject summonerObj = (JSONObject)summonerList.get(Long.toString(summonerID));
@@ -1773,7 +1774,7 @@ public class RiotAPI {
      *      API Specification</a>
      */
     public List<String> getSummonerNames(final List<Long> summonerIDs) {
-        final JSONObject list = handleIDCountLimit(summonerIDs, (IDs) -> API.getSummonerNames(IDs));
+        final JSONObject list = handleIDCountLimit(summonerIDs, (IDs) -> API.getSummonerNames(IDs), STANDARD_ID_LIMIT);
 
         final List<String> names = new ArrayList<String>(summonerIDs.size());
         for(final Long summonerID : summonerIDs) {
@@ -1806,7 +1807,7 @@ public class RiotAPI {
         summonerNamesLeft.removeAll(cache.summonerNames.keySet());
 
         if(summonerNamesLeft.size() > 0) {
-            final JSONObject list = handleIDCountLimit(summonerNamesLeft, (names) -> API.getSummoners(names));
+            final JSONObject list = handleIDCountLimit(summonerNamesLeft, (names) -> API.getSummoners(names), STANDARD_ID_LIMIT);
 
             for(final String summonerName : summonerNamesLeft) {
                 final JSONObject summonerInfo = (JSONObject)list.get(summonerName.toLowerCase().replaceAll("\\s", ""));
@@ -1848,7 +1849,7 @@ public class RiotAPI {
         summonerIDsLeft.removeAll(cache.summonerIDs.keySet());
 
         if(summonerIDsLeft.size() > 0) {
-            final JSONObject list = handleIDCountLimit(summonerIDs, (IDs) -> API.getSummonersByID(IDs));
+            final JSONObject list = handleIDCountLimit(summonerIDs, (IDs) -> API.getSummonersByID(IDs), STANDARD_ID_LIMIT);
 
             for(final Long summonerID : summonerIDsLeft) {
                 final JSONObject summonerInfo = (JSONObject)list.get(Long.toString(summonerID));
@@ -2057,7 +2058,7 @@ public class RiotAPI {
      *      API Specification</a>
      */
     public List<Team> getTeams(final List<String> teamIDs) {
-        final JSONObject teamList = handleIDCountLimit(teamIDs, (IDs) -> API.getTeams(IDs));
+        final JSONObject teamList = handleIDCountLimit(teamIDs, (IDs) -> API.getTeams(IDs), LEAGUE_TEAM_ID_LIMIT);
         return converter.getAllTeamsFromJSON(teamList, teamIDs);
     }
 
@@ -2108,7 +2109,7 @@ public class RiotAPI {
      *      API Specification</a>
      */
     public Map<Long, List<Team>> getTeamsBySummonerIDs(final List<Long> summonerIDs) {
-        final JSONObject summonerList = handleIDCountLimit(summonerIDs, (IDs) -> API.getSummonersTeamsByID(IDs));
+        final JSONObject summonerList = handleIDCountLimit(summonerIDs, (IDs) -> API.getSummonersTeamsByID(IDs), LEAGUE_TEAM_ID_LIMIT);
         return converter.getAllSummonersTeamsFromJSON(summonerList, summonerIDs);
     }
 

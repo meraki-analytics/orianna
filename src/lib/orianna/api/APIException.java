@@ -15,19 +15,19 @@ public class APIException extends RuntimeException {
     private static String getMessage(final Type type) {
         switch(type) {
             case BAD_REQUEST:
-                return "Bad Request";
+                return "Bad request";
             case DATA_NOT_FOUND:
-                return "Requested Data Not Found";
+                return "Requested data not found";
             case PARSE_FAILURE:
                 return "Failed to parse Riot's JSON response";
             case RATE_LIMITED:
-                return "Rate Limit Exceeded";
+                return "Rate limit exceeded";
             case SERVER_ERROR:
-                return "Internal Server Error";
+                return "Internal server error";
             case UNAUTHORIZED:
                 return "Unauthorized";
             case UNAVAILABLE:
-                return "Service Unavailable";
+                return "Service unavailable";
             case UNKNOWN:
                 return "An unknown API error occured";
             default:
