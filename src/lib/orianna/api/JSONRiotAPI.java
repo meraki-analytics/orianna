@@ -30,19 +30,19 @@ import lib.orianna.type.league.LeagueType;
  */
 public class JSONRiotAPI {
     private static final Map<String, String> APIVersions;
-    private final static Pattern IOEXCEPTION_PATTERN = Pattern.compile("Server returned HTTP response code: (.*?) for URL: (.*)");
+    private final static Pattern IOEXCEPTION_PATTERN = Pattern.compile("Server returned HTTP response code: (.*?) for URL:? (.*)");
 
     static {
         APIVersions = new HashMap<String, String>();
         APIVersions.put("champion", "v1.2");
         APIVersions.put("game", "v1.3");
-        APIVersions.put("league", "v2.4");
+        APIVersions.put("league", "v2.5");
         APIVersions.put("static-data", "v1.2");
         APIVersions.put("match", "v2.2");
         APIVersions.put("matchhistory", "v2.2");
         APIVersions.put("stats", "v1.3");
         APIVersions.put("summoner", "v1.4");
-        APIVersions.put("team", "v2.3");
+        APIVersions.put("team", "v2.4");
     }
 
     private static String getCollectionString(final Collection<?> items) {
@@ -85,7 +85,6 @@ public class JSONRiotAPI {
                     return new APIException(APIException.Type.UNKNOWN, URL, e);
             }
         }
-        e.printStackTrace();
         return new APIException(APIException.Type.UNKNOWN, e);
     }
 
