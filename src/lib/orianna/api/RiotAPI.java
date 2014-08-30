@@ -24,6 +24,7 @@ import lib.orianna.type.game.Game;
 import lib.orianna.type.league.League;
 import lib.orianna.type.league.LeagueType;
 import lib.orianna.type.match.MatchSummary;
+import lib.orianna.type.match.QueueType;
 import lib.orianna.type.staticdata.Champion;
 import lib.orianna.type.staticdata.Item;
 import lib.orianna.type.staticdata.Mastery;
@@ -489,6 +490,18 @@ public class RiotAPI {
     }
 
     /**
+     * Not supported by the API, done locally (and slowly at that)
+     *
+     * @param championName
+     *            the champion's name
+     * @return the champion
+     */
+    public Champion getChampion(final String championName) {
+        final List<Champion> champions = getChampions();
+        return champions.stream().filter((champion) -> champion.name.equals(championName)).findAny().get();
+    }
+
+    /**
      * @return all champions
      * @see <a href="http://developer.riotgames.com/api/methods#!/710/2529">LoL
      *      API Specification</a>
@@ -523,6 +536,29 @@ public class RiotAPI {
         cache.championsFilled = true;
 
         return champions;
+    }
+
+    /**
+     * Not supported by the API, done locally (and slowly at that)
+     *
+     * @param championNames
+     *            the champions' names
+     * @return the champions
+     */
+    public List<Champion> getChampions(final List<String> championNames) {
+        final List<Champion> champions = getChampions();
+        return Collections.unmodifiableList(champions.stream().filter((champion) -> championNames.contains(champion.name)).collect(Collectors.toList()));
+    }
+
+    /**
+     * Not supported by the API, done locally (and slowly at that)
+     *
+     * @param championNames
+     *            the champions' names
+     * @return the champions
+     */
+    public List<Champion> getChampions(final String... championNames) {
+        return getChampions(Arrays.asList(championNames));
     }
 
     /**
@@ -1289,13 +1325,72 @@ public class RiotAPI {
 
     /**
      * @param summonerID
-     *            the summoner to get match history for
+     *            the summoner to get information for
      * @return the summoner's match history
      * @see <a href="https://developer.riotgames.com/api/methods#!/805/2847">LoL
      *      API Specification</a>
      */
     public List<MatchSummary> getMatchHistory(final long summonerID) {
-        final String json = API.getSummonerMatchHistory(summonerID);
+        return getMatchHistory(summonerID, null, null, null, null);
+    }
+
+    /**
+     * @param summonerID
+     *            the summoner to get information for
+     * @param beginIndex
+     *            the begin index to use for fetching games. No more than 15
+     *            games will be fetched.
+     * @param endIndex
+     *            the end index to use for fetching games. No more than 15 games
+     *            will be fetched.
+     * @return the summoner's match history
+     * @see <a href="https://developer.riotgames.com/api/methods#!/805/2847">LoL
+     *      API Specification</a>
+     */
+    public List<MatchSummary> getMatchHistory(final long summonerID, final Integer beginIndex, final Integer endIndex) {
+        return getMatchHistory(summonerID, null, null, beginIndex, endIndex);
+    }
+
+    /**
+     * @param summonerID
+     *            the summoner to get information for
+     * @param champions
+     *            which champions to limit this search to
+     * @param rankedQueues
+     *            which queues to limit this search to. Any queues other than
+     *            RANKED_SOLO_5x5, RANKED_TEAM_5x5, and RANKED_TEAM_3x3 will be
+     *            ignored.
+     * @return the summoner's match history
+     * @see <a href="https://developer.riotgames.com/api/methods#!/805/2847">LoL
+     *      API Specification</a>
+     */
+    public List<MatchSummary> getMatchHistory(final long summonerID, final List<Champion> champions, final List<QueueType> rankedQueues) {
+        return getMatchHistory(summonerID, champions, rankedQueues, null, null);
+    }
+
+    /**
+     * @param summonerID
+     *            the summoner to get information for
+     * @param champions
+     *            which champions to limit this search to
+     * @param rankedQueues
+     *            which queues to limit this search to. Any queues other than
+     *            RANKED_SOLO_5x5, RANKED_TEAM_5x5, and RANKED_TEAM_3x3 will be
+     *            ignored.
+     * @param beginIndex
+     *            the begin index to use for fetching games. No more than 15
+     *            games will be fetched.
+     * @param endIndex
+     *            the end index to use for fetching games. No more than 15 games
+     *            will be fetched.
+     * @return the summoner's match history
+     * @see <a href="https://developer.riotgames.com/api/methods#!/805/2847">LoL
+     *      API Specification</a>
+     */
+    public List<MatchSummary> getMatchHistory(final long summonerID, final List<Champion> champions, final List<QueueType> rankedQueues,
+            final Integer beginIndex, final Integer endIndex) {
+        final List<Integer> championIDs = champions.stream().map((champ) -> champ.ID).collect(Collectors.toList());
+        final String json = API.getSummonerMatchHistory(summonerID, championIDs, rankedQueues, beginIndex, endIndex);
         try {
             return converter.getMatchHistoryFromJSON((JSONArray)((JSONObject)parser.parse(json)).get("matches"));
         }
@@ -1306,13 +1401,71 @@ public class RiotAPI {
 
     /**
      * @param summonerName
-     *            the summoner to get match history for
+     *            the summoner to get information for
      * @return the summoner's match history
      * @see <a href="https://developer.riotgames.com/api/methods#!/805/2847">LoL
      *      API Specification</a>
      */
     public List<MatchSummary> getMatchHistory(final String summonerName) {
         return getMatchHistory(getSummoner(summonerName));
+    }
+
+    /**
+     * @param summonerName
+     *            the summoner to get information for
+     * @param beginIndex
+     *            the begin index to use for fetching games. No more than 15
+     *            games will be fetched.
+     * @param endIndex
+     *            the end index to use for fetching games. No more than 15 games
+     *            will be fetched.
+     * @return the summoner's match history
+     * @see <a href="https://developer.riotgames.com/api/methods#!/805/2847">LoL
+     *      API Specification</a>
+     */
+    public List<MatchSummary> getMatchHistory(final String summonerName, final Integer beginIndex, final Integer endIndex) {
+        return getMatchHistory(getSummoner(summonerName), beginIndex, endIndex);
+    }
+
+    /**
+     * @param summonerName
+     *            the summoner to get information for
+     * @param champions
+     *            which champions to limit this search to
+     * @param rankedQueues
+     *            which queues to limit this search to. Any queues other than
+     *            RANKED_SOLO_5x5, RANKED_TEAM_5x5, and RANKED_TEAM_3x3 will be
+     *            ignored.
+     * @return the summoner's match history
+     * @see <a href="https://developer.riotgames.com/api/methods#!/805/2847">LoL
+     *      API Specification</a>
+     */
+    public List<MatchSummary> getMatchHistory(final String summonerName, final List<Champion> champions, final List<QueueType> rankedQueues) {
+        return getMatchHistory(getSummoner(summonerName), champions, rankedQueues);
+    }
+
+    /**
+     * @param summonerName
+     *            the summoner to get information for
+     * @param champions
+     *            which champions to limit this search to
+     * @param rankedQueues
+     *            which queues to limit this search to. Any queues other than
+     *            RANKED_SOLO_5x5, RANKED_TEAM_5x5, and RANKED_TEAM_3x3 will be
+     *            ignored.
+     * @param beginIndex
+     *            the begin index to use for fetching games. No more than 15
+     *            games will be fetched.
+     * @param endIndex
+     *            the end index to use for fetching games. No more than 15 games
+     *            will be fetched.
+     * @return the summoner's match history
+     * @see <a href="https://developer.riotgames.com/api/methods#!/805/2847">LoL
+     *      API Specification</a>
+     */
+    public List<MatchSummary> getMatchHistory(final String summonerName, final List<Champion> champions, final List<QueueType> rankedQueues,
+            final Integer beginIndex, final Integer endIndex) {
+        return getMatchHistory(getSummoner(summonerName), champions, rankedQueues, beginIndex, endIndex);
     }
 
     /**
@@ -1324,6 +1477,64 @@ public class RiotAPI {
      */
     public List<MatchSummary> getMatchHistory(final Summoner summoner) {
         return getMatchHistory(summoner.ID);
+    }
+
+    /**
+     * @param summoner
+     *            the summoner to get information for
+     * @param beginIndex
+     *            the begin index to use for fetching games. No more than 15
+     *            games will be fetched.
+     * @param endIndex
+     *            the end index to use for fetching games. No more than 15 games
+     *            will be fetched.
+     * @return the summoner's match history
+     * @see <a href="https://developer.riotgames.com/api/methods#!/805/2847">LoL
+     *      API Specification</a>
+     */
+    public List<MatchSummary> getMatchHistory(final Summoner summoner, final Integer beginIndex, final Integer endIndex) {
+        return getMatchHistory(summoner.ID, beginIndex, endIndex);
+    }
+
+    /**
+     * @param summoner
+     *            the summoner to get information for
+     * @param champions
+     *            which champions to limit this search to
+     * @param rankedQueues
+     *            which queues to limit this search to. Any queues other than
+     *            RANKED_SOLO_5x5, RANKED_TEAM_5x5, and RANKED_TEAM_3x3 will be
+     *            ignored.
+     * @return the summoner's match history
+     * @see <a href="https://developer.riotgames.com/api/methods#!/805/2847">LoL
+     *      API Specification</a>
+     */
+    public List<MatchSummary> getMatchHistory(final Summoner summoner, final List<Champion> champions, final List<QueueType> rankedQueues) {
+        return getMatchHistory(summoner.ID, champions, rankedQueues);
+    }
+
+    /**
+     * @param summoner
+     *            the summoner to get information for
+     * @param champions
+     *            which champions to limit this search to
+     * @param rankedQueues
+     *            which queues to limit this search to. Any queues other than
+     *            RANKED_SOLO_5x5, RANKED_TEAM_5x5, and RANKED_TEAM_3x3 will be
+     *            ignored.
+     * @param beginIndex
+     *            the begin index to use for fetching games. No more than 15
+     *            games will be fetched.
+     * @param endIndex
+     *            the end index to use for fetching games. No more than 15 games
+     *            will be fetched.
+     * @return the summoner's match history
+     * @see <a href="https://developer.riotgames.com/api/methods#!/805/2847">LoL
+     *      API Specification</a>
+     */
+    public List<MatchSummary> getMatchHistory(final Summoner summoner, final List<Champion> champions, final List<QueueType> rankedQueues,
+            final Integer beginIndex, final Integer endIndex) {
+        return getMatchHistory(summoner.ID, champions, rankedQueues, beginIndex, endIndex);
     }
 
     /**

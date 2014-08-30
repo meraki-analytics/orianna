@@ -5,6 +5,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,6 +22,7 @@ import lib.orianna.api.queryspecs.RuneData;
 import lib.orianna.api.queryspecs.Season;
 import lib.orianna.api.queryspecs.SummonerSpellData;
 import lib.orianna.type.league.LeagueType;
+import lib.orianna.type.match.QueueType;
 
 /**
  * Queries the <a href="http://developer.riotgames.com/api/methods">LoL REST
@@ -30,7 +32,8 @@ import lib.orianna.type.league.LeagueType;
  */
 public class JSONRiotAPI {
     private static final Map<String, String> APIVersions;
-    private final static Pattern IOEXCEPTION_PATTERN = Pattern.compile("Server returned HTTP response code: (.*?) for URL:? (.*)");
+    private static final Pattern IOEXCEPTION_PATTERN = Pattern.compile("Server returned HTTP response code: (.*?) for URL:? (.*)");
+    private static final Set<QueueType> rankedQueues;
 
     static {
         APIVersions = new HashMap<String, String>();
@@ -43,6 +46,11 @@ public class JSONRiotAPI {
         APIVersions.put("stats", "v1.3");
         APIVersions.put("summoner", "v1.4");
         APIVersions.put("team", "v2.4");
+
+        rankedQueues = new HashSet<QueueType>();
+        rankedQueues.add(QueueType.RANKED_SOLO_5x5);
+        rankedQueues.add(QueueType.RANKED_TEAM_3x3);
+        rankedQueues.add(QueueType.RANKED_TEAM_5x5);
     }
 
     private static String getCollectionString(final Collection<?> items) {
@@ -782,7 +790,82 @@ public class JSONRiotAPI {
      *      API Specification</a>
      */
     public String getSummonerMatchHistory(final long summonerID) {
-        return waitForRateLimiter(APIVersions.get("matchhistory") + "/matchhistory/" + summonerID, baseParams());
+        return getSummonerMatchHistory(summonerID, null, null, null, null);
+    }
+
+    /**
+     * @param summonerID
+     *            the ID to get information for
+     * @param beginIndex
+     *            the begin index to use for fetching games. No more than 15
+     *            games will be fetched.
+     * @param endIndex
+     *            the end index to use for fetching games. No more than 15 games
+     *            will be fetched.
+     * @return the API's JSON formatted response
+     * @see <a href="https://developer.riotgames.com/api/methods#!/805/2847">LoL
+     *      API Specification</a>
+     */
+    public String getSummonerMatchHistory(final long summonerID, final Integer beginIndex, final Integer endIndex) {
+        return getSummonerMatchHistory(summonerID, null, null, beginIndex, endIndex);
+    }
+
+    /**
+     * @param summonerID
+     *            the ID to get information for
+     * @param championIDs
+     *            which champions to limit this search to
+     * @param rankedQueues
+     *            which queues to limit this search to. Any queues other than
+     *            RANKED_SOLO_5x5, RANKED_TEAM_5x5, and RANKED_TEAM_3x3 will be
+     *            ignored.
+     * @return the API's JSON formatted response
+     * @see <a href="https://developer.riotgames.com/api/methods#!/805/2847">LoL
+     *      API Specification</a>
+     */
+    public String getSummonerMatchHistory(final long summonerID, final List<Integer> championIDs, final List<QueueType> rankedQueues) {
+        return getSummonerMatchHistory(summonerID, championIDs, rankedQueues, null, null);
+    }
+
+    /**
+     * @param summonerID
+     *            the ID to get information for
+     * @param championIDs
+     *            which champions to limit this search to
+     * @param rankedQueues
+     *            which queues to limit this search to. Any queues other than
+     *            RANKED_SOLO_5x5, RANKED_TEAM_5x5, and RANKED_TEAM_3x3 will be
+     *            ignored.
+     * @param beginIndex
+     *            the begin index to use for fetching games. No more than 15
+     *            games will be fetched.
+     * @param endIndex
+     *            the end index to use for fetching games. No more than 15 games
+     *            will be fetched.
+     * @return the API's JSON formatted response
+     * @see <a href="https://developer.riotgames.com/api/methods#!/805/2847">LoL
+     *      API Specification</a>
+     */
+    public String getSummonerMatchHistory(final long summonerID, final List<Integer> championIDs, final List<QueueType> rankedQueues, final Integer beginIndex,
+            final Integer endIndex) {
+        final Map<String, String> params = baseParams();
+        if(championIDs != null) {
+            params.put("championIds", getCollectionString(championIDs));
+        }
+        if(rankedQueues != null) {
+            rankedQueues.retainAll(JSONRiotAPI.rankedQueues);
+            if(!rankedQueues.isEmpty()) {
+                params.put("rankedQueues", getCollectionString(rankedQueues));
+            }
+        }
+        if(beginIndex != null) {
+            params.put("beginIndex", beginIndex.toString());
+        }
+        if(endIndex != null) {
+            params.put("endIndex", endIndex.toString());
+        }
+
+        return waitForRateLimiter(APIVersions.get("matchhistory") + "/matchhistory/" + summonerID, params);
     }
 
     /**
