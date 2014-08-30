@@ -37,6 +37,7 @@ import lib.orianna.type.match.EventType;
 import lib.orianna.type.match.Frame;
 import lib.orianna.type.match.Lane;
 import lib.orianna.type.match.LaneType;
+import lib.orianna.type.match.LevelUpType;
 import lib.orianna.type.match.MatchMap;
 import lib.orianna.type.match.MatchSummary;
 import lib.orianna.type.match.MatchTeam;
@@ -862,6 +863,8 @@ public class JSONConverter {
         final EventType eventType = typeName == null ? null : EventType.valueOf(typeName);
         typeName = (String)eventInfo.get("laneType");
         final LaneType laneType = typeName == null ? null : LaneType.valueOf(typeName);
+        typeName = (String)eventInfo.get("levelUpType");
+        final LevelUpType levelUpType = typeName == null ? null : LevelUpType.valueOf(typeName);
         typeName = (String)eventInfo.get("monsterType");
         final MonsterType monsterType = typeName == null ? null : MonsterType.valueOf(typeName);
         typeName = (String)eventInfo.get("towerType");
@@ -869,19 +872,26 @@ public class JSONConverter {
         typeName = (String)eventInfo.get("wardType");
         final WardType wardType = typeName == null ? null : WardType.valueOf(typeName);
 
+        final Item itemAfter = API.getItem(getInteger(eventInfo, "itemAfter"));
+        final Item itemBefore = API.getItem(getInteger(eventInfo, "itemBefore"));
+        final Item item = API.getItem(getInteger(eventInfo, "item"));
+
+        final Integer skillSlot = getInteger(eventInfo, "skillSlot");
+        final Side side = getSide(eventInfo, "teamId");
         final Position position = getPositionFromJSON((JSONObject)eventInfo.get("position"));
         final Duration timestamp = getDuration(eventInfo, "timestamp", ChronoUnit.MILLIS);
         final Participant creator = participants.get(getInteger(eventInfo, "creatorId"));
         final Participant killer = participants.get(getInteger(eventInfo, "killerId"));
         final Participant victim = participants.get(getInteger(eventInfo, "victimId"));
+        final Participant participant = participants.get(getInteger(eventInfo, "participantId"));
         final MatchTeam team = teams.get(getSide(eventInfo, "teamId"));
 
         final List<Integer> participantIDs = getIntegerList(eventInfo, "assistingParticipantIds");
         final List<Participant> assistingParticipants = participantIDs == null ? null : participantIDs.stream().map((ID) -> participants.get(ID))
                 .collect(Collectors.toList());
 
-        return new Event(assistingParticipants, creator, killer, victim, team, timestamp, position, eventType, buildingType, laneType, monsterType, towerType,
-                wardType);
+        return new Event(assistingParticipants, buildingType, creator, killer, victim, participant, eventType, itemAfter, itemBefore, item, laneType,
+                levelUpType, monsterType, position, side, skillSlot, team, timestamp, towerType, wardType);
     }
 
     @SuppressWarnings("unchecked")
