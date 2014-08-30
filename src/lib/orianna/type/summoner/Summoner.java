@@ -152,7 +152,7 @@ public class Summoner implements Serializable {
      *      API Specification</a>
      */
     public List<MatchSummary> getMatchHistory(final RiotAPI API, final List<Champion> champions, final List<QueueType> rankedQueues) {
-        return API.getMatchHistory(this, champions, rankedQueues, null, null);
+        return getMatchHistory(API, champions, rankedQueues, null, null);
     }
 
     /**
@@ -176,7 +176,7 @@ public class Summoner implements Serializable {
      */
     public List<MatchSummary> getMatchHistory(final RiotAPI API, final List<Champion> champions, final List<QueueType> rankedQueues, final Integer beginIndex,
             final Integer endIndex) {
-        return getMatchHistory(API, champions, rankedQueues, beginIndex, endIndex);
+        return API.getMatchHistory(this, champions, rankedQueues, beginIndex, endIndex);
     }
 
     /**
