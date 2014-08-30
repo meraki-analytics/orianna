@@ -1389,7 +1389,7 @@ public class RiotAPI {
      */
     public List<MatchSummary> getMatchHistory(final long summonerID, final List<Champion> champions, final List<QueueType> rankedQueues,
             final Integer beginIndex, final Integer endIndex) {
-        final List<Integer> championIDs = champions.stream().map((champ) -> champ.ID).collect(Collectors.toList());
+        final List<Integer> championIDs = champions == null ? null : champions.stream().map((champ) -> champ.ID).collect(Collectors.toList());
         final String json = API.getSummonerMatchHistory(summonerID, championIDs, rankedQueues, beginIndex, endIndex);
         try {
             return converter.getMatchHistoryFromJSON((JSONArray)((JSONObject)parser.parse(json)).get("matches"));
