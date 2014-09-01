@@ -75,8 +75,8 @@ public class ChampionSpell implements Serializable {
      *            the spell rank to get the specific sanitized tooltip for
      * @return the sanitized tooltip with numerical values
      */
-    public String getSanitizedTooltip(final int champLevel, final int spellLevel) {
-        return replaceVariables(sanitizedTooltip, champLevel, spellLevel);
+    public String getSanitizedTooltip(final int championLevel, final int spellLevel) {
+        return replaceVariables(sanitizedTooltip, championLevel, spellLevel);
     }
 
     /**
@@ -88,8 +88,8 @@ public class ChampionSpell implements Serializable {
      *            the spell rank to get the specific tooltip for
      * @return the tooltip with numerical values
      */
-    public String getTooltip(final int champLevel, final int spellLevel) {
-        return replaceVariables(tooltip, champLevel, spellLevel);
+    public String getTooltip(final int championLevel, final int spellLevel) {
+        return replaceVariables(tooltip, championLevel, spellLevel);
     }
 
     @Override
@@ -100,11 +100,11 @@ public class ChampionSpell implements Serializable {
         return result;
     }
 
-    private String replaceVariables(String text, final int champLevel, final int spellLevel) {
+    private String replaceVariables(String text, final int championLevel, final int spellLevel) {
         if(spellLevel < 1 || spellLevel > maxRank) {
             throw new IllegalArgumentException("Not a valid level for this spell!");
         }
-        if(champLevel < 1 || champLevel > 18) {
+        if(championLevel < 1 || championLevel > 18) {
             throw new IllegalArgumentException("Not a valid champion level!");
         }
 
@@ -123,7 +123,7 @@ public class ChampionSpell implements Serializable {
                     val = var.coeff.get(spellLevel - 1);
                 }
                 else if(var.coeff.size() == 18) {
-                    val = var.coeff.get(champLevel - 1);
+                    val = var.coeff.get(championLevel - 1);
                 }
                 text = text.replaceAll("\\{\\{ " + var.key + " \\}\\}", val.toString());
             }
