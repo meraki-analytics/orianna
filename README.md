@@ -25,13 +25,13 @@ Here's some examples of a few simple uses of the API. The full JavaDoc can be fo
 ```java
 import java.util.List;
 
-import lib.orianna.api.RateLimiter;
-import lib.orianna.api.RiotAPI;
-import lib.orianna.api.queryspecs.Region;
-import lib.orianna.type.league.League;
-import lib.orianna.type.league.LeagueType;
-import lib.orianna.type.staticdata.Champion;
-import lib.orianna.type.summoner.Summoner;
+import com.robrua.orianna.api.RateLimiter;
+import com.robrua.orianna.api.RiotAPI;
+import com.robrua.orianna.api.queryspecs.Region;
+import com.robrua.orianna.type.league.League;
+import com.robrua.orianna.type.league.LeagueType;
+import com.robrua.orianna.type.staticdata.Champion;
+import com.robrua.orianna.type.summoner.Summoner;
 
 public class Example {
     public static void main(String[] args) {
