@@ -13,6 +13,7 @@ import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.robrua.easyjava.net.rest.SimpleRESTClient;
 import com.robrua.orianna.api.queryspecs.ChampionData;
 import com.robrua.orianna.api.queryspecs.ItemData;
 import com.robrua.orianna.api.queryspecs.MasteryData;
@@ -22,8 +23,6 @@ import com.robrua.orianna.api.queryspecs.Season;
 import com.robrua.orianna.api.queryspecs.SummonerSpellData;
 import com.robrua.orianna.type.league.LeagueType;
 import com.robrua.orianna.type.match.QueueType;
-
-import lib.easyjava.net.rest.SimpleRESTClient;
 
 /**
  * Queries the <a href="http://developer.riotgames.com/api/methods">LoL REST
