@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import lib.easyjava.net.rest.MultiRateLimiter;
-import lib.easyjava.net.rest.SingleRateLimiter;
-import lib.easyjava.type.Pair;
+import com.robrua.easyjava.net.rest.MultiRateLimiter;
+import com.robrua.easyjava.net.rest.SingleRateLimiter;
+import com.robrua.easyjava.type.Pair;
 
 /**
  * Wrapper for EasyJava's RateLimiter to hide EasyJava from consumers. Used to
@@ -15,7 +15,7 @@ import lib.easyjava.type.Pair;
  *
  * @author Rob Rua (FatalElement - NA) (robrua@alumni.cmu.edu)
  */
-public class RateLimiter implements lib.easyjava.net.rest.RateLimiter {
+public class RateLimiter implements com.robrua.easyjava.net.rest.RateLimiter {
     /**
      * A rate limit as prescribed by the LoL API
      */
@@ -53,7 +53,7 @@ public class RateLimiter implements lib.easyjava.net.rest.RateLimiter {
         return new RateLimiter(10, 10000L);
     }
 
-    private final lib.easyjava.net.rest.RateLimiter rateLimiter;
+    private final com.robrua.easyjava.net.rest.RateLimiter rateLimiter;
 
     /**
      * Use this constructor to manage a single limit
