@@ -15,6 +15,8 @@ A Java adaptation of the Riot Games LoL API (http://developer.riotgames.com/). R
 Just [download](https://github.com/robrua/Orianna/releases) the latest .jar and add it to your project's build path.
  
 To do this in eclipse, I recommend creating a lib/ directory in your project's root directory and putting the .jar there. Then just right click the .jar in eclipse and click Build Path -> Add to Build Path.
+
+If you use Maven to manage your dependencies, you Orianna is posted on Maven Central @ com.robrua.orianna
  
 ## Usage
 
