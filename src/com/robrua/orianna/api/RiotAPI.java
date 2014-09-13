@@ -1909,7 +1909,7 @@ public class RiotAPI {
         if(summonerName == null) {
             return null;
         }
-        
+
         Summoner summoner = cache.summonerNames.get(summonerName);
 
         if(summoner == null) {
