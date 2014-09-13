@@ -155,7 +155,7 @@ public class JSONConverter {
         if(list == null) {
             return null;
         }
-        
+
         final List<T> result = new ArrayList<T>(list.size());
         for(final Object obj : list) {
             final T item = mapper.apply(obj);
@@ -876,9 +876,12 @@ public class JSONConverter {
         typeName = (String)eventInfo.get("wardType");
         final WardType wardType = typeName == null ? null : WardType.valueOf(typeName);
 
-        final Item itemAfter = API.getItem(getInteger(eventInfo, "itemAfter"));
-        final Item itemBefore = API.getItem(getInteger(eventInfo, "itemBefore"));
-        final Item item = API.getItem(getInteger(eventInfo, "item"));
+        Integer id = getInteger(eventInfo, "itemAfter");
+        final Item itemAfter = id == null ? null : API.getItem(id);
+        id = getInteger(eventInfo, "itemBefore");
+        final Item itemBefore = id == null ? null : API.getItem(id);
+        id = getInteger(eventInfo, "itemBefore");
+        final Item item = id == null ? null : API.getItem(id);
 
         final Integer skillSlot = getInteger(eventInfo, "skillSlot");
         final Side side = getSide(eventInfo, "teamId");
