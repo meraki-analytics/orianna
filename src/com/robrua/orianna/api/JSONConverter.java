@@ -1315,49 +1315,20 @@ public class JSONConverter {
             return null;
         }
 
-        final MatchMap map = getMap(getInteger(matchSummaryInfo, "mapId"));
-        final LocalDateTime creation = getDateTime(matchSummaryInfo, "matchCreation");
-        final Duration duration = getDuration(matchSummaryInfo, "matchDuration", ChronoUnit.SECONDS);
-        final Long ID = (Long)matchSummaryInfo.get("matchId");
-        final String version = (String)matchSummaryInfo.get("matchVersion");
-        final QueueType queueType = QueueType.valueOf((String)matchSummaryInfo.get("queueType"));
-        final Region region = Region.valueOf((String)matchSummaryInfo.get("region"));
-        final Season season = Season.valueOf((String)matchSummaryInfo.get("season"));
-        final List<MatchTeam> teams = getList(matchSummaryInfo, "teams", (t) -> getMatchTeamFromJSON((JSONObject)t));
-
-        final Map<Side, MatchTeam> teamColors = teams.stream().collect(Collectors.toMap((team) -> team.side, (team) -> team));
-
         final JSONArray identities = (JSONArray)matchSummaryInfo.get("participantIdentities");
-        final Map<Integer, Player> participantPlayers = new HashMap<Integer, Player>();
-        for(final Object iden : identities) {
-            final JSONObject identity = (JSONObject)iden;
-            participantPlayers.put(getInteger(identity, "participantId"), getPlayerFromJSON((JSONObject)identity.get("player")));
-        }
+        final List<JSONObject> plrs = getList(identities, p -> (JSONObject)((JSONObject)p).get("player"));
+        final List<String> summonerNames = plrs.stream().map((plr) -> (String)plr.get("summonerName")).filter((name) -> name != null)
+                .collect(Collectors.toList());
 
-        final List<Participant> participants = getList(matchSummaryInfo, "participants",
-                (p) -> getParticipantFromJSON((JSONObject)p, teamColors, participantPlayers));
-
-        final Map<Integer, Participant> participantIDs = participants.stream().collect(
-                Collectors.toMap((participant) -> participant.ID, (participant) -> participant));
-
-        final MatchTimeline timeline = getMatchTimelineFromJSON((JSONObject)matchSummaryInfo.get("timeline"), participantIDs, teamColors);
-
-        final JSONArray participantIdentityList = (JSONArray)matchSummaryInfo.get("participantIdentities");
-        final List<JSONObject> plrs = getList(participantIdentityList, p -> (JSONObject)((JSONObject)p).get("player"));
-
-        final boolean haveIdentities = plrs.size() > 0 && plrs.get(0) != null;
-
+        final List<Summoner> summoners = API.getSummoners(summonerNames);
         final Map<String, Summoner> mapping = new HashMap<String, Summoner>();
-        if(haveIdentities) {
-            final List<String> summonerNames = plrs.stream().map((plr) -> (String)plr.get("summonerName")).collect(Collectors.toList());
-
-            final List<Summoner> summoners = API.getSummoners(summonerNames);
-            for(final Summoner summoner : summoners) {
+        for(final Summoner summoner : summoners) {
+            if(summoner != null) {
                 mapping.put(summoner.name, summoner);
             }
         }
 
-        return new MatchSummary(creation, duration, ID, map, participants, queueType, region, season, teams, timeline, version);
+        return getMatchSummaryFromJSON(mapping, matchSummaryInfo);
     }
 
     private MatchSummary getMatchSummaryFromJSON(final Map<String, Summoner> summoners, final JSONObject matchSummaryInfo) {
