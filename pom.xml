@@ -107,7 +107,7 @@
 	</build>
 	<dependencies>
 		<dependency>
-			<groupId>com.robrua.easyjava</groupId>
+			<groupId>com.robrua</groupId>
 			<artifactId>easyjava</artifactId>
 			<version>0.6.5</version>
 		</dependency>
