@@ -737,6 +737,20 @@ public class JSONConverter {
         return new Block(items, recMath, type);
     }
 
+    private static List<Integer> recommendedIDSNotExist = new ArrayList<>();
+
+    static {
+        recommendedIDSNotExist.add(3210);
+        recommendedIDSNotExist.add(3176);
+        recommendedIDSNotExist.add(3210);
+        recommendedIDSNotExist.add(3005);
+        recommendedIDSNotExist.add(3131);
+        recommendedIDSNotExist.add(2037);
+        recommendedIDSNotExist.add(2040);
+        recommendedIDSNotExist.add(2039);
+        recommendedIDSNotExist.add(3186);
+    }
+
     public BlockItem getBlockItemFromJSON(final JSONObject blockItemInfo) {
         if(blockItemInfo == null) {
             return null;
@@ -751,7 +765,7 @@ public class JSONConverter {
          */
         // TODO: Remove this after rito fixes it.
         Item item = null;
-        if(ID != 3186 && ID != 3176 && ID != 3210) {
+        if(!recommendedIDSNotExist.contains(ID)) {
             item = API.getItem(ID);
         }
 
