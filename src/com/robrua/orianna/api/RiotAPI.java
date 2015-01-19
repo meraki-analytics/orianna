@@ -76,9 +76,23 @@ public class RiotAPI {
         public boolean summonerSpellsFilled = false;
     }
 
+    // Item IDs that Riot sends which reference removed items
+    private static final Set<Integer> IGNORE_IDS = new HashSet<>();
+
     private final static int LEAGUE_TEAM_ID_LIMIT = 10;
+
     private final static JSONParser parser = new JSONParser();
     private final static int STANDARD_ID_LIMIT = 40;
+    static {
+        IGNORE_IDS.add(3210);
+        IGNORE_IDS.add(3176);
+        IGNORE_IDS.add(3210);
+        IGNORE_IDS.add(3005);
+        IGNORE_IDS.add(3131);
+        IGNORE_IDS.add(2040);
+        IGNORE_IDS.add(2039);
+        IGNORE_IDS.add(3186);
+    }
 
     private static List<Long> getIDsFromSummoners(final List<Summoner> summoners) {
         return summoners.stream().map((summoner) -> summoner.ID).collect(Collectors.toList());
@@ -627,6 +641,10 @@ public class RiotAPI {
      *      API Specification</a>
      */
     public Item getItem(final int itemID) {
+        if(IGNORE_IDS.contains(itemID)) {
+            return null;
+        }
+
         Item item = cache.items.get(itemID);
 
         if(item == null) {
