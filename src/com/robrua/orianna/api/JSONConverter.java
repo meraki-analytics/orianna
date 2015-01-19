@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -103,6 +105,20 @@ import com.robrua.orianna.type.team.TeamStatDetail;
  * @author Rob Rua (FatalElement - NA) (robrua@alumni.cmu.edu)
  */
 public class JSONConverter {
+    // Item IDs that Riot sends which reference removed items
+    private static final Set<Integer> IGNORE_IDS = new HashSet<>();
+
+    static {
+        IGNORE_IDS.add(3210);
+        IGNORE_IDS.add(3176);
+        IGNORE_IDS.add(3210);
+        IGNORE_IDS.add(3005);
+        IGNORE_IDS.add(3131);
+        IGNORE_IDS.add(2040);
+        IGNORE_IDS.add(2039);
+        IGNORE_IDS.add(3186);
+    }
+
     private static Integer convertInteger(final Object object) {
         final Long longVersion = (Long)object;
         if(longVersion == null) {
@@ -737,20 +753,6 @@ public class JSONConverter {
         return new Block(items, recMath, type);
     }
 
-    private static List<Integer> recommendedIDSNotExist = new ArrayList<>();
-
-    static {
-        recommendedIDSNotExist.add(3210);
-        recommendedIDSNotExist.add(3176);
-        recommendedIDSNotExist.add(3210);
-        recommendedIDSNotExist.add(3005);
-        recommendedIDSNotExist.add(3131);
-        recommendedIDSNotExist.add(2037);
-        recommendedIDSNotExist.add(2040);
-        recommendedIDSNotExist.add(2039);
-        recommendedIDSNotExist.add(3186);
-    }
-
     public BlockItem getBlockItemFromJSON(final JSONObject blockItemInfo) {
         if(blockItemInfo == null) {
             return null;
@@ -765,7 +767,7 @@ public class JSONConverter {
          */
         // TODO: Remove this after rito fixes it.
         Item item = null;
-        if(!recommendedIDSNotExist.contains(ID)) {
+        if(!IGNORE_IDS.contains(ID)) {
             item = API.getItem(ID);
         }
 
