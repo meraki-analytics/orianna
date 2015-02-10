@@ -4,7 +4,6 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.robrua</groupId>
 	<artifactId>orianna</artifactId>
-	<version>1.4.5</version>
 	<packaging>jar</packaging>
 
 	<name>Orianna</name>
@@ -105,16 +104,12 @@
 			</plugin>
 		</plugins>
 	</build>
+	<version>2.0.0</version>
 	<dependencies>
 		<dependency>
-			<groupId>com.robrua</groupId>
-			<artifactId>easyjava</artifactId>
-			<version>0.6.5</version>
-		</dependency>
-		<dependency>
-			<groupId>com.googlecode.json-simple</groupId>
-			<artifactId>json-simple</artifactId>
-			<version>1.1.1</version>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.2.4</version>
 		</dependency>
 	</dependencies>
 </project>

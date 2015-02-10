@@ -1,0 +1,369 @@
+package com.robrua.orianna.type.dto.matchhistory;
+
+import java.util.List;
+
+import com.robrua.orianna.type.dto.OriannaDto;
+
+public class MatchSummary extends OriannaDto {
+    private static final long serialVersionUID = -4917715857425560615L;
+    private Integer mapId;
+    private Long matchCreation, matchDuration, matchId;
+    private String matchMode, matchType, matchVersion, platformId, queueType, region, season;
+    private List<ParticipantIdentity> participantIdentities;
+    private List<Participant> participants;
+
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(final Object obj) {
+        if(this == obj) {
+            return true;
+        }
+        if(obj == null) {
+            return false;
+        }
+        if(!(obj instanceof MatchSummary)) {
+            return false;
+        }
+        final MatchSummary other = (MatchSummary)obj;
+        if(mapId == null) {
+            if(other.mapId != null) {
+                return false;
+            }
+        }
+        else if(!mapId.equals(other.mapId)) {
+            return false;
+        }
+        if(matchCreation == null) {
+            if(other.matchCreation != null) {
+                return false;
+            }
+        }
+        else if(!matchCreation.equals(other.matchCreation)) {
+            return false;
+        }
+        if(matchDuration == null) {
+            if(other.matchDuration != null) {
+                return false;
+            }
+        }
+        else if(!matchDuration.equals(other.matchDuration)) {
+            return false;
+        }
+        if(matchId == null) {
+            if(other.matchId != null) {
+                return false;
+            }
+        }
+        else if(!matchId.equals(other.matchId)) {
+            return false;
+        }
+        if(matchMode == null) {
+            if(other.matchMode != null) {
+                return false;
+            }
+        }
+        else if(!matchMode.equals(other.matchMode)) {
+            return false;
+        }
+        if(matchType == null) {
+            if(other.matchType != null) {
+                return false;
+            }
+        }
+        else if(!matchType.equals(other.matchType)) {
+            return false;
+        }
+        if(matchVersion == null) {
+            if(other.matchVersion != null) {
+                return false;
+            }
+        }
+        else if(!matchVersion.equals(other.matchVersion)) {
+            return false;
+        }
+        if(participantIdentities == null) {
+            if(other.participantIdentities != null) {
+                return false;
+            }
+        }
+        else if(!participantIdentities.equals(other.participantIdentities)) {
+            return false;
+        }
+        if(participants == null) {
+            if(other.participants != null) {
+                return false;
+            }
+        }
+        else if(!participants.equals(other.participants)) {
+            return false;
+        }
+        if(platformId == null) {
+            if(other.platformId != null) {
+                return false;
+            }
+        }
+        else if(!platformId.equals(other.platformId)) {
+            return false;
+        }
+        if(queueType == null) {
+            if(other.queueType != null) {
+                return false;
+            }
+        }
+        else if(!queueType.equals(other.queueType)) {
+            return false;
+        }
+        if(region == null) {
+            if(other.region != null) {
+                return false;
+            }
+        }
+        else if(!region.equals(other.region)) {
+            return false;
+        }
+        if(season == null) {
+            if(other.season != null) {
+                return false;
+            }
+        }
+        else if(!season.equals(other.season)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * @return the mapId
+     */
+    public Integer getMapId() {
+        return mapId;
+    }
+
+    /**
+     * @return the matchCreation
+     */
+    public Long getMatchCreation() {
+        return matchCreation;
+    }
+
+    /**
+     * @return the matchDuration
+     */
+    public Long getMatchDuration() {
+        return matchDuration;
+    }
+
+    /**
+     * @return the matchId
+     */
+    public Long getMatchId() {
+        return matchId;
+    }
+
+    /**
+     * @return the matchMode
+     */
+    public String getMatchMode() {
+        return matchMode;
+    }
+
+    /**
+     * @return the matchType
+     */
+    public String getMatchType() {
+        return matchType;
+    }
+
+    /**
+     * @return the matchVersion
+     */
+    public String getMatchVersion() {
+        return matchVersion;
+    }
+
+    /**
+     * @return the participantIdentities
+     */
+    public List<ParticipantIdentity> getParticipantIdentities() {
+        return participantIdentities;
+    }
+
+    /**
+     * @return the participants
+     */
+    public List<Participant> getParticipants() {
+        return participants;
+    }
+
+    /**
+     * @return the platformId
+     */
+    public String getPlatformId() {
+        return platformId;
+    }
+
+    /**
+     * @return the queueType
+     */
+    public String getQueueType() {
+        return queueType;
+    }
+
+    /**
+     * @return the region
+     */
+    public String getRegion() {
+        return region;
+    }
+
+    /**
+     * @return the season
+     */
+    public String getSeason() {
+        return season;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (mapId == null ? 0 : mapId.hashCode());
+        result = prime * result + (matchCreation == null ? 0 : matchCreation.hashCode());
+        result = prime * result + (matchDuration == null ? 0 : matchDuration.hashCode());
+        result = prime * result + (matchId == null ? 0 : matchId.hashCode());
+        result = prime * result + (matchMode == null ? 0 : matchMode.hashCode());
+        result = prime * result + (matchType == null ? 0 : matchType.hashCode());
+        result = prime * result + (matchVersion == null ? 0 : matchVersion.hashCode());
+        result = prime * result + (participantIdentities == null ? 0 : participantIdentities.hashCode());
+        result = prime * result + (participants == null ? 0 : participants.hashCode());
+        result = prime * result + (platformId == null ? 0 : platformId.hashCode());
+        result = prime * result + (queueType == null ? 0 : queueType.hashCode());
+        result = prime * result + (region == null ? 0 : region.hashCode());
+        result = prime * result + (season == null ? 0 : season.hashCode());
+        return result;
+    }
+
+    /**
+     * @param mapId
+     *            the mapId to set
+     */
+    public void setMapId(final Integer mapId) {
+        this.mapId = mapId;
+    }
+
+    /**
+     * @param matchCreation
+     *            the matchCreation to set
+     */
+    public void setMatchCreation(final Long matchCreation) {
+        this.matchCreation = matchCreation;
+    }
+
+    /**
+     * @param matchDuration
+     *            the matchDuration to set
+     */
+    public void setMatchDuration(final Long matchDuration) {
+        this.matchDuration = matchDuration;
+    }
+
+    /**
+     * @param matchId
+     *            the matchId to set
+     */
+    public void setMatchId(final Long matchId) {
+        this.matchId = matchId;
+    }
+
+    /**
+     * @param matchMode
+     *            the matchMode to set
+     */
+    public void setMatchMode(final String matchMode) {
+        this.matchMode = matchMode;
+    }
+
+    /**
+     * @param matchType
+     *            the matchType to set
+     */
+    public void setMatchType(final String matchType) {
+        this.matchType = matchType;
+    }
+
+    /**
+     * @param matchVersion
+     *            the matchVersion to set
+     */
+    public void setMatchVersion(final String matchVersion) {
+        this.matchVersion = matchVersion;
+    }
+
+    /**
+     * @param participantIdentities
+     *            the participantIdentities to set
+     */
+    public void setParticipantIdentities(final List<ParticipantIdentity> participantIdentities) {
+        this.participantIdentities = participantIdentities;
+    }
+
+    /**
+     * @param participants
+     *            the participants to set
+     */
+    public void setParticipants(final List<Participant> participants) {
+        this.participants = participants;
+    }
+
+    /**
+     * @param platformId
+     *            the platformId to set
+     */
+    public void setPlatformId(final String platformId) {
+        this.platformId = platformId;
+    }
+
+    /**
+     * @param queueType
+     *            the queueType to set
+     */
+    public void setQueueType(final String queueType) {
+        this.queueType = queueType;
+    }
+
+    /**
+     * @param region
+     *            the region to set
+     */
+    public void setRegion(final String region) {
+        this.region = region;
+    }
+
+    /**
+     * @param season
+     *            the season to set
+     */
+    public void setSeason(final String season) {
+        this.season = season;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return "MatchSummary [mapId=" + mapId + ", matchCreation=" + matchCreation + ", matchDuration=" + matchDuration + ", matchId=" + matchId
+                + ", matchMode=" + matchMode + ", matchType=" + matchType + ", matchVersion=" + matchVersion + ", platformId=" + platformId + ", queueType="
+                + queueType + ", region=" + region + ", season=" + season + ", participantIdentities=" + participantIdentities + ", participants="
+                + participants + "]";
+    }
+
+}
