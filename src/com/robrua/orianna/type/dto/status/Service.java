@@ -6,7 +6,7 @@ import com.robrua.orianna.type.dto.OriannaDto;
 
 public class Service extends OriannaDto {
     private static final long serialVersionUID = -4726729009126605263L;
-    private List<Incident> incident;
+    private List<Incident> incidents;
     private String name, slug, status;
 
     /*
@@ -25,12 +25,12 @@ public class Service extends OriannaDto {
             return false;
         }
         final Service other = (Service)obj;
-        if(incident == null) {
-            if(other.incident != null) {
+        if(incidents == null) {
+            if(other.incidents != null) {
                 return false;
             }
         }
-        else if(!incident.equals(other.incident)) {
+        else if(!incidents.equals(other.incidents)) {
             return false;
         }
         if(name == null) {
@@ -63,8 +63,8 @@ public class Service extends OriannaDto {
     /**
      * @return the incident
      */
-    public List<Incident> getIncident() {
-        return incident;
+    public List<Incident> getIncidents() {
+        return incidents;
     }
 
     /**
@@ -96,7 +96,7 @@ public class Service extends OriannaDto {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (incident == null ? 0 : incident.hashCode());
+        result = prime * result + (incidents == null ? 0 : incidents.hashCode());
         result = prime * result + (name == null ? 0 : name.hashCode());
         result = prime * result + (slug == null ? 0 : slug.hashCode());
         result = prime * result + (status == null ? 0 : status.hashCode());
@@ -107,8 +107,8 @@ public class Service extends OriannaDto {
      * @param incident
      *            the incident to set
      */
-    public void setIncident(final List<Incident> incident) {
-        this.incident = incident;
+    public void setIncidents(final List<Incident> incident) {
+        incidents = incident;
     }
 
     /**
@@ -141,6 +141,6 @@ public class Service extends OriannaDto {
      */
     @Override
     public String toString() {
-        return "Service [incident=" + incident + ", name=" + name + ", slug=" + slug + ", status=" + status + "]";
+        return "Service [incident=" + incidents + ", name=" + name + ", slug=" + slug + ", status=" + status + "]";
     }
 }

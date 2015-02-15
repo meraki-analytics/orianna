@@ -5,7 +5,7 @@ import com.robrua.orianna.type.dto.OriannaDto;
 public class Stats extends OriannaDto {
     private static final long serialVersionUID = -5686446191361451936L;
     private Double armor, armorperlevel, attackdamage, attackdamageperlevel, attackrange, attackspeedoffset, attackspeedperlevel, crit, critperlevel, hp,
-        hpperlevel, hpregen, hpregenperlevel, movespeed, mp, mpperlevel, mpregen, mpregenperlevel, spellblock, spellblockperlevel;
+            hpperlevel, hpregen, hpregenperlevel, movespeed, mp, mpperlevel, mpregen, mpregenperlevel, spellblock, spellblockperlevel;
 
     /*
      * (non-Javadoc)

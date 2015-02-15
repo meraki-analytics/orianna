@@ -1,6 +1,8 @@
 package com.robrua.orianna.type.dto.league;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.robrua.orianna.type.dto.OriannaDto;
 
@@ -94,6 +96,65 @@ public class League extends OriannaDto {
      */
     public String getQueue() {
         return queue;
+    }
+
+    /**
+     * Gets all stored summoner IDs for batch lookup
+     *
+     * @return the summoner IDs
+     */
+    public Set<Long> getSummonerIDs() {
+        final Set<Long> set = new HashSet<>();
+
+        Long ID;
+        try {
+            ID = Long.parseLong(participantId);
+            set.add(ID);
+        }
+        catch(final NumberFormatException e) {
+            // Don't add team ID to the set
+        }
+
+        for(final LeagueEntry entry : entries) {
+            try {
+                ID = Long.parseLong(entry.getPlayerOrTeamId());
+                set.add(ID);
+            }
+            catch(final NumberFormatException e) {
+                // Don't add team ID to the set
+            }
+        }
+
+        return set;
+    }
+
+    /**
+     * Gets all stored team IDs for batch lookup
+     *
+     * @return the team IDs
+     */
+    public Set<String> getTeamIDs() {
+        final Set<String> set = new HashSet<>();
+
+        try {
+            Long.parseLong(participantId);
+            // Don't add summoner ID to the set
+        }
+        catch(final NumberFormatException e) {
+            set.add(participantId);
+        }
+
+        for(final LeagueEntry entry : entries) {
+            try {
+                Long.parseLong(entry.getPlayerOrTeamId());
+                // Don't add summoner ID to the set
+            }
+            catch(final NumberFormatException e) {
+                set.add(participantId);
+            }
+        }
+
+        return set;
     }
 
     /**
