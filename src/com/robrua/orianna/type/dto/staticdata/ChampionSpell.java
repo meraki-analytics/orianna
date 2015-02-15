@@ -1,6 +1,5 @@
 package com.robrua.orianna.type.dto.staticdata;
 
-import java.awt.Image;
 import java.util.List;
 
 import com.robrua.orianna.type.dto.OriannaDto;

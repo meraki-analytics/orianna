@@ -1,7 +1,8 @@
 package com.robrua.orianna.type.dto.staticdata;
 
-import java.awt.Image;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.robrua.orianna.type.dto.OriannaDto;
 
@@ -16,6 +17,7 @@ public class Champion extends OriannaDto {
     private List<Recommended> recommended;
     private List<Skin> skins;
     private List<ChampionSpell> spells;
+    private Stats stats;
 
     /*
      * (non-Javadoc)
@@ -33,12 +35,140 @@ public class Champion extends OriannaDto {
             return false;
         }
         final Champion other = (Champion)obj;
+        if(allytips == null) {
+            if(other.allytips != null) {
+                return false;
+            }
+        }
+        else if(!allytips.equals(other.allytips)) {
+            return false;
+        }
+        if(blurb == null) {
+            if(other.blurb != null) {
+                return false;
+            }
+        }
+        else if(!blurb.equals(other.blurb)) {
+            return false;
+        }
+        if(enemytips == null) {
+            if(other.enemytips != null) {
+                return false;
+            }
+        }
+        else if(!enemytips.equals(other.enemytips)) {
+            return false;
+        }
         if(id == null) {
             if(other.id != null) {
                 return false;
             }
         }
         else if(!id.equals(other.id)) {
+            return false;
+        }
+        if(image == null) {
+            if(other.image != null) {
+                return false;
+            }
+        }
+        else if(!image.equals(other.image)) {
+            return false;
+        }
+        if(info == null) {
+            if(other.info != null) {
+                return false;
+            }
+        }
+        else if(!info.equals(other.info)) {
+            return false;
+        }
+        if(key == null) {
+            if(other.key != null) {
+                return false;
+            }
+        }
+        else if(!key.equals(other.key)) {
+            return false;
+        }
+        if(lore == null) {
+            if(other.lore != null) {
+                return false;
+            }
+        }
+        else if(!lore.equals(other.lore)) {
+            return false;
+        }
+        if(name == null) {
+            if(other.name != null) {
+                return false;
+            }
+        }
+        else if(!name.equals(other.name)) {
+            return false;
+        }
+        if(partype == null) {
+            if(other.partype != null) {
+                return false;
+            }
+        }
+        else if(!partype.equals(other.partype)) {
+            return false;
+        }
+        if(passive == null) {
+            if(other.passive != null) {
+                return false;
+            }
+        }
+        else if(!passive.equals(other.passive)) {
+            return false;
+        }
+        if(recommended == null) {
+            if(other.recommended != null) {
+                return false;
+            }
+        }
+        else if(!recommended.equals(other.recommended)) {
+            return false;
+        }
+        if(skins == null) {
+            if(other.skins != null) {
+                return false;
+            }
+        }
+        else if(!skins.equals(other.skins)) {
+            return false;
+        }
+        if(spells == null) {
+            if(other.spells != null) {
+                return false;
+            }
+        }
+        else if(!spells.equals(other.spells)) {
+            return false;
+        }
+        if(stats == null) {
+            if(other.stats != null) {
+                return false;
+            }
+        }
+        else if(!stats.equals(other.stats)) {
+            return false;
+        }
+        if(tags == null) {
+            if(other.tags != null) {
+                return false;
+            }
+        }
+        else if(!tags.equals(other.tags)) {
+            return false;
+        }
+        if(title == null) {
+            if(other.title != null) {
+                return false;
+            }
+        }
+        else if(!title.equals(other.title)) {
             return false;
         }
         return true;
@@ -84,6 +214,24 @@ public class Champion extends OriannaDto {
      */
     public Info getInfo() {
         return info;
+    }
+
+    /**
+     * Gets all stored item IDs for batch lookup
+     *
+     * @return the item IDs
+     */
+    public Set<Long> getItemIDs() {
+        final Set<Long> set = new HashSet<>();
+        for(final Recommended rec : recommended) {
+            for(final Block block : rec.getBlocks()) {
+                for(final BlockItem item : block.getItems()) {
+                    set.add(item.getId().longValue());
+                }
+            }
+        }
+
+        return set;
     }
 
     /**
@@ -143,6 +291,13 @@ public class Champion extends OriannaDto {
     }
 
     /**
+     * @return the stats
+     */
+    public Stats getStats() {
+        return stats;
+    }
+
+    /**
      * @return the tags
      */
     public List<String> getTags() {
@@ -164,7 +319,23 @@ public class Champion extends OriannaDto {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + (allytips == null ? 0 : allytips.hashCode());
+        result = prime * result + (blurb == null ? 0 : blurb.hashCode());
+        result = prime * result + (enemytips == null ? 0 : enemytips.hashCode());
         result = prime * result + (id == null ? 0 : id.hashCode());
+        result = prime * result + (image == null ? 0 : image.hashCode());
+        result = prime * result + (info == null ? 0 : info.hashCode());
+        result = prime * result + (key == null ? 0 : key.hashCode());
+        result = prime * result + (lore == null ? 0 : lore.hashCode());
+        result = prime * result + (name == null ? 0 : name.hashCode());
+        result = prime * result + (partype == null ? 0 : partype.hashCode());
+        result = prime * result + (passive == null ? 0 : passive.hashCode());
+        result = prime * result + (recommended == null ? 0 : recommended.hashCode());
+        result = prime * result + (skins == null ? 0 : skins.hashCode());
+        result = prime * result + (spells == null ? 0 : spells.hashCode());
+        result = prime * result + (stats == null ? 0 : stats.hashCode());
+        result = prime * result + (tags == null ? 0 : tags.hashCode());
+        result = prime * result + (title == null ? 0 : title.hashCode());
         return result;
     }
 
@@ -281,6 +452,14 @@ public class Champion extends OriannaDto {
     }
 
     /**
+     * @param stats
+     *            the stats to set
+     */
+    public void setStats(final Stats stats) {
+        this.stats = stats;
+    }
+
+    /**
      * @param tags
      *            the tags to set
      */
@@ -303,7 +482,7 @@ public class Champion extends OriannaDto {
     @Override
     public String toString() {
         return "Champion [allytips=" + allytips + ", enemytips=" + enemytips + ", tags=" + tags + ", blurb=" + blurb + ", key=" + key + ", lore=" + lore
-                + ", name=" + name + ", partype=" + partype + ", title=" + title + ", id=" + id + ", image=" + image + ", info=" + info + ", passive="
-                + passive + ", recommended=" + recommended + ", skins=" + skins + ", spells=" + spells + "]";
+                + ", name=" + name + ", partype=" + partype + ", title=" + title + ", id=" + id + ", image=" + image + ", info=" + info + ", stats=" + stats
+                + ", passive=" + passive + ", recommended=" + recommended + ", skins=" + skins + ", spells=" + spells + "]";
     }
 }

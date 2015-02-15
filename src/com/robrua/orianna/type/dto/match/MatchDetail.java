@@ -1,6 +1,8 @@
 package com.robrua.orianna.type.dto.match;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.robrua.orianna.type.dto.OriannaDto;
 
@@ -154,10 +156,66 @@ public class MatchDetail extends OriannaDto {
     }
 
     /**
+     * Gets all stored champion IDs for batch lookup
+     *
+     * @return the champion IDs
+     */
+    public Set<Long> getChampionIDs() {
+        final Set<Long> set = new HashSet<>();
+        for(final Participant p : participants) {
+            set.add(p.getChampionId().longValue());
+        }
+        for(final Team t : teams) {
+            for(final BannedChampion ban : t.getBans()) {
+                set.add(ban.getChampionId().longValue());
+            }
+        }
+
+        return set;
+    }
+
+    /**
+     * Gets all stored item IDs for batch lookup
+     *
+     * @return the item IDs
+     */
+    public Set<Long> getItemIDs() {
+        final Set<Long> set = new HashSet<>();
+        for(final Participant p : participants) {
+            final ParticipantStats s = p.getStats();
+            set.add(s.getItem0());
+            set.add(s.getItem1());
+            set.add(s.getItem2());
+            set.add(s.getItem3());
+            set.add(s.getItem4());
+            set.add(s.getItem5());
+            set.add(s.getItem6());
+        }
+
+        return set;
+    }
+
+    /**
      * @return the mapId
      */
     public Integer getMapId() {
         return mapId;
+    }
+
+    /**
+     * Gets all stored mastery IDs for batch lookup
+     *
+     * @return the mastery IDs
+     */
+    public Set<Long> getMasteryIDs() {
+        final Set<Long> set = new HashSet<>();
+        for(final Participant p : participants) {
+            for(final Mastery mastery : p.getMasteries()) {
+                set.add(mastery.getMasteryId());
+            }
+        }
+
+        return set;
     }
 
     /**
@@ -238,10 +296,55 @@ public class MatchDetail extends OriannaDto {
     }
 
     /**
+     * Gets all stored rune IDs for batch lookup
+     *
+     * @return the rune IDs
+     */
+    public Set<Long> getRuneIDs() {
+        final Set<Long> set = new HashSet<>();
+        for(final Participant p : participants) {
+            for(final Rune rune : p.getRunes()) {
+                set.add(rune.getRuneId());
+            }
+        }
+
+        return set;
+    }
+
+    /**
      * @return the season
      */
     public String getSeason() {
         return season;
+    }
+
+    /**
+     * Gets all stored summoner IDs for batch lookup
+     *
+     * @return the summoner IDs
+     */
+    public Set<Long> getSummonerIDs() {
+        final Set<Long> set = new HashSet<>();
+        for(final ParticipantIdentity p : participantIdentities) {
+            set.add(p.getPlayer().getSummonerId());
+        }
+
+        return set;
+    }
+
+    /**
+     * Gets all stored summoner spell IDs for batch lookup
+     *
+     * @return the summoner spell IDs
+     */
+    public Set<Long> getSummonerSpellIDs() {
+        final Set<Long> set = new HashSet<>();
+        for(final Participant p : participants) {
+            set.add(p.getSpell1Id().longValue());
+            set.add(p.getSpell1Id().longValue());
+        }
+
+        return set;
     }
 
     /**

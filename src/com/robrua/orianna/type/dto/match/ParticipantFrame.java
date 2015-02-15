@@ -3,8 +3,8 @@ package com.robrua.orianna.type.dto.match;
 import com.robrua.orianna.type.dto.OriannaDto;
 
 public class ParticipantFrame extends OriannaDto {
-    private static final long serialVersionUID = -4155545316233287154L;
-    private Integer currentGold, jungleMinionsKilled, level, minionsKilled, participantId, totalGold, xp;
+    private static final long serialVersionUID = 3116174959429857810L;
+    private Integer currentGold, jungleMinionsKilled, level, minionsKilled, participantId, totalGold, xp, dominionScore, teamScore;
     private Position position;
 
     /*
@@ -29,6 +29,14 @@ public class ParticipantFrame extends OriannaDto {
             }
         }
         else if(!currentGold.equals(other.currentGold)) {
+            return false;
+        }
+        if(dominionScore == null) {
+            if(other.dominionScore != null) {
+                return false;
+            }
+        }
+        else if(!dominionScore.equals(other.dominionScore)) {
             return false;
         }
         if(jungleMinionsKilled == null) {
@@ -71,6 +79,14 @@ public class ParticipantFrame extends OriannaDto {
         else if(!position.equals(other.position)) {
             return false;
         }
+        if(teamScore == null) {
+            if(other.teamScore != null) {
+                return false;
+            }
+        }
+        else if(!teamScore.equals(other.teamScore)) {
+            return false;
+        }
         if(totalGold == null) {
             if(other.totalGold != null) {
                 return false;
@@ -95,6 +111,13 @@ public class ParticipantFrame extends OriannaDto {
      */
     public Integer getCurrentGold() {
         return currentGold;
+    }
+
+    /**
+     * @return the dominionScore
+     */
+    public Integer getDominionScore() {
+        return dominionScore;
     }
 
     /**
@@ -133,6 +156,13 @@ public class ParticipantFrame extends OriannaDto {
     }
 
     /**
+     * @return the teamScore
+     */
+    public Integer getTeamScore() {
+        return teamScore;
+    }
+
+    /**
      * @return the totalGold
      */
     public Integer getTotalGold() {
@@ -155,11 +185,13 @@ public class ParticipantFrame extends OriannaDto {
         final int prime = 31;
         int result = 1;
         result = prime * result + (currentGold == null ? 0 : currentGold.hashCode());
+        result = prime * result + (dominionScore == null ? 0 : dominionScore.hashCode());
         result = prime * result + (jungleMinionsKilled == null ? 0 : jungleMinionsKilled.hashCode());
         result = prime * result + (level == null ? 0 : level.hashCode());
         result = prime * result + (minionsKilled == null ? 0 : minionsKilled.hashCode());
         result = prime * result + (participantId == null ? 0 : participantId.hashCode());
         result = prime * result + (position == null ? 0 : position.hashCode());
+        result = prime * result + (teamScore == null ? 0 : teamScore.hashCode());
         result = prime * result + (totalGold == null ? 0 : totalGold.hashCode());
         result = prime * result + (xp == null ? 0 : xp.hashCode());
         return result;
@@ -171,6 +203,14 @@ public class ParticipantFrame extends OriannaDto {
      */
     public void setCurrentGold(final Integer currentGold) {
         this.currentGold = currentGold;
+    }
+
+    /**
+     * @param dominionScore
+     *            the dominionScore to set
+     */
+    public void setDominionScore(final Integer dominionScore) {
+        this.dominionScore = dominionScore;
     }
 
     /**
@@ -214,6 +254,14 @@ public class ParticipantFrame extends OriannaDto {
     }
 
     /**
+     * @param teamScore
+     *            the teamScore to set
+     */
+    public void setTeamScore(final Integer teamScore) {
+        this.teamScore = teamScore;
+    }
+
+    /**
      * @param totalGold
      *            the totalGold to set
      */
@@ -236,6 +284,7 @@ public class ParticipantFrame extends OriannaDto {
     @Override
     public String toString() {
         return "ParticipantFrame [currentGold=" + currentGold + ", jungleMinionsKilled=" + jungleMinionsKilled + ", level=" + level + ", minionsKilled="
-                + minionsKilled + ", participantId=" + participantId + ", totalGold=" + totalGold + ", xp=" + xp + ", position=" + position + "]";
+                + minionsKilled + ", participantId=" + participantId + ", totalGold=" + totalGold + ", xp=" + xp + ", dominionScore=" + dominionScore
+                + ", teamScore=" + teamScore + ", position=" + position + "]";
     }
 }

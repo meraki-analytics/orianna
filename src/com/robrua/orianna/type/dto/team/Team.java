@@ -1,6 +1,8 @@
 package com.robrua.orianna.type.dto.team;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.robrua.orianna.type.dto.OriannaDto;
 
@@ -114,6 +116,21 @@ public class Team extends OriannaDto {
      */
     public String getStatus() {
         return status;
+    }
+
+    /**
+     * Gets all stored summoner IDs for batch lookup
+     *
+     * @return the summoner IDs
+     */
+    public Set<Long> getSummonerIDs() {
+        final Set<Long> set = new HashSet<>();
+        set.add(roster.getOwnerId());
+        for(final TeamMemberInfo member : roster.getMemberList()) {
+            set.add(member.getPlayerId());
+        }
+
+        return set;
     }
 
     /**

@@ -1,7 +1,8 @@
 package com.robrua.orianna.type.dto.currentgame;
 
+import java.util.HashSet;
 import java.util.List;
-import java.util.Observer;
+import java.util.Set;
 
 import com.robrua.orianna.type.dto.OriannaDto;
 
@@ -128,6 +129,23 @@ public class CurrentGameInfo extends OriannaDto {
     }
 
     /**
+     * Gets all stored champion IDs for batch lookup
+     *
+     * @return the champion IDs
+     */
+    public Set<Long> getChampionIDs() {
+        final Set<Long> set = new HashSet<>();
+        for(final BannedChampion ban : bannedChampions) {
+            set.add(ban.getChampionId());
+        }
+        for(final Participant p : participants) {
+            set.add(p.getChampionId());
+        }
+
+        return set;
+    }
+
+    /**
      * @return the gameId
      */
     public Long getGameId() {
@@ -177,6 +195,22 @@ public class CurrentGameInfo extends OriannaDto {
     }
 
     /**
+     * Gets all stored mastery IDs for batch lookup
+     *
+     * @return the mastery IDs
+     */
+    public Set<Long> getMasteryIDs() {
+        final Set<Long> set = new HashSet<>();
+        for(final Participant p : participants) {
+            for(final Mastery m : p.getMasteries()) {
+                set.add(m.getMasteryId());
+            }
+        }
+
+        return set;
+    }
+
+    /**
      * @return the observers
      */
     public Observer getObservers() {
@@ -195,6 +229,51 @@ public class CurrentGameInfo extends OriannaDto {
      */
     public String getPlatformId() {
         return platformId;
+    }
+
+    /**
+     * Gets all stored rune IDs for batch lookup
+     *
+     * @return the rune IDs
+     */
+    public Set<Long> getRuneIDs() {
+        final Set<Long> set = new HashSet<>();
+        for(final Participant p : participants) {
+            for(final Rune rune : p.getRunes()) {
+                set.add(rune.getRuneId());
+            }
+        }
+
+        return set;
+    }
+
+    /**
+     * Gets all stored summoner IDs for batch lookup
+     *
+     * @return the summoner IDs
+     */
+    public Set<Long> getSummonerIDs() {
+        final Set<Long> set = new HashSet<>();
+        for(final Participant p : participants) {
+            set.add(p.getSummonerId());
+        }
+
+        return set;
+    }
+
+    /**
+     * Gets all stored summoner spell IDs for batch lookup
+     *
+     * @return the summoner spell IDs
+     */
+    public Set<Long> getSummonerSpellIDs() {
+        final Set<Long> set = new HashSet<>();
+        for(final Participant p : participants) {
+            set.add(p.getSpell1Id());
+            set.add(p.getSpell2Id());
+        }
+
+        return set;
     }
 
     /*

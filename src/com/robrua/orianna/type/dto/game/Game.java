@@ -1,6 +1,8 @@
 package com.robrua.orianna.type.dto.game;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.robrua.orianna.type.dto.OriannaDto;
 
@@ -45,6 +47,21 @@ public class Game extends OriannaDto {
      */
     public Integer getChampionId() {
         return championId;
+    }
+
+    /**
+     * Gets all stored champion IDs for batch lookup
+     *
+     * @return the champion IDs
+     */
+    public Set<Long> getChampionIDs() {
+        final Set<Long> set = new HashSet<>();
+        set.add(championId.longValue());
+        for(final Player player : fellowPlayers) {
+            set.add(player.getChampionId().longValue());
+        }
+
+        return set;
     }
 
     /**
@@ -97,6 +114,24 @@ public class Game extends OriannaDto {
     }
 
     /**
+     * Gets all stored item IDs for batch lookup
+     *
+     * @return the item IDs
+     */
+    public Set<Long> getItemIDs() {
+        final Set<Long> set = new HashSet<>();
+        set.add(stats.getItem0().longValue());
+        set.add(stats.getItem1().longValue());
+        set.add(stats.getItem2().longValue());
+        set.add(stats.getItem3().longValue());
+        set.add(stats.getItem4().longValue());
+        set.add(stats.getItem5().longValue());
+        set.add(stats.getItem6().longValue());
+
+        return set;
+    }
+
+    /**
      * @return the level
      */
     public Integer getLevel() {
@@ -136,6 +171,33 @@ public class Game extends OriannaDto {
      */
     public String getSubType() {
         return subType;
+    }
+
+    /**
+     * Gets all stored summoner IDs for batch lookup
+     *
+     * @return the summoner IDs
+     */
+    public Set<Long> getSummonerIDs() {
+        final Set<Long> set = new HashSet<>();
+        for(final Player player : fellowPlayers) {
+            set.add(player.getSummonerId());
+        }
+
+        return set;
+    }
+
+    /**
+     * Gets all stored summoner spell IDs for batch lookup
+     *
+     * @return the summoner spell IDs
+     */
+    public Set<Long> getSummonerSpellIDs() {
+        final Set<Long> set = new HashSet<>();
+        set.add(spell1.longValue());
+        set.add(spell2.longValue());
+
+        return set;
     }
 
     /**
