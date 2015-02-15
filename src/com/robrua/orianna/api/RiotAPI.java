@@ -2,13 +2,13 @@ package com.robrua.orianna.api;
 
 import java.util.List;
 
-import com.robrua.orianna.type.api.staticdata.Champion;
-import com.robrua.orianna.type.api.staticdata.Item;
-import com.robrua.orianna.type.api.staticdata.Mastery;
-import com.robrua.orianna.type.api.staticdata.Rune;
-import com.robrua.orianna.type.api.staticdata.SummonerSpell;
-import com.robrua.orianna.type.api.summoner.Summoner;
-import com.robrua.orianna.type.api.team.Team;
+import com.robrua.orianna.type.core.staticdata.Champion;
+import com.robrua.orianna.type.core.staticdata.Item;
+import com.robrua.orianna.type.core.staticdata.Mastery;
+import com.robrua.orianna.type.core.staticdata.Rune;
+import com.robrua.orianna.type.core.staticdata.SummonerSpell;
+import com.robrua.orianna.type.core.summoner.Summoner;
+import com.robrua.orianna.type.core.team.Team;
 
 public abstract class RiotAPI {
     private static LoadPolicy loadPolicy = LoadPolicy.UPFRONT;
