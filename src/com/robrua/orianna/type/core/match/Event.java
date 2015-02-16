@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import com.robrua.orianna.api.RiotAPI;
+import com.robrua.orianna.api.core.RiotAPI;
 import com.robrua.orianna.type.core.OriannaObject;
 import com.robrua.orianna.type.core.common.Side;
 import com.robrua.orianna.type.core.staticdata.Item;
@@ -109,7 +109,7 @@ public class Event extends OriannaObject<com.robrua.orianna.type.dto.match.Event
             throw new MissingDataException("Item ID is null.");
         }
 
-        item = RiotAPI.getItemByID(i.longValue());
+        item = RiotAPI.getItem(i.longValue());
         return item;
     }
 
@@ -128,7 +128,7 @@ public class Event extends OriannaObject<com.robrua.orianna.type.dto.match.Event
             throw new MissingDataException("Item After ID is null.");
         }
 
-        itemAfter = RiotAPI.getItemByID(i.longValue());
+        itemAfter = RiotAPI.getItem(i.longValue());
         return itemAfter;
     }
 
@@ -156,7 +156,7 @@ public class Event extends OriannaObject<com.robrua.orianna.type.dto.match.Event
             throw new MissingDataException("Item Before ID is null.");
         }
 
-        itemBefore = RiotAPI.getItemByID(i.longValue());
+        itemBefore = RiotAPI.getItem(i.longValue());
         return itemBefore;
     }
 

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.robrua.orianna.api.RiotAPI;
+import com.robrua.orianna.api.core.RiotAPI;
 import com.robrua.orianna.type.core.OriannaObject;
 import com.robrua.orianna.type.core.common.Side;
 import com.robrua.orianna.type.core.common.Tier;
@@ -50,7 +50,7 @@ public class Participant extends OriannaObject<CombinedParticipant> {
             throw new MissingDataException("Champion ID is null.");
         }
 
-        champion = RiotAPI.getChampionByID(i.longValue());
+        champion = RiotAPI.getChampion(i.longValue());
         return champion;
     }
 

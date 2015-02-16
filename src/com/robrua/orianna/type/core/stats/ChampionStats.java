@@ -1,6 +1,6 @@
 package com.robrua.orianna.type.core.stats;
 
-import com.robrua.orianna.api.RiotAPI;
+import com.robrua.orianna.api.core.RiotAPI;
 import com.robrua.orianna.type.core.OriannaObject;
 import com.robrua.orianna.type.core.staticdata.Champion;
 import com.robrua.orianna.type.exception.MissingDataException;
@@ -38,7 +38,7 @@ public class ChampionStats extends OriannaObject<com.robrua.orianna.type.dto.sta
             return null;
         }
 
-        champion = RiotAPI.getChampionByID(i.longValue());
+        champion = RiotAPI.getChampion(i.longValue());
         return champion;
     }
 

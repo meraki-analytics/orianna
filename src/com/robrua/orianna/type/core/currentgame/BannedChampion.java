@@ -1,6 +1,6 @@
 package com.robrua.orianna.type.core.currentgame;
 
-import com.robrua.orianna.api.RiotAPI;
+import com.robrua.orianna.api.core.RiotAPI;
 import com.robrua.orianna.type.core.OriannaObject;
 import com.robrua.orianna.type.core.common.Side;
 import com.robrua.orianna.type.core.staticdata.Champion;
@@ -33,7 +33,7 @@ public class BannedChampion extends OriannaObject<com.robrua.orianna.type.dto.cu
             throw new MissingDataException("Champion ID is null.");
         }
 
-        champion = RiotAPI.getChampionByID(l.longValue());
+        champion = RiotAPI.getChampion(l.longValue());
         return champion;
     }
 
