@@ -2,7 +2,7 @@ package com.robrua.orianna.type.core.team;
 
 import java.util.Date;
 
-import com.robrua.orianna.api.RiotAPI;
+import com.robrua.orianna.api.core.RiotAPI;
 import com.robrua.orianna.type.core.OriannaObject;
 import com.robrua.orianna.type.core.summoner.Summoner;
 import com.robrua.orianna.type.exception.MissingDataException;

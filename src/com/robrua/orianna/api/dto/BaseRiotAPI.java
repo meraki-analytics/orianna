@@ -23,7 +23,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.robrua.orianna.api.RiotAPI;
+import com.robrua.orianna.api.core.RiotAPI;
 import com.robrua.orianna.type.api.MultiRateLimiter;
 import com.robrua.orianna.type.api.RateLimit;
 import com.robrua.orianna.type.api.RateLimiter;

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.robrua.orianna.api.RiotAPI;
+import com.robrua.orianna.api.core.RiotAPI;
 import com.robrua.orianna.type.core.OriannaObject;
 import com.robrua.orianna.type.core.common.Side;
 import com.robrua.orianna.type.core.staticdata.Item;
@@ -136,7 +136,7 @@ public class RawStats extends OriannaObject<com.robrua.orianna.type.dto.game.Raw
             throw new MissingDataException("Item #0 ID is null.");
         }
 
-        item0 = RiotAPI.getItemByID(i.longValue());
+        item0 = RiotAPI.getItem(i.longValue());
         return item0;
     }
 
@@ -164,7 +164,7 @@ public class RawStats extends OriannaObject<com.robrua.orianna.type.dto.game.Raw
             throw new MissingDataException("Item #1 ID is null.");
         }
 
-        item1 = RiotAPI.getItemByID(i.longValue());
+        item1 = RiotAPI.getItem(i.longValue());
         return item1;
     }
 
@@ -192,7 +192,7 @@ public class RawStats extends OriannaObject<com.robrua.orianna.type.dto.game.Raw
             throw new MissingDataException("Item #2 ID is null.");
         }
 
-        item2 = RiotAPI.getItemByID(i.longValue());
+        item2 = RiotAPI.getItem(i.longValue());
         return item2;
     }
 
@@ -220,7 +220,7 @@ public class RawStats extends OriannaObject<com.robrua.orianna.type.dto.game.Raw
             throw new MissingDataException("Item #3 ID is null.");
         }
 
-        item3 = RiotAPI.getItemByID(i.longValue());
+        item3 = RiotAPI.getItem(i.longValue());
         return item3;
     }
 
@@ -248,7 +248,7 @@ public class RawStats extends OriannaObject<com.robrua.orianna.type.dto.game.Raw
             throw new MissingDataException("Item #4 ID is null.");
         }
 
-        item4 = RiotAPI.getItemByID(i.longValue());
+        item4 = RiotAPI.getItem(i.longValue());
         return item4;
     }
 
@@ -276,7 +276,7 @@ public class RawStats extends OriannaObject<com.robrua.orianna.type.dto.game.Raw
             throw new MissingDataException("Item #5 ID is null.");
         }
 
-        item5 = RiotAPI.getItemByID(i.longValue());
+        item5 = RiotAPI.getItem(i.longValue());
         return item5;
     }
 
@@ -304,7 +304,7 @@ public class RawStats extends OriannaObject<com.robrua.orianna.type.dto.game.Raw
             throw new MissingDataException("Item #6 ID is null.");
         }
 
-        item6 = RiotAPI.getItemByID(i.longValue());
+        item6 = RiotAPI.getItem(i.longValue());
         return item6;
     }
 
@@ -414,7 +414,7 @@ public class RawStats extends OriannaObject<com.robrua.orianna.type.dto.game.Raw
             return Collections.unmodifiableList(items);
         }
 
-        final List<Item> newItems = RiotAPI.getItemsByID(toLoad);
+        final List<Item> newItems = RiotAPI.getItems(toLoad);
         for(final Item item : newItems) {
             final int index = items.indexOf(null);
             items.add(index, item);

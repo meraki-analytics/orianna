@@ -1,6 +1,6 @@
 package com.robrua.orianna.type.core.currentgame;
 
-import com.robrua.orianna.api.RiotAPI;
+import com.robrua.orianna.api.core.RiotAPI;
 import com.robrua.orianna.type.core.OriannaObject;
 import com.robrua.orianna.type.core.staticdata.Mastery;
 import com.robrua.orianna.type.exception.MissingDataException;

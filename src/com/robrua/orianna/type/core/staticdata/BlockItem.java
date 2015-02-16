@@ -1,6 +1,6 @@
 package com.robrua.orianna.type.core.staticdata;
 
-import com.robrua.orianna.api.RiotAPI;
+import com.robrua.orianna.api.core.RiotAPI;
 import com.robrua.orianna.type.core.OriannaObject;
 import com.robrua.orianna.type.exception.MissingDataException;
 
@@ -40,7 +40,7 @@ public class BlockItem extends OriannaObject<com.robrua.orianna.type.dto.staticd
             throw new MissingDataException("Item ID is null.");
         }
 
-        item = RiotAPI.getItemByID(i.longValue());
+        item = RiotAPI.getItem(i.longValue());
         return item;
     }
 
