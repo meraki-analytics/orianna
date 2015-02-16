@@ -26,7 +26,6 @@ public abstract class StatusAPI {
         try {
             final URI uri = new URIBuilder().setScheme("http").setHost("status.leagueoflegends.com").setPath("/shards/" + region.toString().toLowerCase())
                     .build();
-            System.out.println(uri);
             return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(uri, true), ShardStatus.class);
         }
         catch(final URISyntaxException e) {
@@ -44,7 +43,6 @@ public abstract class StatusAPI {
         try {
             final URI uri = new URIBuilder().setScheme("http").setHost("status.leagueoflegends.com").setPath("/shards").build();
             final Type type = new TypeToken<List<Shard>>() {}.getType();
-            System.out.println(uri);
             return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(uri, true), type);
         }
         catch(final URISyntaxException e) {
