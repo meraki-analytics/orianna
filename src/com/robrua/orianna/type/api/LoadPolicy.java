@@ -1,4 +1,4 @@
-package com.robrua.orianna.api;
+package com.robrua.orianna.type.api;
 
 public enum LoadPolicy {
     LAZY, UPFRONT;
