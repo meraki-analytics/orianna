@@ -1,0 +1,148 @@
+package com.robrua.orianna.type.dto.staticdata;
+
+import java.util.List;
+
+import com.robrua.orianna.type.dto.OriannaDto;
+
+public class MapInfo extends OriannaDto {
+    private static final long serialVersionUID = 7442359340416835068L;
+    private Image image;
+    private Integer mapId;
+    private String mapName;
+    private List<Long> unpurchasableItemList;
+
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(final Object obj) {
+        if(this == obj) {
+            return true;
+        }
+        if(obj == null) {
+            return false;
+        }
+        if(!(obj instanceof MapInfo)) {
+            return false;
+        }
+        final MapInfo other = (MapInfo)obj;
+        if(image == null) {
+            if(other.image != null) {
+                return false;
+            }
+        }
+        else if(!image.equals(other.image)) {
+            return false;
+        }
+        if(mapId == null) {
+            if(other.mapId != null) {
+                return false;
+            }
+        }
+        else if(!mapId.equals(other.mapId)) {
+            return false;
+        }
+        if(mapName == null) {
+            if(other.mapName != null) {
+                return false;
+            }
+        }
+        else if(!mapName.equals(other.mapName)) {
+            return false;
+        }
+        if(unpurchasableItemList == null) {
+            if(other.unpurchasableItemList != null) {
+                return false;
+            }
+        }
+        else if(!unpurchasableItemList.equals(other.unpurchasableItemList)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * @return the image
+     */
+    public Image getImage() {
+        return image;
+    }
+
+    /**
+     * @return the mapId
+     */
+    public Integer getMapId() {
+        return mapId;
+    }
+
+    /**
+     * @return the mapName
+     */
+    public String getMapName() {
+        return mapName;
+    }
+
+    /**
+     * @return the unpurchasableItemList
+     */
+    public List<Long> getUnpurchasableItemList() {
+        return unpurchasableItemList;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (image == null ? 0 : image.hashCode());
+        result = prime * result + (mapId == null ? 0 : mapId.hashCode());
+        result = prime * result + (mapName == null ? 0 : mapName.hashCode());
+        result = prime * result + (unpurchasableItemList == null ? 0 : unpurchasableItemList.hashCode());
+        return result;
+    }
+
+    /**
+     * @param image
+     *            the image to set
+     */
+    public void setImage(final Image image) {
+        this.image = image;
+    }
+
+    /**
+     * @param mapId
+     *            the mapId to set
+     */
+    public void setMapId(final Integer mapId) {
+        this.mapId = mapId;
+    }
+
+    /**
+     * @param mapName
+     *            the mapName to set
+     */
+    public void setMapName(final String mapName) {
+        this.mapName = mapName;
+    }
+
+    /**
+     * @param unpurchasableItemList
+     *            the unpurchasableItemList to set
+     */
+    public void setUnpurchasableItemList(final List<Long> unpurchasableItemList) {
+        this.unpurchasableItemList = unpurchasableItemList;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return "MapInfo [mapName=" + mapName + ", mapId=" + mapId + ", unpurchasableItemList=" + unpurchasableItemList + ", image=" + image + "]";
+    }
+}

@@ -2,6 +2,10 @@ package com.robrua.orianna.api;
 
 import java.util.List;
 
+import com.robrua.orianna.type.api.LoadPolicy;
+import com.robrua.orianna.type.api.MultiRateLimiter;
+import com.robrua.orianna.type.api.RateLimit;
+import com.robrua.orianna.type.api.RateLimiter;
 import com.robrua.orianna.type.core.staticdata.Champion;
 import com.robrua.orianna.type.core.staticdata.Item;
 import com.robrua.orianna.type.core.staticdata.Mastery;
@@ -15,6 +19,15 @@ public abstract class RiotAPI {
 
     public static Champion getChampionByID(final long ID) {
         return null;
+    }
+
+    /**
+     * Gets a rate limiter for the default development rate limit
+     *
+     * @return default development rate limiter
+     */
+    public static RateLimiter getDefaultDevelopmentRateLimiter() {
+        return new MultiRateLimiter(new RateLimit(10, 10), new RateLimit(500, 600));
     }
 
     public static Item getItemByID(final long ID) {
