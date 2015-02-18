@@ -62,9 +62,7 @@ public class RankedStats extends OriannaDto {
     public Set<Long> getChampionIDs() {
         final Set<Long> set = new HashSet<>();
         for(final ChampionStats stats : champions) {
-            if(stats.getId() != 0) {
-                set.add(stats.getId().longValue());
-            }
+            set.add(stats.getId().longValue());
         }
 
         return set;

@@ -120,13 +120,27 @@ public class Game extends OriannaDto {
      */
     public Set<Long> getItemIDs() {
         final Set<Long> set = new HashSet<>();
-        set.add(stats.getItem0().longValue());
-        set.add(stats.getItem1().longValue());
-        set.add(stats.getItem2().longValue());
-        set.add(stats.getItem3().longValue());
-        set.add(stats.getItem4().longValue());
-        set.add(stats.getItem5().longValue());
-        set.add(stats.getItem6().longValue());
+        if(stats.getItem0() != null) {
+            set.add(stats.getItem0().longValue());
+        }
+        if(stats.getItem1() != null) {
+            set.add(stats.getItem1().longValue());
+        }
+        if(stats.getItem2() != null) {
+            set.add(stats.getItem2().longValue());
+        }
+        if(stats.getItem3() != null) {
+            set.add(stats.getItem3().longValue());
+        }
+        if(stats.getItem4() != null) {
+            set.add(stats.getItem4().longValue());
+        }
+        if(stats.getItem5() != null) {
+            set.add(stats.getItem5().longValue());
+        }
+        if(stats.getItem6() != null) {
+            set.add(stats.getItem6().longValue());
+        }
 
         return set;
     }

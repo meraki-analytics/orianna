@@ -202,8 +202,10 @@ public class CurrentGameInfo extends OriannaDto {
     public Set<Long> getMasteryIDs() {
         final Set<Long> set = new HashSet<>();
         for(final Participant p : participants) {
-            for(final Mastery m : p.getMasteries()) {
-                set.add(m.getMasteryId());
+            if(p.getMasteries() != null) {
+                for(final Mastery m : p.getMasteries()) {
+                    set.add(m.getMasteryId());
+                }
             }
         }
 
@@ -239,8 +241,10 @@ public class CurrentGameInfo extends OriannaDto {
     public Set<Long> getRuneIDs() {
         final Set<Long> set = new HashSet<>();
         for(final Participant p : participants) {
-            for(final Rune rune : p.getRunes()) {
-                set.add(rune.getRuneId());
+            if(p.getRunes() != null) {
+                for(final Rune rune : p.getRunes()) {
+                    set.add(rune.getRuneId());
+                }
             }
         }
 
@@ -255,7 +259,25 @@ public class CurrentGameInfo extends OriannaDto {
     public Set<Long> getSummonerIDs() {
         final Set<Long> set = new HashSet<>();
         for(final Participant p : participants) {
-            set.add(p.getSummonerId());
+            if(p.getSummonerId() != null) {
+                set.add(p.getSummonerId());
+            }
+        }
+
+        return set;
+    }
+
+    /**
+     * Gets all stored summoner names for batch lookup
+     *
+     * @return the summoner names
+     */
+    public Set<String> getSummonerNames() {
+        final Set<String> set = new HashSet<>();
+        for(final Participant p : participants) {
+            if(p.getSummonerName() != null) {
+                set.add(p.getSummonerName());
+            }
         }
 
         return set;

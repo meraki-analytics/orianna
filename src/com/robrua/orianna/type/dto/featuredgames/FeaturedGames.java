@@ -118,6 +118,20 @@ public class FeaturedGames extends OriannaDto {
     }
 
     /**
+     * Gets all stored summoner names for batch lookup
+     *
+     * @return the summoner names
+     */
+    public Set<String> getSummonerNames() {
+        final Set<String> set = new HashSet<>();
+        for(final CurrentGameInfo game : gameList) {
+            set.addAll(game.getSummonerNames());
+        }
+
+        return set;
+    }
+
+    /**
      * Gets all stored summoner spell IDs for batch lookup
      *
      * @return the summoner spell IDs

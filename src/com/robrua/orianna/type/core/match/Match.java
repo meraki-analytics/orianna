@@ -16,7 +16,7 @@ import com.robrua.orianna.type.core.common.QueueType;
 import com.robrua.orianna.type.core.common.Region;
 import com.robrua.orianna.type.core.common.Season;
 
-public class MatchDetail extends OriannaObject<com.robrua.orianna.type.dto.match.MatchDetail> {
+public class Match extends OriannaObject<com.robrua.orianna.type.dto.match.MatchDetail> {
     private static final long serialVersionUID = -4989370919962037643L;
     private List<Participant> participants;
     private List<MatchTeam> teams;
@@ -26,7 +26,7 @@ public class MatchDetail extends OriannaObject<com.robrua.orianna.type.dto.match
      * @param data
      *            the underlying dto
      */
-    public MatchDetail(final com.robrua.orianna.type.dto.match.MatchDetail data) {
+    public Match(final com.robrua.orianna.type.dto.match.MatchDetail data) {
         super(data, com.robrua.orianna.type.dto.match.MatchDetail.class);
     }
 

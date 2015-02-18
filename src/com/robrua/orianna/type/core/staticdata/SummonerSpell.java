@@ -20,8 +20,7 @@ public class SummonerSpell extends OriannaObject<com.robrua.orianna.type.dto.sta
      * @param data
      *            the underlying dto
      */
-    public SummonerSpell(final com.robrua.orianna.type.dto.staticdata.SummonerSpell data,
-            final Class<com.robrua.orianna.type.dto.staticdata.SummonerSpell> clazz) {
+    public SummonerSpell(final com.robrua.orianna.type.dto.staticdata.SummonerSpell data) {
         super(data, com.robrua.orianna.type.dto.staticdata.SummonerSpell.class);
     }
 

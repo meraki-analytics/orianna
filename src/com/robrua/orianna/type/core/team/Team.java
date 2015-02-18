@@ -5,7 +5,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import com.robrua.orianna.api.core.RiotAPI;
 import com.robrua.orianna.type.core.OriannaObject;
+import com.robrua.orianna.type.core.league.League;
 
 public class Team extends OriannaObject<com.robrua.orianna.type.dto.team.Team> {
     private static final long serialVersionUID = -6729037169787253289L;
@@ -64,6 +66,24 @@ public class Team extends OriannaObject<com.robrua.orianna.type.dto.team.Team> {
      */
     public Date getLastQueueDate() {
         return super.getDate(data.getLastJoinedRankedTeamQueueDate());
+    }
+
+    /**
+     * The team's league entries
+     *
+     * @return the team's league entries
+     */
+    public List<League> getLeagueEntries() {
+        return RiotAPI.getLeagueEntriesByTeamID(getID());
+    }
+
+    /**
+     * The team's leagues
+     *
+     * @return the team's leagues
+     */
+    public List<League> getLeagues() {
+        return RiotAPI.getLeaguesByTeamID(getID());
     }
 
     /**
