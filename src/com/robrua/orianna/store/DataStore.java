@@ -11,6 +11,8 @@ import com.robrua.orianna.type.core.OriannaObject;
  */
 public interface DataStore {
     /**
+     * @param <T>
+     *            the type of object to delete
      * @param type
      *            the type of object to delete
      * @param keys
@@ -19,6 +21,8 @@ public interface DataStore {
     public <T extends OriannaObject<?>> void delete(Class<T> type, List<?> keys);
 
     /**
+     * @param <T>
+     *            the type of object to delete
      * @param type
      *            the type of object to delete
      * @param key
@@ -27,6 +31,8 @@ public interface DataStore {
     public <T extends OriannaObject<?>> void delete(Class<T> type, Object key);
 
     /**
+     * @param <T>
+     *            the type of object to get
      * @param type
      *            the type of object to get
      * @param keys
@@ -37,6 +43,8 @@ public interface DataStore {
     public <T extends OriannaObject<?>> List<T> get(Class<T> type, List<?> keys);
 
     /**
+     * @param <T>
+     *            the type of object to get
      * @param type
      *            the type of object to get
      * @param key
@@ -46,6 +54,8 @@ public interface DataStore {
     public <T extends OriannaObject<?>> T get(Class<T> type, Object key);
 
     /**
+     * @param <T>
+     *            the type of object to get
      * @param type
      *            the type of object to get
      * @return if all objects have been stored, all objects. If not, null.
@@ -53,6 +63,8 @@ public interface DataStore {
     public <T extends OriannaObject<?>> List<T> getAll(Class<T> type);
 
     /**
+     * @param <T>
+     *            the type of object to store
      * @param objs
      *            the objects to store
      * @param keys
@@ -63,6 +75,8 @@ public interface DataStore {
     public <T extends OriannaObject<?>> void store(List<T> objs, List<?> keys, boolean isFullSet);
 
     /**
+     * @param <T>
+     *            the type of object to store
      * @param obj
      *            the object to store
      * @param key

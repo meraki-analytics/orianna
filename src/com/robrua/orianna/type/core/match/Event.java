@@ -21,6 +21,8 @@ public class Event extends OriannaObject<com.robrua.orianna.type.dto.match.Event
     /**
      * @param data
      *            the underlying dto
+     * @param participants
+     *            the participants
      */
     public Event(final com.robrua.orianna.type.dto.match.Event data, final Map<Integer, Participant> participants) {
         super(data, com.robrua.orianna.type.dto.match.Event.class);

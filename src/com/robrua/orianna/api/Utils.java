@@ -7,6 +7,8 @@ public abstract class Utils {
     /**
      * Breaks a list of IDs into smaller lists under the limited size
      *
+     * @param <T>
+     *            the type of the IDs
      * @param IDs
      *            the IDs to split
      * @param limit
@@ -47,6 +49,8 @@ public abstract class Utils {
     /**
      * Stringifies a list of IDs
      *
+     * @param <T>
+     *            the type of the IDs
      * @param IDs
      *            the IDs
      * @return a string of the IDs

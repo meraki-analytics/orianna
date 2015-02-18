@@ -237,8 +237,6 @@ public class Summoner extends OriannaObject<com.robrua.orianna.type.dto.summoner
     }
 
     /**
-     * @param season
-     *            the season to get stats for
      * @return the stats for this summoner by queue type
      */
     public Map<PlayerStatsSummaryType, PlayerStatsSummary> getStats() {

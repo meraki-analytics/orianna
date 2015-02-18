@@ -13,6 +13,8 @@ public abstract class OriannaObject<T extends OriannaDto> implements Serializabl
     /**
      * @param data
      *            the underlying dto
+     * @param clazz
+     *            the class of the underlying dto
      */
     public OriannaObject(final T data, final Class<T> clazz) {
         if(data == null) {

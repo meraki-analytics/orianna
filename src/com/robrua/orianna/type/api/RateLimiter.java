@@ -29,9 +29,6 @@ public interface RateLimiter {
 
     /**
      * Blocks until a call is available
-     *
-     * @throws InterruptedException
-     *             if the thread was interrupted while blocking
      */
     public void waitForCall();
 }

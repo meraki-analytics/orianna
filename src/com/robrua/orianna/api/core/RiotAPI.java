@@ -1046,8 +1046,6 @@ public abstract class RiotAPI {
     /**
      * @param summonerID
      *            the summoner to get stats for
-     * @param season
-     *            the season to get stats for
      * @return the stats for the summoner by queue type
      */
     public static Map<PlayerStatsSummaryType, PlayerStatsSummary> getStats(final long summonerID) {
@@ -1068,8 +1066,6 @@ public abstract class RiotAPI {
     /**
      * @param summoner
      *            the summoner to get stats for
-     * @param season
-     *            the season to get stats for
      * @return the stats for the summoner by queue type
      */
     public static Map<PlayerStatsSummaryType, PlayerStatsSummary> getStats(final Summoner summoner) {
@@ -1380,10 +1376,8 @@ public abstract class RiotAPI {
     /**
      * Sets a new rate limit for the API, removing any old ones
      *
-     * @param callsPerEpoch
-     *            the number of calls allowed in each epoch
-     * @param secondsPerEpoch
-     *            the number of seconds in each epoch
+     * @param limit
+     *            the new rate limit
      */
     public static void setRateLimit(final RateLimit limit) {
         BaseRiotAPI.setRateLimit(limit);
