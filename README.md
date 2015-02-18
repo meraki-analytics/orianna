@@ -114,8 +114,8 @@ public class Example {
         System.out.println("He enjoys playing LoL on all different champions, like " + champions.get((int)(champions.size() * Math.random())).getName() + ".");
         
         League challenger = BaseRiotAPI.getChallenger(QueueType.RANKED_SOLO_5x5);
-        String bestNA = challenger.getEntries().get(0).getPlayerOrTeamName();
-        System.out.println("He's much better at writing Java code than he is a LoL. He'll never be as good as " + bestNA + ".");
+        String aChallenger = challenger.getEntries().get(0).getPlayerOrTeamName();
+        System.out.println("He's much better at writing Java code than he is a LoL. He'll never be as good as " + aChallenger + ".");
     }
 }
 ```
