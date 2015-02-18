@@ -15,7 +15,7 @@ import com.robrua.orianna.type.core.common.QueueType;
 import com.robrua.orianna.type.dto.league.League;
 
 public abstract class LeagueAPI {
-    private static final Set<QueueType> rankedQueues = new HashSet<>(Arrays.asList(new QueueType[] {QueueType.RANKED_SOLO_5x5, QueueType.RANKED_TEAM_3x3,
+    private static final Set<QueueType> RANKED_QUEUES = new HashSet<>(Arrays.asList(new QueueType[] {QueueType.RANKED_SOLO_5x5, QueueType.RANKED_TEAM_3x3,
             QueueType.RANKED_TEAM_5x5}));
 
     /**
@@ -27,7 +27,7 @@ public abstract class LeagueAPI {
      *      API Specification</a>
      */
     public static League getChallenger(final QueueType queueType) {
-        if(!rankedQueues.contains(queueType)) {
+        if(!RANKED_QUEUES.contains(queueType)) {
             throw new IllegalArgumentException("Can't get challenger for a non-ranked queue type!");
         }
 
@@ -44,7 +44,7 @@ public abstract class LeagueAPI {
      *      href="https://developer.riotgames.com/api/methods#!/936/3245">Riot
      *      API Specification</a>
      */
-    public static Map<String, List<League>> getSummonerLeagueEntries(final List<Long> summonerIDs) {
+    public static Map<Long, List<League>> getSummonerLeagueEntries(final List<Long> summonerIDs) {
         if(summonerIDs.isEmpty()) {
             return new HashMap<>();
         }
@@ -53,7 +53,7 @@ public abstract class LeagueAPI {
         }
 
         final String request = BaseRiotAPI.API_VERSIONS.get("league") + "/league/by-summoner/" + Utils.getIDString(summonerIDs) + "/entry";
-        final Type type = new TypeToken<Map<String, List<League>>>() {}.getType();
+        final Type type = new TypeToken<Map<Long, List<League>>>() {}.getType();
         return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, null, false), type);
     }
 
@@ -65,7 +65,7 @@ public abstract class LeagueAPI {
      *      href="https://developer.riotgames.com/api/methods#!/936/3245">Riot
      *      API Specification</a>
      */
-    public static Map<String, List<League>> getSummonerLeagueEntries(final long... summonerIDs) {
+    public static Map<Long, List<League>> getSummonerLeagueEntries(final long... summonerIDs) {
         return getSummonerLeagueEntries(Utils.convert(summonerIDs));
     }
 
@@ -77,7 +77,7 @@ public abstract class LeagueAPI {
      *      href="https://developer.riotgames.com/api/methods#!/936/3241">Riot
      *      API Specification</a>
      */
-    public static Map<String, List<League>> getSummonerLeagues(final List<Long> summonerIDs) {
+    public static Map<Long, List<League>> getSummonerLeagues(final List<Long> summonerIDs) {
         if(summonerIDs.isEmpty()) {
             return new HashMap<>();
         }
@@ -86,7 +86,7 @@ public abstract class LeagueAPI {
         }
 
         final String request = BaseRiotAPI.API_VERSIONS.get("league") + "/league/by-summoner/" + Utils.getIDString(summonerIDs);
-        final Type type = new TypeToken<Map<String, List<League>>>() {}.getType();
+        final Type type = new TypeToken<Map<Long, List<League>>>() {}.getType();
         return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, null, false), type);
     }
 
@@ -98,7 +98,7 @@ public abstract class LeagueAPI {
      *      href="https://developer.riotgames.com/api/methods#!/936/3241">Riot
      *      API Specification</a>
      */
-    public static Map<String, List<League>> getSummonerLeagues(final long... summonerIDs) {
+    public static Map<Long, List<League>> getSummonerLeagues(final long... summonerIDs) {
         return getSummonerLeagues(Utils.convert(summonerIDs));
     }
 

@@ -106,22 +106,24 @@ public class League extends OriannaDto {
     public Set<Long> getSummonerIDs() {
         final Set<Long> set = new HashSet<>();
 
-        Long ID;
-        try {
-            ID = Long.parseLong(participantId);
-            set.add(ID);
-        }
-        catch(final NumberFormatException e) {
-            // Don't add team ID to the set
-        }
-
-        for(final LeagueEntry entry : entries) {
+        if(participantId != null) {
+            Long ID;
             try {
-                ID = Long.parseLong(entry.getPlayerOrTeamId());
+                ID = Long.parseLong(participantId);
                 set.add(ID);
             }
             catch(final NumberFormatException e) {
                 // Don't add team ID to the set
+            }
+
+            for(final LeagueEntry entry : entries) {
+                try {
+                    ID = Long.parseLong(entry.getPlayerOrTeamId());
+                    set.add(ID);
+                }
+                catch(final NumberFormatException e) {
+                    // Don't add team ID to the set
+                }
             }
         }
 
@@ -136,21 +138,23 @@ public class League extends OriannaDto {
     public Set<String> getTeamIDs() {
         final Set<String> set = new HashSet<>();
 
-        try {
-            Long.parseLong(participantId);
-            // Don't add summoner ID to the set
-        }
-        catch(final NumberFormatException e) {
-            set.add(participantId);
-        }
-
-        for(final LeagueEntry entry : entries) {
+        if(participantId != null) {
             try {
-                Long.parseLong(entry.getPlayerOrTeamId());
+                Long.parseLong(participantId);
                 // Don't add summoner ID to the set
             }
             catch(final NumberFormatException e) {
                 set.add(participantId);
+            }
+
+            for(final LeagueEntry entry : entries) {
+                try {
+                    Long.parseLong(entry.getPlayerOrTeamId());
+                    // Don't add summoner ID to the set
+                }
+                catch(final NumberFormatException e) {
+                    set.add(participantId);
+                }
             }
         }
 

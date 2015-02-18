@@ -4,7 +4,7 @@ import java.util.Map;
 
 import com.robrua.orianna.type.dto.OriannaDto;
 
-public class LanguageStringsInfo extends OriannaDto {
+public class LanguageStrings extends OriannaDto {
     private static final long serialVersionUID = -519169121689972804L;
     private Map<String, String> data;
     private String type, version;
@@ -21,10 +21,10 @@ public class LanguageStringsInfo extends OriannaDto {
         if(obj == null) {
             return false;
         }
-        if(!(obj instanceof LanguageStringsInfo)) {
+        if(!(obj instanceof LanguageStrings)) {
             return false;
         }
-        final LanguageStringsInfo other = (LanguageStringsInfo)obj;
+        final LanguageStrings other = (LanguageStrings)obj;
         if(data == null) {
             if(other.data != null) {
                 return false;

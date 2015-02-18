@@ -12,7 +12,7 @@ import com.robrua.orianna.type.core.common.GameType;
 import com.robrua.orianna.type.core.common.PlatformID;
 import com.robrua.orianna.type.core.common.QueueType;
 
-public class CurrentGameInfo extends OriannaObject<com.robrua.orianna.type.dto.currentgame.CurrentGameInfo> {
+public class CurrentGame extends OriannaObject<com.robrua.orianna.type.dto.currentgame.CurrentGameInfo> {
     private static final long serialVersionUID = -2835507404250272815L;
     private List<BannedChampion> bannedChampions;
     private Observer observer;
@@ -22,7 +22,7 @@ public class CurrentGameInfo extends OriannaObject<com.robrua.orianna.type.dto.c
      * @param data
      *            the underlying dto
      */
-    public CurrentGameInfo(final com.robrua.orianna.type.dto.currentgame.CurrentGameInfo data) {
+    public CurrentGame(final com.robrua.orianna.type.dto.currentgame.CurrentGameInfo data) {
         super(data, com.robrua.orianna.type.dto.currentgame.CurrentGameInfo.class);
     }
 
@@ -100,8 +100,10 @@ public class CurrentGameInfo extends OriannaObject<com.robrua.orianna.type.dto.c
     public List<Participant> getParticipants() {
         if(participants == null) {
             participants = new ArrayList<>();
-            for(final com.robrua.orianna.type.dto.currentgame.Participant part : data.getParticipants()) {
-                participants.add(new Participant(part));
+            if(data.getParticipants() != null) {
+                for(final com.robrua.orianna.type.dto.currentgame.Participant part : data.getParticipants()) {
+                    participants.add(new Participant(part));
+                }
             }
         }
 

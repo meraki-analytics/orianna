@@ -12,7 +12,7 @@ import com.robrua.orianna.type.core.common.QueueType;
 import com.robrua.orianna.type.dto.matchhistory.PlayerHistory;
 
 public abstract class MatchHistoryAPI {
-    private static final Set<QueueType> rankedQueues = new HashSet<>(Arrays.asList(new QueueType[] {QueueType.RANKED_SOLO_5x5, QueueType.RANKED_TEAM_3x3,
+    private static final Set<QueueType> RANKED_QUEUES = new HashSet<>(Arrays.asList(new QueueType[] {QueueType.RANKED_SOLO_5x5, QueueType.RANKED_TEAM_3x3,
             QueueType.RANKED_TEAM_5x5}));
 
     /**
@@ -83,7 +83,7 @@ public abstract class MatchHistoryAPI {
      *      API Specification</a>
      */
     public static PlayerHistory getMatchHistory(final long summonerID, final int beginIndex, final QueueType queueType) {
-        if(!rankedQueues.contains(queueType)) {
+        if(!RANKED_QUEUES.contains(queueType)) {
             throw new IllegalArgumentException("Can't get challenger for a non-ranked queue type!");
         }
 
@@ -109,7 +109,7 @@ public abstract class MatchHistoryAPI {
      *      API Specification</a>
      */
     public static PlayerHistory getMatchHistory(final long summonerID, final int beginIndex, final QueueType queueType, final List<Long> championIDs) {
-        if(!rankedQueues.contains(queueType)) {
+        if(!RANKED_QUEUES.contains(queueType)) {
             throw new IllegalArgumentException("Can't get challenger for a non-ranked queue type!");
         }
 
@@ -150,7 +150,7 @@ public abstract class MatchHistoryAPI {
      *      API Specification</a>
      */
     public static PlayerHistory getMatchHistory(final long summonerID, final QueueType queueType) {
-        if(!rankedQueues.contains(queueType)) {
+        if(!RANKED_QUEUES.contains(queueType)) {
             throw new IllegalArgumentException("Can't get challenger for a non-ranked queue type!");
         }
 
@@ -174,7 +174,7 @@ public abstract class MatchHistoryAPI {
      *      API Specification</a>
      */
     public static PlayerHistory getMatchHistory(final long summonerID, final QueueType queueType, final List<Long> championIDs) {
-        if(!rankedQueues.contains(queueType)) {
+        if(!RANKED_QUEUES.contains(queueType)) {
             throw new IllegalArgumentException("Can't get challenger for a non-ranked queue type!");
         }
 

@@ -40,7 +40,7 @@ import com.robrua.orianna.type.dto.matchhistory.PlayerHistory;
 import com.robrua.orianna.type.dto.staticdata.ChampionSpell;
 import com.robrua.orianna.type.dto.staticdata.Item;
 import com.robrua.orianna.type.dto.staticdata.ItemList;
-import com.robrua.orianna.type.dto.staticdata.LanguageStringsInfo;
+import com.robrua.orianna.type.dto.staticdata.LanguageStrings;
 import com.robrua.orianna.type.dto.staticdata.MapInfoList;
 import com.robrua.orianna.type.dto.staticdata.Mastery;
 import com.robrua.orianna.type.dto.staticdata.MasteryList;
@@ -74,7 +74,7 @@ public abstract class BaseRiotAPI {
             .registerTypeAdapter(SummonerSpell.class, new SummonerSpellDeserializer()).create();
     static Region mirror, region;
     private static RateLimiter rateLimiter = RiotAPI.getDefaultDevelopmentRateLimiter();
-
+    
     static {
         API_VERSIONS = new HashMap<>();
         API_VERSIONS.put("champion", "v1.2");
@@ -173,8 +173,7 @@ public abstract class BaseRiotAPI {
 
             // Handle API errors
             if(response.getStatusLine().getStatusCode() != 200) {
-                throw new APIException(response.getStatusLine().getStatusCode() + " " + response.getStatusLine().getReasonPhrase()
-                        + " was server response for call " + uri);
+                throw new APIException(uri.toString(), response.getStatusLine().getStatusCode());
             }
 
             // Read response into a string, return, and clean up Apache Http
@@ -330,7 +329,7 @@ public abstract class BaseRiotAPI {
      *      href="https://developer.riotgames.com/api/methods#!/938/3250">Riot
      *      API Specification</a>
      */
-    public static LanguageStringsInfo getLanguageStrings() {
+    public static LanguageStrings getLanguageStrings() {
         return StaticDataAPI.getLanguageStrings();
     }
 
@@ -685,7 +684,7 @@ public abstract class BaseRiotAPI {
      *      href="https://developer.riotgames.com/api/methods#!/936/3245">Riot
      *      API Specification</a>
      */
-    public static Map<String, List<League>> getSummonerLeagueEntries(final List<Long> summonerIDs) {
+    public static Map<Long, List<League>> getSummonerLeagueEntries(final List<Long> summonerIDs) {
         return LeagueAPI.getSummonerLeagueEntries(summonerIDs);
     }
 
@@ -697,7 +696,7 @@ public abstract class BaseRiotAPI {
      *      href="https://developer.riotgames.com/api/methods#!/936/3245">Riot
      *      API Specification</a>
      */
-    public static Map<String, List<League>> getSummonerLeagueEntries(final long... summonerIDs) {
+    public static Map<Long, List<League>> getSummonerLeagueEntries(final long... summonerIDs) {
         return LeagueAPI.getSummonerLeagueEntries(summonerIDs);
     }
 
@@ -709,7 +708,7 @@ public abstract class BaseRiotAPI {
      *      href="https://developer.riotgames.com/api/methods#!/936/3241">Riot
      *      API Specification</a>
      */
-    public static Map<String, List<League>> getSummonerLeagues(final List<Long> summonerIDs) {
+    public static Map<Long, List<League>> getSummonerLeagues(final List<Long> summonerIDs) {
         return LeagueAPI.getSummonerLeagues(summonerIDs);
     }
 
@@ -721,7 +720,7 @@ public abstract class BaseRiotAPI {
      *      href="https://developer.riotgames.com/api/methods#!/936/3241">Riot
      *      API Specification</a>
      */
-    public static Map<String, List<League>> getSummonerLeagues(final long... summonerIDs) {
+    public static Map<Long, List<League>> getSummonerLeagues(final long... summonerIDs) {
         return LeagueAPI.getSummonerLeagues(summonerIDs);
     }
 

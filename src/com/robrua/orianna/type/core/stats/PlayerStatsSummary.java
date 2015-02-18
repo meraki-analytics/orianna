@@ -54,8 +54,8 @@ public class PlayerStatsSummary extends OriannaObject<com.robrua.orianna.type.dt
      *
      * @return player stats summary type
      */
-    public PlayerStatSummaryType getType() {
-        return PlayerStatSummaryType.valueOf(super.getString(data.getPlayerStatSummaryType()));
+    public PlayerStatsSummaryType getType() {
+        return PlayerStatsSummaryType.valueOf(super.getString(data.getPlayerStatSummaryType()));
     }
 
     /**

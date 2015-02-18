@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.robrua.orianna.api.core.RiotAPI;
 import com.robrua.orianna.type.core.OriannaObject;
+import com.robrua.orianna.type.core.champion.ChampionStatus;
 
 public class Champion extends OriannaObject<com.robrua.orianna.type.dto.staticdata.Champion> {
     private static final long serialVersionUID = -1285569935446443640L;
@@ -205,6 +207,15 @@ public class Champion extends OriannaObject<com.robrua.orianna.type.dto.staticda
         }
 
         return stats;
+    }
+
+    /**
+     * Status
+     *
+     * @return status
+     */
+    public ChampionStatus getStatus() {
+        return RiotAPI.getChampionStatus(getID());
     }
 
     /**

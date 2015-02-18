@@ -61,8 +61,10 @@ public class RunePages extends OriannaDto {
     public Set<Long> getRuneIDs() {
         final Set<Long> set = new HashSet<>();
         for(final RunePage page : pages) {
-            for(final RuneSlot rune : page.getSlots()) {
-                set.add(rune.getRuneId().longValue());
+            if(page.getSlots() != null) {
+                for(final RuneSlot rune : page.getSlots()) {
+                    set.add(rune.getRuneId().longValue());
+                }
             }
         }
 

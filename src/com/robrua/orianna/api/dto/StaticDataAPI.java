@@ -10,7 +10,7 @@ import com.robrua.orianna.type.dto.staticdata.Champion;
 import com.robrua.orianna.type.dto.staticdata.ChampionList;
 import com.robrua.orianna.type.dto.staticdata.Item;
 import com.robrua.orianna.type.dto.staticdata.ItemList;
-import com.robrua.orianna.type.dto.staticdata.LanguageStringsInfo;
+import com.robrua.orianna.type.dto.staticdata.LanguageStrings;
 import com.robrua.orianna.type.dto.staticdata.MapInfoList;
 import com.robrua.orianna.type.dto.staticdata.Mastery;
 import com.robrua.orianna.type.dto.staticdata.MasteryList;
@@ -30,6 +30,10 @@ public abstract class StaticDataAPI {
      *      API Specification</a>
      */
     public static Champion getChampion(final long ID) {
+        if(ID == 0) {
+            return null;
+        }
+
         final String request = BaseRiotAPI.API_VERSIONS.get("static-data") + "/champion/" + ID;
         final Map<String, String> params = new ParamsBuilder().add("champData", "all").build();
         return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, params, true), Champion.class);
@@ -91,9 +95,9 @@ public abstract class StaticDataAPI {
      *      href="https://developer.riotgames.com/api/methods#!/938/3250">Riot
      *      API Specification</a>
      */
-    public static LanguageStringsInfo getLanguageStrings() {
+    public static LanguageStrings getLanguageStrings() {
         final String request = BaseRiotAPI.API_VERSIONS.get("static-data") + "/language-strings";
-        return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, null, true), LanguageStringsInfo.class);
+        return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, null, true), LanguageStrings.class);
     }
 
     /**

@@ -166,8 +166,10 @@ public class MatchDetail extends OriannaDto {
             set.add(p.getChampionId().longValue());
         }
         for(final Team t : teams) {
-            for(final BannedChampion ban : t.getBans()) {
-                set.add(ban.getChampionId().longValue());
+            if(t.getBans() != null) {
+                for(final BannedChampion ban : t.getBans()) {
+                    set.add(ban.getChampionId().longValue());
+                }
             }
         }
 
@@ -326,7 +328,9 @@ public class MatchDetail extends OriannaDto {
     public Set<Long> getSummonerIDs() {
         final Set<Long> set = new HashSet<>();
         for(final ParticipantIdentity p : participantIdentities) {
-            set.add(p.getPlayer().getSummonerId());
+            if(p.getPlayer() != null) {
+                set.add(p.getPlayer().getSummonerId());
+            }
         }
 
         return set;
