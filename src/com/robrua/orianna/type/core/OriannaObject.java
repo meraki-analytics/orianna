@@ -94,7 +94,7 @@ public abstract class OriannaObject<T extends OriannaDto> implements Serializabl
     /**
      * Ensures proper default int values for unsent data
      *
-     * @param d
+     * @param i
      *            the integer
      * @return the int or 0 if null
      */
