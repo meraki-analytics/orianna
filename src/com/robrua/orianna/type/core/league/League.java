@@ -2,6 +2,7 @@ package com.robrua.orianna.type.core.league;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import com.robrua.orianna.api.core.RiotAPI;
@@ -27,9 +28,9 @@ public class League extends OriannaObject<com.robrua.orianna.type.dto.league.Lea
     }
 
     /**
-     * The requested league entries
+     * The requested league entries sorted by LP
      *
-     * @return the requested league entries
+     * @return the requested league entries sorted by LP
      */
     public List<LeagueEntry> getEntries() {
         if(entries == null) {
@@ -37,6 +38,12 @@ public class League extends OriannaObject<com.robrua.orianna.type.dto.league.Lea
             for(final com.robrua.orianna.type.dto.league.LeagueEntry entry : data.getEntries()) {
                 entries.add(new LeagueEntry(entry));
             }
+            Collections.sort(entries, new Comparator<LeagueEntry>() {
+                @Override
+                public int compare(LeagueEntry o1, LeagueEntry o2) {
+                    return Integer.compare(o2.getLeaguePoints(), o1.getLeaguePoints());
+                }
+            });
         }
 
         return Collections.unmodifiableList(entries);
