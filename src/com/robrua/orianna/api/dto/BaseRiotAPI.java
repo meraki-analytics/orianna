@@ -1,9 +1,6 @@
 package com.robrua.orianna.api.dto;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -20,6 +17,7 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -157,57 +155,35 @@ public abstract class BaseRiotAPI {
      * @return the JSON response from the API
      */
     static String get(final URI uri, final boolean staticServer) {
+        // Wait for a call to be available if this is a call to a rate
+        // limited server
+        if(!staticServer) {
+            rateLimiter.waitForCall();
+        }
+
+        // Send request to Riot and register call
         try {
-            // Wait for a call to be available if this is a call to a rate
-            // limited server
-            if(!staticServer) {
-                rateLimiter.waitForCall();
-            }
-
-            // Send request to Riot and register call
             final CloseableHttpResponse response = CLIENT.execute(new HttpGet(uri));
-
+            try {
+                HttpEntity entity = response.getEntity();
+                String content = EntityUtils.toString(entity);
+                EntityUtils.consume(entity);
+                
+                // Handle API errors
+                if(response.getStatusLine().getStatusCode() != 200) {
+                    throw new APIException(uri.toString(), response.getStatusLine().getStatusCode());
+                }
+                
+                return content;
+            } finally {
+                response.close();
+            }
+        } catch(IOException e) {
+            throw new OriannaException("Request to Riot server failed! Report this to the Orianna team.");
+        } finally {
             if(!staticServer) {
                 rateLimiter.registerCall();
             }
-
-            // Handle API errors
-            if(response.getStatusLine().getStatusCode() != 200) {
-                throw new APIException(uri.toString(), response.getStatusLine().getStatusCode());
-            }
-
-            // Read response into a string, return, and clean up Apache Http
-            // resources
-            try {
-                final HttpEntity entity = response.getEntity();
-                if(entity != null) {
-                    final InputStream inStream = entity.getContent();
-                    try {
-                        final BufferedReader reader = new BufferedReader(new InputStreamReader(inStream));
-                        final StringBuilder builder = new StringBuilder();
-
-                        String line;
-                        while((line = reader.readLine()) != null) {
-                            builder.append(line);
-                        }
-
-                        return builder.toString().trim();
-                    }
-                    finally {
-                        inStream.close();
-                    }
-                }
-                else {
-                    // Error reading the stream
-                    throw new OriannaException("Request to Riot server failed! Report this to the Orianna team.");
-                }
-            }
-            finally {
-                response.close();
-            }
-        }
-        catch(final IOException e) {
-            throw new OriannaException("Request to Riot server failed! Report this to the Orianna team.");
         }
     }
 
