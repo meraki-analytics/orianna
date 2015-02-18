@@ -17,6 +17,8 @@ public class Frame extends OriannaObject<com.robrua.orianna.type.dto.match.Frame
     /**
      * @param data
      *            the underlying dto
+     * @param participants
+     *            the participants
      */
     public Frame(final com.robrua.orianna.type.dto.match.Frame data, final Map<Integer, Participant> participants) {
         super(data, com.robrua.orianna.type.dto.match.Frame.class);

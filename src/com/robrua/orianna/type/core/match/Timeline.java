@@ -15,6 +15,8 @@ public class Timeline extends OriannaObject<com.robrua.orianna.type.dto.match.Ti
     /**
      * @param data
      *            the underlying dto
+     * @param participants
+     *            the participants
      */
     public Timeline(final com.robrua.orianna.type.dto.match.Timeline data, final Map<Integer, Participant> participants) {
         super(data, com.robrua.orianna.type.dto.match.Timeline.class);

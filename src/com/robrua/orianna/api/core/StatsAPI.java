@@ -82,8 +82,6 @@ public abstract class StatsAPI {
     /**
      * @param summonerID
      *            the summoner to get stats for
-     * @param season
-     *            the season to get stats for
      * @return the stats for the summoner by queue type
      */
     public static Map<PlayerStatsSummaryType, PlayerStatsSummary> getStats(final long summonerID) {
@@ -118,8 +116,6 @@ public abstract class StatsAPI {
     /**
      * @param summoner
      *            the summoner to get stats for
-     * @param season
-     *            the season to get stats for
      * @return the stats for the summoner by queue type
      */
     public static Map<PlayerStatsSummaryType, PlayerStatsSummary> getStats(final Summoner summoner) {

@@ -74,7 +74,7 @@ public abstract class BaseRiotAPI {
             .registerTypeAdapter(SummonerSpell.class, new SummonerSpellDeserializer()).create();
     static Region mirror, region;
     private static RateLimiter rateLimiter = RiotAPI.getDefaultDevelopmentRateLimiter();
-    
+
     static {
         API_VERSIONS = new HashMap<>();
         API_VERSIONS.put("champion", "v1.2");
@@ -1017,10 +1017,8 @@ public abstract class BaseRiotAPI {
     /**
      * Sets a new rate limit for the API, removing any old ones
      *
-     * @param callsPerEpoch
-     *            the number of calls allowed in each epoch
-     * @param secondsPerEpoch
-     *            the number of seconds in each epoch
+     * @param limit
+     *            the rate limit
      */
     public static void setRateLimit(final RateLimit limit) {
         rateLimiter = new SingleRateLimiter(limit);

@@ -20,6 +20,7 @@ public class ParamsBuilder {
      *            the key
      * @param value
      *            the value
+     * @return this
      */
     public ParamsBuilder add(final String key, final boolean value) {
         map.put(key, Boolean.toString(value));
@@ -33,6 +34,7 @@ public class ParamsBuilder {
      *            the key
      * @param value
      *            the value
+     * @return this
      */
     public ParamsBuilder add(final String key, final double value) {
         map.put(key, Double.toString(value));
@@ -46,6 +48,7 @@ public class ParamsBuilder {
      *            the key
      * @param value
      *            the value
+     * @return this
      */
     public ParamsBuilder add(final String key, final int value) {
         map.put(key, Integer.toString(value));
@@ -59,6 +62,7 @@ public class ParamsBuilder {
      *            the key
      * @param value
      *            the value
+     * @return this
      */
     public ParamsBuilder add(final String key, final long value) {
         map.put(key, Long.toString(value));
@@ -72,6 +76,7 @@ public class ParamsBuilder {
      *            the key
      * @param value
      *            the value
+     * @return this
      */
     public ParamsBuilder add(final String key, final Object value) {
         map.put(key, value.toString());
@@ -81,7 +86,7 @@ public class ParamsBuilder {
     /**
      * Gets the parameter map
      *
-     * @return
+     * @return the parameter map
      */
     public Map<String, String> build() {
         return map;
