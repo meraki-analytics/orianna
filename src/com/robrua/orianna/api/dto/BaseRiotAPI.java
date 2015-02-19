@@ -39,7 +39,7 @@ import com.robrua.orianna.type.dto.staticdata.ChampionSpell;
 import com.robrua.orianna.type.dto.staticdata.Item;
 import com.robrua.orianna.type.dto.staticdata.ItemList;
 import com.robrua.orianna.type.dto.staticdata.LanguageStrings;
-import com.robrua.orianna.type.dto.staticdata.MapInfoList;
+import com.robrua.orianna.type.dto.staticdata.MapData;
 import com.robrua.orianna.type.dto.staticdata.Mastery;
 import com.robrua.orianna.type.dto.staticdata.MasteryList;
 import com.robrua.orianna.type.dto.staticdata.Realm;
@@ -165,22 +165,25 @@ public abstract class BaseRiotAPI {
         try {
             final CloseableHttpResponse response = CLIENT.execute(new HttpGet(uri));
             try {
-                HttpEntity entity = response.getEntity();
-                String content = EntityUtils.toString(entity);
+                final HttpEntity entity = response.getEntity();
+                final String content = EntityUtils.toString(entity);
                 EntityUtils.consume(entity);
-                
+
                 // Handle API errors
                 if(response.getStatusLine().getStatusCode() != 200) {
                     throw new APIException(uri.toString(), response.getStatusLine().getStatusCode());
                 }
-                
+
                 return content;
-            } finally {
+            }
+            finally {
                 response.close();
             }
-        } catch(IOException e) {
+        }
+        catch(final IOException e) {
             throw new OriannaException("Request to Riot server failed! Report this to the Orianna team.");
-        } finally {
+        }
+        finally {
             if(!staticServer) {
                 rateLimiter.registerCall();
             }
@@ -315,7 +318,7 @@ public abstract class BaseRiotAPI {
      *      href="https://developer.riotgames.com/api/methods#!/938/3262">Riot
      *      API Specification</a>
      */
-    public static MapInfoList getMapInformation() {
+    public static MapData getMapInformation() {
         return StaticDataAPI.getMapInformation();
     }
 

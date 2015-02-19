@@ -8,7 +8,7 @@ import com.robrua.orianna.api.core.RiotAPI;
 import com.robrua.orianna.type.core.OriannaObject;
 import com.robrua.orianna.type.core.common.GameMap;
 
-public class MapInfo extends OriannaObject<com.robrua.orianna.type.dto.staticdata.MapInfo> {
+public class MapInfo extends OriannaObject<com.robrua.orianna.type.dto.staticdata.MapDetails> {
     private static final long serialVersionUID = -1589775562057319474L;
     private Image image;
     private List<Long> unpurchasableItemIDs;
@@ -18,8 +18,8 @@ public class MapInfo extends OriannaObject<com.robrua.orianna.type.dto.staticdat
      * @param data
      *            the underlying dto
      */
-    public MapInfo(final com.robrua.orianna.type.dto.staticdata.MapInfo data) {
-        super(data, com.robrua.orianna.type.dto.staticdata.MapInfo.class);
+    public MapInfo(final com.robrua.orianna.type.dto.staticdata.MapDetails data) {
+        super(data, com.robrua.orianna.type.dto.staticdata.MapDetails.class);
     }
 
     /**

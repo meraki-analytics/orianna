@@ -11,7 +11,6 @@ public class Rune extends OriannaDto {
     private Boolean consumeOnFull, consumed, hideFromAll, inStore;
     private Integer depth, id, specialRecipe, stacks;
     private List<String> from, into, tags;
-    private Gold gold;
     private Image image;
     private Map<String, Boolean> maps;
     private MetaData rune;
@@ -84,13 +83,6 @@ public class Rune extends OriannaDto {
      */
     public List<String> getFrom() {
         return from;
-    }
-
-    /**
-     * @return the gold
-     */
-    public Gold getGold() {
-        return gold;
     }
 
     /**
@@ -266,14 +258,6 @@ public class Rune extends OriannaDto {
     }
 
     /**
-     * @param gold
-     *            the gold to set
-     */
-    public void setGold(final Gold gold) {
-        this.gold = gold;
-    }
-
-    /**
      * @param group
      *            the group to set
      */
@@ -410,7 +394,7 @@ public class Rune extends OriannaDto {
         return "Rune [colloq=" + colloq + ", description=" + description + ", group=" + group + ", name=" + name + ", plaintext=" + plaintext
                 + ", requiredChampion=" + requiredChampion + ", sanitizedDescription=" + sanitizedDescription + ", consumeOnFull=" + consumeOnFull
                 + ", consumed=" + consumed + ", hideFromAll=" + hideFromAll + ", inStore=" + inStore + ", depth=" + depth + ", id=" + id + ", specialRecipe="
-                + specialRecipe + ", stacks=" + stacks + ", from=" + from + ", into=" + into + ", tags=" + tags + ", gold=" + gold + ", image=" + image
-                + ", maps=" + maps + ", rune=" + rune + ", stats=" + stats + "]";
+                + specialRecipe + ", stacks=" + stacks + ", from=" + from + ", into=" + into + ", tags=" + tags + ", image=" + image + ", maps=" + maps
+                + ", rune=" + rune + ", stats=" + stats + "]";
     }
 }

@@ -20,7 +20,7 @@ import com.robrua.orianna.type.core.staticdata.Rune;
 import com.robrua.orianna.type.core.staticdata.SummonerSpell;
 import com.robrua.orianna.type.dto.staticdata.ChampionList;
 import com.robrua.orianna.type.dto.staticdata.ItemList;
-import com.robrua.orianna.type.dto.staticdata.MapInfoList;
+import com.robrua.orianna.type.dto.staticdata.MapData;
 import com.robrua.orianna.type.dto.staticdata.MasteryList;
 import com.robrua.orianna.type.dto.staticdata.RuneList;
 import com.robrua.orianna.type.dto.staticdata.SummonerSpellList;
@@ -246,10 +246,10 @@ public abstract class StaticDataAPI {
             return info;
         }
 
-        final MapInfoList inf = BaseRiotAPI.getMapInformation();
+        final MapData inf = BaseRiotAPI.getMapInformation();
         info = new ArrayList<>(inf.getData().size());
         final List<Long> IDs = new ArrayList<>(info.size());
-        for(final com.robrua.orianna.type.dto.staticdata.MapInfo map : inf.getData().values()) {
+        for(final com.robrua.orianna.type.dto.staticdata.MapDetails map : inf.getData().values()) {
             info.add(new MapInfo(map));
             IDs.add(map.getMapId().longValue());
         }
