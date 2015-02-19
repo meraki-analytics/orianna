@@ -4,9 +4,9 @@ import java.util.Map;
 
 import com.robrua.orianna.type.dto.OriannaDto;
 
-public class MapInfoList extends OriannaDto {
+public class MapData extends OriannaDto {
     private static final long serialVersionUID = -6713522275386810877L;
-    private Map<Integer, MapInfo> data;
+    private Map<Integer, MapDetails> data;
     private String type, version;
 
     /*
@@ -21,10 +21,10 @@ public class MapInfoList extends OriannaDto {
         if(obj == null) {
             return false;
         }
-        if(!(obj instanceof MapInfoList)) {
+        if(!(obj instanceof MapData)) {
             return false;
         }
-        final MapInfoList other = (MapInfoList)obj;
+        final MapData other = (MapData)obj;
         if(data == null) {
             if(other.data != null) {
                 return false;
@@ -55,7 +55,7 @@ public class MapInfoList extends OriannaDto {
     /**
      * @return the data
      */
-    public Map<Integer, MapInfo> getData() {
+    public Map<Integer, MapDetails> getData() {
         return data;
     }
 
@@ -91,7 +91,7 @@ public class MapInfoList extends OriannaDto {
      * @param data
      *            the data to set
      */
-    public void setData(final Map<Integer, MapInfo> data) {
+    public void setData(final Map<Integer, MapDetails> data) {
         this.data = data;
     }
 

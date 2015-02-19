@@ -40,7 +40,7 @@ public class League extends OriannaObject<com.robrua.orianna.type.dto.league.Lea
             }
             Collections.sort(entries, new Comparator<LeagueEntry>() {
                 @Override
-                public int compare(LeagueEntry o1, LeagueEntry o2) {
+                public int compare(final LeagueEntry o1, final LeagueEntry o2) {
                     return Integer.compare(o2.getLeaguePoints(), o1.getLeaguePoints());
                 }
             });

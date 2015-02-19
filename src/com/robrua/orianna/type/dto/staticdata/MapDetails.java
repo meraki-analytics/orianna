@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.robrua.orianna.type.dto.OriannaDto;
 
-public class MapInfo extends OriannaDto {
+public class MapDetails extends OriannaDto {
     private static final long serialVersionUID = 7442359340416835068L;
     private Image image;
     private Integer mapId;
@@ -23,10 +23,10 @@ public class MapInfo extends OriannaDto {
         if(obj == null) {
             return false;
         }
-        if(!(obj instanceof MapInfo)) {
+        if(!(obj instanceof MapDetails)) {
             return false;
         }
-        final MapInfo other = (MapInfo)obj;
+        final MapDetails other = (MapDetails)obj;
         if(image == null) {
             if(other.image != null) {
                 return false;

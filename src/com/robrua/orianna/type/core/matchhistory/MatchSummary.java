@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import com.robrua.orianna.api.core.RiotAPI;
 import com.robrua.orianna.type.core.OriannaObject;
 import com.robrua.orianna.type.core.common.GameMap;
 import com.robrua.orianna.type.core.common.GameMode;
@@ -13,6 +14,7 @@ import com.robrua.orianna.type.core.common.PlatformID;
 import com.robrua.orianna.type.core.common.QueueType;
 import com.robrua.orianna.type.core.common.Region;
 import com.robrua.orianna.type.core.common.Season;
+import com.robrua.orianna.type.core.match.Match;
 import com.robrua.orianna.type.core.match.Participant;
 
 public class MatchSummary extends OriannaObject<com.robrua.orianna.type.dto.matchhistory.MatchSummary> {
@@ -65,6 +67,15 @@ public class MatchSummary extends OriannaObject<com.robrua.orianna.type.dto.matc
      */
     public GameMap getMap() {
         return GameMap.forID(super.getInteger(data.getMapId()));
+    }
+
+    /**
+     * The match (via match API)
+     *
+     * @return the match (via match API)
+     */
+    public Match getMatch() {
+        return RiotAPI.getMatch(getID());
     }
 
     /**

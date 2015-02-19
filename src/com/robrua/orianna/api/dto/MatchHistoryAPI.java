@@ -27,7 +27,8 @@ public abstract class MatchHistoryAPI {
      */
     public static PlayerHistory getMatchHistory(final long summonerID) {
         final String request = BaseRiotAPI.API_VERSIONS.get("matchhistory") + "/matchhistory/" + summonerID;
-        return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, null, false), PlayerHistory.class);
+        final Map<String, String> params = new ParamsBuilder().add("beginIndex", 0).add("endIndex", 15).build();
+        return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, params, false), PlayerHistory.class);
     }
 
     /**
@@ -44,7 +45,7 @@ public abstract class MatchHistoryAPI {
      */
     public static PlayerHistory getMatchHistory(final long summonerID, final int beginIndex) {
         final String request = BaseRiotAPI.API_VERSIONS.get("matchhistory") + "/matchhistory/" + summonerID;
-        final Map<String, String> params = new ParamsBuilder().add("beginIndex", beginIndex).build();
+        final Map<String, String> params = new ParamsBuilder().add("beginIndex", beginIndex).add("endIndex", beginIndex + 15).build();
         return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, params, false), PlayerHistory.class);
     }
 
@@ -64,7 +65,8 @@ public abstract class MatchHistoryAPI {
      */
     public static PlayerHistory getMatchHistory(final long summonerID, final int beginIndex, final List<Long> championIDs) {
         final String request = BaseRiotAPI.API_VERSIONS.get("matchhistory") + "/matchhistory/" + summonerID;
-        final Map<String, String> params = new ParamsBuilder().add("beginIndex", beginIndex).add("championIds", Utils.getIDString(championIDs)).build();
+        final Map<String, String> params = new ParamsBuilder().add("beginIndex", beginIndex).add("endIndex", beginIndex + 15)
+                .add("championIds", Utils.getIDString(championIDs)).build();
         return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, params, false), PlayerHistory.class);
     }
 
@@ -88,7 +90,8 @@ public abstract class MatchHistoryAPI {
         }
 
         final String request = BaseRiotAPI.API_VERSIONS.get("matchhistory") + "/matchhistory/" + summonerID;
-        final Map<String, String> params = new ParamsBuilder().add("beginIndex", beginIndex).add("rankedQueues", queueType).build();
+        final Map<String, String> params = new ParamsBuilder().add("beginIndex", beginIndex).add("endIndex", beginIndex + 15).add("rankedQueues", queueType)
+                .build();
         return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, params, false), PlayerHistory.class);
     }
 
@@ -114,7 +117,7 @@ public abstract class MatchHistoryAPI {
         }
 
         final String request = BaseRiotAPI.API_VERSIONS.get("matchhistory") + "/matchhistory/" + summonerID;
-        final Map<String, String> params = new ParamsBuilder().add("beginIndex", beginIndex).add("rankedQueues", queueType)
+        final Map<String, String> params = new ParamsBuilder().add("beginIndex", beginIndex).add("endIndex", beginIndex + 15).add("rankedQueues", queueType)
                 .add("championIds", Utils.getIDString(championIDs)).build();
         return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, params, false), PlayerHistory.class);
     }

@@ -11,7 +11,7 @@ import com.robrua.orianna.type.dto.staticdata.ChampionList;
 import com.robrua.orianna.type.dto.staticdata.Item;
 import com.robrua.orianna.type.dto.staticdata.ItemList;
 import com.robrua.orianna.type.dto.staticdata.LanguageStrings;
-import com.robrua.orianna.type.dto.staticdata.MapInfoList;
+import com.robrua.orianna.type.dto.staticdata.MapData;
 import com.robrua.orianna.type.dto.staticdata.Mastery;
 import com.robrua.orianna.type.dto.staticdata.MasteryList;
 import com.robrua.orianna.type.dto.staticdata.Realm;
@@ -106,9 +106,9 @@ public abstract class StaticDataAPI {
      *      href="https://developer.riotgames.com/api/methods#!/938/3262">Riot
      *      API Specification</a>
      */
-    public static MapInfoList getMapInformation() {
+    public static MapData getMapInformation() {
         final String request = BaseRiotAPI.API_VERSIONS.get("static-data") + "/map";
-        return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, null, true), MapInfoList.class);
+        return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, null, true), MapData.class);
     }
 
     /**

@@ -11,7 +11,6 @@ import com.robrua.orianna.type.core.OriannaObject;
 public class Rune extends OriannaObject<com.robrua.orianna.type.dto.staticdata.Rune> {
     private static final long serialVersionUID = 2161726902324003014L;
     private List<String> from, into, tags;
-    private Gold gold;
     private Image image;
     private Map<String, Boolean> maps;
     private MetaData rune;
@@ -82,19 +81,6 @@ public class Rune extends OriannaObject<com.robrua.orianna.type.dto.staticdata.R
         }
 
         return Collections.unmodifiableList(from);
-    }
-
-    /**
-     * Gold
-     *
-     * @return gold
-     */
-    public Gold getGold() {
-        if(gold == null) {
-            gold = new Gold(data.getGold());
-        }
-
-        return gold;
     }
 
     /**
