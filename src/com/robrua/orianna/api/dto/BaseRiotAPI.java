@@ -1,6 +1,7 @@
 package com.robrua.orianna.api.dto;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -167,7 +168,7 @@ public abstract class BaseRiotAPI {
             try {
                 final HttpEntity entity = response.getEntity();
                 final String content = EntityUtils.toString(entity);
-                EntityUtils.consume(entity);
+                consume(entity);
 
                 // Handle API errors
                 if(response.getStatusLine().getStatusCode() != 200) {
@@ -186,6 +187,24 @@ public abstract class BaseRiotAPI {
         finally {
             if(!staticServer) {
                 rateLimiter.registerCall();
+            }
+        }
+    }
+    
+    /**
+     * Consumes the entity, closing resources
+     * 
+     * @param entity the entity to consume
+     * @throws IOException
+     */
+    private static void consume(final HttpEntity entity) throws IOException {
+        if(entity == null) {
+            return;
+        }
+        if(entity.isStreaming()) {
+            final InputStream instream = entity.getContent();
+            if (instream != null) {
+                instream.close();
             }
         }
     }
