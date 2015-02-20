@@ -29,11 +29,11 @@ Just [download](https://github.com/robrua/Orianna/releases) the latest .jar and 
  
 To do this in eclipse, I recommend creating a lib/ directory in your project's root directory and putting the .jar there. Then just right click the .jar in eclipse and click Build Path -> Add to Build Path.
 
-If you use Maven to manage your dependencies, Orianna is posted on Maven Central @ com.robrua.orianna
+If you use Maven to manage your dependencies, Orianna is posted on Maven Central at com.robrua.orianna and com.robrua.orianna-android
 
 ## Dependencies
 
-Orianna relies on [Apache HttpClient](http://hc.apache.org/httpcomponents-client-ga/) v4.3.5 and [Google GSON](https://code.google.com/p/google-gson/) v2.3.1. Both are included in the JARs distributed here.
+Orianna relies on [Apache HttpClient](http://hc.apache.org/httpcomponents-client-ga/) v4.3.5 (Android v4.3.5.1) and [Google GSON](https://code.google.com/p/google-gson/) v2.3.1. Both are included in the JARs distributed here.
  
 ## Usage
 
