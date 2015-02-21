@@ -13,7 +13,7 @@ public abstract class MatchAPI {
      *            the ID of the match to get
      * @return the match
      */
-    public static Match getMatch(final long ID) {
+    public synchronized static Match getMatch(final long ID) {
         Match match = RiotAPI.store.get(Match.class, ID);
         if(match != null) {
             return match;

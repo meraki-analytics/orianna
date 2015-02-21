@@ -91,6 +91,25 @@ public abstract class BaseRiotAPI {
     }
 
     /**
+     * Consumes the entity, closing resources
+     *
+     * @param entity
+     *            the entity to consume
+     * @throws IOException
+     */
+    private static void consume(final HttpEntity entity) throws IOException {
+        if(entity == null) {
+            return;
+        }
+        if(entity.isStreaming()) {
+            final InputStream instream = entity.getContent();
+            if(instream != null) {
+                instream.close();
+            }
+        }
+    }
+
+    /**
      * Uses Apache HttpClient to make a GET request to the server and return the
      * JSON response. Blocks if necessary to meet rate limits. Throws an
      * APIException if the server sends an error code.
@@ -187,24 +206,6 @@ public abstract class BaseRiotAPI {
         finally {
             if(!staticServer) {
                 rateLimiter.registerCall();
-            }
-        }
-    }
-    
-    /**
-     * Consumes the entity, closing resources
-     * 
-     * @param entity the entity to consume
-     * @throws IOException
-     */
-    private static void consume(final HttpEntity entity) throws IOException {
-        if(entity == null) {
-            return;
-        }
-        if(entity.isStreaming()) {
-            final InputStream instream = entity.getContent();
-            if (instream != null) {
-                instream.close();
             }
         }
     }

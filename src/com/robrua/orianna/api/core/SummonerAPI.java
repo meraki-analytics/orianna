@@ -282,7 +282,7 @@ public abstract class SummonerAPI {
      *            the IDs of the summoners to get
      * @return the summoners
      */
-    public static List<Summoner> getSummonersByID(final List<Long> IDs) {
+    public synchronized static List<Summoner> getSummonersByID(final List<Long> IDs) {
         if(IDs.isEmpty()) {
             return Collections.emptyList();
         }
@@ -336,7 +336,7 @@ public abstract class SummonerAPI {
      *            the names of the summoners to get
      * @return the summoners
      */
-    public static List<Summoner> getSummonersByName(final List<String> names) {
+    public synchronized static List<Summoner> getSummonersByName(final List<String> names) {
         if(names.isEmpty()) {
             return Collections.emptyList();
         }
@@ -391,7 +391,7 @@ public abstract class SummonerAPI {
      *            the IDs of the summoners to get the names of
      * @return the summoners' names
      */
-    public static List<String> getSummonersNames(final List<Long> IDs) {
+    public synchronized static List<String> getSummonersNames(final List<Long> IDs) {
         if(IDs.isEmpty()) {
             return Collections.emptyList();
         }

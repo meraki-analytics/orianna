@@ -13,7 +13,7 @@ import com.robrua.orianna.api.dto.BaseRiotAPI;
 import com.robrua.orianna.type.api.LoadPolicy;
 import com.robrua.orianna.type.core.staticdata.Champion;
 import com.robrua.orianna.type.core.staticdata.Item;
-import com.robrua.orianna.type.core.staticdata.MapInfo;
+import com.robrua.orianna.type.core.staticdata.MapDetails;
 import com.robrua.orianna.type.core.staticdata.Mastery;
 import com.robrua.orianna.type.core.staticdata.Realm;
 import com.robrua.orianna.type.core.staticdata.Rune;
@@ -34,7 +34,7 @@ public abstract class StaticDataAPI {
      *            the ID of the champion to get
      * @return the champion
      */
-    public static Champion getChampion(final long ID) {
+    public synchronized static Champion getChampion(final long ID) {
         Champion champion = RiotAPI.store.get(Champion.class, ID);
         if(champion != null) {
             return champion;
@@ -58,7 +58,7 @@ public abstract class StaticDataAPI {
     /**
      * @return all the champions
      */
-    public static List<Champion> getChampions() {
+    public synchronized static List<Champion> getChampions() {
         List<Champion> champions = RiotAPI.store.getAll(Champion.class);
         if(champions != null) {
             return champions;
@@ -87,7 +87,7 @@ public abstract class StaticDataAPI {
      *            the IDs of the champions to get
      * @return the champions
      */
-    public static List<Champion> getChampions(final List<Long> IDs) {
+    public synchronized static List<Champion> getChampions(final List<Long> IDs) {
         if(IDs.isEmpty()) {
             return Collections.emptyList();
         }
@@ -135,7 +135,7 @@ public abstract class StaticDataAPI {
      *            the ID of the item to get
      * @return the item
      */
-    public static Item getItem(final long ID) {
+    public synchronized static Item getItem(final long ID) {
         if(IGNORE_ITEMS.contains(ID)) {
             return null;
         }
@@ -155,7 +155,7 @@ public abstract class StaticDataAPI {
     /**
      * @return all the items
      */
-    public static List<Item> getItems() {
+    public synchronized static List<Item> getItems() {
         List<Item> items = RiotAPI.store.getAll(Item.class);
         if(items != null) {
             return items;
@@ -179,7 +179,7 @@ public abstract class StaticDataAPI {
      *            the IDs of the items to get
      * @return the items
      */
-    public static List<Item> getItems(final List<Long> IDs) {
+    public synchronized static List<Item> getItems(final List<Long> IDs) {
         if(IDs.isEmpty()) {
             return Collections.emptyList();
         }
@@ -240,8 +240,8 @@ public abstract class StaticDataAPI {
     /**
      * @return information for the maps
      */
-    public static List<MapInfo> getMapInformation() {
-        List<MapInfo> info = RiotAPI.store.getAll(MapInfo.class);
+    public synchronized static List<MapDetails> getMapInformation() {
+        List<MapDetails> info = RiotAPI.store.getAll(MapDetails.class);
         if(info != null) {
             return info;
         }
@@ -250,7 +250,7 @@ public abstract class StaticDataAPI {
         info = new ArrayList<>(inf.getData().size());
         final List<Long> IDs = new ArrayList<>(info.size());
         for(final com.robrua.orianna.type.dto.staticdata.MapDetails map : inf.getData().values()) {
-            info.add(new MapInfo(map));
+            info.add(new MapDetails(map));
             IDs.add(map.getMapId().longValue());
         }
         RiotAPI.store.store(info, IDs, true);
@@ -261,7 +261,7 @@ public abstract class StaticDataAPI {
     /**
      * @return all the masteries
      */
-    public static List<Mastery> getMasteries() {
+    public synchronized static List<Mastery> getMasteries() {
         List<Mastery> masteries = RiotAPI.store.getAll(Mastery.class);
         if(masteries != null) {
             return masteries;
@@ -285,7 +285,7 @@ public abstract class StaticDataAPI {
      *            the IDs of the masteries to get
      * @return the masteries
      */
-    public static List<Mastery> getMasteries(final List<Long> IDs) {
+    public synchronized static List<Mastery> getMasteries(final List<Long> IDs) {
         if(IDs.isEmpty()) {
             return Collections.emptyList();
         }
@@ -333,7 +333,7 @@ public abstract class StaticDataAPI {
      *            the ID of the mastery to get
      * @return the mastery
      */
-    public static Mastery getMastery(final long ID) {
+    public synchronized static Mastery getMastery(final long ID) {
         Mastery mastery = RiotAPI.store.get(Mastery.class, ID);
         if(mastery != null) {
             return mastery;
@@ -349,7 +349,7 @@ public abstract class StaticDataAPI {
     /**
      * @return the realm
      */
-    public static Realm getRealm() {
+    public synchronized static Realm getRealm() {
         Realm realm = RiotAPI.store.get(Realm.class, "");
         if(realm != null) {
             return realm;
@@ -366,7 +366,7 @@ public abstract class StaticDataAPI {
      *            the ID of the rune to get
      * @return the rune
      */
-    public static Rune getRune(final long ID) {
+    public synchronized static Rune getRune(final long ID) {
         Rune rune = RiotAPI.store.get(Rune.class, ID);
         if(rune != null) {
             return rune;
@@ -382,7 +382,7 @@ public abstract class StaticDataAPI {
     /**
      * @return all the runes
      */
-    public static List<Rune> getRunes() {
+    public synchronized static List<Rune> getRunes() {
         List<Rune> runes = RiotAPI.store.getAll(Rune.class);
         if(runes != null) {
             return runes;
@@ -406,7 +406,7 @@ public abstract class StaticDataAPI {
      *            the IDs of the runes to get
      * @return the runes
      */
-    public static List<Rune> getRunes(final List<Long> IDs) {
+    public synchronized static List<Rune> getRunes(final List<Long> IDs) {
         if(IDs.isEmpty()) {
             return Collections.emptyList();
         }
@@ -454,7 +454,7 @@ public abstract class StaticDataAPI {
      *            the ID of the summoner spell to get
      * @return the summoner spell
      */
-    public static SummonerSpell getSummonerSpell(final long ID) {
+    public synchronized static SummonerSpell getSummonerSpell(final long ID) {
         SummonerSpell spell = RiotAPI.store.get(SummonerSpell.class, ID);
         if(spell != null) {
             return spell;
@@ -470,7 +470,7 @@ public abstract class StaticDataAPI {
     /**
      * @return all the summoner spells
      */
-    public static List<SummonerSpell> getSummonerSpells() {
+    public synchronized static List<SummonerSpell> getSummonerSpells() {
         List<SummonerSpell> spells = RiotAPI.store.getAll(SummonerSpell.class);
         if(spells != null) {
             return spells;
@@ -494,7 +494,7 @@ public abstract class StaticDataAPI {
      *            the IDs of the summoner spells to get
      * @return the summoner spells
      */
-    public static List<SummonerSpell> getSummonerSpells(final List<Long> IDs) {
+    public synchronized static List<SummonerSpell> getSummonerSpells(final List<Long> IDs) {
         if(IDs.isEmpty()) {
             return Collections.emptyList();
         }

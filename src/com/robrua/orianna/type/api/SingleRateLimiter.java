@@ -1,5 +1,7 @@
 package com.robrua.orianna.type.api;
 
+import java.util.concurrent.Semaphore;
+
 import com.robrua.orianna.type.exception.OriannaException;
 
 /**
@@ -8,10 +10,29 @@ import com.robrua.orianna.type.exception.OriannaException;
  * @author Rob Rua (FatalElement - NA) (robrua@alumni.cmu.edu)
  */
 public class SingleRateLimiter implements RateLimiter {
-    private long callsLeft;
-    private long check;
-    private final long limit;
+    /**
+     * Resets the semaphore after the time window has passed
+     */
+    private class ResetThread implements Runnable {
+        @Override
+        public void run() {
+            try {
+                Thread.sleep(millisPerEpoch);
+                semaphore.drainPermits();
+                semaphore.release(limit);
+                needToWait = true;
+            }
+            catch(final InterruptedException e) {
+                throw new OriannaException("Rate Limiter reset thread interrupted!");
+            }
+        }
+    }
+
+    private final int limit;
     private final long millisPerEpoch;
+    private volatile boolean needToWait;
+
+    private final Semaphore semaphore;
 
     /**
      * @param callsPerEpoch
@@ -22,8 +43,8 @@ public class SingleRateLimiter implements RateLimiter {
     public SingleRateLimiter(final int callsPerEpoch, final int secondsPerEpoch) {
         millisPerEpoch = secondsPerEpoch * 1000L;
         limit = callsPerEpoch;
-        callsLeft = limit;
-        check = System.currentTimeMillis();
+        semaphore = new Semaphore(limit);
+        needToWait = true;
     }
 
     /**
@@ -35,54 +56,17 @@ public class SingleRateLimiter implements RateLimiter {
     }
 
     @Override
-    public synchronized int getCallsLeft() {
-        updateCallsLeft();
-        return (int)callsLeft;
-    }
-
-    @Override
-    public synchronized long millisUntilNextCall() {
-        updateCallsLeft();
-        if(callsLeft >= 1L) {
-            return 0L;
-        }
-
-        final long millisPassed = System.currentTimeMillis() - check;
-        return millisPerEpoch - millisPassed;
-    }
-
-    @Override
     public synchronized void registerCall() {
-        if(callsLeft == limit) {
-            check = System.currentTimeMillis();
-        }
-
-        callsLeft--;
-    }
-
-    /**
-     * Updates the number of remaining calls
-     */
-    private synchronized void updateCallsLeft() {
-        final long millisPassed = System.currentTimeMillis() - check;
-
-        if(millisPassed >= millisPerEpoch) {
-            callsLeft = limit;
-            check = System.currentTimeMillis();
+        if(needToWait) {
+            needToWait = false;
+            final Thread t = new Thread(new ResetThread());
+            t.setDaemon(true);
+            t.start();
         }
     }
 
     @Override
-    public synchronized void waitForCall() {
-        final long waitTime = millisUntilNextCall();
-        if(waitTime > 0) {
-            try {
-                Thread.sleep(waitTime);
-                callsLeft = limit;
-            }
-            catch(final InterruptedException e) {
-                throw new OriannaException("Rate limiter was interrupted waiting for call!");
-            }
-        }
+    public void waitForCall() {
+        semaphore.acquireUninterruptibly();
     }
 }
