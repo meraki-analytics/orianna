@@ -101,7 +101,7 @@ public class Example {
     public static void main(String[] args) {
         AsyncRiotAPI.setMirror(Region.NA);
         AsyncRiotAPI.setRegion(Region.NA);
-        AsyncRiotAPI.setAPIKey(TestRiotAPI.APIKey);
+        AsyncRiotAPI.setAPIKey("YOUR-API-KEY-HERE");
         
         AsyncRiotAPI.getSummonerByName(new Action<Summoner>() {
             @Override
