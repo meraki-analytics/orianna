@@ -33,40 +33,14 @@ public class MultiRateLimiter implements RateLimiter {
     }
 
     @Override
-    public int getCallsLeft() {
-        int min = Integer.MAX_VALUE;
-        for(final RateLimiter limit : limits) {
-            final int val = limit.getCallsLeft();
-            if(val < min) {
-                min = val;
-            }
-        }
-
-        return min;
-    }
-
-    @Override
-    public long millisUntilNextCall() {
-        long max = 0;
-        for(final RateLimiter limit : limits) {
-            final long val = limit.millisUntilNextCall();
-            if(val > max) {
-                max = val;
-            }
-        }
-
-        return max;
-    }
-
-    @Override
-    public void registerCall() {
+    public synchronized void registerCall() {
         for(final RateLimiter limit : limits) {
             limit.registerCall();
         }
     }
 
     @Override
-    public void waitForCall() {
+    public synchronized void waitForCall() {
         for(final RateLimiter limit : limits) {
             limit.waitForCall();
         }

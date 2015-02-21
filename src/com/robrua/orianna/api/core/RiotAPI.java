@@ -22,7 +22,7 @@ import com.robrua.orianna.type.core.match.Match;
 import com.robrua.orianna.type.core.matchhistory.MatchSummary;
 import com.robrua.orianna.type.core.staticdata.Champion;
 import com.robrua.orianna.type.core.staticdata.Item;
-import com.robrua.orianna.type.core.staticdata.MapInfo;
+import com.robrua.orianna.type.core.staticdata.MapDetails;
 import com.robrua.orianna.type.core.staticdata.Mastery;
 import com.robrua.orianna.type.core.staticdata.Realm;
 import com.robrua.orianna.type.core.staticdata.Rune;
@@ -506,7 +506,7 @@ public abstract class RiotAPI {
     /**
      * @return information for the maps
      */
-    public static List<MapInfo> getMapInformation() {
+    public static List<MapDetails> getMapInformation() {
         return StaticDataAPI.getMapInformation();
     }
 

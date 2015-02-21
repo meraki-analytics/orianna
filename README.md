@@ -84,7 +84,51 @@ New in V2, you can set a load policy for filling in foreign key values. UPFRONT 
 RiotAPI.setLoadPolicy(LoadPolicy.UPFRONT);
 ```
 
-Or, if you don't want all the bells and whistles and you'd just like to access the Riot API as the specification says, you can use BaseRiotAPI.
+For you Android devs out there there's also a new AsyncRiotAPI, which will perform all of your API calls on a different thread (since no networking is allowed on the main thread).
+
+```java
+import java.util.List;
+
+import com.robrua.orianna.api.core.AsyncRiotAPI;
+import com.robrua.orianna.type.api.Action;
+import com.robrua.orianna.type.core.common.QueueType;
+import com.robrua.orianna.type.core.common.Region;
+import com.robrua.orianna.type.core.league.League;
+import com.robrua.orianna.type.core.staticdata.Champion;
+import com.robrua.orianna.type.core.summoner.Summoner;
+
+public class Example {
+    public static void main(String[] args) {
+        AsyncRiotAPI.setMirror(Region.NA);
+        AsyncRiotAPI.setRegion(Region.NA);
+        AsyncRiotAPI.setAPIKey(TestRiotAPI.APIKey);
+        
+        AsyncRiotAPI.getSummonerByName(new Action<Summoner>() {
+            @Override
+            public void perform(Summoner summoner) {
+                System.out.println(summoner.getName() + " is a level " + summoner.getLevel() + " summoner on the NA server.");
+            }
+        }, "FatalElement");
+        
+        AsyncRiotAPI.getChampions(new Action<List<Champion>>() {
+            @Override
+            public void perform(List<Champion> champions) {
+                System.out.println("He enjoys playing LoL on all different champions, like " + champions.get((int)(champions.size() * Math.random())) + ".");
+            }
+        });
+
+        AsyncRiotAPI.getChallenger(new Action<League>() {
+            @Override
+            public void perform(League challenger) {
+                Summoner bestNA = challenger.getEntries().get(0).getSummoner();
+                System.out.println("He's much better at writing Java code than he is a LoL. He'll never be as good as " + bestNA + ".");
+            }
+        }, QueueType.RANKED_SOLO_5x5);
+    }
+}
+```
+
+Or, if you don't want all the bells and whistles and you'd just like to access the Riot API as the specification says, you can use BaseRiotAPI (there's also an AsyncBaseRiotAPI).
 
 ```java
 import java.util.ArrayList;
