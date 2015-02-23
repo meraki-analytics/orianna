@@ -29,7 +29,25 @@ Just [download](https://github.com/robrua/Orianna/releases) the latest .jar and 
  
 To do this in eclipse, I recommend creating a lib/ directory in your project's root directory and putting the .jar there. Then just right click the .jar in eclipse and click Build Path -> Add to Build Path.
 
-If you use Maven to manage your dependencies, Orianna is posted on Maven Central at com.robrua.orianna and com.robrua.orianna-android
+If you use Maven to manage your dependencies, Orianna is posted on Maven Central:
+
+Standard Java
+```xml
+<dependency>
+  <groupId>com.robrua</groupId>
+  <artifactId>orianna</artifactId>
+  <version>2.0.5</version>
+</dependency>
+```
+
+Android
+```xml
+<dependency>
+  <groupId>com.robrua</groupId>
+  <artifactId>orianna-android</artifactId>
+  <version>2.0.5</version>
+</dependency>
+```
 
 ## Dependencies
 
