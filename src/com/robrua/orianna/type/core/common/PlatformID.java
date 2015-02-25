@@ -14,9 +14,9 @@ public enum PlatformID {
             case KR:
                 return KR;
             case LAN:
-                return LA2;
-            case LAS:
                 return LA1;
+            case LAS:
+                return LA2;
             case NA:
                 return NA1;
             case OCE:
