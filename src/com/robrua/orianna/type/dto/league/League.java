@@ -106,8 +106,8 @@ public class League extends OriannaDto {
     public Set<Long> getSummonerIDs() {
         final Set<Long> set = new HashSet<>();
 
+        long ID;
         if(participantId != null) {
-            Long ID;
             try {
                 ID = Long.parseLong(participantId);
                 set.add(ID);
@@ -115,15 +115,15 @@ public class League extends OriannaDto {
             catch(final NumberFormatException e) {
                 // Don't add team ID to the set
             }
+        }
 
-            for(final LeagueEntry entry : entries) {
-                try {
-                    ID = Long.parseLong(entry.getPlayerOrTeamId());
-                    set.add(ID);
-                }
-                catch(final NumberFormatException e) {
-                    // Don't add team ID to the set
-                }
+        for(final LeagueEntry entry : entries) {
+            try {
+                ID = Long.parseLong(entry.getPlayerOrTeamId());
+                set.add(ID);
+            }
+            catch(final NumberFormatException e) {
+                // Don't add team ID to the set
             }
         }
 
@@ -146,15 +146,15 @@ public class League extends OriannaDto {
             catch(final NumberFormatException e) {
                 set.add(participantId);
             }
+        }
 
-            for(final LeagueEntry entry : entries) {
-                try {
-                    Long.parseLong(entry.getPlayerOrTeamId());
-                    // Don't add summoner ID to the set
-                }
-                catch(final NumberFormatException e) {
-                    set.add(participantId);
-                }
+        for(final LeagueEntry entry : entries) {
+            try {
+                Long.parseLong(entry.getPlayerOrTeamId());
+                // Don't add summoner ID to the set
+            }
+            catch(final NumberFormatException e) {
+                set.add(participantId);
             }
         }
 

@@ -1,8 +1,8 @@
 package com.robrua.orianna.type.api;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
-
-import com.robrua.orianna.type.exception.OriannaException;
 
 /**
  * Handles one rate limit
@@ -11,28 +11,24 @@ import com.robrua.orianna.type.exception.OriannaException;
  */
 public class SingleRateLimiter implements RateLimiter {
     /**
-     * Resets the semaphore after the time window has passed
+     * Resets the number of available permits
      */
-    private class ResetThread implements Runnable {
+    private class ResetTask extends TimerTask {
         @Override
         public void run() {
-            try {
-                Thread.sleep(millisPerEpoch);
-                semaphore.drainPermits();
-                semaphore.release(limit);
-                needToWait = true;
-            }
-            catch(final InterruptedException e) {
-                throw new OriannaException("Rate Limiter reset thread interrupted!");
-            }
+            semaphore.drainPermits();
+            resetRunning = false;
+            semaphore.release(limit - current);
         }
     }
 
+    private volatile int current;
     private final int limit;
     private final long millisPerEpoch;
-    private volatile boolean needToWait;
-
+    private volatile boolean resetRunning;
     private final Semaphore semaphore;
+
+    private final Timer timer;
 
     /**
      * @param callsPerEpoch
@@ -44,7 +40,8 @@ public class SingleRateLimiter implements RateLimiter {
         millisPerEpoch = secondsPerEpoch * 1000L;
         limit = callsPerEpoch;
         semaphore = new Semaphore(limit);
-        needToWait = true;
+        timer = new Timer(true);
+        current = 0;
     }
 
     /**
@@ -57,16 +54,17 @@ public class SingleRateLimiter implements RateLimiter {
 
     @Override
     public synchronized void registerCall() {
-        if(needToWait) {
-            needToWait = false;
-            final Thread t = new Thread(new ResetThread());
-            t.setDaemon(true);
-            t.start();
+        if(!resetRunning) {
+            timer.schedule(new ResetTask(), millisPerEpoch);
+            resetRunning = true;
         }
+
+        current--;
     }
 
     @Override
     public void waitForCall() {
         semaphore.acquireUninterruptibly();
+        current++;
     }
 }
