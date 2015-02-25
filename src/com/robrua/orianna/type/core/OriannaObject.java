@@ -92,6 +92,13 @@ public abstract class OriannaObject<T extends OriannaDto> implements Serializabl
     }
 
     /**
+     * @return the underlying dto
+     */
+    public T getDto() {
+        return data;
+    }
+
+    /**
      * Ensures proper default int values for unsent data
      *
      * @param i

@@ -329,20 +329,20 @@ public class AggregatedStats extends OriannaObject<com.robrua.orianna.type.dto.s
     }
 
     /**
-     * Total damate taken
+     * Total damage taken
      *
-     * @return total damate taken
+     * @return total damage taken
      */
     public int getTotalDamageTaken() {
         return super.getInteger(data.getTotalDamageTaken());
     }
 
     /**
-     * Total number of deaths per session
+     * Total number of deaths
      *
-     * @return total number of deaths per session
+     * @return total number of deaths
      */
-    public int getTotalDeathsPerSession() {
+    public int getTotalDeaths() {
         return super.getInteger(data.getTotalDeathsPerSession());
     }
 
