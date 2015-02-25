@@ -118,12 +118,14 @@ public class League extends OriannaDto {
         }
 
         for(final LeagueEntry entry : entries) {
-            try {
-                ID = Long.parseLong(entry.getPlayerOrTeamId());
-                set.add(ID);
-            }
-            catch(final NumberFormatException e) {
-                // Don't add team ID to the set
+            if(entry.getPlayerOrTeamId() != null) {
+                try {
+                    ID = Long.parseLong(entry.getPlayerOrTeamId());
+                    set.add(ID);
+                }
+                catch(final NumberFormatException e) {
+                    // Don't add team ID to the set
+                }
             }
         }
 
@@ -149,12 +151,14 @@ public class League extends OriannaDto {
         }
 
         for(final LeagueEntry entry : entries) {
-            try {
-                Long.parseLong(entry.getPlayerOrTeamId());
-                // Don't add summoner ID to the set
-            }
-            catch(final NumberFormatException e) {
-                set.add(participantId);
+            if(entry.getPlayerOrTeamId() != null) {
+                try {
+                    Long.parseLong(entry.getPlayerOrTeamId());
+                    // Don't add summoner ID to the set
+                }
+                catch(final NumberFormatException e) {
+                    set.add(entry.getPlayerOrTeamId());
+                }
             }
         }
 
