@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
@@ -68,10 +70,11 @@ import com.robrua.orianna.type.exception.OriannaException;
 public abstract class BaseRiotAPI {
     static final Map<String, String> API_VERSIONS;
     private static String APIKey;
-    private static final CloseableHttpClient CLIENT = HttpClients.createDefault();
+    private static CloseableHttpClient CLIENT = HttpClients.createDefault();
     static final Gson GSON = new GsonBuilder().registerTypeAdapter(ChampionSpell.class, new ChampionSpellDeserializer())
             .registerTypeAdapter(SummonerSpell.class, new SummonerSpellDeserializer()).create();
     static Region mirror, region;
+    private static HttpHost proxy;
     private static RateLimiter rateLimiter = RiotAPI.getDefaultDevelopmentRateLimiter();
 
     static {
@@ -183,7 +186,13 @@ public abstract class BaseRiotAPI {
 
         // Send request to Riot and register call
         try {
-            final CloseableHttpResponse response = CLIENT.execute(new HttpGet(uri));
+            final HttpGet get = new HttpGet(uri);
+            if(proxy != null) {
+                final RequestConfig config = RequestConfig.custom().setProxy(proxy).build();
+                get.setConfig(config);
+            }
+
+            final CloseableHttpResponse response = CLIENT.execute(get);
             try {
                 final HttpEntity entity = response.getEntity();
                 final String content = EntityUtils.toString(entity);
@@ -201,6 +210,7 @@ public abstract class BaseRiotAPI {
             }
         }
         catch(final IOException e) {
+            e.printStackTrace();
             throw new OriannaException("Request to Riot server failed! Report this to the Orianna team.");
         }
         finally {
@@ -972,6 +982,13 @@ public abstract class BaseRiotAPI {
     }
 
     /**
+     * Removes any set proxy
+     */
+    public static void removeProxy() {
+        proxy = null;
+    }
+
+    /**
      * Sets the API Key to use for queries
      *
      * @param newAPIKey
@@ -989,6 +1006,18 @@ public abstract class BaseRiotAPI {
      */
     public static void setMirror(final Region newMirror) {
         mirror = newMirror;
+    }
+
+    /**
+     * Sets the proxy to access the API through
+     *
+     * @param IP
+     *            the IP address of the proxy server
+     * @param port
+     *            the working port for the proxy server
+     */
+    public static void setProxy(final String IP, final int port) {
+        proxy = new HttpHost(IP, port);
     }
 
     /**
