@@ -1108,6 +1108,13 @@ public class AsyncBaseRiotAPI {
     }
 
     /**
+     * Removes any set proxy
+     */
+    public static void removeProxy() {
+        BaseRiotAPI.removeProxy();
+    }
+
+    /**
      * Sets the API Key to use for queries
      *
      * @param newAPIKey
@@ -1125,6 +1132,18 @@ public class AsyncBaseRiotAPI {
      */
     public static void setMirror(final Region newMirror) {
         BaseRiotAPI.setMirror(newMirror);
+    }
+
+    /**
+     * Sets the proxy to access the API through
+     *
+     * @param IP
+     *            the IP address of the proxy server
+     * @param port
+     *            the working port for the proxy server
+     */
+    public static void setProxy(final String IP, final int port) {
+        BaseRiotAPI.setProxy(IP, port);
     }
 
     /**
