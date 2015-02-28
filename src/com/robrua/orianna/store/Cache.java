@@ -1,7 +1,7 @@
 package com.robrua.orianna.store;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,125 +13,116 @@ import com.robrua.orianna.type.core.OriannaObject;
  *
  * @author Rob Rua (FatalElement - NA) (robrua@alumni.cmu.edu)
  */
-public class Cache implements DataStore {
-    private final Map<Class<?>, Map<Object, OriannaObject<?>>> cache = new HashMap<>();
-    private final Map<Class<?>, Boolean> haveAll = new HashMap<>();
+public class Cache extends DataStore {
+    private final Map<Class<? extends OriannaObject<?>>, Map<Object, OriannaObject<?>>> cache = new HashMap<>();
+    private final Map<Class<? extends OriannaObject<?>>, Boolean> haveAll = new HashMap<>();
 
     @Override
-    public <T extends OriannaObject<?>> void delete(final Class<T> type, final List<?> keys) {
-        if(keys.isEmpty()) {
-            return;
+    protected <T extends OriannaObject<?>> boolean checkHasAll(final Class<T> type) {
+        final Boolean val = haveAll.get(type);
+
+        if(val == null) {
+            return false;
         }
 
-        final Map<Object, OriannaObject<?>> forType = cache.get(type);
-        if(forType == null) {
-            return;
-        }
-
-        for(final Object key : keys) {
-            forType.remove(key);
-        }
+        return val.booleanValue();
     }
 
     @Override
-    public <T extends OriannaObject<?>> void delete(final Class<T> type, final Object key) {
-        final Map<Object, OriannaObject<?>> forType = cache.get(type);
-        if(forType == null) {
-            return;
-        }
+    protected <T extends OriannaObject<?>> void doDelete(final Class<T> type, final List<?> keys) {
+        final Map<Object, OriannaObject<?>> stored = cache.get(type);
 
-        forType.remove(key);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T extends OriannaObject<?>> List<T> get(final Class<T> type, final List<?> keys) {
-        final List<T> list = new ArrayList<>(keys.size());
-        if(keys.isEmpty()) {
-            return list;
-        }
-
-        final Map<Object, OriannaObject<?>> forType = cache.get(type);
-        if(forType == null) {
-            for(int i = 0; i < keys.size(); i++) {
-                list.add(null);
+        if(stored != null) {
+            for(final Object key : keys) {
+                stored.remove(key);
             }
-
-            return list;
         }
+    }
 
-        for(int i = 0; i < keys.size(); i++) {
-            list.add(i, (T)forType.get(keys.get(i)));
+    @Override
+    protected <T extends OriannaObject<?>> void doDelete(final Class<T> type, final Object key) {
+        final Map<Object, OriannaObject<?>> stored = cache.get(type);
+
+        if(stored != null) {
+            stored.remove(key);
         }
-
-        return list;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T extends OriannaObject<?>> T get(final Class<T> type, final Object key) {
-        final Map<Object, OriannaObject<?>> forType = cache.get(type);
-        if(forType == null) {
-            return null;
+    protected <T extends OriannaObject<?>> List<T> doGet(final Class<T> type, final List<?> keys) {
+        final Map<Object, OriannaObject<?>> stored = cache.get(type);
+
+        final List<T> result = new ArrayList<>(keys.size());
+        if(stored == null) {
+            for(int i = 0; i < keys.size(); i++) {
+                result.add(null);
+            }
+        }
+        else {
+            for(final Object key : keys) {
+                result.add((T)stored.get(key));
+            }
         }
 
-        return (T)forType.get(key);
+        return result;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T extends OriannaObject<?>> List<T> getAll(final Class<T> type) {
-        final Boolean haveAll = this.haveAll.get(type);
+    protected <T extends OriannaObject<?>> T doGet(final Class<T> type, final Object key) {
+        final Map<Object, OriannaObject<?>> stored = cache.get(type);
 
-        if(haveAll == null || haveAll == Boolean.FALSE) {
+        if(stored == null) {
             return null;
         }
 
-        final Map<Object, OriannaObject<?>> forType = cache.get(type);
-        if(forType == null) {
-            return null;
+        return (T)stored.get(key);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    protected <T extends OriannaObject<?>> List<T> doGetAll(final Class<T> type) {
+        final Map<Object, OriannaObject<?>> stored = cache.get(type);
+
+        if(stored == null) {
+            return Collections.emptyList();
         }
 
-        final List<T> results = new ArrayList<>((Collection<T>)forType.values());
-        return results;
+        final List<T> result = new ArrayList<>();
+        for(final Object val : stored.values()) {
+            result.add((T)val);
+        }
+        return result;
     }
 
     @Override
-    public <T extends OriannaObject<?>> void store(final List<T> objs, final List<?> keys, final boolean isFullSet) {
-        if(keys.size() != objs.size()) {
-            throw new IllegalArgumentException("Each object must have a key");
-        }
-        else if(keys.isEmpty()) {
-            return;
-        }
-
-        final Class<?> clazz = objs.get(0).getClass();
-
+    protected <T extends OriannaObject<?>> void doStore(final Class<T> type, final List<T> objs, final List<?> keys, final boolean isFullSet) {
         if(isFullSet) {
-            haveAll.put(clazz, true);
+            haveAll.put(type, Boolean.TRUE);
         }
 
-        Map<Object, OriannaObject<?>> forType = cache.get(clazz);
-        if(forType == null) {
-            forType = new HashMap<>();
-            cache.put(clazz, forType);
+        Map<Object, OriannaObject<?>> stored = cache.get(type);
+        if(stored == null) {
+            stored = new HashMap<>();
+            cache.put(type, stored);
         }
 
-        for(int i = 0; i < keys.size(); i++) {
-            forType.put(keys.get(i), objs.get(i));
+        for(int i = 0; i < objs.size(); i++) {
+            stored.put(keys.get(i), objs.get(i));
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public <T extends OriannaObject<?>> void store(final T obj, final Object key) {
-        final Class<?> clazz = obj.getClass();
-
-        Map<Object, OriannaObject<?>> forType = cache.get(clazz);
-        if(forType == null) {
-            forType = new HashMap<>();
-            cache.put(clazz, forType);
+    protected <T extends OriannaObject<?>> void doStore(final T obj, final Object key) {
+        final Class<T> type = (Class<T>)obj.getClass();
+        Map<Object, OriannaObject<?>> stored = cache.get(type);
+        if(stored == null) {
+            stored = new HashMap<>();
+            cache.put(type, stored);
         }
 
-        forType.put(key, obj);
+        stored.put(key, obj);
     }
 }
