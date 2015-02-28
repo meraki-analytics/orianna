@@ -36,7 +36,7 @@ Standard Java
 <dependency>
   <groupId>com.robrua</groupId>
   <artifactId>orianna</artifactId>
-  <version>2.0.5</version>
+  <version>2.0.7</version>
 </dependency>
 ```
 
@@ -45,8 +45,32 @@ Android
 <dependency>
   <groupId>com.robrua</groupId>
   <artifactId>orianna-android</artifactId>
-  <version>2.0.5</version>
+  <version>2.0.7</version>
 </dependency>
+```
+
+Or using Gradle:
+
+Standard Java
+```
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+	compile 'com.robrua:orianna:2.0.7'
+}
+```
+
+Android
+```
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+	compile 'com.robrua:orianna-android:2.0.7'
+}
 ```
 
 ## Dependencies
