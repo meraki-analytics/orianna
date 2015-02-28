@@ -59,14 +59,13 @@ public abstract class StaticDataAPI {
      * @return all the champions
      */
     public synchronized static List<Champion> getChampions() {
-        List<Champion> champions = RiotAPI.store.getAll(Champion.class);
-        if(champions != null) {
-            return champions;
+        if(RiotAPI.store.hasAll(Champion.class)) {
+            return RiotAPI.store.getAll(Champion.class);
         }
 
         final ChampionList champs = BaseRiotAPI.getChampions();
 
-        champions = new ArrayList<>(champs.getData().size());
+        final List<Champion> champions = new ArrayList<>(champs.getData().size());
         final List<Long> IDs = new ArrayList<>(champions.size());
         for(final com.robrua.orianna.type.dto.staticdata.Champion champ : champs.getData().values()) {
             champions.add(new Champion(champ));
@@ -77,7 +76,7 @@ public abstract class StaticDataAPI {
             RiotAPI.getItems(new ArrayList<>(champs.getItemIDs()));
         }
 
-        RiotAPI.store.store(champions, IDs, true);
+        RiotAPI.store.store(Champion.class, champions, IDs, true);
 
         return Collections.unmodifiableList(champions);
     }
@@ -156,20 +155,19 @@ public abstract class StaticDataAPI {
      * @return all the items
      */
     public synchronized static List<Item> getItems() {
-        List<Item> items = RiotAPI.store.getAll(Item.class);
-        if(items != null) {
-            return items;
+        if(RiotAPI.store.hasAll(Item.class)) {
+            return RiotAPI.store.getAll(Item.class);
         }
 
         final ItemList its = BaseRiotAPI.getItems();
 
-        items = new ArrayList<>(its.getData().size());
+        final List<Item> items = new ArrayList<>(its.getData().size());
         final List<Long> IDs = new ArrayList<>(items.size());
         for(final com.robrua.orianna.type.dto.staticdata.Item item : its.getData().values()) {
             items.add(new Item(item));
             IDs.add(item.getId().longValue());
         }
-        RiotAPI.store.store(items, IDs, true);
+        RiotAPI.store.store(Item.class, items, IDs, true);
 
         return Collections.unmodifiableList(items);
     }
@@ -241,19 +239,19 @@ public abstract class StaticDataAPI {
      * @return information for the maps
      */
     public synchronized static List<MapDetails> getMapInformation() {
-        List<MapDetails> info = RiotAPI.store.getAll(MapDetails.class);
-        if(info != null) {
-            return info;
+        if(RiotAPI.store.hasAll(MapDetails.class)) {
+            return RiotAPI.store.getAll(MapDetails.class);
         }
 
         final MapData inf = BaseRiotAPI.getMapInformation();
-        info = new ArrayList<>(inf.getData().size());
+
+        final List<MapDetails> info = new ArrayList<>(inf.getData().size());
         final List<Long> IDs = new ArrayList<>(info.size());
         for(final com.robrua.orianna.type.dto.staticdata.MapDetails map : inf.getData().values()) {
             info.add(new MapDetails(map));
             IDs.add(map.getMapId().longValue());
         }
-        RiotAPI.store.store(info, IDs, true);
+        RiotAPI.store.store(MapDetails.class, info, IDs, true);
 
         return Collections.unmodifiableList(info);
     }
@@ -262,20 +260,19 @@ public abstract class StaticDataAPI {
      * @return all the masteries
      */
     public synchronized static List<Mastery> getMasteries() {
-        List<Mastery> masteries = RiotAPI.store.getAll(Mastery.class);
-        if(masteries != null) {
-            return masteries;
+        if(RiotAPI.store.hasAll(Mastery.class)) {
+            return RiotAPI.store.getAll(Mastery.class);
         }
 
         final MasteryList its = BaseRiotAPI.getMasteries();
 
-        masteries = new ArrayList<>(its.getData().size());
+        final List<Mastery> masteries = new ArrayList<>(its.getData().size());
         final List<Long> IDs = new ArrayList<>(masteries.size());
         for(final com.robrua.orianna.type.dto.staticdata.Mastery mastery : its.getData().values()) {
             masteries.add(new Mastery(mastery));
             IDs.add(mastery.getId().longValue());
         }
-        RiotAPI.store.store(masteries, IDs, true);
+        RiotAPI.store.store(Mastery.class, masteries, IDs, true);
 
         return Collections.unmodifiableList(masteries);
     }
@@ -383,20 +380,19 @@ public abstract class StaticDataAPI {
      * @return all the runes
      */
     public synchronized static List<Rune> getRunes() {
-        List<Rune> runes = RiotAPI.store.getAll(Rune.class);
-        if(runes != null) {
-            return runes;
+        if(RiotAPI.store.hasAll(Rune.class)) {
+            return RiotAPI.store.getAll(Rune.class);
         }
 
         final RuneList its = BaseRiotAPI.getRunes();
 
-        runes = new ArrayList<>(its.getData().size());
+        final List<Rune> runes = new ArrayList<>(its.getData().size());
         final List<Long> IDs = new ArrayList<>(runes.size());
         for(final com.robrua.orianna.type.dto.staticdata.Rune rune : its.getData().values()) {
             runes.add(new Rune(rune));
             IDs.add(rune.getId().longValue());
         }
-        RiotAPI.store.store(runes, IDs, true);
+        RiotAPI.store.store(Rune.class, runes, IDs, true);
 
         return Collections.unmodifiableList(runes);
     }
@@ -471,20 +467,19 @@ public abstract class StaticDataAPI {
      * @return all the summoner spells
      */
     public synchronized static List<SummonerSpell> getSummonerSpells() {
-        List<SummonerSpell> spells = RiotAPI.store.getAll(SummonerSpell.class);
-        if(spells != null) {
-            return spells;
+        if(RiotAPI.store.hasAll(SummonerSpell.class)) {
+            return RiotAPI.store.getAll(SummonerSpell.class);
         }
 
         final SummonerSpellList its = BaseRiotAPI.getSummonerSpells();
 
-        spells = new ArrayList<>(its.getData().size());
+        final List<SummonerSpell> spells = new ArrayList<>(its.getData().size());
         final List<Long> IDs = new ArrayList<>(spells.size());
         for(final com.robrua.orianna.type.dto.staticdata.SummonerSpell spell : its.getData().values()) {
             spells.add(new SummonerSpell(spell));
             IDs.add(spell.getId().longValue());
         }
-        RiotAPI.store.store(spells, IDs, true);
+        RiotAPI.store.store(SummonerSpell.class, spells, IDs, true);
 
         return Collections.unmodifiableList(spells);
     }

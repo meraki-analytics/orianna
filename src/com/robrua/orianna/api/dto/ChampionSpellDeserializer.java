@@ -3,9 +3,7 @@ package com.robrua.orianna.api.dto;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -16,9 +14,7 @@ import com.robrua.orianna.type.dto.staticdata.Image;
 import com.robrua.orianna.type.dto.staticdata.LevelTip;
 import com.robrua.orianna.type.dto.staticdata.SpellVars;
 
-public class ChampionSpellDeserializer implements JsonDeserializer<ChampionSpell> {
-    private static final Gson GSON = new Gson();
-
+public class ChampionSpellDeserializer extends DtoDeserializer<ChampionSpell> {
     @SuppressWarnings("unchecked")
     @Override
     public ChampionSpell deserialize(final JsonElement json, final Type type, final JsonDeserializationContext context) throws JsonParseException {

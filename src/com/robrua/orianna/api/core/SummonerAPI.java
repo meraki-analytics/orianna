@@ -287,7 +287,7 @@ public abstract class SummonerAPI {
             return Collections.emptyList();
         }
 
-        final List<Summoner> summoners = RiotAPI.store.get(Summoner.class, IDs);
+        final List<Summoner> summoners = RiotAPI.store.get(Summoner.class, stringifyIDs(IDs));
         final List<Long> toGet = new ArrayList<>();
         final List<Integer> index = new ArrayList<>();
         for(int i = 0; i < IDs.size(); i++) {
@@ -311,8 +311,8 @@ public abstract class SummonerAPI {
             }
         }
 
-        RiotAPI.store.store(gotten, toGet, false);
-        RiotAPI.store.store(gotten, names, false);
+        RiotAPI.store.store(Summoner.class, gotten, stringifyIDs(toGet), false);
+        RiotAPI.store.store(Summoner.class, gotten, names, false);
 
         int count = 0;
         for(final Integer id : index) {
@@ -356,18 +356,18 @@ public abstract class SummonerAPI {
         }
 
         final List<Summoner> gotten = new ArrayList<>();
-        final List<Long> IDs = new ArrayList<>();
+        final List<String> IDs = new ArrayList<>();
         for(final List<String> get : Utils.breakUpList(toGet, 40)) {
             final Map<String, com.robrua.orianna.type.dto.summoner.Summoner> sums = BaseRiotAPI.getSummonersByName(get);
             for(final String name : get) {
                 final String std = standardize(name);
                 gotten.add(new Summoner(sums.get(std)));
-                IDs.add(sums.get(std).getId());
+                IDs.add("[" + sums.get(std).getId() + "]");
             }
         }
 
-        RiotAPI.store.store(gotten, toGet, false);
-        RiotAPI.store.store(gotten, IDs, false);
+        RiotAPI.store.store(Summoner.class, gotten, toGet, false);
+        RiotAPI.store.store(Summoner.class, gotten, IDs, false);
 
         int count = 0;
         for(final Integer id : index) {
@@ -396,7 +396,7 @@ public abstract class SummonerAPI {
             return Collections.emptyList();
         }
 
-        final List<Summoner> summoners = RiotAPI.store.get(Summoner.class, IDs);
+        final List<Summoner> summoners = RiotAPI.store.get(Summoner.class, stringifyIDs(IDs));
         final List<String> names = new ArrayList<>(summoners.size());
         for(final Summoner summoner : summoners) {
             names.add(summoner.getName());
@@ -450,5 +450,20 @@ public abstract class SummonerAPI {
      */
     private static String standardize(final String summonerName) {
         return new String(EncodingUtils.getBytes(summonerName.replaceAll(" ", "").toLowerCase(), "UTF-8"));
+    }
+
+    /**
+     * Used to ensure all IDs are of the same type (String)
+     *
+     * @param IDs
+     *            the IDs
+     * @return stringified IDs
+     */
+    private static List<String> stringifyIDs(final List<Long> IDs) {
+        final List<String> stringed = new ArrayList<>(IDs.size());
+        for(final Long ID : IDs) {
+            stringed.add("[" + ID + "]");
+        }
+        return stringed;
     }
 }
