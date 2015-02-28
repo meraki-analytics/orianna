@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.robrua.orianna.api.dto.BaseRiotAPI;
+import com.robrua.orianna.store.DataStore;
 import com.robrua.orianna.type.api.Action;
 import com.robrua.orianna.type.api.LoadPolicy;
 import com.robrua.orianna.type.api.RateLimit;
@@ -2166,6 +2167,16 @@ public abstract class AsyncRiotAPI {
      */
     public static void setAPIKey(final String newAPIKey) {
         BaseRiotAPI.setAPIKey(newAPIKey);
+    }
+
+    /**
+     * Sets the data store to use for caching
+     *
+     * @param newStore
+     *            the data store to use for caching
+     */
+    public static void setDataStore(final DataStore newStore) {
+        RiotAPI.setDataStore(newStore);
     }
 
     /**

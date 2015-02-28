@@ -1339,6 +1339,16 @@ public abstract class RiotAPI {
     }
 
     /**
+     * Sets the data store to use for caching
+     *
+     * @param newStore
+     *            the data store to use for caching
+     */
+    public static void setDataStore(final DataStore newStore) {
+        store = newStore;
+    }
+
+    /**
      * Sets the load policy for the API
      *
      * @param policy
