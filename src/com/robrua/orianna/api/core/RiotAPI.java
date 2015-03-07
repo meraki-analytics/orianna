@@ -66,6 +66,15 @@ public abstract class RiotAPI {
     }
 
     /**
+     * @param name
+     *            the name of the champion to get
+     * @return the champion
+     */
+    public synchronized static Champion getChampion(final String name) {
+        return StaticDataAPI.getChampion(name);
+    }
+
+    /**
      * @return all the champions
      */
     public static List<Champion> getChampions() {

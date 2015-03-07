@@ -138,6 +138,7 @@ import com.robrua.orianna.type.core.common.Region;
 import com.robrua.orianna.type.core.league.League;
 import com.robrua.orianna.type.core.staticdata.Champion;
 import com.robrua.orianna.type.core.summoner.Summoner;
+import com.robrua.orianna.type.exception.APIException;
 
 public class Example {
     public static void main(String[] args) {
@@ -150,12 +151,20 @@ public class Example {
             public void perform(Summoner summoner) {
                 System.out.println(summoner.getName() + " is a level " + summoner.getLevel() + " summoner on the NA server.");
             }
+            
+            public void handle(APIException e) {
+                System.out.println("Couldn't get summoner FatalElement");
+            }
         }, "FatalElement");
         
         AsyncRiotAPI.getChampions(new Action<List<Champion>>() {
             @Override
             public void perform(List<Champion> champions) {
                 System.out.println("He enjoys playing LoL on all different champions, like " + champions.get((int)(champions.size() * Math.random())) + ".");
+            }
+            
+            public void handle(APIException e) {
+                System.out.println("Couldn't get champion list.");
             }
         });
 
@@ -164,6 +173,10 @@ public class Example {
             public void perform(League challenger) {
                 Summoner bestNA = challenger.getEntries().get(0).getSummoner();
                 System.out.println("He's much better at writing Java code than he is a LoL. He'll never be as good as " + bestNA + ".");
+            }
+            
+            public void handle(APIException e) {
+                System.out.println("Couldn't get solo queue challenger league.");
             }
         }, QueueType.RANKED_SOLO_5x5);
     }
