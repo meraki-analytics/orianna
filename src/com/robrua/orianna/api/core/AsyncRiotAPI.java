@@ -34,6 +34,7 @@ import com.robrua.orianna.type.core.summoner.MasteryPage;
 import com.robrua.orianna.type.core.summoner.RunePage;
 import com.robrua.orianna.type.core.summoner.Summoner;
 import com.robrua.orianna.type.core.team.Team;
+import com.robrua.orianna.type.exception.APIException;
 
 /**
  * Accesses the <a href="http://developer.riotgames.com/api/methods">LoL REST
@@ -52,7 +53,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(LeagueAPI.getChallenger(queueType));
+                try {
+                    action.perform(LeagueAPI.getChallenger(queueType));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -67,7 +73,31 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StaticDataAPI.getChampion(ID));
+                try {
+                    action.perform(StaticDataAPI.getChampion(ID));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param name
+     *            the name of the champion to get
+     * @return the champion
+     */
+    public static void getChampion(final Action<Champion> action, final String name) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    action.perform(StaticDataAPI.getChampion(name));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -80,7 +110,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StaticDataAPI.getChampions());
+                try {
+                    action.perform(StaticDataAPI.getChampions());
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -95,7 +130,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StaticDataAPI.getChampions(IDs));
+                try {
+                    action.perform(StaticDataAPI.getChampions(IDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -110,7 +150,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StaticDataAPI.getChampions(IDs));
+                try {
+                    action.perform(StaticDataAPI.getChampions(IDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -125,7 +170,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(ChampionAPI.getChampionStatus(champion));
+                try {
+                    action.perform(ChampionAPI.getChampionStatus(champion));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -140,7 +190,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(ChampionAPI.getChampionStatus(ID));
+                try {
+                    action.perform(ChampionAPI.getChampionStatus(ID));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -155,7 +210,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(ChampionAPI.getChampionStatuses(IDs));
+                try {
+                    action.perform(ChampionAPI.getChampionStatuses(IDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -170,7 +230,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(ChampionAPI.getChampionStatuses(IDs));
+                try {
+                    action.perform(ChampionAPI.getChampionStatuses(IDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -183,7 +248,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(ChampionAPI.getChampionStatuses());
+                try {
+                    action.perform(ChampionAPI.getChampionStatuses());
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -199,7 +269,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(ChampionAPI.getChampionStatuses(freeToPlay));
+                try {
+                    action.perform(ChampionAPI.getChampionStatuses(freeToPlay));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -215,7 +290,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(CurrentGameAPI.getCurrentGame(summonerID));
+                try {
+                    action.perform(CurrentGameAPI.getCurrentGame(summonerID));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -231,7 +311,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(CurrentGameAPI.getCurrentGame(summonerName));
+                try {
+                    action.perform(CurrentGameAPI.getCurrentGame(summonerName));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -247,7 +332,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(CurrentGameAPI.getCurrentGame(summoner));
+                try {
+                    action.perform(CurrentGameAPI.getCurrentGame(summoner));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -260,7 +350,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(FeaturedGamesAPI.getFeaturedGames());
+                try {
+                    action.perform(FeaturedGamesAPI.getFeaturedGames());
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -275,7 +370,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StaticDataAPI.getItem(ID));
+                try {
+                    action.perform(StaticDataAPI.getItem(ID));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -288,7 +388,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StaticDataAPI.getItems());
+                try {
+                    action.perform(StaticDataAPI.getItems());
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -303,7 +408,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StaticDataAPI.getItems(IDs));
+                try {
+                    action.perform(StaticDataAPI.getItems(IDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -318,7 +428,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StaticDataAPI.getItems(IDs));
+                try {
+                    action.perform(StaticDataAPI.getItems(IDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -331,7 +446,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StaticDataAPI.getLanguages());
+                try {
+                    action.perform(StaticDataAPI.getLanguages());
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -344,7 +464,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StaticDataAPI.getLanguageStrings());
+                try {
+                    action.perform(StaticDataAPI.getLanguageStrings());
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -359,7 +484,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(LeagueAPI.getLeagueEntriesBySummoner(summoner));
+                try {
+                    action.perform(LeagueAPI.getLeagueEntriesBySummoner(summoner));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -374,7 +504,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(LeagueAPI.getLeagueEntriesBySummoner(summoners));
+                try {
+                    action.perform(LeagueAPI.getLeagueEntriesBySummoner(summoners));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -389,7 +524,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(LeagueAPI.getLeagueEntriesBySummoner(summoners));
+                try {
+                    action.perform(LeagueAPI.getLeagueEntriesBySummoner(summoners));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -404,7 +544,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(LeagueAPI.getLeagueEntriesBySummonerID(summonerID));
+                try {
+                    action.perform(LeagueAPI.getLeagueEntriesBySummonerID(summonerID));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -419,7 +564,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(LeagueAPI.getLeagueEntriesBySummonerID(summonerIDs));
+                try {
+                    action.perform(LeagueAPI.getLeagueEntriesBySummonerID(summonerIDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -434,7 +584,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(LeagueAPI.getLeagueEntriesBySummonerID(summonerIDs));
+                try {
+                    action.perform(LeagueAPI.getLeagueEntriesBySummonerID(summonerIDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -449,7 +604,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(LeagueAPI.getLeagueEntriesBySummonerName(summonerName));
+                try {
+                    action.perform(LeagueAPI.getLeagueEntriesBySummonerName(summonerName));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -464,7 +624,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(LeagueAPI.getLeagueEntriesBySummonerName(summonerNames));
+                try {
+                    action.perform(LeagueAPI.getLeagueEntriesBySummonerName(summonerNames));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -479,7 +644,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(LeagueAPI.getLeagueEntriesBySummonerName(summonerNames));
+                try {
+                    action.perform(LeagueAPI.getLeagueEntriesBySummonerName(summonerNames));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -494,7 +664,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(LeagueAPI.getLeagueEntriesByTeam(team));
+                try {
+                    action.perform(LeagueAPI.getLeagueEntriesByTeam(team));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -509,7 +684,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(LeagueAPI.getLeagueEntriesByTeam(teams));
+                try {
+                    action.perform(LeagueAPI.getLeagueEntriesByTeam(teams));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -524,7 +704,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(LeagueAPI.getLeagueEntriesByTeam(teams));
+                try {
+                    action.perform(LeagueAPI.getLeagueEntriesByTeam(teams));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -539,7 +724,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(LeagueAPI.getLeagueEntriesByTeamID(teamID));
+                try {
+                    action.perform(LeagueAPI.getLeagueEntriesByTeamID(teamID));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -554,7 +744,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(LeagueAPI.getLeagueEntriesByTeamID(teamIDs));
+                try {
+                    action.perform(LeagueAPI.getLeagueEntriesByTeamID(teamIDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -569,7 +764,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(LeagueAPI.getLeagueEntriesByTeamID(teamIDs));
+                try {
+                    action.perform(LeagueAPI.getLeagueEntriesByTeamID(teamIDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -584,7 +784,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(LeagueAPI.getLeaguesBySummoner(summoner));
+                try {
+                    action.perform(LeagueAPI.getLeaguesBySummoner(summoner));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -599,7 +804,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(LeagueAPI.getLeaguesBySummoner(summoners));
+                try {
+                    action.perform(LeagueAPI.getLeaguesBySummoner(summoners));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -614,7 +824,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(LeagueAPI.getLeaguesBySummoner(summoners));
+                try {
+                    action.perform(LeagueAPI.getLeaguesBySummoner(summoners));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -629,7 +844,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(LeagueAPI.getLeaguesBySummonerID(summonerID));
+                try {
+                    action.perform(LeagueAPI.getLeaguesBySummonerID(summonerID));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -644,7 +864,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(LeagueAPI.getLeaguesBySummonerID(summonerIDs));
+                try {
+                    action.perform(LeagueAPI.getLeaguesBySummonerID(summonerIDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -659,7 +884,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(LeagueAPI.getLeaguesBySummonerID(summonerIDs));
+                try {
+                    action.perform(LeagueAPI.getLeaguesBySummonerID(summonerIDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -674,7 +904,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(LeagueAPI.getLeaguesBySummonerName(summonerName));
+                try {
+                    action.perform(LeagueAPI.getLeaguesBySummonerName(summonerName));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -689,7 +924,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(LeagueAPI.getLeaguesBySummonerName(summonerNames));
+                try {
+                    action.perform(LeagueAPI.getLeaguesBySummonerName(summonerNames));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -704,7 +944,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(LeagueAPI.getLeaguesBySummonerName(summonerNames));
+                try {
+                    action.perform(LeagueAPI.getLeaguesBySummonerName(summonerNames));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -719,7 +964,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(LeagueAPI.getLeaguesByTeam(team));
+                try {
+                    action.perform(LeagueAPI.getLeaguesByTeam(team));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -734,7 +984,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(LeagueAPI.getLeaguesByTeam(teams));
+                try {
+                    action.perform(LeagueAPI.getLeaguesByTeam(teams));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -749,7 +1004,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(LeagueAPI.getLeaguesByTeam(teams));
+                try {
+                    action.perform(LeagueAPI.getLeaguesByTeam(teams));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -764,7 +1024,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(LeagueAPI.getLeaguesByTeamID(teamID));
+                try {
+                    action.perform(LeagueAPI.getLeaguesByTeamID(teamID));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -779,7 +1044,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(LeagueAPI.getLeaguesByTeamID(teamIDs));
+                try {
+                    action.perform(LeagueAPI.getLeaguesByTeamID(teamIDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -794,7 +1064,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(LeagueAPI.getLeaguesByTeamID(teamIDs));
+                try {
+                    action.perform(LeagueAPI.getLeaguesByTeamID(teamIDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -807,7 +1082,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StaticDataAPI.getMapInformation());
+                try {
+                    action.perform(StaticDataAPI.getMapInformation());
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -820,7 +1100,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StaticDataAPI.getMasteries());
+                try {
+                    action.perform(StaticDataAPI.getMasteries());
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -835,7 +1120,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StaticDataAPI.getMasteries(IDs));
+                try {
+                    action.perform(StaticDataAPI.getMasteries(IDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -850,7 +1140,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StaticDataAPI.getMasteries(IDs));
+                try {
+                    action.perform(StaticDataAPI.getMasteries(IDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -865,7 +1160,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StaticDataAPI.getMastery(ID));
+                try {
+                    action.perform(StaticDataAPI.getMastery(ID));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -874,7 +1174,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(null);
+                try {
+                    action.perform(null);
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -889,7 +1194,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(SummonerAPI.getMasteryPages(summoners));
+                try {
+                    action.perform(SummonerAPI.getMasteryPages(summoners));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -904,7 +1214,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(SummonerAPI.getMasteryPages(summoners));
+                try {
+                    action.perform(SummonerAPI.getMasteryPages(summoners));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -919,7 +1234,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(SummonerAPI.getMasteryPages(summoner));
+                try {
+                    action.perform(SummonerAPI.getMasteryPages(summoner));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -934,7 +1254,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(SummonerAPI.getMasteryPagesByID(summonerIDs));
+                try {
+                    action.perform(SummonerAPI.getMasteryPagesByID(summonerIDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -949,7 +1274,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(SummonerAPI.getMasteryPagesByID(summonerIDs));
+                try {
+                    action.perform(SummonerAPI.getMasteryPagesByID(summonerIDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -964,7 +1294,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(SummonerAPI.getMasteryPagesByID(summonerID));
+                try {
+                    action.perform(SummonerAPI.getMasteryPagesByID(summonerID));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -979,7 +1314,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(SummonerAPI.getMasteryPagesByName(summonerNames));
+                try {
+                    action.perform(SummonerAPI.getMasteryPagesByName(summonerNames));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -994,7 +1334,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(SummonerAPI.getMasteryPagesByName(summonerNames));
+                try {
+                    action.perform(SummonerAPI.getMasteryPagesByName(summonerNames));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1009,7 +1354,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(SummonerAPI.getMasteryPagesByName(summonerName));
+                try {
+                    action.perform(SummonerAPI.getMasteryPagesByName(summonerName));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1024,7 +1374,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(MatchAPI.getMatch(ID));
+                try {
+                    action.perform(MatchAPI.getMatch(ID));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1039,7 +1394,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(MatchHistoryAPI.getMatchHistory(summonerID));
+                try {
+                    action.perform(MatchHistoryAPI.getMatchHistory(summonerID));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1057,7 +1417,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(MatchHistoryAPI.getMatchHistory(summonerID, beginIndex));
+                try {
+                    action.perform(MatchHistoryAPI.getMatchHistory(summonerID, beginIndex));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1077,7 +1442,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(MatchHistoryAPI.getMatchHistory(summonerID, beginIndex, championIDs));
+                try {
+                    action.perform(MatchHistoryAPI.getMatchHistory(summonerID, beginIndex, championIDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1097,7 +1467,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(MatchHistoryAPI.getMatchHistory(summonerID, beginIndex, queueType));
+                try {
+                    action.perform(MatchHistoryAPI.getMatchHistory(summonerID, beginIndex, queueType));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1120,7 +1495,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(MatchHistoryAPI.getMatchHistory(summonerID, beginIndex, queueType, championIDs));
+                try {
+                    action.perform(MatchHistoryAPI.getMatchHistory(summonerID, beginIndex, queueType, championIDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1137,7 +1517,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(MatchHistoryAPI.getMatchHistory(summonerID, championIDs));
+                try {
+                    action.perform(MatchHistoryAPI.getMatchHistory(summonerID, championIDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1154,7 +1539,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(MatchHistoryAPI.getMatchHistory(summonerID, queueType));
+                try {
+                    action.perform(MatchHistoryAPI.getMatchHistory(summonerID, queueType));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1173,7 +1563,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(MatchHistoryAPI.getMatchHistory(summonerID, queueType, championIDs));
+                try {
+                    action.perform(MatchHistoryAPI.getMatchHistory(summonerID, queueType, championIDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1188,7 +1583,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(MatchHistoryAPI.getMatchHistory(summoner));
+                try {
+                    action.perform(MatchHistoryAPI.getMatchHistory(summoner));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1206,7 +1606,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(MatchHistoryAPI.getMatchHistory(summoner, beginIndex));
+                try {
+                    action.perform(MatchHistoryAPI.getMatchHistory(summoner, beginIndex));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1226,7 +1631,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(MatchHistoryAPI.getMatchHistory(summoner, beginIndex, champions));
+                try {
+                    action.perform(MatchHistoryAPI.getMatchHistory(summoner, beginIndex, champions));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1246,7 +1656,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(MatchHistoryAPI.getMatchHistory(summoner, beginIndex, queueType));
+                try {
+                    action.perform(MatchHistoryAPI.getMatchHistory(summoner, beginIndex, queueType));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1269,7 +1684,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(MatchHistoryAPI.getMatchHistory(summoner, beginIndex, queueType, champions));
+                try {
+                    action.perform(MatchHistoryAPI.getMatchHistory(summoner, beginIndex, queueType, champions));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1286,7 +1706,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(MatchHistoryAPI.getMatchHistory(summoner, champions));
+                try {
+                    action.perform(MatchHistoryAPI.getMatchHistory(summoner, champions));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1303,7 +1728,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(MatchHistoryAPI.getMatchHistory(summoner, queueType));
+                try {
+                    action.perform(MatchHistoryAPI.getMatchHistory(summoner, queueType));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1323,7 +1753,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(MatchHistoryAPI.getMatchHistory(summoner, queueType, champions));
+                try {
+                    action.perform(MatchHistoryAPI.getMatchHistory(summoner, queueType, champions));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1339,7 +1774,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StatsAPI.getRankedStats(summonerID));
+                try {
+                    action.perform(StatsAPI.getRankedStats(summonerID));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1357,7 +1797,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StatsAPI.getRankedStats(summonerID, season));
+                try {
+                    action.perform(StatsAPI.getRankedStats(summonerID, season));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1373,7 +1818,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StatsAPI.getRankedStats(summoner));
+                try {
+                    action.perform(StatsAPI.getRankedStats(summoner));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1391,7 +1841,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StatsAPI.getRankedStats(summoner, season));
+                try {
+                    action.perform(StatsAPI.getRankedStats(summoner, season));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1404,7 +1859,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StaticDataAPI.getRealm());
+                try {
+                    action.perform(StaticDataAPI.getRealm());
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1419,7 +1879,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(GameAPI.getRecentGames(summonerID));
+                try {
+                    action.perform(GameAPI.getRecentGames(summonerID));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1434,7 +1899,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(GameAPI.getRecentGames(summonerName));
+                try {
+                    action.perform(GameAPI.getRecentGames(summonerName));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1449,7 +1919,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(GameAPI.getRecentGames(summoner));
+                try {
+                    action.perform(GameAPI.getRecentGames(summoner));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1464,7 +1939,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StaticDataAPI.getRune(ID));
+                try {
+                    action.perform(StaticDataAPI.getRune(ID));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1473,7 +1953,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(null);
+                try {
+                    action.perform(null);
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1488,7 +1973,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(SummonerAPI.getRunePages(summoners));
+                try {
+                    action.perform(SummonerAPI.getRunePages(summoners));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1503,7 +1993,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(SummonerAPI.getRunePages(summoners));
+                try {
+                    action.perform(SummonerAPI.getRunePages(summoners));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1518,7 +2013,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(SummonerAPI.getRunePages(summoner));
+                try {
+                    action.perform(SummonerAPI.getRunePages(summoner));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1533,7 +2033,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(SummonerAPI.getRunePagesByID(summonerIDs));
+                try {
+                    action.perform(SummonerAPI.getRunePagesByID(summonerIDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1548,7 +2053,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(SummonerAPI.getRunePagesByID(summonerIDs));
+                try {
+                    action.perform(SummonerAPI.getRunePagesByID(summonerIDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1563,7 +2073,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(SummonerAPI.getRunePagesByID(summonerID));
+                try {
+                    action.perform(SummonerAPI.getRunePagesByID(summonerID));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1578,7 +2093,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(SummonerAPI.getRunePagesByName(summonerNames));
+                try {
+                    action.perform(SummonerAPI.getRunePagesByName(summonerNames));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1593,7 +2113,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(SummonerAPI.getRunePagesByName(summonerNames));
+                try {
+                    action.perform(SummonerAPI.getRunePagesByName(summonerNames));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1608,7 +2133,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(SummonerAPI.getRunePagesByName(summonerName));
+                try {
+                    action.perform(SummonerAPI.getRunePagesByName(summonerName));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1621,7 +2151,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StaticDataAPI.getRunes());
+                try {
+                    action.perform(StaticDataAPI.getRunes());
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1636,7 +2171,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StaticDataAPI.getRunes(IDs));
+                try {
+                    action.perform(StaticDataAPI.getRunes(IDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1651,7 +2191,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StaticDataAPI.getRunes(IDs));
+                try {
+                    action.perform(StaticDataAPI.getRunes(IDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1666,7 +2211,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StatusAPI.getShard(region));
+                try {
+                    action.perform(StatusAPI.getShard(region));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1679,7 +2229,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StatusAPI.getShards());
+                try {
+                    action.perform(StatusAPI.getShards());
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1694,7 +2249,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StatsAPI.getStats(summonerID));
+                try {
+                    action.perform(StatsAPI.getStats(summonerID));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1711,7 +2271,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StatsAPI.getStats(summonerID, season));
+                try {
+                    action.perform(StatsAPI.getStats(summonerID, season));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1726,7 +2291,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StatsAPI.getStats(summoner));
+                try {
+                    action.perform(StatsAPI.getStats(summoner));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1743,7 +2313,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StatsAPI.getStats(summoner, season));
+                try {
+                    action.perform(StatsAPI.getStats(summoner, season));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1758,7 +2333,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(SummonerAPI.getSummonerByID(ID));
+                try {
+                    action.perform(SummonerAPI.getSummonerByID(ID));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1773,7 +2353,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(SummonerAPI.getSummonerByName(name));
+                try {
+                    action.perform(SummonerAPI.getSummonerByName(name));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1788,7 +2373,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(SummonerAPI.getSummonerName(ID));
+                try {
+                    action.perform(SummonerAPI.getSummonerName(ID));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1803,7 +2393,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(SummonerAPI.getSummonersByID(IDs));
+                try {
+                    action.perform(SummonerAPI.getSummonersByID(IDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1818,7 +2413,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(SummonerAPI.getSummonersByID(IDs));
+                try {
+                    action.perform(SummonerAPI.getSummonersByID(IDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1833,7 +2433,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(SummonerAPI.getSummonersByName(names));
+                try {
+                    action.perform(SummonerAPI.getSummonersByName(names));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1848,7 +2453,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(SummonerAPI.getSummonersByName(names));
+                try {
+                    action.perform(SummonerAPI.getSummonersByName(names));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1863,7 +2473,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(SummonerAPI.getSummonersNames(IDs));
+                try {
+                    action.perform(SummonerAPI.getSummonersNames(IDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1878,7 +2493,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(SummonerAPI.getSummonersNames(IDs));
+                try {
+                    action.perform(SummonerAPI.getSummonersNames(IDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1893,7 +2513,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StaticDataAPI.getSummonerSpell(ID));
+                try {
+                    action.perform(StaticDataAPI.getSummonerSpell(ID));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1902,7 +2527,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(null);
+                try {
+                    action.perform(null);
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1915,7 +2545,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StaticDataAPI.getSummonerSpells());
+                try {
+                    action.perform(StaticDataAPI.getSummonerSpells());
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1930,7 +2565,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StaticDataAPI.getSummonerSpells(IDs));
+                try {
+                    action.perform(StaticDataAPI.getSummonerSpells(IDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1945,7 +2585,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StaticDataAPI.getSummonerSpells(IDs));
+                try {
+                    action.perform(StaticDataAPI.getSummonerSpells(IDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1960,7 +2605,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(TeamAPI.getTeam(teamID));
+                try {
+                    action.perform(TeamAPI.getTeam(teamID));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1969,7 +2619,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(null);
+                try {
+                    action.perform(null);
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1984,7 +2639,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(TeamAPI.getTeams(teamIDs));
+                try {
+                    action.perform(TeamAPI.getTeams(teamIDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -1999,7 +2659,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(TeamAPI.getTeams(teamIDs));
+                try {
+                    action.perform(TeamAPI.getTeams(teamIDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -2014,7 +2679,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(TeamAPI.getTeamsBySummoner(summoners));
+                try {
+                    action.perform(TeamAPI.getTeamsBySummoner(summoners));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -2029,7 +2699,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(TeamAPI.getTeamsBySummoner(summoners));
+                try {
+                    action.perform(TeamAPI.getTeamsBySummoner(summoners));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -2044,7 +2719,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(TeamAPI.getTeamsBySummoner(summoner));
+                try {
+                    action.perform(TeamAPI.getTeamsBySummoner(summoner));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -2059,7 +2739,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(TeamAPI.getTeamsBySummonerID(summonerIDs));
+                try {
+                    action.perform(TeamAPI.getTeamsBySummonerID(summonerIDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -2074,7 +2759,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(TeamAPI.getTeamsBySummonerID(summonerIDs));
+                try {
+                    action.perform(TeamAPI.getTeamsBySummonerID(summonerIDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -2089,7 +2779,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(TeamAPI.getTeamsBySummonerID(summonerID));
+                try {
+                    action.perform(TeamAPI.getTeamsBySummonerID(summonerID));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -2104,7 +2799,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(TeamAPI.getTeamsBySummonerName(summonerNames));
+                try {
+                    action.perform(TeamAPI.getTeamsBySummonerName(summonerNames));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -2119,7 +2819,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(TeamAPI.getTeamsBySummonerName(summonerNames));
+                try {
+                    action.perform(TeamAPI.getTeamsBySummonerName(summonerNames));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -2134,7 +2839,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(TeamAPI.getTeamsBySummonerName(summonerName));
+                try {
+                    action.perform(TeamAPI.getTeamsBySummonerName(summonerName));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }
@@ -2147,7 +2857,12 @@ public abstract class AsyncRiotAPI {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                action.perform(StaticDataAPI.getVersions());
+                try {
+                    action.perform(StaticDataAPI.getVersions());
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
             }
         }).start();
     }

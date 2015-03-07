@@ -56,6 +56,22 @@ public abstract class StaticDataAPI {
     }
 
     /**
+     * @param name
+     *            the name of the champion to get
+     * @return the champion
+     */
+    public synchronized static Champion getChampion(final String name) {
+        final List<Champion> champions = getChampions();
+        for(final Champion champion : champions) {
+            if(champion.getName().equals(name)) {
+                return champion;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * @return all the champions
      */
     public synchronized static List<Champion> getChampions() {
