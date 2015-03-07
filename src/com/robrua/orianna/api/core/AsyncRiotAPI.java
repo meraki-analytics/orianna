@@ -84,9 +84,10 @@ public abstract class AsyncRiotAPI {
     }
 
     /**
+     * @param action
+     *            what to do with the champion
      * @param name
      *            the name of the champion to get
-     * @return the champion
      */
     public static void getChampion(final Action<Champion> action, final String name) {
         new Thread(new Runnable() {
