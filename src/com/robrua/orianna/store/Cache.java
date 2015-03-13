@@ -3,6 +3,7 @@ package com.robrua.orianna.store;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -94,6 +95,18 @@ public class Cache extends DataStore {
             result.add((T)val);
         }
         return result;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T extends OriannaObject<?>> Iterator<T> doGetIterator(final Class<T> type) {
+        final Map<Object, OriannaObject<?>> stored = cache.get(type);
+
+        if(stored == null) {
+            return Collections.emptyIterator();
+        }
+
+        return (Iterator<T>)stored.values().iterator();
     }
 
     @Override

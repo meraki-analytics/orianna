@@ -8,7 +8,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +23,36 @@ import com.robrua.orianna.type.exception.OriannaException;
  * @author Rob Rua (robrua@alumni.cmu.edu)
  */
 public class FileSystemDB extends DataStore {
+    /**
+     * Iterator for DB entries on the file system
+     *
+     * @author Rob Rua (robrua@alumni.cmu.edu)
+     */
+    public static class FSIterator<T extends OriannaObject<?>> implements Iterator<T> {
+        private final Class<T> clazz;
+        private final Iterator<File> files;
+
+        /**
+         * @param folder root DB folder for type
+         * @param clazz the type
+         */
+        private FSIterator(final File folder, final Class<T> clazz) {
+            files = Arrays.asList(folder.listFiles()).iterator();
+            this.clazz = clazz;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return files.hasNext();
+        }
+
+        @Override
+        public T next() {
+            final File file = files.next();
+            return read(file, clazz);
+        }
+    }
+
     private static final String HAVE_ALL_NAME = "meta";
 
     /**
@@ -112,6 +144,7 @@ public class FileSystemDB extends DataStore {
     }
 
     private final Map<Class<? extends OriannaObject<?>>, Boolean> haveAll;
+
     private final File root;
 
     /**
@@ -216,6 +249,12 @@ public class FileSystemDB extends DataStore {
         }
 
         return result;
+    }
+
+    @Override
+    public <T extends OriannaObject<?>> Iterator<T> doGetIterator(final Class<T> type) {
+        final File folder = getFolder(type);
+        return new FSIterator<>(folder, type);
     }
 
     @Override
