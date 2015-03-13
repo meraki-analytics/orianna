@@ -60,6 +60,25 @@ public class League extends OriannaObject<com.robrua.orianna.type.dto.league.Lea
     }
 
     /**
+     * Gets the entry for the relevant participant that is a member of this
+     * league (i.e., a requested summoner ID, a requested team ID, or the ID of
+     * a team to which one of the requested summoners belongs). Only present
+     * when full league is requested so that participant's entry can be
+     * identified. Not present when individual entry is requested.
+     *
+     * @return the relevant participant entry
+     */
+    public LeagueEntry getParticipantEntry() {
+        for(final LeagueEntry e : getEntries()) {
+            if(e.getID().equals(getParticipantID())) {
+                return e;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Specifies the relevant participant that is a member of this league (i.e.,
      * a requested summoner ID, a requested team ID, or the ID of a team to
      * which one of the requested summoners belongs). Only present when full

@@ -74,6 +74,7 @@ public abstract class BaseRiotAPI {
     static final Gson GSON = new GsonBuilder().registerTypeAdapter(ChampionSpell.class, new ChampionSpellDeserializer())
             .registerTypeAdapter(SummonerSpell.class, new SummonerSpellDeserializer()).create();
     static Region mirror, region;
+    private static boolean printCalls = false;
     private static HttpHost proxy;
     private static RateLimiter rateLimiter = RiotAPI.getDefaultDevelopmentRateLimiter();
 
@@ -190,6 +191,10 @@ public abstract class BaseRiotAPI {
             if(proxy != null) {
                 final RequestConfig config = RequestConfig.custom().setProxy(proxy).build();
                 get.setConfig(config);
+            }
+
+            if(printCalls) {
+                System.out.println(uri);
             }
 
             final CloseableHttpResponse response = CLIENT.execute(get);
@@ -979,6 +984,16 @@ public abstract class BaseRiotAPI {
      */
     public static List<String> getVersions() {
         return StaticDataAPI.getVersions();
+    }
+
+    /**
+     * If turned on, prints the URI of calls made to stdout
+     *
+     * @param on
+     *            whether to print the URI of calls to stdout
+     */
+    public static void printCalls(final boolean on) {
+        printCalls = on;
     }
 
     /**

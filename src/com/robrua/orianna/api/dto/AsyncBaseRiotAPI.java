@@ -1399,6 +1399,16 @@ public class AsyncBaseRiotAPI {
     }
 
     /**
+     * If turned on, prints the URI of calls made to stdout
+     *
+     * @param on
+     *            whether to print the URI of calls to stdout
+     */
+    public static void printCalls(final boolean on) {
+        BaseRiotAPI.printCalls(on);
+    }
+
+    /**
      * Removes any set proxy
      */
     public static void removeProxy() {

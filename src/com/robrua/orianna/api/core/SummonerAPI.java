@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.http.util.EncodingUtils;
-
 import com.robrua.orianna.api.Utils;
 import com.robrua.orianna.api.dto.BaseRiotAPI;
 import com.robrua.orianna.type.api.LoadPolicy;
@@ -362,7 +360,13 @@ public abstract class SummonerAPI {
             for(final String name : get) {
                 final String std = standardize(name);
                 gotten.add(new Summoner(sums.get(std)));
-                IDs.add("[" + sums.get(std).getId() + "]");
+
+                if(sums.get(std) == null) {
+                    IDs.add("[" + null + "]");
+                }
+                else {
+                    IDs.add("[" + sums.get(std).getId() + "]");
+                }
             }
         }
 
@@ -449,7 +453,7 @@ public abstract class SummonerAPI {
      * @return the standardized summoner name
      */
     private static String standardize(final String summonerName) {
-        return new String(EncodingUtils.getBytes(summonerName.replaceAll(" ", "").toLowerCase(), "UTF-8"));
+        return summonerName.replaceAll(" ", "").toLowerCase();
     }
 
     /**
