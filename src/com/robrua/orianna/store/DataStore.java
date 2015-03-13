@@ -113,7 +113,7 @@ public abstract class DataStore {
      *            the type of object to get
      * @return an iterator over objects of that type in the data store
      */
-    public abstract <T extends OriannaObject<?>> Iterator<T> doGetIterator(final Class<T> type);
+    protected abstract <T extends OriannaObject<?>> Iterator<T> doGetIterator(final Class<T> type);
 
     /**
      * @param <T>
