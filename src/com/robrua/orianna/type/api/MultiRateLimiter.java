@@ -40,6 +40,13 @@ public class MultiRateLimiter implements RateLimiter {
     }
 
     @Override
+    public synchronized void resetIn(final long millis) {
+        for(final RateLimiter limit : limits) {
+            limit.resetIn(millis);
+        }
+    }
+
+    @Override
     public synchronized void waitForCall() {
         for(final RateLimiter limit : limits) {
             limit.waitForCall();

@@ -14,6 +14,14 @@ public interface RateLimiter {
     public void registerCall();
 
     /**
+     * Cancels current operation and resets the rate limiter
+     *
+     * @param millis
+     *            the number of milliseconds to wait before resetting
+     */
+    public void resetIn(long millis);
+
+    /**
      * Blocks until a call is available
      */
     public void waitForCall();

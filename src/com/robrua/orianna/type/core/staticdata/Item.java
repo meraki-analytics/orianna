@@ -5,17 +5,39 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.robrua.orianna.type.core.OriannaObject;
 
 public class Item extends OriannaObject<com.robrua.orianna.type.dto.staticdata.Item> {
+    private static final Map<String, Pattern> PATTERNS = getScrapedStatPatterns();
     private static final long serialVersionUID = 8240618175038660294L;
+
+    /**
+     * Patterns for scraping non-included stat data from item descriptions
+     *
+     * @return the patterns
+     */
+    private static Map<String, Pattern> getScrapedStatPatterns() {
+        final Map<String, Pattern> patterns = new HashMap<String, Pattern>();
+        patterns.put("percentCooldownReduction", Pattern.compile("\\+(\\d+) *% Cooldown Reduction *(<br>|</stats>|</passive>|$)"));
+        patterns.put("flatArmorPenetration", Pattern.compile("\\+(\\d+) *Armor Penetration *(<br>|</stats>|</passive>|$)"));
+        patterns.put("percentArmorPenetration", Pattern.compile("ignores (\\d+)% of the target's Armor"));
+        patterns.put("flatMagicPenetration", Pattern.compile("\\+(\\d+) *Magic Penetration *(<br>|</stats>|</passive>|$)"));
+        patterns.put("percentMagicPenetration", Pattern.compile("ignores (\\d+)% of the target's Magic Resist"));
+        patterns.put("goldPer10", Pattern.compile("\\+(\\d+) *Gold per 10 seconds *(<br>|</stats>|</passive>|$)"));
+
+        return patterns;
+    }
+
     private Map<String, String> effect;
     private List<String> from, into, tags;
     private Gold gold;
     private Image image;
     private Map<String, Boolean> maps;
     private MetaData rune;
+
     private BasicDataStats stats;
 
     /**
@@ -264,6 +286,7 @@ public class Item extends OriannaObject<com.robrua.orianna.type.dto.staticdata.I
     public BasicDataStats getStats() {
         if(stats == null) {
             stats = new BasicDataStats(data.getStats());
+            scrapeStats();
         }
 
         return stats;
@@ -281,6 +304,29 @@ public class Item extends OriannaObject<com.robrua.orianna.type.dto.staticdata.I
         }
 
         return Collections.unmodifiableList(tags);
+    }
+
+    /**
+     * Scrapes the item description to get stats Riot doesn't send in a workable
+     * format
+     */
+    private void scrapeStats() {
+        if(stats == null) {
+            return;
+        }
+
+        final Class<BasicDataStats> clazz = BasicDataStats.class;
+        for(final String stat : PATTERNS.keySet()) {
+            final Matcher matcher = PATTERNS.get(stat).matcher(getDescription());
+            if(matcher.find()) {
+                try {
+                    clazz.getDeclaredField(stat).set(stats, Double.parseDouble(matcher.group(1)));
+                }
+                catch(IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     /*

@@ -33,8 +33,10 @@ public class FileSystemDB extends DataStore {
         private final Iterator<File> files;
 
         /**
-         * @param folder root DB folder for type
-         * @param clazz the type
+         * @param folder
+         *            root DB folder for type
+         * @param clazz
+         *            the type
          */
         private FSIterator(final File folder, final Class<T> clazz) {
             files = Arrays.asList(folder.listFiles()).iterator();

@@ -249,6 +249,17 @@ public class SummonerSpell extends OriannaObject<com.robrua.orianna.type.dto.sta
     }
 
     /**
+     * Replaces the variables in the sanitized tooltip with numerical values
+     *
+     * @param championLevel
+     *            the champion level to get the specific sanitized tooltip for
+     * @return the sanitized tooltip with numerical values
+     */
+    public String getSanitizedTooltip(final int championLevel) {
+        return replaceVariables(getSanitizedTooltip(), championLevel);
+    }
+
+    /**
      * Spell vars
      *
      * @return spell vars
@@ -256,8 +267,10 @@ public class SummonerSpell extends OriannaObject<com.robrua.orianna.type.dto.sta
     public List<SpellVars> getSpellVars() {
         if(vars == null) {
             vars = new ArrayList<>();
-            for(final com.robrua.orianna.type.dto.staticdata.SpellVars v : data.getVars()) {
-                vars.add(new SpellVars(v));
+            if(data.getVars() != null) {
+                for(final com.robrua.orianna.type.dto.staticdata.SpellVars v : data.getVars()) {
+                    vars.add(new SpellVars(v));
+                }
             }
         }
 
@@ -280,6 +293,29 @@ public class SummonerSpell extends OriannaObject<com.robrua.orianna.type.dto.sta
      */
     public String getTooltip() {
         return super.getString(data.getTooltip());
+    }
+
+    /**
+     * Replaces the variables in the tooltip with numerical values
+     *
+     * @param championLevel
+     *            the champion level to get the specific tooltip for
+     * @return the tooltip with numerical values
+     */
+    public String getTooltip(final int championLevel) {
+        return replaceVariables(getTooltip(), championLevel);
+    }
+
+    private String replaceVariables(String text, final int level) {
+        if(level < 1 || level > 18) {
+            throw new IllegalArgumentException("Not a valid champion level!");
+        }
+
+        for(final SpellVars var : getSpellVars()) {
+            final Double val = var.getLink().equals("@player.level") ? var.getCoeffs().get(level - 1) : var.getCoeffs().get(0);
+            text = text.replaceAll("\\{\\{ " + var.getKey() + " \\}\\}", val.toString());
+        }
+        return text;
     }
 
     /*
