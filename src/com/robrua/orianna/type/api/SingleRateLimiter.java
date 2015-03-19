@@ -17,7 +17,7 @@ public class SingleRateLimiter implements RateLimiter {
         @Override
         public void run() {
             semaphore.drainPermits();
-            resetRunning = false;
+            resetter = null;
             semaphore.release(limit - current);
         }
     }
@@ -25,9 +25,8 @@ public class SingleRateLimiter implements RateLimiter {
     private volatile int current;
     private final int limit;
     private final long millisPerEpoch;
-    private volatile boolean resetRunning;
+    private volatile ResetTask resetter;
     private final Semaphore semaphore;
-
     private final Timer timer;
 
     /**
@@ -39,7 +38,7 @@ public class SingleRateLimiter implements RateLimiter {
     public SingleRateLimiter(final int callsPerEpoch, final int secondsPerEpoch) {
         millisPerEpoch = secondsPerEpoch * 1000L;
         limit = callsPerEpoch;
-        semaphore = new Semaphore(limit);
+        semaphore = new Semaphore(limit, true);
         timer = new Timer(true);
         current = 0;
     }
@@ -54,12 +53,22 @@ public class SingleRateLimiter implements RateLimiter {
 
     @Override
     public synchronized void registerCall() {
-        if(!resetRunning) {
-            timer.schedule(new ResetTask(), millisPerEpoch);
-            resetRunning = true;
+        if(resetter == null) {
+            resetter = new ResetTask();
+            timer.schedule(resetter, millisPerEpoch);
         }
 
         current--;
+    }
+
+    @Override
+    public synchronized void resetIn(final long millis) {
+        if(resetter != null) {
+            resetter.cancel();
+        }
+        resetter = new ResetTask();
+        semaphore.drainPermits();
+        timer.schedule(resetter, millis);
     }
 
     @Override

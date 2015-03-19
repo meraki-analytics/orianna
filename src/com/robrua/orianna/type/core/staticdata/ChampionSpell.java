@@ -113,8 +113,10 @@ public class ChampionSpell extends OriannaObject<com.robrua.orianna.type.dto.sta
     public List<List<Double>> getEffect() {
         if(effect == null) {
             effect = new ArrayList<>();
-            for(final List<Double> e : data.getEffect()) {
-                effect.add(Collections.unmodifiableList(e));
+            if(data.getEffect() != null) {
+                for(final List<Double> e : data.getEffect()) {
+                    effect.add(e == null ? null : Collections.unmodifiableList(e));
+                }
             }
         }
 
@@ -243,6 +245,19 @@ public class ChampionSpell extends OriannaObject<com.robrua.orianna.type.dto.sta
     }
 
     /**
+     * Replaces the variables in the sanitized tooltip with numerical values
+     *
+     * @param champLevel
+     *            the champion level to get the specific sanitized tooltip for
+     * @param spellLevel
+     *            the spell rank to get the specific sanitized tooltip for
+     * @return the sanitized tooltip with numerical values
+     */
+    public String getSanitizedTooltip(final int champLevel, final int spellLevel) {
+        return replaceVariables(getSanitizedTooltip(), champLevel, spellLevel);
+    }
+
+    /**
      * Spell vars
      *
      * @return spell vars
@@ -250,8 +265,10 @@ public class ChampionSpell extends OriannaObject<com.robrua.orianna.type.dto.sta
     public List<SpellVars> getSpellVars() {
         if(vars == null) {
             vars = new ArrayList<>();
-            for(final com.robrua.orianna.type.dto.staticdata.SpellVars v : data.getVars()) {
-                vars.add(new SpellVars(v));
+            if(data.getVars() != null) {
+                for(final com.robrua.orianna.type.dto.staticdata.SpellVars v : data.getVars()) {
+                    vars.add(new SpellVars(v));
+                }
             }
         }
 
@@ -265,6 +282,73 @@ public class ChampionSpell extends OriannaObject<com.robrua.orianna.type.dto.sta
      */
     public String getTooltip() {
         return super.getString(data.getTooltip());
+    }
+
+    /**
+     * Replaces the variables in the tooltip with numerical values
+     *
+     * @param champLevel
+     *            the champion level to get the specific tooltip for
+     * @param spellLevel
+     *            the spell rank to get the specific tooltip for
+     * @return the tooltip with numerical values
+     */
+    public String getTooltip(final int champLevel, final int spellLevel) {
+        return replaceVariables(getTooltip(), champLevel, spellLevel);
+    }
+
+    /**
+     * Replaces spell variables in description with values
+     *
+     * @param text
+     *            the text to replace in
+     * @param champLevel
+     *            the champion level to get values for
+     * @param spellLevel
+     *            the spell level to get values for
+     * @return the fixed text
+     */
+    private String replaceVariables(String text, final int champLevel, final int spellLevel) {
+        final int maxRank = getMaxRank();
+        if(spellLevel < 1 || spellLevel > maxRank) {
+            throw new IllegalArgumentException("Not a valid level for this spell!");
+        }
+        if(champLevel < 1 || champLevel > 18) {
+            throw new IllegalArgumentException("Not a valid champion level!");
+        }
+
+        int i = 1;
+        for(final List<Double> e : getEffect()) {
+            if(e == null) {
+                continue;
+            }
+
+            text = text.replaceAll("\\{\\{ e" + i + " \\}\\}", e.get(spellLevel - 1).toString());
+            i++;
+        }
+
+        for(final SpellVars var : getSpellVars()) {
+            final List<Double> coeffs = var.getCoeffs();
+            Double val = coeffs.get(0);
+            if(coeffs.size() == maxRank) {
+                val = coeffs.get(spellLevel - 1);
+            }
+            else if(coeffs.size() == 18) {
+                val = coeffs.get(champLevel - 1);
+            }
+            String replacement = val.toString();
+
+            final String link = var.getLink();
+            if(link.equals("attackdamage")) {
+                replacement += " AD";
+            }
+            else if(link.equals("spelldamage")) {
+                replacement += " AP";
+            }
+
+            text = text.replaceAll("\\{\\{ " + var.getKey() + " \\}\\}", replacement);
+        }
+        return text;
     }
 
     /*

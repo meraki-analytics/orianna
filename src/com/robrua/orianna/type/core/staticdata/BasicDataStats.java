@@ -4,6 +4,7 @@ import com.robrua.orianna.type.core.OriannaObject;
 
 public class BasicDataStats extends OriannaObject<com.robrua.orianna.type.dto.staticdata.BasicDataStats> {
     private static final long serialVersionUID = 7920872026162580279L;
+    double percentCooldownReduction, flatArmorPenetration, percentArmorPenetration, flatMagicPenetration, percentMagicPenetration, goldPer10;
 
     /**
      * @param data
@@ -20,6 +21,15 @@ public class BasicDataStats extends OriannaObject<com.robrua.orianna.type.dto.st
      */
     public double getFlatArmorMod() {
         return super.getDouble(data.getFlatArmorMod());
+    }
+
+    /**
+     * Flat Armor Penetration
+     *
+     * @return flat armor penetration
+     */
+    public double getFlatArmorPenetration() {
+        return flatArmorPenetration;
     }
 
     /**
@@ -113,6 +123,15 @@ public class BasicDataStats extends OriannaObject<com.robrua.orianna.type.dto.st
     }
 
     /**
+     * Flat Magic Penetration
+     *
+     * @return flat magic penetration
+     */
+    public double getFlatMagicPenetration() {
+        return flatMagicPenetration;
+    }
+
+    /**
      * Flat movement speed mod
      *
      * @return flat movement speed mod
@@ -158,12 +177,30 @@ public class BasicDataStats extends OriannaObject<com.robrua.orianna.type.dto.st
     }
 
     /**
+     * Gold Per 10
+     *
+     * @return gold per 10
+     */
+    public double getGoldPer10() {
+        return goldPer10;
+    }
+
+    /**
      * Percent armor mod
      *
      * @return percent armor mod
      */
     public double getPercentArmorMod() {
         return super.getDouble(data.getPercentArmorMod());
+    }
+
+    /**
+     * Percent Armor Penetration
+     *
+     * @return percent armor penetration
+     */
+    public double getPercentArmorPenetration() {
+        return percentArmorPenetration;
     }
 
     /**
@@ -182,6 +219,15 @@ public class BasicDataStats extends OriannaObject<com.robrua.orianna.type.dto.st
      */
     public double getPercentBlockMod() {
         return super.getDouble(data.getPercentBlockMod());
+    }
+
+    /**
+     * Cooldown Reduction
+     *
+     * @return cooldown reduction
+     */
+    public double getPercentCooldownReduction() {
+        return percentCooldownReduction;
     }
 
     /**
@@ -254,6 +300,15 @@ public class BasicDataStats extends OriannaObject<com.robrua.orianna.type.dto.st
      */
     public double getPercentMagicDamageMod() {
         return super.getDouble(data.getPercentMagicDamageMod());
+    }
+
+    /**
+     * Percent Magic Penetration
+     *
+     * @return percent magic penetration
+     */
+    public double getPercentMagicPenetration() {
+        return percentMagicPenetration;
     }
 
     /**
