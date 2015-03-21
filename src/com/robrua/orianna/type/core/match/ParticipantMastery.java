@@ -32,7 +32,7 @@ public class ParticipantMastery extends OriannaObject<com.robrua.orianna.type.dt
             throw new MissingDataException("Mastery ID is null.");
         }
 
-        mastery = RiotAPI.getMasteryByID(l.longValue());
+        mastery = RiotAPI.getMastery(l.longValue());
         return mastery;
     }
 

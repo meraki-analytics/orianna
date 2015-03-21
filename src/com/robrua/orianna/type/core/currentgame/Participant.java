@@ -158,7 +158,7 @@ public class Participant extends OriannaObject<com.robrua.orianna.type.dto.curre
             throw new MissingDataException("Summoner Spell #1 ID is null.");
         }
 
-        spell1 = RiotAPI.getSummonerSpellByID(l.longValue());
+        spell1 = RiotAPI.getSummonerSpell(l.longValue());
         return spell1;
     }
 
@@ -186,7 +186,7 @@ public class Participant extends OriannaObject<com.robrua.orianna.type.dto.curre
             throw new MissingDataException("Summoner Spell #2 ID is null.");
         }
 
-        spell2 = RiotAPI.getSummonerSpellByID(l.longValue());
+        spell2 = RiotAPI.getSummonerSpell(l.longValue());
         return spell2;
     }
 

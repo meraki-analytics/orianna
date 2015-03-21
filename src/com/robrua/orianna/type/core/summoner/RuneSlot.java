@@ -32,7 +32,7 @@ public class RuneSlot extends OriannaObject<com.robrua.orianna.type.dto.summoner
             throw new MissingDataException("Rune ID is null.");
         }
 
-        rune = RiotAPI.getRuneByID(i.longValue());
+        rune = RiotAPI.getRune(i.longValue());
         return rune;
     }
 

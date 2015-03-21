@@ -185,8 +185,6 @@ public abstract class BaseRiotAPI {
             rateLimiter.waitForCall();
         }
 
-        final boolean registered = false;
-
         // Send request to Riot and register call
         try {
             final HttpGet get = new HttpGet(uri);
@@ -227,7 +225,7 @@ public abstract class BaseRiotAPI {
             throw new OriannaException("Request to Riot server failed! Report this to the Orianna team.");
         }
         finally {
-            if(!staticServer && !registered) {
+            if(!staticServer) {
                 rateLimiter.registerCall();
             }
         }

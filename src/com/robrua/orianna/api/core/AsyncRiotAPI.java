@@ -1171,20 +1171,6 @@ public abstract class AsyncRiotAPI {
         }).start();
     }
 
-    public static void getMasteryByID(final Action<Mastery> action, final long ID) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(null);
-                }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
-    }
-
     /**
      * @param action
      *            what to do with the summoners' mastery pages
@@ -1950,20 +1936,6 @@ public abstract class AsyncRiotAPI {
         }).start();
     }
 
-    public static void getRuneByID(final Action<Rune> action, final long ID) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(null);
-                }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
-    }
-
     /**
      * @param action
      *            what to do with the summoners' rune pages
@@ -2524,20 +2496,6 @@ public abstract class AsyncRiotAPI {
         }).start();
     }
 
-    public static void getSummonerSpellByID(final Action<SummonerSpell> action, final long ID) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(null);
-                }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
-    }
-
     /**
      * @param action
      *            what to do with all the summoner spells
@@ -2608,20 +2566,6 @@ public abstract class AsyncRiotAPI {
             public void run() {
                 try {
                     action.perform(TeamAPI.getTeam(teamID));
-                }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
-    }
-
-    public static void getTeamByID(final Action<Team> action, final String ID) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(null);
                 }
                 catch(final APIException e) {
                     action.handle(e);
