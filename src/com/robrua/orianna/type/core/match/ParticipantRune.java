@@ -41,7 +41,7 @@ public class ParticipantRune extends OriannaObject<com.robrua.orianna.type.dto.m
             throw new MissingDataException("Rune ID is null.");
         }
 
-        rune = RiotAPI.getRuneByID(l.longValue());
+        rune = RiotAPI.getRune(l.longValue());
         return rune;
     }
 

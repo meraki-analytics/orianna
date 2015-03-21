@@ -41,7 +41,7 @@ public class RuneCount extends OriannaObject<com.robrua.orianna.type.dto.current
             throw new MissingDataException("Rune ID is null.");
         }
 
-        rune = RiotAPI.getRuneByID(l.intValue());
+        rune = RiotAPI.getRune(l.intValue());
         return rune;
     }
 

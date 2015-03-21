@@ -32,7 +32,7 @@ public class MasteryRank extends OriannaObject<com.robrua.orianna.type.dto.summo
             throw new MissingDataException("Mastery ID is null.");
         }
 
-        mastery = RiotAPI.getMasteryByID(i.longValue());
+        mastery = RiotAPI.getMastery(i.longValue());
         return mastery;
     }
 

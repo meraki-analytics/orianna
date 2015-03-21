@@ -137,7 +137,7 @@ public class League extends OriannaObject<com.robrua.orianna.type.dto.league.Lea
             return null;
         }
         catch(final NumberFormatException e) {
-            team = RiotAPI.getTeamByID(s);
+            team = RiotAPI.getTeam(s);
             return team;
         }
     }

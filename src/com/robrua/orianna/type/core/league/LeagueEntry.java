@@ -157,7 +157,7 @@ public class LeagueEntry extends OriannaObject<com.robrua.orianna.type.dto.leagu
             return null;
         }
         catch(final NumberFormatException e) {
-            team = RiotAPI.getTeamByID(s);
+            team = RiotAPI.getTeam(s);
             return team;
         }
     }

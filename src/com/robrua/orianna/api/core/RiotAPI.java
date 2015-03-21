@@ -553,10 +553,6 @@ public abstract class RiotAPI {
         return StaticDataAPI.getMastery(ID);
     }
 
-    public static Mastery getMasteryByID(final long ID) {
-        return null;
-    }
-
     /**
      * @param summoners
      *            the summoners to get mastery pages for
@@ -926,10 +922,6 @@ public abstract class RiotAPI {
         return StaticDataAPI.getRune(ID);
     }
 
-    public static Rune getRuneByID(final long ID) {
-        return null;
-    }
-
     /**
      * @param summoners
      *            the summoners to get rune pages for
@@ -1182,10 +1174,6 @@ public abstract class RiotAPI {
         return StaticDataAPI.getSummonerSpell(ID);
     }
 
-    public static SummonerSpell getSummonerSpellByID(final long ID) {
-        return null;
-    }
-
     /**
      * @return all the summoner spells
      */
@@ -1218,10 +1206,6 @@ public abstract class RiotAPI {
      */
     public static Team getTeam(final String teamID) {
         return TeamAPI.getTeam(teamID);
-    }
-
-    public static Team getTeamByID(final String ID) {
-        return null;
     }
 
     /**
