@@ -232,4 +232,4 @@ Feel free to send pull requests or to contact me via github or email (robrua@alu
 There's probably typos or some data missing somewhere in the project. Let me know about any of them you run into. I'm also looking for consistent maintainers to help me out as the Riot API evolves.
 
 ## Disclaimer
-This product is not endorsed, certified or otherwise approved in any way by Riot Games, Inc. or any of its affiliates.
+Orianna isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.
