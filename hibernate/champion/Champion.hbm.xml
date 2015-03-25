@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+ 
+<hibernate-mapping>
+    <class name="com.robrua.orianna.dto.champion.Champion" table="champions">
+    	<id name="id" column="id" type="long" />
+ 		<property name="active" column="active" type="boolean" />
+ 		<property name="botEnabled" column="botEnabled" type="boolean" />
+ 		<property name="botMmEnabled" column="botMmEnabled" type="boolean" />
+ 		<property name="freeToPlay" column="freeToPlay" type="boolean" />
+ 		<property name="rankedPlayEnabled" column="rankedPlayEnabled" type="boolean" />
+    </class>
+</hibernate-mapping>
