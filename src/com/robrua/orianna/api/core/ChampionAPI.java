@@ -31,7 +31,7 @@ public abstract class ChampionAPI {
      */
     public static ChampionStatus getChampionStatus(final long ID) {
         final com.robrua.orianna.type.dto.champion.Champion status = BaseRiotAPI.getChampionStatus(ID);
-        RiotAPI.getChampions(status.getId().longValue());
+        RiotAPI.getChampionsByID(status.getId().longValue());
 
         return new ChampionStatus(status);
     }
@@ -52,7 +52,7 @@ public abstract class ChampionAPI {
         final ChampionList st = BaseRiotAPI.getChampionStatuses(freeToPlay);
 
         final List<Long> index = new ArrayList<>(st.getChampionIDs());
-        final List<Champion> champions = RiotAPI.getChampions(index);
+        final List<Champion> champions = RiotAPI.getChampionsByID(index);
 
         final Map<Champion, ChampionStatus> statuses = new HashMap<>();
         for(final com.robrua.orianna.type.dto.champion.Champion ch : st.getChampions()) {
@@ -86,7 +86,7 @@ public abstract class ChampionAPI {
         for(final com.robrua.orianna.type.dto.champion.Champion ch : st.getChampions()) {
             statuses.add(new ChampionStatus(ch));
         }
-        RiotAPI.getChampions(new ArrayList<>(st.getChampionIDs()));
+        RiotAPI.getChampionsByID(new ArrayList<>(st.getChampionIDs()));
 
         return Collections.unmodifiableList(statuses);
     }

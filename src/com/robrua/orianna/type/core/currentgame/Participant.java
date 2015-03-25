@@ -52,7 +52,7 @@ public class Participant extends OriannaObject<com.robrua.orianna.type.dto.curre
             throw new MissingDataException("Champion ID is null.");
         }
 
-        champion = RiotAPI.getChampion(l.longValue());
+        champion = RiotAPI.getChampionByID(l.longValue());
         return champion;
     }
 

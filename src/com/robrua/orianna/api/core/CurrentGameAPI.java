@@ -21,7 +21,7 @@ public abstract class CurrentGameAPI {
         }
 
         if(RiotAPI.loadPolicy == LoadPolicy.UPFRONT) {
-            RiotAPI.getChampions(new ArrayList<>(game.getChampionIDs()));
+            RiotAPI.getChampionsByID(new ArrayList<>(game.getChampionIDs()));
             RiotAPI.getMasteries(new ArrayList<>(game.getMasteryIDs()));
             RiotAPI.getRunes(new ArrayList<>(game.getRuneIDs()));
             RiotAPI.getSummonerSpells(new ArrayList<>(game.getSummonerSpellIDs()));

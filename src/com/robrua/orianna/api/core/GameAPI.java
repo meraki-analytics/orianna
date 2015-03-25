@@ -26,7 +26,7 @@ public abstract class GameAPI {
 
         if(RiotAPI.loadPolicy == LoadPolicy.UPFRONT) {
             RiotAPI.getItems(new ArrayList<>(gms.getItemIDs()));
-            RiotAPI.getChampions(new ArrayList<>(gms.getChampionIDs()));
+            RiotAPI.getChampionsByID(new ArrayList<>(gms.getChampionIDs()));
             RiotAPI.getSummonerSpells(new ArrayList<>(gms.getSummonerSpellIDs()));
             RiotAPI.getSummonersByID(new ArrayList<>(gms.getSummonerIDs()));
         }

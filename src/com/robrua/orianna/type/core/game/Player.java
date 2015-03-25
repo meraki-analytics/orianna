@@ -35,7 +35,7 @@ public class Player extends OriannaObject<com.robrua.orianna.type.dto.game.Playe
             throw new MissingDataException("Champion ID is null.");
         }
 
-        champion = RiotAPI.getChampion(i.longValue());
+        champion = RiotAPI.getChampionByID(i.longValue());
         return champion;
     }
 

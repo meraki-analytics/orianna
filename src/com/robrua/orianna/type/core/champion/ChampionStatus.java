@@ -59,7 +59,7 @@ public class ChampionStatus extends OriannaObject<com.robrua.orianna.type.dto.ch
             throw new MissingDataException("Champion ID is null.");
         }
 
-        champion = RiotAPI.getChampion(l.longValue());
+        champion = RiotAPI.getChampionByID(l.longValue());
         return champion;
     }
 

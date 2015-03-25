@@ -22,7 +22,7 @@ public abstract class FeaturedGamesAPI {
         }
 
         if(RiotAPI.loadPolicy == LoadPolicy.UPFRONT) {
-            RiotAPI.getChampions(new ArrayList<>(gms.getChampionIDs()));
+            RiotAPI.getChampionsByID(new ArrayList<>(gms.getChampionIDs()));
             RiotAPI.getMasteries(new ArrayList<>(gms.getMasteryIDs()));
             RiotAPI.getRunes(new ArrayList<>(gms.getRuneIDs()));
             RiotAPI.getSummonerSpells(new ArrayList<>(gms.getSummonerSpellIDs()));
