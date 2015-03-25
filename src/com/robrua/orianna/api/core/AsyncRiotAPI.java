@@ -69,12 +69,12 @@ public abstract class AsyncRiotAPI {
      * @param ID
      *            the ID of the champion to get
      */
-    public static void getChampion(final Action<Champion> action, final long ID) {
+    public static void getChampionByID(final Action<Champion> action, final long ID) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    action.perform(StaticDataAPI.getChampion(ID));
+                    action.perform(StaticDataAPI.getChampionByID(ID));
                 }
                 catch(final APIException e) {
                     action.handle(e);
@@ -89,12 +89,12 @@ public abstract class AsyncRiotAPI {
      * @param name
      *            the name of the champion to get
      */
-    public static void getChampion(final Action<Champion> action, final String name) {
+    public static void getChampionByName(final Action<Champion> action, final String name) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    action.perform(StaticDataAPI.getChampion(name));
+                    action.perform(StaticDataAPI.getChampionByName(name));
                 }
                 catch(final APIException e) {
                     action.handle(e);
@@ -127,12 +127,12 @@ public abstract class AsyncRiotAPI {
      * @param IDs
      *            the IDs of the champions to get
      */
-    public static void getChampions(final Action<List<Champion>> action, final List<Long> IDs) {
+    public static void getChampionsByID(final Action<List<Champion>> action, final List<Long> IDs) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    action.perform(StaticDataAPI.getChampions(IDs));
+                    action.perform(StaticDataAPI.getChampionsByID(IDs));
                 }
                 catch(final APIException e) {
                     action.handle(e);
@@ -147,12 +147,52 @@ public abstract class AsyncRiotAPI {
      * @param IDs
      *            the IDs of the champions to get
      */
-    public static void getChampions(final Action<List<Champion>> action, final long... IDs) {
+    public static void getChampionsByID(final Action<List<Champion>> action, final long... IDs) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    action.perform(StaticDataAPI.getChampions(IDs));
+                    action.perform(StaticDataAPI.getChampionsByID(IDs));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
+     *            what to do with the champions
+     * @param names
+     *            the names of the champions to get
+     */
+    public static void getChampionsByName(final Action<List<Champion>> action, final List<String> names) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    action.perform(StaticDataAPI.getChampionsByName(names));
+                }
+                catch(final APIException e) {
+                    action.handle(e);
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
+     *            what to do with the champions
+     * @param names
+     *            the names of the champions to get
+     */
+    public static void getChampionsByName(final Action<List<Champion>> action, final String... names) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    action.perform(StaticDataAPI.getChampionsByName(names));
                 }
                 catch(final APIException e) {
                     action.handle(e);

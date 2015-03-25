@@ -24,7 +24,7 @@ public abstract class MatchAPI {
 
         if(RiotAPI.loadPolicy == LoadPolicy.UPFRONT) {
             RiotAPI.getItems(new ArrayList<>(mtch.getItemIDs()));
-            RiotAPI.getChampions(new ArrayList<>(mtch.getChampionIDs()));
+            RiotAPI.getChampionsByID(new ArrayList<>(mtch.getChampionIDs()));
             RiotAPI.getMasteries(new ArrayList<>(mtch.getMasteryIDs()));
             RiotAPI.getRunes(new ArrayList<>(mtch.getRuneIDs()));
             RiotAPI.getSummonersByID(new ArrayList<>(mtch.getSummonerIDs()));

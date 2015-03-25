@@ -38,7 +38,7 @@ public class ChampionStats extends OriannaObject<com.robrua.orianna.type.dto.sta
             return null;
         }
 
-        champion = RiotAPI.getChampion(i.longValue());
+        champion = RiotAPI.getChampionByID(i.longValue());
         return champion;
     }
 

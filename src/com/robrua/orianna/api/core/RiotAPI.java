@@ -61,8 +61,8 @@ public abstract class RiotAPI {
      *            the ID of the champion to get
      * @return the champion
      */
-    public static Champion getChampion(final long ID) {
-        return StaticDataAPI.getChampion(ID);
+    public static Champion getChampionByID(final long ID) {
+        return StaticDataAPI.getChampionByID(ID);
     }
 
     /**
@@ -70,8 +70,8 @@ public abstract class RiotAPI {
      *            the name of the champion to get
      * @return the champion
      */
-    public synchronized static Champion getChampion(final String name) {
-        return StaticDataAPI.getChampion(name);
+    public static Champion getChampionByName(final String name) {
+        return StaticDataAPI.getChampionByName(name);
     }
 
     /**
@@ -86,8 +86,8 @@ public abstract class RiotAPI {
      *            the IDs of the champions to get
      * @return the champions
      */
-    public static List<Champion> getChampions(final List<Long> IDs) {
-        return StaticDataAPI.getChampions(IDs);
+    public static List<Champion> getChampionsByID(final List<Long> IDs) {
+        return StaticDataAPI.getChampionsByID(IDs);
     }
 
     /**
@@ -95,8 +95,26 @@ public abstract class RiotAPI {
      *            the IDs of the champions to get
      * @return the champions
      */
-    public static List<Champion> getChampions(final long... IDs) {
-        return StaticDataAPI.getChampions(IDs);
+    public static List<Champion> getChampionsByID(final long... IDs) {
+        return StaticDataAPI.getChampionsByID(IDs);
+    }
+
+    /**
+     * @param names
+     *            the names of the champions to get
+     * @return the champions
+     */
+    public static List<Champion> getChampionsByName(final List<String> names) {
+        return StaticDataAPI.getChampionsByName(names);
+    }
+
+    /**
+     * @param names
+     *            the names of the champions to get
+     * @return the champions
+     */
+    public static List<Champion> getChampionsByName(final String... names) {
+        return StaticDataAPI.getChampionsByName(names);
     }
 
     /**

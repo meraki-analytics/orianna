@@ -50,7 +50,7 @@ public class Participant extends OriannaObject<CombinedParticipant> {
             throw new MissingDataException("Champion ID is null.");
         }
 
-        champion = RiotAPI.getChampion(i.longValue());
+        champion = RiotAPI.getChampionByID(i.longValue());
         return champion;
     }
 

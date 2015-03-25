@@ -3,6 +3,7 @@ package com.robrua.orianna.api.core;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +35,7 @@ public abstract class StaticDataAPI {
      *            the ID of the champion to get
      * @return the champion
      */
-    public synchronized static Champion getChampion(final long ID) {
+    public synchronized static Champion getChampionByID(final long ID) {
         Champion champion = RiotAPI.store.get(Champion.class, ID);
         if(champion != null) {
             return champion;
@@ -60,7 +61,7 @@ public abstract class StaticDataAPI {
      *            the name of the champion to get
      * @return the champion
      */
-    public static Champion getChampion(final String name) {
+    public static Champion getChampionByName(final String name) {
         final List<Champion> champions = getChampions();
         for(final Champion champion : champions) {
             if(champion.getName().equals(name)) {
@@ -102,7 +103,7 @@ public abstract class StaticDataAPI {
      *            the IDs of the champions to get
      * @return the champions
      */
-    public synchronized static List<Champion> getChampions(final List<Long> IDs) {
+    public synchronized static List<Champion> getChampionsByID(final List<Long> IDs) {
         if(IDs.isEmpty()) {
             return Collections.emptyList();
         }
@@ -122,7 +123,7 @@ public abstract class StaticDataAPI {
         }
 
         if(toGet.size() == 1) {
-            champions.set(index.get(0), getChampion(toGet.get(0)));
+            champions.set(index.get(0), getChampionByID(toGet.get(0)));
             return champions;
         }
 
@@ -141,8 +142,42 @@ public abstract class StaticDataAPI {
      *            the IDs of the champions to get
      * @return the champions
      */
-    public static List<Champion> getChampions(final long... IDs) {
-        return getChampions(Utils.convert(IDs));
+    public static List<Champion> getChampionsByID(final long... IDs) {
+        return getChampionsByID(Utils.convert(IDs));
+    }
+
+    /**
+     * @param names
+     *            the names of the champions to get
+     * @return the champions
+     */
+    public static List<Champion> getChampionsByName(final List<String> names) {
+        final Map<String, Integer> indices = new HashMap<>();
+        final List<Champion> result = new ArrayList<>(names.size());
+        int i = 0;
+        for(final String name : names) {
+            indices.put(name, i++);
+            result.add(null);
+        }
+
+        final List<Champion> champions = getChampions();
+        for(final Champion champ : champions) {
+            final Integer index = indices.get(champ.getName());
+            if(index != null) {
+                result.set(index, champ);
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * @param names
+     *            the names of the champions to get
+     * @return the champions
+     */
+    public static List<Champion> getChampionsByName(final String... names) {
+        return getChampionsByName(Arrays.asList(names));
     }
 
     /**

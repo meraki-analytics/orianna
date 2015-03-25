@@ -28,7 +28,7 @@ public abstract class MatchHistoryAPI {
 
         if(RiotAPI.loadPolicy == LoadPolicy.UPFRONT) {
             RiotAPI.getItems(new ArrayList<>(hist.getItemIDs()));
-            RiotAPI.getChampions(new ArrayList<>(hist.getChampionIDs()));
+            RiotAPI.getChampionsByID(new ArrayList<>(hist.getChampionIDs()));
             RiotAPI.getMasteries(new ArrayList<>(hist.getMasteryIDs()));
             RiotAPI.getRunes(new ArrayList<>(hist.getRuneIDs()));
             RiotAPI.getSummonersByID(new ArrayList<>(hist.getSummonerIDs()));
@@ -55,7 +55,7 @@ public abstract class MatchHistoryAPI {
 
         if(RiotAPI.loadPolicy == LoadPolicy.UPFRONT) {
             RiotAPI.getItems(new ArrayList<>(hist.getItemIDs()));
-            RiotAPI.getChampions(new ArrayList<>(hist.getChampionIDs()));
+            RiotAPI.getChampionsByID(new ArrayList<>(hist.getChampionIDs()));
             RiotAPI.getMasteries(new ArrayList<>(hist.getMasteryIDs()));
             RiotAPI.getRunes(new ArrayList<>(hist.getRuneIDs()));
             RiotAPI.getSummonersByID(new ArrayList<>(hist.getSummonerIDs()));
@@ -88,7 +88,7 @@ public abstract class MatchHistoryAPI {
 
         if(RiotAPI.loadPolicy == LoadPolicy.UPFRONT) {
             RiotAPI.getItems(new ArrayList<>(hist.getItemIDs()));
-            RiotAPI.getChampions(new ArrayList<>(hist.getChampionIDs()));
+            RiotAPI.getChampionsByID(new ArrayList<>(hist.getChampionIDs()));
             RiotAPI.getMasteries(new ArrayList<>(hist.getMasteryIDs()));
             RiotAPI.getRunes(new ArrayList<>(hist.getRuneIDs()));
             RiotAPI.getSummonersByID(new ArrayList<>(hist.getSummonerIDs()));
@@ -117,7 +117,7 @@ public abstract class MatchHistoryAPI {
 
         if(RiotAPI.loadPolicy == LoadPolicy.UPFRONT) {
             RiotAPI.getItems(new ArrayList<>(hist.getItemIDs()));
-            RiotAPI.getChampions(new ArrayList<>(hist.getChampionIDs()));
+            RiotAPI.getChampionsByID(new ArrayList<>(hist.getChampionIDs()));
             RiotAPI.getMasteries(new ArrayList<>(hist.getMasteryIDs()));
             RiotAPI.getRunes(new ArrayList<>(hist.getRuneIDs()));
             RiotAPI.getSummonersByID(new ArrayList<>(hist.getSummonerIDs()));
@@ -152,7 +152,7 @@ public abstract class MatchHistoryAPI {
 
         if(RiotAPI.loadPolicy == LoadPolicy.UPFRONT) {
             RiotAPI.getItems(new ArrayList<>(hist.getItemIDs()));
-            RiotAPI.getChampions(new ArrayList<>(hist.getChampionIDs()));
+            RiotAPI.getChampionsByID(new ArrayList<>(hist.getChampionIDs()));
             RiotAPI.getMasteries(new ArrayList<>(hist.getMasteryIDs()));
             RiotAPI.getRunes(new ArrayList<>(hist.getRuneIDs()));
             RiotAPI.getSummonersByID(new ArrayList<>(hist.getSummonerIDs()));
@@ -183,7 +183,7 @@ public abstract class MatchHistoryAPI {
 
         if(RiotAPI.loadPolicy == LoadPolicy.UPFRONT) {
             RiotAPI.getItems(new ArrayList<>(hist.getItemIDs()));
-            RiotAPI.getChampions(new ArrayList<>(hist.getChampionIDs()));
+            RiotAPI.getChampionsByID(new ArrayList<>(hist.getChampionIDs()));
             RiotAPI.getMasteries(new ArrayList<>(hist.getMasteryIDs()));
             RiotAPI.getRunes(new ArrayList<>(hist.getRuneIDs()));
             RiotAPI.getSummonersByID(new ArrayList<>(hist.getSummonerIDs()));
@@ -210,7 +210,7 @@ public abstract class MatchHistoryAPI {
 
         if(RiotAPI.loadPolicy == LoadPolicy.UPFRONT) {
             RiotAPI.getItems(new ArrayList<>(hist.getItemIDs()));
-            RiotAPI.getChampions(new ArrayList<>(hist.getChampionIDs()));
+            RiotAPI.getChampionsByID(new ArrayList<>(hist.getChampionIDs()));
             RiotAPI.getMasteries(new ArrayList<>(hist.getMasteryIDs()));
             RiotAPI.getRunes(new ArrayList<>(hist.getRuneIDs()));
             RiotAPI.getSummonersByID(new ArrayList<>(hist.getSummonerIDs()));
@@ -243,7 +243,7 @@ public abstract class MatchHistoryAPI {
 
         if(RiotAPI.loadPolicy == LoadPolicy.UPFRONT) {
             RiotAPI.getItems(new ArrayList<>(hist.getItemIDs()));
-            RiotAPI.getChampions(new ArrayList<>(hist.getChampionIDs()));
+            RiotAPI.getChampionsByID(new ArrayList<>(hist.getChampionIDs()));
             RiotAPI.getMasteries(new ArrayList<>(hist.getMasteryIDs()));
             RiotAPI.getRunes(new ArrayList<>(hist.getRuneIDs()));
             RiotAPI.getSummonersByID(new ArrayList<>(hist.getSummonerIDs()));

@@ -26,7 +26,7 @@ public abstract class StatsAPI {
     public static Map<Champion, ChampionStats> getRankedStats(final long summonerID) {
         final RankedStats sts = BaseRiotAPI.getRankedStats(summonerID);
         final List<Long> index = new ArrayList<>(sts.getChampionIDs());
-        final List<Champion> champions = RiotAPI.getChampions(index);
+        final List<Champion> champions = RiotAPI.getChampionsByID(index);
 
         final Map<Champion, ChampionStats> stats = new HashMap<>();
         for(final com.robrua.orianna.type.dto.stats.ChampionStats champion : sts.getChampions()) {
@@ -47,7 +47,7 @@ public abstract class StatsAPI {
     public static Map<Champion, ChampionStats> getRankedStats(final long summonerID, final Season season) {
         final RankedStats sts = BaseRiotAPI.getRankedStats(summonerID, season);
         final List<Long> index = new ArrayList<>(sts.getChampionIDs());
-        final List<Champion> champions = RiotAPI.getChampions(index);
+        final List<Champion> champions = RiotAPI.getChampionsByID(index);
 
         final Map<Champion, ChampionStats> stats = new HashMap<>();
         for(final com.robrua.orianna.type.dto.stats.ChampionStats champion : sts.getChampions()) {
