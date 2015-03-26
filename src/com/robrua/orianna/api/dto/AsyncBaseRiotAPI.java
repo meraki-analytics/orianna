@@ -53,17 +53,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getChallenger(final Action<League> action, final QueueType queueType) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(LeagueAPI.getChallenger(queueType));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(LeagueAPI.getChallenger(queueType));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -76,17 +78,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getChampion(final Action<com.robrua.orianna.type.dto.staticdata.Champion> action, final long ID) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(StaticDataAPI.getChampion(ID));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(StaticDataAPI.getChampion(ID));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -97,17 +101,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getChampions(final Action<com.robrua.orianna.type.dto.staticdata.ChampionList> action) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(StaticDataAPI.getChampions());
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(StaticDataAPI.getChampions());
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -120,17 +126,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getChampionStatus(final Action<com.robrua.orianna.type.dto.champion.Champion> action, final long ID) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(ChampionAPI.getChampionStatus(ID));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(ChampionAPI.getChampionStatus(ID));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -143,17 +151,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getChampionStatuses(final Action<com.robrua.orianna.type.dto.champion.ChampionList> action, final boolean freeToPlay) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(ChampionAPI.getChampionStatuses(freeToPlay));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(ChampionAPI.getChampionStatuses(freeToPlay));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -166,17 +176,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getCurrentGame(final Action<CurrentGameInfo> action, final long summonerID) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(CurrentGameAPI.getCurrentGame(summonerID));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(CurrentGameAPI.getCurrentGame(summonerID));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -187,17 +199,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getFeaturedGames(final Action<FeaturedGames> action) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(FeaturedGamesAPI.getFeaturedGames());
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(FeaturedGamesAPI.getFeaturedGames());
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -210,17 +224,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getItem(final Action<Item> action, final long ID) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(StaticDataAPI.getItem(ID));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(StaticDataAPI.getItem(ID));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -231,17 +247,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getItems(final Action<ItemList> action) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(StaticDataAPI.getItems());
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(StaticDataAPI.getItems());
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -252,17 +270,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getLanguages(final Action<List<String>> action) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(StaticDataAPI.getLanguages());
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(StaticDataAPI.getLanguages());
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -273,17 +293,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getLanguageStrings(final Action<LanguageStrings> action) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(StaticDataAPI.getLanguageStrings());
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(StaticDataAPI.getLanguageStrings());
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -294,17 +316,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getMapInformation(final Action<MapData> action) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(StaticDataAPI.getMapInformation());
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(StaticDataAPI.getMapInformation());
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -315,17 +339,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getMasteries(final Action<MasteryList> action) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(StaticDataAPI.getMasteries());
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(StaticDataAPI.getMasteries());
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -338,17 +364,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getMastery(final Action<Mastery> action, final long ID) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(StaticDataAPI.getMastery(ID));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(StaticDataAPI.getMastery(ID));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -361,17 +389,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getMatch(final Action<MatchDetail> action, final long ID) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(MatchAPI.getMatch(ID));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(MatchAPI.getMatch(ID));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -386,17 +416,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getMatchHistory(final Action<PlayerHistory> action, final long summonerID) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(MatchHistoryAPI.getMatchHistory(summonerID));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(MatchHistoryAPI.getMatchHistory(summonerID));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -413,17 +445,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getMatchHistory(final Action<PlayerHistory> action, final long summonerID, final int beginIndex) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(MatchHistoryAPI.getMatchHistory(summonerID, beginIndex));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(MatchHistoryAPI.getMatchHistory(summonerID, beginIndex));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -442,17 +476,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getMatchHistory(final Action<PlayerHistory> action, final long summonerID, final int beginIndex, final List<Long> championIDs) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(MatchHistoryAPI.getMatchHistory(summonerID, beginIndex, championIDs));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(MatchHistoryAPI.getMatchHistory(summonerID, beginIndex, championIDs));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -471,17 +507,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getMatchHistory(final Action<PlayerHistory> action, final long summonerID, final int beginIndex, final QueueType queueType) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(MatchHistoryAPI.getMatchHistory(summonerID, beginIndex, queueType));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(MatchHistoryAPI.getMatchHistory(summonerID, beginIndex, queueType));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -503,17 +541,19 @@ public class AsyncBaseRiotAPI {
      */
     public static void getMatchHistory(final Action<PlayerHistory> action, final long summonerID, final int beginIndex, final QueueType queueType,
             final List<Long> championIDs) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(MatchHistoryAPI.getMatchHistory(summonerID, beginIndex, queueType, championIDs));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(MatchHistoryAPI.getMatchHistory(summonerID, beginIndex, queueType, championIDs));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -530,17 +570,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getMatchHistory(final Action<PlayerHistory> action, final long summonerID, final List<Long> championIDs) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(MatchHistoryAPI.getMatchHistory(summonerID, championIDs));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(MatchHistoryAPI.getMatchHistory(summonerID, championIDs));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -557,17 +599,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getMatchHistory(final Action<PlayerHistory> action, final long summonerID, final QueueType queueType) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(MatchHistoryAPI.getMatchHistory(summonerID, queueType));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(MatchHistoryAPI.getMatchHistory(summonerID, queueType));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -586,17 +630,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getMatchHistory(final Action<PlayerHistory> action, final long summonerID, final QueueType queueType, final List<Long> championIDs) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(MatchHistoryAPI.getMatchHistory(summonerID, queueType, championIDs));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(MatchHistoryAPI.getMatchHistory(summonerID, queueType, championIDs));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -609,17 +655,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getRankedStats(final Action<RankedStats> action, final long summonerID) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(StatsAPI.getRankedStats(summonerID));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(StatsAPI.getRankedStats(summonerID));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -634,17 +682,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getRankedStats(final Action<RankedStats> action, final long summonerID, final Season season) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(StatsAPI.getRankedStats(summonerID, season));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(StatsAPI.getRankedStats(summonerID, season));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -655,17 +705,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getRealm(final Action<Realm> action) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(StaticDataAPI.getRealm());
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(StaticDataAPI.getRealm());
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -678,17 +730,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getRecentGames(final Action<RecentGames> action, final long summonerID) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(GameAPI.getRecentGames(summonerID));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(GameAPI.getRecentGames(summonerID));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -701,17 +755,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getRune(final Action<Rune> action, final long ID) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(StaticDataAPI.getRune(ID));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(StaticDataAPI.getRune(ID));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -722,17 +778,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getRunes(final Action<RuneList> action) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(StaticDataAPI.getRunes());
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(StaticDataAPI.getRunes());
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -745,17 +803,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getShard(final Action<ShardStatus> action, final Region region) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(StatusAPI.getShard(region));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(StatusAPI.getShard(region));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -766,17 +826,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getShards(final Action<List<Shard>> action) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(StatusAPI.getShards());
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(StatusAPI.getShards());
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -789,17 +851,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getStats(final Action<PlayerStatsSummaryList> action, final long summonerID) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(StatsAPI.getStats(summonerID));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(StatsAPI.getStats(summonerID));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -814,17 +878,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getStats(final Action<PlayerStatsSummaryList> action, final long summonerID, final Season season) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(StatsAPI.getStats(summonerID, season));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(StatsAPI.getStats(summonerID, season));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -837,17 +903,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonerLeagueEntries(final Action<Map<Long, List<League>>> action, final List<Long> summonerIDs) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(LeagueAPI.getSummonerLeagueEntries(summonerIDs));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(LeagueAPI.getSummonerLeagueEntries(summonerIDs));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -860,17 +928,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonerLeagueEntries(final Action<Map<Long, List<League>>> action, final long... summonerIDs) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(LeagueAPI.getSummonerLeagueEntries(summonerIDs));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(LeagueAPI.getSummonerLeagueEntries(summonerIDs));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -883,17 +953,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonerLeagues(final Action<Map<Long, List<League>>> action, final List<Long> summonerIDs) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(LeagueAPI.getSummonerLeagues(summonerIDs));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(LeagueAPI.getSummonerLeagues(summonerIDs));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -906,17 +978,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonerLeagues(final Action<Map<Long, List<League>>> action, final long... summonerIDs) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(LeagueAPI.getSummonerLeagues(summonerIDs));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(LeagueAPI.getSummonerLeagues(summonerIDs));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -929,17 +1003,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonersByID(final Action<Map<Long, Summoner>> action, final List<Long> summonerIDs) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(SummonerAPI.getSummonersByID(summonerIDs));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(SummonerAPI.getSummonersByID(summonerIDs));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -952,17 +1028,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonersByID(final Action<Map<Long, Summoner>> action, final long... summonerIDs) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(SummonerAPI.getSummonersByID(summonerIDs));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(SummonerAPI.getSummonersByID(summonerIDs));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -975,17 +1053,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonersByName(final Action<Map<String, Summoner>> action, final List<String> summonerNames) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(SummonerAPI.getSummonersByName(summonerNames));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(SummonerAPI.getSummonersByName(summonerNames));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -998,17 +1078,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonersByName(final Action<Map<String, Summoner>> action, final String... summonerNames) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(SummonerAPI.getSummonersByName(summonerNames));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(SummonerAPI.getSummonersByName(summonerNames));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -1021,17 +1103,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonersMasteries(final Action<Map<Long, MasteryPages>> action, final List<Long> summonerIDs) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(SummonerAPI.getSummonersMasteries(summonerIDs));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(SummonerAPI.getSummonersMasteries(summonerIDs));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -1044,17 +1128,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonersMasteries(final Action<Map<Long, MasteryPages>> action, final long... summonerIDs) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(SummonerAPI.getSummonersMasteries(summonerIDs));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(SummonerAPI.getSummonersMasteries(summonerIDs));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -1067,17 +1153,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonersNames(final Action<Map<Long, String>> action, final List<Long> summonerIDs) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(SummonerAPI.getSummonersNames(summonerIDs));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(SummonerAPI.getSummonersNames(summonerIDs));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -1090,17 +1178,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonersNames(final Action<Map<Long, String>> action, final long... summonerIDs) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(SummonerAPI.getSummonersNames(summonerIDs));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(SummonerAPI.getSummonersNames(summonerIDs));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -1113,17 +1203,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonerSpell(final Action<SummonerSpell> action, final long ID) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(StaticDataAPI.getSummonerSpell(ID));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(StaticDataAPI.getSummonerSpell(ID));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -1134,17 +1226,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonerSpells(final Action<SummonerSpellList> action) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(StaticDataAPI.getSummonerSpells());
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(StaticDataAPI.getSummonerSpells());
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -1157,17 +1251,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonersRunes(final Action<Map<Long, RunePages>> action, final List<Long> summonerIDs) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(SummonerAPI.getSummonersRunes(summonerIDs));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(SummonerAPI.getSummonersRunes(summonerIDs));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -1180,17 +1276,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonersRunes(final Action<Map<Long, RunePages>> action, final long... summonerIDs) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(SummonerAPI.getSummonersRunes(summonerIDs));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(SummonerAPI.getSummonersRunes(summonerIDs));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -1203,17 +1301,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getTeamLeagueEntries(final Action<Map<String, List<League>>> action, final List<String> teamIDs) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(LeagueAPI.getTeamLeagueEntries(teamIDs));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(LeagueAPI.getTeamLeagueEntries(teamIDs));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -1226,17 +1326,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getTeamLeagueEntries(final Action<Map<String, List<League>>> action, final String... teamIDs) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(LeagueAPI.getTeamLeagueEntries(teamIDs));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(LeagueAPI.getTeamLeagueEntries(teamIDs));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -1249,17 +1351,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getTeamLeagues(final Action<Map<String, List<League>>> action, final List<String> teamIDs) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(LeagueAPI.getTeamLeagues(teamIDs));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(LeagueAPI.getTeamLeagues(teamIDs));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -1272,17 +1376,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getTeamLeagues(final Action<Map<String, List<League>>> action, final String... teamIDs) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(LeagueAPI.getTeamLeagues(teamIDs));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(LeagueAPI.getTeamLeagues(teamIDs));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -1295,17 +1401,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getTeamsByID(final Action<Map<String, Team>> action, final List<String> IDs) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(TeamAPI.getTeamsByID(IDs));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(TeamAPI.getTeamsByID(IDs));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -1318,17 +1426,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getTeamsByID(final Action<Map<String, Team>> action, final String... IDs) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(TeamAPI.getTeamsByID(IDs));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(TeamAPI.getTeamsByID(IDs));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -1341,17 +1451,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getTeamsBySummoner(final Action<Map<Long, List<Team>>> action, final List<Long> summonerIDs) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(TeamAPI.getTeamsBySummoner(summonerIDs));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(TeamAPI.getTeamsBySummoner(summonerIDs));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -1364,17 +1476,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getTeamsBySummoner(final Action<Map<Long, List<Team>>> action, final long... summonerIDs) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(TeamAPI.getTeamsBySummoner(summonerIDs));
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(TeamAPI.getTeamsBySummoner(summonerIDs));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -1385,17 +1499,19 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getVersions(final Action<List<String>> action) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    action.perform(StaticDataAPI.getVersions());
+        if(action != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.perform(StaticDataAPI.getVersions());
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
                 }
-                catch(final APIException e) {
-                    action.handle(e);
-                }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
