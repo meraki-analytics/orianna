@@ -185,6 +185,8 @@ public abstract class BaseRiotAPI {
             rateLimiter.waitForCall();
         }
 
+        boolean registered = false;
+
         // Send request to Riot and register call
         try {
             final HttpGet get = new HttpGet(uri);
@@ -208,7 +210,13 @@ public abstract class BaseRiotAPI {
                     // Force rate limiter to wait after a 429
                     final int retryAfter = Integer.parseInt(response.getFirstHeader("Retry-After").getValue()) + 1;
                     rateLimiter.resetIn(retryAfter * 1000L);
-                    throw new APIException(uri.toString(), 429);
+
+                    // Release resources and exit from rate limited call, then
+                    // retry call
+                    response.close();
+                    rateLimiter.registerCall();
+                    registered = true;
+                    return get(uri, staticServer);
                 }
                 else if(response.getStatusLine().getStatusCode() != 200) {
                     throw new APIException(uri.toString(), response.getStatusLine().getStatusCode());
@@ -217,15 +225,16 @@ public abstract class BaseRiotAPI {
                 return content;
             }
             finally {
-                response.close();
+                if(!registered) {
+                    response.close();
+                }
             }
         }
         catch(final IOException e) {
-            e.printStackTrace();
             throw new OriannaException("Request to Riot server failed! Report this to the Orianna team.");
         }
         finally {
-            if(!staticServer) {
+            if(!staticServer && !registered) {
                 rateLimiter.registerCall();
             }
         }
