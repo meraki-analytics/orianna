@@ -9,6 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.robrua.orianna.type.core.OriannaObject;
+import com.robrua.orianna.type.exception.OriannaException;
 
 public class Item extends OriannaObject<com.robrua.orianna.type.dto.staticdata.Item> {
     private static final Map<String, Pattern> PATTERNS = getScrapedStatPatterns();
@@ -323,7 +324,7 @@ public class Item extends OriannaObject<com.robrua.orianna.type.dto.staticdata.I
                     clazz.getDeclaredField(stat).set(stats, Double.parseDouble(matcher.group(1)));
                 }
                 catch(IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
-                    e.printStackTrace();
+                    throw new OriannaException("Error while scraping for Item stats. Report this to the Orianna team.");
                 }
             }
         }

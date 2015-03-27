@@ -38,7 +38,7 @@ Standard Java
 <dependency>
   <groupId>com.robrua</groupId>
   <artifactId>orianna</artifactId>
-  <version>2.1.3</version>
+  <version>2.1.4</version>
 </dependency>
 ```
 
@@ -47,7 +47,7 @@ Android
 <dependency>
   <groupId>com.robrua</groupId>
   <artifactId>orianna-android</artifactId>
-  <version>2.1.3</version>
+  <version>2.1.4</version>
 </dependency>
 ```
 
@@ -60,7 +60,7 @@ repositories {
 }
 
 dependencies {
-	compile 'com.robrua:orianna:2.1.3'
+	compile 'com.robrua:orianna:2.1.4'
 }
 ```
 
@@ -71,7 +71,7 @@ repositories {
 }
 
 dependencies {
-	compile 'com.robrua:orianna-android:2.1.3'
+	compile 'com.robrua:orianna-android:2.1.4'
 }
 ```
 
@@ -225,7 +225,7 @@ public class Example {
 [Found Here](http://robrua.github.io/Orianna/)
 
 ## Download
-[Check Releases](https://github.com/robrua/Orianna/releases)
+[Releases](https://github.com/robrua/Orianna/releases)/[Snapshot](http://robrua.com/orianna)
 
 ## Questions/Contributions
 Feel free to send pull requests or to contact me via github or email (robrua@alumni.cmu.edu).
