@@ -50,10 +50,13 @@ public abstract class AsyncRiotAPI {
      *            the ranked queue type to get the challenger league of
      */
     public static void getChallenger(final Action<League> action, final QueueType queueType) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getChallenger(queueType);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getChallenger(queueType));
                     }
@@ -61,8 +64,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -72,10 +75,13 @@ public abstract class AsyncRiotAPI {
      *            the ID of the champion to get
      */
     public static void getChampionByID(final Action<Champion> action, final long ID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getChampionByID(ID);
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getChampionByID(ID));
                     }
@@ -83,8 +89,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -94,10 +100,13 @@ public abstract class AsyncRiotAPI {
      *            the name of the champion to get
      */
     public static void getChampionByName(final Action<Champion> action, final String name) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getChampionByName(name);
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getChampionByName(name));
                     }
@@ -105,8 +114,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -114,10 +123,13 @@ public abstract class AsyncRiotAPI {
      *            what to do with all the champions
      */
     public static void getChampions(final Action<List<Champion>> action) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getChampions();
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getChampions());
                     }
@@ -125,8 +137,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -136,10 +148,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the champions to get
      */
     public static void getChampionsByID(final Action<List<Champion>> action, final List<Long> IDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getChampionsByID(IDs);
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getChampionsByID(IDs));
                     }
@@ -147,8 +162,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -158,10 +173,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the champions to get
      */
     public static void getChampionsByID(final Action<List<Champion>> action, final long... IDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getChampionsByID(IDs);
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getChampionsByID(IDs));
                     }
@@ -169,8 +187,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -180,10 +198,13 @@ public abstract class AsyncRiotAPI {
      *            the names of the champions to get
      */
     public static void getChampionsByName(final Action<List<Champion>> action, final List<String> names) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getChampionsByName(names);
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getChampionsByName(names));
                     }
@@ -191,8 +212,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -202,10 +223,13 @@ public abstract class AsyncRiotAPI {
      *            the names of the champions to get
      */
     public static void getChampionsByName(final Action<List<Champion>> action, final String... names) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getChampionsByName(names);
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getChampionsByName(names));
                     }
@@ -213,8 +237,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -224,10 +248,13 @@ public abstract class AsyncRiotAPI {
      *            the champion to get status for
      */
     public static void getChampionStatus(final Action<ChampionStatus> action, final Champion champion) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChampionAPI.getChampionStatus(champion);
+                }
+                else {
                     try {
                         action.perform(ChampionAPI.getChampionStatus(champion));
                     }
@@ -235,8 +262,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -246,10 +273,13 @@ public abstract class AsyncRiotAPI {
      *            the ID of the champion to get status for
      */
     public static void getChampionStatus(final Action<ChampionStatus> action, final long ID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChampionAPI.getChampionStatus(ID);
+                }
+                else {
                     try {
                         action.perform(ChampionAPI.getChampionStatus(ID));
                     }
@@ -257,8 +287,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -268,10 +298,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the champions to get statuses for
      */
     public static void getChampionStatuses(final Action<List<ChampionStatus>> action, final List<Long> IDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChampionAPI.getChampionStatuses(IDs);
+                }
+                else {
                     try {
                         action.perform(ChampionAPI.getChampionStatuses(IDs));
                     }
@@ -279,8 +312,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -290,10 +323,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the champions to get statuses for
      */
     public static void getChampionStatuses(final Action<List<ChampionStatus>> action, final long... IDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChampionAPI.getChampionStatuses(IDs);
+                }
+                else {
                     try {
                         action.perform(ChampionAPI.getChampionStatuses(IDs));
                     }
@@ -301,8 +337,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -310,10 +346,13 @@ public abstract class AsyncRiotAPI {
      *            what to do with all champion's statuses
      */
     public static void getChampionStatuses(final Action<Map<Champion, ChampionStatus>> action) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChampionAPI.getChampionStatuses();
+                }
+                else {
                     try {
                         action.perform(ChampionAPI.getChampionStatuses());
                     }
@@ -321,8 +360,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -333,10 +372,13 @@ public abstract class AsyncRiotAPI {
      *            whether to only get free to play champions
      */
     public static void getChampionStatuses(final Action<Map<Champion, ChampionStatus>> action, final boolean freeToPlay) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChampionAPI.getChampionStatuses(freeToPlay);
+                }
+                else {
                     try {
                         action.perform(ChampionAPI.getChampionStatuses(freeToPlay));
                     }
@@ -344,8 +386,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -356,10 +398,13 @@ public abstract class AsyncRiotAPI {
      *            the ID of the summoner to get current game for
      */
     public static void getCurrentGame(final Action<CurrentGame> action, final long summonerID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    CurrentGameAPI.getCurrentGame(summonerID);
+                }
+                else {
                     try {
                         action.perform(CurrentGameAPI.getCurrentGame(summonerID));
                     }
@@ -367,8 +412,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -379,10 +424,13 @@ public abstract class AsyncRiotAPI {
      *            the name of the summoner to get current game for
      */
     public static void getCurrentGame(final Action<CurrentGame> action, final String summonerName) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    CurrentGameAPI.getCurrentGame(summonerName);
+                }
+                else {
                     try {
                         action.perform(CurrentGameAPI.getCurrentGame(summonerName));
                     }
@@ -390,8 +438,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -402,10 +450,13 @@ public abstract class AsyncRiotAPI {
      *            the summoner to get current game for
      */
     public static void getCurrentGame(final Action<CurrentGame> action, final Summoner summoner) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    CurrentGameAPI.getCurrentGame(summoner);
+                }
+                else {
                     try {
                         action.perform(CurrentGameAPI.getCurrentGame(summoner));
                     }
@@ -413,8 +464,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -422,10 +473,13 @@ public abstract class AsyncRiotAPI {
      *            what to do with the current featured games
      */
     public static void getFeaturedGames(final Action<List<CurrentGame>> action) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    FeaturedGamesAPI.getFeaturedGames();
+                }
+                else {
                     try {
                         action.perform(FeaturedGamesAPI.getFeaturedGames());
                     }
@@ -433,8 +487,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -444,10 +498,13 @@ public abstract class AsyncRiotAPI {
      *            the ID of the item to get
      */
     public static void getItem(final Action<Item> action, final long ID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getItem(ID);
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getItem(ID));
                     }
@@ -455,8 +512,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -464,10 +521,13 @@ public abstract class AsyncRiotAPI {
      *            what to do with all the items
      */
     public static void getItems(final Action<List<Item>> action) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getItems();
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getItems());
                     }
@@ -475,8 +535,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -486,10 +546,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the items to get
      */
     public static void getItems(final Action<List<Item>> action, final List<Long> IDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getItems(IDs);
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getItems(IDs));
                     }
@@ -497,8 +560,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -508,10 +571,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the items to get
      */
     public static void getItems(final Action<List<Item>> action, final long... IDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getItems(IDs);
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getItems(IDs));
                     }
@@ -519,8 +585,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -528,10 +594,13 @@ public abstract class AsyncRiotAPI {
      *            what to do with the languages
      */
     public static void getLanguages(final Action<List<String>> action) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getLanguages();
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getLanguages());
                     }
@@ -539,8 +608,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -548,10 +617,13 @@ public abstract class AsyncRiotAPI {
      *            what to do with the language strings
      */
     public static void getLanguageStrings(final Action<Map<String, String>> action) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getLanguageStrings();
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getLanguageStrings());
                     }
@@ -559,8 +631,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -570,10 +642,13 @@ public abstract class AsyncRiotAPI {
      *            the summoner to get league entries for
      */
     public static void getLeagueEntriesBySummoner(final Action<List<League>> action, final Summoner summoner) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getLeagueEntriesBySummoner(summoner);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getLeagueEntriesBySummoner(summoner));
                     }
@@ -581,8 +656,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -592,10 +667,13 @@ public abstract class AsyncRiotAPI {
      *            the summoners to get league entries for
      */
     public static void getLeagueEntriesBySummoner(final Action<List<List<League>>> action, final List<Summoner> summoners) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getLeagueEntriesBySummoner(summoners);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getLeagueEntriesBySummoner(summoners));
                     }
@@ -603,8 +681,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -614,10 +692,13 @@ public abstract class AsyncRiotAPI {
      *            the summoners to get league entries for
      */
     public static void getLeagueEntriesBySummoner(final Action<List<List<League>>> action, final Summoner... summoners) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getLeagueEntriesBySummoner(summoners);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getLeagueEntriesBySummoner(summoners));
                     }
@@ -625,8 +706,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -636,10 +717,13 @@ public abstract class AsyncRiotAPI {
      *            the ID of the summoner to get league entries for
      */
     public static void getLeagueEntriesBySummonerID(final Action<List<League>> action, final long summonerID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getLeagueEntriesBySummonerID(summonerID);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getLeagueEntriesBySummonerID(summonerID));
                     }
@@ -647,8 +731,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -658,10 +742,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the summoners to get league entries for
      */
     public static void getLeagueEntriesBySummonerID(final Action<List<List<League>>> action, final List<Long> summonerIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getLeagueEntriesBySummonerID(summonerIDs);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getLeagueEntriesBySummonerID(summonerIDs));
                     }
@@ -669,8 +756,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -680,10 +767,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the summoners to get league entries for
      */
     public static void getLeagueEntriesBySummonerID(final Action<List<List<League>>> action, final long... summonerIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getLeagueEntriesBySummonerID(summonerIDs);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getLeagueEntriesBySummonerID(summonerIDs));
                     }
@@ -691,8 +781,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -702,10 +792,13 @@ public abstract class AsyncRiotAPI {
      *            the name of the summoner to get league entries for
      */
     public static void getLeagueEntriesBySummonerName(final Action<List<League>> action, final String summonerName) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getLeagueEntriesBySummonerName(summonerName);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getLeagueEntriesBySummonerName(summonerName));
                     }
@@ -713,8 +806,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -724,10 +817,13 @@ public abstract class AsyncRiotAPI {
      *            the names of the summoners to get league entries for
      */
     public static void getLeagueEntriesBySummonerName(final Action<List<List<League>>> action, final List<String> summonerNames) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getLeagueEntriesBySummonerName(summonerNames);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getLeagueEntriesBySummonerName(summonerNames));
                     }
@@ -735,8 +831,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -746,10 +842,13 @@ public abstract class AsyncRiotAPI {
      *            the names of the summoners to get league entries for
      */
     public static void getLeagueEntriesBySummonerName(final Action<List<List<League>>> action, final String... summonerNames) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getLeagueEntriesBySummonerName(summonerNames);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getLeagueEntriesBySummonerName(summonerNames));
                     }
@@ -757,8 +856,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -768,10 +867,13 @@ public abstract class AsyncRiotAPI {
      *            the team to get league entries for
      */
     public static void getLeagueEntriesByTeam(final Action<List<League>> action, final Team team) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getLeagueEntriesByTeam(team);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getLeagueEntriesByTeam(team));
                     }
@@ -779,8 +881,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -790,10 +892,13 @@ public abstract class AsyncRiotAPI {
      *            the teams to get league entries for
      */
     public static void getLeagueEntriesByTeam(final Action<List<List<League>>> action, final List<Team> teams) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getLeagueEntriesByTeam(teams);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getLeagueEntriesByTeam(teams));
                     }
@@ -801,8 +906,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -812,10 +917,13 @@ public abstract class AsyncRiotAPI {
      *            the teams to get league entries for
      */
     public static void getLeagueEntriesByTeam(final Action<List<List<League>>> action, final Team... teams) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getLeagueEntriesByTeam(teams);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getLeagueEntriesByTeam(teams));
                     }
@@ -823,8 +931,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -834,10 +942,13 @@ public abstract class AsyncRiotAPI {
      *            the ID of the team to get league entries for
      */
     public static void getLeagueEntriesByTeamID(final Action<List<League>> action, final String teamID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getLeagueEntriesByTeamID(teamID);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getLeagueEntriesByTeamID(teamID));
                     }
@@ -845,8 +956,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -856,10 +967,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the teams to get league entries for
      */
     public static void getLeagueEntriesByTeamID(final Action<List<List<League>>> action, final List<String> teamIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getLeagueEntriesByTeamID(teamIDs);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getLeagueEntriesByTeamID(teamIDs));
                     }
@@ -867,8 +981,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -878,10 +992,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the teams to get league entries for
      */
     public static void getLeagueEntriesByTeamID(final Action<List<List<League>>> action, final String... teamIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getLeagueEntriesByTeamID(teamIDs);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getLeagueEntriesByTeamID(teamIDs));
                     }
@@ -889,8 +1006,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -900,10 +1017,13 @@ public abstract class AsyncRiotAPI {
      *            the summoner to get leagues for
      */
     public static void getLeaguesBySummoner(final Action<List<League>> action, final Summoner summoner) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getLeaguesBySummoner(summoner);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getLeaguesBySummoner(summoner));
                     }
@@ -911,8 +1031,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -922,10 +1042,13 @@ public abstract class AsyncRiotAPI {
      *            the summoners to get leagues for
      */
     public static void getLeaguesBySummoner(final Action<List<List<League>>> action, final List<Summoner> summoners) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getLeaguesBySummoner(summoners);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getLeaguesBySummoner(summoners));
                     }
@@ -933,8 +1056,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -944,10 +1067,13 @@ public abstract class AsyncRiotAPI {
      *            the summoners to get leagues for
      */
     public static void getLeaguesBySummoner(final Action<List<List<League>>> action, final Summoner... summoners) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getLeaguesBySummoner(summoners);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getLeaguesBySummoner(summoners));
                     }
@@ -955,8 +1081,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -966,10 +1092,13 @@ public abstract class AsyncRiotAPI {
      *            the ID of the summoner to get leagues for
      */
     public static void getLeaguesBySummonerID(final Action<List<League>> action, final long summonerID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getLeaguesBySummonerID(summonerID);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getLeaguesBySummonerID(summonerID));
                     }
@@ -977,8 +1106,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -988,10 +1117,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the summoners to get leagues for
      */
     public static void getLeaguesBySummonerID(final Action<List<List<League>>> action, final List<Long> summonerIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getLeaguesBySummonerID(summonerIDs);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getLeaguesBySummonerID(summonerIDs));
                     }
@@ -999,8 +1131,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1010,10 +1142,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the summoners to get leagues for
      */
     public static void getLeaguesBySummonerID(final Action<List<List<League>>> action, final long... summonerIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getLeaguesBySummonerID(summonerIDs);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getLeaguesBySummonerID(summonerIDs));
                     }
@@ -1021,8 +1156,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1032,10 +1167,13 @@ public abstract class AsyncRiotAPI {
      *            the name of the summoner to get leagues for
      */
     public static void getLeaguesBySummonerName(final Action<List<League>> action, final String summonerName) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getLeaguesBySummonerName(summonerName);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getLeaguesBySummonerName(summonerName));
                     }
@@ -1043,8 +1181,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1054,10 +1192,13 @@ public abstract class AsyncRiotAPI {
      *            the names of the summoners to get leagues for
      */
     public static void getLeaguesBySummonerName(final Action<List<List<League>>> action, final List<String> summonerNames) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getLeaguesBySummonerName(summonerNames);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getLeaguesBySummonerName(summonerNames));
                     }
@@ -1065,8 +1206,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1076,10 +1217,13 @@ public abstract class AsyncRiotAPI {
      *            the names of the summoners to get leagues for
      */
     public static void getLeaguesBySummonerName(final Action<List<List<League>>> action, final String... summonerNames) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getLeaguesBySummonerName(summonerNames);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getLeaguesBySummonerName(summonerNames));
                     }
@@ -1087,8 +1231,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1098,10 +1242,13 @@ public abstract class AsyncRiotAPI {
      *            the team to get leagues for
      */
     public static void getLeaguesByTeam(final Action<List<League>> action, final Team team) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getLeaguesByTeam(team);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getLeaguesByTeam(team));
                     }
@@ -1109,8 +1256,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1120,10 +1267,13 @@ public abstract class AsyncRiotAPI {
      *            the teams to get leagues for
      */
     public static void getLeaguesByTeam(final Action<List<List<League>>> action, final List<Team> teams) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getLeaguesByTeam(teams);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getLeaguesByTeam(teams));
                     }
@@ -1131,8 +1281,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1142,10 +1292,13 @@ public abstract class AsyncRiotAPI {
      *            the teams to get leagues for
      */
     public static void getLeaguesByTeam(final Action<List<List<League>>> action, final Team... teams) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getLeaguesByTeam(teams);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getLeaguesByTeam(teams));
                     }
@@ -1153,8 +1306,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1164,10 +1317,13 @@ public abstract class AsyncRiotAPI {
      *            the ID of the team to get leagues for
      */
     public static void getLeaguesByTeamID(final Action<List<League>> action, final String teamID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getLeaguesByTeamID(teamID);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getLeaguesByTeamID(teamID));
                     }
@@ -1175,8 +1331,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1186,10 +1342,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the teams to get leagues for
      */
     public static void getLeaguesByTeamID(final Action<List<List<League>>> action, final List<String> teamIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getLeaguesByTeamID(teamIDs);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getLeaguesByTeamID(teamIDs));
                     }
@@ -1197,8 +1356,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1208,10 +1367,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the teams to get leagues for
      */
     public static void getLeaguesByTeamID(final Action<List<List<League>>> action, final String... teamIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getLeaguesByTeamID(teamIDs);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getLeaguesByTeamID(teamIDs));
                     }
@@ -1219,8 +1381,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1228,10 +1390,13 @@ public abstract class AsyncRiotAPI {
      *            what to do with information for the maps
      */
     public static void getMapInformation(final Action<List<MapDetails>> action) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getMapInformation();
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getMapInformation());
                     }
@@ -1239,8 +1404,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1248,10 +1413,13 @@ public abstract class AsyncRiotAPI {
      *            what to do with all the masteries
      */
     public static void getMasteries(final Action<List<Mastery>> action) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getMasteries();
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getMasteries());
                     }
@@ -1259,8 +1427,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1270,10 +1438,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the masteries to get
      */
     public static void getMasteries(final Action<List<Mastery>> action, final List<Long> IDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getMasteries(IDs);
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getMasteries(IDs));
                     }
@@ -1281,8 +1452,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1292,10 +1463,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the masteries to get
      */
     public static void getMasteries(final Action<List<Mastery>> action, final long... IDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getMasteries(IDs);
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getMasteries(IDs));
                     }
@@ -1303,8 +1477,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1314,10 +1488,13 @@ public abstract class AsyncRiotAPI {
      *            the ID of the mastery to get
      */
     public static void getMastery(final Action<Mastery> action, final long ID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getMastery(ID);
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getMastery(ID));
                     }
@@ -1325,8 +1502,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1336,10 +1513,13 @@ public abstract class AsyncRiotAPI {
      *            the summoners to get mastery pages for
      */
     public static void getMasteryPages(final Action<List<List<MasteryPage>>> action, final List<Summoner> summoners) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getMasteryPages(summoners);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getMasteryPages(summoners));
                     }
@@ -1347,8 +1527,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1358,10 +1538,13 @@ public abstract class AsyncRiotAPI {
      *            the summoners to get mastery pages for
      */
     public static void getMasteryPages(final Action<List<List<MasteryPage>>> action, final Summoner... summoners) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getMasteryPages(summoners);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getMasteryPages(summoners));
                     }
@@ -1369,8 +1552,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1380,10 +1563,13 @@ public abstract class AsyncRiotAPI {
      *            the summoner to get mastery pages for
      */
     public static void getMasteryPages(final Action<List<MasteryPage>> action, final Summoner summoner) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getMasteryPages(summoner);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getMasteryPages(summoner));
                     }
@@ -1391,8 +1577,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1402,10 +1588,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the summoners to get mastery pages for
      */
     public static void getMasteryPagesByID(final Action<List<List<MasteryPage>>> action, final List<Long> summonerIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getMasteryPagesByID(summonerIDs);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getMasteryPagesByID(summonerIDs));
                     }
@@ -1413,8 +1602,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1424,10 +1613,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the summoners to get mastery pages for
      */
     public static void getMasteryPagesByID(final Action<List<List<MasteryPage>>> action, final long... summonerIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getMasteryPagesByID(summonerIDs);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getMasteryPagesByID(summonerIDs));
                     }
@@ -1435,8 +1627,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1446,10 +1638,13 @@ public abstract class AsyncRiotAPI {
      *            the ID of the summoner to get mastery pages for
      */
     public static void getMasteryPagesByID(final Action<List<MasteryPage>> action, final long summonerID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getMasteryPagesByID(summonerID);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getMasteryPagesByID(summonerID));
                     }
@@ -1457,8 +1652,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1468,10 +1663,13 @@ public abstract class AsyncRiotAPI {
      *            the names of the summoners to get mastery pages for
      */
     public static void getMasteryPagesByName(final Action<List<List<MasteryPage>>> action, final List<String> summonerNames) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getMasteryPagesByName(summonerNames);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getMasteryPagesByName(summonerNames));
                     }
@@ -1479,8 +1677,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1490,10 +1688,13 @@ public abstract class AsyncRiotAPI {
      *            the names of the summoners to get mastery pages for
      */
     public static void getMasteryPagesByName(final Action<List<List<MasteryPage>>> action, final String... summonerNames) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getMasteryPagesByName(summonerNames);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getMasteryPagesByName(summonerNames));
                     }
@@ -1501,8 +1702,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1512,10 +1713,13 @@ public abstract class AsyncRiotAPI {
      *            the name of the summoner to get mastery pages for
      */
     public static void getMasteryPagesByName(final Action<List<MasteryPage>> action, final String summonerName) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getMasteryPagesByName(summonerName);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getMasteryPagesByName(summonerName));
                     }
@@ -1523,8 +1727,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1534,10 +1738,13 @@ public abstract class AsyncRiotAPI {
      *            the ID of the match to get
      */
     public static void getMatch(final Action<Match> action, final long ID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchAPI.getMatch(ID);
+                }
+                else {
                     try {
                         action.perform(MatchAPI.getMatch(ID));
                     }
@@ -1545,8 +1752,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1556,10 +1763,13 @@ public abstract class AsyncRiotAPI {
      *            the summoner to get match history for
      */
     public static void getMatchHistory(final Action<List<MatchSummary>> action, final long summonerID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchHistoryAPI.getMatchHistory(summonerID);
+                }
+                else {
                     try {
                         action.perform(MatchHistoryAPI.getMatchHistory(summonerID));
                     }
@@ -1567,8 +1777,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1581,10 +1791,13 @@ public abstract class AsyncRiotAPI {
      *            the game index to start from
      */
     public static void getMatchHistory(final Action<List<MatchSummary>> action, final long summonerID, final int beginIndex) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchHistoryAPI.getMatchHistory(summonerID, beginIndex);
+                }
+                else {
                     try {
                         action.perform(MatchHistoryAPI.getMatchHistory(summonerID, beginIndex));
                     }
@@ -1592,8 +1805,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1608,10 +1821,13 @@ public abstract class AsyncRiotAPI {
      *            the champions to limit games to
      */
     public static void getMatchHistory(final Action<List<MatchSummary>> action, final long summonerID, final int beginIndex, final List<Long> championIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchHistoryAPI.getMatchHistory(summonerID, beginIndex, championIDs);
+                }
+                else {
                     try {
                         action.perform(MatchHistoryAPI.getMatchHistory(summonerID, beginIndex, championIDs));
                     }
@@ -1619,8 +1835,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1635,10 +1851,13 @@ public abstract class AsyncRiotAPI {
      *            the queue type to limit games to (only ranked queues)
      */
     public static void getMatchHistory(final Action<List<MatchSummary>> action, final long summonerID, final int beginIndex, final QueueType queueType) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchHistoryAPI.getMatchHistory(summonerID, beginIndex, queueType);
+                }
+                else {
                     try {
                         action.perform(MatchHistoryAPI.getMatchHistory(summonerID, beginIndex, queueType));
                     }
@@ -1646,8 +1865,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1665,10 +1884,13 @@ public abstract class AsyncRiotAPI {
      */
     public static void getMatchHistory(final Action<List<MatchSummary>> action, final long summonerID, final int beginIndex, final QueueType queueType,
             final List<Long> championIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchHistoryAPI.getMatchHistory(summonerID, beginIndex, queueType, championIDs);
+                }
+                else {
                     try {
                         action.perform(MatchHistoryAPI.getMatchHistory(summonerID, beginIndex, queueType, championIDs));
                     }
@@ -1676,8 +1898,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1689,10 +1911,13 @@ public abstract class AsyncRiotAPI {
      *            the champions to limit games to
      */
     public static void getMatchHistory(final Action<List<MatchSummary>> action, final long summonerID, final List<Long> championIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchHistoryAPI.getMatchHistory(summonerID, championIDs);
+                }
+                else {
                     try {
                         action.perform(MatchHistoryAPI.getMatchHistory(summonerID, championIDs));
                     }
@@ -1700,8 +1925,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1713,10 +1938,13 @@ public abstract class AsyncRiotAPI {
      *            the queue type to limit games to (only ranked queues)
      */
     public static void getMatchHistory(final Action<List<MatchSummary>> action, final long summonerID, final QueueType queueType) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchHistoryAPI.getMatchHistory(summonerID, queueType);
+                }
+                else {
                     try {
                         action.perform(MatchHistoryAPI.getMatchHistory(summonerID, queueType));
                     }
@@ -1724,8 +1952,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1739,10 +1967,13 @@ public abstract class AsyncRiotAPI {
      *            the champions to limit games to
      */
     public static void getMatchHistory(final Action<List<MatchSummary>> action, final long summonerID, final QueueType queueType, final List<Long> championIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchHistoryAPI.getMatchHistory(summonerID, queueType, championIDs);
+                }
+                else {
                     try {
                         action.perform(MatchHistoryAPI.getMatchHistory(summonerID, queueType, championIDs));
                     }
@@ -1750,8 +1981,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1761,10 +1992,13 @@ public abstract class AsyncRiotAPI {
      *            the summoner to get match history for
      */
     public static void getMatchHistory(final Action<List<MatchSummary>> action, final Summoner summoner) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchHistoryAPI.getMatchHistory(summoner);
+                }
+                else {
                     try {
                         action.perform(MatchHistoryAPI.getMatchHistory(summoner));
                     }
@@ -1772,8 +2006,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1786,10 +2020,13 @@ public abstract class AsyncRiotAPI {
      *            the game index to start from
      */
     public static void getMatchHistory(final Action<List<MatchSummary>> action, final Summoner summoner, final int beginIndex) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchHistoryAPI.getMatchHistory(summoner, beginIndex);
+                }
+                else {
                     try {
                         action.perform(MatchHistoryAPI.getMatchHistory(summoner, beginIndex));
                     }
@@ -1797,8 +2034,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1813,10 +2050,13 @@ public abstract class AsyncRiotAPI {
      *            the champions to limit games to
      */
     public static void getMatchHistory(final Action<List<MatchSummary>> action, final Summoner summoner, final int beginIndex, final List<Champion> champions) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchHistoryAPI.getMatchHistory(summoner, beginIndex, champions);
+                }
+                else {
                     try {
                         action.perform(MatchHistoryAPI.getMatchHistory(summoner, beginIndex, champions));
                     }
@@ -1824,8 +2064,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1840,10 +2080,13 @@ public abstract class AsyncRiotAPI {
      *            the queue type to limit games to (only ranked queues)
      */
     public static void getMatchHistory(final Action<List<MatchSummary>> action, final Summoner summoner, final int beginIndex, final QueueType queueType) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchHistoryAPI.getMatchHistory(summoner, beginIndex, queueType);
+                }
+                else {
                     try {
                         action.perform(MatchHistoryAPI.getMatchHistory(summoner, beginIndex, queueType));
                     }
@@ -1851,8 +2094,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1870,10 +2113,13 @@ public abstract class AsyncRiotAPI {
      */
     public static void getMatchHistory(final Action<List<MatchSummary>> action, final Summoner summoner, final int beginIndex, final QueueType queueType,
             final List<Champion> champions) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchHistoryAPI.getMatchHistory(summoner, beginIndex, queueType, champions);
+                }
+                else {
                     try {
                         action.perform(MatchHistoryAPI.getMatchHistory(summoner, beginIndex, queueType, champions));
                     }
@@ -1881,8 +2127,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1894,10 +2140,13 @@ public abstract class AsyncRiotAPI {
      *            the champions to limit games to
      */
     public static void getMatchHistory(final Action<List<MatchSummary>> action, final Summoner summoner, final List<Champion> champions) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchHistoryAPI.getMatchHistory(summoner, champions);
+                }
+                else {
                     try {
                         action.perform(MatchHistoryAPI.getMatchHistory(summoner, champions));
                     }
@@ -1905,8 +2154,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1918,10 +2167,13 @@ public abstract class AsyncRiotAPI {
      *            the queue type to limit games to (only ranked queues)
      */
     public static void getMatchHistory(final Action<List<MatchSummary>> action, final Summoner summoner, final QueueType queueType) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchHistoryAPI.getMatchHistory(summoner, queueType);
+                }
+                else {
                     try {
                         action.perform(MatchHistoryAPI.getMatchHistory(summoner, queueType));
                     }
@@ -1929,8 +2181,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1945,10 +2197,13 @@ public abstract class AsyncRiotAPI {
      */
     public static void getMatchHistory(final Action<List<MatchSummary>> action, final Summoner summoner, final QueueType queueType,
             final List<Champion> champions) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchHistoryAPI.getMatchHistory(summoner, queueType, champions);
+                }
+                else {
                     try {
                         action.perform(MatchHistoryAPI.getMatchHistory(summoner, queueType, champions));
                     }
@@ -1956,8 +2211,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1968,10 +2223,13 @@ public abstract class AsyncRiotAPI {
      *            the summoner to get ranked stats for
      */
     public static void getRankedStats(final Action<Map<Champion, ChampionStats>> action, final long summonerID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StatsAPI.getRankedStats(summonerID);
+                }
+                else {
                     try {
                         action.perform(StatsAPI.getRankedStats(summonerID));
                     }
@@ -1979,8 +2237,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1993,10 +2251,13 @@ public abstract class AsyncRiotAPI {
      *            the season to get ranked stats for
      */
     public static void getRankedStats(final Action<Map<Champion, ChampionStats>> action, final long summonerID, final Season season) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StatsAPI.getRankedStats(summonerID, season);
+                }
+                else {
                     try {
                         action.perform(StatsAPI.getRankedStats(summonerID, season));
                     }
@@ -2004,8 +2265,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2016,10 +2277,13 @@ public abstract class AsyncRiotAPI {
      *            the summoner to get ranked stats for
      */
     public static void getRankedStats(final Action<Map<Champion, ChampionStats>> action, final Summoner summoner) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StatsAPI.getRankedStats(summoner);
+                }
+                else {
                     try {
                         action.perform(StatsAPI.getRankedStats(summoner));
                     }
@@ -2027,8 +2291,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2041,10 +2305,13 @@ public abstract class AsyncRiotAPI {
      *            the season to get ranked stats for
      */
     public static void getRankedStats(final Action<Map<Champion, ChampionStats>> action, final Summoner summoner, final Season season) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StatsAPI.getRankedStats(summoner, season);
+                }
+                else {
                     try {
                         action.perform(StatsAPI.getRankedStats(summoner, season));
                     }
@@ -2052,8 +2319,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2061,10 +2328,13 @@ public abstract class AsyncRiotAPI {
      *            what to do with the realm
      */
     public static void getRealm(final Action<Realm> action) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getRealm();
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getRealm());
                     }
@@ -2072,8 +2342,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2083,10 +2353,13 @@ public abstract class AsyncRiotAPI {
      *            the ID of the summoner to get recent games for
      */
     public static void getRecentGames(final Action<List<Game>> action, final long summonerID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    GameAPI.getRecentGames(summonerID);
+                }
+                else {
                     try {
                         action.perform(GameAPI.getRecentGames(summonerID));
                     }
@@ -2094,8 +2367,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2105,10 +2378,13 @@ public abstract class AsyncRiotAPI {
      *            the name of the summoner to get recent games for
      */
     public static void getRecentGames(final Action<List<Game>> action, final String summonerName) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    GameAPI.getRecentGames(summonerName);
+                }
+                else {
                     try {
                         action.perform(GameAPI.getRecentGames(summonerName));
                     }
@@ -2116,8 +2392,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2127,10 +2403,13 @@ public abstract class AsyncRiotAPI {
      *            the summoner to get recent games for
      */
     public static void getRecentGames(final Action<List<Game>> action, final Summoner summoner) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    GameAPI.getRecentGames(summoner);
+                }
+                else {
                     try {
                         action.perform(GameAPI.getRecentGames(summoner));
                     }
@@ -2138,8 +2417,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2149,10 +2428,13 @@ public abstract class AsyncRiotAPI {
      *            the ID of the rune to get
      */
     public static void getRune(final Action<Rune> action, final long ID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getRune(ID);
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getRune(ID));
                     }
@@ -2160,8 +2442,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2171,10 +2453,13 @@ public abstract class AsyncRiotAPI {
      *            the summoners to get rune pages for
      */
     public static void getRunePages(final Action<List<List<RunePage>>> action, final List<Summoner> summoners) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getRunePages(summoners);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getRunePages(summoners));
                     }
@@ -2182,8 +2467,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2193,10 +2478,13 @@ public abstract class AsyncRiotAPI {
      *            the summoners to get rune pages for
      */
     public static void getRunePages(final Action<List<List<RunePage>>> action, final Summoner... summoners) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getRunePages(summoners);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getRunePages(summoners));
                     }
@@ -2204,8 +2492,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2215,10 +2503,13 @@ public abstract class AsyncRiotAPI {
      *            the summoner to get rune pages for
      */
     public static void getRunePages(final Action<List<RunePage>> action, final Summoner summoner) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getRunePages(summoner);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getRunePages(summoner));
                     }
@@ -2226,8 +2517,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2237,10 +2528,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the summoners to get rune pages for
      */
     public static void getRunePagesByID(final Action<List<List<RunePage>>> action, final List<Long> summonerIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getRunePagesByID(summonerIDs);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getRunePagesByID(summonerIDs));
                     }
@@ -2248,8 +2542,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2259,10 +2553,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the summoners to get rune pages for
      */
     public static void getRunePagesByID(final Action<List<List<RunePage>>> action, final long... summonerIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getRunePagesByID(summonerIDs);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getRunePagesByID(summonerIDs));
                     }
@@ -2270,8 +2567,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2281,10 +2578,13 @@ public abstract class AsyncRiotAPI {
      *            the ID of the summoner to get rune pages for
      */
     public static void getRunePagesByID(final Action<List<RunePage>> action, final long summonerID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getRunePagesByID(summonerID);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getRunePagesByID(summonerID));
                     }
@@ -2292,8 +2592,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2303,10 +2603,13 @@ public abstract class AsyncRiotAPI {
      *            the names of the summoners to get rune pages for
      */
     public static void getRunePagesByName(final Action<List<List<RunePage>>> action, final List<String> summonerNames) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getRunePagesByName(summonerNames);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getRunePagesByName(summonerNames));
                     }
@@ -2314,8 +2617,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2325,10 +2628,13 @@ public abstract class AsyncRiotAPI {
      *            the names of the summoners to get rune pages for
      */
     public static void getRunePagesByName(final Action<List<List<RunePage>>> action, final String... summonerNames) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getRunePagesByName(summonerNames);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getRunePagesByName(summonerNames));
                     }
@@ -2336,8 +2642,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2347,10 +2653,13 @@ public abstract class AsyncRiotAPI {
      *            the name of the summoner to get rune pages for
      */
     public static void getRunePagesByName(final Action<List<RunePage>> action, final String summonerName) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getRunePagesByName(summonerName);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getRunePagesByName(summonerName));
                     }
@@ -2358,8 +2667,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2367,10 +2676,13 @@ public abstract class AsyncRiotAPI {
      *            what to do with all the runes
      */
     public static void getRunes(final Action<List<Rune>> action) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getRunes();
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getRunes());
                     }
@@ -2378,8 +2690,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2389,10 +2701,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the runes to get
      */
     public static void getRunes(final Action<List<Rune>> action, final List<Long> IDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getRunes(IDs);
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getRunes(IDs));
                     }
@@ -2400,8 +2715,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2411,10 +2726,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the runes to get
      */
     public static void getRunes(final Action<List<Rune>> action, final long... IDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getRunes(IDs);
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getRunes(IDs));
                     }
@@ -2422,8 +2740,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2433,10 +2751,13 @@ public abstract class AsyncRiotAPI {
      *            the region to get the shard for
      */
     public static void getShard(final Action<ShardStatus> action, final Region region) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StatusAPI.getShard(region);
+                }
+                else {
                     try {
                         action.perform(StatusAPI.getShard(region));
                     }
@@ -2444,8 +2765,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2453,10 +2774,13 @@ public abstract class AsyncRiotAPI {
      *            what to do with the status shard list
      */
     public static void getShards(final Action<List<Shard>> action) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StatusAPI.getShards();
+                }
+                else {
                     try {
                         action.perform(StatusAPI.getShards());
                     }
@@ -2464,8 +2788,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2475,10 +2799,13 @@ public abstract class AsyncRiotAPI {
      *            the summoner to get stats for
      */
     public static void getStats(final Action<Map<PlayerStatsSummaryType, PlayerStatsSummary>> action, final long summonerID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StatsAPI.getStats(summonerID);
+                }
+                else {
                     try {
                         action.perform(StatsAPI.getStats(summonerID));
                     }
@@ -2486,8 +2813,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2499,10 +2826,13 @@ public abstract class AsyncRiotAPI {
      *            the season to get stats for
      */
     public static void getStats(final Action<Map<PlayerStatsSummaryType, PlayerStatsSummary>> action, final long summonerID, final Season season) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StatsAPI.getStats(summonerID, season);
+                }
+                else {
                     try {
                         action.perform(StatsAPI.getStats(summonerID, season));
                     }
@@ -2510,8 +2840,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2521,10 +2851,13 @@ public abstract class AsyncRiotAPI {
      *            the summoner to get stats for
      */
     public static void getStats(final Action<Map<PlayerStatsSummaryType, PlayerStatsSummary>> action, final Summoner summoner) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StatsAPI.getStats(summoner);
+                }
+                else {
                     try {
                         action.perform(StatsAPI.getStats(summoner));
                     }
@@ -2532,8 +2865,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2545,10 +2878,13 @@ public abstract class AsyncRiotAPI {
      *            the season to get stats for
      */
     public static void getStats(final Action<Map<PlayerStatsSummaryType, PlayerStatsSummary>> action, final Summoner summoner, final Season season) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StatsAPI.getStats(summoner, season);
+                }
+                else {
                     try {
                         action.perform(StatsAPI.getStats(summoner, season));
                     }
@@ -2556,8 +2892,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2567,10 +2903,13 @@ public abstract class AsyncRiotAPI {
      *            the ID of the summoner to get
      */
     public static void getSummonerByID(final Action<Summoner> action, final long ID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getSummonerByID(ID);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getSummonerByID(ID));
                     }
@@ -2578,8 +2917,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2589,10 +2928,13 @@ public abstract class AsyncRiotAPI {
      *            the name of the summoner to get
      */
     public static void getSummonerByName(final Action<Summoner> action, final String name) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getSummonerByName(name);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getSummonerByName(name));
                     }
@@ -2600,8 +2942,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2611,10 +2953,13 @@ public abstract class AsyncRiotAPI {
      *            the ID of the summoner to get the names of
      */
     public static void getSummonerName(final Action<String> action, final long ID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getSummonerName(ID);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getSummonerName(ID));
                     }
@@ -2622,8 +2967,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2633,10 +2978,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the summoners to get
      */
     public static void getSummonersByID(final Action<List<Summoner>> action, final List<Long> IDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getSummonersByID(IDs);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getSummonersByID(IDs));
                     }
@@ -2644,8 +2992,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2655,10 +3003,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the summoners to get
      */
     public static void getSummonersByID(final Action<List<Summoner>> action, final long... IDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getSummonersByID(IDs);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getSummonersByID(IDs));
                     }
@@ -2666,8 +3017,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2677,10 +3028,13 @@ public abstract class AsyncRiotAPI {
      *            the names of the summoners to get
      */
     public static void getSummonersByName(final Action<List<Summoner>> action, final List<String> names) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getSummonersByName(names);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getSummonersByName(names));
                     }
@@ -2688,8 +3042,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2699,10 +3053,13 @@ public abstract class AsyncRiotAPI {
      *            the names of the summoners to get
      */
     public static void getSummonersByName(final Action<List<Summoner>> action, final String... names) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getSummonersByName(names);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getSummonersByName(names));
                     }
@@ -2710,8 +3067,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2721,10 +3078,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the summoners to get the names of
      */
     public static void getSummonersNames(final Action<List<String>> action, final List<Long> IDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getSummonersNames(IDs);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getSummonersNames(IDs));
                     }
@@ -2732,8 +3092,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2743,10 +3103,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the summoners to get the names of
      */
     public static void getSummonersNames(final Action<List<String>> action, final long... IDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getSummonersNames(IDs);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getSummonersNames(IDs));
                     }
@@ -2754,8 +3117,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2765,10 +3128,13 @@ public abstract class AsyncRiotAPI {
      *            the ID of the summoner spell to get
      */
     public static void getSummonerSpell(final Action<SummonerSpell> action, final long ID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getSummonerSpell(ID);
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getSummonerSpell(ID));
                     }
@@ -2776,8 +3142,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2785,10 +3151,13 @@ public abstract class AsyncRiotAPI {
      *            what to do with all the summoner spells
      */
     public static void getSummonerSpells(final Action<List<SummonerSpell>> action) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getSummonerSpells();
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getSummonerSpells());
                     }
@@ -2796,8 +3165,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2807,10 +3176,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the summoner spells to get
      */
     public static void getSummonerSpells(final Action<List<SummonerSpell>> action, final List<Long> IDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getSummonerSpells(IDs);
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getSummonerSpells(IDs));
                     }
@@ -2818,8 +3190,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2829,10 +3201,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the summoner spells to get
      */
     public static void getSummonerSpells(final Action<List<SummonerSpell>> action, final long... IDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getSummonerSpells(IDs);
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getSummonerSpells(IDs));
                     }
@@ -2840,8 +3215,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2851,10 +3226,13 @@ public abstract class AsyncRiotAPI {
      *            the ID of the team to get
      */
     public static void getTeam(final Action<Team> action, final String teamID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    TeamAPI.getTeam(teamID);
+                }
+                else {
                     try {
                         action.perform(TeamAPI.getTeam(teamID));
                     }
@@ -2862,8 +3240,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2873,10 +3251,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the teams to get
      */
     public static void getTeams(final Action<List<Team>> action, final List<String> teamIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    TeamAPI.getTeams(teamIDs);
+                }
+                else {
                     try {
                         action.perform(TeamAPI.getTeams(teamIDs));
                     }
@@ -2884,8 +3265,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2895,10 +3276,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the teams to get
      */
     public static void getTeams(final Action<List<Team>> action, final String... teamIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    TeamAPI.getTeams(teamIDs);
+                }
+                else {
                     try {
                         action.perform(TeamAPI.getTeams(teamIDs));
                     }
@@ -2906,8 +3290,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2917,10 +3301,13 @@ public abstract class AsyncRiotAPI {
      *            the summoners to get teams for
      */
     public static void getTeamsBySummoner(final Action<List<List<Team>>> action, final List<Summoner> summoners) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    TeamAPI.getTeamsBySummoner(summoners);
+                }
+                else {
                     try {
                         action.perform(TeamAPI.getTeamsBySummoner(summoners));
                     }
@@ -2928,8 +3315,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2939,10 +3326,13 @@ public abstract class AsyncRiotAPI {
      *            the summoners to get teams for
      */
     public static void getTeamsBySummoner(final Action<List<List<Team>>> action, final Summoner... summoners) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    TeamAPI.getTeamsBySummoner(summoners);
+                }
+                else {
                     try {
                         action.perform(TeamAPI.getTeamsBySummoner(summoners));
                     }
@@ -2950,8 +3340,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2961,10 +3351,13 @@ public abstract class AsyncRiotAPI {
      *            the summoner to get teams for
      */
     public static void getTeamsBySummoner(final Action<List<Team>> action, final Summoner summoner) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    TeamAPI.getTeamsBySummoner(summoner);
+                }
+                else {
                     try {
                         action.perform(TeamAPI.getTeamsBySummoner(summoner));
                     }
@@ -2972,8 +3365,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -2983,10 +3376,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the summoners to get teams for
      */
     public static void getTeamsBySummonerID(final Action<List<List<Team>>> action, final List<Long> summonerIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    TeamAPI.getTeamsBySummonerID(summonerIDs);
+                }
+                else {
                     try {
                         action.perform(TeamAPI.getTeamsBySummonerID(summonerIDs));
                     }
@@ -2994,8 +3390,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -3005,10 +3401,13 @@ public abstract class AsyncRiotAPI {
      *            the IDs of the summoners to get teams for
      */
     public static void getTeamsBySummonerID(final Action<List<List<Team>>> action, final long... summonerIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    TeamAPI.getTeamsBySummonerID(summonerIDs);
+                }
+                else {
                     try {
                         action.perform(TeamAPI.getTeamsBySummonerID(summonerIDs));
                     }
@@ -3016,8 +3415,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -3027,10 +3426,13 @@ public abstract class AsyncRiotAPI {
      *            the ID of the summoner to get teams for
      */
     public static void getTeamsBySummonerID(final Action<List<Team>> action, final long summonerID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    TeamAPI.getTeamsBySummonerID(summonerID);
+                }
+                else {
                     try {
                         action.perform(TeamAPI.getTeamsBySummonerID(summonerID));
                     }
@@ -3038,8 +3440,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -3049,10 +3451,13 @@ public abstract class AsyncRiotAPI {
      *            the names of the summoners to get teams for
      */
     public static void getTeamsBySummonerName(final Action<List<List<Team>>> action, final List<String> summonerNames) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    TeamAPI.getTeamsBySummonerName(summonerNames);
+                }
+                else {
                     try {
                         action.perform(TeamAPI.getTeamsBySummonerName(summonerNames));
                     }
@@ -3060,8 +3465,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -3071,10 +3476,13 @@ public abstract class AsyncRiotAPI {
      *            the names of the summoners to get teams for
      */
     public static void getTeamsBySummonerName(final Action<List<List<Team>>> action, final String... summonerNames) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    TeamAPI.getTeamsBySummonerName(summonerNames);
+                }
+                else {
                     try {
                         action.perform(TeamAPI.getTeamsBySummonerName(summonerNames));
                     }
@@ -3082,8 +3490,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -3093,10 +3501,13 @@ public abstract class AsyncRiotAPI {
      *            the names of the summoner to get teams for
      */
     public static void getTeamsBySummonerName(final Action<List<List<Team>>> action, final String summonerName) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    TeamAPI.getTeamsBySummonerName(summonerName);
+                }
+                else {
                     try {
                         action.perform(TeamAPI.getTeamsBySummonerName(summonerName));
                     }
@@ -3104,8 +3515,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -3113,10 +3524,13 @@ public abstract class AsyncRiotAPI {
      *            what to do with the versions
      */
     public static void getVersions(final Action<List<String>> action) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getVersions();
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getVersions());
                     }
@@ -3124,8 +3538,8 @@ public abstract class AsyncRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**

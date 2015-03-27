@@ -53,10 +53,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getChallenger(final Action<League> action, final QueueType queueType) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getChallenger(queueType);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getChallenger(queueType));
                     }
@@ -64,8 +67,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -78,10 +81,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getChampion(final Action<com.robrua.orianna.type.dto.staticdata.Champion> action, final long ID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getChampion(ID);
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getChampion(ID));
                     }
@@ -89,8 +95,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -101,10 +107,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getChampions(final Action<com.robrua.orianna.type.dto.staticdata.ChampionList> action) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getChampions();
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getChampions());
                     }
@@ -112,8 +121,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -126,10 +135,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getChampionStatus(final Action<com.robrua.orianna.type.dto.champion.Champion> action, final long ID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChampionAPI.getChampionStatus(ID);
+                }
+                else {
                     try {
                         action.perform(ChampionAPI.getChampionStatus(ID));
                     }
@@ -137,8 +149,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -151,10 +163,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getChampionStatuses(final Action<com.robrua.orianna.type.dto.champion.ChampionList> action, final boolean freeToPlay) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChampionAPI.getChampionStatuses(freeToPlay);
+                }
+                else {
                     try {
                         action.perform(ChampionAPI.getChampionStatuses(freeToPlay));
                     }
@@ -162,8 +177,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -176,10 +191,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getCurrentGame(final Action<CurrentGameInfo> action, final long summonerID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    CurrentGameAPI.getCurrentGame(summonerID);
+                }
+                else {
                     try {
                         action.perform(CurrentGameAPI.getCurrentGame(summonerID));
                     }
@@ -187,8 +205,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -199,10 +217,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getFeaturedGames(final Action<FeaturedGames> action) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    FeaturedGamesAPI.getFeaturedGames();
+                }
+                else {
                     try {
                         action.perform(FeaturedGamesAPI.getFeaturedGames());
                     }
@@ -210,8 +231,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -224,10 +245,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getItem(final Action<Item> action, final long ID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getItem(ID);
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getItem(ID));
                     }
@@ -235,8 +259,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -247,10 +271,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getItems(final Action<ItemList> action) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getItems();
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getItems());
                     }
@@ -258,8 +285,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -270,10 +297,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getLanguages(final Action<List<String>> action) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getLanguages();
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getLanguages());
                     }
@@ -281,8 +311,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -293,10 +323,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getLanguageStrings(final Action<LanguageStrings> action) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getLanguageStrings();
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getLanguageStrings());
                     }
@@ -304,8 +337,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -316,10 +349,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getMapInformation(final Action<MapData> action) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getMapInformation();
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getMapInformation());
                     }
@@ -327,8 +363,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -339,10 +375,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getMasteries(final Action<MasteryList> action) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getMasteries();
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getMasteries());
                     }
@@ -350,8 +389,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -364,10 +403,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getMastery(final Action<Mastery> action, final long ID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getMastery(ID);
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getMastery(ID));
                     }
@@ -375,8 +417,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -389,10 +431,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getMatch(final Action<MatchDetail> action, final long ID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchAPI.getMatch(ID);
+                }
+                else {
                     try {
                         action.perform(MatchAPI.getMatch(ID));
                     }
@@ -400,8 +445,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -416,10 +461,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getMatchHistory(final Action<PlayerHistory> action, final long summonerID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchHistoryAPI.getMatchHistory(summonerID);
+                }
+                else {
                     try {
                         action.perform(MatchHistoryAPI.getMatchHistory(summonerID));
                     }
@@ -427,8 +475,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -445,10 +493,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getMatchHistory(final Action<PlayerHistory> action, final long summonerID, final int beginIndex) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchHistoryAPI.getMatchHistory(summonerID, beginIndex);
+                }
+                else {
                     try {
                         action.perform(MatchHistoryAPI.getMatchHistory(summonerID, beginIndex));
                     }
@@ -456,8 +507,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -476,10 +527,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getMatchHistory(final Action<PlayerHistory> action, final long summonerID, final int beginIndex, final List<Long> championIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchHistoryAPI.getMatchHistory(summonerID, beginIndex, championIDs);
+                }
+                else {
                     try {
                         action.perform(MatchHistoryAPI.getMatchHistory(summonerID, beginIndex, championIDs));
                     }
@@ -487,8 +541,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -507,10 +561,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getMatchHistory(final Action<PlayerHistory> action, final long summonerID, final int beginIndex, final QueueType queueType) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchHistoryAPI.getMatchHistory(summonerID, beginIndex, queueType);
+                }
+                else {
                     try {
                         action.perform(MatchHistoryAPI.getMatchHistory(summonerID, beginIndex, queueType));
                     }
@@ -518,8 +575,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -541,10 +598,13 @@ public class AsyncBaseRiotAPI {
      */
     public static void getMatchHistory(final Action<PlayerHistory> action, final long summonerID, final int beginIndex, final QueueType queueType,
             final List<Long> championIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchHistoryAPI.getMatchHistory(summonerID, beginIndex, queueType, championIDs);
+                }
+                else {
                     try {
                         action.perform(MatchHistoryAPI.getMatchHistory(summonerID, beginIndex, queueType, championIDs));
                     }
@@ -552,8 +612,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -570,10 +630,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getMatchHistory(final Action<PlayerHistory> action, final long summonerID, final List<Long> championIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchHistoryAPI.getMatchHistory(summonerID, championIDs);
+                }
+                else {
                     try {
                         action.perform(MatchHistoryAPI.getMatchHistory(summonerID, championIDs));
                     }
@@ -581,8 +644,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -599,10 +662,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getMatchHistory(final Action<PlayerHistory> action, final long summonerID, final QueueType queueType) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchHistoryAPI.getMatchHistory(summonerID, queueType);
+                }
+                else {
                     try {
                         action.perform(MatchHistoryAPI.getMatchHistory(summonerID, queueType));
                     }
@@ -610,8 +676,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -630,10 +696,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getMatchHistory(final Action<PlayerHistory> action, final long summonerID, final QueueType queueType, final List<Long> championIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchHistoryAPI.getMatchHistory(summonerID, queueType, championIDs);
+                }
+                else {
                     try {
                         action.perform(MatchHistoryAPI.getMatchHistory(summonerID, queueType, championIDs));
                     }
@@ -641,8 +710,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -655,10 +724,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getRankedStats(final Action<RankedStats> action, final long summonerID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StatsAPI.getRankedStats(summonerID);
+                }
+                else {
                     try {
                         action.perform(StatsAPI.getRankedStats(summonerID));
                     }
@@ -666,8 +738,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -682,10 +754,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getRankedStats(final Action<RankedStats> action, final long summonerID, final Season season) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StatsAPI.getRankedStats(summonerID, season);
+                }
+                else {
                     try {
                         action.perform(StatsAPI.getRankedStats(summonerID, season));
                     }
@@ -693,8 +768,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -705,10 +780,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getRealm(final Action<Realm> action) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getRealm();
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getRealm());
                     }
@@ -716,8 +794,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -730,10 +808,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getRecentGames(final Action<RecentGames> action, final long summonerID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    GameAPI.getRecentGames(summonerID);
+                }
+                else {
                     try {
                         action.perform(GameAPI.getRecentGames(summonerID));
                     }
@@ -741,8 +822,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -755,10 +836,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getRune(final Action<Rune> action, final long ID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getRune(ID);
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getRune(ID));
                     }
@@ -766,8 +850,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -778,10 +862,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getRunes(final Action<RuneList> action) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getRunes();
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getRunes());
                     }
@@ -789,8 +876,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -803,10 +890,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getShard(final Action<ShardStatus> action, final Region region) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StatusAPI.getShard(region);
+                }
+                else {
                     try {
                         action.perform(StatusAPI.getShard(region));
                     }
@@ -814,8 +904,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -826,10 +916,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getShards(final Action<List<Shard>> action) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StatusAPI.getShards();
+                }
+                else {
                     try {
                         action.perform(StatusAPI.getShards());
                     }
@@ -837,8 +930,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -851,10 +944,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getStats(final Action<PlayerStatsSummaryList> action, final long summonerID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StatsAPI.getStats(summonerID);
+                }
+                else {
                     try {
                         action.perform(StatsAPI.getStats(summonerID));
                     }
@@ -862,8 +958,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -878,10 +974,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getStats(final Action<PlayerStatsSummaryList> action, final long summonerID, final Season season) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StatsAPI.getStats(summonerID, season);
+                }
+                else {
                     try {
                         action.perform(StatsAPI.getStats(summonerID, season));
                     }
@@ -889,8 +988,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -903,10 +1002,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonerLeagueEntries(final Action<Map<Long, List<League>>> action, final List<Long> summonerIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getSummonerLeagueEntries(summonerIDs);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getSummonerLeagueEntries(summonerIDs));
                     }
@@ -914,8 +1016,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -928,10 +1030,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonerLeagueEntries(final Action<Map<Long, List<League>>> action, final long... summonerIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getSummonerLeagueEntries(summonerIDs);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getSummonerLeagueEntries(summonerIDs));
                     }
@@ -939,8 +1044,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -953,10 +1058,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonerLeagues(final Action<Map<Long, List<League>>> action, final List<Long> summonerIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getSummonerLeagues(summonerIDs);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getSummonerLeagues(summonerIDs));
                     }
@@ -964,8 +1072,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -978,10 +1086,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonerLeagues(final Action<Map<Long, List<League>>> action, final long... summonerIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getSummonerLeagues(summonerIDs);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getSummonerLeagues(summonerIDs));
                     }
@@ -989,8 +1100,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1003,10 +1114,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonersByID(final Action<Map<Long, Summoner>> action, final List<Long> summonerIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getSummonersByID(summonerIDs);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getSummonersByID(summonerIDs));
                     }
@@ -1014,8 +1128,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1028,10 +1142,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonersByID(final Action<Map<Long, Summoner>> action, final long... summonerIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getSummonersByID(summonerIDs);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getSummonersByID(summonerIDs));
                     }
@@ -1039,8 +1156,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1053,10 +1170,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonersByName(final Action<Map<String, Summoner>> action, final List<String> summonerNames) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getSummonersByName(summonerNames);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getSummonersByName(summonerNames));
                     }
@@ -1064,8 +1184,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1078,10 +1198,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonersByName(final Action<Map<String, Summoner>> action, final String... summonerNames) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getSummonersByName(summonerNames);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getSummonersByName(summonerNames));
                     }
@@ -1089,8 +1212,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1103,10 +1226,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonersMasteries(final Action<Map<Long, MasteryPages>> action, final List<Long> summonerIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getSummonersMasteries(summonerIDs);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getSummonersMasteries(summonerIDs));
                     }
@@ -1114,8 +1240,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1128,10 +1254,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonersMasteries(final Action<Map<Long, MasteryPages>> action, final long... summonerIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getSummonersMasteries(summonerIDs);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getSummonersMasteries(summonerIDs));
                     }
@@ -1139,8 +1268,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1153,10 +1282,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonersNames(final Action<Map<Long, String>> action, final List<Long> summonerIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getSummonersNames(summonerIDs);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getSummonersNames(summonerIDs));
                     }
@@ -1164,8 +1296,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1178,10 +1310,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonersNames(final Action<Map<Long, String>> action, final long... summonerIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getSummonersNames(summonerIDs);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getSummonersNames(summonerIDs));
                     }
@@ -1189,8 +1324,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1203,10 +1338,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonerSpell(final Action<SummonerSpell> action, final long ID) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getSummonerSpell(ID);
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getSummonerSpell(ID));
                     }
@@ -1214,8 +1352,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1226,10 +1364,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonerSpells(final Action<SummonerSpellList> action) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getSummonerSpells();
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getSummonerSpells());
                     }
@@ -1237,8 +1378,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1251,10 +1392,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonersRunes(final Action<Map<Long, RunePages>> action, final List<Long> summonerIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getSummonersRunes(summonerIDs);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getSummonersRunes(summonerIDs));
                     }
@@ -1262,8 +1406,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1276,10 +1420,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getSummonersRunes(final Action<Map<Long, RunePages>> action, final long... summonerIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    SummonerAPI.getSummonersRunes(summonerIDs);
+                }
+                else {
                     try {
                         action.perform(SummonerAPI.getSummonersRunes(summonerIDs));
                     }
@@ -1287,8 +1434,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1301,10 +1448,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getTeamLeagueEntries(final Action<Map<String, List<League>>> action, final List<String> teamIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getTeamLeagueEntries(teamIDs);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getTeamLeagueEntries(teamIDs));
                     }
@@ -1312,8 +1462,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1326,10 +1476,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getTeamLeagueEntries(final Action<Map<String, List<League>>> action, final String... teamIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getTeamLeagueEntries(teamIDs);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getTeamLeagueEntries(teamIDs));
                     }
@@ -1337,8 +1490,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1351,10 +1504,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getTeamLeagues(final Action<Map<String, List<League>>> action, final List<String> teamIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getTeamLeagues(teamIDs);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getTeamLeagues(teamIDs));
                     }
@@ -1362,8 +1518,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1376,10 +1532,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getTeamLeagues(final Action<Map<String, List<League>>> action, final String... teamIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getTeamLeagues(teamIDs);
+                }
+                else {
                     try {
                         action.perform(LeagueAPI.getTeamLeagues(teamIDs));
                     }
@@ -1387,8 +1546,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1401,10 +1560,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getTeamsByID(final Action<Map<String, Team>> action, final List<String> IDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    TeamAPI.getTeamsByID(IDs);
+                }
+                else {
                     try {
                         action.perform(TeamAPI.getTeamsByID(IDs));
                     }
@@ -1412,8 +1574,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1426,10 +1588,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getTeamsByID(final Action<Map<String, Team>> action, final String... IDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    TeamAPI.getTeamsByID(IDs);
+                }
+                else {
                     try {
                         action.perform(TeamAPI.getTeamsByID(IDs));
                     }
@@ -1437,8 +1602,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1451,10 +1616,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getTeamsBySummoner(final Action<Map<Long, List<Team>>> action, final List<Long> summonerIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    TeamAPI.getTeamsBySummoner(summonerIDs);
+                }
+                else {
                     try {
                         action.perform(TeamAPI.getTeamsBySummoner(summonerIDs));
                     }
@@ -1462,8 +1630,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1476,10 +1644,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getTeamsBySummoner(final Action<Map<Long, List<Team>>> action, final long... summonerIDs) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    TeamAPI.getTeamsBySummoner(summonerIDs);
+                }
+                else {
                     try {
                         action.perform(TeamAPI.getTeamsBySummoner(summonerIDs));
                     }
@@ -1487,8 +1658,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
@@ -1499,10 +1670,13 @@ public class AsyncBaseRiotAPI {
      *      API Specification</a>
      */
     public static void getVersions(final Action<List<String>> action) {
-        if(action != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getVersions();
+                }
+                else {
                     try {
                         action.perform(StaticDataAPI.getVersions());
                     }
@@ -1510,8 +1684,8 @@ public class AsyncBaseRiotAPI {
                         action.handle(e);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     /**
