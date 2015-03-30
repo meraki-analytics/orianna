@@ -2,13 +2,25 @@ package com.robrua.orianna.type.dto.summoner;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "runepage")
 public class RunePage extends OriannaDto {
     private static final long serialVersionUID = 4197280778538512349L;
     private Boolean current;
+    @Id
     private Long id;
+
     private String name;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<RuneSlot> slots;
 
     /*

@@ -4,12 +4,33 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity(name = "staticdata.ChampionList")
+@Table(name = "championlist")
 public class ChampionList extends OriannaDto {
     private static final long serialVersionUID = -2563300402769670975L;
+    @OneToMany(cascade = CascadeType.ALL)
     private Map<String, Champion> data;
+
+    @Id
+    private final int dbId = 0;
+
     private String format, type, version;
+
+    @ElementCollection
+    @CollectionTable(name = "championlist_key", joinColumns = @JoinColumn(name = "championlist_id"))
+    @Column(name = "keyy")
     private Map<String, String> keys;
 
     /*

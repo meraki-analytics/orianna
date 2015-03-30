@@ -1,9 +1,21 @@
 package com.robrua.orianna.type.dto.summoner;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity(name = "summoner.Mastery")
+@Table(name = "summonermastery")
 public class Mastery extends OriannaDto {
     private static final long serialVersionUID = -5587121170853133695L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
+
     private Integer id, rank;
 
     /*

@@ -1,9 +1,21 @@
 package com.robrua.orianna.type.dto.staticdata;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "basicdatastats")
 public class BasicDataStats extends OriannaDto {
     private static final long serialVersionUID = 3565726158610875915L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
+
     private Double FlatArmorMod, FlatAttackSpeedMod, FlatBlockMod, FlatCritChanceMod, FlatCritDamageMod, FlatEXPBonus, FlatEnergyPoolMod, FlatEnergyRegenMod,
     FlatHPPoolMod, FlatHPRegenMod, FlatMPPoolMod, FlatMPRegenMod, FlatMagicDamageMod, FlatMovementSpeedMod, FlatPhysicalDamageMod, FlatSpellBlockMod,
     PercentArmorMod, PercentAttackSpeedMod, PercentBlockMod, PercentCritChanceMod, PercentCritDamageMod, PercentDodgeMod, PercentEXPBonus,

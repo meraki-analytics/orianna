@@ -1,10 +1,22 @@
 package com.robrua.orianna.type.dto.team;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "teammemberinfo")
 public class TeamStatDetail extends OriannaDto {
     private static final long serialVersionUID = -3811741438279345755L;
     private Integer averageGamesPlayed, losses, wins;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
+
     private String teamStatType;
 
     /*

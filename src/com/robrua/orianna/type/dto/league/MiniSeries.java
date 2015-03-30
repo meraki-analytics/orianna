@@ -1,10 +1,22 @@
 package com.robrua.orianna.type.dto.league;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "miniseries")
 public class MiniSeries extends OriannaDto {
     private static final long serialVersionUID = -7559487310510378384L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
     private Integer losses, target, wins;
+
     private String progress;
 
     /*

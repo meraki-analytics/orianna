@@ -1,22 +1,30 @@
-package com.robrua.orianna.type.dto.currentgame;
+package com.robrua.orianna.type.dto.staticdata;
 
+import java.util.List;
+
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 import com.robrua.orianna.type.dto.OriannaDto;
 
 @Entity
-@Table(name = "currentgameobserver")
-public class Observer extends OriannaDto {
-    private static final long serialVersionUID = 1212236867210702931L;
+@Table(name = "effectlist")
+public class EffectList extends OriannaDto {
+    private static final long serialVersionUID = 572382532327504732L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long dbId;
 
-    private String encryptionKey;
+    @ElementCollection
+    @CollectionTable(name = "effectlist_list", joinColumns = @JoinColumn(name = "effectlist_id"))
+    private List<Double> list;
 
     /*
      * (non-Javadoc)
@@ -30,26 +38,26 @@ public class Observer extends OriannaDto {
         if(obj == null) {
             return false;
         }
-        if(!(obj instanceof Observer)) {
+        if(!(obj instanceof EffectList)) {
             return false;
         }
-        final Observer other = (Observer)obj;
-        if(encryptionKey == null) {
-            if(other.encryptionKey != null) {
+        final EffectList other = (EffectList)obj;
+        if(list == null) {
+            if(other.list != null) {
                 return false;
             }
         }
-        else if(!encryptionKey.equals(other.encryptionKey)) {
+        else if(!list.equals(other.list)) {
             return false;
         }
         return true;
     }
 
     /**
-     * @return the encryptionKey
+     * @return the list
      */
-    public String getEncryptionKey() {
-        return encryptionKey;
+    public List<Double> getList() {
+        return list;
     }
 
     /*
@@ -60,16 +68,16 @@ public class Observer extends OriannaDto {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (encryptionKey == null ? 0 : encryptionKey.hashCode());
+        result = prime * result + (list == null ? 0 : list.hashCode());
         return result;
     }
 
     /**
-     * @param encryptionKey
-     *            the encryptionKey to set
+     * @param list
+     *            the list to set
      */
-    public void setEncryptionKey(final String encryptionKey) {
-        this.encryptionKey = encryptionKey;
+    public void setList(final List<Double> list) {
+        this.list = list;
     }
 
     /*
@@ -78,6 +86,6 @@ public class Observer extends OriannaDto {
      */
     @Override
     public String toString() {
-        return "Observer [encryptionKey=" + encryptionKey + "]";
+        return list.toString();
     }
 }

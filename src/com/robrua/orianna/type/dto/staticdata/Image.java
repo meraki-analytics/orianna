@@ -1,10 +1,26 @@
 package com.robrua.orianna.type.dto.staticdata;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "image")
 public class Image extends OriannaDto {
     private static final long serialVersionUID = -6019788102590496443L;
-    private String full, group, sprite;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
+    private String full, sprite;
+
+    @Column(name = "grp")
+    private String group;
+
     private Integer h, w, x, y;
 
     /*

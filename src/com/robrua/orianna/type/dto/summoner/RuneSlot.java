@@ -1,9 +1,21 @@
 package com.robrua.orianna.type.dto.summoner;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "runeslot")
 public class RuneSlot extends OriannaDto {
     private static final long serialVersionUID = 3235577434750626183L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
+
     private Integer runeId, runeSlotId;
 
     /*

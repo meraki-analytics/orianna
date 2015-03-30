@@ -4,6 +4,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 import com.robrua.orianna.type.dto.match.Mastery;
 import com.robrua.orianna.type.dto.match.Participant;
@@ -11,12 +17,21 @@ import com.robrua.orianna.type.dto.match.ParticipantIdentity;
 import com.robrua.orianna.type.dto.match.ParticipantStats;
 import com.robrua.orianna.type.dto.match.Rune;
 
+@Entity
+@Table(name = "matchsummary")
 public class MatchSummary extends OriannaDto {
     private static final long serialVersionUID = -4917715857425560615L;
     private Integer mapId;
-    private Long matchCreation, matchDuration, matchId;
+    private Long matchCreation, matchDuration;
+    @Id
+    private Long matchId;
+
     private String matchMode, matchType, matchVersion, platformId, queueType, region, season;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<ParticipantIdentity> participantIdentities;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Participant> participants;
 
     /*

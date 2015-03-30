@@ -2,10 +2,26 @@ package com.robrua.orianna.type.dto.staticdata;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "masterytreelist")
 public class MasteryTreeList extends OriannaDto {
     private static final long serialVersionUID = -20489430038210081L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<MasteryTreeItem> masteryTreeItems;
 
     /*

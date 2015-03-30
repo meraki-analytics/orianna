@@ -1,10 +1,28 @@
 package com.robrua.orianna.type.dto.match;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "combinedparticipant")
 public class CombinedParticipant extends OriannaDto {
     private static final long serialVersionUID = 8480309852405991908L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
+
+    @OneToOne(cascade = CascadeType.ALL)
     private ParticipantIdentity identity;
+
+    @OneToOne(cascade = CascadeType.ALL)
     private Participant participant;
 
     /**

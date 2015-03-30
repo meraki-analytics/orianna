@@ -2,12 +2,30 @@ package com.robrua.orianna.type.dto.staticdata;
 
 import java.util.Map;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "realm")
 public class Realm extends OriannaDto {
     private static final long serialVersionUID = 3843541502302131652L;
     private String cdn, css, dd, l, lg, store, v;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
+
+    @ElementCollection
+    @CollectionTable(name = "realm_n", joinColumns = @JoinColumn(name = "realm_id"))
     private Map<String, String> n;
+
     private Integer profileiconmax;
 
     /*

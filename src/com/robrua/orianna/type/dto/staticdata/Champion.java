@@ -4,20 +4,69 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity(name = "staticdata.Champion")
+@Table(name = "champion")
 public class Champion extends OriannaDto {
     private static final long serialVersionUID = -7433824613178209493L;
-    private List<String> allytips, enemytips, tags;
-    private String blurb, key, lore, name, partype, title;
+    @ElementCollection
+    @CollectionTable(name = "champion_allytip", joinColumns = @JoinColumn(name = "champion_id"))
+    @Lob
+    private List<String> allytips;
+
+    private String blurb, name, partype, title;
+
+    @ElementCollection
+    @CollectionTable(name = "champion_enemytip", joinColumns = @JoinColumn(name = "champion_id"))
+    @Lob
+    private List<String> enemytips;
+
+    @Id
     private Integer id;
+
+    @OneToOne(cascade = CascadeType.ALL)
     private Image image;
+
+    @OneToOne(cascade = CascadeType.ALL)
     private Info info;
+
+    @Column(name = "keyy")
+    private String key;
+
+    @Lob
+    private String lore;
+
+    @OneToOne(cascade = CascadeType.ALL)
     private Passive passive;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Recommended> recommended;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Skin> skins;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<ChampionSpell> spells;
+
+    @OneToOne(cascade = CascadeType.ALL)
     private Stats stats;
+
+    @ElementCollection
+    @CollectionTable(name = "champion_tag", joinColumns = @JoinColumn(name = "champion_id"))
+    private List<String> tags;
 
     /*
      * (non-Javadoc)

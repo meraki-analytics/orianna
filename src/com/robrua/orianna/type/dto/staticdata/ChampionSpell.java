@@ -1,20 +1,71 @@
 package com.robrua.orianna.type.dto.staticdata;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "championspell")
 public class ChampionSpell extends OriannaDto {
     private static final long serialVersionUID = -6863973261022203668L;
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Image> altimages;
+    @ElementCollection
+    @CollectionTable(name = "championspell_cooldown", joinColumns = @JoinColumn(name = "championspell_id"))
     private List<Double> cooldown;
-    private String cooldownBurn, costBurn, costType, description, key, name, rangeBurn, resource, sanitizedDescription, sanitizedTooltip, tooltip;
-    private List<Integer> cost, range;
-    private List<List<Double>> effect;
+
+    private String cooldownBurn, costBurn, costType, name, rangeBurn, resource;
+
+    @ElementCollection
+    @CollectionTable(name = "championspell_cost", joinColumns = @JoinColumn(name = "championspell_id"))
+    private List<Integer> cost;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
+
+    @Lob
+    private String description, sanitizedDescription, sanitizedTooltip, tooltip;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<EffectList> effect;
+
+    @ElementCollection
+    @CollectionTable(name = "championspell_effectburn", joinColumns = @JoinColumn(name = "championspell_id"))
     private List<String> effectBurn;
+
+    @OneToOne(cascade = CascadeType.ALL)
     private Image image;
+
+    @Column(name = "keyy")
+    private String key;
+
+    @OneToOne(cascade = CascadeType.ALL)
     private LevelTip leveltip;
+
     private Integer maxrank;
+
+    @ElementCollection
+    @CollectionTable(name = "championspell_range", joinColumns = @JoinColumn(name = "championspell_id"))
+    @Column(name = "rnge")
+    private List<Integer> range;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<SpellVars> vars;
 
     /*
@@ -257,7 +308,16 @@ public class ChampionSpell extends OriannaDto {
      * @return the effect
      */
     public List<List<Double>> getEffect() {
-        return effect;
+        if(effect == null) {
+            return null;
+        }
+
+        final List<List<Double>> conv = new ArrayList<>();
+        for(final EffectList l : effect) {
+            conv.add(l.getList());
+        }
+
+        return conv;
     }
 
     /**
@@ -444,7 +504,19 @@ public class ChampionSpell extends OriannaDto {
      *            the effect to set
      */
     public void setEffect(final List<List<Double>> effect) {
-        this.effect = effect;
+        if(effect == null) {
+            this.effect = null;
+            return;
+        }
+
+        final List<EffectList> conv = new ArrayList<>();
+        for(final List<Double> l : effect) {
+            final EffectList el = new EffectList();
+            el.setList(l);
+            conv.add(el);
+        }
+
+        this.effect = conv;
     }
 
     /**

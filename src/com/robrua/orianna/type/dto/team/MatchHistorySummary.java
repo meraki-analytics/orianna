@@ -1,12 +1,21 @@
 package com.robrua.orianna.type.dto.team;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "matchhistorysummary")
 public class MatchHistorySummary extends OriannaDto {
     private static final long serialVersionUID = 1520292597125046264L;
     private Integer assists, deaths, kills, mapId, opposingTeamKills;
-    private Long date, gameId;
+    private Long date;
+    @Id
+    private Long gameId;
     private String gameMode, opposingTeamName;
+
     private Boolean invalid, win;
 
     /*

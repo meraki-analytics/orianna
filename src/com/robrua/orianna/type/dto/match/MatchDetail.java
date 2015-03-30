@@ -4,16 +4,36 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "matchdetail")
 public class MatchDetail extends OriannaDto {
     private static final long serialVersionUID = -5583614253740686126L;
     private Integer mapId;
-    private Long matchCreation, matchDuration, matchId;
+    private Long matchCreation, matchDuration;
+    @Id
+    private Long matchId;
+
     private String matchMode, matchType, matchVersion, platformId, queueType, region, season;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<ParticipantIdentity> participantIdentities;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Participant> participants;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Team> teams;
+
+    @OneToOne(cascade = CascadeType.ALL)
     private Timeline timeline;
 
     /*

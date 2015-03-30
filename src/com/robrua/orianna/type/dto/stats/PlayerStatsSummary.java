@@ -1,12 +1,28 @@
 package com.robrua.orianna.type.dto.stats;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "playerstatssummary")
 public class PlayerStatsSummary extends OriannaDto {
     private static final long serialVersionUID = -6006209553573430917L;
+    @OneToOne(cascade = CascadeType.ALL)
     private AggregatedStats aggregatedStats;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
     private Integer losses, wins;
+
     private Long modifyDate;
+
     private String playerStatSummaryType;
 
     /*

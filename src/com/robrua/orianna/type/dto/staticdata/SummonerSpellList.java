@@ -2,11 +2,24 @@ package com.robrua.orianna.type.dto.staticdata;
 
 import java.util.Map;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "summonerspelllist")
 public class SummonerSpellList extends OriannaDto {
     private static final long serialVersionUID = 594583844266898980L;
+    @OneToMany(cascade = CascadeType.ALL)
     private Map<String, SummonerSpell> data;
+
+    @Id
+    private final int dbId = 0;
+
     private String type, version;
 
     /*

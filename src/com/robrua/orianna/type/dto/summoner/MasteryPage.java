@@ -2,13 +2,25 @@ package com.robrua.orianna.type.dto.summoner;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "masterypage")
 public class MasteryPage extends OriannaDto {
     private static final long serialVersionUID = -1087013791899459444L;
     private Boolean current;
+    @Id
     private Long id;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Mastery> masteries;
+
     private String name;
 
     /*

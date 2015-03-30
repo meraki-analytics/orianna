@@ -4,14 +4,32 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "currentgame")
 public class CurrentGameInfo extends OriannaDto {
     private static final long serialVersionUID = -8942022841946474617L;
+    @OneToMany(cascade = CascadeType.ALL)
     private List<BannedChampion> bannedChampions;
-    private Long gameId, gameLength, gameQueueConfigId, gameStartTime, mapId;
+    @Id
+    private Long gameId;
+
+    private Long gameLength, gameQueueConfigId, gameStartTime, mapId;
+
     private String gameMode, gameType, platformId;
+
+    @OneToOne(cascade = CascadeType.ALL)
     private Observer observers;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Participant> participants;
 
     /*

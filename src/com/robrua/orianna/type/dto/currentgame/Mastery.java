@@ -1,10 +1,22 @@
 package com.robrua.orianna.type.dto.currentgame;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity(name = "currentgame.Mastery")
+@Table(name = "currentgamemastery")
 public class Mastery extends OriannaDto {
     private static final long serialVersionUID = -7195495006340257194L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
     private Long masteryId;
+
     private Integer rank;
 
     /*

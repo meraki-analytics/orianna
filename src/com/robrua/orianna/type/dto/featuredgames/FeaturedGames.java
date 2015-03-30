@@ -4,12 +4,25 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 import com.robrua.orianna.type.dto.currentgame.CurrentGameInfo;
 
+@Entity
+@Table(name = "featuredgame")
 public class FeaturedGames extends OriannaDto {
     private static final long serialVersionUID = 4926425430293315274L;
     private Long clientRefreshInterval;
+
+    @Id
+    private final int dbId = 0;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<CurrentGameInfo> gameList;
 
     /*

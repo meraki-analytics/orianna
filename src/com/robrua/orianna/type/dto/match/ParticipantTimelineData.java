@@ -1,9 +1,21 @@
 package com.robrua.orianna.type.dto.match;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "participanttimelinedata")
 public class ParticipantTimelineData extends OriannaDto {
     private static final long serialVersionUID = 7842605945477094887L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
+
     private Double tenToTwenty, thirtyToEnd, twentyToThirty, zeroToTen;
 
     /*

@@ -1,7 +1,15 @@
 package com.robrua.orianna.type.dto.game;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "gamestats")
 public class RawStats extends OriannaDto {
     private static final long serialVersionUID = -7331494090056610673L;
     private Integer assists, barracksKilled, championsKilled, combatPlayerScore, consumablesPurchased, damageDealtPlayer, doubleKills, firstBlood, gold,
@@ -13,6 +21,10 @@ public class RawStats extends OriannaDto {
     summonSpell1Cast, summonSpell2Cast, superMonsterKilled, team, teamObjective, timePlayed, totalDamageDealt, totalDamageDealtToChampions,
     totalDamageTaken, totalHeal, totalPlayerScore, totalScoreRank, totalTimeCrowdControlDealt, totalUnitsHealed, tripleKills, trueDamageDealtPlayer,
     trueDamageDealtToChampions, trueDamageTaken, turretsKilled, unrealKills, victoryPointTotal, visionWardsBought, wardKilled, wardPlaced;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
+
     private Boolean win, nexusKilled;
 
     /*

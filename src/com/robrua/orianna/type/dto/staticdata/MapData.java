@@ -2,11 +2,27 @@ package com.robrua.orianna.type.dto.staticdata;
 
 import java.util.Map;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "mapdata")
 public class MapData extends OriannaDto {
     private static final long serialVersionUID = -6713522275386810877L;
+    @OneToMany(cascade = CascadeType.ALL)
     private Map<Integer, MapDetails> data;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
+
     private String type, version;
 
     /*

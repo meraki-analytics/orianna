@@ -2,11 +2,33 @@ package com.robrua.orianna.type.dto.staticdata;
 
 import java.util.List;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "leveltip")
 public class LevelTip extends OriannaDto {
     private static final long serialVersionUID = 2815711972133041104L;
-    private List<String> effect, label;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
+
+    @ElementCollection
+    @CollectionTable(name = "leveltip_effect", joinColumns = @JoinColumn(name = "leveltip_id"))
+    private List<String> effect;
+
+    @ElementCollection
+    @CollectionTable(name = "leveltip_label", joinColumns = @JoinColumn(name = "leveltip_id"))
+    private List<String> label;
 
     /*
      * (non-Javadoc)

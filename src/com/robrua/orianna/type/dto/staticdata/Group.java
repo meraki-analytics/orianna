@@ -1,10 +1,26 @@
 package com.robrua.orianna.type.dto.staticdata;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "grp")
 public class Group extends OriannaDto {
     private static final long serialVersionUID = -6233511964798419336L;
-    private String MaxGroupOwnable, key;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
+
+    @Column(name = "keyy")
+    private String key;
+
+    private String MaxGroupOwnable;
 
     /*
      * (non-Javadoc)
