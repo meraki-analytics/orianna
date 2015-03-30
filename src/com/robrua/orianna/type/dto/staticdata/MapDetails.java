@@ -2,13 +2,31 @@ package com.robrua.orianna.type.dto.staticdata;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "mapdetails")
 public class MapDetails extends OriannaDto {
     private static final long serialVersionUID = 7442359340416835068L;
+    @OneToOne(cascade = CascadeType.ALL)
     private Image image;
+
+    @Id
     private Integer mapId;
+
     private String mapName;
+
+    @ElementCollection
+    @CollectionTable(name = "mapdetails_unpurchasable", joinColumns = @JoinColumn(name = "map_id"))
     private List<Long> unpurchasableItemList;
 
     /*

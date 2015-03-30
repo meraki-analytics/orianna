@@ -1,10 +1,22 @@
 package com.robrua.orianna.type.dto.match;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity(name = "match.BannedChampion")
+@Table(name = "matchbannedchampion")
 public class BannedChampion extends OriannaDto {
     private static final long serialVersionUID = -4903663770220158361L;
     private Integer championId, pickTurn;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
 
     /*
      * (non-Javadoc)

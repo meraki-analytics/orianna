@@ -1,11 +1,23 @@
 package com.robrua.orianna.type.dto.match;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity(name = "match.Player")
+@Table(name = "matchplayer")
 public class Player extends OriannaDto {
     private static final long serialVersionUID = -5513104603133796172L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
     private String matchHistoryUri, summonerName;
     private Integer profileIcon;
+
     private Long summonerId;
 
     /*

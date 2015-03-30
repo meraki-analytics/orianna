@@ -3,12 +3,30 @@ package com.robrua.orianna.type.dto.match;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "frame")
 public class Frame extends OriannaDto {
     private static final long serialVersionUID = 4239036611650793396L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Event> events;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private Map<String, ParticipantFrame> participantFrames;
+
     private Long timestamp;
 
     /*

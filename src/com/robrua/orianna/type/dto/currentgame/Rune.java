@@ -1,10 +1,22 @@
 package com.robrua.orianna.type.dto.currentgame;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity(name = "currentgame.Rune")
+@Table(name = "currentgamerune")
 public class Rune extends OriannaDto {
     private static final long serialVersionUID = -2242219274680852910L;
     private Integer count;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
+
     private Long runeId;
 
     /*

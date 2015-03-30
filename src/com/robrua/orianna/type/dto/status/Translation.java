@@ -1,10 +1,22 @@
 package com.robrua.orianna.type.dto.status;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "translation")
 public class Translation extends OriannaDto {
     private static final long serialVersionUID = -3189944613741543831L;
     private String content, locale, updated_at;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
 
     /*
      * (non-Javadoc)

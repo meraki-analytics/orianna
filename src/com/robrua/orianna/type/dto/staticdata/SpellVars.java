@@ -2,12 +2,34 @@ package com.robrua.orianna.type.dto.staticdata;
 
 import java.util.List;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "spellvars")
 public class SpellVars extends OriannaDto {
     private static final long serialVersionUID = 3196309764964468106L;
+    @ElementCollection
+    @CollectionTable(name = "spellvars_coeff", joinColumns = @JoinColumn(name = "spellvars_id"))
     private List<Double> coeff;
-    private String dyn, key, link, ranksWith;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
+
+    private String dyn, link, ranksWith;
+
+    @Column(name = "keyy")
+    private String key;
 
     /*
      * (non-Javadoc)

@@ -2,11 +2,29 @@ package com.robrua.orianna.type.dto.status;
 
 import java.util.List;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "shard")
 public class Shard extends OriannaDto {
     private static final long serialVersionUID = -1804284441849157098L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
+
     private String hostname, name, region_tag, slug;
+
+    @ElementCollection
+    @CollectionTable(name = "shard_locale", joinColumns = @JoinColumn(name = "shard_id"))
     private List<String> locales;
 
     /*

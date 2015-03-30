@@ -2,11 +2,23 @@ package com.robrua.orianna.type.dto.stats;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "playerstatssummarylist")
 public class PlayerStatsSummaryList extends OriannaDto {
     private static final long serialVersionUID = 31774821362693998L;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<PlayerStatsSummary> playerStatSummaries;
+
+    @Id
     private Long summonerId;
 
     /*

@@ -2,14 +2,36 @@ package com.robrua.orianna.type.dto.match;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "event")
 public class Event extends OriannaDto {
     private static final long serialVersionUID = -802105921853149453L;
     private String ascendedType, buildingType, eventType, laneType, levelUpType, monsterType, pointCaptured, towerType, wardType;
+    @ElementCollection
+    @CollectionTable(name = "event_assistingparticipantid", joinColumns = @JoinColumn(name = "event_id"))
     private List<Integer> assistingParticipantIds;
     private Integer creatorId, itemAfter, itemBefore, itemId, killerId, participantId, skillSlot, teamId, victimId;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
+
+    @OneToOne(cascade = CascadeType.ALL)
     private Position position;
+
     private Long timestamp;
 
     /*

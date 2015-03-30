@@ -2,12 +2,28 @@ package com.robrua.orianna.type.dto.staticdata;
 
 import java.util.Map;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "runelist")
 public class RuneList extends OriannaDto {
     private static final long serialVersionUID = -7089873705936509856L;
+    @OneToOne(cascade = CascadeType.ALL)
     private BasicData basic;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private Map<String, Rune> data;
+
+    @Id
+    private final int dbId = 0;
+
     private String type, version;
 
     /*

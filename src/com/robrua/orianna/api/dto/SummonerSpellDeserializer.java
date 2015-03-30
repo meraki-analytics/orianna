@@ -7,7 +7,6 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.robrua.orianna.type.dto.staticdata.Image;
 import com.robrua.orianna.type.dto.staticdata.LevelTip;
@@ -43,7 +42,7 @@ public class SummonerSpellDeserializer extends DtoDeserializer<SummonerSpell> {
         try {
             spell.setRange((List<Integer>)GSON.fromJson(obj.get("range"), t));
         }
-        catch(final JsonSyntaxException e) {
+        catch(final JsonParseException e) {
             spell.setRange(null);
         }
 

@@ -1,12 +1,21 @@
 package com.robrua.orianna.type.dto.summoner;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "summoner")
 public class Summoner extends OriannaDto {
     private static final long serialVersionUID = -2752289282845515894L;
-    private Long id, revisionDate, summonerLevel;
+    @Id
+    private Long id;
     private String name;
     private Integer profileIconId;
+
+    private Long revisionDate, summonerLevel;
 
     /*
      * (non-Javadoc)

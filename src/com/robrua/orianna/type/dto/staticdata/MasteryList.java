@@ -2,12 +2,28 @@ package com.robrua.orianna.type.dto.staticdata;
 
 import java.util.Map;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "masterylist")
 public class MasteryList extends OriannaDto {
     private static final long serialVersionUID = -7246982316813173323L;
+    @OneToMany(cascade = CascadeType.ALL)
     private Map<String, Mastery> data;
+
+    @Id
+    private final int dbId = 0;
+
+    @OneToOne(cascade = CascadeType.ALL)
     private MasteryTree tree;
+
     private String type, version;
 
     /*

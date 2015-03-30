@@ -3,20 +3,69 @@ package com.robrua.orianna.type.dto.staticdata;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "item")
 public class Item extends OriannaDto {
     private static final long serialVersionUID = -1354683419193009743L;
-    private String colloq, description, group, name, plaintext, requiredChampion, sanitizedDescription;
+    private String colloq, name, requiredChampion;
     private Boolean consumeOnFull, consumed, hideFromAll, inStore;
-    private Integer depth, id, specialRecipe, stacks;
+    private Integer depth, specialRecipe, stacks;
+
+    @Lob
+    private String description, plaintext, sanitizedDescription;
+
+    @ElementCollection
+    @CollectionTable(name = "item_effect", joinColumns = @JoinColumn(name = "item_id"))
     private Map<String, String> effect;
-    private List<String> from, into, tags;
+
+    @ElementCollection
+    @CollectionTable(name = "item_from", joinColumns = @JoinColumn(name = "item_id"))
+    @Column(name = "frm")
+    private List<String> from;
+
+    @OneToOne(cascade = CascadeType.ALL)
     private Gold gold;
+
+    @Column(name = "grp")
+    private String group;
+
+    @Id
+    private Integer id;
+
+    @OneToOne(cascade = CascadeType.ALL)
     private Image image;
+
+    @ElementCollection
+    @CollectionTable(name = "item_into", joinColumns = @JoinColumn(name = "item_id"))
+    @Column(name = "nto")
+    private List<String> into;
+
+    @ElementCollection
+    @CollectionTable(name = "item_map", joinColumns = @JoinColumn(name = "item_id"))
     private Map<String, Boolean> maps;
+
+    @OneToOne(cascade = CascadeType.ALL)
     private MetaData rune;
+
+    @OneToOne(cascade = CascadeType.ALL)
     private BasicDataStats stats;
+
+    @ElementCollection
+    @CollectionTable(name = "item_tag", joinColumns = @JoinColumn(name = "item_id"))
+    private List<String> tags;
 
     /*
      * (non-Javadoc)

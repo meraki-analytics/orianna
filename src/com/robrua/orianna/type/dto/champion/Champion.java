@@ -1,10 +1,18 @@
 package com.robrua.orianna.type.dto.champion;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity(name = "champion.Champion")
+@Table(name = "championstatus")
 public class Champion extends OriannaDto {
     private static final long serialVersionUID = 6532858269176881617L;
     private Boolean active, botEnabled, botMmEnabled, freeToPlay, rankedPlayEnabled;
+
+    @Id
     private Long id;
 
     /*

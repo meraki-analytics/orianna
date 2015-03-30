@@ -4,11 +4,23 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "masterypages")
 public class MasteryPages extends OriannaDto {
     private static final long serialVersionUID = -7964030783531757808L;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<MasteryPage> pages;
+
+    @Id
     private Long summonerId;
 
     /*

@@ -4,12 +4,25 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "rankedstats")
 public class RankedStats extends OriannaDto {
     private static final long serialVersionUID = 1193813117107198821L;
+    @OneToMany(cascade = CascadeType.ALL)
     private List<ChampionStats> champions;
-    private Long modifyDate, summonerId;
+
+    private Long modifyDate;
+
+    @Id
+    private Long summonerId;
 
     /*
      * (non-Javadoc)

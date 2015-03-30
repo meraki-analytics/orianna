@@ -4,14 +4,32 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity(name = "team.Team")
+@Table(name = "team")
 public class Team extends OriannaDto {
     private static final long serialVersionUID = 7937264447395600368L;
     private Long createDate, lastGameDate, lastJoinDate, lastJoinedRankedTeamQueueDate, modifyDate, secondLastJoinDate, thirdLastJoinDate;
-    private String fullId, name, status, tag;
+    @Id
+    private String fullId;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<MatchHistorySummary> matchHistory;
+
+    private String name, status, tag;
+
+    @OneToOne(cascade = CascadeType.ALL)
     private Roster roster;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<TeamStatDetail> teamStatDetails;
 
     /*

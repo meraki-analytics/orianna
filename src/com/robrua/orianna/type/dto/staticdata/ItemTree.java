@@ -2,11 +2,29 @@ package com.robrua.orianna.type.dto.staticdata;
 
 import java.util.List;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "itemtree")
 public class ItemTree extends OriannaDto {
     private static final long serialVersionUID = 5673226182296449779L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
+
     private String header;
+
+    @ElementCollection
+    @CollectionTable(name = "itemtree_tag", joinColumns = @JoinColumn(name = "itemtree_id"))
     private List<String> tags;
 
     /*

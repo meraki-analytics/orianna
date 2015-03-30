@@ -1,12 +1,28 @@
 package com.robrua.orianna.type.dto.league;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "leagueentry")
 public class LeagueEntry extends OriannaDto {
     private static final long serialVersionUID = -1460752030523463013L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
     private String division, playerOrTeamId, playerOrTeamName;
     private Boolean isFreshBlood, isHotStreak, isInactive, isVeteran;
+
     private Integer leaguePoints, losses, wins;
+
+    @OneToOne(cascade = CascadeType.ALL)
     private MiniSeries miniSeries;
 
     /*

@@ -2,13 +2,25 @@ package com.robrua.orianna.type.dto.status;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "incident")
 public class Incident extends OriannaDto {
     private static final long serialVersionUID = 59206886346662528L;
     private Boolean active;
     private String created_at;
+
+    @Id
     private Long id;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Message> updates;
 
     /*

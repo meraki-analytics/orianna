@@ -1,10 +1,22 @@
 package com.robrua.orianna.type.dto.staticdata;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "blockitem")
 public class BlockItem extends OriannaDto {
     private static final long serialVersionUID = -183649437260660069L;
     private Integer count, id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
 
     /*
      * (non-Javadoc)

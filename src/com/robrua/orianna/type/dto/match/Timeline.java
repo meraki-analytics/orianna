@@ -2,11 +2,27 @@ package com.robrua.orianna.type.dto.match;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "timeline")
 public class Timeline extends OriannaDto {
     private static final long serialVersionUID = 6097409442140309148L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
+
     private Long frameInterval;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Frame> frames;
 
     /*

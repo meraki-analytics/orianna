@@ -2,11 +2,29 @@ package com.robrua.orianna.type.dto.staticdata;
 
 import java.util.Map;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "languagestring")
 public class LanguageStrings extends OriannaDto {
     private static final long serialVersionUID = -519169121689972804L;
+    @ElementCollection
+    @CollectionTable(name = "languagestring_data", joinColumns = @JoinColumn(name = "languagestring_id"))
     private Map<String, String> data;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
+
     private String type, version;
 
     /*

@@ -1,19 +1,69 @@
 package com.robrua.orianna.type.dto.staticdata;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "summonerspell")
 public class SummonerSpell extends OriannaDto {
     private static final long serialVersionUID = 157344746152124321L;
+    @ElementCollection
+    @CollectionTable(name = "summonerspell_cooldown", joinColumns = @JoinColumn(name = "summonerspell_id"))
     private List<Double> cooldown;
-    private String cooldownBurn, costBurn, costType, description, key, name, rangeBurn, resource, sanitizedDescription, sanitizedTooltip, tooltip;
-    private List<Integer> cost, range;
-    private List<List<Double>> effect;
-    private List<String> effectBurn, modes;
-    private Integer id, maxrank, summonerLevel;
+    private String cooldownBurn, costBurn, costType, name, rangeBurn, resource;
+
+    @ElementCollection
+    @CollectionTable(name = "summonerspell_cost", joinColumns = @JoinColumn(name = "summonerspell_id"))
+    private List<Integer> cost;
+
+    @Lob
+    private String description, sanitizedDescription, sanitizedTooltip, tooltip;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<EffectList> effect;
+
+    @ElementCollection
+    @CollectionTable(name = "summonerspell_effectburn", joinColumns = @JoinColumn(name = "summonerspell_id"))
+    private List<String> effectBurn;
+
+    @Id
+    private Integer id;
+
+    @OneToOne(cascade = CascadeType.ALL)
     private Image image;
+
+    @Column(name = "keyy")
+    private String key;
+
+    @OneToOne(cascade = CascadeType.ALL)
     private LevelTip leveltip;
+
+    private Integer maxrank, summonerLevel;
+
+    @ElementCollection
+    @CollectionTable(name = "summonerspell_modes", joinColumns = @JoinColumn(name = "summonerspell_id"))
+    private List<String> modes;
+
+    @ElementCollection
+    @CollectionTable(name = "summonerspell_range", joinColumns = @JoinColumn(name = "summonerspell_id"))
+    @Column(name = "rng")
+    private List<Integer> range;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<SpellVars> vars;
 
     /*
@@ -265,7 +315,16 @@ public class SummonerSpell extends OriannaDto {
      * @return the effect
      */
     public List<List<Double>> getEffect() {
-        return effect;
+        if(effect == null) {
+            return null;
+        }
+
+        final List<List<Double>> conv = new ArrayList<>();
+        for(final EffectList l : effect) {
+            conv.add(l.getList());
+        }
+
+        return conv;
     }
 
     /**
@@ -467,7 +526,19 @@ public class SummonerSpell extends OriannaDto {
      *            the effect to set
      */
     public void setEffect(final List<List<Double>> effect) {
-        this.effect = effect;
+        if(effect == null) {
+            this.effect = null;
+            return;
+        }
+
+        final List<EffectList> conv = new ArrayList<>();
+        for(final List<Double> l : effect) {
+            final EffectList el = new EffectList();
+            el.setList(l);
+            conv.add(el);
+        }
+
+        this.effect = conv;
     }
 
     /**

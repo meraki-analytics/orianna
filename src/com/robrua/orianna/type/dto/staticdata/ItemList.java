@@ -3,14 +3,34 @@ package com.robrua.orianna.type.dto.staticdata;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "itemlist")
 public class ItemList extends OriannaDto {
     private static final long serialVersionUID = 6176599592434124709L;
+    @OneToOne(cascade = CascadeType.ALL)
     private BasicData basic;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private Map<String, Item> data;
+
+    @Id
+    private final int dbId = 0;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Group> groups;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<ItemTree> tree;
+
     private String type, version;
 
     /*

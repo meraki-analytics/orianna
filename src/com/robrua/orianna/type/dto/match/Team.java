@@ -2,13 +2,29 @@ package com.robrua.orianna.type.dto.match;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity(name = "match.Team")
+@Table(name = "matchteam")
 public class Team extends OriannaDto {
     private static final long serialVersionUID = 9126311625219194559L;
+    @OneToMany(cascade = CascadeType.ALL)
     private List<BannedChampion> bans;
     private Integer baronKills, dragonKills, inhibitorKills, teamId, towerKills, vilemawKills;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
+
     private Long dominionVictoryScore;
+
     private Boolean firstBaron, firstBlood, firstDragon, firstInhibitor, firstTower, winner;
 
     /*

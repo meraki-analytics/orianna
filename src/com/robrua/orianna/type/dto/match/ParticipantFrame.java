@@ -1,10 +1,26 @@
 package com.robrua.orianna.type.dto.match;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "participantframe")
 public class ParticipantFrame extends OriannaDto {
     private static final long serialVersionUID = 3116174959429857810L;
     private Integer currentGold, jungleMinionsKilled, level, minionsKilled, participantId, totalGold, xp, dominionScore, teamScore;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long dbId;
+
+    @OneToOne(cascade = CascadeType.ALL)
     private Position position;
 
     /*

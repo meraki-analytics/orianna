@@ -2,14 +2,37 @@ package com.robrua.orianna.type.dto.staticdata;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity(name = "staticdata.Mastery")
+@Table(name = "mastery")
 public class Mastery extends OriannaDto {
     private static final long serialVersionUID = -4569475685529096111L;
-    private List<String> description, sanitizedDescription;
-    private Integer id, ranks;
+    @ElementCollection
+    @CollectionTable(name = "mastery_description", joinColumns = @JoinColumn(name = "mastery_id"))
+    private List<String> description;
+    @Id
+    private Integer id;
+
+    @OneToOne(cascade = CascadeType.ALL)
     private Image image;
+
     private String masteryTree, name, prereq;
+
+    private Integer ranks;
+
+    @ElementCollection
+    @CollectionTable(name = "mastery_sanitizeddescription", joinColumns = @JoinColumn(name = "mastery_id"))
+    private List<String> sanitizedDescription;
 
     /*
      * (non-Javadoc)

@@ -1,11 +1,20 @@
 package com.robrua.orianna.type.dto.staticdata;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.robrua.orianna.type.dto.OriannaDto;
 
+@Entity
+@Table(name = "skin")
 public class Skin extends OriannaDto {
     private static final long serialVersionUID = 1435516912904407890L;
-    private Integer id, num;
+    @Id
+    private Integer id;
     private String name;
+
+    private Integer num;
 
     /*
      * (non-Javadoc)
