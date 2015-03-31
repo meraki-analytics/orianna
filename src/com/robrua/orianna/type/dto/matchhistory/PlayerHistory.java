@@ -67,6 +67,14 @@ public class PlayerHistory extends OriannaDto {
         return set;
     }
 
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "dbId";
+        }
+        return null;
+    }
+
     /**
      * Gets all stored item IDs for batch lookup
      *

@@ -76,6 +76,14 @@ public class Info extends OriannaDto {
         return attack;
     }
 
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "dbId";
+        }
+        return null;
+    }
+
     /**
      * @return the defense
      */

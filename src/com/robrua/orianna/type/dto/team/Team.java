@@ -66,6 +66,14 @@ public class Team extends OriannaDto {
         return createDate;
     }
 
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(String.class)) {
+            return "fullId";
+        }
+        return null;
+    }
+
     /**
      * @return the fullId
      */

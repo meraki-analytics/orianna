@@ -23,7 +23,7 @@ public class ItemList extends OriannaDto {
     private Map<String, Item> data;
 
     @Id
-    private final int dbId = 0;
+    private final long dbId = 0;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Group> groups;
@@ -112,6 +112,14 @@ public class ItemList extends OriannaDto {
      */
     public Map<String, Item> getData() {
         return data;
+    }
+
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "dbId";
+        }
+        return null;
     }
 
     /**

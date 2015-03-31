@@ -129,6 +129,14 @@ public class ParticipantFrame extends OriannaDto {
         return currentGold;
     }
 
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "dbId";
+        }
+        return null;
+    }
+
     /**
      * @return the dominionScore
      */

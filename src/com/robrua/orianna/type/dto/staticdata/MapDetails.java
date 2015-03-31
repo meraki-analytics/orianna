@@ -80,6 +80,17 @@ public class MapDetails extends OriannaDto {
         return true;
     }
 
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Integer.class)) {
+            return "mapId";
+        }
+        if(keyType.equals(String.class)) {
+            return "mapName";
+        }
+        return null;
+    }
+
     /**
      * @return the image
      */

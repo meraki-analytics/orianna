@@ -77,6 +77,14 @@ public class TeamStatDetail extends OriannaDto {
         return averageGamesPlayed;
     }
 
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "dbId";
+        }
+        return null;
+    }
+
     /**
      * @return the losses
      */

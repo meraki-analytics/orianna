@@ -163,6 +163,14 @@ public class CurrentGameInfo extends OriannaDto {
         return set;
     }
 
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "gameId";
+        }
+        return null;
+    }
+
     /**
      * @return the gameId
      */

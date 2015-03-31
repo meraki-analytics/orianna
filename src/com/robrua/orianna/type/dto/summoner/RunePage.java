@@ -81,6 +81,14 @@ public class RunePage extends OriannaDto {
         return current;
     }
 
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "id";
+        }
+        return null;
+    }
+
     /**
      * @return the id
      */

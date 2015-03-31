@@ -62,4 +62,20 @@ public abstract class Utils {
         }
         return sb.substring(1);
     }
+
+    /**
+     * Converts a list of Longs to Integers
+     *
+     * @param longs
+     *            the longs
+     * @return a list of Integers
+     */
+    public static List<Integer> toIntegers(final List<Long> longs) {
+        final List<Integer> ints = new ArrayList<>();
+        for(final Long lng : longs) {
+            ints.add(lng.intValue());
+        }
+
+        return ints;
+    }
 }

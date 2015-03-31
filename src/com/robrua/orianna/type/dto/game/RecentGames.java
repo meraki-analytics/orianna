@@ -72,6 +72,14 @@ public class RecentGames extends OriannaDto {
         return set;
     }
 
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "summonerId";
+        }
+        return null;
+    }
+
     /**
      * @return the games
      */

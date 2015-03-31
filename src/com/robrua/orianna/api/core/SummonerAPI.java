@@ -285,7 +285,7 @@ public abstract class SummonerAPI {
             return Collections.emptyList();
         }
 
-        final List<Summoner> summoners = RiotAPI.store.get(Summoner.class, stringifyIDs(IDs));
+        final List<Summoner> summoners = RiotAPI.store.get(Summoner.class, IDs);
         final List<Long> toGet = new ArrayList<>();
         final List<Integer> index = new ArrayList<>();
         for(int i = 0; i < IDs.size(); i++) {
@@ -309,7 +309,7 @@ public abstract class SummonerAPI {
             }
         }
 
-        RiotAPI.store.store(Summoner.class, gotten, stringifyIDs(toGet), false);
+        RiotAPI.store.store(Summoner.class, gotten, toGet, false);
         RiotAPI.store.store(Summoner.class, gotten, names, false);
 
         int count = 0;
@@ -400,10 +400,14 @@ public abstract class SummonerAPI {
             return Collections.emptyList();
         }
 
-        final List<Summoner> summoners = RiotAPI.store.get(Summoner.class, stringifyIDs(IDs));
+        final List<Summoner> summoners = RiotAPI.store.get(Summoner.class, IDs);
         final List<String> names = new ArrayList<>(summoners.size());
         for(final Summoner summoner : summoners) {
-            names.add(summoner.getName());
+            if(summoner != null) {
+                names.add(summoner.getName());
+            } else {
+                names.add(null);
+            }
         }
 
         final List<Long> toGet = new ArrayList<>();
@@ -454,20 +458,5 @@ public abstract class SummonerAPI {
      */
     private static String standardize(final String summonerName) {
         return summonerName.replaceAll(" ", "").toLowerCase();
-    }
-
-    /**
-     * Used to ensure all IDs are of the same type (String)
-     *
-     * @param IDs
-     *            the IDs
-     * @return stringified IDs
-     */
-    private static List<String> stringifyIDs(final List<Long> IDs) {
-        final List<String> stringed = new ArrayList<>(IDs.size());
-        for(final Long ID : IDs) {
-            stringed.add("[" + ID + "]");
-        }
-        return stringed;
     }
 }

@@ -68,6 +68,14 @@ public class Translation extends OriannaDto {
         return content;
     }
 
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "dbId";
+        }
+        return null;
+    }
+
     /**
      * @return the locale
      */

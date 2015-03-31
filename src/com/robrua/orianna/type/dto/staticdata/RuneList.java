@@ -22,7 +22,7 @@ public class RuneList extends OriannaDto {
     private Map<String, Rune> data;
 
     @Id
-    private final int dbId = 0;
+    private final long dbId = 0;
 
     private String type, version;
 
@@ -89,6 +89,14 @@ public class RuneList extends OriannaDto {
      */
     public Map<String, Rune> getData() {
         return data;
+    }
+
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "dbId";
+        }
+        return null;
     }
 
     /**

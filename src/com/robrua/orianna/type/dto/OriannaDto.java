@@ -10,6 +10,16 @@ public abstract class OriannaDto implements Serializable {
     private static final long serialVersionUID = 8004053822022503790L;
 
     /**
+     * Gets the field that this object should be indexed on given a key of some
+     * type
+     *
+     * @param keyType
+     *            the type of the key
+     * @return the field that this object should be indexed on
+     */
+    public abstract String getDataStoreIndexField(Class<?> keyType);
+
+    /**
      * Gets a JSON representation of the Dto
      *
      * @return a JSON representation of the Dto

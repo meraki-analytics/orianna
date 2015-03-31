@@ -21,7 +21,7 @@ public class ChampionList extends OriannaDto {
     private List<Champion> champions;
 
     @Id
-    private final int dbId = 0;
+    private final long dbId = 0;
 
     /*
      * (non-Javadoc)
@@ -69,6 +69,14 @@ public class ChampionList extends OriannaDto {
      */
     public List<Champion> getChampions() {
         return champions;
+    }
+
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "dbId";
+        }
+        return null;
     }
 
     /*

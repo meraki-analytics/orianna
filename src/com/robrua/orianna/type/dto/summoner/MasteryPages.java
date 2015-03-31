@@ -58,6 +58,14 @@ public class MasteryPages extends OriannaDto {
         return true;
     }
 
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "summonerId";
+        }
+        return null;
+    }
+
     /**
      * Gets all stored mastery IDs for batch lookup
      *

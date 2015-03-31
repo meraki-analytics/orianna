@@ -146,7 +146,6 @@ public class FileSystemDB extends DataStore {
     }
 
     private final Map<Class<? extends OriannaObject<?>>, Boolean> haveAll;
-
     private final File root;
 
     /**
@@ -254,9 +253,9 @@ public class FileSystemDB extends DataStore {
     }
 
     @Override
-    public <T extends OriannaObject<?>> Iterator<T> doGetIterator(final Class<T> type) {
+    public <T extends OriannaObject<?>> CloseableIterator<T> doGetIterator(final Class<T> type) {
         final File folder = getFolder(type);
-        return new FSIterator<>(folder, type);
+        return CloseableIterator.fromIterator(new FSIterator<>(folder, type));
     }
 
     @Override
@@ -286,7 +285,8 @@ public class FileSystemDB extends DataStore {
      * @return the file that the key is or would be stored in
      */
     private File getFile(final File folder, final Object key) {
-        return new File(folder, Integer.toString(key.hashCode()));
+        int hashCode = Arrays.hashCode(new Object[] {key, key.getClass()});
+        return new File(folder, Integer.toString(hashCode));
     }
 
     /**

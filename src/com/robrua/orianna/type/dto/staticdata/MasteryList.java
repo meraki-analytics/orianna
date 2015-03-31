@@ -19,7 +19,7 @@ public class MasteryList extends OriannaDto {
     private Map<String, Mastery> data;
 
     @Id
-    private final int dbId = 0;
+    private final long dbId = 0;
 
     @OneToOne(cascade = CascadeType.ALL)
     private MasteryTree tree;
@@ -82,6 +82,14 @@ public class MasteryList extends OriannaDto {
      */
     public Map<String, Mastery> getData() {
         return data;
+    }
+
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "dbId";
+        }
+        return null;
     }
 
     /**

@@ -91,6 +91,14 @@ public class PlayerStatsSummary extends OriannaDto {
         return aggregatedStats;
     }
 
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "dbId";
+        }
+        return null;
+    }
+
     /**
      * @return the losses
      */

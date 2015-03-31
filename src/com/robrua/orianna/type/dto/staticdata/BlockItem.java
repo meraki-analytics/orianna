@@ -60,6 +60,14 @@ public class BlockItem extends OriannaDto {
         return count;
     }
 
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "dbId";
+        }
+        return null;
+    }
+
     /**
      * @return the id
      */

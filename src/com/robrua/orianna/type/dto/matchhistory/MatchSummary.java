@@ -171,6 +171,14 @@ public class MatchSummary extends OriannaDto {
         return set;
     }
 
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "matchId";
+        }
+        return null;
+    }
+
     /**
      * Gets all stored item IDs for batch lookup
      *
