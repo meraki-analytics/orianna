@@ -114,8 +114,10 @@ public class Cache extends DataStore {
         return CloseableIterator.fromIterator((Iterator<T>)stored.values().iterator());
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    protected <T extends OriannaObject<?>> void doStore(final Class<T> type, final List<T> objs, final List<?> keys, final boolean isFullSet) {
+    protected <T extends OriannaObject<?>> void doStore(final List<T> objs, final List<?> keys, final boolean isFullSet) {
+        final Class<T> type = (Class<T>)objs.get(0).getClass();
         if(isFullSet) {
             haveAll.put(type, Boolean.TRUE);
         }

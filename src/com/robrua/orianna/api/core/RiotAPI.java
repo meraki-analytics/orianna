@@ -662,6 +662,15 @@ public abstract class RiotAPI {
     }
 
     /**
+     * @param IDs
+     *            the IDs of the matches to get
+     * @return the matches
+     */
+    public static List<Match> getMatches(final List<Long> IDs) {
+        return MatchAPI.getMatches(IDs);
+    }
+
+    /**
      * @param summonerID
      *            the summoner to get match history for
      * @return the 15 most recent matches for the summoner

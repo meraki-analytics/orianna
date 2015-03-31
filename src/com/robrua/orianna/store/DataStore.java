@@ -122,8 +122,6 @@ public abstract class DataStore {
     /**
      * @param <T>
      *            the type of object to store
-     * @param type
-     *            the type of object to store
      * @param objs
      *            the objects to store
      * @param keys
@@ -131,7 +129,7 @@ public abstract class DataStore {
      * @param isFullSet
      *            whether these are all the objects of that type that can exist
      */
-    protected abstract <T extends OriannaObject<?>> void doStore(Class<T> type, List<T> objs, List<?> keys, boolean isFullSet);
+    protected abstract <T extends OriannaObject<?>> void doStore(List<T> objs, List<?> keys, boolean isFullSet);
 
     /**
      * @param <T>
@@ -227,8 +225,6 @@ public abstract class DataStore {
     /**
      * @param <T>
      *            the type of object to store
-     * @param type
-     *            the type of object to store
      * @param objs
      *            the objects to store
      * @param keys
@@ -236,12 +232,12 @@ public abstract class DataStore {
      * @param isFullSet
      *            whether these are all the objects of that type that can exist
      */
-    public <T extends OriannaObject<?>> void store(final Class<T> type, final List<T> objs, final List<?> keys, final boolean isFullSet) {
-        if(type == null || objs == null || !allowsNullStoreKeys() && (keys == null || objs.size() != keys.size()) || objs.isEmpty()) {
+    public <T extends OriannaObject<?>> void store(final List<T> objs, final List<?> keys, final boolean isFullSet) {
+        if(objs == null || !allowsNullStoreKeys() && (keys == null || objs.size() != keys.size()) || objs.isEmpty()) {
             return;
         }
 
-        doStore(type, objs, keys, isFullSet);
+        doStore(objs, keys, isFullSet);
     }
 
     /**

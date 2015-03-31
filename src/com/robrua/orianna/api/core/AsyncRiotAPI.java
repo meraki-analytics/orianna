@@ -1758,6 +1758,31 @@ public abstract class AsyncRiotAPI {
 
     /**
      * @param action
+     *            what to do with the matches
+     * @param IDs
+     *            the match IDs to get
+     */
+    public static void getMatches(final Action<List<Match>> action, final List<Long> IDs) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchAPI.getMatches(IDs);
+                }
+                else {
+                    try {
+                        action.perform(MatchAPI.getMatches(IDs));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
      *            what to do with the 15 most recent matches for the summoner
      * @param summonerID
      *            the summoner to get match history for
