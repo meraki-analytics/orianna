@@ -87,10 +87,12 @@ public abstract class LeagueAPI {
             final Map<Long, List<com.robrua.orianna.type.dto.league.League>> leg = BaseRiotAPI.getSummonerLeagueEntries(get);
             for(final Long ID : get) {
                 final List<League> lgs = new ArrayList<>();
-                for(final com.robrua.orianna.type.dto.league.League l : leg.get(ID)) {
-                    sumIDs.addAll(l.getSummonerIDs());
-                    teamIDs.addAll(l.getTeamIDs());
-                    lgs.add(new League(l));
+                if(leg.get(ID) != null) {
+                    for(final com.robrua.orianna.type.dto.league.League l : leg.get(ID)) {
+                        sumIDs.addAll(l.getSummonerIDs());
+                        teamIDs.addAll(l.getTeamIDs());
+                        lgs.add(new League(l));
+                    }
                 }
                 leagues.add(Collections.unmodifiableList(lgs));
             }
@@ -203,10 +205,12 @@ public abstract class LeagueAPI {
             final Map<String, List<com.robrua.orianna.type.dto.league.League>> leg = BaseRiotAPI.getTeamLeagueEntries(get);
             for(final String ID : get) {
                 final List<League> lgs = new ArrayList<>();
-                for(final com.robrua.orianna.type.dto.league.League l : leg.get(ID)) {
-                    summonerIDs.addAll(l.getSummonerIDs());
-                    tmIDs.addAll(l.getTeamIDs());
-                    lgs.add(new League(l));
+                if(leg.get(ID) != null) {
+                    for(final com.robrua.orianna.type.dto.league.League l : leg.get(ID)) {
+                        summonerIDs.addAll(l.getSummonerIDs());
+                        tmIDs.addAll(l.getTeamIDs());
+                        lgs.add(new League(l));
+                    }
                 }
                 leagues.add(Collections.unmodifiableList(lgs));
             }
@@ -292,10 +296,12 @@ public abstract class LeagueAPI {
             final Map<Long, List<com.robrua.orianna.type.dto.league.League>> leg = BaseRiotAPI.getSummonerLeagues(get);
             for(final Long ID : get) {
                 final List<League> lgs = new ArrayList<>();
-                for(final com.robrua.orianna.type.dto.league.League l : leg.get(ID)) {
-                    sumIDs.addAll(l.getSummonerIDs());
-                    teamIDs.addAll(l.getTeamIDs());
-                    lgs.add(new League(l));
+                if(leg.get(ID) != null) {
+                    for(final com.robrua.orianna.type.dto.league.League l : leg.get(ID)) {
+                        sumIDs.addAll(l.getSummonerIDs());
+                        teamIDs.addAll(l.getTeamIDs());
+                        lgs.add(new League(l));
+                    }
                 }
                 leagues.add(Collections.unmodifiableList(lgs));
             }
@@ -408,10 +414,12 @@ public abstract class LeagueAPI {
             final Map<String, List<com.robrua.orianna.type.dto.league.League>> leg = BaseRiotAPI.getTeamLeagues(get);
             for(final String ID : get) {
                 final List<League> lgs = new ArrayList<>();
-                for(final com.robrua.orianna.type.dto.league.League l : leg.get(ID)) {
-                    summonerIDs.addAll(l.getSummonerIDs());
-                    tmIDs.addAll(l.getTeamIDs());
-                    lgs.add(new League(l));
+                if(leg.get(ID) != null) {
+                    for(final com.robrua.orianna.type.dto.league.League l : leg.get(ID)) {
+                        summonerIDs.addAll(l.getSummonerIDs());
+                        tmIDs.addAll(l.getTeamIDs());
+                        lgs.add(new League(l));
+                    }
                 }
                 leagues.add(Collections.unmodifiableList(lgs));
             }
