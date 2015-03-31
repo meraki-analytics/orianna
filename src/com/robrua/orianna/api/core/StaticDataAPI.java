@@ -93,7 +93,7 @@ public abstract class StaticDataAPI {
             RiotAPI.getItems(new ArrayList<>(champs.getItemIDs()));
         }
 
-        RiotAPI.store.store(Champion.class, champions, Utils.toIntegers(IDs), true);
+        RiotAPI.store.store(champions, Utils.toIntegers(IDs), true);
 
         return Collections.unmodifiableList(champions);
     }
@@ -218,7 +218,7 @@ public abstract class StaticDataAPI {
             items.add(new Item(item));
             IDs.add(item.getId().longValue());
         }
-        RiotAPI.store.store(Item.class, items, Utils.toIntegers(IDs), true);
+        RiotAPI.store.store(items, Utils.toIntegers(IDs), true);
 
         return Collections.unmodifiableList(items);
     }
@@ -302,7 +302,7 @@ public abstract class StaticDataAPI {
             info.add(new MapDetails(map));
             IDs.add(map.getMapId().longValue());
         }
-        RiotAPI.store.store(MapDetails.class, info, Utils.toIntegers(IDs), true);
+        RiotAPI.store.store(info, Utils.toIntegers(IDs), true);
 
         return Collections.unmodifiableList(info);
     }
@@ -323,7 +323,7 @@ public abstract class StaticDataAPI {
             masteries.add(new Mastery(mastery));
             IDs.add(mastery.getId().longValue());
         }
-        RiotAPI.store.store(Mastery.class, masteries, Utils.toIntegers(IDs), true);
+        RiotAPI.store.store(masteries, Utils.toIntegers(IDs), true);
 
         return Collections.unmodifiableList(masteries);
     }
@@ -443,7 +443,7 @@ public abstract class StaticDataAPI {
             runes.add(new Rune(rune));
             IDs.add(rune.getId().longValue());
         }
-        RiotAPI.store.store(Rune.class, runes, Utils.toIntegers(IDs), true);
+        RiotAPI.store.store(runes, Utils.toIntegers(IDs), true);
 
         return Collections.unmodifiableList(runes);
     }
@@ -530,7 +530,7 @@ public abstract class StaticDataAPI {
             spells.add(new SummonerSpell(spell));
             IDs.add(spell.getId().longValue());
         }
-        RiotAPI.store.store(SummonerSpell.class, spells, Utils.toIntegers(IDs), true);
+        RiotAPI.store.store(spells, Utils.toIntegers(IDs), true);
 
         return Collections.unmodifiableList(spells);
     }

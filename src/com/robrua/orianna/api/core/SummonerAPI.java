@@ -309,8 +309,8 @@ public abstract class SummonerAPI {
             }
         }
 
-        RiotAPI.store.store(Summoner.class, gotten, toGet, false);
-        RiotAPI.store.store(Summoner.class, gotten, names, false);
+        RiotAPI.store.store(gotten, toGet, false);
+        RiotAPI.store.store(gotten, names, false);
 
         int count = 0;
         for(final Integer id : index) {
@@ -370,8 +370,8 @@ public abstract class SummonerAPI {
             }
         }
 
-        RiotAPI.store.store(Summoner.class, gotten, toGet, false);
-        RiotAPI.store.store(Summoner.class, gotten, IDs, false);
+        RiotAPI.store.store(gotten, toGet, false);
+        RiotAPI.store.store(gotten, IDs, false);
 
         int count = 0;
         for(final Integer id : index) {

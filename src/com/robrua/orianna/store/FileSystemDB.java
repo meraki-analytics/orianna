@@ -263,8 +263,10 @@ public class FileSystemDB extends DataStore {
         return CloseableIterator.fromIterator(new FSIterator<>(folder, type));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    protected <T extends OriannaObject<?>> void doStore(final Class<T> type, final List<T> objs, final List<?> keys, final boolean isFullSet) {
+    protected <T extends OriannaObject<?>> void doStore(final List<T> objs, final List<?> keys, final boolean isFullSet) {
+        final Class<T> type = (Class<T>)objs.get(0).getClass();
         if(isFullSet) {
             haveAll.put(type, Boolean.TRUE);
             writeFile(new File(root, HAVE_ALL_NAME), haveAll);
