@@ -114,9 +114,11 @@ public abstract class TeamAPI {
             final Map<Long, List<com.robrua.orianna.type.dto.team.Team>> tms = BaseRiotAPI.getTeamsBySummoner(get);
             for(final Long ID : get) {
                 final List<Team> tm = new ArrayList<>();
-                for(final com.robrua.orianna.type.dto.team.Team team : tms.get(ID)) {
-                    sumIDs.addAll(team.getSummonerIDs());
-                    tm.add(new Team(team));
+                if(tms.get(ID) != null) {
+                    for(final com.robrua.orianna.type.dto.team.Team team : tms.get(ID)) {
+                        sumIDs.addAll(team.getSummonerIDs());
+                        tm.add(new Team(team));
+                    }
                 }
                 teams.add(Collections.unmodifiableList(tm));
             }
