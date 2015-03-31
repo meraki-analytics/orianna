@@ -16,9 +16,9 @@ import com.robrua.orianna.type.dto.OriannaDto;
 public class Realm extends OriannaDto {
     private static final long serialVersionUID = 3843541502302131652L;
     private String cdn, css, dd, l, lg, store, v;
-    
+
     @Id
-    private long dbId = 0;
+    private final long dbId = 0;
 
     @ElementCollection
     @CollectionTable(name = "realm_n", joinColumns = @JoinColumn(name = "realm_id"))

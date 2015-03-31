@@ -574,7 +574,7 @@ public class BasicDataStats extends OriannaDto {
         }
         return null;
     }
-    
+
     /**
      * @return the flatArmorMod
      */

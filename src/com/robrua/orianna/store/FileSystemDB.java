@@ -181,6 +181,11 @@ public class FileSystemDB extends DataStore {
     }
 
     @Override
+    protected boolean allowsNullStoreKeys() {
+        return false;
+    }
+
+    @Override
     protected <T extends OriannaObject<?>> boolean checkHasAll(final Class<T> type) {
         final Boolean val = haveAll.get(type);
 
@@ -285,7 +290,7 @@ public class FileSystemDB extends DataStore {
      * @return the file that the key is or would be stored in
      */
     private File getFile(final File folder, final Object key) {
-        int hashCode = Arrays.hashCode(new Object[] {key, key.getClass()});
+        final int hashCode = Arrays.hashCode(new Object[] {key, key.getClass()});
         return new File(folder, Integer.toString(hashCode));
     }
 

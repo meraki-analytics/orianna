@@ -268,7 +268,7 @@ public class Stats extends OriannaDto {
         }
         return null;
     }
-    
+
     /**
      * @return the hp
      */

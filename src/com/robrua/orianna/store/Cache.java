@@ -19,6 +19,11 @@ public class Cache extends DataStore {
     private final Map<Class<? extends OriannaObject<?>>, Boolean> haveAll = new HashMap<>();
 
     @Override
+    protected boolean allowsNullStoreKeys() {
+        return false;
+    }
+
+    @Override
     protected <T extends OriannaObject<?>> boolean checkHasAll(final Class<T> type) {
         final Boolean val = haveAll.get(type);
 

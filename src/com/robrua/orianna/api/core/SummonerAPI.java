@@ -405,7 +405,8 @@ public abstract class SummonerAPI {
         for(final Summoner summoner : summoners) {
             if(summoner != null) {
                 names.add(summoner.getName());
-            } else {
+            }
+            else {
                 names.add(null);
             }
         }

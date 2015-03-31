@@ -76,7 +76,7 @@ public class ParticipantTimelineData extends OriannaDto {
         }
         return null;
     }
-    
+
     /**
      * @return the tenToTwenty
      */
