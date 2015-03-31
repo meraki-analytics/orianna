@@ -69,6 +69,14 @@ public class Player extends OriannaDto {
         return championId;
     }
 
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "dbId";
+        }
+        return null;
+    }
+
     /**
      * @return the summonerId
      */

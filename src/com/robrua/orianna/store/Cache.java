@@ -99,14 +99,14 @@ public class Cache extends DataStore {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T extends OriannaObject<?>> Iterator<T> doGetIterator(final Class<T> type) {
+    public <T extends OriannaObject<?>> CloseableIterator<T> doGetIterator(final Class<T> type) {
         final Map<Object, OriannaObject<?>> stored = cache.get(type);
 
         if(stored == null) {
-            return Collections.emptyIterator();
+            return CloseableIterator.emptyIterator();
         }
 
-        return (Iterator<T>)stored.values().iterator();
+        return CloseableIterator.fromIterator((Iterator<T>)stored.values().iterator());
     }
 
     @Override

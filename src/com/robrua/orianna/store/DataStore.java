@@ -1,7 +1,6 @@
 package com.robrua.orianna.store;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import com.robrua.orianna.type.core.OriannaObject;
@@ -113,7 +112,7 @@ public abstract class DataStore {
      *            the type of object to get
      * @return an iterator over objects of that type in the data store
      */
-    protected abstract <T extends OriannaObject<?>> Iterator<T> doGetIterator(final Class<T> type);
+    protected abstract <T extends OriannaObject<?>> CloseableIterator<T> doGetIterator(final Class<T> type);
 
     /**
      * @param <T>
@@ -196,9 +195,9 @@ public abstract class DataStore {
      *            the type of object to get
      * @return an iterator over objects of that type in the data store
      */
-    public <T extends OriannaObject<?>> Iterator<T> getIterator(final Class<T> type) {
+    public <T extends OriannaObject<?>> CloseableIterator<T> getIterator(final Class<T> type) {
         if(type == null) {
-            return Collections.emptyIterator();
+            return CloseableIterator.emptyIterator();
         }
 
         return doGetIterator(type);

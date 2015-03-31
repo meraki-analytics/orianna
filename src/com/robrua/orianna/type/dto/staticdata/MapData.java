@@ -75,6 +75,14 @@ public class MapData extends OriannaDto {
         return data;
     }
 
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "dbId";
+        }
+        return null;
+    }
+
     /**
      * @return the type
      */

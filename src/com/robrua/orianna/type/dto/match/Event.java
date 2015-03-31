@@ -249,6 +249,14 @@ public class Event extends OriannaDto {
         return creatorId;
     }
 
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "dbId";
+        }
+        return null;
+    }
+
     /**
      * @return the eventType
      */

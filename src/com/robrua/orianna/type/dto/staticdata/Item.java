@@ -115,6 +115,17 @@ public class Item extends OriannaDto {
         return consumeOnFull;
     }
 
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Integer.class)) {
+            return "id";
+        }
+        if(keyType.equals(String.class)) {
+            return "name";
+        }
+        return null;
+    }
+
     /**
      * @return the depth
      */

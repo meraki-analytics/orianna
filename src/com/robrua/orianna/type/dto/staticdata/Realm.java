@@ -5,8 +5,6 @@ import java.util.Map;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
@@ -18,9 +16,9 @@ import com.robrua.orianna.type.dto.OriannaDto;
 public class Realm extends OriannaDto {
     private static final long serialVersionUID = 3843541502302131652L;
     private String cdn, css, dd, l, lg, store, v;
+    
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long dbId;
+    private long dbId = 0;
 
     @ElementCollection
     @CollectionTable(name = "realm_n", joinColumns = @JoinColumn(name = "realm_id"))
@@ -131,6 +129,14 @@ public class Realm extends OriannaDto {
      */
     public String getCss() {
         return css;
+    }
+
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "dbId";
+        }
+        return null;
     }
 
     /**

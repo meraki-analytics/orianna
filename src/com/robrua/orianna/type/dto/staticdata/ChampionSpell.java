@@ -297,6 +297,14 @@ public class ChampionSpell extends OriannaDto {
         return costType;
     }
 
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "dbId";
+        }
+        return null;
+    }
+
     /**
      * @return the description
      */

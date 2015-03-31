@@ -36,7 +36,7 @@ public abstract class StaticDataAPI {
      * @return the champion
      */
     public synchronized static Champion getChampionByID(final long ID) {
-        Champion champion = RiotAPI.store.get(Champion.class, ID);
+        Champion champion = RiotAPI.store.get(Champion.class, (int)ID);
         if(champion != null) {
             return champion;
         }
@@ -51,7 +51,7 @@ public abstract class StaticDataAPI {
             RiotAPI.getItems(new ArrayList<>(champ.getItemIDs()));
         }
 
-        RiotAPI.store.store(champion, ID);
+        RiotAPI.store.store(champion, (int)ID);
 
         return champion;
     }
@@ -93,7 +93,7 @@ public abstract class StaticDataAPI {
             RiotAPI.getItems(new ArrayList<>(champs.getItemIDs()));
         }
 
-        RiotAPI.store.store(Champion.class, champions, IDs, true);
+        RiotAPI.store.store(Champion.class, champions, Utils.toIntegers(IDs), true);
 
         return Collections.unmodifiableList(champions);
     }
@@ -108,7 +108,7 @@ public abstract class StaticDataAPI {
             return Collections.emptyList();
         }
 
-        final List<Champion> champions = RiotAPI.store.get(Champion.class, IDs);
+        final List<Champion> champions = RiotAPI.store.get(Champion.class, Utils.toIntegers(IDs));
         final List<Long> toGet = new ArrayList<>();
         final List<Integer> index = new ArrayList<>();
         for(int i = 0; i < IDs.size(); i++) {
@@ -128,7 +128,7 @@ public abstract class StaticDataAPI {
         }
 
         getChampions();
-        final List<Champion> gotten = RiotAPI.store.get(Champion.class, toGet);
+        final List<Champion> gotten = RiotAPI.store.get(Champion.class, Utils.toIntegers(toGet));
         int count = 0;
         for(final Integer id : index) {
             champions.set(id, gotten.get(count++));
@@ -190,14 +190,14 @@ public abstract class StaticDataAPI {
             return null;
         }
 
-        Item item = RiotAPI.store.get(Item.class, ID);
+        Item item = RiotAPI.store.get(Item.class, (int)ID);
         if(item != null) {
             return item;
         }
 
         final com.robrua.orianna.type.dto.staticdata.Item it = BaseRiotAPI.getItem(ID);
         item = new Item(it);
-        RiotAPI.store.store(item, ID);
+        RiotAPI.store.store(item, (int)ID);
 
         return item;
     }
@@ -218,7 +218,7 @@ public abstract class StaticDataAPI {
             items.add(new Item(item));
             IDs.add(item.getId().longValue());
         }
-        RiotAPI.store.store(Item.class, items, IDs, true);
+        RiotAPI.store.store(Item.class, items, Utils.toIntegers(IDs), true);
 
         return Collections.unmodifiableList(items);
     }
@@ -233,7 +233,7 @@ public abstract class StaticDataAPI {
             return Collections.emptyList();
         }
 
-        final List<Item> items = RiotAPI.store.get(Item.class, IDs);
+        final List<Item> items = RiotAPI.store.get(Item.class, Utils.toIntegers(IDs));
         final List<Long> toGet = new ArrayList<>();
         final List<Integer> index = new ArrayList<>();
         for(int i = 0; i < IDs.size(); i++) {
@@ -253,7 +253,7 @@ public abstract class StaticDataAPI {
         }
 
         getItems();
-        final List<Item> gotten = RiotAPI.store.get(Item.class, toGet);
+        final List<Item> gotten = RiotAPI.store.get(Item.class, Utils.toIntegers(toGet));
         int count = 0;
         for(final Integer id : index) {
             items.add(id, gotten.get(count++));
@@ -302,7 +302,7 @@ public abstract class StaticDataAPI {
             info.add(new MapDetails(map));
             IDs.add(map.getMapId().longValue());
         }
-        RiotAPI.store.store(MapDetails.class, info, IDs, true);
+        RiotAPI.store.store(MapDetails.class, info, Utils.toIntegers(IDs), true);
 
         return Collections.unmodifiableList(info);
     }
@@ -323,7 +323,7 @@ public abstract class StaticDataAPI {
             masteries.add(new Mastery(mastery));
             IDs.add(mastery.getId().longValue());
         }
-        RiotAPI.store.store(Mastery.class, masteries, IDs, true);
+        RiotAPI.store.store(Mastery.class, masteries, Utils.toIntegers(IDs), true);
 
         return Collections.unmodifiableList(masteries);
     }
@@ -338,7 +338,7 @@ public abstract class StaticDataAPI {
             return Collections.emptyList();
         }
 
-        final List<Mastery> masteries = RiotAPI.store.get(Mastery.class, IDs);
+        final List<Mastery> masteries = RiotAPI.store.get(Mastery.class, Utils.toIntegers(IDs));
         final List<Long> toGet = new ArrayList<>();
         final List<Integer> index = new ArrayList<>();
         for(int i = 0; i < IDs.size(); i++) {
@@ -358,7 +358,7 @@ public abstract class StaticDataAPI {
         }
 
         getMasteries();
-        final List<Mastery> gotten = RiotAPI.store.get(Mastery.class, toGet);
+        final List<Mastery> gotten = RiotAPI.store.get(Mastery.class, Utils.toIntegers(toGet));
         int count = 0;
         for(final Integer id : index) {
             masteries.set(id, gotten.get(count++));
@@ -382,14 +382,14 @@ public abstract class StaticDataAPI {
      * @return the mastery
      */
     public synchronized static Mastery getMastery(final long ID) {
-        Mastery mastery = RiotAPI.store.get(Mastery.class, ID);
+        Mastery mastery = RiotAPI.store.get(Mastery.class, (int)ID);
         if(mastery != null) {
             return mastery;
         }
 
         final com.robrua.orianna.type.dto.staticdata.Mastery mast = BaseRiotAPI.getMastery(ID);
         mastery = new Mastery(mast);
-        RiotAPI.store.store(mastery, ID);
+        RiotAPI.store.store(mastery, (int)ID);
 
         return mastery;
     }
@@ -398,13 +398,13 @@ public abstract class StaticDataAPI {
      * @return the realm
      */
     public synchronized static Realm getRealm() {
-        Realm realm = RiotAPI.store.get(Realm.class, "");
+        Realm realm = RiotAPI.store.get(Realm.class, 0L);
         if(realm != null) {
             return realm;
         }
 
         realm = new Realm(BaseRiotAPI.getRealm());
-        RiotAPI.store.store(realm, "");
+        RiotAPI.store.store(realm, 0);
 
         return realm;
     }
@@ -415,14 +415,14 @@ public abstract class StaticDataAPI {
      * @return the rune
      */
     public synchronized static Rune getRune(final long ID) {
-        Rune rune = RiotAPI.store.get(Rune.class, ID);
+        Rune rune = RiotAPI.store.get(Rune.class, (int)ID);
         if(rune != null) {
             return rune;
         }
 
         final com.robrua.orianna.type.dto.staticdata.Rune run = BaseRiotAPI.getRune(ID);
         rune = new Rune(run);
-        RiotAPI.store.store(rune, ID);
+        RiotAPI.store.store(rune, (int)ID);
 
         return rune;
     }
@@ -443,7 +443,7 @@ public abstract class StaticDataAPI {
             runes.add(new Rune(rune));
             IDs.add(rune.getId().longValue());
         }
-        RiotAPI.store.store(Rune.class, runes, IDs, true);
+        RiotAPI.store.store(Rune.class, runes, Utils.toIntegers(IDs), true);
 
         return Collections.unmodifiableList(runes);
     }
@@ -458,7 +458,7 @@ public abstract class StaticDataAPI {
             return Collections.emptyList();
         }
 
-        final List<Rune> runes = RiotAPI.store.get(Rune.class, IDs);
+        final List<Rune> runes = RiotAPI.store.get(Rune.class, Utils.toIntegers(IDs));
         final List<Long> toGet = new ArrayList<>();
         final List<Integer> index = new ArrayList<>();
         for(int i = 0; i < IDs.size(); i++) {
@@ -478,7 +478,7 @@ public abstract class StaticDataAPI {
         }
 
         getRunes();
-        final List<Rune> gotten = RiotAPI.store.get(Rune.class, toGet);
+        final List<Rune> gotten = RiotAPI.store.get(Rune.class, Utils.toIntegers(toGet));
         int count = 0;
         for(final Integer id : index) {
             runes.set(id, gotten.get(count++));
@@ -502,14 +502,14 @@ public abstract class StaticDataAPI {
      * @return the summoner spell
      */
     public synchronized static SummonerSpell getSummonerSpell(final long ID) {
-        SummonerSpell spell = RiotAPI.store.get(SummonerSpell.class, ID);
+        SummonerSpell spell = RiotAPI.store.get(SummonerSpell.class, (int)ID);
         if(spell != null) {
             return spell;
         }
 
         final com.robrua.orianna.type.dto.staticdata.SummonerSpell spl = BaseRiotAPI.getSummonerSpell(ID);
         spell = new SummonerSpell(spl);
-        RiotAPI.store.store(spell, ID);
+        RiotAPI.store.store(spell, (int)ID);
 
         return spell;
     }
@@ -530,7 +530,7 @@ public abstract class StaticDataAPI {
             spells.add(new SummonerSpell(spell));
             IDs.add(spell.getId().longValue());
         }
-        RiotAPI.store.store(SummonerSpell.class, spells, IDs, true);
+        RiotAPI.store.store(SummonerSpell.class, spells, Utils.toIntegers(IDs), true);
 
         return Collections.unmodifiableList(spells);
     }
@@ -545,7 +545,7 @@ public abstract class StaticDataAPI {
             return Collections.emptyList();
         }
 
-        final List<SummonerSpell> spells = RiotAPI.store.get(SummonerSpell.class, IDs);
+        final List<SummonerSpell> spells = RiotAPI.store.get(SummonerSpell.class, Utils.toIntegers(IDs));
         final List<Long> toGet = new ArrayList<>();
         final List<Integer> index = new ArrayList<>();
         for(int i = 0; i < IDs.size(); i++) {
@@ -565,7 +565,7 @@ public abstract class StaticDataAPI {
         }
 
         getSummonerSpells();
-        final List<SummonerSpell> gotten = RiotAPI.store.get(SummonerSpell.class, toGet);
+        final List<SummonerSpell> gotten = RiotAPI.store.get(SummonerSpell.class, Utils.toIntegers(toGet));
         int count = 0;
         for(final Integer id : index) {
             spells.set(id, gotten.get(count++));

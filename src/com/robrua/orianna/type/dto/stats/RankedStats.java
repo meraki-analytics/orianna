@@ -88,6 +88,14 @@ public class RankedStats extends OriannaDto {
         return champions;
     }
 
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "summonerId";
+        }
+        return null;
+    }
+
     /**
      * @return the modifyDate
      */

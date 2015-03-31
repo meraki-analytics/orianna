@@ -87,6 +87,14 @@ public class Game extends OriannaDto {
         return createDate;
     }
 
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "gameId";
+        }
+        return null;
+    }
+
     /**
      * @return the fellowPlayers
      */

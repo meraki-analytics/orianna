@@ -19,6 +19,7 @@ public class Block extends OriannaDto {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long dbId;
+
     @OneToMany(cascade = CascadeType.ALL)
     private List<BlockItem> items;
 
@@ -67,6 +68,14 @@ public class Block extends OriannaDto {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "dbId";
+        }
+        return null;
     }
 
     /**

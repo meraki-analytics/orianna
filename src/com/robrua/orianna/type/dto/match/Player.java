@@ -71,6 +71,14 @@ public class Player extends OriannaDto {
         return true;
     }
 
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Integer.class) || keyType.equals(Long.class)) {
+            return "dbId";
+        }
+        return null;
+    }
+
     /**
      * @return the matchHistoryUri
      */

@@ -118,6 +118,14 @@ public class Message extends OriannaDto {
         return created_at;
     }
 
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "id";
+        }
+        return null;
+    }
+
     /**
      * @return the id
      */

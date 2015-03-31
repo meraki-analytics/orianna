@@ -13,14 +13,14 @@ import com.robrua.orianna.type.dto.OriannaDto;
 public class AggregatedStats extends OriannaDto {
     private static final long serialVersionUID = 4301211932958625756L;
     private Integer averageAssists, averageChampionsKilled, averageCombatPlayerScore, averageNodeCapture, averageNodeCaptureAssist, averageNodeNeutralize,
-    averageNodeNeutralizeAssist, averageNumDeaths, averageObjectivePlayerScore, averageTeamObjective, averageTotalPlayerScore, botGamesPlayed,
-    killingSpree, maxAssists, maxChampionsKilled, maxCombatPlayerScore, maxLargestCriticalStrike, maxLargestKillingSpree, maxNodeCapture,
-    maxNodeCaptureAssist, maxNodeNeutralize, maxNodeNeutralizeAssist, maxNumDeaths, maxObjectivePlayerScore, maxTeamObjective, maxTimePlayed,
-    maxTimeSpentLiving, maxTotalPlayerScore, mostChampionKillsPerSession, mostSpellsCast, normalGamesPlayed, rankedPremadeGamesPlayed,
-    rankedSoloGamesPlayed, totalAssists, totalChampionKills, totalDamageDealt, totalDamageTaken, totalDeathsPerSession, totalDoubleKills,
-    totalFirstBlood, totalGoldEarned, totalHeal, totalMagicDamageDealt, totalMinionKills, totalNeutralMinionsKilled, totalNodeCapture,
-    totalNodeNeutralize, totalPentaKills, totalPhysicalDamageDealt, totalQuadraKills, totalSessionsLost, totalSessionsPlayed, totalSessionsWon,
-    totalTripleKills, totalTurretsKilled, totalUnrealKills;
+            averageNodeNeutralizeAssist, averageNumDeaths, averageObjectivePlayerScore, averageTeamObjective, averageTotalPlayerScore, botGamesPlayed,
+            killingSpree, maxAssists, maxChampionsKilled, maxCombatPlayerScore, maxLargestCriticalStrike, maxLargestKillingSpree, maxNodeCapture,
+            maxNodeCaptureAssist, maxNodeNeutralize, maxNodeNeutralizeAssist, maxNumDeaths, maxObjectivePlayerScore, maxTeamObjective, maxTimePlayed,
+            maxTimeSpentLiving, maxTotalPlayerScore, mostChampionKillsPerSession, mostSpellsCast, normalGamesPlayed, rankedPremadeGamesPlayed,
+            rankedSoloGamesPlayed, totalAssists, totalChampionKills, totalDamageDealt, totalDamageTaken, totalDeathsPerSession, totalDoubleKills,
+            totalFirstBlood, totalGoldEarned, totalHeal, totalMagicDamageDealt, totalMinionKills, totalNeutralMinionsKilled, totalNodeCapture,
+            totalNodeNeutralize, totalPentaKills, totalPhysicalDamageDealt, totalQuadraKills, totalSessionsLost, totalSessionsPlayed, totalSessionsWon,
+            totalTripleKills, totalTurretsKilled, totalUnrealKills;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -575,6 +575,14 @@ public class AggregatedStats extends OriannaDto {
      */
     public Integer getBotGamesPlayed() {
         return botGamesPlayed;
+    }
+
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "dbId";
+        }
+        return null;
     }
 
     /**

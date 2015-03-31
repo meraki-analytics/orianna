@@ -20,7 +20,7 @@ public class FeaturedGames extends OriannaDto {
     private Long clientRefreshInterval;
 
     @Id
-    private final int dbId = 0;
+    private final long dbId = 0;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<CurrentGameInfo> gameList;
@@ -79,6 +79,14 @@ public class FeaturedGames extends OriannaDto {
      */
     public Long getClientRefreshInterval() {
         return clientRefreshInterval;
+    }
+
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "dbId";
+        }
+        return null;
     }
 
     /**

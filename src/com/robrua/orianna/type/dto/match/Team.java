@@ -172,6 +172,14 @@ public class Team extends OriannaDto {
         return baronKills;
     }
 
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "dbId";
+        }
+        return null;
+    }
+
     /**
      * @return the dominionVictoryScore
      */

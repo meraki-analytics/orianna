@@ -115,6 +115,14 @@ public class Recommended extends OriannaDto {
         return champion;
     }
 
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "dbId";
+        }
+        return null;
+    }
+
     /**
      * @return the map
      */

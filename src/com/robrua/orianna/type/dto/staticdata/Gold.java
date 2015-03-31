@@ -77,6 +77,14 @@ public class Gold extends OriannaDto {
         return base;
     }
 
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "dbId";
+        }
+        return null;
+    }
+
     /**
      * @return the purchasable
      */

@@ -17,7 +17,7 @@ public class MasteryTree extends OriannaDto {
     private static final long serialVersionUID = -7530057902542747774L;
 
     @Id
-    private final int dbId = 0;
+    private final long dbId = 0;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "masterytree_id")
@@ -64,6 +64,14 @@ public class MasteryTree extends OriannaDto {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "dbId";
+        }
+        return null;
     }
 
     /**

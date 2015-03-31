@@ -287,6 +287,14 @@ public class BasicData extends OriannaDto {
         return consumeOnFull;
     }
 
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Integer.class)) {
+            return "id";
+        }
+        return null;
+    }
+
     /**
      * @return the depth
      */

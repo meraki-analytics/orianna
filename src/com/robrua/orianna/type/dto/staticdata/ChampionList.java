@@ -24,7 +24,7 @@ public class ChampionList extends OriannaDto {
     private Map<String, Champion> data;
 
     @Id
-    private final int dbId = 0;
+    private final long dbId = 0;
 
     private String format, type, version;
 
@@ -97,6 +97,14 @@ public class ChampionList extends OriannaDto {
      */
     public Map<String, Champion> getData() {
         return data;
+    }
+
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "dbId";
+        }
+        return null;
     }
 
     /**

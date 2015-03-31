@@ -72,6 +72,13 @@ public class Frame extends OriannaDto {
         return true;
     }
 
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "dbId";
+        }
+        return null;
+    }
     /**
      * @return the events
      */

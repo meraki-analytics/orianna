@@ -18,7 +18,7 @@ public class SummonerSpellList extends OriannaDto {
     private Map<String, SummonerSpell> data;
 
     @Id
-    private final int dbId = 0;
+    private final long dbId = 0;
 
     private String type, version;
 
@@ -70,6 +70,14 @@ public class SummonerSpellList extends OriannaDto {
      */
     public Map<String, SummonerSpell> getData() {
         return data;
+    }
+
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Long.class)) {
+            return "dbId";
+        }
+        return null;
     }
 
     /**

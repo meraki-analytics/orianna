@@ -304,6 +304,17 @@ public class SummonerSpell extends OriannaDto {
         return costType;
     }
 
+    @Override
+    public String getDataStoreIndexField(final Class<?> keyType) {
+        if(keyType.equals(Integer.class)) {
+            return "id";
+        }
+        if(keyType.equals(String.class)) {
+            return name;
+        }
+        return null;
+    }
+
     /**
      * @return the description
      */
