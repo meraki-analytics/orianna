@@ -5,7 +5,6 @@ A Java adaptation of the Riot Games LoL API (http://developer.riotgames.com/).
 Orianna is back, rebuilt from the ground up with some new features, Java 7 compatibility, and a whole lot more in store.
 In addition to the standard RiotAPI we've added a BaseRiotAPI which can interact with the Riot API exactly according to specification.
 We've also changed the core architecture to be more resilient to future API changes and ease maintenance. 
-Expect cool new features like automatic generation of local databases (through the same old interface) coming down the pipe soon!
 
 ## Features (RiotAPI)
 
@@ -15,6 +14,7 @@ Expect cool new features like automatic generation of local databases (through t
 - Replaces foreign key ID values with the referenced object
 - Option to lazy load references objects right when you need them or load them automatically upfront with minimal API calls
 - Caches static data and summoner information to accelerate access and reduce API load
+- Automatic databasing using [Hibernate](http://hibernate.org/). See [the project here.](https://github.com/robrua/orianna-hibernate)
 
 ## Features (BaseRiotAPI)
 
