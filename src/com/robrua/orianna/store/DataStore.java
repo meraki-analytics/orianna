@@ -12,6 +12,11 @@ import com.robrua.orianna.type.core.OriannaObject;
  */
 public abstract class DataStore {
     /**
+     * @return true if this DataStore doesn't need key information to store data
+     */
+    protected abstract boolean allowsNullStoreKeys();
+
+    /**
      * @param <T>
      *            the type of object to check for
      * @param type
@@ -232,7 +237,7 @@ public abstract class DataStore {
      *            whether these are all the objects of that type that can exist
      */
     public <T extends OriannaObject<?>> void store(final Class<T> type, final List<T> objs, final List<?> keys, final boolean isFullSet) {
-        if(type == null || objs == null || keys == null || objs.size() != keys.size() || objs.isEmpty()) {
+        if(type == null || objs == null || !allowsNullStoreKeys() && (keys == null || objs.size() != keys.size()) || objs.isEmpty()) {
             return;
         }
 
@@ -248,7 +253,7 @@ public abstract class DataStore {
      *            the key to store it with
      */
     public <T extends OriannaObject<?>> void store(final T obj, final Object key) {
-        if(obj == null || key == null) {
+        if(obj == null || !allowsNullStoreKeys() && key == null) {
             return;
         }
 

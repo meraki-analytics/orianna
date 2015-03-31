@@ -79,6 +79,7 @@ public class Frame extends OriannaDto {
         }
         return null;
     }
+
     /**
      * @return the events
      */
