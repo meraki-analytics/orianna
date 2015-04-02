@@ -1,6 +1,7 @@
 package com.robrua.orianna.api.dto;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -1653,6 +1654,63 @@ public class AsyncBaseRiotAPI {
                 else {
                     try {
                         action.perform(TeamAPI.getTeamsBySummoner(summonerIDs));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
+     *            what to do with the match IDs
+     * @param bucketStartTime
+     *            the start time for the 5-minute bucket to query
+     * @see <a
+     *      href="https://developer.riotgames.com/api/methods#!/980/3340">Riot
+     *      API Specification</a>
+     */
+    public static void getURFMatchIDs(final Action<List<Long>> action, final Date bucketStartTime) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChallengeAPI.getURFMatchIDs(bucketStartTime);
+                }
+                else {
+                    try {
+                        action.perform(ChallengeAPI.getURFMatchIDs(bucketStartTime));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
+     *            what to do with the match IDs
+     * @param bucketStartTime
+     *            the start time for the 5-minute bucket to query (in epoch
+     *            seconds)
+     * @see <a
+     *      href="https://developer.riotgames.com/api/methods#!/980/3340">Riot
+     *      API Specification</a>
+     */
+    public static void getURFMatchIDs(final Action<List<Long>> action, final long bucketStartTime) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChallengeAPI.getURFMatchIDs(bucketStartTime);
+                }
+                else {
+                    try {
+                        action.perform(ChallengeAPI.getURFMatchIDs(bucketStartTime));
                     }
                     catch(final APIException e) {
                         action.handle(e);
