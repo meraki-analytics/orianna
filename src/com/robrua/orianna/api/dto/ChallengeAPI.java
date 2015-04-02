@@ -21,7 +21,7 @@ public abstract class ChallengeAPI {
     public static List<Long> getURFMatchIDs(final Date bucketStartTime) {
         final Calendar date = Calendar.getInstance();
         date.setTime(bucketStartTime);
-        if(date.get(Calendar.MINUTE) % 5 != 0) {
+        if(date.get(Calendar.MINUTE) % 5 != 0 || date.get(Calendar.SECOND) != 0) {
             throw new IllegalArgumentException("Bucket start time must be an even 5 minute offset!");
         }
 
@@ -43,7 +43,7 @@ public abstract class ChallengeAPI {
     public static List<Long> getURFMatchIDs(final long bucketStartTime) {
         final Calendar date = Calendar.getInstance();
         date.setTimeInMillis(bucketStartTime);
-        if(date.get(Calendar.MINUTE) % 5 != 0) {
+        if(date.get(Calendar.MINUTE) % 5 != 0 || date.get(Calendar.SECOND) != 0) {
             throw new IllegalArgumentException("Bucket start time must be an even 5 minute offset!");
         }
 
