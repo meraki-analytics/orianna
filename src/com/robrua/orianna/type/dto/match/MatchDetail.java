@@ -333,8 +333,10 @@ public class MatchDetail extends OriannaDto {
     public Set<Long> getRuneIDs() {
         final Set<Long> set = new HashSet<>();
         for(final Participant p : participants) {
-            for(final Rune rune : p.getRunes()) {
-                set.add(rune.getRuneId());
+            if(p.getRunes() != null) {
+                for(final Rune rune : p.getRunes()) {
+                    set.add(rune.getRuneId());
+                }
             }
         }
 

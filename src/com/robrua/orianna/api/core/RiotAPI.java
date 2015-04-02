@@ -1,6 +1,7 @@
 package com.robrua.orianna.api.core;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -1332,6 +1333,44 @@ public abstract class RiotAPI {
      */
     public static List<List<Team>> getTeamsBySummonerName(final String summonerName) {
         return TeamAPI.getTeamsBySummonerName(summonerName);
+    }
+
+    /**
+     * @param bucketStartTime
+     *            the start time for the 5-minute bucket to query
+     * @return randomized matches from that bucket
+     */
+    public static List<Match> getURFMatches(final Date bucketStartTime) {
+        return ChallengeAPI.getURFMatches(bucketStartTime);
+    }
+
+    /**
+     * @param bucketStartTime
+     *            the start time for the 5-minute bucket to query (in epoch
+     *            seconds)
+     * @return randomized matches from that bucket
+     */
+    public static List<Match> getURFMatches(final long bucketStartTime) {
+        return ChallengeAPI.getURFMatches(bucketStartTime);
+    }
+
+    /**
+     * @param bucketStartTime
+     *            the start time for the 5-minute bucket to query
+     * @return randomized match IDs from that bucket
+     */
+    public static List<Long> getURFMatchIDs(final Date bucketStartTime) {
+        return ChallengeAPI.getURFMatchIDs(bucketStartTime);
+    }
+
+    /**
+     * @param bucketStartTime
+     *            the start time for the 5-minute bucket to query (in epoch
+     *            seconds)
+     * @return randomized match IDs from that bucket
+     */
+    public static List<Long> getURFMatchIDs(final long bucketStartTime) {
+        return ChallengeAPI.getURFMatchIDs(bucketStartTime);
     }
 
     /**

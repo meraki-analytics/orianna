@@ -6,6 +6,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,6 +93,7 @@ public abstract class BaseRiotAPI {
         API_VERSIONS.put("stats", "v1.3");
         API_VERSIONS.put("summoner", "v1.4");
         API_VERSIONS.put("team", "v2.4");
+        API_VERSIONS.put("challenge", "v4.1");
     }
 
     /**
@@ -989,6 +991,31 @@ public abstract class BaseRiotAPI {
      */
     public static Map<Long, List<Team>> getTeamsBySummoner(final long... summonerIDs) {
         return TeamAPI.getTeamsBySummoner(summonerIDs);
+    }
+
+    /**
+     * @param bucketStartTime
+     *            the start time for the 5-minute bucket to query
+     * @return randomized match IDs from that bucket
+     * @see <a
+     *      href="https://developer.riotgames.com/api/methods#!/980/3340">Riot
+     *      API Specification</a>
+     */
+    public static List<Long> getURFMatchIDs(final Date bucketStartTime) {
+        return ChallengeAPI.getURFMatchIDs(bucketStartTime);
+    }
+
+    /**
+     * @param bucketStartTime
+     *            the start time for the 5-minute bucket to query (in epoch
+     *            seconds)
+     * @return randomized match IDs from that bucket
+     * @see <a
+     *      href="https://developer.riotgames.com/api/methods#!/980/3340">Riot
+     *      API Specification</a>
+     */
+    public static List<Long> getURFMatchIDs(final long bucketStartTime) {
+        return ChallengeAPI.getURFMatchIDs(bucketStartTime);
     }
 
     /**

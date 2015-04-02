@@ -1,6 +1,7 @@
 package com.robrua.orianna.api.core;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -3535,6 +3536,108 @@ public abstract class AsyncRiotAPI {
                 else {
                     try {
                         action.perform(TeamAPI.getTeamsBySummonerName(summonerName));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
+     *            what to do with the matches
+     * @param bucketStartTime
+     *            the start time for the 5-minute bucket to query
+     */
+    public static void getURFMatches(final Action<List<Match>> action, final Date bucketStartTime) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChallengeAPI.getURFMatches(bucketStartTime);
+                }
+                else {
+                    try {
+                        action.perform(ChallengeAPI.getURFMatches(bucketStartTime));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
+     *            what to do with the matches
+     * @param bucketStartTime
+     *            the start time for the 5-minute bucket to query (in epoch
+     *            seconds)
+     */
+    public static void getURFMatches(final Action<List<Match>> action, final long bucketStartTime) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChallengeAPI.getURFMatches(bucketStartTime);
+                }
+                else {
+                    try {
+                        action.perform(ChallengeAPI.getURFMatches(bucketStartTime));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
+     *            what to do with the match IDs
+     * @param bucketStartTime
+     *            the start time for the 5-minute bucket to query
+     */
+    public static void getURFMatchIDs(final Action<List<Long>> action, final Date bucketStartTime) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChallengeAPI.getURFMatchIDs(bucketStartTime);
+                }
+                else {
+                    try {
+                        action.perform(ChallengeAPI.getURFMatchIDs(bucketStartTime));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
+     *            what to do with the match IDs
+     * @param bucketStartTime
+     *            the start time for the 5-minute bucket to query (in epoch
+     *            seconds)
+     */
+    public static void getURFMatchIDs(final Action<List<Long>> action, final long bucketStartTime) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChallengeAPI.getURFMatchIDs(bucketStartTime);
+                }
+                else {
+                    try {
+                        action.perform(ChallengeAPI.getURFMatchIDs(bucketStartTime));
                     }
                     catch(final APIException e) {
                         action.handle(e);
