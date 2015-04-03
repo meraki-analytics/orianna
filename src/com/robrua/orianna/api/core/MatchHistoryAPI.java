@@ -21,6 +21,10 @@ public abstract class MatchHistoryAPI {
     public static List<MatchSummary> getMatchHistory(final long summonerID) {
         final PlayerHistory hist = BaseRiotAPI.getMatchHistory(summonerID);
 
+        if(hist.getMatches() == null) {
+            return null;
+        }
+        
         final List<MatchSummary> history = new ArrayList<>(hist.getMatches().size());
         for(final com.robrua.orianna.type.dto.matchhistory.MatchSummary match : hist.getMatches()) {
             history.add(new MatchSummary(match));
@@ -48,6 +52,10 @@ public abstract class MatchHistoryAPI {
     public static List<MatchSummary> getMatchHistory(final long summonerID, final int beginIndex) {
         final PlayerHistory hist = BaseRiotAPI.getMatchHistory(summonerID, beginIndex);
 
+        if(hist.getMatches() == null) {
+            return null;
+        }
+        
         final List<MatchSummary> history = new ArrayList<>(hist.getMatches().size());
         for(final com.robrua.orianna.type.dto.matchhistory.MatchSummary match : hist.getMatches()) {
             history.add(new MatchSummary(match));
@@ -81,6 +89,10 @@ public abstract class MatchHistoryAPI {
 
         final PlayerHistory hist = BaseRiotAPI.getMatchHistory(summonerID, beginIndex, championIDs);
 
+        if(hist.getMatches() == null) {
+            return null;
+        }
+        
         final List<MatchSummary> history = new ArrayList<>(hist.getMatches().size());
         for(final com.robrua.orianna.type.dto.matchhistory.MatchSummary match : hist.getMatches()) {
             history.add(new MatchSummary(match));
@@ -110,6 +122,10 @@ public abstract class MatchHistoryAPI {
     public static List<MatchSummary> getMatchHistory(final long summonerID, final int beginIndex, final QueueType queueType) {
         final PlayerHistory hist = BaseRiotAPI.getMatchHistory(summonerID, beginIndex, queueType);
 
+        if(hist.getMatches() == null) {
+            return null;
+        }
+        
         final List<MatchSummary> history = new ArrayList<>(hist.getMatches().size());
         for(final com.robrua.orianna.type.dto.matchhistory.MatchSummary match : hist.getMatches()) {
             history.add(new MatchSummary(match));
@@ -145,6 +161,10 @@ public abstract class MatchHistoryAPI {
 
         final PlayerHistory hist = BaseRiotAPI.getMatchHistory(summonerID, beginIndex, queueType, championIDs);
 
+        if(hist.getMatches() == null) {
+            return null;
+        }
+        
         final List<MatchSummary> history = new ArrayList<>(hist.getMatches().size());
         for(final com.robrua.orianna.type.dto.matchhistory.MatchSummary match : hist.getMatches()) {
             history.add(new MatchSummary(match));
@@ -176,6 +196,10 @@ public abstract class MatchHistoryAPI {
 
         final PlayerHistory hist = BaseRiotAPI.getMatchHistory(summonerID, championIDs);
 
+        if(hist.getMatches() == null) {
+            return null;
+        }
+        
         final List<MatchSummary> history = new ArrayList<>(hist.getMatches().size());
         for(final com.robrua.orianna.type.dto.matchhistory.MatchSummary match : hist.getMatches()) {
             history.add(new MatchSummary(match));
@@ -203,6 +227,10 @@ public abstract class MatchHistoryAPI {
     public static List<MatchSummary> getMatchHistory(final long summonerID, final QueueType queueType) {
         final PlayerHistory hist = BaseRiotAPI.getMatchHistory(summonerID, queueType);
 
+        if(hist.getMatches() == null) {
+            return null;
+        }
+        
         final List<MatchSummary> history = new ArrayList<>(hist.getMatches().size());
         for(final com.robrua.orianna.type.dto.matchhistory.MatchSummary match : hist.getMatches()) {
             history.add(new MatchSummary(match));
@@ -236,6 +264,10 @@ public abstract class MatchHistoryAPI {
 
         final PlayerHistory hist = BaseRiotAPI.getMatchHistory(summonerID, queueType, championIDs);
 
+        if(hist.getMatches() == null) {
+            return null;
+        }
+        
         final List<MatchSummary> history = new ArrayList<>(hist.getMatches().size());
         for(final com.robrua.orianna.type.dto.matchhistory.MatchSummary match : hist.getMatches()) {
             history.add(new MatchSummary(match));
