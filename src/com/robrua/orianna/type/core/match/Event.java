@@ -12,8 +12,8 @@ import com.robrua.orianna.type.core.staticdata.Item;
 import com.robrua.orianna.type.exception.MissingDataException;
 
 public class Event extends OriannaObject<com.robrua.orianna.type.dto.match.Event> {
-    private static final long serialVersionUID = -5805690031607393709L;
-    private final Participant creator, participant, victim;
+    private static final long serialVersionUID = 1981502246740363640L;
+    private final Participant creator, participant, victim, killer;
     private Item itemAfter, itemBefore, item;
     private final List<Participant> participants;
     private Position position;
@@ -33,6 +33,12 @@ public class Event extends OriannaObject<com.robrua.orianna.type.dto.match.Event
         creator = participants.get(data.getCreatorId());
         participant = participants.get(data.getParticipantId());
         victim = participants.get(data.getVictimId());
+        
+        if(data.getKillerId() != null && data.getKillerId() != 0) {
+            killer = participants.get(data.getKillerId());
+        } else {
+            killer = null;
+        }
     }
 
     /**
@@ -181,13 +187,12 @@ public class Event extends OriannaObject<com.robrua.orianna.type.dto.match.Event
     }
 
     /**
-     * The killer ID of the event. Only present if relevant. Killer ID 0
-     * indicates a minion.
+     * The killer of the event. Only present if relevant. Null on a kill represents a minion.
      *
      * @return the killer ID of the event
      */
-    public int getKillerID() {
-        return super.getInteger(data.getKillerId());
+    public Participant getKiller() {
+        return killer;
     }
 
     /**
