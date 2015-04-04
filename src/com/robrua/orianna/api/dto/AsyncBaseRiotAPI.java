@@ -1696,7 +1696,7 @@ public class AsyncBaseRiotAPI {
      *            what to do with the match IDs
      * @param bucketStartTime
      *            the start time for the 5-minute bucket to query (in epoch
-     *            seconds)
+     *            milliseconds)
      * @see <a
      *      href="https://developer.riotgames.com/api/methods#!/980/3340">Riot
      *      API Specification</a>

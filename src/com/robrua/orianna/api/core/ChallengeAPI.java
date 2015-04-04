@@ -19,7 +19,7 @@ public abstract class ChallengeAPI {
     /**
      * @param bucketStartTime
      *            the start time for the 5-minute bucket to query (in epoch
-     *            seconds)
+     *            milliseconds)
      * @return randomized matches from that bucket
      */
     public static List<Match> getURFMatches(final long bucketStartTime) {
@@ -38,7 +38,7 @@ public abstract class ChallengeAPI {
     /**
      * @param bucketStartTime
      *            the start time for the 5-minute bucket to query (in epoch
-     *            seconds)
+     *            milliseconds)
      * @return randomized match IDs from that bucket
      */
     public static List<Long> getURFMatchIDs(final long bucketStartTime) {
