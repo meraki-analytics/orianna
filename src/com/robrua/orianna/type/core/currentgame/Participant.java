@@ -181,7 +181,7 @@ public class Participant extends OriannaObject<com.robrua.orianna.type.dto.curre
             return spell2;
         }
 
-        final Long l = data.getSpell1Id();
+        final Long l = data.getSpell2Id();
         if(l == null) {
             throw new MissingDataException("Summoner Spell #2 ID is null.");
         }
