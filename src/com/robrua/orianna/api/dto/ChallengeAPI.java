@@ -34,7 +34,7 @@ public abstract class ChallengeAPI {
     /**
      * @param bucketStartTime
      *            the start time for the 5-minute bucket to query (in epoch
-     *            seconds)
+     *            milliseconds)
      * @return randomized match IDs from that bucket
      * @see <a
      *      href="https://developer.riotgames.com/api/methods#!/980/3340">Riot

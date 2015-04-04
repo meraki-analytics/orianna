@@ -3575,7 +3575,7 @@ public abstract class AsyncRiotAPI {
      *            what to do with the matches
      * @param bucketStartTime
      *            the start time for the 5-minute bucket to query (in epoch
-     *            seconds)
+     *            milliseconds)
      */
     public static void getURFMatches(final Action<List<Match>> action, final long bucketStartTime) {
         new Thread(new Runnable() {
@@ -3626,7 +3626,7 @@ public abstract class AsyncRiotAPI {
      *            what to do with the match IDs
      * @param bucketStartTime
      *            the start time for the 5-minute bucket to query (in epoch
-     *            seconds)
+     *            milliseconds)
      */
     public static void getURFMatchIDs(final Action<List<Long>> action, final long bucketStartTime) {
         new Thread(new Runnable() {
