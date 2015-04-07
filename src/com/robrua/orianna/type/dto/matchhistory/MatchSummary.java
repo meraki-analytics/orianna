@@ -215,8 +215,10 @@ public class MatchSummary extends OriannaDto {
     public Set<Long> getMasteryIDs() {
         final Set<Long> set = new HashSet<>();
         for(final Participant p : participants) {
-            for(final Mastery mastery : p.getMasteries()) {
-                set.add(mastery.getMasteryId());
+            if(p.getMasteries() != null) {
+                for(final Mastery mastery : p.getMasteries()) {
+                    set.add(mastery.getMasteryId());
+                }
             }
         }
 
