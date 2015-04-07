@@ -27,8 +27,10 @@ public class Event extends OriannaObject<com.robrua.orianna.type.dto.match.Event
     public Event(final com.robrua.orianna.type.dto.match.Event data, final Map<Integer, Participant> participants) {
         super(data, com.robrua.orianna.type.dto.match.Event.class);
         this.participants = new ArrayList<>();
-        for(final Integer ID : data.getAssistingParticipantIds()) {
-            this.participants.add(participants.get(ID));
+        if(data.getAssistingParticipantIds() != null) {
+            for(final Integer ID : data.getAssistingParticipantIds()) {
+                this.participants.add(participants.get(ID));
+            }
         }
         creator = participants.get(data.getCreatorId());
         participant = participants.get(data.getParticipantId());
