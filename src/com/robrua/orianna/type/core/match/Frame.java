@@ -33,8 +33,10 @@ public class Frame extends OriannaObject<com.robrua.orianna.type.dto.match.Frame
     public List<Event> getEvents() {
         if(events == null) {
             events = new ArrayList<>();
-            for(final com.robrua.orianna.type.dto.match.Event event : data.getEvents()) {
-                events.add(new Event(event, participants));
+            if(data.getEvents() != null) {
+                for(final com.robrua.orianna.type.dto.match.Event event : data.getEvents()) {
+                    events.add(new Event(event, participants));
+                }
             }
         }
 
