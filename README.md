@@ -12,7 +12,7 @@ We've also changed the core architecture to be more resilient to future API chan
 - Automatically throttles requests to fit rate limits
 - Ensures well-formed API requests
 - Replaces foreign key ID values with the referenced object
-- Option to lazy load references objects right when you need them or load them automatically upfront with minimal API calls
+- Option to lazy load referenced objects right when you need them or load them automatically upfront with minimal API calls
 - Caches static data and summoner information to accelerate access and reduce API load
 - Automatic databasing using [Hibernate](http://hibernate.org/). See [the project here.](https://github.com/robrua/orianna-hibernate)
 
@@ -38,7 +38,7 @@ Standard Java
 <dependency>
   <groupId>com.robrua</groupId>
   <artifactId>orianna</artifactId>
-  <version>2.2.3</version>
+  <version>2.2.4</version>
 </dependency>
 ```
 
@@ -47,7 +47,7 @@ Android
 <dependency>
   <groupId>com.robrua</groupId>
   <artifactId>orianna-android</artifactId>
-  <version>2.2.3</version>
+  <version>2.2.4</version>
 </dependency>
 ```
 
@@ -60,7 +60,7 @@ repositories {
 }
 
 dependencies {
-	compile 'com.robrua:orianna:2.2.3'
+	compile 'com.robrua:orianna:2.2.4'
 }
 ```
 
@@ -71,7 +71,7 @@ repositories {
 }
 
 dependencies {
-	compile 'com.robrua:orianna-android:2.2.3'
+	compile 'com.robrua:orianna-android:2.2.4'
 }
 ```
 

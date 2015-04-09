@@ -77,7 +77,7 @@ public abstract class BaseRiotAPI {
     static Region mirror, region;
     private static boolean printCalls = false;
     private static HttpHost proxy;
-    private static RateLimiter rateLimiter = RiotAPI.getDefaultDevelopmentRateLimiter();
+    private static RateLimiter rateLimiter = new MultiRateLimiter(RiotAPI.getDefaultDevelopmentRateLimits());
 
     static {
         API_VERSIONS = new HashMap<>();

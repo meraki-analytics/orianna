@@ -2,6 +2,7 @@ package com.robrua.orianna.api.core;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -9,9 +10,7 @@ import com.robrua.orianna.api.dto.BaseRiotAPI;
 import com.robrua.orianna.store.Cache;
 import com.robrua.orianna.store.DataStore;
 import com.robrua.orianna.type.api.LoadPolicy;
-import com.robrua.orianna.type.api.MultiRateLimiter;
 import com.robrua.orianna.type.api.RateLimit;
-import com.robrua.orianna.type.api.RateLimiter;
 import com.robrua.orianna.type.core.champion.ChampionStatus;
 import com.robrua.orianna.type.core.common.QueueType;
 import com.robrua.orianna.type.core.common.Region;
@@ -198,12 +197,15 @@ public abstract class RiotAPI {
     }
 
     /**
-     * Gets a rate limiter for the default development rate limit
+     * Gets the default development rate limits
      *
-     * @return default development rate limiter
+     * @return default development rate limites
      */
-    public static RateLimiter getDefaultDevelopmentRateLimiter() {
-        return new MultiRateLimiter(new RateLimit(10, 10), new RateLimit(500, 600));
+    public static List<RateLimit> getDefaultDevelopmentRateLimits() {
+        List<RateLimit> limits = new LinkedList<>();
+        limits.add(new RateLimit(10, 10));
+        limits.add(new RateLimit(500, 600));
+        return limits;
     }
 
     /**
