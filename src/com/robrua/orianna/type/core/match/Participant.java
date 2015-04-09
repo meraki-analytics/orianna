@@ -12,6 +12,8 @@ import com.robrua.orianna.type.core.staticdata.Champion;
 import com.robrua.orianna.type.core.staticdata.SummonerSpell;
 import com.robrua.orianna.type.core.summoner.Summoner;
 import com.robrua.orianna.type.dto.match.CombinedParticipant;
+import com.robrua.orianna.type.dto.match.ParticipantIdentity;
+import com.robrua.orianna.type.dto.match.Player;
 import com.robrua.orianna.type.exception.MissingDataException;
 
 public class Participant extends OriannaObject<CombinedParticipant> {
@@ -161,7 +163,17 @@ public class Participant extends OriannaObject<CombinedParticipant> {
             return summoner;
         }
 
-        final Long l = data.getIdentity().getPlayer().getSummonerId();
+        ParticipantIdentity identity = data.getIdentity();
+        if(identity == null) {
+            return null;
+        }
+        
+        Player player = identity.getPlayer();
+        if(player == null) {
+            return null;
+        }
+        
+        final Long l = player.getSummonerId();
         if(l == null) {
             throw new MissingDataException("Summoner ID is null.");
         }
@@ -275,6 +287,6 @@ public class Participant extends OriannaObject<CombinedParticipant> {
      */
     @Override
     public String toString() {
-        return "Participant (" + getSummonerName() + " as " + getChampion() + ")";
+        return "Participant (" + getChampion() + ")";
     }
 }
