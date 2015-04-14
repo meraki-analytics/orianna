@@ -24,7 +24,7 @@ public abstract class MatchHistoryAPI {
         if(hist.getMatches() == null) {
             return null;
         }
-        
+
         final List<MatchSummary> history = new ArrayList<>(hist.getMatches().size());
         for(final com.robrua.orianna.type.dto.matchhistory.MatchSummary match : hist.getMatches()) {
             history.add(new MatchSummary(match));
@@ -55,7 +55,7 @@ public abstract class MatchHistoryAPI {
         if(hist.getMatches() == null) {
             return null;
         }
-        
+
         final List<MatchSummary> history = new ArrayList<>(hist.getMatches().size());
         for(final com.robrua.orianna.type.dto.matchhistory.MatchSummary match : hist.getMatches()) {
             history.add(new MatchSummary(match));
@@ -92,7 +92,7 @@ public abstract class MatchHistoryAPI {
         if(hist.getMatches() == null) {
             return null;
         }
-        
+
         final List<MatchSummary> history = new ArrayList<>(hist.getMatches().size());
         for(final com.robrua.orianna.type.dto.matchhistory.MatchSummary match : hist.getMatches()) {
             history.add(new MatchSummary(match));
@@ -125,7 +125,7 @@ public abstract class MatchHistoryAPI {
         if(hist.getMatches() == null) {
             return null;
         }
-        
+
         final List<MatchSummary> history = new ArrayList<>(hist.getMatches().size());
         for(final com.robrua.orianna.type.dto.matchhistory.MatchSummary match : hist.getMatches()) {
             history.add(new MatchSummary(match));
@@ -164,7 +164,7 @@ public abstract class MatchHistoryAPI {
         if(hist.getMatches() == null) {
             return null;
         }
-        
+
         final List<MatchSummary> history = new ArrayList<>(hist.getMatches().size());
         for(final com.robrua.orianna.type.dto.matchhistory.MatchSummary match : hist.getMatches()) {
             history.add(new MatchSummary(match));
@@ -199,7 +199,7 @@ public abstract class MatchHistoryAPI {
         if(hist.getMatches() == null) {
             return null;
         }
-        
+
         final List<MatchSummary> history = new ArrayList<>(hist.getMatches().size());
         for(final com.robrua.orianna.type.dto.matchhistory.MatchSummary match : hist.getMatches()) {
             history.add(new MatchSummary(match));
@@ -230,7 +230,7 @@ public abstract class MatchHistoryAPI {
         if(hist.getMatches() == null) {
             return null;
         }
-        
+
         final List<MatchSummary> history = new ArrayList<>(hist.getMatches().size());
         for(final com.robrua.orianna.type.dto.matchhistory.MatchSummary match : hist.getMatches()) {
             history.add(new MatchSummary(match));
@@ -267,7 +267,7 @@ public abstract class MatchHistoryAPI {
         if(hist.getMatches() == null) {
             return null;
         }
-        
+
         final List<MatchSummary> history = new ArrayList<>(hist.getMatches().size());
         for(final com.robrua.orianna.type.dto.matchhistory.MatchSummary match : hist.getMatches()) {
             history.add(new MatchSummary(match));

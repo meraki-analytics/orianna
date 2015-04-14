@@ -163,16 +163,16 @@ public class Participant extends OriannaObject<CombinedParticipant> {
             return summoner;
         }
 
-        ParticipantIdentity identity = data.getIdentity();
+        final ParticipantIdentity identity = data.getIdentity();
         if(identity == null) {
             return null;
         }
-        
-        Player player = identity.getPlayer();
+
+        final Player player = identity.getPlayer();
         if(player == null) {
             return null;
         }
-        
+
         final Long l = player.getSummonerId();
         if(l == null) {
             throw new MissingDataException("Summoner ID is null.");

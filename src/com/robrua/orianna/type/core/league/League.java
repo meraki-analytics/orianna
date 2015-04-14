@@ -69,7 +69,7 @@ public class League extends OriannaObject<com.robrua.orianna.type.dto.league.Lea
         if(getEntries().size() == 1) {
             return getEntries().get(0);
         }
-        
+
         for(final LeagueEntry e : getEntries()) {
             if(e.getID().equals(getParticipantID())) {
                 return e;

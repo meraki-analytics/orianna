@@ -35,10 +35,11 @@ public class Event extends OriannaObject<com.robrua.orianna.type.dto.match.Event
         creator = participants.get(data.getCreatorId());
         participant = participants.get(data.getParticipantId());
         victim = participants.get(data.getVictimId());
-        
+
         if(data.getKillerId() != null && data.getKillerId() != 0) {
             killer = participants.get(data.getKillerId());
-        } else {
+        }
+        else {
             killer = null;
         }
     }
@@ -189,7 +190,8 @@ public class Event extends OriannaObject<com.robrua.orianna.type.dto.match.Event
     }
 
     /**
-     * The killer of the event. Only present if relevant. Null on a kill represents a minion.
+     * The killer of the event. Only present if relevant. Null on a kill
+     * represents a minion.
      *
      * @return the killer ID of the event
      */
