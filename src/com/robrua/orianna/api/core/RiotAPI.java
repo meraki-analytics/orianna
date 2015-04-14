@@ -202,7 +202,7 @@ public abstract class RiotAPI {
      * @return default development rate limites
      */
     public static List<RateLimit> getDefaultDevelopmentRateLimits() {
-        List<RateLimit> limits = new LinkedList<>();
+        final List<RateLimit> limits = new LinkedList<>();
         limits.add(new RateLimit(10, 10));
         limits.add(new RateLimit(500, 600));
         return limits;
