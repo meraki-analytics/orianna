@@ -86,7 +86,7 @@ public abstract class MatchHistoryAPI {
      */
     public static PlayerHistory getMatchHistory(final long summonerID, final int beginIndex, final QueueType queueType) {
         if(!RANKED_QUEUES.contains(queueType)) {
-            throw new IllegalArgumentException("Can't get challenger for a non-ranked queue type!");
+            throw new IllegalArgumentException("Can't get match history for a non-ranked queue type!");
         }
 
         final String request = BaseRiotAPI.API_VERSIONS.get("matchhistory") + "/matchhistory/" + summonerID;
@@ -113,7 +113,7 @@ public abstract class MatchHistoryAPI {
      */
     public static PlayerHistory getMatchHistory(final long summonerID, final int beginIndex, final QueueType queueType, final List<Long> championIDs) {
         if(!RANKED_QUEUES.contains(queueType)) {
-            throw new IllegalArgumentException("Can't get challenger for a non-ranked queue type!");
+            throw new IllegalArgumentException("Can't get match history for a non-ranked queue type!");
         }
 
         final String request = BaseRiotAPI.API_VERSIONS.get("matchhistory") + "/matchhistory/" + summonerID;
@@ -155,7 +155,7 @@ public abstract class MatchHistoryAPI {
      */
     public static PlayerHistory getMatchHistory(final long summonerID, final QueueType queueType) {
         if(!RANKED_QUEUES.contains(queueType)) {
-            throw new IllegalArgumentException("Can't get challenger for a non-ranked queue type!");
+            throw new IllegalArgumentException("Can't get match history for a non-ranked queue type!");
         }
 
         final String request = BaseRiotAPI.API_VERSIONS.get("matchhistory") + "/matchhistory/" + summonerID;
@@ -179,7 +179,7 @@ public abstract class MatchHistoryAPI {
      */
     public static PlayerHistory getMatchHistory(final long summonerID, final QueueType queueType, final List<Long> championIDs) {
         if(!RANKED_QUEUES.contains(queueType)) {
-            throw new IllegalArgumentException("Can't get challenger for a non-ranked queue type!");
+            throw new IllegalArgumentException("Can't get match history for a non-ranked queue type!");
         }
 
         final String request = BaseRiotAPI.API_VERSIONS.get("matchhistory") + "/matchhistory/" + summonerID;
