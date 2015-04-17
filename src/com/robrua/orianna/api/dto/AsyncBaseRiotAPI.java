@@ -370,6 +370,34 @@ public class AsyncBaseRiotAPI {
 
     /**
      * @param action
+     *            what to do with the master league
+     * @param queueType
+     *            the queue type to get the master league for
+     * @see <a
+     *      href="https://developer.riotgames.com/api/methods#!/936/3354">Riot
+     *      API Specification</a>
+     */
+    public static void getMaster(final Action<League> action, final QueueType queueType) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getMaster(queueType);
+                }
+                else {
+                    try {
+                        action.perform(LeagueAPI.getMaster(queueType));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
      *            what to do with the list of all masteries
      * @see <a
      *      href="https://developer.riotgames.com/api/methods#!/938/3251">Riot

@@ -375,6 +375,18 @@ public abstract class BaseRiotAPI {
     }
 
     /**
+     * @param queueType
+     *            the queue type to get the master league for
+     * @return the master league
+     * @see <a
+     *      href="https://developer.riotgames.com/api/methods#!/985/3354">Riot
+     *      API Specification</a>
+     */
+    public static League getMaster(final QueueType queueType) {
+        return LeagueAPI.getMaster(queueType);
+    }
+
+    /**
      * @return the list of all masteries
      * @see <a
      *      href="https://developer.riotgames.com/api/methods#!/938/3251">Riot

@@ -1411,6 +1411,31 @@ public abstract class AsyncRiotAPI {
 
     /**
      * @param action
+     *            what to do with the master league
+     * @param queueType
+     *            the ranked queue type to get the master league of
+     */
+    public static void getMaster(final Action<League> action, final QueueType queueType) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    LeagueAPI.getMaster(queueType);
+                }
+                else {
+                    try {
+                        action.perform(LeagueAPI.getMaster(queueType));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
      *            what to do with all the masteries
      */
     public static void getMasteries(final Action<List<Mastery>> action) {
