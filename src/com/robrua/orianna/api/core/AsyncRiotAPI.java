@@ -11,6 +11,7 @@ import com.robrua.orianna.type.api.Action;
 import com.robrua.orianna.type.api.LoadPolicy;
 import com.robrua.orianna.type.api.RateLimit;
 import com.robrua.orianna.type.core.champion.ChampionStatus;
+import com.robrua.orianna.type.core.common.Locale;
 import com.robrua.orianna.type.core.common.QueueType;
 import com.robrua.orianna.type.core.common.Region;
 import com.robrua.orianna.type.core.common.Season;
@@ -3706,6 +3707,13 @@ public abstract class AsyncRiotAPI {
     }
 
     /**
+     * Reset locale to the default
+     */
+    public static void removeLocale() {
+        BaseRiotAPI.removeLocale();
+    }
+
+    /**
      * Removes any set proxy
      */
     public static void removeProxy() {
@@ -3740,6 +3748,16 @@ public abstract class AsyncRiotAPI {
      */
     public static void setLoadPolicy(final LoadPolicy policy) {
         RiotAPI.setLoadPolicy(policy);
+    }
+
+    /**
+     * Sets the locale (language) to return API results for
+     *
+     * @param newLocale
+     *            the locale to return results for
+     */
+    public static void setLocale(final Locale newLocale) {
+        BaseRiotAPI.setLocale(newLocale);
     }
 
     /**

@@ -84,6 +84,22 @@ public class ParamsBuilder {
     }
 
     /**
+     * Adds a parameter if the value is not null
+     *
+     * @param key
+     *            the key
+     * @param value
+     *            the value
+     * @return this
+     */
+    public ParamsBuilder addIfNotNull(final String key, final Object value) {
+        if(value != null) {
+            map.put(key, value.toString());
+        }
+        return this;
+    }
+
+    /**
      * Gets the parameter map
      *
      * @return the parameter map

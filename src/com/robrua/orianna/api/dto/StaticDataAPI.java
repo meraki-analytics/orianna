@@ -35,7 +35,7 @@ public abstract class StaticDataAPI {
         }
 
         final String request = BaseRiotAPI.API_VERSIONS.get("static-data") + "/champion/" + ID;
-        final Map<String, String> params = new ParamsBuilder().add("champData", "all").build();
+        final Map<String, String> params = new ParamsBuilder().add("champData", "all").addIfNotNull("locale", BaseRiotAPI.locale).build();
         return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, params, true), Champion.class);
     }
 
@@ -47,7 +47,7 @@ public abstract class StaticDataAPI {
      */
     public static ChampionList getChampions() {
         final String request = BaseRiotAPI.API_VERSIONS.get("static-data") + "/champion";
-        final Map<String, String> params = new ParamsBuilder().add("champData", "all").build();
+        final Map<String, String> params = new ParamsBuilder().add("champData", "all").addIfNotNull("locale", BaseRiotAPI.locale).build();
         return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, params, true), ChampionList.class);
     }
 
@@ -61,7 +61,7 @@ public abstract class StaticDataAPI {
      */
     public static Item getItem(final long ID) {
         final String request = BaseRiotAPI.API_VERSIONS.get("static-data") + "/item/" + ID;
-        final Map<String, String> params = new ParamsBuilder().add("itemData", "all").build();
+        final Map<String, String> params = new ParamsBuilder().add("itemData", "all").addIfNotNull("locale", BaseRiotAPI.locale).build();
         return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, params, true), Item.class);
     }
 
@@ -73,7 +73,7 @@ public abstract class StaticDataAPI {
      */
     public static ItemList getItems() {
         final String request = BaseRiotAPI.API_VERSIONS.get("static-data") + "/item";
-        final Map<String, String> params = new ParamsBuilder().add("itemListData", "all").build();
+        final Map<String, String> params = new ParamsBuilder().add("itemListData", "all").addIfNotNull("locale", BaseRiotAPI.locale).build();
         return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, params, true), ItemList.class);
     }
 
@@ -97,7 +97,8 @@ public abstract class StaticDataAPI {
      */
     public static LanguageStrings getLanguageStrings() {
         final String request = BaseRiotAPI.API_VERSIONS.get("static-data") + "/language-strings";
-        return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, null, true), LanguageStrings.class);
+        final Map<String, String> params = new ParamsBuilder().addIfNotNull("locale", BaseRiotAPI.locale).build();
+        return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, params, true), LanguageStrings.class);
     }
 
     /**
@@ -119,7 +120,7 @@ public abstract class StaticDataAPI {
      */
     public static MasteryList getMasteries() {
         final String request = BaseRiotAPI.API_VERSIONS.get("static-data") + "/mastery";
-        final Map<String, String> params = new ParamsBuilder().add("masteryListData", "all").build();
+        final Map<String, String> params = new ParamsBuilder().add("masteryListData", "all").addIfNotNull("locale", BaseRiotAPI.locale).build();
         return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, params, true), MasteryList.class);
     }
 
@@ -133,7 +134,7 @@ public abstract class StaticDataAPI {
      */
     public static Mastery getMastery(final long ID) {
         final String request = BaseRiotAPI.API_VERSIONS.get("static-data") + "/mastery/" + ID;
-        final Map<String, String> params = new ParamsBuilder().add("masteryData", "all").build();
+        final Map<String, String> params = new ParamsBuilder().add("masteryData", "all").addIfNotNull("locale", BaseRiotAPI.locale).build();
         return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, params, true), Mastery.class);
     }
 
@@ -158,7 +159,7 @@ public abstract class StaticDataAPI {
      */
     public static Rune getRune(final long ID) {
         final String request = BaseRiotAPI.API_VERSIONS.get("static-data") + "/rune/" + ID;
-        final Map<String, String> params = new ParamsBuilder().add("runeData", "all").build();
+        final Map<String, String> params = new ParamsBuilder().add("runeData", "all").addIfNotNull("locale", BaseRiotAPI.locale).build();
         return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, params, true), Rune.class);
     }
 
@@ -170,7 +171,7 @@ public abstract class StaticDataAPI {
      */
     public static RuneList getRunes() {
         final String request = BaseRiotAPI.API_VERSIONS.get("static-data") + "/rune";
-        final Map<String, String> params = new ParamsBuilder().add("runeListData", "all").build();
+        final Map<String, String> params = new ParamsBuilder().add("runeListData", "all").addIfNotNull("locale", BaseRiotAPI.locale).build();
         return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, params, true), RuneList.class);
     }
 
@@ -184,7 +185,7 @@ public abstract class StaticDataAPI {
      */
     public static SummonerSpell getSummonerSpell(final long ID) {
         final String request = BaseRiotAPI.API_VERSIONS.get("static-data") + "/summoner-spell/" + ID;
-        final Map<String, String> params = new ParamsBuilder().add("spellData", "all").build();
+        final Map<String, String> params = new ParamsBuilder().add("spellData", "all").addIfNotNull("locale", BaseRiotAPI.locale).build();
         return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, params, true), SummonerSpell.class);
     }
 
@@ -196,7 +197,7 @@ public abstract class StaticDataAPI {
      */
     public static SummonerSpellList getSummonerSpells() {
         final String request = BaseRiotAPI.API_VERSIONS.get("static-data") + "/summoner-spell";
-        final Map<String, String> params = new ParamsBuilder().add("spellData", "all").build();
+        final Map<String, String> params = new ParamsBuilder().add("spellData", "all").addIfNotNull("locale", BaseRiotAPI.locale).build();
         return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, params, true), SummonerSpellList.class);
     }
 
