@@ -450,4 +450,20 @@ public abstract class LeagueAPI {
     public static List<League> getLeaguesByTeamID(final String teamID) {
         return getLeaguesByTeamID(new String[] {teamID}).get(0);
     }
+
+    /**
+     * @param queueType
+     *            the ranked queue type to get the master league of
+     * @return the master league
+     */
+    public static League getMaster(final QueueType queueType) {
+        final com.robrua.orianna.type.dto.league.League league = BaseRiotAPI.getMaster(queueType);
+
+        if(RiotAPI.loadPolicy == LoadPolicy.UPFRONT) {
+            RiotAPI.getSummonersByID(new ArrayList<>(league.getSummonerIDs()));
+            RiotAPI.getTeams(new ArrayList<>(league.getTeamIDs()));
+        }
+
+        return new League(league);
+    }
 }

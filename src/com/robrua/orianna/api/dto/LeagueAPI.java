@@ -37,6 +37,24 @@ public abstract class LeagueAPI {
     }
 
     /**
+     * @param queueType
+     *            the queue type to get the master league for
+     * @return the master league
+     * @see <a
+     *      href="https://developer.riotgames.com/api/methods#!/985/3354">Riot
+     *      API Specification</a>
+     */
+    public static League getMaster(final QueueType queueType) {
+        if(!RANKED_QUEUES.contains(queueType)) {
+            throw new IllegalArgumentException("Can't get master for a non-ranked queue type!");
+        }
+
+        final String request = BaseRiotAPI.API_VERSIONS.get("league") + "/league/master";
+        final Map<String, String> params = new ParamsBuilder().add("type", queueType).build();
+        return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, params, false), League.class);
+    }
+
+    /**
      * @param summonerIDs
      *            the summoners to get league entries for
      * @return the summoners' league entries

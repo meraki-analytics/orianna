@@ -541,6 +541,15 @@ public abstract class RiotAPI {
     }
 
     /**
+     * @param queueType
+     *            the ranked queue type to get the master league of
+     * @return the master league
+     */
+    public static League getMaster(final QueueType queueType) {
+        return LeagueAPI.getMaster(queueType);
+    }
+
+    /**
      * @return all the masteries
      */
     public static List<Mastery> getMasteries() {
