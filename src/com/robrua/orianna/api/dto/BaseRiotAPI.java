@@ -30,6 +30,7 @@ import com.robrua.orianna.type.api.MultiRateLimiter;
 import com.robrua.orianna.type.api.RateLimit;
 import com.robrua.orianna.type.api.RateLimiter;
 import com.robrua.orianna.type.api.SingleRateLimiter;
+import com.robrua.orianna.type.core.common.Locale;
 import com.robrua.orianna.type.core.common.QueueType;
 import com.robrua.orianna.type.core.common.Region;
 import com.robrua.orianna.type.core.common.Season;
@@ -74,6 +75,7 @@ public abstract class BaseRiotAPI {
     private static CloseableHttpClient CLIENT = HttpClients.createDefault();
     static final Gson GSON = new GsonBuilder().registerTypeAdapter(ChampionSpell.class, new ChampionSpellDeserializer())
             .registerTypeAdapter(SummonerSpell.class, new SummonerSpellDeserializer()).create();
+    static Locale locale;
     static Region mirror, region;
     private static boolean printCalls = false;
     private static HttpHost proxy;
@@ -1051,6 +1053,13 @@ public abstract class BaseRiotAPI {
     }
 
     /**
+     * Reset locale to the default
+     */
+    public static void removeLocale() {
+        locale = null;
+    }
+
+    /**
      * Removes any set proxy
      */
     public static void removeProxy() {
@@ -1065,6 +1074,16 @@ public abstract class BaseRiotAPI {
      */
     public static void setAPIKey(final String newAPIKey) {
         APIKey = newAPIKey;
+    }
+
+    /**
+     * Sets the locale (language) to return API results for
+     *
+     * @param newLocale
+     *            the locale to return results for
+     */
+    public static void setLocale(final Locale newLocale) {
+        locale = newLocale;
     }
 
     /**

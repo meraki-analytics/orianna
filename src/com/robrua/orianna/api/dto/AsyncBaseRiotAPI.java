@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.robrua.orianna.type.api.Action;
 import com.robrua.orianna.type.api.RateLimit;
+import com.robrua.orianna.type.core.common.Locale;
 import com.robrua.orianna.type.core.common.QueueType;
 import com.robrua.orianna.type.core.common.Region;
 import com.robrua.orianna.type.core.common.Season;
@@ -1785,6 +1786,13 @@ public class AsyncBaseRiotAPI {
     }
 
     /**
+     * Reset locale to the default
+     */
+    public static void removeLocale() {
+        BaseRiotAPI.removeLocale();
+    }
+
+    /**
      * Removes any set proxy
      */
     public static void removeProxy() {
@@ -1799,6 +1807,16 @@ public class AsyncBaseRiotAPI {
      */
     public static void setAPIKey(final String newAPIKey) {
         BaseRiotAPI.setAPIKey(newAPIKey);
+    }
+
+    /**
+     * Sets the locale (language) to return API results for
+     *
+     * @param newLocale
+     *            the locale to return results for
+     */
+    public static void setLocale(final Locale newLocale) {
+        BaseRiotAPI.setLocale(newLocale);
     }
 
     /**

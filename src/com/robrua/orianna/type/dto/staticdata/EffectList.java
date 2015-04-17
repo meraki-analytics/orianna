@@ -94,6 +94,10 @@ public class EffectList extends OriannaDto {
      */
     @Override
     public String toString() {
+        if(list == null) {
+            return "null";
+        }
+
         return list.toString();
     }
 }
