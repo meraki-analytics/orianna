@@ -30,7 +30,6 @@ import com.robrua.orianna.type.api.MultiRateLimiter;
 import com.robrua.orianna.type.api.RateLimit;
 import com.robrua.orianna.type.api.RateLimiter;
 import com.robrua.orianna.type.api.SingleRateLimiter;
-import com.robrua.orianna.type.core.common.Locale;
 import com.robrua.orianna.type.core.common.QueueType;
 import com.robrua.orianna.type.core.common.Region;
 import com.robrua.orianna.type.core.common.Season;
@@ -75,7 +74,7 @@ public abstract class BaseRiotAPI {
     private static CloseableHttpClient CLIENT = HttpClients.createDefault();
     static final Gson GSON = new GsonBuilder().registerTypeAdapter(ChampionSpell.class, new ChampionSpellDeserializer())
             .registerTypeAdapter(SummonerSpell.class, new SummonerSpellDeserializer()).create();
-    static Locale locale;
+    static String locale;
     static Region mirror, region;
     private static boolean printCalls = false;
     private static HttpHost proxy;
@@ -1082,7 +1081,11 @@ public abstract class BaseRiotAPI {
      * @param newLocale
      *            the locale to return results for
      */
-    public static void setLocale(final Locale newLocale) {
+    public static void setLocale(final String newLocale) {
+        if(!getLanguages().contains(newLocale)) {
+            throw new IllegalArgumentException(newLocale + " is not a supported locale. Use getLanguages() to find valid locales.");
+        }
+        
         locale = newLocale;
     }
 

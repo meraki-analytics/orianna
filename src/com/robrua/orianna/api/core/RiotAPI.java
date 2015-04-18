@@ -12,7 +12,6 @@ import com.robrua.orianna.store.DataStore;
 import com.robrua.orianna.type.api.LoadPolicy;
 import com.robrua.orianna.type.api.RateLimit;
 import com.robrua.orianna.type.core.champion.ChampionStatus;
-import com.robrua.orianna.type.core.common.Locale;
 import com.robrua.orianna.type.core.common.QueueType;
 import com.robrua.orianna.type.core.common.Region;
 import com.robrua.orianna.type.core.common.Season;
@@ -1452,7 +1451,7 @@ public abstract class RiotAPI {
      * @param newLocale
      *            the locale to return results for
      */
-    public static void setLocale(final Locale newLocale) {
+    public static void setLocale(final String newLocale) {
         BaseRiotAPI.setLocale(newLocale);
     }
 
