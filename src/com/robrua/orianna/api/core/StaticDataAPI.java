@@ -28,7 +28,7 @@ import com.robrua.orianna.type.dto.staticdata.SummonerSpellList;
 
 public abstract class StaticDataAPI {
     private static Set<Long> IGNORE_ITEMS = new HashSet<>(Arrays.asList(new Long[] {0L, 2037L, 2039L, 2040L, 3005L, 3039L, 3128L, 3131L, 3167L, 3168L, 3169L,
-            3176L, 3171L, 3186L, 3188L, 3207L, 3209L, 3210L, 3407L, 3408L, 3409L, 3413L, 3415L, 3419L, 3420L}));
+            3176L, 3171L, 3186L, 3188L, 3207L, 3209L, 3210L, 3405L, 3407L, 3408L, 3409L, 3413L, 3415L, 3419L, 3420L}));
 
     /**
      * @param ID
