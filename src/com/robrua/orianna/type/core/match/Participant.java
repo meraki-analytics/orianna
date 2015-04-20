@@ -287,6 +287,9 @@ public class Participant extends OriannaObject<CombinedParticipant> {
      */
     @Override
     public String toString() {
+        if(getSummonerName() != null) {
+            return "Participant (" + getSummonerName() + " on " + getChampion() + ")";
+        }
         return "Participant (" + getChampion() + ")";
     }
 }
