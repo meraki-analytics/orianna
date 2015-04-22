@@ -43,6 +43,11 @@ public abstract class CloseableIterator<T> implements Iterator<T>, AutoCloseable
             public T next() {
                 return iterator.next();
             }
+
+            @Override
+            public void remove() {
+                iterator.remove();
+            }
         };
     }
 }
