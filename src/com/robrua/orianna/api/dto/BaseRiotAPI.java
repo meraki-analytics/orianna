@@ -1085,7 +1085,7 @@ public abstract class BaseRiotAPI {
         if(!getLanguages().contains(newLocale)) {
             throw new IllegalArgumentException(newLocale + " is not a supported locale. Use getLanguages() to find valid locales.");
         }
-        
+
         locale = newLocale;
     }
 
