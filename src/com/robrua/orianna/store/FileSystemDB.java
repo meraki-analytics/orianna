@@ -53,6 +53,11 @@ public class FileSystemDB extends DataStore {
             final File file = files.next();
             return read(file, clazz);
         }
+
+        @Override
+        public void remove() {
+            files.remove();
+        }
     }
 
     private static final String HAVE_ALL_NAME = "meta";
