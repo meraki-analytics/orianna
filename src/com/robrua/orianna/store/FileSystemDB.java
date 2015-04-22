@@ -31,6 +31,7 @@ public class FileSystemDB extends DataStore {
     public static class FSIterator<T extends OriannaObject<?>> implements Iterator<T> {
         private final Class<T> clazz;
         private final Iterator<File> files;
+        private File lastFile = null;
 
         /**
          * @param folder
@@ -50,12 +51,15 @@ public class FileSystemDB extends DataStore {
 
         @Override
         public T next() {
-            final File file = files.next();
-            return read(file, clazz);
+            lastFile = files.next();
+            return read(lastFile, clazz);
         }
 
         @Override
         public void remove() {
+            if(lastFile != null) {
+                lastFile.delete();
+            }
             files.remove();
         }
     }
