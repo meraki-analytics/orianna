@@ -48,6 +48,21 @@ public class Timeline extends OriannaObject<com.robrua.orianna.type.dto.match.Ti
         return Collections.unmodifiableList(frames);
     }
 
+    /**
+     * @param participant
+     *            the participant to get frames for
+     * @return that participant's frames
+     */
+    public List<ParticipantFrame> getFrames(final Participant participant) {
+        final List<Frame> frames = getFrames();
+        final List<ParticipantFrame> parts = new ArrayList<>(frames.size());
+        for(final Frame frame : frames) {
+            parts.add(frame.getFrameForParticipant(participant));
+        }
+
+        return parts;
+    }
+
     /*
      * (non-Javadoc)
      * @see java.lang.Object#toString()
