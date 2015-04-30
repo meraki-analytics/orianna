@@ -74,8 +74,10 @@ public class MasteryPages extends OriannaDto {
     public Set<Long> getMasteryIDs() {
         final Set<Long> set = new HashSet<>();
         for(final MasteryPage page : pages) {
-            for(final Mastery mastery : page.getMasteries()) {
-                set.add(mastery.getId().longValue());
+            if(page.getMasteries() != null) {
+                for(final Mastery mastery : page.getMasteries()) {
+                    set.add(mastery.getId().longValue());
+                }
             }
         }
 
