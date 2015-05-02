@@ -28,8 +28,10 @@ import com.robrua.orianna.type.dto.staticdata.SummonerSpellList;
 
 public abstract class StaticDataAPI {
     private static Set<Long> IGNORE_ITEMS = new HashSet<>(Arrays.asList(new Long[] {0L, 1080L, 2037L, 2039L, 2040L, 3005L, 3039L, 3123L, 3128L, 3131L, 3160L,
-            3166L, 3167L, 3168L, 3169L, 3175L, 3176L, 3171L, 3186L, 3188L, 3205L, 3206L, 3207L, 3209L, 3210L, 3405L, 3406L, 3407L, 3408L, 3409L, 3410L, 3413L,
-            3414L, 3415L, 3417L, 3419L, 3420L}));
+            3166L, 3167L, 3168L, 3169L, 3175L, 3176L, 3171L, 3186L, 3188L, 3205L, 3206L, 3207L, 3209L, 3210L, 3405L, 3406L, 3407L, 3408L, 3409L, 3410L, 3412L,
+            3413L, 3414L, 3415L, 3416L, 3417L, 3419L, 3420L}));
+    private static Set<Long> IGNORE_RUNES = new HashSet<>(Arrays.asList(new Long[] {8028L}));
+    private static Set<Long> IGNORE_SPELLS = new HashSet<>(Arrays.asList(new Long[] {10L}));
 
     /**
      * @param ID
@@ -416,6 +418,10 @@ public abstract class StaticDataAPI {
      * @return the rune
      */
     public synchronized static Rune getRune(final long ID) {
+        if(IGNORE_RUNES.contains(ID)) {
+            return null;
+        }
+
         Rune rune = RiotAPI.store.get(Rune.class, (int)ID);
         if(rune != null) {
             return rune;
@@ -463,7 +469,7 @@ public abstract class StaticDataAPI {
         final List<Long> toGet = new ArrayList<>();
         final List<Integer> index = new ArrayList<>();
         for(int i = 0; i < IDs.size(); i++) {
-            if(runes.get(i) == null) {
+            if(runes.get(i) == null && !IGNORE_RUNES.contains(IDs.get(i))) {
                 toGet.add(IDs.get(i));
                 index.add(i);
             }
@@ -503,6 +509,10 @@ public abstract class StaticDataAPI {
      * @return the summoner spell
      */
     public synchronized static SummonerSpell getSummonerSpell(final long ID) {
+        if(IGNORE_SPELLS.contains(ID)) {
+            return null;
+        }
+
         SummonerSpell spell = RiotAPI.store.get(SummonerSpell.class, (int)ID);
         if(spell != null) {
             return spell;
@@ -550,7 +560,7 @@ public abstract class StaticDataAPI {
         final List<Long> toGet = new ArrayList<>();
         final List<Integer> index = new ArrayList<>();
         for(int i = 0; i < IDs.size(); i++) {
-            if(spells.get(i) == null) {
+            if(spells.get(i) == null && !IGNORE_SPELLS.contains(IDs.get(i))) {
                 toGet.add(IDs.get(i));
                 index.add(i);
             }
