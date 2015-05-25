@@ -1,5 +1,6 @@
 package com.robrua.orianna.store;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,7 +32,11 @@ public class VoidDataStore extends DataStore {
 
     @Override
     protected <T extends OriannaObject<?>> List<T> doGet(Class<T> type, List<?> keys) {
-        return Collections.emptyList();
+        final List<T> result = new ArrayList<>(keys.size());
+        for(int i = 0; i < keys.size(); i++) {
+            result.add(null);
+        }
+        return result;
     }
 
     @Override
