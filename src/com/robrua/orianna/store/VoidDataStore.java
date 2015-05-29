@@ -7,7 +7,8 @@ import java.util.List;
 import com.robrua.orianna.type.core.OriannaObject;
 
 /**
- * For use when you want absolutely no caching/data storage to be done automatically
+ * For use when you want absolutely no caching/data storage to be done
+ * automatically
  */
 public class VoidDataStore extends DataStore {
     @Override
@@ -16,22 +17,22 @@ public class VoidDataStore extends DataStore {
     }
 
     @Override
-    protected <T extends OriannaObject<?>> boolean checkHasAll(Class<T> type) {
+    protected <T extends OriannaObject<?>> boolean checkHasAll(final Class<T> type) {
         return false;
     }
 
     @Override
-    protected <T extends OriannaObject<?>> void doDelete(Class<T> type, List<?> keys) {
+    protected <T extends OriannaObject<?>> void doDelete(final Class<T> type, final List<?> keys) {
         // Do nothing
     }
 
     @Override
-    protected <T extends OriannaObject<?>> void doDelete(Class<T> type, Object key) {
+    protected <T extends OriannaObject<?>> void doDelete(final Class<T> type, final Object key) {
         // Do nothing
     }
 
     @Override
-    protected <T extends OriannaObject<?>> List<T> doGet(Class<T> type, List<?> keys) {
+    protected <T extends OriannaObject<?>> List<T> doGet(final Class<T> type, final List<?> keys) {
         final List<T> result = new ArrayList<>(keys.size());
         for(int i = 0; i < keys.size(); i++) {
             result.add(null);
@@ -40,27 +41,27 @@ public class VoidDataStore extends DataStore {
     }
 
     @Override
-    protected <T extends OriannaObject<?>> T doGet(Class<T> type, Object key) {
+    protected <T extends OriannaObject<?>> T doGet(final Class<T> type, final Object key) {
         return null;
     }
 
     @Override
-    protected <T extends OriannaObject<?>> List<T> doGetAll(Class<T> type) {
+    protected <T extends OriannaObject<?>> List<T> doGetAll(final Class<T> type) {
         return Collections.emptyList();
     }
 
     @Override
-    protected <T extends OriannaObject<?>> CloseableIterator<T> doGetIterator(Class<T> type) {
+    protected <T extends OriannaObject<?>> CloseableIterator<T> doGetIterator(final Class<T> type) {
         return CloseableIterator.emptyIterator();
     }
 
     @Override
-    protected <T extends OriannaObject<?>> void doStore(List<T> objs, List<?> keys, boolean isFullSet) {
+    protected <T extends OriannaObject<?>> void doStore(final List<T> objs, final List<?> keys, final boolean isFullSet) {
         // Do nothing
     }
 
     @Override
-    protected <T extends OriannaObject<?>> void doStore(T obj, Object key) {
+    protected <T extends OriannaObject<?>> void doStore(final T obj, final Object key) {
         // Do nothing
     }
 }

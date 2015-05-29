@@ -164,7 +164,7 @@ public abstract class BaseRiotAPI {
             return get(uri, staticServer);
         }
         catch(final URISyntaxException e) {
-            throw new OriannaException("Generated http request wasn't valid! Report this to the Orianna team.");
+            throw new OriannaException("Generated http request wasn't valid! Report this to the Orianna team.", e);
         }
     }
 
@@ -233,7 +233,7 @@ public abstract class BaseRiotAPI {
             }
         }
         catch(final IOException e) {
-            throw new OriannaException("Request to Riot server failed! Report this to the Orianna team.");
+            throw new OriannaException("Request to Riot server failed! Report this to the Orianna team.", e);
         }
         finally {
             if(!staticServer && !registered) {
@@ -645,7 +645,7 @@ public abstract class BaseRiotAPI {
             return get(uri, staticServer);
         }
         catch(final URISyntaxException e) {
-            throw new OriannaException("Generated http request wasn't valid! Report this to the Orianna team.");
+            throw new OriannaException("Generated http request wasn't valid! Report this to the Orianna team.", e);
         }
     }
 

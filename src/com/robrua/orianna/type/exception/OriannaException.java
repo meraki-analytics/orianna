@@ -15,4 +15,14 @@ public class OriannaException extends RuntimeException {
     public OriannaException(final String reason) {
         super(reason);
     }
+
+    /**
+     * @param reason
+     *            the reason string
+     * @param cause
+     *            the error that caused this
+     */
+    public OriannaException(final String reason, final Exception cause) {
+        super(reason, cause);
+    }
 }
