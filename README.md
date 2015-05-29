@@ -107,7 +107,7 @@ public class Example {
         
         League challenger = RiotAPI.getChallenger(QueueType.RANKED_SOLO_5x5);
         Summoner bestNA = challenger.getEntries().get(0).getSummoner();
-        System.out.println("He's much better at writing Java code than he is a LoL. He'll never be as good as " + bestNA + ".");
+        System.out.println("He's much better at writing Java code than he is at LoL. He'll never be as good as " + bestNA + ".");
     }
 }
 ```
@@ -174,7 +174,7 @@ public class Example {
             @Override
             public void perform(League challenger) {
                 Summoner bestNA = challenger.getEntries().get(0).getSummoner();
-                System.out.println("He's much better at writing Java code than he is a LoL. He'll never be as good as " + bestNA + ".");
+                System.out.println("He's much better at writing Java code than he is at LoL. He'll never be as good as " + bestNA + ".");
             }
             
             public void handle(APIException e) {
@@ -216,7 +216,7 @@ public class Example {
         
         League challenger = BaseRiotAPI.getChallenger(QueueType.RANKED_SOLO_5x5);
         String aChallenger = challenger.getEntries().get(0).getPlayerOrTeamName();
-        System.out.println("He's much better at writing Java code than he is a LoL. He'll never be as good as " + aChallenger + ".");
+        System.out.println("He's much better at writing Java code than he is at LoL. He'll never be as good as " + aChallenger + ".");
     }
 }
 ```
