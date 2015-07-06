@@ -56,7 +56,7 @@ public class Mastery extends OriannaObject<com.robrua.orianna.type.dto.staticdat
      * @return name
      */
     public String getName() {
-        return super.getString(data.getName());
+        return super.getString(data.getName()).trim();
     }
 
     /**
