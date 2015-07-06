@@ -227,7 +227,7 @@ public class BasicDataStats extends OriannaObject<com.robrua.orianna.type.dto.st
      * @return cooldown reduction
      */
     public double getPercentCooldownReduction() {
-        return percentCooldownReduction;
+        return Math.abs(percentCooldownReduction);
     }
 
     /**
@@ -551,7 +551,7 @@ public class BasicDataStats extends OriannaObject<com.robrua.orianna.type.dto.st
      * @return r flat time dead mod
      */
     public double getRFlatTimeDeadMod() {
-        return super.getDouble(data.getrFlatTimeDeadMod());
+        return Math.abs(super.getDouble(data.getrFlatTimeDeadMod()));
     }
 
     /**
@@ -560,7 +560,7 @@ public class BasicDataStats extends OriannaObject<com.robrua.orianna.type.dto.st
      * @return r flat time dead mod per level
      */
     public double getRFlatTimeDeadModPerLevel() {
-        return super.getDouble(data.getrFlatTimeDeadModPerLevel());
+        return Math.abs(super.getDouble(data.getrFlatTimeDeadModPerLevel()));
     }
 
     /**
@@ -596,7 +596,7 @@ public class BasicDataStats extends OriannaObject<com.robrua.orianna.type.dto.st
      * @return r percent cooldown mod
      */
     public double getRPercentCooldownMod() {
-        return super.getDouble(data.getrPercentCooldownMod());
+        return Math.abs(super.getDouble(data.getrPercentCooldownMod()));
     }
 
     /**
@@ -605,7 +605,7 @@ public class BasicDataStats extends OriannaObject<com.robrua.orianna.type.dto.st
      * @return r percent cooldown mod per level
      */
     public double getRPercentCooldownModPerLevel() {
-        return super.getDouble(data.getrPercentCooldownModPerLevel());
+        return Math.abs(super.getDouble(data.getrPercentCooldownModPerLevel()));
     }
 
     /**
@@ -641,7 +641,7 @@ public class BasicDataStats extends OriannaObject<com.robrua.orianna.type.dto.st
      * @return r percent time dead mod
      */
     public double getRPercentTimeDeadMod() {
-        return super.getDouble(data.getrPercentTimeDeadMod());
+        return Math.abs(super.getDouble(data.getrPercentTimeDeadMod()));
     }
 
     /**
@@ -650,7 +650,7 @@ public class BasicDataStats extends OriannaObject<com.robrua.orianna.type.dto.st
      * @return r percent time dead mod per level
      */
     public double getRPercentTimeDeadModPerLevel() {
-        return super.getDouble(data.getrPercentTimeDeadModPerLevel());
+        return Math.abs(super.getDouble(data.getrPercentTimeDeadModPerLevel()));
     }
 
     /*

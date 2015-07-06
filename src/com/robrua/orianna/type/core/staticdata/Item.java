@@ -28,6 +28,7 @@ public class Item extends OriannaObject<com.robrua.orianna.type.dto.staticdata.I
         patterns.put("flatMagicPenetration", Pattern.compile("\\+(\\d+) *Magic Penetration *(<br>|</stats>|</passive>|$)"));
         patterns.put("percentMagicPenetration", Pattern.compile("ignores (\\d+)% of the target's Magic Resist"));
         patterns.put("goldPer10", Pattern.compile("\\+(\\d+) *Gold per 10 seconds *(<br>|</stats>|</passive>|$)"));
+        patterns.put("percentAbilityPower", Pattern.compile("Increases Ability Power by (\\d+)%"));
 
         return patterns;
     }
