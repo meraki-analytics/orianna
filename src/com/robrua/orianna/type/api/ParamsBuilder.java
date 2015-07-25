@@ -1,5 +1,6 @@
 package com.robrua.orianna.type.api;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +25,24 @@ public class ParamsBuilder {
      */
     public ParamsBuilder add(final String key, final boolean value) {
         map.put(key, Boolean.toString(value));
+        return this;
+    }
+
+    /**
+     * Adds a parameter
+     *
+     * @param key
+     *            the key
+     * @param value
+     *            the value
+     * @return this
+     */
+    public ParamsBuilder add(final String key, final Collection<?> value) {
+        final StringBuilder sb = new StringBuilder();
+        for(final Object o : value) {
+            sb.append("," + o.toString());
+        }
+        map.put(key, sb.substring(1));
         return this;
     }
 

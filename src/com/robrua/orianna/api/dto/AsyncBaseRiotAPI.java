@@ -15,6 +15,7 @@ import com.robrua.orianna.type.dto.game.RecentGames;
 import com.robrua.orianna.type.dto.league.League;
 import com.robrua.orianna.type.dto.match.MatchDetail;
 import com.robrua.orianna.type.dto.matchhistory.PlayerHistory;
+import com.robrua.orianna.type.dto.matchlist.MatchList;
 import com.robrua.orianna.type.dto.staticdata.Item;
 import com.robrua.orianna.type.dto.staticdata.ItemList;
 import com.robrua.orianna.type.dto.staticdata.LanguageStrings;
@@ -733,6 +734,256 @@ public class AsyncBaseRiotAPI {
                 else {
                     try {
                         action.perform(MatchHistoryAPI.getMatchHistory(summonerID, queueType, championIDs));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
+     *            what to do with the match list
+     * @param summonerID
+     *            the ID of the summoner to get match history for
+     * @see <a
+     *      href="https://developer.riotgames.com/api/methods#!/1013/3439">Riot
+     *      API Specification</a>
+     */
+    public static void getMatchList(final Action<MatchList> action, final long summonerID) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchListAPI.getMatchList(summonerID);
+                }
+                else {
+                    try {
+                        action.perform(MatchListAPI.getMatchList(summonerID));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
+     *            what to do with the match list
+     * @param summonerID
+     *            the ID of the summoner to get match history for
+     * @param beginIndex
+     *            the game index to start from
+     * @see <a
+     *      href="https://developer.riotgames.com/api/methods#!/1013/3439">Riot
+     *      API Specification</a>
+     */
+    public static void getMatchList(final Action<MatchList> action, final long summonerID, final int beginIndex) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchListAPI.getMatchList(summonerID, beginIndex);
+                }
+                else {
+                    try {
+                        action.perform(MatchListAPI.getMatchList(summonerID, beginIndex));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
+     *            what to do with the match list
+     * @param summonerID
+     *            the ID of the summoner to get match history for
+     * @param beginIndex
+     *            the game index to start from
+     * @param beginTime
+     *            The begin time to use for fetching games specified as epoch
+     *            milliseconds
+     * @see <a
+     *      href="https://developer.riotgames.com/api/methods#!/1013/3439">Riot
+     *      API Specification</a>
+     */
+    public static void getMatchList(final Action<MatchList> action, final long summonerID, final int beginIndex, final long beginTime) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchListAPI.getMatchList(summonerID, beginIndex, beginTime);
+                }
+                else {
+                    try {
+                        action.perform(MatchListAPI.getMatchList(summonerID, beginIndex, beginTime));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
+     *            what to do with the match list
+     * @param summonerID
+     *            the ID of the summoner to get match history for
+     * @param beginIndex
+     *            the game index to start from
+     * @param beginTime
+     *            The begin time to use for fetching games specified as epoch
+     *            milliseconds
+     * @param endTime
+     *            The end time to use for fetching games specified as epoch
+     *            milliseconds
+     * @see <a
+     *      href="https://developer.riotgames.com/api/methods#!/1013/3439">Riot
+     *      API Specification</a>
+     */
+    public static void getMatchList(final Action<MatchList> action, final long summonerID, final int beginIndex, final long beginTime, final long endTime) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchListAPI.getMatchList(summonerID, beginIndex, beginTime, endTime);
+                }
+                else {
+                    try {
+                        action.perform(MatchListAPI.getMatchList(summonerID, beginIndex, beginTime, endTime));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
+     *            what to do with the match list
+     * @param summonerID
+     *            the ID of the summoner to get match history for
+     * @param beginIndex
+     *            the game index to start from
+     * @param beginTime
+     *            The begin time to use for fetching games specified as epoch
+     *            milliseconds
+     * @param endTime
+     *            The end time to use for fetching games specified as epoch
+     *            milliseconds
+     * @param queueTypes
+     *            the queue types to limit games to (only ranked queues)
+     * @see <a
+     *      href="https://developer.riotgames.com/api/methods#!/1013/3439">Riot
+     *      API Specification</a>
+     */
+    public static void getMatchList(final Action<MatchList> action, final long summonerID, final int beginIndex, final long beginTime, final long endTime,
+            final List<QueueType> queueTypes) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchListAPI.getMatchList(summonerID, beginIndex, beginTime, endTime, queueTypes);
+                }
+                else {
+                    try {
+                        action.perform(MatchListAPI.getMatchList(summonerID, beginIndex, beginTime, endTime, queueTypes));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
+     *            what to do with the match list
+     * @param summonerID
+     *            the ID of the summoner to get match history for
+     * @param beginIndex
+     *            the game index to start from
+     * @param beginTime
+     *            The begin time to use for fetching games specified as epoch
+     *            milliseconds
+     * @param endTime
+     *            The end time to use for fetching games specified as epoch
+     *            milliseconds
+     * @param queueTypes
+     *            the queue types to limit games to (only ranked queues)
+     * @param championIDs
+     *            the champions to limit games to
+     * @see <a
+     *      href="https://developer.riotgames.com/api/methods#!/1013/3439">Riot
+     *      API Specification</a>
+     */
+    public static void getMatchList(final Action<MatchList> action, final long summonerID, final int beginIndex, final long beginTime, final long endTime,
+            final List<QueueType> queueTypes, final List<Long> championIDs) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchListAPI.getMatchList(summonerID, beginIndex, beginTime, endTime, queueTypes, championIDs);
+                }
+                else {
+                    try {
+                        action.perform(MatchListAPI.getMatchList(summonerID, beginIndex, beginTime, endTime, queueTypes, championIDs));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
+     *            what to do with the match list
+     * @param summonerID
+     *            the ID of the summoner to get match history for
+     * @param beginIndex
+     *            the game index to start from
+     * @param beginTime
+     *            The begin time to use for fetching games specified as epoch
+     *            milliseconds
+     * @param endTime
+     *            The end time to use for fetching games specified as epoch
+     *            milliseconds
+     * @param queueTypes
+     *            the queue types to limit games to (only ranked queues)
+     * @param championIDs
+     *            the champions to limit games to
+     * @param seasons
+     *            the seasons to limit games to
+     * @see <a
+     *      href="https://developer.riotgames.com/api/methods#!/1013/3439">Riot
+     *      API Specification</a>
+     */
+    public static void getMatchList(final Action<MatchList> action, final long summonerID, final int beginIndex, final long beginTime, final long endTime,
+            final List<QueueType> queueTypes, final List<Long> championIDs, final List<Season> seasons) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchListAPI.getMatchList(summonerID, beginIndex, beginTime, endTime, queueTypes, championIDs, seasons);
+                }
+                else {
+                    try {
+                        action.perform(MatchListAPI.getMatchList(summonerID, beginIndex, beginTime, endTime, queueTypes, championIDs, seasons));
                     }
                     catch(final APIException e) {
                         action.handle(e);
