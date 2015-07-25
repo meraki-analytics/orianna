@@ -2272,7 +2272,6 @@ public abstract class AsyncRiotAPI {
      *            what to do with the match list
      * @param summonerID
      *            the ID of the summoner to get match history for
-     * @return the 20 most recent matches for the summoner
      */
     public static void getMatchList(final Action<List<MatchReference>> action, final long summonerID) {
         new Thread(new Runnable() {
@@ -2494,7 +2493,6 @@ public abstract class AsyncRiotAPI {
      *            what to do with the match list
      * @param summonerName
      *            the name of the summoner to get match history for
-     * @return the 20 most recent matches for the summoner
      */
     public static void getMatchList(final Action<List<MatchReference>> action, final String summonerName) {
         new Thread(new Runnable() {
@@ -2716,7 +2714,6 @@ public abstract class AsyncRiotAPI {
      *            what to do with the match list
      * @param summoner
      *            the summoner to get match history for
-     * @return the 20 most recent matches for the summoner
      */
     public static void getMatchList(final Action<List<MatchReference>> action, final Summoner summoner) {
         new Thread(new Runnable() {
