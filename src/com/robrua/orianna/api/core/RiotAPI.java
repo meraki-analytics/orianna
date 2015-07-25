@@ -891,6 +891,99 @@ public abstract class RiotAPI {
      *
      * @param summonerID
      *            the ID of the summoner to get match history for
+     * @param beginTime
+     *            The begin time to use for fetching games
+     * @param endTime
+     *            The end time to use for fetching games
+     * @param queueTypes
+     *            the queue types to limit games to (only ranked queues)
+     * @return the match list for that summoner
+     */
+    public static List<MatchReference> getMatchList(final long summonerID, final Date beginTime) {
+        return MatchListAPI.getMatchList(summonerID, beginTime);
+    }
+
+    /**
+     * Gets the 20 most recent matches after beginIndex for the summoner
+     *
+     * @param summonerID
+     *            the ID of the summoner to get match history for
+     * @param beginTime
+     *            The begin time to use for fetching games
+     * @param endTime
+     *            The end time to use for fetching games
+     * @param queueTypes
+     *            the queue types to limit games to (only ranked queues)
+     * @return the match list for that summoner
+     */
+    public static List<MatchReference> getMatchList(final long summonerID, final Date beginTime, final Date endTime) {
+        return MatchListAPI.getMatchList(summonerID, beginTime, endTime);
+    }
+
+    /**
+     * Gets the 20 most recent matches after beginIndex for the summoner
+     *
+     * @param summonerID
+     *            the ID of the summoner to get match history for
+     * @param beginTime
+     *            The begin time to use for fetching games
+     * @param endTime
+     *            The end time to use for fetching games
+     * @param queueTypes
+     *            the queue types to limit games to (only ranked queues)
+     * @return the match list for that summoner
+     */
+    public static List<MatchReference> getMatchList(final long summonerID, final Date beginTime, final Date endTime, final List<QueueType> queueTypes) {
+        return MatchListAPI.getMatchList(summonerID, beginTime, endTime, queueTypes);
+    }
+
+    /**
+     * Gets the 20 most recent matches after beginIndex for the summoner
+     *
+     * @param summonerID
+     *            the ID of the summoner to get match history for
+     * @param beginTime
+     *            The begin time to use for fetching games
+     * @param endTime
+     *            The end time to use for fetching games
+     * @param queueTypes
+     *            the queue types to limit games to (only ranked queues)
+     * @param championIDs
+     *            the champions to limit games to
+     * @return the match list for that summoner
+     */
+    public static List<MatchReference> getMatchList(final long summonerID, final Date beginTime, final Date endTime, final List<QueueType> queueTypes,
+            final List<Long> championIDs) {
+        return MatchListAPI.getMatchList(summonerID, beginTime, endTime, queueTypes, championIDs);
+    }
+
+    /**
+     * Gets the 20 most recent matches after beginIndex for the summoner
+     *
+     * @param summonerID
+     *            the ID of the summoner to get match history for
+     * @param beginTime
+     *            The begin time to use for fetching games
+     * @param endTime
+     *            The end time to use for fetching games
+     * @param queueTypes
+     *            the queue types to limit games to (only ranked queues)
+     * @param championIDs
+     *            the champions to limit games to
+     * @param seasons
+     *            the seasons to limit games to
+     * @return the match list for that summoner
+     */
+    public static List<MatchReference> getMatchList(final long summonerID, final Date beginTime, final Date endTime, final List<QueueType> queueTypes,
+            final List<Long> championIDs, final List<Season> seasons) {
+        return MatchListAPI.getMatchList(summonerID, beginTime, endTime, queueTypes, championIDs, seasons);
+    }
+
+    /**
+     * Gets the 20 most recent matches after beginIndex for the summoner
+     *
+     * @param summonerID
+     *            the ID of the summoner to get match history for
      * @param beginIndex
      *            the game index to start from
      * @return the match list for that summoner
@@ -1013,6 +1106,99 @@ public abstract class RiotAPI {
      *
      * @param summonerName
      *            the name of the summoner to get match history for
+     * @param beginTime
+     *            The begin time to use for fetching games
+     * @param endTime
+     *            The end time to use for fetching games
+     * @param queueTypes
+     *            the queue types to limit games to (only ranked queues)
+     * @return the match list for that summoner
+     */
+    public static List<MatchReference> getMatchList(final String summonerName, final Date beginTime) {
+        return MatchListAPI.getMatchList(RiotAPI.getSummonerByName(summonerName).getID(), beginTime);
+    }
+
+    /**
+     * Gets the 20 most recent matches after beginIndex for the summoner
+     *
+     * @param summonerName
+     *            the name of the summoner to get match history for
+     * @param beginTime
+     *            The begin time to use for fetching games
+     * @param endTime
+     *            The end time to use for fetching games
+     * @param queueTypes
+     *            the queue types to limit games to (only ranked queues)
+     * @return the match list for that summoner
+     */
+    public static List<MatchReference> getMatchList(final String summonerName, final Date beginTime, final Date endTime) {
+        return MatchListAPI.getMatchList(RiotAPI.getSummonerByName(summonerName).getID(), beginTime, endTime);
+    }
+
+    /**
+     * Gets the 20 most recent matches after beginIndex for the summoner
+     *
+     * @param summonerName
+     *            the name of the summoner to get match history for
+     * @param beginTime
+     *            The begin time to use for fetching games
+     * @param endTime
+     *            The end time to use for fetching games
+     * @param queueTypes
+     *            the queue types to limit games to (only ranked queues)
+     * @return the match list for that summoner
+     */
+    public static List<MatchReference> getMatchList(final String summonerName, final Date beginTime, final Date endTime, final List<QueueType> queueTypes) {
+        return MatchListAPI.getMatchList(RiotAPI.getSummonerByName(summonerName).getID(), beginTime, endTime, queueTypes);
+    }
+
+    /**
+     * Gets the 20 most recent matches after beginIndex for the summoner
+     *
+     * @param summonerName
+     *            the name of the summoner to get match history for
+     * @param beginTime
+     *            The begin time to use for fetching games
+     * @param endTime
+     *            The end time to use for fetching games
+     * @param queueTypes
+     *            the queue types to limit games to (only ranked queues)
+     * @param championIDs
+     *            the champions to limit games to
+     * @return the match list for that summoner
+     */
+    public static List<MatchReference> getMatchList(final String summonerName, final Date beginTime, final Date endTime, final List<QueueType> queueTypes,
+            final List<Long> championIDs) {
+        return MatchListAPI.getMatchList(RiotAPI.getSummonerByName(summonerName).getID(), beginTime, endTime, queueTypes, championIDs);
+    }
+
+    /**
+     * Gets the 20 most recent matches after beginIndex for the summoner
+     *
+     * @param summonerName
+     *            the name of the summoner to get match history for
+     * @param beginTime
+     *            The begin time to use for fetching games
+     * @param endTime
+     *            The end time to use for fetching games
+     * @param queueTypes
+     *            the queue types to limit games to (only ranked queues)
+     * @param championIDs
+     *            the champions to limit games to
+     * @param seasons
+     *            the seasons to limit games to
+     * @return the match list for that summoner
+     */
+    public static List<MatchReference> getMatchList(final String summonerName, final Date beginTime, final Date endTime, final List<QueueType> queueTypes,
+            final List<Long> championIDs, final List<Season> seasons) {
+        return MatchListAPI.getMatchList(RiotAPI.getSummonerByName(summonerName).getID(), beginTime, endTime, queueTypes, championIDs, seasons);
+    }
+
+    /**
+     * Gets the 20 most recent matches after beginIndex for the summoner
+     *
+     * @param summonerName
+     *            the name of the summoner to get match history for
      * @param beginIndex
      *            the game index to start from
      * @return the match list for that summoner
@@ -1128,6 +1314,99 @@ public abstract class RiotAPI {
      */
     public static List<MatchReference> getMatchList(final Summoner summoner) {
         return MatchListAPI.getMatchList(summoner);
+    }
+
+    /**
+     * Gets the 20 most recent matches after beginIndex for the summoner
+     *
+     * @param summoner
+     *            the summoner to get match history for
+     * @param beginTime
+     *            The begin time to use for fetching games
+     * @param endTime
+     *            The end time to use for fetching games
+     * @param queueTypes
+     *            the queue types to limit games to (only ranked queues)
+     * @return the match list for that summoner
+     */
+    public static List<MatchReference> getMatchList(final Summoner summoner, final Date beginTime) {
+        return MatchListAPI.getMatchList(summoner.getID(), beginTime);
+    }
+
+    /**
+     * Gets the 20 most recent matches after beginIndex for the summoner
+     *
+     * @param summoner
+     *            the summoner to get match history for
+     * @param beginTime
+     *            The begin time to use for fetching games
+     * @param endTime
+     *            The end time to use for fetching games
+     * @param queueTypes
+     *            the queue types to limit games to (only ranked queues)
+     * @return the match list for that summoner
+     */
+    public static List<MatchReference> getMatchList(final Summoner summoner, final Date beginTime, final Date endTime) {
+        return MatchListAPI.getMatchList(summoner.getID(), beginTime, endTime);
+    }
+
+    /**
+     * Gets the 20 most recent matches after beginIndex for the summoner
+     *
+     * @param summoner
+     *            the summoner to get match history for
+     * @param beginTime
+     *            The begin time to use for fetching games
+     * @param endTime
+     *            The end time to use for fetching games
+     * @param queueTypes
+     *            the queue types to limit games to (only ranked queues)
+     * @return the match list for that summoner
+     */
+    public static List<MatchReference> getMatchList(final Summoner summoner, final Date beginTime, final Date endTime, final List<QueueType> queueTypes) {
+        return MatchListAPI.getMatchList(summoner.getID(), beginTime, endTime, queueTypes);
+    }
+
+    /**
+     * Gets the 20 most recent matches after beginIndex for the summoner
+     *
+     * @param summoner
+     *            the summoner to get match history for
+     * @param beginTime
+     *            The begin time to use for fetching games
+     * @param endTime
+     *            The end time to use for fetching games
+     * @param queueTypes
+     *            the queue types to limit games to (only ranked queues)
+     * @param championIDs
+     *            the champions to limit games to
+     * @return the match list for that summoner
+     */
+    public static List<MatchReference> getMatchList(final Summoner summoner, final Date beginTime, final Date endTime, final List<QueueType> queueTypes,
+            final List<Long> championIDs) {
+        return MatchListAPI.getMatchList(summoner.getID(), beginTime, endTime, queueTypes, championIDs);
+    }
+
+    /**
+     * Gets the 20 most recent matches after beginIndex for the summoner
+     *
+     * @param summoner
+     *            the summoner to get match history for
+     * @param beginTime
+     *            The begin time to use for fetching games
+     * @param endTime
+     *            The end time to use for fetching games
+     * @param queueTypes
+     *            the queue types to limit games to (only ranked queues)
+     * @param championIDs
+     *            the champions to limit games to
+     * @param seasons
+     *            the seasons to limit games to
+     * @return the match list for that summoner
+     */
+    public static List<MatchReference> getMatchList(final Summoner summoner, final Date beginTime, final Date endTime, final List<QueueType> queueTypes,
+            final List<Long> championIDs, final List<Season> seasons) {
+        return MatchListAPI.getMatchList(summoner.getID(), beginTime, endTime, queueTypes, championIDs, seasons);
     }
 
     /**
