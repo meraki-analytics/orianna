@@ -78,7 +78,7 @@ public class MatchList extends OriannaDto {
         }
         return true;
     }
-    
+
     /**
      * Gets all stored champion IDs for batch lookup
      *

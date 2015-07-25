@@ -38,7 +38,7 @@ Standard Java
 <dependency>
   <groupId>com.robrua</groupId>
   <artifactId>orianna</artifactId>
-  <version>2.3.1</version>
+  <version>2.3.2</version>
 </dependency>
 ```
 
@@ -47,7 +47,7 @@ Android
 <dependency>
   <groupId>com.robrua</groupId>
   <artifactId>orianna-android</artifactId>
-  <version>2.3.1</version>
+  <version>2.3.2</version>
 </dependency>
 ```
 
@@ -60,7 +60,7 @@ repositories {
 }
 
 dependencies {
-	compile 'com.robrua:orianna:2.3.1'
+	compile 'com.robrua:orianna:2.3.2'
 }
 ```
 
@@ -71,7 +71,7 @@ repositories {
 }
 
 dependencies {
-	compile 'com.robrua:orianna-android:2.3.1'
+	compile 'com.robrua:orianna-android:2.3.2'
 }
 ```
 
