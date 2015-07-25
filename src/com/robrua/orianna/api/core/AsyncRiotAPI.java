@@ -2514,8 +2514,8 @@ public abstract class AsyncRiotAPI {
     }
 
     /**
-     * Gets the 20 most recent matches after beginIndex for the summoner
-     *
+     * @param action
+     *            what to do with the match list
      * @param summonerName
      *            the name of the summoner to get match history for
      * @param beginIndex
