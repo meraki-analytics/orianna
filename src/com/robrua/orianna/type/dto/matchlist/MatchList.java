@@ -1,6 +1,8 @@
 package com.robrua.orianna.type.dto.matchlist;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -75,6 +77,20 @@ public class MatchList extends OriannaDto {
             return false;
         }
         return true;
+    }
+    
+    /**
+     * Gets all stored champion IDs for batch lookup
+     *
+     * @return the champion IDs
+     */
+    public Set<Long> getChampionIDs() {
+        final Set<Long> set = new HashSet<>();
+        for(final MatchReference match : matches) {
+            set.add(match.getChampion());
+        }
+
+        return set;
     }
 
     @Override

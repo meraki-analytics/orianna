@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.robrua.orianna.api.dto.BaseRiotAPI;
+import com.robrua.orianna.type.api.LoadPolicy;
 import com.robrua.orianna.type.core.common.QueueType;
 import com.robrua.orianna.type.core.common.Season;
 import com.robrua.orianna.type.core.matchlist.MatchReference;
@@ -27,6 +28,10 @@ public abstract class MatchListAPI {
         for(final com.robrua.orianna.type.dto.matchlist.MatchReference match : list.getMatches()) {
             history.add(new MatchReference(match));
         }
+        
+        if(RiotAPI.loadPolicy == LoadPolicy.UPFRONT) {
+            RiotAPI.getChampionsByID(new ArrayList<>(list.getChampionIDs()));
+        }
 
         return Collections.unmodifiableList(history);
     }
@@ -46,6 +51,10 @@ public abstract class MatchListAPI {
         final List<MatchReference> history = new ArrayList<>(list.getMatches().size());
         for(final com.robrua.orianna.type.dto.matchlist.MatchReference match : list.getMatches()) {
             history.add(new MatchReference(match));
+        }
+        
+        if(RiotAPI.loadPolicy == LoadPolicy.UPFRONT) {
+            RiotAPI.getChampionsByID(new ArrayList<>(list.getChampionIDs()));
         }
 
         return Collections.unmodifiableList(history);
@@ -74,6 +83,10 @@ public abstract class MatchListAPI {
         final List<MatchReference> history = new ArrayList<>(list.getMatches().size());
         for(final com.robrua.orianna.type.dto.matchlist.MatchReference match : list.getMatches()) {
             history.add(new MatchReference(match));
+        }
+        
+        if(RiotAPI.loadPolicy == LoadPolicy.UPFRONT) {
+            RiotAPI.getChampionsByID(new ArrayList<>(list.getChampionIDs()));
         }
 
         return Collections.unmodifiableList(history);
@@ -108,6 +121,10 @@ public abstract class MatchListAPI {
         final List<MatchReference> history = new ArrayList<>(list.getMatches().size());
         for(final com.robrua.orianna.type.dto.matchlist.MatchReference match : list.getMatches()) {
             history.add(new MatchReference(match));
+        }
+        
+        if(RiotAPI.loadPolicy == LoadPolicy.UPFRONT) {
+            RiotAPI.getChampionsByID(new ArrayList<>(list.getChampionIDs()));
         }
 
         return Collections.unmodifiableList(history);
@@ -145,6 +162,10 @@ public abstract class MatchListAPI {
         final List<MatchReference> history = new ArrayList<>(list.getMatches().size());
         for(final com.robrua.orianna.type.dto.matchlist.MatchReference match : list.getMatches()) {
             history.add(new MatchReference(match));
+        }
+        
+        if(RiotAPI.loadPolicy == LoadPolicy.UPFRONT) {
+            RiotAPI.getChampionsByID(new ArrayList<>(list.getChampionIDs()));
         }
 
         return Collections.unmodifiableList(history);
@@ -184,6 +205,10 @@ public abstract class MatchListAPI {
         final List<MatchReference> history = new ArrayList<>(list.getMatches().size());
         for(final com.robrua.orianna.type.dto.matchlist.MatchReference match : list.getMatches()) {
             history.add(new MatchReference(match));
+        }
+        
+        if(RiotAPI.loadPolicy == LoadPolicy.UPFRONT) {
+            RiotAPI.getChampionsByID(new ArrayList<>(list.getChampionIDs()));
         }
 
         return Collections.unmodifiableList(history);
@@ -227,6 +252,10 @@ public abstract class MatchListAPI {
             history.add(new MatchReference(match));
         }
 
+        if(RiotAPI.loadPolicy == LoadPolicy.UPFRONT) {
+            RiotAPI.getChampionsByID(new ArrayList<>(list.getChampionIDs()));
+        }
+        
         return Collections.unmodifiableList(history);
     }
 
