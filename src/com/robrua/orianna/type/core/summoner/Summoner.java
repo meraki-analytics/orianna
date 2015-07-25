@@ -193,10 +193,6 @@ public class Summoner extends OriannaObject<com.robrua.orianna.type.dto.summoner
      *
      * @param beginTime
      *            The begin time to use for fetching games
-     * @param endTime
-     *            The end time to use for fetching games
-     * @param queueTypes
-     *            the queue types to limit games to (only ranked queues)
      * @return the match list for that summoner
      */
     public List<MatchReference> getMatchList(final Date beginTime) {
@@ -210,8 +206,6 @@ public class Summoner extends OriannaObject<com.robrua.orianna.type.dto.summoner
      *            The begin time to use for fetching games
      * @param endTime
      *            The end time to use for fetching games
-     * @param queueTypes
-     *            the queue types to limit games to (only ranked queues)
      * @return the match list for that summoner
      */
     public List<MatchReference> getMatchList(final Date beginTime, final Date endTime) {

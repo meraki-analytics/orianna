@@ -2300,10 +2300,6 @@ public abstract class AsyncRiotAPI {
      *            the ID of the summoner to get match history for
      * @param beginTime
      *            The begin time to use for fetching games
-     * @param endTime
-     *            The end time to use for fetching games
-     * @param queueTypes
-     *            the queue types to limit games to (only ranked queues)
      */
     public static void getMatchList(final Action<List<MatchReference>> action, final long summonerID, final Date beginTime) {
         new Thread(new Runnable() {
@@ -2333,8 +2329,6 @@ public abstract class AsyncRiotAPI {
      *            The begin time to use for fetching games
      * @param endTime
      *            The end time to use for fetching games
-     * @param queueTypes
-     *            the queue types to limit games to (only ranked queues)
      */
     public static void getMatchList(final Action<List<MatchReference>> action, final long summonerID, final Date beginTime, final Date endTime) {
         new Thread(new Runnable() {
@@ -2685,10 +2679,6 @@ public abstract class AsyncRiotAPI {
      *            the name of the summoner to get match history for
      * @param beginTime
      *            The begin time to use for fetching games
-     * @param endTime
-     *            The end time to use for fetching games
-     * @param queueTypes
-     *            the queue types to limit games to (only ranked queues)
      */
     public static void getMatchList(final Action<List<MatchReference>> action, final String summonerName, final Date beginTime) {
         new Thread(new Runnable() {
@@ -2718,8 +2708,6 @@ public abstract class AsyncRiotAPI {
      *            The begin time to use for fetching games
      * @param endTime
      *            The end time to use for fetching games
-     * @param queueTypes
-     *            the queue types to limit games to (only ranked queues)
      */
     public static void getMatchList(final Action<List<MatchReference>> action, final String summonerName, final Date beginTime, final Date endTime) {
         new Thread(new Runnable() {
@@ -3071,10 +3059,6 @@ public abstract class AsyncRiotAPI {
      *            the summoner to get match history for
      * @param beginTime
      *            The begin time to use for fetching games
-     * @param endTime
-     *            The end time to use for fetching games
-     * @param queueTypes
-     *            the queue types to limit games to (only ranked queues)
      */
     public static void getMatchList(final Action<List<MatchReference>> action, final Summoner summoner, final Date beginTime) {
         new Thread(new Runnable() {
@@ -3104,8 +3088,6 @@ public abstract class AsyncRiotAPI {
      *            The begin time to use for fetching games
      * @param endTime
      *            The end time to use for fetching games
-     * @param queueTypes
-     *            the queue types to limit games to (only ranked queues)
      */
     public static void getMatchList(final Action<List<MatchReference>> action, final Summoner summoner, final Date beginTime, final Date endTime) {
         new Thread(new Runnable() {
