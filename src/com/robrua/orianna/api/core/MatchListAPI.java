@@ -43,10 +43,6 @@ public abstract class MatchListAPI {
      *            the ID of the summoner to get match history for
      * @param beginTime
      *            The begin time to use for fetching games
-     * @param endTime
-     *            The end time to use for fetching games
-     * @param queueTypes
-     *            the queue types to limit games to (only ranked queues)
      * @return the match list for that summoner
      */
     public static List<MatchReference> getMatchList(final long summonerID, final Date beginTime) {
@@ -79,8 +75,6 @@ public abstract class MatchListAPI {
      *            The begin time to use for fetching games
      * @param endTime
      *            The end time to use for fetching games
-     * @param queueTypes
-     *            the queue types to limit games to (only ranked queues)
      * @return the match list for that summoner
      */
     public static List<MatchReference> getMatchList(final long summonerID, final Date beginTime, Date endTime) {
@@ -471,10 +465,6 @@ public abstract class MatchListAPI {
      *            the name of the summoner to get match history for
      * @param beginTime
      *            The begin time to use for fetching games
-     * @param endTime
-     *            The end time to use for fetching games
-     * @param queueTypes
-     *            the queue types to limit games to (only ranked queues)
      * @return the match list for that summoner
      */
     public static List<MatchReference> getMatchList(final String summonerName, final Date beginTime) {
@@ -490,8 +480,6 @@ public abstract class MatchListAPI {
      *            The begin time to use for fetching games
      * @param endTime
      *            The end time to use for fetching games
-     * @param queueTypes
-     *            the queue types to limit games to (only ranked queues)
      * @return the match list for that summoner
      */
     public static List<MatchReference> getMatchList(final String summonerName, final Date beginTime, final Date endTime) {
@@ -686,10 +674,6 @@ public abstract class MatchListAPI {
      *            the summoner to get match history for
      * @param beginTime
      *            The begin time to use for fetching games
-     * @param endTime
-     *            The end time to use for fetching games
-     * @param queueTypes
-     *            the queue types to limit games to (only ranked queues)
      * @return the match list for that summoner
      */
     public static List<MatchReference> getMatchList(final Summoner summoner, final Date beginTime) {
@@ -705,8 +689,6 @@ public abstract class MatchListAPI {
      *            The begin time to use for fetching games
      * @param endTime
      *            The end time to use for fetching games
-     * @param queueTypes
-     *            the queue types to limit games to (only ranked queues)
      * @return the match list for that summoner
      */
     public static List<MatchReference> getMatchList(final Summoner summoner, final Date beginTime, final Date endTime) {
