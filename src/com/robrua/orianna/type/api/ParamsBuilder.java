@@ -111,6 +111,26 @@ public class ParamsBuilder {
      *            the value
      * @return this
      */
+    public ParamsBuilder addIfNotNull(final String key, final Collection<?> value) {
+        if(value != null) {
+            final StringBuilder sb = new StringBuilder();
+            for(final Object o : value) {
+                sb.append("," + o.toString());
+            }
+            map.put(key, sb.substring(1));
+        }
+        return this;
+    }
+
+    /**
+     * Adds a parameter if the value is not null
+     *
+     * @param key
+     *            the key
+     * @param value
+     *            the value
+     * @return this
+     */
     public ParamsBuilder addIfNotNull(final String key, final Object value) {
         if(value != null) {
             map.put(key, value.toString());
