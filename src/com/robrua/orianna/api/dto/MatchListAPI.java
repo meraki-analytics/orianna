@@ -124,7 +124,7 @@ public abstract class MatchListAPI {
 
         final String request = BaseRiotAPI.API_VERSIONS.get("matchlist") + "/matchlist/by-summoner/" + summonerID;
         final Map<String, String> params = new ParamsBuilder().add("beginIndex", beginIndex).add("endIndex", beginIndex + 20).add("beginTime", beginTime)
-                .add("endTime", endTime).add("rankedQueues", queueTypes).build();
+                .add("endTime", endTime).addIfNotNull("rankedQueues", queueTypes).build();
         return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, params, false), MatchList.class);
     }
 
@@ -154,7 +154,7 @@ public abstract class MatchListAPI {
             final List<QueueType> queueTypes, final List<Long> championIDs) {
         final String request = BaseRiotAPI.API_VERSIONS.get("matchlist") + "/matchlist/by-summoner/" + summonerID;
         final Map<String, String> params = new ParamsBuilder().add("beginIndex", beginIndex).add("endIndex", beginIndex + 20).add("beginTime", beginTime)
-                .add("endTime", endTime).add("rankedQueues", queueTypes).add("championIds", championIDs).build();
+                .add("endTime", endTime).addIfNotNull("rankedQueues", queueTypes).addIfNotNull("championIds", championIDs).build();
         return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, params, false), MatchList.class);
     }
 
@@ -192,7 +192,8 @@ public abstract class MatchListAPI {
 
         final String request = BaseRiotAPI.API_VERSIONS.get("matchlist") + "/matchlist/by-summoner/" + summonerID;
         final Map<String, String> params = new ParamsBuilder().add("beginIndex", beginIndex).add("endIndex", beginIndex + 20).add("beginTime", beginTime)
-                .add("endTime", endTime).add("rankedQueues", queueTypes).add("championIds", championIDs).add("seasons", seasons).build();
+                .add("endTime", endTime).addIfNotNull("rankedQueues", queueTypes).addIfNotNull("championIds", championIDs).addIfNotNull("seasons", seasons)
+                .build();
         return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, params, false), MatchList.class);
     }
 
@@ -263,7 +264,8 @@ public abstract class MatchListAPI {
         }
 
         final String request = BaseRiotAPI.API_VERSIONS.get("matchlist") + "/matchlist/by-summoner/" + summonerID;
-        final Map<String, String> params = new ParamsBuilder().add("beginTime", beginTime).add("endTime", endTime).add("rankedQueues", queueTypes).build();
+        final Map<String, String> params = new ParamsBuilder().add("beginTime", beginTime).add("endTime", endTime).addIfNotNull("rankedQueues", queueTypes)
+                .build();
         return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, params, false), MatchList.class);
     }
 
@@ -296,8 +298,8 @@ public abstract class MatchListAPI {
         }
 
         final String request = BaseRiotAPI.API_VERSIONS.get("matchlist") + "/matchlist/by-summoner/" + summonerID;
-        final Map<String, String> params = new ParamsBuilder().add("beginTime", beginTime).add("endTime", endTime).add("rankedQueues", queueTypes)
-                .add("championIds", championIDs).build();
+        final Map<String, String> params = new ParamsBuilder().add("beginTime", beginTime).add("endTime", endTime).addIfNotNull("rankedQueues", queueTypes)
+                .addIfNotNull("championIds", championIDs).build();
         return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, params, false), MatchList.class);
     }
 
@@ -332,8 +334,8 @@ public abstract class MatchListAPI {
         }
 
         final String request = BaseRiotAPI.API_VERSIONS.get("matchlist") + "/matchlist/by-summoner/" + summonerID;
-        final Map<String, String> params = new ParamsBuilder().add("beginTime", beginTime).add("endTime", endTime).add("rankedQueues", queueTypes)
-                .add("championIds", championIDs).add("seasons", seasons).build();
+        final Map<String, String> params = new ParamsBuilder().add("beginTime", beginTime).add("endTime", endTime).addIfNotNull("rankedQueues", queueTypes)
+                .addIfNotNull("championIds", championIDs).addIfNotNull("seasons", seasons).build();
         return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, params, false), MatchList.class);
     }
 }
