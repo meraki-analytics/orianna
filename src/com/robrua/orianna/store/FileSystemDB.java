@@ -301,7 +301,7 @@ public class FileSystemDB extends DataStore {
      * @return the file that the key is or would be stored in
      */
     private File getFile(final File folder, final Object key) {
-        final int hashCode = Arrays.hashCode(new Object[] {key, key.getClass()});
+        final int hashCode = Arrays.hashCode(new Object[] {key, key.getClass().getCanonicalName()});
         return new File(folder, Integer.toString(hashCode));
     }
 
