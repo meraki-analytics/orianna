@@ -32,6 +32,7 @@ public abstract class StaticDataAPI {
             3412L, 3413L, 3414L, 3415L, 3416L, 3417L, 3419L, 3420L}));
     private static Set<Long> IGNORE_RUNES = new HashSet<>(Arrays.asList(new Long[] {8028L}));
     private static Set<Long> IGNORE_SPELLS = new HashSet<>(Arrays.asList(new Long[] {10L}));
+    private static Map<Long, Long> REMAPPED_ITEMS = remappedItems();
 
     /**
      * @param ID
@@ -188,9 +189,13 @@ public abstract class StaticDataAPI {
      *            the ID of the item to get
      * @return the item
      */
-    public synchronized static Item getItem(final long ID) {
+    public synchronized static Item getItem(long ID) {
         if(IGNORE_ITEMS.contains(ID)) {
             return null;
+        }
+        final Long newID = REMAPPED_ITEMS.get(ID);
+        if(newID != null) {
+            ID = newID.longValue();
         }
 
         Item item = RiotAPI.store.get(Item.class, (int)ID);
@@ -240,8 +245,14 @@ public abstract class StaticDataAPI {
         final List<Long> toGet = new ArrayList<>();
         final List<Integer> index = new ArrayList<>();
         for(int i = 0; i < IDs.size(); i++) {
-            if(items.get(i) == null && !IGNORE_ITEMS.contains(IDs.get(i))) {
-                toGet.add(IDs.get(i));
+            Long ID = IDs.get(i);
+            if(items.get(i) == null && !IGNORE_ITEMS.contains(ID)) {
+                final Long newID = REMAPPED_ITEMS.get(ID);
+                if(newID != null) {
+                    ID = newID.longValue();
+                }
+
+                toGet.add(ID);
                 index.add(i);
             }
         }
@@ -599,5 +610,48 @@ public abstract class StaticDataAPI {
      */
     public static List<String> getVersions() {
         return BaseRiotAPI.getVersions();
+    }
+
+    /*
+     * a Fix for remapped boot enchants (and any others that crop up)
+     */
+    private static Map<Long, Long> remappedItems() {
+        final Map<Long, Long> map = new HashMap<>();
+        map.put(3280L, 1309L);
+        map.put(3282L, 1305L);
+        map.put(3281L, 1307L);
+        map.put(3284L, 1306L);
+        map.put(3283L, 1308L);
+        map.put(3278L, 1333L);
+        map.put(3279L, 1331L);
+        map.put(3250L, 1304L);
+        map.put(3251L, 1302L);
+        map.put(3254L, 1301L);
+        map.put(3255L, 1314L);
+        map.put(3252L, 1300L);
+        map.put(3253L, 1303L);
+        map.put(3263L, 1318L);
+        map.put(3264L, 1316L);
+        map.put(3265L, 1324L);
+        map.put(3266L, 1322L);
+        map.put(3260L, 1319L);
+        map.put(3261L, 1317L);
+        map.put(3262L, 1315L);
+        map.put(3257L, 1310L);
+        map.put(3256L, 1312L);
+        map.put(3259L, 1311L);
+        map.put(3258L, 1313L);
+        map.put(3276L, 1332L);
+        map.put(3277L, 1330L);
+        map.put(3274L, 1326L);
+        map.put(3275L, 1334L);
+        map.put(3272L, 1325L);
+        map.put(3273L, 1328L);
+        map.put(3270L, 1329L);
+        map.put(3271L, 1327L);
+        map.put(3269L, 1321L);
+        map.put(3268L, 1323L);
+        map.put(3267L, 1320L);
+        return map;
     }
 }
