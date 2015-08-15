@@ -45,7 +45,6 @@ import com.robrua.orianna.type.exception.APIException;
  * @author Rob Rua (FatalElement - NA) (robrua@alumni.cmu.edu)
  */
 public abstract class AsyncRiotAPI {
-
     /**
      * @param action
      *            what to do with the challenger league
@@ -1800,6 +1799,56 @@ public abstract class AsyncRiotAPI {
                 else {
                     try {
                         action.perform(MatchAPI.getMatches(IDs));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
+     *            what to do with the matches
+     * @param references
+     *            the match references to get the matches for
+     */
+    public static void getMatchesByReference(final Action<List<Match>> action, final List<MatchReference> references) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchAPI.getMatchesByReference(references);
+                }
+                else {
+                    try {
+                        action.perform(MatchAPI.getMatchesByReference(references));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
+     *            what to do with the match
+     * @param reference
+     *            the match reference to get the match for
+     */
+    public static void getMatchFromReference(final Action<Match> action, final MatchReference reference) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchAPI.getMatchByReference(reference);
+                }
+                else {
+                    try {
+                        action.perform(MatchAPI.getMatchByReference(reference));
                     }
                     catch(final APIException e) {
                         action.handle(e);

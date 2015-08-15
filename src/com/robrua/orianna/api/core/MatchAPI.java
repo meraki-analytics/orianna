@@ -9,6 +9,7 @@ import java.util.Set;
 import com.robrua.orianna.api.dto.BaseRiotAPI;
 import com.robrua.orianna.type.api.LoadPolicy;
 import com.robrua.orianna.type.core.match.Match;
+import com.robrua.orianna.type.core.matchlist.MatchReference;
 import com.robrua.orianna.type.dto.match.MatchDetail;
 
 public abstract class MatchAPI {
@@ -38,6 +39,15 @@ public abstract class MatchAPI {
         RiotAPI.store.store(match, ID);
 
         return match;
+    }
+
+    /**
+     * @param reference
+     *            the match reference to get the match for
+     * @return the match
+     */
+    public synchronized static Match getMatchByReference(final MatchReference reference) {
+        return getMatch(reference.getID());
     }
 
     /**
@@ -95,5 +105,18 @@ public abstract class MatchAPI {
         RiotAPI.store.store(newMatches, newIDs, false);
 
         return matches;
+    }
+
+    /**
+     * @param references
+     *            the match references to get the matches for
+     * @return the matches
+     */
+    public synchronized static List<Match> getMatchesByReference(final List<MatchReference> references) {
+        final List<Long> IDs = new ArrayList<>(references.size());
+        for(final MatchReference ref : references) {
+            IDs.add(ref.getID());
+        }
+        return getMatches(IDs);
     }
 }
