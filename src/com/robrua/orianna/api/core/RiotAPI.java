@@ -675,12 +675,30 @@ public abstract class RiotAPI {
     }
 
     /**
+     * @param reference
+     *            the match reference to get the match for
+     * @return the match
+     */
+    public static Match getMatchByReference(final MatchReference reference) {
+        return MatchAPI.getMatchByReference(reference);
+    }
+
+    /**
      * @param IDs
      *            the IDs of the matches to get
      * @return the matches
      */
     public static List<Match> getMatches(final List<Long> IDs) {
         return MatchAPI.getMatches(IDs);
+    }
+
+    /**
+     * @param references
+     *            the match references to get the matches for
+     * @return the matches
+     */
+    public static List<Match> getMatchesByReference(final List<MatchReference> references) {
+        return MatchAPI.getMatchesByReference(references);
     }
 
     /**

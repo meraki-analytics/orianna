@@ -78,7 +78,7 @@ public class MatchReference extends OriannaObject<com.robrua.orianna.type.dto.ma
      * @return the match (via match API)
      */
     public Match getMatch() {
-        return RiotAPI.getMatch(getID());
+        return RiotAPI.getMatchByReference(this);
     }
 
     /**
