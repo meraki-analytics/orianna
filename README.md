@@ -2,9 +2,7 @@
 
 A Java adaptation of the Riot Games LoL API (http://developer.riotgames.com/).
 
-Orianna is back, rebuilt from the ground up with some new features, Java 7 compatibility, and a whole lot more in store.
-In addition to the standard RiotAPI we've added a BaseRiotAPI which can interact with the Riot API exactly according to specification.
-We've also changed the core architecture to be more resilient to future API changes and ease maintenance. 
+Orianna is the sister library to [Cassiopeia](https://github.com/robrua/cassiopeia) (Python). It's been designed with usability in mind - making sure all the bookkeeping is done right so you can focus on getting the data you need and building your application. There's two main entry points - RiotAPI and BaseRiotAPI. The former handles a ton of stuff behind the scenes to make your development experience awesome, while the latter allows you fine-grained control by exposing the Riot API exactly as the website's documentation specifies.
 
 ## Features (RiotAPI)
 
@@ -12,7 +10,7 @@ We've also changed the core architecture to be more resilient to future API chan
 - Automatically throttles requests to fit rate limits
 - Ensures well-formed API requests
 - Replaces foreign key ID values with the referenced object
-- Option to lazy load referenced objects right when you need them or load them automatically upfront with minimal API calls
+- Option to lazy load referenced objects right when you need them or batch them up and load them upfront to minimize API calls
 - Caches static data and summoner information to accelerate access and reduce API load
 - Automatic databasing using [Hibernate](http://hibernate.org/). See [the project here.](https://github.com/robrua/orianna-hibernate)
 
@@ -81,7 +79,7 @@ Orianna relies on [Apache HttpClient](http://hc.apache.org/httpcomponents-client
  
 ## Usage
 
-Here's some examples of a few basic uses of the API. The full JavaDoc can be found at http://robrua.github.io/Orianna/.
+Here's an example of a few basic uses of the API. The full JavaDoc can be found at http://robrua.github.io/Orianna/.
 
 ```java
 import java.util.List;
@@ -121,11 +119,12 @@ RiotAPI.setRateLimit(10000, 10);
 RiotAPI.setRateLimit(new RateLimit(10000, 10), new RateLimit(50000, 60));
 ```
 
-New in V2, you can set a load policy for filling in foreign key values. UPFRONT will load everything ASAP with a minimal number of calls. LAZY will load things as you ask for them, so you can save calls if you don't use some values, but it won't be able to take as much advantage of bulk loading.
+You can also set a load policy for filling in foreign key values to optimize internal call usage. UPFRONT will load everything ASAP, and will batch together calls where possible to minimize call usage. LAZY will load things as you ask for them, so you can save calls if you don't use some values, but it won't be able to take as much advantage of bulk loading.
 
 ```java
 // Upfront loading is the default strategy
 RiotAPI.setLoadPolicy(LoadPolicy.UPFRONT);
+RiotAPI.setLoadPolicy(LoadPolicy.LAZY);
 ```
 
 For you Android devs out there there's also a new AsyncRiotAPI, which will perform all of your API calls on a different thread (since no networking is allowed on the main thread).
