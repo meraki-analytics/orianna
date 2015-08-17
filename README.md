@@ -113,10 +113,10 @@ public class Example {
 Make sure you set your rate limit! Orianna will limit you the the default development limit until you give it your production limit (if you have one).
 
 ```java
-// 10,000 calls per 10 seconds
-RiotAPI.setRateLimit(10000, 10);
-// 10,000 calls per 10 seconds AND 50,000 calls per minute
-RiotAPI.setRateLimit(new RateLimit(10000, 10), new RateLimit(50000, 60));
+// 3,000 calls per 10 seconds
+RiotAPI.setRateLimit(3000, 10);
+// 3,000 calls per 10 seconds AND 180,000 calls per 10 minutes
+RiotAPI.setRateLimit(new RateLimit(3000, 10), new RateLimit(180000, 600));
 ```
 
 You can also set a load policy for filling in foreign key values to optimize internal call usage. UPFRONT will load everything ASAP, and will batch together calls where possible to minimize call usage. LAZY will load things as you ask for them, so you can save calls if you don't use some values, but it won't be able to take as much advantage of bulk loading.
