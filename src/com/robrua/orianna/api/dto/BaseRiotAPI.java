@@ -211,14 +211,15 @@ public abstract class BaseRiotAPI {
 
                 // Handle API errors
                 if(response.getStatusLine().getStatusCode() == 429) {
+                    int retryAfter = 1;
                     try {
                         // Force rate limiter to wait after a 429
-                        final int retryAfter = Integer.parseInt(response.getFirstHeader("Retry-After").getValue()) + 1;
+                        retryAfter += Integer.parseInt(response.getFirstHeader("Retry-After").getValue());
                         rateLimiter.resetIn(retryAfter * 1000L);
                     }
                     catch(final NullPointerException e) {
-                        // Retry-After wasn't sent
-                        throw new APIException(uri.toString(), response.getStatusLine().getStatusCode());
+                        // Retry-After wasn't sent. Back off for 1 second.
+                        rateLimiter.resetIn(retryAfter * 1000L);
                     }
 
                     // Release resources and exit from rate limited call, then
