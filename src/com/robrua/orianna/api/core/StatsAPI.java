@@ -25,6 +25,7 @@ public abstract class StatsAPI {
      */
     public static Map<Champion, ChampionStats> getRankedStats(final long summonerID) {
         final RankedStats sts = BaseRiotAPI.getRankedStats(summonerID);
+        
         final List<Long> index = new ArrayList<>(sts.getChampionIDs());
         final List<Champion> champions = RiotAPI.getChampionsByID(index);
 
@@ -46,6 +47,7 @@ public abstract class StatsAPI {
      */
     public static Map<Champion, ChampionStats> getRankedStats(final long summonerID, final Season season) {
         final RankedStats sts = BaseRiotAPI.getRankedStats(summonerID, season);
+
         final List<Long> index = new ArrayList<>(sts.getChampionIDs());
         final List<Champion> champions = RiotAPI.getChampionsByID(index);
 
@@ -86,6 +88,9 @@ public abstract class StatsAPI {
      */
     public static Map<PlayerStatsSummaryType, PlayerStatsSummary> getStats(final long summonerID) {
         final PlayerStatsSummaryList sts = BaseRiotAPI.getStats(summonerID);
+        if(sts == null || sts.getPlayerStatSummaries() == null) {
+            return null;
+        }
 
         final Map<PlayerStatsSummaryType, PlayerStatsSummary> stats = new HashMap<>();
         for(final com.robrua.orianna.type.dto.stats.PlayerStatsSummary sum : sts.getPlayerStatSummaries()) {
@@ -104,6 +109,9 @@ public abstract class StatsAPI {
      */
     public static Map<PlayerStatsSummaryType, PlayerStatsSummary> getStats(final long summonerID, final Season season) {
         final PlayerStatsSummaryList sts = BaseRiotAPI.getStats(summonerID, season);
+        if(sts == null || sts.getPlayerStatSummaries() == null) {
+            return null;
+        }
 
         final Map<PlayerStatsSummaryType, PlayerStatsSummary> stats = new HashMap<>();
         for(final com.robrua.orianna.type.dto.stats.PlayerStatsSummary sum : sts.getPlayerStatSummaries()) {
