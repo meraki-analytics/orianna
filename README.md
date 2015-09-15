@@ -12,7 +12,7 @@ Orianna is the sister library to [Cassiopeia](https://github.com/robrua/cassiope
 - Replaces foreign key ID values with the referenced object
 - Option to lazy load referenced objects right when you need them or batch them up and load them upfront to minimize API calls
 - Caches static data and summoner information to accelerate access and reduce API load
-- Automatic databasing using [Hibernate](http://hibernate.org/). See [the project here.](https://github.com/robrua/orianna-hibernate)
+- Available automatic databasing using [Hibernate](http://hibernate.org/). See [the project here.](https://github.com/robrua/orianna-hibernate)
 
 ## Features (BaseRiotAPI)
 
