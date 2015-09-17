@@ -155,11 +155,13 @@ public class Champion extends OriannaDto {
      */
     public Set<Long> getItemIDs() {
         final Set<Long> set = new HashSet<>();
-        for(final Recommended rec : recommended) {
-            for(final Block block : rec.getBlocks()) {
-                if(block.getItems() != null) {
-                    for(final BlockItem item : block.getItems()) {
-                        set.add(item.getId().longValue());
+        if(recommended != null) {
+            for(final Recommended rec : recommended) {
+                for(final Block block : rec.getBlocks()) {
+                    if(block.getItems() != null) {
+                        for(final BlockItem item : block.getItems()) {
+                            set.add(item.getId().longValue());
+                        }
                     }
                 }
             }
