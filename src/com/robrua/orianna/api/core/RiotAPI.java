@@ -670,8 +670,19 @@ public abstract class RiotAPI {
      *            the ID of the match to get
      * @return the match
      */
-    public static Match getMatch(final long ID) {
+    public synchronized static Match getMatch(final long ID) {
         return MatchAPI.getMatch(ID);
+    }
+
+    /**
+     * @param ID
+     *            the ID of the match to get
+     * @param includeTimeline
+     *            whether to include timeline data in the returned match
+     * @return the match
+     */
+    public static Match getMatch(final long ID, final boolean includeTimeline) {
+        return MatchAPI.getMatch(ID, includeTimeline);
     }
 
     /**
@@ -679,8 +690,19 @@ public abstract class RiotAPI {
      *            the match reference to get the match for
      * @return the match
      */
-    public static Match getMatchByReference(final MatchReference reference) {
+    public synchronized static Match getMatchByReference(final MatchReference reference) {
         return MatchAPI.getMatchByReference(reference);
+    }
+
+    /**
+     * @param reference
+     *            the match reference to get the match for
+     * @param includeTimeline
+     *            whether to include timeline data in the returned match
+     * @return the match
+     */
+    public static Match getMatchByReference(final MatchReference reference, final boolean includeTimeline) {
+        return MatchAPI.getMatchByReference(reference, includeTimeline);
     }
 
     /**
@@ -688,8 +710,19 @@ public abstract class RiotAPI {
      *            the IDs of the matches to get
      * @return the matches
      */
-    public static List<Match> getMatches(final List<Long> IDs) {
+    public synchronized static List<Match> getMatches(final List<Long> IDs) {
         return MatchAPI.getMatches(IDs);
+    }
+
+    /**
+     * @param IDs
+     *            the IDs of the matches to get
+     * @param includeTimeline
+     *            whether to include timeline data in the returned matches
+     * @return the matches
+     */
+    public static List<Match> getMatches(final List<Long> IDs, final boolean includeTimeline) {
+        return MatchAPI.getMatches(IDs, includeTimeline);
     }
 
     /**
@@ -697,8 +730,19 @@ public abstract class RiotAPI {
      *            the match references to get the matches for
      * @return the matches
      */
-    public static List<Match> getMatchesByReference(final List<MatchReference> references) {
+    public synchronized static List<Match> getMatchesByReference(final List<MatchReference> references) {
         return MatchAPI.getMatchesByReference(references);
+    }
+
+    /**
+     * @param references
+     *            the match references to get the matches for
+     * @param includeTimeline
+     *            whether to include timeline data in the returned matches
+     * @return the matches
+     */
+    public static List<Match> getMatchesByReference(final List<MatchReference> references, final boolean includeTimeline) {
+        return MatchAPI.getMatchesByReference(references, includeTimeline);
     }
 
     /**

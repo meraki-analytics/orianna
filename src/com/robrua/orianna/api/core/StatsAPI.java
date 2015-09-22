@@ -25,7 +25,7 @@ public abstract class StatsAPI {
      */
     public static Map<Champion, ChampionStats> getRankedStats(final long summonerID) {
         final RankedStats sts = BaseRiotAPI.getRankedStats(summonerID);
-        
+
         final List<Long> index = new ArrayList<>(sts.getChampionIDs());
         final List<Champion> champions = RiotAPI.getChampionsByID(index);
 
