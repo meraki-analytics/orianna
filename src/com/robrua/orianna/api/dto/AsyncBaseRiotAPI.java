@@ -480,6 +480,36 @@ public class AsyncBaseRiotAPI {
 
     /**
      * @param action
+     *            what to do with the match
+     * @param ID
+     *            the ID of the match to look up
+     * @param includeTimeline
+     *            whether to include timeline data in the returned match
+     * @see <a
+     *      href="https://developer.riotgames.com/api/methods#!/967/3313">Riot
+     *      API Specification</a>
+     */
+    public static void getMatch(final Action<MatchDetail> action, final long ID, final boolean includeTimeline) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchAPI.getMatch(ID, includeTimeline);
+                }
+                else {
+                    try {
+                        action.perform(MatchAPI.getMatch(ID, includeTimeline));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
      *            what to do with the match history for that summoner Gets the
      *            15 most recent matches for the summoner
      *

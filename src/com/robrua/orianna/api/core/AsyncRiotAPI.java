@@ -1785,6 +1785,85 @@ public abstract class AsyncRiotAPI {
 
     /**
      * @param action
+     *            what to do with the match
+     * @param ID
+     *            the ID of the match to get
+     * @param includeTimeline
+     *            whether to include timeline data in the returned match
+     */
+    public static void getMatch(final Action<Match> action, final long ID, final boolean includeTimeline) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchAPI.getMatch(ID, includeTimeline);
+                }
+                else {
+                    try {
+                        action.perform(MatchAPI.getMatch(ID, includeTimeline));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
+     *            what to do with the match
+     * @param reference
+     *            the match reference to get the match for
+     */
+    public static void getMatchByReference(final Action<Match> action, final MatchReference reference) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchAPI.getMatchByReference(reference);
+                }
+                else {
+                    try {
+                        action.perform(MatchAPI.getMatchByReference(reference));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
+     *            what to do with the match
+     * @param reference
+     *            the match reference to get the match for
+     * @param includeTimeline
+     *            whether to include timeline data in the returned match
+     */
+    public static void getMatchByReference(final Action<Match> action, final MatchReference reference, final boolean includeTimeline) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchAPI.getMatchByReference(reference, includeTimeline);
+                }
+                else {
+                    try {
+                        action.perform(MatchAPI.getMatchByReference(reference, includeTimeline));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
      *            what to do with the matches
      * @param IDs
      *            the match IDs to get
@@ -1799,6 +1878,33 @@ public abstract class AsyncRiotAPI {
                 else {
                     try {
                         action.perform(MatchAPI.getMatches(IDs));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
+     *            what to do with the matches
+     * @param IDs
+     *            the match IDs to get
+     * @param includeTimeline
+     *            whether to include timeline data in the returned matches
+     */
+    public static void getMatches(final Action<List<Match>> action, final List<Long> IDs, final boolean includeTimeline) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchAPI.getMatches(IDs, includeTimeline);
+                }
+                else {
+                    try {
+                        action.perform(MatchAPI.getMatches(IDs, includeTimeline));
                     }
                     catch(final APIException e) {
                         action.handle(e);
@@ -1835,20 +1941,22 @@ public abstract class AsyncRiotAPI {
 
     /**
      * @param action
-     *            what to do with the match
-     * @param reference
-     *            the match reference to get the match for
+     *            what to do with the matches
+     * @param references
+     *            the match references to get the matches for
+     * @param includeTimeline
+     *            whether to include timeline data in the returned matches
      */
-    public static void getMatchFromReference(final Action<Match> action, final MatchReference reference) {
+    public static void getMatchesByReference(final Action<List<Match>> action, final List<MatchReference> references, final boolean includeTimeline) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 if(action == null) {
-                    MatchAPI.getMatchByReference(reference);
+                    MatchAPI.getMatchesByReference(references, includeTimeline);
                 }
                 else {
                     try {
-                        action.perform(MatchAPI.getMatchByReference(reference));
+                        action.perform(MatchAPI.getMatchesByReference(references, includeTimeline));
                     }
                     catch(final APIException e) {
                         action.handle(e);

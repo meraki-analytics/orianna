@@ -430,6 +430,20 @@ public abstract class BaseRiotAPI {
     }
 
     /**
+     * @param ID
+     *            the ID of the match to look up
+     * @param includeTimeline
+     *            whether to include timeline data in the returned match
+     * @return the match
+     * @see <a
+     *      href="https://developer.riotgames.com/api/methods#!/967/3313">Riot
+     *      API Specification</a>
+     */
+    public static MatchDetail getMatch(final long ID, final boolean includeTimeline) {
+        return MatchAPI.getMatch(ID, includeTimeline);
+    }
+
+    /**
      * Gets the 15 most recent matches for the summoner
      *
      * @param summonerID
