@@ -37,7 +37,6 @@ import com.robrua.orianna.type.dto.featuredgames.FeaturedGames;
 import com.robrua.orianna.type.dto.game.RecentGames;
 import com.robrua.orianna.type.dto.league.League;
 import com.robrua.orianna.type.dto.match.MatchDetail;
-import com.robrua.orianna.type.dto.matchhistory.PlayerHistory;
 import com.robrua.orianna.type.dto.matchlist.MatchList;
 import com.robrua.orianna.type.dto.staticdata.ChampionSpell;
 import com.robrua.orianna.type.dto.staticdata.Item;
@@ -91,11 +90,9 @@ public abstract class BaseRiotAPI {
         API_VERSIONS.put("status", "v1.0");
         API_VERSIONS.put("match", "v2.2");
         API_VERSIONS.put("matchlist", "v2.2");
-        API_VERSIONS.put("matchhistory", "v2.2");
         API_VERSIONS.put("stats", "v1.3");
         API_VERSIONS.put("summoner", "v1.4");
         API_VERSIONS.put("team", "v2.4");
-        API_VERSIONS.put("challenge", "v4.1");
     }
 
     /**
@@ -441,142 +438,6 @@ public abstract class BaseRiotAPI {
      */
     public static MatchDetail getMatch(final long ID, final boolean includeTimeline) {
         return MatchAPI.getMatch(ID, includeTimeline);
-    }
-
-    /**
-     * Gets the 15 most recent matches for the summoner
-     *
-     * @param summonerID
-     *            the ID of the summoner to get match history for
-     * @return the match history for that summoner
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/966/3312">Riot
-     *      API Specification</a>
-     */
-    public static PlayerHistory getMatchHistory(final long summonerID) {
-        return MatchHistoryAPI.getMatchHistory(summonerID);
-    }
-
-    /**
-     * Gets the 15 most recent matches after beginIndex for the summoner
-     *
-     * @param summonerID
-     *            the ID of the summoner to get match history for
-     * @param beginIndex
-     *            the game index to start from
-     * @return the match history for that summoner
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/966/3312">Riot
-     *      API Specification</a>
-     */
-    public static PlayerHistory getMatchHistory(final long summonerID, final int beginIndex) {
-        return MatchHistoryAPI.getMatchHistory(summonerID, beginIndex);
-    }
-
-    /**
-     * Gets the 15 most recent matches after beginIndex for the summoner
-     *
-     * @param summonerID
-     *            the ID of the summoner to get match history for
-     * @param beginIndex
-     *            the game index to start from
-     * @param championIDs
-     *            the champions to limit games to
-     * @return the match history for that summoner
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/966/3312">Riot
-     *      API Specification</a>
-     */
-    public static PlayerHistory getMatchHistory(final long summonerID, final int beginIndex, final List<Long> championIDs) {
-        return MatchHistoryAPI.getMatchHistory(summonerID, beginIndex, championIDs);
-    }
-
-    /**
-     * Gets the 15 most recent matches after beginIndex for the summoner
-     *
-     * @param summonerID
-     *            the ID of the summoner to get match history for
-     * @param beginIndex
-     *            the game index to start from
-     * @param queueType
-     *            the queue type to limit games to (only ranked queues)
-     * @return the match history for that summoner
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/966/3312">Riot
-     *      API Specification</a>
-     */
-    public static PlayerHistory getMatchHistory(final long summonerID, final int beginIndex, final QueueType queueType) {
-        return MatchHistoryAPI.getMatchHistory(summonerID, beginIndex, queueType);
-    }
-
-    /**
-     * Gets the 15 most recent matches after beginIndex for the summoner
-     *
-     * @param summonerID
-     *            the ID of the summoner to get match history for
-     * @param beginIndex
-     *            the game index to start from
-     * @param queueType
-     *            the queue type to limit games to (only ranked queues)
-     * @param championIDs
-     *            the champions to limit games to
-     * @return the match history for that summoner
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/966/3312">Riot
-     *      API Specification</a>
-     */
-    public static PlayerHistory getMatchHistory(final long summonerID, final int beginIndex, final QueueType queueType, final List<Long> championIDs) {
-        return MatchHistoryAPI.getMatchHistory(summonerID, beginIndex, queueType, championIDs);
-    }
-
-    /**
-     * Gets the 15 most recent matches for the summoner
-     *
-     * @param summonerID
-     *            the ID of the summoner to get match history for
-     * @param championIDs
-     *            the champions to limit games to
-     * @return the match history for that summoner
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/966/3312">Riot
-     *      API Specification</a>
-     */
-    public static PlayerHistory getMatchHistory(final long summonerID, final List<Long> championIDs) {
-        return MatchHistoryAPI.getMatchHistory(summonerID, championIDs);
-    }
-
-    /**
-     * Gets the 15 most recent matches for the summoner
-     *
-     * @param summonerID
-     *            the ID of the summoner to get match history for
-     * @param queueType
-     *            the queue type to limit games to (only ranked queues)
-     * @return the match history for that summoner
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/966/3312">Riot
-     *      API Specification</a>
-     */
-    public static PlayerHistory getMatchHistory(final long summonerID, final QueueType queueType) {
-        return MatchHistoryAPI.getMatchHistory(summonerID, queueType);
-    }
-
-    /**
-     * Gets the 15 most recent matches for the summoner
-     *
-     * @param summonerID
-     *            the ID of the summoner to get match history for
-     * @param queueType
-     *            the queue type to limit games to (only ranked queues)
-     * @param championIDs
-     *            the champions to limit games to
-     * @return the match history for that summoner
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/966/3312">Riot
-     *      API Specification</a>
-     */
-    public static PlayerHistory getMatchHistory(final long summonerID, final QueueType queueType, final List<Long> championIDs) {
-        return MatchHistoryAPI.getMatchHistory(summonerID, queueType, championIDs);
     }
 
     /**

@@ -10,7 +10,6 @@ import com.robrua.orianna.type.core.common.QueueType;
 import com.robrua.orianna.type.core.common.Season;
 import com.robrua.orianna.type.core.currentgame.CurrentGame;
 import com.robrua.orianna.type.core.league.League;
-import com.robrua.orianna.type.core.matchhistory.MatchSummary;
 import com.robrua.orianna.type.core.matchlist.MatchReference;
 import com.robrua.orianna.type.core.staticdata.Champion;
 import com.robrua.orianna.type.core.stats.ChampionStats;
@@ -81,102 +80,6 @@ public class Summoner extends OriannaObject<com.robrua.orianna.type.dto.summoner
      */
     public List<MasteryPage> getMasteryPages() {
         return RiotAPI.getMasteryPagesByID(getID());
-    }
-
-    /**
-     * Gets the summoner's 15 most recent matches
-     *
-     * @return the summoner's 15 most recent matches
-     */
-    public List<MatchSummary> getMatchHistory() {
-        return RiotAPI.getMatchHistory(getID());
-    }
-
-    /**
-     * Gets the summoner's 15 most recent matches after beginIndex
-     *
-     * @param beginIndex
-     *            the game index to start from
-     * @return the summoner's 15 most recent matches after beginIndex
-     */
-    public List<MatchSummary> getMatchHistory(final int beginIndex) {
-        return RiotAPI.getMatchHistory(this, beginIndex);
-    }
-
-    /**
-     * Gets the summoner's 15 most recent matches after beginIndex
-     *
-     * @param beginIndex
-     *            the game index to start from
-     * @param champions
-     *            the champions to limit games to
-     * @return the summoner's 15 most recent matches after beginIndex
-     */
-    public List<MatchSummary> getMatchHistory(final int beginIndex, final List<Champion> champions) {
-        return RiotAPI.getMatchHistory(this, beginIndex, champions);
-    }
-
-    /**
-     * Gets the summoner's 15 most recent matches after beginIndex
-     *
-     * @param beginIndex
-     *            the game index to start from
-     * @param queueType
-     *            the queue type to limit games to (only ranked queues)
-     * @return the summoner's 15 most recent matches after beginIndex
-     */
-    public List<MatchSummary> getMatchHistory(final int beginIndex, final QueueType queueType) {
-        return RiotAPI.getMatchHistory(this, beginIndex, queueType);
-    }
-
-    /**
-     * Gets the summoner's 15 most recent matches after beginIndex
-     *
-     * @param beginIndex
-     *            the game index to start from
-     * @param queueType
-     *            the queue type to limit games to (only ranked queues)
-     * @param champions
-     *            the champions to limit games to
-     * @return the summoner's 15 most recent matches after beginIndex
-     */
-    public List<MatchSummary> getMatchHistory(final int beginIndex, final QueueType queueType, final List<Champion> champions) {
-        return RiotAPI.getMatchHistory(this, beginIndex, queueType, champions);
-    }
-
-    /**
-     * Gets the summoner's 15 most recent matches
-     *
-     * @param champions
-     *            the champions to limit games to
-     * @return the summoner's 15 most recent matches
-     */
-    public List<MatchSummary> getMatchHistory(final List<Champion> champions) {
-        return RiotAPI.getMatchHistory(this, champions);
-    }
-
-    /**
-     * Gets the summoner's 15 most recent matches
-     *
-     * @param queueType
-     *            the queue type to limit games to (only ranked queues)
-     * @return the summoner's 15 most recent matches
-     */
-    public List<MatchSummary> getMatchHistory(final QueueType queueType) {
-        return RiotAPI.getMatchHistory(this, queueType);
-    }
-
-    /**
-     * Gets the summoner's 15 most recent matches
-     *
-     * @param queueType
-     *            the queue type to limit games to (only ranked queues)
-     * @param champions
-     *            the champions to limit games to
-     * @return the summoner's 15 most recent matches
-     */
-    public List<MatchSummary> getMatchHistory(final QueueType queueType, final List<Champion> champions) {
-        return RiotAPI.getMatchHistory(this, queueType, champions);
     }
 
     /**
