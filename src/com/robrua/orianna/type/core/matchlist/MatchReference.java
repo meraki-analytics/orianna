@@ -74,9 +74,7 @@ public class MatchReference extends OriannaObject<com.robrua.orianna.type.dto.ma
 
     /**
      * The match (via match API)
-     *
-     * @param includeTimeline
-     *            whether to include timeline data in the returned match
+     * 
      * @return the match (via match API)
      */
     public Match getMatch() {
@@ -85,7 +83,9 @@ public class MatchReference extends OriannaObject<com.robrua.orianna.type.dto.ma
 
     /**
      * The match (via match API)
-     *
+     * 
+     * @param includeTimeline
+     *            whether to include timeline data in the returned match
      * @return the match (via match API)
      */
     public Match getMatch(final boolean includeTimeline) {
