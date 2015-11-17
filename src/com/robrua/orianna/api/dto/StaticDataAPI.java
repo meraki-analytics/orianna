@@ -8,7 +8,6 @@ import com.google.gson.reflect.TypeToken;
 import com.robrua.orianna.type.api.ParamsBuilder;
 import com.robrua.orianna.type.dto.staticdata.Champion;
 import com.robrua.orianna.type.dto.staticdata.ChampionList;
-import com.robrua.orianna.type.dto.staticdata.Item;
 import com.robrua.orianna.type.dto.staticdata.ItemList;
 import com.robrua.orianna.type.dto.staticdata.LanguageStrings;
 import com.robrua.orianna.type.dto.staticdata.MapData;
@@ -49,20 +48,6 @@ public abstract class StaticDataAPI {
         final String request = BaseRiotAPI.API_VERSIONS.get("static-data") + "/champion";
         final Map<String, String> params = new ParamsBuilder().add("champData", "all").addIfNotNull("locale", BaseRiotAPI.locale).build();
         return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, params, true), ChampionList.class);
-    }
-
-    /**
-     * @param ID
-     *            the item's ID
-     * @return the item
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/938/3253">Riot
-     *      API Specification</a>
-     */
-    public static Item getItem(final long ID) {
-        final String request = BaseRiotAPI.API_VERSIONS.get("static-data") + "/item/" + ID;
-        final Map<String, String> params = new ParamsBuilder().add("itemData", "all").addIfNotNull("locale", BaseRiotAPI.locale).build();
-        return BaseRiotAPI.GSON.fromJson(BaseRiotAPI.get(request, params, true), Item.class);
     }
 
     /**
