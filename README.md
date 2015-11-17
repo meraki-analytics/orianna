@@ -93,7 +93,6 @@ import com.robrua.orianna.type.core.summoner.Summoner;
 
 public class Example {
     public static void main(String[] args) {
-        RiotAPI.setMirror(Region.NA);
         RiotAPI.setRegion(Region.NA);
         RiotAPI.setAPIKey("YOUR-API-KEY-HERE");
         
@@ -143,7 +142,6 @@ import com.robrua.orianna.type.exception.APIException;
 
 public class Example {
     public static void main(String[] args) {
-        AsyncRiotAPI.setMirror(Region.NA);
         AsyncRiotAPI.setRegion(Region.NA);
         AsyncRiotAPI.setAPIKey("YOUR-API-KEY-HERE");
         
@@ -201,7 +199,6 @@ import com.robrua.orianna.type.dto.summoner.Summoner;
 
 public class Example {
     public static void main(String[] args) {
-        BaseRiotAPI.setMirror(Region.NA);
         BaseRiotAPI.setRegion(Region.NA);
         BaseRiotAPI.setAPIKey("YOUR-API-KEY-HERE");
         

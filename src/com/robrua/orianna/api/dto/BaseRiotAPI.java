@@ -74,7 +74,7 @@ public abstract class BaseRiotAPI {
     static final Gson GSON = new GsonBuilder().registerTypeAdapter(ChampionSpell.class, new ChampionSpellDeserializer())
             .registerTypeAdapter(SummonerSpell.class, new SummonerSpellDeserializer()).create();
     static String locale;
-    static Region mirror, region;
+    static Region region;
     private static boolean printCalls = false;
     private static HttpHost proxy;
     private static RateLimiter rateLimiter = new MultiRateLimiter(RiotAPI.getDefaultDevelopmentRateLimits());
@@ -135,9 +135,6 @@ public abstract class BaseRiotAPI {
         if(region == null) {
             throw new OriannaException("Must set region for the API using setRegion before the server can be queried!");
         }
-        if(mirror == null) {
-            throw new OriannaException("Must set mirror for the API using setRegion before the server can be queried!");
-        }
         if(APIKey == null) {
             throw new OriannaException("Must set API key for using setAPIKey before the server can be queried!");
         }
@@ -153,7 +150,7 @@ public abstract class BaseRiotAPI {
         }
 
         // Build URI for request
-        final String server = staticServer ? "global" : mirror.toString().toLowerCase();
+        final String server = staticServer ? "global" : region.toString().toLowerCase();
         final String rgn = staticServer ? "static-data/" + region.toString().toLowerCase() : region.toString().toLowerCase();
 
         // Make request
@@ -767,7 +764,7 @@ public abstract class BaseRiotAPI {
      */
     static String getRoot(final String request, final Map<String, String> params, final boolean staticServer) {
         // Check that mirror, region, and API key are set
-        if(mirror == null) {
+        if(region == null) {
             throw new OriannaException("Must set mirror for the API using setRegion before the server can be queried!");
         }
         if(APIKey == null) {
@@ -786,7 +783,7 @@ public abstract class BaseRiotAPI {
 
         // Make request
         try {
-            final String server = staticServer ? "global" : mirror.toString().toLowerCase();
+            final String server = staticServer ? "global" : region.toString().toLowerCase();
             final URI uri = new URIBuilder().setScheme("https").setHost(server + ".api.pvp.net").setPath(request).setParameters(param).build();
             return get(uri, staticServer);
         }
@@ -1214,10 +1211,11 @@ public abstract class BaseRiotAPI {
      *
      * @param newMirror
      *            the server mirror to hit for queries
+     *            
+     * @deprecated Region and Mirror must always match now. This method now does nothing.
      */
-    public static void setMirror(final Region newMirror) {
-        mirror = newMirror;
-    }
+    @Deprecated
+    public static void setMirror(final Region newMirror) {}
 
     /**
      * Sets the proxy to access the API through
