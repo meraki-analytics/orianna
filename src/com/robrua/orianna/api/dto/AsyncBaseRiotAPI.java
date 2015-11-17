@@ -1962,7 +1962,10 @@ public class AsyncBaseRiotAPI {
      *
      * @param newMirror
      *            the server mirror to hit for queries
+     *            
+     * @deprecated Region and Mirror must always match now. This method now does nothing.
      */
+    @Deprecated
     public static void setMirror(final Region newMirror) {
         BaseRiotAPI.setMirror(newMirror);
     }
