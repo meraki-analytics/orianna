@@ -39,6 +39,7 @@ import com.robrua.orianna.type.dto.league.League;
 import com.robrua.orianna.type.dto.match.MatchDetail;
 import com.robrua.orianna.type.dto.matchlist.MatchList;
 import com.robrua.orianna.type.dto.staticdata.ChampionSpell;
+import com.robrua.orianna.type.dto.staticdata.Item;
 import com.robrua.orianna.type.dto.staticdata.ItemList;
 import com.robrua.orianna.type.dto.staticdata.LanguageStrings;
 import com.robrua.orianna.type.dto.staticdata.MapData;
@@ -322,6 +323,18 @@ public abstract class BaseRiotAPI {
      */
     public static FeaturedGames getFeaturedGames() {
         return FeaturedGamesAPI.getFeaturedGames();
+    }
+
+    /**
+     * @param ID
+     *            the item's ID
+     * @return the item
+     * @see <a
+     *      href="https://developer.riotgames.com/api/methods#!/938/3253">Riot
+     *      API Specification</a>
+     */
+    public static Item getItem(final long ID) {
+        return StaticDataAPI.getItem(ID);
     }
 
     /**

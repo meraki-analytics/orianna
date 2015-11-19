@@ -15,6 +15,7 @@ import com.robrua.orianna.type.dto.game.RecentGames;
 import com.robrua.orianna.type.dto.league.League;
 import com.robrua.orianna.type.dto.match.MatchDetail;
 import com.robrua.orianna.type.dto.matchlist.MatchList;
+import com.robrua.orianna.type.dto.staticdata.Item;
 import com.robrua.orianna.type.dto.staticdata.ItemList;
 import com.robrua.orianna.type.dto.staticdata.LanguageStrings;
 import com.robrua.orianna.type.dto.staticdata.MapData;
@@ -225,6 +226,34 @@ public class AsyncBaseRiotAPI {
                 else {
                     try {
                         action.perform(FeaturedGamesAPI.getFeaturedGames());
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
+     *            what to do with the item
+     * @param ID
+     *            the item's ID
+     * @see <a
+     *      href="https://developer.riotgames.com/api/methods#!/938/3253">Riot
+     *      API Specification</a>
+     */
+    public static void getItem(final Action<Item> action, final long ID) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    StaticDataAPI.getItem(ID);
+                }
+                else {
+                    try {
+                        action.perform(StaticDataAPI.getItem(ID));
                     }
                     catch(final APIException e) {
                         action.handle(e);
