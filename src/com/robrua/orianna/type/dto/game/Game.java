@@ -220,7 +220,7 @@ public class Game extends OriannaDto {
      */
     public Set<Long> getSummonerIDs() {
         final Set<Long> set = new HashSet<>();
-        if (fellowPlayers != null) {
+        if(fellowPlayers != null) {
             for(final Player player : fellowPlayers) {
                 set.add(player.getSummonerId());
             }

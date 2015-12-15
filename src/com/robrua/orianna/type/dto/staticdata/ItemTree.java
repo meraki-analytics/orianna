@@ -24,7 +24,7 @@ public class ItemTree extends OriannaDto {
     private String header;
 
     @ElementCollection
-    @CollectionTable(name = "itemtree_tag", joinColumns = @JoinColumn(name = "itemtree_id"))
+    @CollectionTable(name = "itemtree_tag", joinColumns = @JoinColumn(name = "itemtree_id") )
     private List<String> tags;
 
     /*

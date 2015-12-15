@@ -26,13 +26,13 @@ public class ChampionSpell extends OriannaDto {
     @OneToMany(cascade = CascadeType.ALL)
     private List<Image> altimages;
     @ElementCollection
-    @CollectionTable(name = "championspell_cooldown", joinColumns = @JoinColumn(name = "championspell_id"))
+    @CollectionTable(name = "championspell_cooldown", joinColumns = @JoinColumn(name = "championspell_id") )
     private List<Double> cooldown;
 
     private String cooldownBurn, costBurn, costType, name, rangeBurn, resource;
 
     @ElementCollection
-    @CollectionTable(name = "championspell_cost", joinColumns = @JoinColumn(name = "championspell_id"))
+    @CollectionTable(name = "championspell_cost", joinColumns = @JoinColumn(name = "championspell_id") )
     private List<Integer> cost;
 
     @Id
@@ -46,7 +46,7 @@ public class ChampionSpell extends OriannaDto {
     private List<EffectList> effect;
 
     @ElementCollection
-    @CollectionTable(name = "championspell_effectburn", joinColumns = @JoinColumn(name = "championspell_id"))
+    @CollectionTable(name = "championspell_effectburn", joinColumns = @JoinColumn(name = "championspell_id") )
     private List<String> effectBurn;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -61,7 +61,7 @@ public class ChampionSpell extends OriannaDto {
     private Integer maxrank;
 
     @ElementCollection
-    @CollectionTable(name = "championspell_range", joinColumns = @JoinColumn(name = "championspell_id"))
+    @CollectionTable(name = "championspell_range", joinColumns = @JoinColumn(name = "championspell_id") )
     @Column(name = "rnge")
     private List<Integer> range;
 

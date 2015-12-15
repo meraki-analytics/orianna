@@ -23,11 +23,11 @@ public class LevelTip extends OriannaDto {
     private long dbId;
 
     @ElementCollection
-    @CollectionTable(name = "leveltip_effect", joinColumns = @JoinColumn(name = "leveltip_id"))
+    @CollectionTable(name = "leveltip_effect", joinColumns = @JoinColumn(name = "leveltip_id") )
     private List<String> effect;
 
     @ElementCollection
-    @CollectionTable(name = "leveltip_label", joinColumns = @JoinColumn(name = "leveltip_id"))
+    @CollectionTable(name = "leveltip_label", joinColumns = @JoinColumn(name = "leveltip_id") )
     private List<String> label;
 
     /*

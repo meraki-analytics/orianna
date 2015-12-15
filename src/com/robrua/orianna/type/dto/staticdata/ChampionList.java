@@ -29,7 +29,7 @@ public class ChampionList extends OriannaDto {
     private String format, type, version;
 
     @ElementCollection
-    @CollectionTable(name = "championlist_key", joinColumns = @JoinColumn(name = "championlist_id"))
+    @CollectionTable(name = "championlist_key", joinColumns = @JoinColumn(name = "championlist_id") )
     @Column(name = "keyy")
     private Map<String, String> keys;
 

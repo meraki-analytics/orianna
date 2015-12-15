@@ -21,7 +21,7 @@ public class Realm extends OriannaDto {
     private final long dbId = 0;
 
     @ElementCollection
-    @CollectionTable(name = "realm_n", joinColumns = @JoinColumn(name = "realm_id"))
+    @CollectionTable(name = "realm_n", joinColumns = @JoinColumn(name = "realm_id") )
     private Map<String, String> n;
 
     private Integer profileiconmax;

@@ -18,7 +18,7 @@ import com.robrua.orianna.type.dto.OriannaDto;
 public class Mastery extends OriannaDto {
     private static final long serialVersionUID = -4569475685529096111L;
     @ElementCollection
-    @CollectionTable(name = "mastery_description", joinColumns = @JoinColumn(name = "mastery_id"))
+    @CollectionTable(name = "mastery_description", joinColumns = @JoinColumn(name = "mastery_id") )
     private List<String> description;
     @Id
     private Integer id;
@@ -31,7 +31,7 @@ public class Mastery extends OriannaDto {
     private Integer ranks;
 
     @ElementCollection
-    @CollectionTable(name = "mastery_sanitizeddescription", joinColumns = @JoinColumn(name = "mastery_id"))
+    @CollectionTable(name = "mastery_sanitizeddescription", joinColumns = @JoinColumn(name = "mastery_id") )
     private List<String> sanitizedDescription;
 
     /*
@@ -210,7 +210,7 @@ public class Mastery extends OriannaDto {
      */
     @Override
     public String toString() {
-        return "Mastery [id=" + id + ", ranks=" + ranks + ", description=" + description + ", sanitizedDescription=" + sanitizedDescription + ", image="
-                + image + ", masteryTree=" + masteryTree + ", name=" + name + ", prereq=" + prereq + "]";
+        return "Mastery [id=" + id + ", ranks=" + ranks + ", description=" + description + ", sanitizedDescription=" + sanitizedDescription + ", image=" + image
+                + ", masteryTree=" + masteryTree + ", name=" + name + ", prereq=" + prereq + "]";
     }
 }

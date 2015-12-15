@@ -565,9 +565,9 @@ public class MatchDetail extends OriannaDto {
      */
     @Override
     public String toString() {
-        return "MatchDetail [mapId=" + mapId + ", matchCreation=" + matchCreation + ", matchDuration=" + matchDuration + ", matchId=" + matchId
-                + ", matchMode=" + matchMode + ", matchType=" + matchType + ", matchVersion=" + matchVersion + ", platformId=" + platformId + ", queueType="
-                + queueType + ", region=" + region + ", season=" + season + ", participantIdentities=" + participantIdentities + ", participants="
-                + participants + ", teams=" + teams + ", timeline=" + timeline + "]";
+        return "MatchDetail [mapId=" + mapId + ", matchCreation=" + matchCreation + ", matchDuration=" + matchDuration + ", matchId=" + matchId + ", matchMode="
+                + matchMode + ", matchType=" + matchType + ", matchVersion=" + matchVersion + ", platformId=" + platformId + ", queueType=" + queueType
+                + ", region=" + region + ", season=" + season + ", participantIdentities=" + participantIdentities + ", participants=" + participants
+                + ", teams=" + teams + ", timeline=" + timeline + "]";
     }
 }

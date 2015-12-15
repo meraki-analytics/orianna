@@ -24,7 +24,7 @@ public class Shard extends OriannaDto {
     private String hostname, name, region_tag, slug;
 
     @ElementCollection
-    @CollectionTable(name = "shard_locale", joinColumns = @JoinColumn(name = "shard_id"))
+    @CollectionTable(name = "shard_locale", joinColumns = @JoinColumn(name = "shard_id") )
     private List<String> locales;
 
     /*

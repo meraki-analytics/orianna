@@ -13,12 +13,12 @@ import com.robrua.orianna.type.dto.OriannaDto;
 public class ParticipantStats extends OriannaDto {
     private static final long serialVersionUID = 6303683508721189211L;
     private Long assists, champLevel, combatPlayerScore, deaths, doubleKills, goldEarned, goldSpent, inhibitorKills, item0, item1, item2, item3, item4, item5,
-    item6, killingSprees, kills, largestCriticalStrike, largestKillingSpree, largestMultiKill, magicDamageDealt, magicDamageDealtToChampions,
-    magicDamageTaken, minionsKilled, neutralMinionsKilled, neutralMinionsKilledEnemyJungle, neutralMinionsKilledTeamJungle, nodeCapture,
-    nodeCaptureAssist, nodeNeutralize, nodeNeutralizeAssist, objectivePlayerScore, pentaKills, physicalDamageDealt, physicalDamageDealtToChampions,
-    physicalDamageTaken, quadraKills, sightWardsBoughtInGame, teamObjective, totalDamageDealt, totalDamageDealtToChampions, totalDamageTaken,
-    totalHeal, totalPlayerScore, totalScoreRank, totalTimeCrowdControlDealt, totalUnitsHealed, towerKills, tripleKills, trueDamageDealt,
-    trueDamageDealtToChampions, trueDamageTaken, unrealKills, visionWardsBoughtInGame, wardsKilled, wardsPlaced;
+            item6, killingSprees, kills, largestCriticalStrike, largestKillingSpree, largestMultiKill, magicDamageDealt, magicDamageDealtToChampions,
+            magicDamageTaken, minionsKilled, neutralMinionsKilled, neutralMinionsKilledEnemyJungle, neutralMinionsKilledTeamJungle, nodeCapture,
+            nodeCaptureAssist, nodeNeutralize, nodeNeutralizeAssist, objectivePlayerScore, pentaKills, physicalDamageDealt, physicalDamageDealtToChampions,
+            physicalDamageTaken, quadraKills, sightWardsBoughtInGame, teamObjective, totalDamageDealt, totalDamageDealtToChampions, totalDamageTaken, totalHeal,
+            totalPlayerScore, totalScoreRank, totalTimeCrowdControlDealt, totalUnitsHealed, towerKills, tripleKills, trueDamageDealt,
+            trueDamageDealtToChampions, trueDamageTaken, unrealKills, visionWardsBoughtInGame, wardsKilled, wardsPlaced;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long dbId;
@@ -1582,24 +1582,23 @@ public class ParticipantStats extends OriannaDto {
     @Override
     public String toString() {
         return "ParticipantStats [assists=" + assists + ", champLevel=" + champLevel + ", combatPlayerScore=" + combatPlayerScore + ", deaths=" + deaths
-                + ", doubleKills=" + doubleKills + ", goldEarned=" + goldEarned + ", goldSpent=" + goldSpent + ", inhibitorKills=" + inhibitorKills
-                + ", item0=" + item0 + ", item1=" + item1 + ", item2=" + item2 + ", item3=" + item3 + ", item4=" + item4 + ", item5=" + item5 + ", item6="
-                + item6 + ", killingSprees=" + killingSprees + ", kills=" + kills + ", largestCriticalStrike=" + largestCriticalStrike
-                + ", largestKillingSpree=" + largestKillingSpree + ", largestMultiKill=" + largestMultiKill + ", magicDamageDealt=" + magicDamageDealt
-                + ", magicDamageDealtToChampions=" + magicDamageDealtToChampions + ", magicDamageTaken=" + magicDamageTaken + ", minionsKilled="
-                + minionsKilled + ", neutralMinionsKilled=" + neutralMinionsKilled + ", neutralMinionsKilledEnemyJungle=" + neutralMinionsKilledEnemyJungle
-                + ", neutralMinionsKilledTeamJungle=" + neutralMinionsKilledTeamJungle + ", nodeCapture=" + nodeCapture + ", nodeCaptureAssist="
-                + nodeCaptureAssist + ", nodeNeutralize=" + nodeNeutralize + ", nodeNeutralizeAssist=" + nodeNeutralizeAssist + ", objectivePlayerScore="
-                + objectivePlayerScore + ", pentaKills=" + pentaKills + ", physicalDamageDealt=" + physicalDamageDealt + ", physicalDamageDealtToChampions="
-                + physicalDamageDealtToChampions + ", physicalDamageTaken=" + physicalDamageTaken + ", quadraKills=" + quadraKills
-                + ", sightWardsBoughtInGame=" + sightWardsBoughtInGame + ", teamObjective=" + teamObjective + ", totalDamageDealt=" + totalDamageDealt
-                + ", totalDamageDealtToChampions=" + totalDamageDealtToChampions + ", totalDamageTaken=" + totalDamageTaken + ", totalHeal=" + totalHeal
-                + ", totalPlayerScore=" + totalPlayerScore + ", totalScoreRank=" + totalScoreRank + ", totalTimeCrowdControlDealt="
-                + totalTimeCrowdControlDealt + ", totalUnitsHealed=" + totalUnitsHealed + ", towerKills=" + towerKills + ", tripleKills=" + tripleKills
-                + ", trueDamageDealt=" + trueDamageDealt + ", trueDamageDealtToChampions=" + trueDamageDealtToChampions + ", trueDamageTaken="
-                + trueDamageTaken + ", unrealKills=" + unrealKills + ", visionWardsBoughtInGame=" + visionWardsBoughtInGame + ", wardsKilled=" + wardsKilled
-                + ", wardsPlaced=" + wardsPlaced + ", winner=" + winner + ", firstBloodAssist=" + firstBloodAssist + ", firstBloodKill=" + firstBloodKill
-                + ", firstInhibitorKill=" + firstInhibitorKill + ", firstInhibitorAssist=" + firstInhibitorAssist + ", firstTowerAssist=" + firstTowerAssist
-                + ", firstTowerKill=" + firstTowerKill + "]";
+                + ", doubleKills=" + doubleKills + ", goldEarned=" + goldEarned + ", goldSpent=" + goldSpent + ", inhibitorKills=" + inhibitorKills + ", item0="
+                + item0 + ", item1=" + item1 + ", item2=" + item2 + ", item3=" + item3 + ", item4=" + item4 + ", item5=" + item5 + ", item6=" + item6
+                + ", killingSprees=" + killingSprees + ", kills=" + kills + ", largestCriticalStrike=" + largestCriticalStrike + ", largestKillingSpree="
+                + largestKillingSpree + ", largestMultiKill=" + largestMultiKill + ", magicDamageDealt=" + magicDamageDealt + ", magicDamageDealtToChampions="
+                + magicDamageDealtToChampions + ", magicDamageTaken=" + magicDamageTaken + ", minionsKilled=" + minionsKilled + ", neutralMinionsKilled="
+                + neutralMinionsKilled + ", neutralMinionsKilledEnemyJungle=" + neutralMinionsKilledEnemyJungle + ", neutralMinionsKilledTeamJungle="
+                + neutralMinionsKilledTeamJungle + ", nodeCapture=" + nodeCapture + ", nodeCaptureAssist=" + nodeCaptureAssist + ", nodeNeutralize="
+                + nodeNeutralize + ", nodeNeutralizeAssist=" + nodeNeutralizeAssist + ", objectivePlayerScore=" + objectivePlayerScore + ", pentaKills="
+                + pentaKills + ", physicalDamageDealt=" + physicalDamageDealt + ", physicalDamageDealtToChampions=" + physicalDamageDealtToChampions
+                + ", physicalDamageTaken=" + physicalDamageTaken + ", quadraKills=" + quadraKills + ", sightWardsBoughtInGame=" + sightWardsBoughtInGame
+                + ", teamObjective=" + teamObjective + ", totalDamageDealt=" + totalDamageDealt + ", totalDamageDealtToChampions=" + totalDamageDealtToChampions
+                + ", totalDamageTaken=" + totalDamageTaken + ", totalHeal=" + totalHeal + ", totalPlayerScore=" + totalPlayerScore + ", totalScoreRank="
+                + totalScoreRank + ", totalTimeCrowdControlDealt=" + totalTimeCrowdControlDealt + ", totalUnitsHealed=" + totalUnitsHealed + ", towerKills="
+                + towerKills + ", tripleKills=" + tripleKills + ", trueDamageDealt=" + trueDamageDealt + ", trueDamageDealtToChampions="
+                + trueDamageDealtToChampions + ", trueDamageTaken=" + trueDamageTaken + ", unrealKills=" + unrealKills + ", visionWardsBoughtInGame="
+                + visionWardsBoughtInGame + ", wardsKilled=" + wardsKilled + ", wardsPlaced=" + wardsPlaced + ", winner=" + winner + ", firstBloodAssist="
+                + firstBloodAssist + ", firstBloodKill=" + firstBloodKill + ", firstInhibitorKill=" + firstInhibitorKill + ", firstInhibitorAssist="
+                + firstInhibitorAssist + ", firstTowerAssist=" + firstTowerAssist + ", firstTowerKill=" + firstTowerKill + "]";
     }
 }

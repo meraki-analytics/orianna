@@ -26,7 +26,7 @@ public class MapDetails extends OriannaDto {
     private String mapName;
 
     @ElementCollection
-    @CollectionTable(name = "mapdetails_unpurchasable", joinColumns = @JoinColumn(name = "map_id"))
+    @CollectionTable(name = "mapdetails_unpurchasable", joinColumns = @JoinColumn(name = "map_id") )
     private List<Long> unpurchasableItemList;
 
     /*

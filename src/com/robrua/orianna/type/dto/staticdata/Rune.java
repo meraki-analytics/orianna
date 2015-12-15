@@ -28,7 +28,7 @@ public class Rune extends OriannaDto {
     private String description, plaintext, sanitizedDescription;
 
     @ElementCollection
-    @CollectionTable(name = "rune_from", joinColumns = @JoinColumn(name = "rune_id"))
+    @CollectionTable(name = "rune_from", joinColumns = @JoinColumn(name = "rune_id") )
     @Column(name = "frm")
     private List<String> from;
 
@@ -42,12 +42,12 @@ public class Rune extends OriannaDto {
     private Image image;
 
     @ElementCollection
-    @CollectionTable(name = "rune_into", joinColumns = @JoinColumn(name = "rune_id"))
+    @CollectionTable(name = "rune_into", joinColumns = @JoinColumn(name = "rune_id") )
     @Column(name = "nto")
     private List<String> into;
 
     @ElementCollection
-    @CollectionTable(name = "rune_maps", joinColumns = @JoinColumn(name = "rune_id"))
+    @CollectionTable(name = "rune_maps", joinColumns = @JoinColumn(name = "rune_id") )
     private Map<String, Boolean> maps;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -57,7 +57,7 @@ public class Rune extends OriannaDto {
     private BasicDataStats stats;
 
     @ElementCollection
-    @CollectionTable(name = "rune_tags", joinColumns = @JoinColumn(name = "rune_id"))
+    @CollectionTable(name = "rune_tags", joinColumns = @JoinColumn(name = "rune_id") )
     private List<String> tags;
 
     /*

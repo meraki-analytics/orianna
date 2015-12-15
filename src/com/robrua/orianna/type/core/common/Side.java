@@ -7,6 +7,7 @@ public enum Side {
     BLUE(100), PURPLE(200);
 
     private static final Map<Long, Side> IDs = new HashMap<>();
+
     static {
         for(final Side s : Side.values()) {
             IDs.put(s.ID, s);

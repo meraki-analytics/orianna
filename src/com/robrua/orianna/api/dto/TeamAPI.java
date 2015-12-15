@@ -14,9 +14,8 @@ public abstract class TeamAPI {
      * @param IDs
      *            the IDs of the teams
      * @return the teams
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/937/3246">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/937/3246">
+     *      Riot API Specification</a>
      */
     public static Map<String, Team> getTeamsByID(final List<String> IDs) {
         if(IDs.size() > 10) {
@@ -32,9 +31,8 @@ public abstract class TeamAPI {
      * @param IDs
      *            the IDs of the teams
      * @return the teams
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/937/3246">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/937/3246">
+     *      Riot API Specification</a>
      */
     public static Map<String, Team> getTeamsByID(final String... IDs) {
         return getTeamsByID(Arrays.asList(IDs));
@@ -44,9 +42,8 @@ public abstract class TeamAPI {
      * @param summonerIDs
      *            the IDs of the summoners to get teams for
      * @return the summoners' teams
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/937/3247">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/937/3247">
+     *      Riot API Specification</a>
      */
     public static Map<Long, List<Team>> getTeamsBySummoner(final List<Long> summonerIDs) {
         if(summonerIDs.size() > 10) {
@@ -62,9 +59,8 @@ public abstract class TeamAPI {
      * @param summonerIDs
      *            the IDs of the summoners to get teams for
      * @return the summoners' teams
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/937/3247">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/937/3247">
+     *      Riot API Specification</a>
      */
     public static Map<Long, List<Team>> getTeamsBySummoner(final long... summonerIDs) {
         return getTeamsBySummoner(Utils.convert(summonerIDs));

@@ -10,9 +10,8 @@ public abstract class MatchAPI {
      * @param ID
      *            the ID of the match to look up
      * @return the match
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/967/3313">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/967/3313">
+     *      Riot API Specification</a>
      */
     public static MatchDetail getMatch(final long ID) {
         return getMatch(ID, true);
@@ -24,9 +23,8 @@ public abstract class MatchAPI {
      * @param includeTimeline
      *            whether to include timeline data in the returned match
      * @return the match
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/967/3313">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/967/3313">
+     *      Riot API Specification</a>
      */
     public static MatchDetail getMatch(final long ID, final boolean includeTimeline) {
         final String request = BaseRiotAPI.API_VERSIONS.get("match") + "/match/" + ID;

@@ -18,9 +18,8 @@ public abstract class StatusAPI {
      * @param region
      *            the region's shard to get
      * @return the shard
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/908/3142">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/908/3142">
+     *      Riot API Specification</a>
      */
     public static ShardStatus getShard(final Region region) {
         try {
@@ -35,9 +34,8 @@ public abstract class StatusAPI {
 
     /**
      * @return the list of all shards
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/908/3143">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/908/3143">
+     *      Riot API Specification</a>
      */
     public static List<Shard> getShards() {
         try {

@@ -16,9 +16,8 @@ public abstract class SummonerAPI {
      * @param summonerIDs
      *            the IDs of the summoners to get
      * @return the summoners
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/960/3293">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/960/3293">
+     *      Riot API Specification</a>
      */
     public static Map<Long, Summoner> getSummonersByID(final List<Long> summonerIDs) {
         if(summonerIDs.size() > 40) {
@@ -34,9 +33,8 @@ public abstract class SummonerAPI {
      * @param summonerIDs
      *            the IDs of the summoners to get
      * @return the summoners
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/960/3293">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/960/3293">
+     *      Riot API Specification</a>
      */
     public static Map<Long, Summoner> getSummonersByID(final long... summonerIDs) {
         return getSummonersByID(Utils.convert(summonerIDs));
@@ -46,9 +44,8 @@ public abstract class SummonerAPI {
      * @param summonerNames
      *            the names of the summoners to get
      * @return the summoners
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/960/3292">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/960/3292">
+     *      Riot API Specification</a>
      */
     public static Map<String, Summoner> getSummonersByName(final List<String> summonerNames) {
         if(summonerNames.size() > 40) {
@@ -64,9 +61,8 @@ public abstract class SummonerAPI {
      * @param summonerNames
      *            the names of the summoners to get
      * @return the summoners
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/960/3292">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/960/3292">
+     *      Riot API Specification</a>
      */
     public static Map<String, Summoner> getSummonersByName(final String... summonerNames) {
         return getSummonersByName(Arrays.asList(summonerNames));
@@ -76,9 +72,8 @@ public abstract class SummonerAPI {
      * @param summonerIDs
      *            the IDs of the summoners to get masteries for
      * @return the summoners' masteries
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/960/3295">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/960/3295">
+     *      Riot API Specification</a>
      */
     public static Map<Long, MasteryPages> getSummonersMasteries(final List<Long> summonerIDs) {
         if(summonerIDs.size() > 40) {
@@ -94,9 +89,8 @@ public abstract class SummonerAPI {
      * @param summonerIDs
      *            the IDs of the summoners to get masteries for
      * @return the summoners' masteries
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/960/3295">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/960/3295">
+     *      Riot API Specification</a>
      */
     public static Map<Long, MasteryPages> getSummonersMasteries(final long... summonerIDs) {
         return getSummonersMasteries(Utils.convert(summonerIDs));
@@ -106,9 +100,8 @@ public abstract class SummonerAPI {
      * @param summonerIDs
      *            the IDs of the summoners to get names of
      * @return the summoners' names
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/960/3296">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/960/3296">
+     *      Riot API Specification</a>
      */
     public static Map<Long, String> getSummonersNames(final List<Long> summonerIDs) {
         if(summonerIDs.size() > 40) {
@@ -124,9 +117,8 @@ public abstract class SummonerAPI {
      * @param summonerIDs
      *            the IDs of the summoners to get names of
      * @return the summoners' names
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/960/3296">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/960/3296">
+     *      Riot API Specification</a>
      */
     public static Map<Long, String> getSummonersNames(final long... summonerIDs) {
         return getSummonersNames(Utils.convert(summonerIDs));
@@ -136,9 +128,8 @@ public abstract class SummonerAPI {
      * @param summonerIDs
      *            the IDs of the summoners to get runes for
      * @return the summoners' runes
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/960/3294">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/960/3294">
+     *      Riot API Specification</a>
      */
     public static Map<Long, RunePages> getSummonersRunes(final List<Long> summonerIDs) {
         if(summonerIDs.size() > 40) {
@@ -154,9 +145,8 @@ public abstract class SummonerAPI {
      * @param summonerIDs
      *            the IDs of the summoners to get runes for
      * @return the summoners' runes
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/960/3294">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/960/3294">
+     *      Riot API Specification</a>
      */
     public static Map<Long, RunePages> getSummonersRunes(final long... summonerIDs) {
         return getSummonersRunes(Utils.convert(summonerIDs));

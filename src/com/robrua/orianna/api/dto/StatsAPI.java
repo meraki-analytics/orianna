@@ -12,9 +12,8 @@ public abstract class StatsAPI {
      * @param summonerID
      *            the ID of the summoner to get ranked stats for
      * @return the ranked stats for that summoner
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/961/3297">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/961/3297">
+     *      Riot API Specification</a>
      */
     public static RankedStats getRankedStats(final long summonerID) {
         final String request = BaseRiotAPI.API_VERSIONS.get("stats") + "/stats/by-summoner/" + summonerID + "/ranked";
@@ -27,9 +26,8 @@ public abstract class StatsAPI {
      * @param season
      *            the season to get stats for
      * @return the ranked stats for that summoner
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/961/3297">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/961/3297">
+     *      Riot API Specification</a>
      */
     public static RankedStats getRankedStats(final long summonerID, final Season season) {
         final String request = BaseRiotAPI.API_VERSIONS.get("stats") + "/stats/by-summoner/" + summonerID + "/ranked";
@@ -41,9 +39,8 @@ public abstract class StatsAPI {
      * @param summonerID
      *            the ID of the summoner to get stats for
      * @return the stats for that summoner
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/961/3298">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/961/3298">
+     *      Riot API Specification</a>
      */
     public static PlayerStatsSummaryList getStats(final long summonerID) {
         final String request = BaseRiotAPI.API_VERSIONS.get("stats") + "/stats/by-summoner/" + summonerID + "/summary";
@@ -56,9 +53,8 @@ public abstract class StatsAPI {
      * @param season
      *            the season to get stats for
      * @return the stats for that summoner
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/961/3298">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/961/3298">
+     *      Riot API Specification</a>
      */
     public static PlayerStatsSummaryList getStats(final long summonerID, final Season season) {
         final String request = BaseRiotAPI.API_VERSIONS.get("stats") + "/stats/by-summoner/" + summonerID + "/summary";

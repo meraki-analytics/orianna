@@ -13,6 +13,7 @@ public class APIException extends OriannaException {
         BAD_REQUEST(400), INTERNAL_SERVER_ERROR(500), NOT_FOUND(404), RATE_LIMIT_EXCEEDED(429), SERVICE_UNAVAILABLE(503), UNAUTHORIZED(401), UNKNOWN(0);
 
         private static final Map<Integer, Status> codes = new HashMap<>();
+
         static {
             for(final Status m : Status.values()) {
                 codes.put(m.code, m);
