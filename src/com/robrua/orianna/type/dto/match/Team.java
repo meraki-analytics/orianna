@@ -15,17 +15,17 @@ import com.robrua.orianna.type.dto.OriannaDto;
 @Entity(name = "match.Team")
 @Table(name = "matchteam")
 public class Team extends OriannaDto {
-    private static final long serialVersionUID = 9126311625219194559L;
+    private static final long serialVersionUID = 7271221135056766741L;
     @OneToMany(cascade = CascadeType.ALL)
     private List<BannedChampion> bans;
-    private Integer baronKills, dragonKills, inhibitorKills, teamId, towerKills, vilemawKills;
+    private Integer baronKills, dragonKills, inhibitorKills, riftHeraldKills, teamId, towerKills, vilemawKills;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long dbId;
 
     private Long dominionVictoryScore;
 
-    private Boolean firstBaron, firstBlood, firstDragon, firstInhibitor, firstTower, winner;
+    private Boolean firstBaron, firstBlood, firstDragon, firstInhibitor, firstRiftHerald, firstTower, winner;
 
     /*
      * (non-Javadoc)
@@ -99,6 +99,14 @@ public class Team extends OriannaDto {
         else if(!firstDragon.equals(other.firstDragon)) {
             return false;
         }
+        if(firstRiftHerald == null) {
+            if(other.firstRiftHerald != null) {
+                return false;
+            }
+        }
+        else if(!firstRiftHerald.equals(other.firstRiftHerald)) {
+            return false;
+        }
         if(firstInhibitor == null) {
             if(other.firstInhibitor != null) {
                 return false;
@@ -121,6 +129,14 @@ public class Team extends OriannaDto {
             }
         }
         else if(!inhibitorKills.equals(other.inhibitorKills)) {
+            return false;
+        }
+        if(riftHeraldKills == null) {
+            if(other.riftHeraldKills != null) {
+                return false;
+            }
+        }
+        else if(!riftHeraldKills.equals(other.riftHeraldKills)) {
             return false;
         }
         if(teamId == null) {
@@ -223,6 +239,13 @@ public class Team extends OriannaDto {
     }
 
     /**
+     * @return the firstRiftHerald
+     */
+    public Boolean getFirstRiftHerald() {
+        return firstRiftHerald;
+    }
+
+    /**
      * @return the firstTower
      */
     public Boolean getFirstTower() {
@@ -234,6 +257,13 @@ public class Team extends OriannaDto {
      */
     public Integer getInhibitorKills() {
         return inhibitorKills;
+    }
+
+    /**
+     * @return the riftHeraldKills
+     */
+    public Integer getRiftHeraldKills() {
+        return riftHeraldKills;
     }
 
     /**
@@ -280,8 +310,10 @@ public class Team extends OriannaDto {
         result = prime * result + (firstBlood == null ? 0 : firstBlood.hashCode());
         result = prime * result + (firstDragon == null ? 0 : firstDragon.hashCode());
         result = prime * result + (firstInhibitor == null ? 0 : firstInhibitor.hashCode());
+        result = prime * result + (firstRiftHerald == null ? 0 : firstRiftHerald.hashCode());
         result = prime * result + (firstTower == null ? 0 : firstTower.hashCode());
         result = prime * result + (inhibitorKills == null ? 0 : inhibitorKills.hashCode());
+        result = prime * result + (riftHeraldKills == null ? 0 : riftHeraldKills.hashCode());
         result = prime * result + (teamId == null ? 0 : teamId.hashCode());
         result = prime * result + (towerKills == null ? 0 : towerKills.hashCode());
         result = prime * result + (vilemawKills == null ? 0 : vilemawKills.hashCode());
@@ -354,6 +386,14 @@ public class Team extends OriannaDto {
     }
 
     /**
+     * @param firstRiftHerald
+     *            the firstRiftHerald to set
+     */
+    public void setFirstRiftHerald(final Boolean firstRiftHerald) {
+        this.firstRiftHerald = firstRiftHerald;
+    }
+
+    /**
      * @param firstTower
      *            the firstTower to set
      */
@@ -367,6 +407,14 @@ public class Team extends OriannaDto {
      */
     public void setInhibitorKills(final Integer inhibitorKills) {
         this.inhibitorKills = inhibitorKills;
+    }
+
+    /**
+     * @param riftHeraldKills
+     *            the riftHeraldKills to set
+     */
+    public void setRiftHeraldKills(final Integer riftHeraldKills) {
+        this.riftHeraldKills = riftHeraldKills;
     }
 
     /**
@@ -407,9 +455,10 @@ public class Team extends OriannaDto {
      */
     @Override
     public String toString() {
-        return "Team [bans=" + bans + ", baronKills=" + baronKills + ", dragonKills=" + dragonKills + ", inhibitorKills=" + inhibitorKills + ", teamId="
-                + teamId + ", towerKills=" + towerKills + ", vilemawKills=" + vilemawKills + ", dominionVictoryScore=" + dominionVictoryScore + ", firstBaron="
-                + firstBaron + ", firstBlood=" + firstBlood + ", firstDragon=" + firstDragon + ", firstInhibitor=" + firstInhibitor + ", firstTower="
-                + firstTower + ", winner=" + winner + "]";
+        return "Team [bans=" + bans + ", baronKills=" + baronKills + ", dragonKills=" + dragonKills + ", inhibitorKills=" + inhibitorKills
+                + ", riftHeraldKills=" + riftHeraldKills + ", teamId=" + teamId + ", towerKills=" + towerKills + ", vilemawKills=" + vilemawKills
+                + ", dominionVictoryScore=" + dominionVictoryScore + ", firstBaron=" + firstBaron + ", firstBlood=" + firstBlood + ", firstDragon="
+                + firstDragon + ", firstInhibitor=" + firstInhibitor + ", firstRiftHerald=" + firstRiftHerald + ", firstTower=" + firstTower + ", winner="
+                + winner + "]";
     }
 }
