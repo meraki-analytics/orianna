@@ -23,7 +23,7 @@ public class EffectList extends OriannaDto {
     private long dbId;
 
     @ElementCollection
-    @CollectionTable(name = "effectlist_list", joinColumns = @JoinColumn(name = "effectlist_id"))
+    @CollectionTable(name = "effectlist_list", joinColumns = @JoinColumn(name = "effectlist_id") )
     private List<Double> list;
 
     /*

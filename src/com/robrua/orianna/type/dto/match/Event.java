@@ -21,7 +21,7 @@ public class Event extends OriannaDto {
     private static final long serialVersionUID = -802105921853149453L;
     private String ascendedType, buildingType, eventType, laneType, levelUpType, monsterType, pointCaptured, towerType, wardType;
     @ElementCollection
-    @CollectionTable(name = "event_assistingparticipantid", joinColumns = @JoinColumn(name = "event_id"))
+    @CollectionTable(name = "event_assistingparticipantid", joinColumns = @JoinColumn(name = "event_id") )
     private List<Integer> assistingParticipantIds;
     private Integer creatorId, itemAfter, itemBefore, itemId, killerId, participantId, skillSlot, teamId, victimId;
 

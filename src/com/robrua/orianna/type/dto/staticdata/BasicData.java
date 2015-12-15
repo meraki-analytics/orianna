@@ -28,7 +28,7 @@ public class BasicData extends OriannaDto {
     private String description, plaintext, sanitizedDescription;
 
     @ElementCollection
-    @CollectionTable(name = "basicdata_from", joinColumns = @JoinColumn(name = "basicdata_id"))
+    @CollectionTable(name = "basicdata_from", joinColumns = @JoinColumn(name = "basicdata_id") )
     @Column(name = "frm")
     private List<String> from;
 
@@ -45,12 +45,12 @@ public class BasicData extends OriannaDto {
     private Image image;
 
     @ElementCollection
-    @CollectionTable(name = "basicdata_into", joinColumns = @JoinColumn(name = "basicdata_id"))
+    @CollectionTable(name = "basicdata_into", joinColumns = @JoinColumn(name = "basicdata_id") )
     @Column(name = "nto")
     private List<String> into;
 
     @ElementCollection
-    @CollectionTable(name = "basicdata_map", joinColumns = @JoinColumn(name = "basicdata_id"))
+    @CollectionTable(name = "basicdata_map", joinColumns = @JoinColumn(name = "basicdata_id") )
     private Map<String, Boolean> maps;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -60,7 +60,7 @@ public class BasicData extends OriannaDto {
     private BasicDataStats stats;
 
     @ElementCollection
-    @CollectionTable(name = "basicdata_tag", joinColumns = @JoinColumn(name = "basicdata_id"))
+    @CollectionTable(name = "basicdata_tag", joinColumns = @JoinColumn(name = "basicdata_id") )
     private List<String> tags;
 
     /*

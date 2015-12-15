@@ -4,7 +4,8 @@ import com.robrua.orianna.type.core.OriannaObject;
 
 public class BasicDataStats extends OriannaObject<com.robrua.orianna.type.dto.staticdata.BasicDataStats> {
     private static final long serialVersionUID = 7920872026162580279L;
-    double percentCooldownReduction, flatArmorPenetration, percentAbilityPower, percentArmorPenetration, flatMagicPenetration, percentMagicPenetration, goldPer10;
+    double percentCooldownReduction, flatArmorPenetration, percentAbilityPower, percentArmorPenetration, flatMagicPenetration, percentMagicPenetration,
+            goldPer10;
 
     /**
      * @param data

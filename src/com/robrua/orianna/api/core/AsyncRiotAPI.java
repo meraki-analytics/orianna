@@ -2153,19 +2153,19 @@ public abstract class AsyncRiotAPI {
      *            what to do with the match list
      * @param summonerID
      *            the ID of the summoner to get match history for
-     * @param beginIndex
-     *            the game index to start from
+     * @param numMatches
+     *            the maximum number of matches to get
      */
-    public static void getMatchList(final Action<List<MatchReference>> action, final long summonerID, final int beginIndex) {
+    public static void getMatchList(final Action<List<MatchReference>> action, final long summonerID, final int numMatches) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 if(action == null) {
-                    MatchListAPI.getMatchList(summonerID, beginIndex);
+                    MatchListAPI.getMatchList(summonerID, numMatches);
                 }
                 else {
                     try {
-                        action.perform(MatchListAPI.getMatchList(summonerID, beginIndex));
+                        action.perform(MatchListAPI.getMatchList(summonerID, numMatches));
                     }
                     catch(final APIException e) {
                         action.handle(e);
@@ -2180,21 +2180,53 @@ public abstract class AsyncRiotAPI {
      *            what to do with the match list
      * @param summonerID
      *            the ID of the summoner to get match history for
+     * @param numMatches
+     *            the maximum number of matches to get
+     * @param beginIndex
+     *            the game index to start from
+     */
+    public static void getMatchList(final Action<List<MatchReference>> action, final long summonerID, final int numMatches, final int beginIndex) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchListAPI.getMatchList(summonerID, numMatches, beginIndex);
+                }
+                else {
+                    try {
+                        action.perform(MatchListAPI.getMatchList(summonerID, numMatches, beginIndex));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
+     *            what to do with the match list
+     * @param summonerID
+     *            the ID of the summoner to get match history for
+     * @param numMatches
+     *            the maximum number of matches to get
      * @param beginIndex
      *            the game index to start from
      * @param beginTime
      *            The begin time to use for fetching games
      */
-    public static void getMatchList(final Action<List<MatchReference>> action, final long summonerID, final int beginIndex, final Date beginTime) {
+    public static void getMatchList(final Action<List<MatchReference>> action, final long summonerID, final int numMatches, final int beginIndex,
+            final Date beginTime) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 if(action == null) {
-                    MatchListAPI.getMatchList(summonerID, beginIndex, beginTime);
+                    MatchListAPI.getMatchList(summonerID, numMatches, beginIndex, beginTime);
                 }
                 else {
                     try {
-                        action.perform(MatchListAPI.getMatchList(summonerID, beginIndex, beginTime));
+                        action.perform(MatchListAPI.getMatchList(summonerID, numMatches, beginIndex, beginTime));
                     }
                     catch(final APIException e) {
                         action.handle(e);
@@ -2209,6 +2241,8 @@ public abstract class AsyncRiotAPI {
      *            what to do with the match list
      * @param summonerID
      *            the ID of the summoner to get match history for
+     * @param numMatches
+     *            the maximum number of matches to get
      * @param beginIndex
      *            the game index to start from
      * @param beginTime
@@ -2216,17 +2250,17 @@ public abstract class AsyncRiotAPI {
      * @param endTime
      *            The end time to use for fetching games
      */
-    public static void getMatchList(final Action<List<MatchReference>> action, final long summonerID, final int beginIndex, final Date beginTime,
-            final Date endTime) {
+    public static void getMatchList(final Action<List<MatchReference>> action, final long summonerID, final int numMatches, final int beginIndex,
+            final Date beginTime, final Date endTime) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 if(action == null) {
-                    MatchListAPI.getMatchList(summonerID, beginIndex, beginTime, endTime);
+                    MatchListAPI.getMatchList(summonerID, numMatches, beginIndex, beginTime, endTime);
                 }
                 else {
                     try {
-                        action.perform(MatchListAPI.getMatchList(summonerID, beginIndex, beginTime, endTime));
+                        action.perform(MatchListAPI.getMatchList(summonerID, numMatches, beginIndex, beginTime, endTime));
                     }
                     catch(final APIException e) {
                         action.handle(e);
@@ -2241,6 +2275,8 @@ public abstract class AsyncRiotAPI {
      *            what to do with the match list
      * @param summonerID
      *            the ID of the summoner to get match history for
+     * @param numMatches
+     *            the maximum number of matches to get
      * @param beginIndex
      *            the game index to start from
      * @param beginTime
@@ -2250,17 +2286,17 @@ public abstract class AsyncRiotAPI {
      * @param queueTypes
      *            the queue types to limit games to (only ranked queues)
      */
-    public static void getMatchList(final Action<List<MatchReference>> action, final long summonerID, final int beginIndex, final Date beginTime,
-            final Date endTime, final List<QueueType> queueTypes) {
+    public static void getMatchList(final Action<List<MatchReference>> action, final long summonerID, final int numMatches, final int beginIndex,
+            final Date beginTime, final Date endTime, final List<QueueType> queueTypes) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 if(action == null) {
-                    MatchListAPI.getMatchList(summonerID, beginIndex, beginTime, endTime, queueTypes);
+                    MatchListAPI.getMatchList(summonerID, numMatches, beginIndex, beginTime, endTime, queueTypes);
                 }
                 else {
                     try {
-                        action.perform(MatchListAPI.getMatchList(summonerID, beginIndex, beginTime, endTime, queueTypes));
+                        action.perform(MatchListAPI.getMatchList(summonerID, numMatches, beginIndex, beginTime, endTime, queueTypes));
                     }
                     catch(final APIException e) {
                         action.handle(e);
@@ -2275,6 +2311,8 @@ public abstract class AsyncRiotAPI {
      *            what to do with the match list
      * @param summonerID
      *            the ID of the summoner to get match history for
+     * @param numMatches
+     *            the maximum number of matches to get
      * @param beginIndex
      *            the game index to start from
      * @param beginTime
@@ -2286,17 +2324,17 @@ public abstract class AsyncRiotAPI {
      * @param championIDs
      *            the champions to limit games to
      */
-    public static void getMatchList(final Action<List<MatchReference>> action, final long summonerID, final int beginIndex, final Date beginTime,
-            final Date endTime, final List<QueueType> queueTypes, final List<Long> championIDs) {
+    public static void getMatchList(final Action<List<MatchReference>> action, final long summonerID, final int numMatches, final int beginIndex,
+            final Date beginTime, final Date endTime, final List<QueueType> queueTypes, final List<Long> championIDs) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 if(action == null) {
-                    MatchListAPI.getMatchList(summonerID, beginIndex, beginTime, endTime, queueTypes, championIDs);
+                    MatchListAPI.getMatchList(summonerID, numMatches, beginIndex, beginTime, endTime, queueTypes, championIDs);
                 }
                 else {
                     try {
-                        action.perform(MatchListAPI.getMatchList(summonerID, beginIndex, beginTime, endTime, queueTypes, championIDs));
+                        action.perform(MatchListAPI.getMatchList(summonerID, numMatches, beginIndex, beginTime, endTime, queueTypes, championIDs));
                     }
                     catch(final APIException e) {
                         action.handle(e);
@@ -2311,6 +2349,8 @@ public abstract class AsyncRiotAPI {
      *            what to do with the match list
      * @param summonerID
      *            the ID of the summoner to get match history for
+     * @param numMatches
+     *            the maximum number of matches to get
      * @param beginIndex
      *            the game index to start from
      * @param beginTime
@@ -2324,17 +2364,17 @@ public abstract class AsyncRiotAPI {
      * @param seasons
      *            the seasons to limit games to
      */
-    public static void getMatchList(final Action<List<MatchReference>> action, final long summonerID, final int beginIndex, final Date beginTime,
-            final Date endTime, final List<QueueType> queueTypes, final List<Long> championIDs, final List<Season> seasons) {
+    public static void getMatchList(final Action<List<MatchReference>> action, final long summonerID, final int numMatches, final int beginIndex,
+            final Date beginTime, final Date endTime, final List<QueueType> queueTypes, final List<Long> championIDs, final List<Season> seasons) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 if(action == null) {
-                    MatchListAPI.getMatchList(summonerID, beginIndex, beginTime, endTime, queueTypes, championIDs, seasons);
+                    MatchListAPI.getMatchList(summonerID, numMatches, beginIndex, beginTime, endTime, queueTypes, championIDs, seasons);
                 }
                 else {
                     try {
-                        action.perform(MatchListAPI.getMatchList(summonerID, beginIndex, beginTime, endTime, queueTypes, championIDs, seasons));
+                        action.perform(MatchListAPI.getMatchList(summonerID, numMatches, beginIndex, beginTime, endTime, queueTypes, championIDs, seasons));
                     }
                     catch(final APIException e) {
                         action.handle(e);
@@ -2382,11 +2422,11 @@ public abstract class AsyncRiotAPI {
             @Override
             public void run() {
                 if(action == null) {
-                    MatchListAPI.getMatchList(RiotAPI.getSummonerByName(summonerName).getID(), beginTime);
+                    MatchListAPI.getMatchList(summonerName, beginTime);
                 }
                 else {
                     try {
-                        action.perform(MatchListAPI.getMatchList(RiotAPI.getSummonerByName(summonerName).getID(), beginTime));
+                        action.perform(MatchListAPI.getMatchList(summonerName, beginTime));
                     }
                     catch(final APIException e) {
                         action.handle(e);
@@ -2411,11 +2451,11 @@ public abstract class AsyncRiotAPI {
             @Override
             public void run() {
                 if(action == null) {
-                    MatchListAPI.getMatchList(RiotAPI.getSummonerByName(summonerName).getID(), beginTime, endTime);
+                    MatchListAPI.getMatchList(summonerName, beginTime, endTime);
                 }
                 else {
                     try {
-                        action.perform(MatchListAPI.getMatchList(RiotAPI.getSummonerByName(summonerName).getID(), beginTime, endTime));
+                        action.perform(MatchListAPI.getMatchList(summonerName, beginTime, endTime));
                     }
                     catch(final APIException e) {
                         action.handle(e);
@@ -2443,11 +2483,11 @@ public abstract class AsyncRiotAPI {
             @Override
             public void run() {
                 if(action == null) {
-                    MatchListAPI.getMatchList(RiotAPI.getSummonerByName(summonerName).getID(), beginTime, endTime, queueTypes);
+                    MatchListAPI.getMatchList(summonerName, beginTime, endTime, queueTypes);
                 }
                 else {
                     try {
-                        action.perform(MatchListAPI.getMatchList(RiotAPI.getSummonerByName(summonerName).getID(), beginTime, endTime, queueTypes));
+                        action.perform(MatchListAPI.getMatchList(summonerName, beginTime, endTime, queueTypes));
                     }
                     catch(final APIException e) {
                         action.handle(e);
@@ -2477,11 +2517,11 @@ public abstract class AsyncRiotAPI {
             @Override
             public void run() {
                 if(action == null) {
-                    MatchListAPI.getMatchList(RiotAPI.getSummonerByName(summonerName).getID(), beginTime, endTime, queueTypes, championIDs);
+                    MatchListAPI.getMatchList(summonerName, beginTime, endTime, queueTypes, championIDs);
                 }
                 else {
                     try {
-                        action.perform(MatchListAPI.getMatchList(RiotAPI.getSummonerByName(summonerName).getID(), beginTime, endTime, queueTypes, championIDs));
+                        action.perform(MatchListAPI.getMatchList(summonerName, beginTime, endTime, queueTypes, championIDs));
                     }
                     catch(final APIException e) {
                         action.handle(e);
@@ -2513,12 +2553,11 @@ public abstract class AsyncRiotAPI {
             @Override
             public void run() {
                 if(action == null) {
-                    MatchListAPI.getMatchList(RiotAPI.getSummonerByName(summonerName).getID(), beginTime, endTime, queueTypes, championIDs, seasons);
+                    MatchListAPI.getMatchList(summonerName, beginTime, endTime, queueTypes, championIDs, seasons);
                 }
                 else {
                     try {
-                        action.perform(MatchListAPI.getMatchList(RiotAPI.getSummonerByName(summonerName).getID(), beginTime, endTime, queueTypes, championIDs,
-                                seasons));
+                        action.perform(MatchListAPI.getMatchList(summonerName, beginTime, endTime, queueTypes, championIDs, seasons));
                     }
                     catch(final APIException e) {
                         action.handle(e);
@@ -2533,19 +2572,19 @@ public abstract class AsyncRiotAPI {
      *            what to do with the match list
      * @param summonerName
      *            the name of the summoner to get match history for
-     * @param beginIndex
-     *            the game index to start from
+     * @param numMatches
+     *            the maximum number of matches to get
      */
-    public static void getMatchList(final Action<List<MatchReference>> action, final String summonerName, final int beginIndex) {
+    public static void getMatchList(final Action<List<MatchReference>> action, final String summonerName, final int numMatches) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 if(action == null) {
-                    MatchListAPI.getMatchList(summonerName, beginIndex);
+                    MatchListAPI.getMatchList(summonerName, numMatches);
                 }
                 else {
                     try {
-                        action.perform(MatchListAPI.getMatchList(summonerName, beginIndex));
+                        action.perform(MatchListAPI.getMatchList(summonerName, numMatches));
                     }
                     catch(final APIException e) {
                         action.handle(e);
@@ -2560,21 +2599,53 @@ public abstract class AsyncRiotAPI {
      *            what to do with the match list
      * @param summonerName
      *            the name of the summoner to get match history for
+     * @param numMatches
+     *            the maximum number of matches to get
+     * @param beginIndex
+     *            the game index to start from
+     */
+    public static void getMatchList(final Action<List<MatchReference>> action, final String summonerName, final int numMatches, final int beginIndex) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchListAPI.getMatchList(summonerName, numMatches, beginIndex);
+                }
+                else {
+                    try {
+                        action.perform(MatchListAPI.getMatchList(summonerName, numMatches, beginIndex));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
+     *            what to do with the match list
+     * @param summonerName
+     *            the name of the summoner to get match history for
+     * @param numMatches
+     *            the maximum number of matches to get
      * @param beginIndex
      *            the game index to start from
      * @param beginTime
      *            The begin time to use for fetching games
      */
-    public static void getMatchList(final Action<List<MatchReference>> action, final String summonerName, final int beginIndex, final Date beginTime) {
+    public static void getMatchList(final Action<List<MatchReference>> action, final String summonerName, final int numMatches, final int beginIndex,
+            final Date beginTime) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 if(action == null) {
-                    MatchListAPI.getMatchList(summonerName, beginIndex, beginTime);
+                    MatchListAPI.getMatchList(summonerName, numMatches, beginIndex, beginTime);
                 }
                 else {
                     try {
-                        action.perform(MatchListAPI.getMatchList(summonerName, beginIndex, beginTime));
+                        action.perform(MatchListAPI.getMatchList(summonerName, numMatches, beginIndex, beginTime));
                     }
                     catch(final APIException e) {
                         action.handle(e);
@@ -2589,6 +2660,8 @@ public abstract class AsyncRiotAPI {
      *            what to do with the match list
      * @param summonerName
      *            the name of the summoner to get match history for
+     * @param numMatches
+     *            the maximum number of matches to get
      * @param beginIndex
      *            the game index to start from
      * @param beginTime
@@ -2596,17 +2669,17 @@ public abstract class AsyncRiotAPI {
      * @param endTime
      *            The end time to use for fetching games
      */
-    public static void getMatchList(final Action<List<MatchReference>> action, final String summonerName, final int beginIndex, final Date beginTime,
-            final Date endTime) {
+    public static void getMatchList(final Action<List<MatchReference>> action, final String summonerName, final int numMatches, final int beginIndex,
+            final Date beginTime, final Date endTime) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 if(action == null) {
-                    MatchListAPI.getMatchList(summonerName, beginIndex, beginTime, endTime);
+                    MatchListAPI.getMatchList(summonerName, numMatches, beginIndex, beginTime, endTime);
                 }
                 else {
                     try {
-                        action.perform(MatchListAPI.getMatchList(summonerName, beginIndex, beginTime, endTime));
+                        action.perform(MatchListAPI.getMatchList(summonerName, numMatches, beginIndex, beginTime, endTime));
                     }
                     catch(final APIException e) {
                         action.handle(e);
@@ -2621,6 +2694,8 @@ public abstract class AsyncRiotAPI {
      *            what to do with the match list
      * @param summonerName
      *            the name of the summoner to get match history for
+     * @param numMatches
+     *            the maximum number of matches to get
      * @param beginIndex
      *            the game index to start from
      * @param beginTime
@@ -2630,17 +2705,17 @@ public abstract class AsyncRiotAPI {
      * @param queueTypes
      *            the queue types to limit games to (only ranked queues)
      */
-    public static void getMatchList(final Action<List<MatchReference>> action, final String summonerName, final int beginIndex, final Date beginTime,
-            final Date endTime, final List<QueueType> queueTypes) {
+    public static void getMatchList(final Action<List<MatchReference>> action, final String summonerName, final int numMatches, final int beginIndex,
+            final Date beginTime, final Date endTime, final List<QueueType> queueTypes) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 if(action == null) {
-                    MatchListAPI.getMatchList(summonerName, beginIndex, beginTime, endTime, queueTypes);
+                    MatchListAPI.getMatchList(summonerName, numMatches, beginIndex, beginTime, endTime, queueTypes);
                 }
                 else {
                     try {
-                        action.perform(MatchListAPI.getMatchList(summonerName, beginIndex, beginTime, endTime, queueTypes));
+                        action.perform(MatchListAPI.getMatchList(summonerName, numMatches, beginIndex, beginTime, endTime, queueTypes));
                     }
                     catch(final APIException e) {
                         action.handle(e);
@@ -2655,6 +2730,8 @@ public abstract class AsyncRiotAPI {
      *            what to do with the match list
      * @param summonerName
      *            the name of the summoner to get match history for
+     * @param numMatches
+     *            the maximum number of matches to get
      * @param beginIndex
      *            the game index to start from
      * @param beginTime
@@ -2666,17 +2743,17 @@ public abstract class AsyncRiotAPI {
      * @param championIDs
      *            the champions to limit games to
      */
-    public static void getMatchList(final Action<List<MatchReference>> action, final String summonerName, final int beginIndex, final Date beginTime,
-            final Date endTime, final List<QueueType> queueTypes, final List<Long> championIDs) {
+    public static void getMatchList(final Action<List<MatchReference>> action, final String summonerName, final int numMatches, final int beginIndex,
+            final Date beginTime, final Date endTime, final List<QueueType> queueTypes, final List<Long> championIDs) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 if(action == null) {
-                    MatchListAPI.getMatchList(summonerName, beginIndex, beginTime, endTime, queueTypes, championIDs);
+                    MatchListAPI.getMatchList(summonerName, numMatches, beginIndex, beginTime, endTime, queueTypes, championIDs);
                 }
                 else {
                     try {
-                        action.perform(MatchListAPI.getMatchList(summonerName, beginIndex, beginTime, endTime, queueTypes, championIDs));
+                        action.perform(MatchListAPI.getMatchList(summonerName, numMatches, beginIndex, beginTime, endTime, queueTypes, championIDs));
                     }
                     catch(final APIException e) {
                         action.handle(e);
@@ -2691,6 +2768,8 @@ public abstract class AsyncRiotAPI {
      *            what to do with the match list
      * @param summonerName
      *            the name of the summoner to get match history for
+     * @param numMatches
+     *            the maximum number of matches to get
      * @param beginIndex
      *            the game index to start from
      * @param beginTime
@@ -2704,17 +2783,17 @@ public abstract class AsyncRiotAPI {
      * @param seasons
      *            the seasons to limit games to
      */
-    public static void getMatchList(final Action<List<MatchReference>> action, final String summonerName, final int beginIndex, final Date beginTime,
-            final Date endTime, final List<QueueType> queueTypes, final List<Long> championIDs, final List<Season> seasons) {
+    public static void getMatchList(final Action<List<MatchReference>> action, final String summonerName, final int numMatches, final int beginIndex,
+            final Date beginTime, final Date endTime, final List<QueueType> queueTypes, final List<Long> championIDs, final List<Season> seasons) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 if(action == null) {
-                    MatchListAPI.getMatchList(summonerName, beginIndex, beginTime, endTime, queueTypes, championIDs, seasons);
+                    MatchListAPI.getMatchList(summonerName, numMatches, beginIndex, beginTime, endTime, queueTypes, championIDs, seasons);
                 }
                 else {
                     try {
-                        action.perform(MatchListAPI.getMatchList(summonerName, beginIndex, beginTime, endTime, queueTypes, championIDs, seasons));
+                        action.perform(MatchListAPI.getMatchList(summonerName, numMatches, beginIndex, beginTime, endTime, queueTypes, championIDs, seasons));
                     }
                     catch(final APIException e) {
                         action.handle(e);
@@ -2762,11 +2841,11 @@ public abstract class AsyncRiotAPI {
             @Override
             public void run() {
                 if(action == null) {
-                    MatchListAPI.getMatchList(summoner.getID(), beginTime);
+                    MatchListAPI.getMatchList(summoner, beginTime);
                 }
                 else {
                     try {
-                        action.perform(MatchListAPI.getMatchList(summoner.getID(), beginTime));
+                        action.perform(MatchListAPI.getMatchList(summoner, beginTime));
                     }
                     catch(final APIException e) {
                         action.handle(e);
@@ -2791,11 +2870,11 @@ public abstract class AsyncRiotAPI {
             @Override
             public void run() {
                 if(action == null) {
-                    MatchListAPI.getMatchList(summoner.getID(), beginTime, endTime);
+                    MatchListAPI.getMatchList(summoner, beginTime, endTime);
                 }
                 else {
                     try {
-                        action.perform(MatchListAPI.getMatchList(summoner.getID(), beginTime, endTime));
+                        action.perform(MatchListAPI.getMatchList(summoner, beginTime, endTime));
                     }
                     catch(final APIException e) {
                         action.handle(e);
@@ -2823,11 +2902,11 @@ public abstract class AsyncRiotAPI {
             @Override
             public void run() {
                 if(action == null) {
-                    MatchListAPI.getMatchList(summoner.getID(), beginTime, endTime, queueTypes);
+                    MatchListAPI.getMatchList(summoner, beginTime, endTime, queueTypes);
                 }
                 else {
                     try {
-                        action.perform(MatchListAPI.getMatchList(summoner.getID(), beginTime, endTime, queueTypes));
+                        action.perform(MatchListAPI.getMatchList(summoner, beginTime, endTime, queueTypes));
                     }
                     catch(final APIException e) {
                         action.handle(e);
@@ -2857,11 +2936,11 @@ public abstract class AsyncRiotAPI {
             @Override
             public void run() {
                 if(action == null) {
-                    MatchListAPI.getMatchList(summoner.getID(), beginTime, endTime, queueTypes, championIDs);
+                    MatchListAPI.getMatchList(summoner, beginTime, endTime, queueTypes, championIDs);
                 }
                 else {
                     try {
-                        action.perform(MatchListAPI.getMatchList(summoner.getID(), beginTime, endTime, queueTypes, championIDs));
+                        action.perform(MatchListAPI.getMatchList(summoner, beginTime, endTime, queueTypes, championIDs));
                     }
                     catch(final APIException e) {
                         action.handle(e);
@@ -2893,11 +2972,11 @@ public abstract class AsyncRiotAPI {
             @Override
             public void run() {
                 if(action == null) {
-                    MatchListAPI.getMatchList(summoner.getID(), beginTime, endTime, queueTypes, championIDs, seasons);
+                    MatchListAPI.getMatchList(summoner, beginTime, endTime, queueTypes, championIDs, seasons);
                 }
                 else {
                     try {
-                        action.perform(MatchListAPI.getMatchList(summoner.getID(), beginTime, endTime, queueTypes, championIDs, seasons));
+                        action.perform(MatchListAPI.getMatchList(summoner, beginTime, endTime, queueTypes, championIDs, seasons));
                     }
                     catch(final APIException e) {
                         action.handle(e);
@@ -2912,19 +2991,19 @@ public abstract class AsyncRiotAPI {
      *            what to do with the match list
      * @param summoner
      *            the summoner to get match history for
-     * @param beginIndex
-     *            the game index to start from
+     * @param numMatches
+     *            the maximum number of matches to get
      */
-    public static void getMatchList(final Action<List<MatchReference>> action, final Summoner summoner, final int beginIndex) {
+    public static void getMatchList(final Action<List<MatchReference>> action, final Summoner summoner, final int numMatches) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 if(action == null) {
-                    MatchListAPI.getMatchList(summoner, beginIndex);
+                    MatchListAPI.getMatchList(summoner, numMatches);
                 }
                 else {
                     try {
-                        action.perform(MatchListAPI.getMatchList(summoner, beginIndex));
+                        action.perform(MatchListAPI.getMatchList(summoner, numMatches));
                     }
                     catch(final APIException e) {
                         action.handle(e);
@@ -2939,21 +3018,53 @@ public abstract class AsyncRiotAPI {
      *            what to do with the match list
      * @param summoner
      *            the summoner to get match history for
+     * @param numMatches
+     *            the maximum number of matches to get
+     * @param beginIndex
+     *            the game index to start from
+     */
+    public static void getMatchList(final Action<List<MatchReference>> action, final Summoner summoner, final int numMatches, final int beginIndex) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    MatchListAPI.getMatchList(summoner, numMatches, beginIndex);
+                }
+                else {
+                    try {
+                        action.perform(MatchListAPI.getMatchList(summoner, numMatches, beginIndex));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
+     *            what to do with the match list
+     * @param summoner
+     *            the summoner to get match history for
+     * @param numMatches
+     *            the maximum number of matches to get
      * @param beginIndex
      *            the game index to start from
      * @param beginTime
      *            The begin time to use for fetching games
      */
-    public static void getMatchList(final Action<List<MatchReference>> action, final Summoner summoner, final int beginIndex, final Date beginTime) {
+    public static void getMatchList(final Action<List<MatchReference>> action, final Summoner summoner, final int numMatches, final int beginIndex,
+            final Date beginTime) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 if(action == null) {
-                    MatchListAPI.getMatchList(summoner, beginIndex, beginTime);
+                    MatchListAPI.getMatchList(summoner, numMatches, beginIndex, beginTime);
                 }
                 else {
                     try {
-                        action.perform(MatchListAPI.getMatchList(summoner, beginIndex, beginTime));
+                        action.perform(MatchListAPI.getMatchList(summoner, numMatches, beginIndex, beginTime));
                     }
                     catch(final APIException e) {
                         action.handle(e);
@@ -2968,6 +3079,8 @@ public abstract class AsyncRiotAPI {
      *            what to do with the match list
      * @param summoner
      *            the summoner to get match history for
+     * @param numMatches
+     *            the maximum number of matches to get
      * @param beginIndex
      *            the game index to start from
      * @param beginTime
@@ -2975,17 +3088,17 @@ public abstract class AsyncRiotAPI {
      * @param endTime
      *            The end time to use for fetching games
      */
-    public static void getMatchList(final Action<List<MatchReference>> action, final Summoner summoner, final int beginIndex, final Date beginTime,
-            final Date endTime) {
+    public static void getMatchList(final Action<List<MatchReference>> action, final Summoner summoner, final int numMatches, final int beginIndex,
+            final Date beginTime, final Date endTime) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 if(action == null) {
-                    MatchListAPI.getMatchList(summoner, beginIndex, beginTime, endTime);
+                    MatchListAPI.getMatchList(summoner, numMatches, beginIndex, beginTime, endTime);
                 }
                 else {
                     try {
-                        action.perform(MatchListAPI.getMatchList(summoner, beginIndex, beginTime, endTime));
+                        action.perform(MatchListAPI.getMatchList(summoner, numMatches, beginIndex, beginTime, endTime));
                     }
                     catch(final APIException e) {
                         action.handle(e);
@@ -3000,6 +3113,8 @@ public abstract class AsyncRiotAPI {
      *            what to do with the match list
      * @param summoner
      *            the summoner to get match history for
+     * @param numMatches
+     *            the maximum number of matches to get
      * @param beginIndex
      *            the game index to start from
      * @param beginTime
@@ -3009,17 +3124,17 @@ public abstract class AsyncRiotAPI {
      * @param queueTypes
      *            the queue types to limit games to (only ranked queues)
      */
-    public static void getMatchList(final Action<List<MatchReference>> action, final Summoner summoner, final int beginIndex, final Date beginTime,
-            final Date endTime, final List<QueueType> queueTypes) {
+    public static void getMatchList(final Action<List<MatchReference>> action, final Summoner summoner, final int numMatches, final int beginIndex,
+            final Date beginTime, final Date endTime, final List<QueueType> queueTypes) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 if(action == null) {
-                    MatchListAPI.getMatchList(summoner, beginIndex, beginTime, endTime, queueTypes);
+                    MatchListAPI.getMatchList(summoner, numMatches, beginIndex, beginTime, endTime, queueTypes);
                 }
                 else {
                     try {
-                        action.perform(MatchListAPI.getMatchList(summoner, beginIndex, beginTime, endTime, queueTypes));
+                        action.perform(MatchListAPI.getMatchList(summoner, numMatches, beginIndex, beginTime, endTime, queueTypes));
                     }
                     catch(final APIException e) {
                         action.handle(e);
@@ -3034,6 +3149,8 @@ public abstract class AsyncRiotAPI {
      *            what to do with the match list
      * @param summoner
      *            the summoner to get match history for
+     * @param numMatches
+     *            the maximum number of matches to get
      * @param beginIndex
      *            the game index to start from
      * @param beginTime
@@ -3045,17 +3162,17 @@ public abstract class AsyncRiotAPI {
      * @param championIDs
      *            the champions to limit games to
      */
-    public static void getMatchList(final Action<List<MatchReference>> action, final Summoner summoner, final int beginIndex, final Date beginTime,
-            final Date endTime, final List<QueueType> queueTypes, final List<Long> championIDs) {
+    public static void getMatchList(final Action<List<MatchReference>> action, final Summoner summoner, final int numMatches, final int beginIndex,
+            final Date beginTime, final Date endTime, final List<QueueType> queueTypes, final List<Long> championIDs) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 if(action == null) {
-                    MatchListAPI.getMatchList(summoner, beginIndex, beginTime, endTime, queueTypes, championIDs);
+                    MatchListAPI.getMatchList(summoner, numMatches, beginIndex, beginTime, endTime, queueTypes, championIDs);
                 }
                 else {
                     try {
-                        action.perform(MatchListAPI.getMatchList(summoner, beginIndex, beginTime, endTime, queueTypes, championIDs));
+                        action.perform(MatchListAPI.getMatchList(summoner, numMatches, beginIndex, beginTime, endTime, queueTypes, championIDs));
                     }
                     catch(final APIException e) {
                         action.handle(e);
@@ -3070,6 +3187,8 @@ public abstract class AsyncRiotAPI {
      *            what to do with the match list
      * @param summoner
      *            the summoner to get match history for
+     * @param numMatches
+     *            the maximum number of matches to get
      * @param beginIndex
      *            the game index to start from
      * @param beginTime
@@ -3083,17 +3202,17 @@ public abstract class AsyncRiotAPI {
      * @param seasons
      *            the seasons to limit games to
      */
-    public static void getMatchList(final Action<List<MatchReference>> action, final Summoner summoner, final int beginIndex, final Date beginTime,
-            final Date endTime, final List<QueueType> queueTypes, final List<Long> championIDs, final List<Season> seasons) {
+    public static void getMatchList(final Action<List<MatchReference>> action, final Summoner summoner, final int numMatches, final int beginIndex,
+            final Date beginTime, final Date endTime, final List<QueueType> queueTypes, final List<Long> championIDs, final List<Season> seasons) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 if(action == null) {
-                    MatchListAPI.getMatchList(summoner, beginIndex, beginTime, endTime, queueTypes, championIDs, seasons);
+                    MatchListAPI.getMatchList(summoner, numMatches, beginIndex, beginTime, endTime, queueTypes, championIDs, seasons);
                 }
                 else {
                     try {
-                        action.perform(MatchListAPI.getMatchList(summoner, beginIndex, beginTime, endTime, queueTypes, championIDs, seasons));
+                        action.perform(MatchListAPI.getMatchList(summoner, numMatches, beginIndex, beginTime, endTime, queueTypes, championIDs, seasons));
                     }
                     catch(final APIException e) {
                         action.handle(e);
@@ -4499,8 +4618,9 @@ public abstract class AsyncRiotAPI {
      *
      * @param newMirror
      *            the server mirror to hit for queries
-     *            
-     * @deprecated Region and Mirror must always match now. This method now does nothing.
+     *
+     * @deprecated Region and Mirror must always match now. This method now does
+     *             nothing.
      */
     @Deprecated
     public static void setMirror(final Region newMirror) {

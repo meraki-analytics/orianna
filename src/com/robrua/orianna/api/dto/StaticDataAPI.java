@@ -25,9 +25,8 @@ public abstract class StaticDataAPI {
      * @param ID
      *            the champion's ID
      * @return the champion
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/938/3256">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/938/3256">
+     *      Riot API Specification</a>
      */
     public static Champion getChampion(final long ID) {
         if(ID == 0) {
@@ -41,9 +40,8 @@ public abstract class StaticDataAPI {
 
     /**
      * @return the list all of champions
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/938/3260">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/938/3260">
+     *      Riot API Specification</a>
      */
     public static ChampionList getChampions() {
         final String request = BaseRiotAPI.API_VERSIONS.get("static-data") + "/champion";
@@ -55,9 +53,8 @@ public abstract class StaticDataAPI {
      * @param ID
      *            the item's ID
      * @return the item
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/938/3253">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/938/3253">
+     *      Riot API Specification</a>
      */
     public static Item getItem(final long ID) {
         final String request = BaseRiotAPI.API_VERSIONS.get("static-data") + "/item/" + ID;
@@ -67,9 +64,8 @@ public abstract class StaticDataAPI {
 
     /**
      * @return the list of all items
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/938/3248">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/938/3248">
+     *      Riot API Specification</a>
      */
     public static ItemList getItems() {
         final String request = BaseRiotAPI.API_VERSIONS.get("static-data") + "/item";
@@ -79,9 +75,8 @@ public abstract class StaticDataAPI {
 
     /**
      * @return the languages
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/938/3258">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/938/3258">
+     *      Riot API Specification</a>
      */
     public static List<String> getLanguages() {
         final String request = BaseRiotAPI.API_VERSIONS.get("static-data") + "/languages";
@@ -91,9 +86,8 @@ public abstract class StaticDataAPI {
 
     /**
      * @return the language strings
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/938/3250">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/938/3250">
+     *      Riot API Specification</a>
      */
     public static LanguageStrings getLanguageStrings() {
         final String request = BaseRiotAPI.API_VERSIONS.get("static-data") + "/language-strings";
@@ -103,9 +97,8 @@ public abstract class StaticDataAPI {
 
     /**
      * @return the map information
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/938/3262">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/938/3262">
+     *      Riot API Specification</a>
      */
     public static MapData getMapInformation() {
         final String request = BaseRiotAPI.API_VERSIONS.get("static-data") + "/map";
@@ -114,9 +107,8 @@ public abstract class StaticDataAPI {
 
     /**
      * @return the list of all masteries
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/938/3251">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/938/3251">
+     *      Riot API Specification</a>
      */
     public static MasteryList getMasteries() {
         final String request = BaseRiotAPI.API_VERSIONS.get("static-data") + "/mastery";
@@ -128,9 +120,8 @@ public abstract class StaticDataAPI {
      * @param ID
      *            the mastery's ID
      * @return the mastery
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/938/3252">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/938/3252">
+     *      Riot API Specification</a>
      */
     public static Mastery getMastery(final long ID) {
         final String request = BaseRiotAPI.API_VERSIONS.get("static-data") + "/mastery/" + ID;
@@ -140,9 +131,8 @@ public abstract class StaticDataAPI {
 
     /**
      * @return the realm
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/938/3259">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/938/3259">
+     *      Riot API Specification</a>
      */
     public static Realm getRealm() {
         final String request = BaseRiotAPI.API_VERSIONS.get("static-data") + "/realm";
@@ -153,9 +143,8 @@ public abstract class StaticDataAPI {
      * @param ID
      *            the rune's ID
      * @return the rune
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/938/3255">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/938/3255">
+     *      Riot API Specification</a>
      */
     public static Rune getRune(final long ID) {
         final String request = BaseRiotAPI.API_VERSIONS.get("static-data") + "/rune/" + ID;
@@ -165,9 +154,8 @@ public abstract class StaticDataAPI {
 
     /**
      * @return the list of all runes
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/938/3249">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/938/3249">
+     *      Riot API Specification</a>
      */
     public static RuneList getRunes() {
         final String request = BaseRiotAPI.API_VERSIONS.get("static-data") + "/rune";
@@ -179,9 +167,8 @@ public abstract class StaticDataAPI {
      * @param ID
      *            the summoner spell's ID
      * @return the summoner spell
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/938/3254">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/938/3254">
+     *      Riot API Specification</a>
      */
     public static SummonerSpell getSummonerSpell(final long ID) {
         final String request = BaseRiotAPI.API_VERSIONS.get("static-data") + "/summoner-spell/" + ID;
@@ -191,9 +178,8 @@ public abstract class StaticDataAPI {
 
     /**
      * @return the list of all summoner spells
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/938/3261">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/938/3261">
+     *      Riot API Specification</a>
      */
     public static SummonerSpellList getSummonerSpells() {
         final String request = BaseRiotAPI.API_VERSIONS.get("static-data") + "/summoner-spell";
@@ -203,9 +189,8 @@ public abstract class StaticDataAPI {
 
     /**
      * @return the versions
-     * @see <a
-     *      href="https://developer.riotgames.com/api/methods#!/938/3257">Riot
-     *      API Specification</a>
+     * @see <a href="https://developer.riotgames.com/api/methods#!/938/3257">
+     *      Riot API Specification</a>
      */
     public static List<String> getVersions() {
         final String request = BaseRiotAPI.API_VERSIONS.get("static-data") + "/versions";

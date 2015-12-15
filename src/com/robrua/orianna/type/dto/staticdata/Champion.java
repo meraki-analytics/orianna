@@ -24,13 +24,13 @@ public class Champion extends OriannaDto {
     private static final long serialVersionUID = -7433824613178209493L;
 
     @ElementCollection
-    @CollectionTable(name = "champion_allytip", joinColumns = @JoinColumn(name = "champion_id"))
+    @CollectionTable(name = "champion_allytip", joinColumns = @JoinColumn(name = "champion_id") )
     @Lob
     private List<String> allytips;
 
     private String blurb, name, partype, title;
     @ElementCollection
-    @CollectionTable(name = "champion_enemytip", joinColumns = @JoinColumn(name = "champion_id"))
+    @CollectionTable(name = "champion_enemytip", joinColumns = @JoinColumn(name = "champion_id") )
     @Lob
     private List<String> enemytips;
 
@@ -65,7 +65,7 @@ public class Champion extends OriannaDto {
     private Stats stats;
 
     @ElementCollection
-    @CollectionTable(name = "champion_tag", joinColumns = @JoinColumn(name = "champion_id"))
+    @CollectionTable(name = "champion_tag", joinColumns = @JoinColumn(name = "champion_id") )
     private List<String> tags;
 
     /*

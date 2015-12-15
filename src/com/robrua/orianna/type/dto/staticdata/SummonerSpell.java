@@ -22,12 +22,12 @@ import com.robrua.orianna.type.dto.OriannaDto;
 public class SummonerSpell extends OriannaDto {
     private static final long serialVersionUID = 157344746152124321L;
     @ElementCollection
-    @CollectionTable(name = "summonerspell_cooldown", joinColumns = @JoinColumn(name = "summonerspell_id"))
+    @CollectionTable(name = "summonerspell_cooldown", joinColumns = @JoinColumn(name = "summonerspell_id") )
     private List<Double> cooldown;
     private String cooldownBurn, costBurn, costType, name, rangeBurn, resource;
 
     @ElementCollection
-    @CollectionTable(name = "summonerspell_cost", joinColumns = @JoinColumn(name = "summonerspell_id"))
+    @CollectionTable(name = "summonerspell_cost", joinColumns = @JoinColumn(name = "summonerspell_id") )
     private List<Integer> cost;
 
     @Lob
@@ -37,7 +37,7 @@ public class SummonerSpell extends OriannaDto {
     private List<EffectList> effect;
 
     @ElementCollection
-    @CollectionTable(name = "summonerspell_effectburn", joinColumns = @JoinColumn(name = "summonerspell_id"))
+    @CollectionTable(name = "summonerspell_effectburn", joinColumns = @JoinColumn(name = "summonerspell_id") )
     private List<String> effectBurn;
 
     @Id
@@ -55,11 +55,11 @@ public class SummonerSpell extends OriannaDto {
     private Integer maxrank, summonerLevel;
 
     @ElementCollection
-    @CollectionTable(name = "summonerspell_modes", joinColumns = @JoinColumn(name = "summonerspell_id"))
+    @CollectionTable(name = "summonerspell_modes", joinColumns = @JoinColumn(name = "summonerspell_id") )
     private List<String> modes;
 
     @ElementCollection
-    @CollectionTable(name = "summonerspell_range", joinColumns = @JoinColumn(name = "summonerspell_id"))
+    @CollectionTable(name = "summonerspell_range", joinColumns = @JoinColumn(name = "summonerspell_id") )
     @Column(name = "rng")
     private List<Integer> range;
 
@@ -686,10 +686,10 @@ public class SummonerSpell extends OriannaDto {
      */
     @Override
     public String toString() {
-        return "SummonerSpell [cooldown=" + cooldown + ", cooldownBurn=" + cooldownBurn + ", costBurn=" + costBurn + ", costType=" + costType
-                + ", description=" + description + ", key=" + key + ", name=" + name + ", rangeBurn=" + rangeBurn + ", resource=" + resource
-                + ", sanitizedDescription=" + sanitizedDescription + ", sanitizedTooltip=" + sanitizedTooltip + ", tooltip=" + tooltip + ", cost=" + cost
-                + ", range=" + range + ", effect=" + effect + ", effectBurn=" + effectBurn + ", modes=" + modes + ", image=" + image + ", leveltip=" + leveltip
-                + ", id=" + id + ", maxrank=" + maxrank + ", summonerLevel=" + summonerLevel + ", vars=" + vars + "]";
+        return "SummonerSpell [cooldown=" + cooldown + ", cooldownBurn=" + cooldownBurn + ", costBurn=" + costBurn + ", costType=" + costType + ", description="
+                + description + ", key=" + key + ", name=" + name + ", rangeBurn=" + rangeBurn + ", resource=" + resource + ", sanitizedDescription="
+                + sanitizedDescription + ", sanitizedTooltip=" + sanitizedTooltip + ", tooltip=" + tooltip + ", cost=" + cost + ", range=" + range + ", effect="
+                + effect + ", effectBurn=" + effectBurn + ", modes=" + modes + ", image=" + image + ", leveltip=" + leveltip + ", id=" + id + ", maxrank="
+                + maxrank + ", summonerLevel=" + summonerLevel + ", vars=" + vars + "]";
     }
 }

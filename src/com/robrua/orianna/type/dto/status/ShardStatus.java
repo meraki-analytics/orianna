@@ -26,7 +26,7 @@ public class ShardStatus extends OriannaDto {
     private String hostname, name, region_tag, slug;
 
     @ElementCollection
-    @CollectionTable(name = "shardstatus_locale", joinColumns = @JoinColumn(name = "shardstatus_id"))
+    @CollectionTable(name = "shardstatus_locale", joinColumns = @JoinColumn(name = "shardstatus_id") )
     private List<String> locales;
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -220,7 +220,7 @@ public class ShardStatus extends OriannaDto {
      */
     @Override
     public String toString() {
-        return "ShardStatus [hostname=" + hostname + ", name=" + name + ", region_tag=" + region_tag + ", slug=" + slug + ", locales=" + locales
-                + ", services=" + services + "]";
+        return "ShardStatus [hostname=" + hostname + ", name=" + name + ", region_tag=" + region_tag + ", slug=" + slug + ", locales=" + locales + ", services="
+                + services + "]";
     }
 }

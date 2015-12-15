@@ -19,7 +19,7 @@ import com.robrua.orianna.type.dto.OriannaDto;
 public class SpellVars extends OriannaDto {
     private static final long serialVersionUID = 3196309764964468106L;
     @ElementCollection
-    @CollectionTable(name = "spellvars_coeff", joinColumns = @JoinColumn(name = "spellvars_id"))
+    @CollectionTable(name = "spellvars_coeff", joinColumns = @JoinColumn(name = "spellvars_id") )
     private List<Double> coeff;
 
     @Id

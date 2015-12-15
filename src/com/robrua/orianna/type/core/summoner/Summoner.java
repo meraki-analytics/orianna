@@ -21,6 +21,17 @@ public class Summoner extends OriannaObject<com.robrua.orianna.type.dto.summoner
     private static final long serialVersionUID = 5207241015938391741L;
 
     /**
+     * Gets the match history for the summoner
+     *
+     * @param numMatches
+     *            the maximum number of matches to get
+     * @return the match list for this summoner
+     */
+    public static List<MatchReference> getMatchList(final int numMatches) {
+        return RiotAPI.getMatchList(numMatches);
+    }
+
+    /**
      * @param data
      *            the underlying dto
      */
@@ -83,40 +94,40 @@ public class Summoner extends OriannaObject<com.robrua.orianna.type.dto.summoner
     }
 
     /**
-     * Gets the 20 most recent matches for the summoner
+     * Gets the match history for the summoner
      *
-     * @return the 20 most recent matches for the summoner
+     * @return the match list for this summoner
      */
     public List<MatchReference> getMatchList() {
         return RiotAPI.getMatchList(this);
     }
 
     /**
-     * Gets the 20 most recent matches after beginIndex for the summoner
+     * Gets the match history for the summoner
      *
      * @param beginTime
      *            The begin time to use for fetching games
-     * @return the match list for that summoner
+     * @return the match list for this summoner
      */
     public List<MatchReference> getMatchList(final Date beginTime) {
         return RiotAPI.getMatchList(this, beginTime);
     }
 
     /**
-     * Gets the 20 most recent matches after beginIndex for the summoner
+     * Gets the match history for the summoner
      *
      * @param beginTime
      *            The begin time to use for fetching games
      * @param endTime
      *            The end time to use for fetching games
-     * @return the match list for that summoner
+     * @return the match list for this summoner
      */
     public List<MatchReference> getMatchList(final Date beginTime, final Date endTime) {
         return RiotAPI.getMatchList(this, beginTime, endTime);
     }
 
     /**
-     * Gets the 20 most recent matches after beginIndex for the summoner
+     * Gets the match history for the summoner
      *
      * @param beginTime
      *            The begin time to use for fetching games
@@ -124,14 +135,14 @@ public class Summoner extends OriannaObject<com.robrua.orianna.type.dto.summoner
      *            The end time to use for fetching games
      * @param queueTypes
      *            the queue types to limit games to (only ranked queues)
-     * @return the match list for that summoner
+     * @return the match list for this summoner
      */
     public List<MatchReference> getMatchList(final Date beginTime, final Date endTime, final List<QueueType> queueTypes) {
         return RiotAPI.getMatchList(this, beginTime, endTime, queueTypes);
     }
 
     /**
-     * Gets the 20 most recent matches after beginIndex for the summoner
+     * Gets the match history for the summoner
      *
      * @param beginTime
      *            The begin time to use for fetching games
@@ -141,14 +152,14 @@ public class Summoner extends OriannaObject<com.robrua.orianna.type.dto.summoner
      *            the queue types to limit games to (only ranked queues)
      * @param championIDs
      *            the champions to limit games to
-     * @return the match list for that summoner
+     * @return the match list for this summoner
      */
     public List<MatchReference> getMatchList(final Date beginTime, final Date endTime, final List<QueueType> queueTypes, final List<Long> championIDs) {
         return RiotAPI.getMatchList(this, beginTime, endTime, queueTypes, championIDs);
     }
 
     /**
-     * Gets the 20 most recent matches after beginIndex for the summoner
+     * Gets the match history for the summoner
      *
      * @param beginTime
      *            The begin time to use for fetching games
@@ -160,7 +171,7 @@ public class Summoner extends OriannaObject<com.robrua.orianna.type.dto.summoner
      *            the champions to limit games to
      * @param seasons
      *            the seasons to limit games to
-     * @return the match list for that summoner
+     * @return the match list for this summoner
      */
     public List<MatchReference> getMatchList(final Date beginTime, final Date endTime, final List<QueueType> queueTypes, final List<Long> championIDs,
             final List<Season> seasons) {
@@ -168,47 +179,55 @@ public class Summoner extends OriannaObject<com.robrua.orianna.type.dto.summoner
     }
 
     /**
-     * Gets the 20 most recent matches after beginIndex for the summoner
+     * Gets the match history for the summoner
      *
+     * @param numMatches
+     *            the maximum number of matches to get
      * @param beginIndex
      *            the game index to start from
-     * @return the match list for that summoner
+     * @return the match list for this summoner
      */
-    public List<MatchReference> getMatchList(final int beginIndex) {
-        return RiotAPI.getMatchList(this, beginIndex);
+    public List<MatchReference> getMatchList(final int numMatches, final int beginIndex) {
+        return RiotAPI.getMatchList(this, numMatches, beginIndex);
     }
 
     /**
-     * Gets the 20 most recent matches after beginIndex for the summoner
+     * Gets the match history for the summoner
      *
+     * @param numMatches
+     *            the maximum number of matches to get
      * @param beginIndex
      *            the game index to start from
      * @param beginTime
      *            The begin time to use for fetching games
-     * @return the match list for that summoner
+     * @return the match list for this summoner
      */
-    public List<MatchReference> getMatchList(final int beginIndex, final Date beginTime) {
-        return RiotAPI.getMatchList(this, beginIndex, beginTime);
+    public List<MatchReference> getMatchList(final int numMatches, final int beginIndex, final Date beginTime) {
+        return RiotAPI.getMatchList(this, numMatches, beginIndex, beginTime);
     }
 
     /**
-     * Gets the 20 most recent matches after beginIndex for the summoner
+     * Gets the match history for the summoner
      *
+     * @param numMatches
+     *            the maximum number of matches to get
      * @param beginIndex
      *            the game index to start from
      * @param beginTime
      *            The begin time to use for fetching games
      * @param endTime
      *            The end time to use for fetching games
-     * @return the match list for that summoner
+     * @return the match list for this summoner
      */
-    public List<MatchReference> getMatchList(final int beginIndex, final Date beginTime, final Date endTime) {
-        return RiotAPI.getMatchList(this, beginIndex, beginTime, endTime);
+    public List<MatchReference> getMatchList(final int numMatches, final int beginIndex, final Date beginTime, final Date endTime) {
+        return RiotAPI.getMatchList(this, numMatches, beginIndex, beginTime, endTime);
     }
 
     /**
-     * Gets the 20 most recent matches after beginIndex for the summoner
+     * Gets the match history for the summoner
      *
+     * @param numMatches
+     *            the maximum number of matches to get
      * @param beginIndex
      *            the game index to start from
      * @param beginTime
@@ -217,15 +236,18 @@ public class Summoner extends OriannaObject<com.robrua.orianna.type.dto.summoner
      *            The end time to use for fetching games
      * @param queueTypes
      *            the queue types to limit games to (only ranked queues)
-     * @return the match list for that summoner
+     * @return the match list for this summoner
      */
-    public List<MatchReference> getMatchList(final int beginIndex, final Date beginTime, final Date endTime, final List<QueueType> queueTypes) {
-        return RiotAPI.getMatchList(this, beginIndex, beginTime, endTime, queueTypes);
+    public List<MatchReference> getMatchList(final int numMatches, final int beginIndex, final Date beginTime, final Date endTime,
+            final List<QueueType> queueTypes) {
+        return RiotAPI.getMatchList(this, numMatches, beginIndex, beginTime, endTime, queueTypes);
     }
 
     /**
-     * Gets the 20 most recent matches after beginIndex for the summoner
+     * Gets the match history for the summoner
      *
+     * @param numMatches
+     *            the maximum number of matches to get
      * @param beginIndex
      *            the game index to start from
      * @param beginTime
@@ -236,16 +258,18 @@ public class Summoner extends OriannaObject<com.robrua.orianna.type.dto.summoner
      *            the queue types to limit games to (only ranked queues)
      * @param championIDs
      *            the champions to limit games to
-     * @return the match list for that summoner
+     * @return the match list for this summoner
      */
-    public List<MatchReference> getMatchList(final int beginIndex, final Date beginTime, final Date endTime, final List<QueueType> queueTypes,
-            final List<Long> championIDs) {
-        return RiotAPI.getMatchList(this, beginIndex, beginTime, endTime, queueTypes, championIDs);
+    public List<MatchReference> getMatchList(final int numMatches, final int beginIndex, final Date beginTime, final Date endTime,
+            final List<QueueType> queueTypes, final List<Long> championIDs) {
+        return RiotAPI.getMatchList(this, numMatches, beginIndex, beginTime, endTime, queueTypes, championIDs);
     }
 
     /**
-     * Gets the 20 most recent matches after beginIndex for the summoner
+     * Gets the match history for the summoner
      *
+     * @param numMatches
+     *            the maximum number of matches to get
      * @param beginIndex
      *            the game index to start from
      * @param beginTime
@@ -258,11 +282,11 @@ public class Summoner extends OriannaObject<com.robrua.orianna.type.dto.summoner
      *            the champions to limit games to
      * @param seasons
      *            the seasons to limit games to
-     * @return the match list for that summoner
+     * @return the match list for this summoner
      */
-    public List<MatchReference> getMatchList(final int beginIndex, final Date beginTime, final Date endTime, final List<QueueType> queueTypes,
-            final List<Long> championIDs, final List<Season> seasons) {
-        return RiotAPI.getMatchList(this, beginIndex, beginTime, endTime, queueTypes, championIDs, seasons);
+    public List<MatchReference> getMatchList(final int numMatches, final int beginIndex, final Date beginTime, final Date endTime,
+            final List<QueueType> queueTypes, final List<Long> championIDs, final List<Season> seasons) {
+        return RiotAPI.getMatchList(this, numMatches, beginIndex, beginTime, endTime, queueTypes, championIDs, seasons);
     }
 
     /**

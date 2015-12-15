@@ -28,11 +28,11 @@ public class Item extends OriannaDto {
     private String description, plaintext, sanitizedDescription;
 
     @ElementCollection
-    @CollectionTable(name = "item_effect", joinColumns = @JoinColumn(name = "item_id"))
+    @CollectionTable(name = "item_effect", joinColumns = @JoinColumn(name = "item_id") )
     private Map<String, String> effect;
 
     @ElementCollection
-    @CollectionTable(name = "item_from", joinColumns = @JoinColumn(name = "item_id"))
+    @CollectionTable(name = "item_from", joinColumns = @JoinColumn(name = "item_id") )
     @Column(name = "frm")
     private List<String> from;
 
@@ -49,12 +49,12 @@ public class Item extends OriannaDto {
     private Image image;
 
     @ElementCollection
-    @CollectionTable(name = "item_into", joinColumns = @JoinColumn(name = "item_id"))
+    @CollectionTable(name = "item_into", joinColumns = @JoinColumn(name = "item_id") )
     @Column(name = "nto")
     private List<String> into;
 
     @ElementCollection
-    @CollectionTable(name = "item_map", joinColumns = @JoinColumn(name = "item_id"))
+    @CollectionTable(name = "item_map", joinColumns = @JoinColumn(name = "item_id") )
     private Map<String, Boolean> maps;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -64,7 +64,7 @@ public class Item extends OriannaDto {
     private BasicDataStats stats;
 
     @ElementCollection
-    @CollectionTable(name = "item_tag", joinColumns = @JoinColumn(name = "item_id"))
+    @CollectionTable(name = "item_tag", joinColumns = @JoinColumn(name = "item_id") )
     private List<String> tags;
 
     /*

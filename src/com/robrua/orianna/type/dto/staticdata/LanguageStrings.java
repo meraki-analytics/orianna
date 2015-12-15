@@ -18,7 +18,7 @@ import com.robrua.orianna.type.dto.OriannaDto;
 public class LanguageStrings extends OriannaDto {
     private static final long serialVersionUID = -519169121689972804L;
     @ElementCollection
-    @CollectionTable(name = "languagestring_data", joinColumns = @JoinColumn(name = "languagestring_id"))
+    @CollectionTable(name = "languagestring_data", joinColumns = @JoinColumn(name = "languagestring_id") )
     private Map<String, String> data;
 
     @Id
