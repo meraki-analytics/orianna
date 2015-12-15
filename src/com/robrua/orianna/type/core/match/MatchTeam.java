@@ -100,6 +100,15 @@ public class MatchTeam extends OriannaObject<com.robrua.orianna.type.dto.match.T
     }
 
     /**
+     * Flag indicating whether or not the team killed the first rift herald
+     *
+     * @return whether or not the team killed the first rift herald
+     */
+    public boolean getFirstRiftHerald() {
+        return super.getBoolean(data.getFirstRiftHerald());
+    }
+
+    /**
      * Flag indicating whether or not the team destroyed the first tower
      *
      * @return whether or not the team destroyed the first tower
@@ -115,6 +124,15 @@ public class MatchTeam extends OriannaObject<com.robrua.orianna.type.dto.match.T
      */
     public int getInhibitorKills() {
         return super.getInteger(data.getInhibitorKills());
+    }
+
+    /**
+     * Number of rift heralds the team killed
+     *
+     * @return number of rift heralds the team killed
+     */
+    public int getRiftHeraldKills() {
+        return super.getInteger(data.getRiftHeraldKills());
     }
 
     /**
