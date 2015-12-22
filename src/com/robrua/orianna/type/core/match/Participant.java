@@ -188,6 +188,9 @@ public class Participant extends OriannaObject<CombinedParticipant> {
      * @return the ID of the summoner this participant represents
      */
     public long getSummonerID() {
+        if(data.getIdentity() == null || data.getIdentity().getPlayer() == null) {
+            return -1;
+        }
         return super.getLong(data.getIdentity().getPlayer().getSummonerId());
     }
 
@@ -197,6 +200,9 @@ public class Participant extends OriannaObject<CombinedParticipant> {
      * @return the name of the summoner this participant represents
      */
     public String getSummonerName() {
+        if(data.getIdentity() == null || data.getIdentity().getPlayer() == null) {
+            return null;
+        }
         return super.getString(data.getIdentity().getPlayer().getSummonerName());
     }
 
