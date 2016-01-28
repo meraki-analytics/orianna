@@ -103,7 +103,9 @@ public class Item extends OriannaObject<com.robrua.orianna.type.dto.staticdata.I
     public Map<String, String> getEffect() {
         if(effect == null) {
             effect = new HashMap<>();
-            effect.putAll(data.getEffect());
+            if(data.getEffect() != null) {
+                effect.putAll(data.getEffect());
+            }
         }
 
         return Collections.unmodifiableMap(effect);
@@ -117,7 +119,9 @@ public class Item extends OriannaObject<com.robrua.orianna.type.dto.staticdata.I
     public List<String> getFrom() {
         if(from == null) {
             from = new ArrayList<>();
-            from.addAll(data.getFrom());
+            if(data.getFrom() != null) {
+                from.addAll(data.getFrom());
+            }
         }
 
         return Collections.unmodifiableList(from);
@@ -193,7 +197,9 @@ public class Item extends OriannaObject<com.robrua.orianna.type.dto.staticdata.I
     public List<String> getInto() {
         if(into == null) {
             into = new ArrayList<>();
-            into.addAll(data.getInto());
+            if(data.getInto() != null) {
+                into.addAll(data.getInto());
+            }
         }
 
         return Collections.unmodifiableList(into);
@@ -302,7 +308,9 @@ public class Item extends OriannaObject<com.robrua.orianna.type.dto.staticdata.I
     public List<String> getTags() {
         if(tags == null) {
             tags = new ArrayList<>();
-            tags.addAll(data.getTags());
+            if(data.getTags() != null) {
+                tags.addAll(data.getTags());
+            }
         }
 
         return Collections.unmodifiableList(tags);
