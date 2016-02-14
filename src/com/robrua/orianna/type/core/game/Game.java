@@ -75,6 +75,10 @@ public class Game extends OriannaObject<com.robrua.orianna.type.dto.game.Game> {
      */
     public List<Player> getFellowPlayers() {
         if(fellowPlayers == null) {
+            if(data.getFellowPlayers() == null) {
+                return Collections.emptyList();
+            }
+            
             fellowPlayers = new ArrayList<>();
             for(final com.robrua.orianna.type.dto.game.Player player : data.getFellowPlayers()) {
                 fellowPlayers.add(new Player(player));
