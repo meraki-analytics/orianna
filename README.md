@@ -109,7 +109,7 @@ public class Example {
 }
 ```
 
-Make sure you set your rate limit ONLY IF YOU HAVE APPLIED FOR AN RECIEVED A PRODUCTION-LEVEL API KEY. By default, Orianna will limit you to the Development rate limit. You can set the rate limit to your production limit (if you have one) as follows:
+Make sure you set your rate limit ONLY IF YOU HAVE APPLIED FOR AND RECIEVED A PRODUCTION-LEVEL API KEY. By default, Orianna will limit you to the Development rate limit. You can set the rate limit to your production limit (if you have one) as follows:
 ```java
 // 3,000 calls per 10 seconds
 RiotAPI.setRateLimit(3000, 10);
