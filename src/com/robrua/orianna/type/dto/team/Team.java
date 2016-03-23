@@ -152,10 +152,10 @@ public class Team extends OriannaDto {
     public Set<Long> getSummonerIDs() {
         final Set<Long> set = new HashSet<>();
         set.add(roster.getOwnerId());
-        
+
         if(roster.getMemberList() != null) {
             for(final TeamMemberInfo member : roster.getMemberList()) {
-               set.add(member.getPlayerId());
+                set.add(member.getPlayerId());
             }
         }
 
