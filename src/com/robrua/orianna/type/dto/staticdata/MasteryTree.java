@@ -21,7 +21,7 @@ public class MasteryTree extends OriannaDto {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "masterytree_id")
-    private List<MasteryTreeList> Defense, Offense, Utility;
+    private List<MasteryTreeList> Cunning, Ferocity, Resolve;
 
     /*
      * (non-Javadoc)
@@ -39,28 +39,28 @@ public class MasteryTree extends OriannaDto {
             return false;
         }
         final MasteryTree other = (MasteryTree)obj;
-        if(Defense == null) {
-            if(other.Defense != null) {
+        if(Cunning == null) {
+            if(other.Cunning != null) {
                 return false;
             }
         }
-        else if(!Defense.equals(other.Defense)) {
+        else if(!Cunning.equals(other.Cunning)) {
             return false;
         }
-        if(Offense == null) {
-            if(other.Offense != null) {
+        if(Ferocity == null) {
+            if(other.Ferocity != null) {
                 return false;
             }
         }
-        else if(!Offense.equals(other.Offense)) {
+        else if(!Ferocity.equals(other.Ferocity)) {
             return false;
         }
-        if(Utility == null) {
-            if(other.Utility != null) {
+        if(Resolve == null) {
+            if(other.Resolve != null) {
                 return false;
             }
         }
-        else if(!Utility.equals(other.Utility)) {
+        else if(!Resolve.equals(other.Resolve)) {
             return false;
         }
         return true;
@@ -75,24 +75,24 @@ public class MasteryTree extends OriannaDto {
     }
 
     /**
-     * @return the defense
+     * @return the cunning
      */
-    public List<MasteryTreeList> getDefense() {
-        return Defense;
+    public List<MasteryTreeList> getCunning() {
+        return Cunning;
     }
 
     /**
-     * @return the offense
+     * @return the ferocity
      */
-    public List<MasteryTreeList> getOffense() {
-        return Offense;
+    public List<MasteryTreeList> getFerocity() {
+        return Ferocity;
     }
 
     /**
-     * @return the utility
+     * @return the resolve
      */
-    public List<MasteryTreeList> getUtility() {
-        return Utility;
+    public List<MasteryTreeList> getResolve() {
+        return Resolve;
     }
 
     /*
@@ -103,34 +103,34 @@ public class MasteryTree extends OriannaDto {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (Defense == null ? 0 : Defense.hashCode());
-        result = prime * result + (Offense == null ? 0 : Offense.hashCode());
-        result = prime * result + (Utility == null ? 0 : Utility.hashCode());
+        result = prime * result + (Cunning == null ? 0 : Cunning.hashCode());
+        result = prime * result + (Ferocity == null ? 0 : Ferocity.hashCode());
+        result = prime * result + (Resolve == null ? 0 : Resolve.hashCode());
         return result;
     }
 
     /**
-     * @param defense
-     *            the defense to set
+     * @param cunning
+     *            the cunning to set
      */
-    public void setDefense(final List<MasteryTreeList> defense) {
-        Defense = defense;
+    public void setCunning(final List<MasteryTreeList> cunning) {
+        Cunning = cunning;
     }
 
     /**
-     * @param offense
-     *            the offense to set
+     * @param ferocity
+     *            the ferocity to set
      */
-    public void setOffense(final List<MasteryTreeList> offense) {
-        Offense = offense;
+    public void setFerocity(final List<MasteryTreeList> ferocity) {
+        Ferocity = ferocity;
     }
 
     /**
-     * @param utility
-     *            the utility to set
+     * @param resolve
+     *            the resolve to set
      */
-    public void setUtility(final List<MasteryTreeList> utility) {
-        Utility = utility;
+    public void setResolve(final List<MasteryTreeList> resolve) {
+        Resolve = resolve;
     }
 
     /*
@@ -139,6 +139,6 @@ public class MasteryTree extends OriannaDto {
      */
     @Override
     public String toString() {
-        return "MasteryTree [Defense=" + Defense + ", Offense=" + Offense + ", Utility=" + Utility + "]";
+        return "MasteryTree [Cunning=" + Cunning + ", Ferocity=" + Ferocity + ", Resolve=" + Resolve + "]";
     }
 }
