@@ -70,7 +70,14 @@ import com.robrua.orianna.type.exception.OriannaException;
 public abstract class BaseRiotAPI {
     static final Map<String, String> API_VERSIONS;
     private static String APIKey;
-    private static CloseableHttpClient CLIENT = HttpClients.createDefault();
+    private static final int TIMEOUT = 60 * 1000;
+    private static final RequestConfig clientConfig = RequestConfig.custom()
+            .setConnectionRequestTimeout(TIMEOUT)
+            .setConnectTimeout(TIMEOUT)
+            .setSocketTimeout(TIMEOUT)
+            .setStaleConnectionCheckEnabled(true)
+            .build();
+    private static CloseableHttpClient CLIENT = HttpClients.custom().setDefaultRequestConfig(clientConfig).build();
     static final Gson GSON = new GsonBuilder().registerTypeAdapter(ChampionSpell.class, new ChampionSpellDeserializer())
             .registerTypeAdapter(SummonerSpell.class, new SummonerSpellDeserializer()).create();
     static String locale;
@@ -189,7 +196,13 @@ public abstract class BaseRiotAPI {
         try {
             final HttpGet get = new HttpGet(uri);
             if(proxy != null) {
-                final RequestConfig config = RequestConfig.custom().setProxy(proxy).build();
+                final RequestConfig config = RequestConfig.custom()
+                        .setProxy(proxy)
+                        .setConnectionRequestTimeout(TIMEOUT)
+                        .setConnectTimeout(TIMEOUT)
+                        .setSocketTimeout(TIMEOUT)
+                        .setStaleConnectionCheckEnabled(true)
+                        .build();
                 get.setConfig(config);
             }
 
