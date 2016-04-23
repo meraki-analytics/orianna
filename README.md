@@ -12,7 +12,7 @@ Orianna is the sister library to [Cassiopeia](https://github.com/robrua/cassiope
 - Replaces foreign key ID values with the referenced object
 - Option to lazy load referenced objects right when you need them or batch them up and load them upfront to minimize API calls
 - Caches static data and summoner information to accelerate access and reduce API load
-- Available automatic databasing using [Hibernate](http://hibernate.org/). See [the project here.](https://github.com/robrua/orianna-hibernate)
+- Available automatic databasing using [Hibernate](http://hibernate.org/). See [the project here.](https://github.com/meraki-analytics/orianna-hibernate)
 
 ## Features (BaseRiotAPI)
 
@@ -23,7 +23,7 @@ Orianna is the sister library to [Cassiopeia](https://github.com/robrua/cassiope
  
 ## Setup
 
-Just [download](https://github.com/robrua/Orianna/releases) the latest .jar and add it to your project's build path.
+Just [download](https://github.com/meraki-analytics/Orianna/releases) the latest .jar and add it to your project's build path.
  
 To do this in eclipse, I recommend creating a lib/ directory in your project's root directory and putting the .jar there. Then just right click the .jar in eclipse and click Build Path -> Add to Build Path.
 
@@ -36,7 +36,7 @@ Standard Java
 <dependency>
   <groupId>com.robrua</groupId>
   <artifactId>orianna</artifactId>
-  <version>2.4.2</version>
+  <version>2.4.3</version>
 </dependency>
 ```
 
@@ -45,7 +45,7 @@ Android
 <dependency>
   <groupId>com.robrua</groupId>
   <artifactId>orianna-android</artifactId>
-  <version>2.4.2</version>
+  <version>2.4.3</version>
 </dependency>
 ```
 
@@ -58,7 +58,7 @@ repositories {
 }
 
 dependencies {
-	compile 'com.robrua:orianna:2.4.2'
+	compile 'com.robrua:orianna:2.4.3'
 }
 ```
 
@@ -69,7 +69,7 @@ repositories {
 }
 
 dependencies {
-	compile 'com.robrua:orianna-android:2.4.2'
+	compile 'com.robrua:orianna-android:2.4.3'
 }
 ```
 
@@ -79,7 +79,7 @@ Orianna relies on [Apache HttpClient](http://hc.apache.org/httpcomponents-client
  
 ## Usage
 
-Here's an example of a few basic uses of the API. The full JavaDoc can be found at http://robrua.github.io/Orianna/.
+Here's an example of a few basic uses of the API. The full JavaDoc can be found at http://meraki-analytics.github.io/Orianna/.
 
 ```java
 import java.util.List;
@@ -217,10 +217,10 @@ public class Example {
 ```
 
 ## JavaDoc
-[Found Here](http://robrua.github.io/Orianna/)
+[Found Here](http://meraki-analytics.github.io/Orianna/)
 
 ## Download
-[Releases](https://github.com/robrua/Orianna/releases)/[Snapshot](http://robrua.com/orianna)
+[Releases](https://github.com/meraki-analytics/Orianna/releases)/[Snapshot](http://robrua.com/orianna)
 
 ## Questions/Contributions
 Feel free to send pull requests or to contact me via github or email (robrua@alumni.cmu.edu).
