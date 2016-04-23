@@ -12,6 +12,7 @@ import com.robrua.orianna.store.DataStore;
 import com.robrua.orianna.type.api.LoadPolicy;
 import com.robrua.orianna.type.api.RateLimit;
 import com.robrua.orianna.type.core.champion.ChampionStatus;
+import com.robrua.orianna.type.core.championmastery.ChampionMastery;
 import com.robrua.orianna.type.core.common.QueueType;
 import com.robrua.orianna.type.core.common.Region;
 import com.robrua.orianna.type.core.common.Season;
@@ -72,6 +73,117 @@ public abstract class RiotAPI {
      */
     public static Champion getChampionByName(final String name) {
         return StaticDataAPI.getChampionByName(name);
+    }
+
+    /**
+     * Gets the champion mastery ratings for a summoner
+     *
+     * @param summonerID
+     *            the summoner to get ratings for
+     * @return the summoner's champion mastery ratings
+     */
+    public static List<ChampionMastery> getChampionMastery(final long summonerID) {
+        return ChampionMasteryAPI.getChampionMastery(summonerID);
+    }
+
+    /**
+     * Gets the summoner's mastery on a champion
+     *
+     * @param summonerID
+     *            the summoner to get rating for
+     * @param champion
+     *            the champion to get rating for
+     * @return the summoner's champion mastery rating
+     */
+    public static ChampionMastery getChampionMastery(final long summonerID, final Champion champion) {
+        return ChampionMasteryAPI.getChampionMastery(summonerID, champion);
+    }
+
+    /**
+     * Gets the summoner's mastery on a champion
+     *
+     * @param summonerID
+     *            the summoner to get rating for
+     * @param championID
+     *            the champion to get rating for
+     * @return the summoner's champion mastery rating
+     */
+    public static ChampionMastery getChampionMastery(final long summonerID, final long championID) {
+        return ChampionMasteryAPI.getChampionMastery(summonerID, championID);
+    }
+
+    /**
+     * Gets the champion mastery ratings for a summoner
+     *
+     * @param summonerName
+     *            the summoner to get ratings for
+     * @return the summoner's champion mastery ratings
+     */
+    public static List<ChampionMastery> getChampionMastery(final String summonerName) {
+        return ChampionMasteryAPI.getChampionMastery(summonerName);
+    }
+
+    /**
+     * Gets the summoner's mastery on a champion
+     *
+     * @param summonerName
+     *            the summoner to get rating for
+     * @param champion
+     *            the champion to get rating for
+     * @return the summoner's champion mastery rating
+     */
+    public static ChampionMastery getChampionMastery(final String summonerName, final Champion champion) {
+        return ChampionMasteryAPI.getChampionMastery(summonerName, champion);
+    }
+
+    /**
+     * Gets the summoner's mastery on a champion
+     *
+     * @param summonerName
+     *            the summoner to get rating for
+     * @param championID
+     *            the champion to get rating for
+     * @return the summoner's champion mastery rating
+     */
+    public static ChampionMastery getChampionMastery(final String summonerName, final long championID) {
+        return ChampionMasteryAPI.getChampionMastery(summonerName, championID);
+    }
+
+    /**
+     * Gets the champion mastery ratings for a summoner
+     *
+     * @param summoner
+     *            the summoner to get ratings for
+     * @return the summoner's champion mastery ratings
+     */
+    public static List<ChampionMastery> getChampionMastery(final Summoner summoner) {
+        return ChampionMasteryAPI.getChampionMastery(summoner);
+    }
+
+    /**
+     * Gets the summoner's mastery on a champion
+     *
+     * @param summoner
+     *            the summoner to get rating for
+     * @param champion
+     *            the champion to get rating for
+     * @return the summoner's champion mastery rating
+     */
+    public static ChampionMastery getChampionMastery(final Summoner summoner, final Champion champion) {
+        return ChampionMasteryAPI.getChampionMastery(summoner, champion);
+    }
+
+    /**
+     * Gets the summoner's mastery on a champion
+     *
+     * @param summoner
+     *            the summoner to get rating for
+     * @param championID
+     *            the champion to get rating for
+     * @return the summoner's champion mastery rating
+     */
+    public static ChampionMastery getChampionMastery(final Summoner summoner, final long championID) {
+        return ChampionMasteryAPI.getChampionMastery(summoner, championID);
     }
 
     /**
@@ -1919,6 +2031,78 @@ public abstract class RiotAPI {
      */
     public static List<List<Team>> getTeamsBySummonerName(final String summonerName) {
         return TeamAPI.getTeamsBySummonerName(summonerName);
+    }
+
+    /**
+     * Gets the top champion mastery ratings for a summoner
+     *
+     * @param summonerID
+     *            the summoner to get ratings for
+     * @param count
+     *            the number of top champions to get
+     * @return the summoner's champion mastery ratings
+     */
+    public static List<ChampionMastery> getTopChampionMastery(final long summonerID, final int count) {
+        return ChampionMasteryAPI.getTopChampionMastery(summonerID, count);
+    }
+
+    /**
+     * Gets the top champion mastery ratings for a summoner
+     *
+     * @param summoner
+     *            the summoner to get ratings for
+     * @param count
+     *            the number of top champions to get
+     * @return the summoner's champion mastery ratings
+     */
+    public static List<ChampionMastery> getTopChampionMastery(final String summonerName, final int count) {
+        return ChampionMasteryAPI.getTopChampionMastery(summonerName, count);
+    }
+
+    /**
+     * Gets the top champion mastery ratings for a summoner
+     *
+     * @param summoner
+     *            the summoner to get ratings for
+     * @param count
+     *            the number of top champions to get
+     * @return the summoner's champion mastery ratings
+     */
+    public static List<ChampionMastery> getTopChampionMastery(final Summoner summoner, final int count) {
+        return ChampionMasteryAPI.getTopChampionMastery(summoner, count);
+    }
+
+    /**
+     * Gets the total mastery level for a summoner
+     *
+     * @param summonerID
+     *            the summoner to get mastery level for
+     * @return the summoner's total mastery level
+     */
+    public static int getTotalMasteryLevel(final long summonerID) {
+        return ChampionMasteryAPI.getTotalMasteryLevel(summonerID);
+    }
+
+    /**
+     * Gets the total mastery level for a summoner
+     *
+     * @param summonerName
+     *            the summoner to get mastery level for
+     * @return the summoner's total mastery level
+     */
+    public static int getTotalMasteryLevel(final String summonerName) {
+        return ChampionMasteryAPI.getTotalMasteryLevel(summonerName);
+    }
+
+    /**
+     * Gets the total mastery level for a summoner
+     *
+     * @param summoner
+     *            the summoner to get mastery level for
+     * @return the summoner's total mastery level
+     */
+    public static int getTotalMasteryLevel(final Summoner summoner) {
+        return ChampionMasteryAPI.getTotalMasteryLevel(summoner);
     }
 
     /**

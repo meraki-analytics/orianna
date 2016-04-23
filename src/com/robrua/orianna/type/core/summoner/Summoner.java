@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.robrua.orianna.api.core.RiotAPI;
 import com.robrua.orianna.type.core.OriannaObject;
+import com.robrua.orianna.type.core.championmastery.ChampionMastery;
 import com.robrua.orianna.type.core.common.QueueType;
 import com.robrua.orianna.type.core.common.Season;
 import com.robrua.orianna.type.core.currentgame.CurrentGame;
@@ -37,6 +38,26 @@ public class Summoner extends OriannaObject<com.robrua.orianna.type.dto.summoner
      */
     public Summoner(final com.robrua.orianna.type.dto.summoner.Summoner data) {
         super(data, com.robrua.orianna.type.dto.summoner.Summoner.class);
+    }
+
+    /**
+     * Gets the champion mastery ratings for this summoner
+     *
+     * @return the summoner's champion mastery ratings
+     */
+    public List<ChampionMastery> getChampionMastery() {
+        return RiotAPI.getChampionMastery(getID());
+    }
+
+    /**
+     * Gets the summoner's mastery on a champion
+     *
+     * @param champion
+     *            the champion to get rating for
+     * @return the summoner's champion mastery rating
+     */
+    public ChampionMastery getChampionMastery(final Champion champion) {
+        return RiotAPI.getChampionMastery(getID(), champion.getID());
     }
 
     /**
@@ -370,6 +391,26 @@ public class Summoner extends OriannaObject<com.robrua.orianna.type.dto.summoner
      */
     public List<Team> getTeams() {
         return RiotAPI.getTeamsBySummonerID(getID());
+    }
+
+    /**
+     * Gets the top champion mastery ratings for this summoner
+     *
+     * @param count
+     *            the number of top champions to get
+     * @return the summoner's champion mastery ratings
+     */
+    public List<ChampionMastery> getTopChampionMastery(final int count) {
+        return RiotAPI.getTopChampionMastery(getID(), count);
+    }
+
+    /**
+     * Gets the total mastery level for this summoner
+     *
+     * @return the summoner's total mastery level
+     */
+    public int getTotalMasteryLevel() {
+        return RiotAPI.getTotalMasteryLevel(getID());
     }
 
     /*

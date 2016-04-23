@@ -7,6 +7,8 @@ import java.util.List;
 import com.robrua.orianna.api.core.RiotAPI;
 import com.robrua.orianna.type.core.OriannaObject;
 import com.robrua.orianna.type.core.champion.ChampionStatus;
+import com.robrua.orianna.type.core.championmastery.ChampionMastery;
+import com.robrua.orianna.type.core.summoner.Summoner;
 
 public class Champion extends OriannaObject<com.robrua.orianna.type.dto.staticdata.Champion> {
     private static final long serialVersionUID = -1285569935446443640L;
@@ -48,6 +50,17 @@ public class Champion extends OriannaObject<com.robrua.orianna.type.dto.staticda
      */
     public String getBlurb() {
         return super.getString(data.getBlurb());
+    }
+
+    /**
+     * Gets a summoner's mastery on this champion
+     *
+     * @param summoner
+     *            the summoner to get rating for
+     * @return the summoner's champion mastery rating
+     */
+    public ChampionMastery getChampionMastery(final Summoner summoner) {
+        return RiotAPI.getChampionMastery(summoner.getID(), getID());
     }
 
     /**

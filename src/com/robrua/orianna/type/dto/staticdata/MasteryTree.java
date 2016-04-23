@@ -16,12 +16,12 @@ import com.robrua.orianna.type.dto.OriannaDto;
 public class MasteryTree extends OriannaDto {
     private static final long serialVersionUID = -7530057902542747774L;
 
-    @Id
-    private final long dbId = 0;
-
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "masterytree_id")
     private List<MasteryTreeList> Cunning, Ferocity, Resolve;
+
+    @Id
+    private final long dbId = 0;
 
     /*
      * (non-Javadoc)
@@ -66,19 +66,19 @@ public class MasteryTree extends OriannaDto {
         return true;
     }
 
+    /**
+     * @return the cunning
+     */
+    public List<MasteryTreeList> getCunning() {
+        return Cunning;
+    }
+
     @Override
     public String getDataStoreIndexField(final Class<?> keyType) {
         if(keyType.equals(Long.class)) {
             return "dbId";
         }
         return null;
-    }
-
-    /**
-     * @return the cunning
-     */
-    public List<MasteryTreeList> getCunning() {
-        return Cunning;
     }
 
     /**

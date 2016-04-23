@@ -9,6 +9,7 @@ import com.robrua.orianna.type.api.RateLimit;
 import com.robrua.orianna.type.core.common.QueueType;
 import com.robrua.orianna.type.core.common.Region;
 import com.robrua.orianna.type.core.common.Season;
+import com.robrua.orianna.type.dto.championmastery.ChampionMastery;
 import com.robrua.orianna.type.dto.currentgame.CurrentGameInfo;
 import com.robrua.orianna.type.dto.featuredgames.FeaturedGames;
 import com.robrua.orianna.type.dto.game.RecentGames;
@@ -88,6 +89,62 @@ public class AsyncBaseRiotAPI {
                 else {
                     try {
                         action.perform(StaticDataAPI.getChampion(ID));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
+     *            what to do with the champion mastery
+     * @param summonerID
+     *            the ID of the summoner to get mastery for
+     * @param championID
+     *            the ID of the champion to get mastery for
+     * @see <a href="https://developer.riotgames.com/api/methods#!/1071/3697">
+     *      Riot API Specification</a>
+     */
+    public static void getChampionMastery(final Action<ChampionMastery> action, final long summonerID, final long championID) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChampionMasteryAPI.getChampionMastery(summonerID, championID);
+                }
+                else {
+                    try {
+                        action.perform(ChampionMasteryAPI.getChampionMastery(summonerID, championID));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
+     *            what to do with the champion masteries
+     * @param summonerID
+     *            the summoner to get champion mastery for
+     * @see <a href="https://developer.riotgames.com/api/methods#!/1071/3696">
+     *      Riot API Specification</a>
+     */
+    public static void getChampionMastery(final Action<List<ChampionMastery>> action, final long summonerID) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChampionMasteryAPI.getChampionMastery(summonerID);
+                }
+                else {
+                    try {
+                        action.perform(ChampionMasteryAPI.getChampionMastery(summonerID));
                     }
                     catch(final APIException e) {
                         action.handle(e);
@@ -1857,6 +1914,62 @@ public class AsyncBaseRiotAPI {
                 else {
                     try {
                         action.perform(TeamAPI.getTeamsBySummoner(summonerIDs));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
+     *            what to do with the masteries
+     * @param summonerID
+     *            the summoner to get masteries for
+     * @param count
+     *            the number of top champions to get
+     * @see <a href="https://developer.riotgames.com/api/methods#!/1071/3692">
+     *      Riot API Specification</a>
+     */
+    public static void getTopChampionMastery(final Action<List<ChampionMastery>> action, final long summonerID, final int count) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChampionMasteryAPI.getTopChampionMastery(summonerID, count);
+                }
+                else {
+                    try {
+                        action.perform(ChampionMasteryAPI.getTopChampionMastery(summonerID, count));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * @param action
+     *            what to do with the result
+     * @param summonerID
+     *            the summoner to get total mastery level for
+     * @see <a href="https://developer.riotgames.com/api/methods#!/1071/3698">
+     *      Riot API Specification</a>
+     */
+    public static void getTotalMasteryLevel(final Action<Integer> action, final long summonerID) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChampionMasteryAPI.getTotalMasteryLevel(summonerID);
+                }
+                else {
+                    try {
+                        action.perform(ChampionMasteryAPI.getTotalMasteryLevel(summonerID));
                     }
                     catch(final APIException e) {
                         action.handle(e);
