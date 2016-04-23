@@ -32,6 +32,7 @@ import com.robrua.orianna.type.api.SingleRateLimiter;
 import com.robrua.orianna.type.core.common.QueueType;
 import com.robrua.orianna.type.core.common.Region;
 import com.robrua.orianna.type.core.common.Season;
+import com.robrua.orianna.type.dto.championmastery.ChampionMastery;
 import com.robrua.orianna.type.dto.currentgame.CurrentGameInfo;
 import com.robrua.orianna.type.dto.featuredgames.FeaturedGames;
 import com.robrua.orianna.type.dto.game.RecentGames;
@@ -82,6 +83,7 @@ public abstract class BaseRiotAPI {
     static {
         API_VERSIONS = new HashMap<>();
         API_VERSIONS.put("champion", "v1.2");
+        API_VERSIONS.put("championmastery", "");
         API_VERSIONS.put("current-game", "v1.0");
         API_VERSIONS.put("featured-games", "v1.0");
         API_VERSIONS.put("game", "v1.3");
@@ -265,6 +267,30 @@ public abstract class BaseRiotAPI {
      */
     public static com.robrua.orianna.type.dto.staticdata.Champion getChampion(final long ID) {
         return StaticDataAPI.getChampion(ID);
+    }
+
+    /**
+     * @param summonerID
+     *            the summoner to get champion mastery for
+     * @return the summoner's mastery for all their champions
+     * @see <a href="https://developer.riotgames.com/api/methods#!/1071/3696">
+     *      Riot API Specification</a>
+     */
+    public static List<ChampionMastery> getChampionMastery(final long summonerID) {
+        return ChampionMasteryAPI.getChampionMastery(summonerID);
+    }
+
+    /**
+     * @param summonerID
+     *            the ID of the summoner to get mastery for
+     * @param championID
+     *            the ID of the champion to get mastery for
+     * @return the champion's mastery score
+     * @see <a href="https://developer.riotgames.com/api/methods#!/1071/3697">
+     *      Riot API Specification</a>
+     */
+    public static ChampionMastery getChampionMastery(final long summonerID, final long championID) {
+        return ChampionMasteryAPI.getChampionMastery(summonerID, championID);
     }
 
     /**
@@ -1111,6 +1137,30 @@ public abstract class BaseRiotAPI {
      */
     public static Map<Long, List<Team>> getTeamsBySummoner(final long... summonerIDs) {
         return TeamAPI.getTeamsBySummoner(summonerIDs);
+    }
+
+    /**
+     * @param summonerID
+     *            the summoner to get masteries for
+     * @param count
+     *            the number of top champions to get
+     * @return the *count* highest champion masteries for the summoner
+     * @see <a href="https://developer.riotgames.com/api/methods#!/1071/3692">
+     *      Riot API Specification</a>
+     */
+    public static List<ChampionMastery> getTopChampionMastery(final long summonerID, final int count) {
+        return ChampionMasteryAPI.getTopChampionMastery(summonerID, count);
+    }
+
+    /**
+     * @param summonerID
+     *            the summoner to get total mastery level for
+     * @return the summoner's total mastery level
+     * @see <a href="https://developer.riotgames.com/api/methods#!/1071/3698">
+     *      Riot API Specification</a>
+     */
+    public static int getTotalMasteryLevel(final long summonerID) {
+        return ChampionMasteryAPI.getTotalMasteryLevel(summonerID);
     }
 
     /**

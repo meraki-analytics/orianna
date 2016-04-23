@@ -11,6 +11,7 @@ import com.robrua.orianna.type.api.Action;
 import com.robrua.orianna.type.api.LoadPolicy;
 import com.robrua.orianna.type.api.RateLimit;
 import com.robrua.orianna.type.core.champion.ChampionStatus;
+import com.robrua.orianna.type.core.championmastery.ChampionMastery;
 import com.robrua.orianna.type.core.common.QueueType;
 import com.robrua.orianna.type.core.common.Region;
 import com.robrua.orianna.type.core.common.Season;
@@ -44,6 +45,7 @@ import com.robrua.orianna.type.exception.APIException;
  * @author Rob Rua (FatalElement - NA) (robrua@alumni.cmu.edu)
  */
 public abstract class AsyncRiotAPI {
+
     /**
      * @param action
      *            what to do with the challenger league
@@ -110,6 +112,261 @@ public abstract class AsyncRiotAPI {
                 else {
                     try {
                         action.perform(StaticDataAPI.getChampionByName(name));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * Gets the summoner's mastery on a champion
+     *
+     * @param action
+     *            what to do with the mastery information
+     * @param summonerID
+     *            the summoner to get rating for
+     * @param champion
+     *            the champion to get rating for
+     */
+    public static void getChampionMastery(final Action<ChampionMastery> action, final long summonerID, final Champion champion) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChampionMasteryAPI.getChampionMastery(summonerID, champion);
+                }
+                else {
+                    try {
+                        action.perform(ChampionMasteryAPI.getChampionMastery(summonerID, champion));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * Gets the summoner's mastery on a champion
+     *
+     * @param action
+     *            what to do with the mastery information
+     * @param summonerID
+     *            the summoner to get rating for
+     * @param championID
+     *            the champion to get rating for
+     */
+    public static void getChampionMastery(final Action<ChampionMastery> action, final long summonerID, final long championID) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChampionMasteryAPI.getChampionMastery(summonerID, championID);
+                }
+                else {
+                    try {
+                        action.perform(ChampionMasteryAPI.getChampionMastery(summonerID, championID));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * Gets the summoner's mastery on a champion
+     *
+     * @param action
+     *            what to do with the mastery information
+     * @param summonerName
+     *            the summoner to get rating for
+     * @param champion
+     *            the champion to get rating for
+     */
+    public static void getChampionMastery(final Action<ChampionMastery> action, final String summonerName, final Champion champion) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChampionMasteryAPI.getChampionMastery(summonerName, champion);
+                }
+                else {
+                    try {
+                        action.perform(ChampionMasteryAPI.getChampionMastery(summonerName, champion));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * Gets the summoner's mastery on a champion
+     *
+     * @param action
+     *            what to do with the mastery information
+     * @param summonerName
+     *            the summoner to get rating for
+     * @param championID
+     *            the champion to get rating for
+     */
+    public static void getChampionMastery(final Action<ChampionMastery> action, final String summonerName, final long championID) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChampionMasteryAPI.getChampionMastery(summonerName, championID);
+                }
+                else {
+                    try {
+                        action.perform(ChampionMasteryAPI.getChampionMastery(summonerName, championID));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * Gets the summoner's mastery on a champion
+     *
+     * @param action
+     *            what to do with the mastery information
+     * @param summoner
+     *            the summoner to get rating for
+     * @param champion
+     *            the champion to get rating for
+     */
+    public static void getChampionMastery(final Action<ChampionMastery> action, final Summoner summoner, final Champion champion) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChampionMasteryAPI.getChampionMastery(summoner, champion);
+                }
+                else {
+                    try {
+                        action.perform(ChampionMasteryAPI.getChampionMastery(summoner, champion));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * Gets the summoner's mastery on a champion
+     *
+     * @param action
+     *            what to do with the mastery information
+     * @param summoner
+     *            the summoner to get rating for
+     * @param championID
+     *            the champion to get rating for
+     */
+    public static void getChampionMastery(final Action<ChampionMastery> action, final Summoner summoner, final long championID) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChampionMasteryAPI.getChampionMastery(summoner, championID);
+                }
+                else {
+                    try {
+                        action.perform(ChampionMasteryAPI.getChampionMastery(summoner, championID));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * Gets the champion mastery ratings for a summoner
+     *
+     * @param action
+     *            what to do with the mastery information
+     * @param summonerID
+     *            the summoner to get ratings for
+     */
+    public static void getChampionMastery(final Action<List<ChampionMastery>> action, final long summonerID) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChampionMasteryAPI.getChampionMastery(summonerID);
+                }
+                else {
+                    try {
+                        action.perform(ChampionMasteryAPI.getChampionMastery(summonerID));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * Gets the champion mastery ratings for a summoner
+     *
+     * @param action
+     *            what to do with the mastery information
+     * @param summonerName
+     *            the summoner to get ratings for
+     */
+    public static void getChampionMastery(final Action<List<ChampionMastery>> action, final String summonerName) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChampionMasteryAPI.getChampionMastery(summonerName);
+                }
+                else {
+                    try {
+                        action.perform(ChampionMasteryAPI.getChampionMastery(summonerName));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * Gets the champion mastery ratings for a summoner
+     *
+     * @param action
+     *            what to do with the mastery information
+     * @param summoner
+     *            the summoner to get ratings for
+     */
+    public static void getChampionMastery(final Action<List<ChampionMastery>> action, final Summoner summoner) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChampionMasteryAPI.getChampionMastery(summoner);
+                }
+                else {
+                    try {
+                        action.perform(ChampionMasteryAPI.getChampionMastery(summoner));
                     }
                     catch(final APIException e) {
                         action.handle(e);
@@ -4517,6 +4774,174 @@ public abstract class AsyncRiotAPI {
                 else {
                     try {
                         action.perform(TeamAPI.getTeamsBySummonerName(summonerName));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * Gets the top champion mastery ratings for a summoner
+     *
+     * @param action
+     *            what to do with the mastery information
+     * @param summonerID
+     *            the summoner to get ratings for
+     * @param count
+     *            the number of top champions to get
+     */
+    public static void getTopChampionMastery(final Action<List<ChampionMastery>> action, final long summonerID, final int count) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChampionMasteryAPI.getTopChampionMastery(summonerID, count);
+                }
+                else {
+                    try {
+                        action.perform(ChampionMasteryAPI.getTopChampionMastery(summonerID, count));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * Gets the top champion mastery ratings for a summoner
+     *
+     * @param action
+     *            what to do with the mastery information
+     * @param summoner
+     *            the summoner to get ratings for
+     * @param count
+     *            the number of top champions to get
+     */
+    public static void getTopChampionMastery(final Action<List<ChampionMastery>> action, final String summonerName, final int count) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChampionMasteryAPI.getTopChampionMastery(summonerName, count);
+                }
+                else {
+                    try {
+                        action.perform(ChampionMasteryAPI.getTopChampionMastery(summonerName, count));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * Gets the top champion mastery ratings for a summoner
+     *
+     * @param action
+     *            what to do with the mastery information
+     * @param summoner
+     *            the summoner to get ratings for
+     * @param count
+     *            the number of top champions to get
+     */
+    public static void getTopChampionMastery(final Action<List<ChampionMastery>> action, final Summoner summoner, final int count) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChampionMasteryAPI.getTopChampionMastery(summoner, count);
+                }
+                else {
+                    try {
+                        action.perform(ChampionMasteryAPI.getTopChampionMastery(summoner, count));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * Gets the total mastery level for a summoner
+     *
+     * @param action
+     *            what to do with the total mastery level
+     * @param summonerID
+     *            the summoner to get mastery level for
+     */
+    public static void getTotalMasteryLevel(final Action<Integer> action, final long summonerID) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChampionMasteryAPI.getTotalMasteryLevel(summonerID);
+                }
+                else {
+                    try {
+                        action.perform(ChampionMasteryAPI.getTotalMasteryLevel(summonerID));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * Gets the total mastery level for a summoner
+     *
+     * @param action
+     *            what to do with the total mastery level
+     * @param summonerName
+     *            the summoner to get mastery level for
+     */
+    public static void getTotalMasteryLevel(final Action<Integer> action, final String summonerName) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChampionMasteryAPI.getTotalMasteryLevel(summonerName);
+                }
+                else {
+                    try {
+                        action.perform(ChampionMasteryAPI.getTotalMasteryLevel(summonerName));
+                    }
+                    catch(final APIException e) {
+                        action.handle(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * Gets the total mastery level for a summoner
+     *
+     * @param action
+     *            what to do with the total mastery level
+     * @param summoner
+     *            the summoner to get mastery level for
+     */
+    public static void getTotalMasteryLevel(final Action<Integer> action, final Summoner summoner) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(action == null) {
+                    ChampionMasteryAPI.getTotalMasteryLevel(summoner);
+                }
+                else {
+                    try {
+                        action.perform(ChampionMasteryAPI.getTotalMasteryLevel(summoner));
                     }
                     catch(final APIException e) {
                         action.handle(e);
