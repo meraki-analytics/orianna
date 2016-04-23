@@ -2049,7 +2049,7 @@ public abstract class RiotAPI {
     /**
      * Gets the top champion mastery ratings for a summoner
      *
-     * @param summoner
+     * @param summonerName
      *            the summoner to get ratings for
      * @param count
      *            the number of top champions to get

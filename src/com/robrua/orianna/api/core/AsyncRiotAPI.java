@@ -4817,7 +4817,7 @@ public abstract class AsyncRiotAPI {
      *
      * @param action
      *            what to do with the mastery information
-     * @param summoner
+     * @param summonerName
      *            the summoner to get ratings for
      * @param count
      *            the number of top champions to get
