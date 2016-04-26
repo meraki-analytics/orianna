@@ -5,7 +5,8 @@ import com.robrua.orianna.type.core.OriannaObject;
 public class BasicDataStats extends OriannaObject<com.robrua.orianna.type.dto.staticdata.BasicDataStats> {
     private static final long serialVersionUID = 7920872026162580279L;
     double percentCooldownReduction, flatArmorPenetration, percentAbilityPower, percentArmorPenetration, flatMagicPenetration, percentMagicPenetration,
-            goldPer10;
+            goldPer10, percentAttackDamage, percentLifeSteal, percentSpellVamp, percentManaRegen, percentHealthRegen, percentBonusHealth, percentMovespeed,
+            tenacity;
 
     /**
      * @param data
@@ -273,7 +274,7 @@ public class BasicDataStats extends OriannaObject<com.robrua.orianna.type.dto.st
      * @return percent HP pool mod
      */
     public double getPercentHPPoolMod() {
-        return super.getDouble(data.getPercentHPPoolMod());
+        return super.getDouble(data.getPercentHPPoolMod()) + percentBonusHealth;
     }
 
     /**
@@ -282,7 +283,7 @@ public class BasicDataStats extends OriannaObject<com.robrua.orianna.type.dto.st
      * @return percent HP regen mod
      */
     public double getPercentHPRegenMod() {
-        return super.getDouble(data.getPercentHPRegenMod());
+        return super.getDouble(data.getPercentHPRegenMod()) + percentHealthRegen;
     }
 
     /**
@@ -291,7 +292,7 @@ public class BasicDataStats extends OriannaObject<com.robrua.orianna.type.dto.st
      * @return percent life steal mod
      */
     public double getPercentLifeStealMod() {
-        return super.getDouble(data.getPercentLifeStealMod());
+        return super.getDouble(data.getPercentLifeStealMod()) + percentLifeSteal;
     }
 
     /**
@@ -300,7 +301,7 @@ public class BasicDataStats extends OriannaObject<com.robrua.orianna.type.dto.st
      * @return percent magic damage mod
      */
     public double getPercentMagicDamageMod() {
-        return super.getDouble(data.getPercentMagicDamageMod());
+        return super.getDouble(data.getPercentMagicDamageMod()) + percentAbilityPower;
     }
 
     /**
@@ -318,7 +319,7 @@ public class BasicDataStats extends OriannaObject<com.robrua.orianna.type.dto.st
      * @return percent movement speed mod
      */
     public double getPercentMovementSpeedMod() {
-        return super.getDouble(data.getPercentMovementSpeedMod());
+        return super.getDouble(data.getPercentMovementSpeedMod()) + percentMovespeed;
     }
 
     /**
@@ -336,7 +337,7 @@ public class BasicDataStats extends OriannaObject<com.robrua.orianna.type.dto.st
      * @return percent MP regen mod
      */
     public double getPercentMPRegenMod() {
-        return super.getDouble(data.getPercentMPRegenMod());
+        return super.getDouble(data.getPercentMPRegenMod()) + percentManaRegen;
     }
 
     /**
@@ -345,7 +346,7 @@ public class BasicDataStats extends OriannaObject<com.robrua.orianna.type.dto.st
      * @return percent physical damage mod
      */
     public double getPercentPhysicalDamageMod() {
-        return super.getDouble(data.getPercentPhysicalDamageMod());
+        return super.getDouble(data.getPercentPhysicalDamageMod()) + percentAttackDamage;
     }
 
     /**
@@ -363,7 +364,7 @@ public class BasicDataStats extends OriannaObject<com.robrua.orianna.type.dto.st
      * @return percent spell vamp mod
      */
     public double getPercentSpellVampMod() {
-        return super.getDouble(data.getPercentSpellVampMod());
+        return super.getDouble(data.getPercentSpellVampMod()) + percentSpellVamp;
     }
 
     /**
@@ -652,6 +653,15 @@ public class BasicDataStats extends OriannaObject<com.robrua.orianna.type.dto.st
      */
     public double getRPercentTimeDeadModPerLevel() {
         return Math.abs(super.getDouble(data.getrPercentTimeDeadModPerLevel()));
+    }
+
+    /**
+     * Tenacity
+     *
+     * @return tenacity
+     */
+    public double getTenacity() {
+        return tenacity;
     }
 
     /*

@@ -22,13 +22,23 @@ public class Item extends OriannaObject<com.robrua.orianna.type.dto.staticdata.I
      */
     private static Map<String, Pattern> getScrapedStatPatterns() {
         final Map<String, Pattern> patterns = new HashMap<String, Pattern>();
-        patterns.put("percentCooldownReduction", Pattern.compile("\\+(\\d+) *% Cooldown Reduction *(<br>|</stats>|</passive>|$)"));
-        patterns.put("flatArmorPenetration", Pattern.compile("\\+(\\d+) *Armor Penetration *(<br>|</stats>|</passive>|$)"));
-        patterns.put("percentArmorPenetration", Pattern.compile("ignores (\\d+)% of the target's Armor"));
-        patterns.put("flatMagicPenetration", Pattern.compile("\\+(\\d+) *Magic Penetration *(<br>|</stats>|</passive>|$)"));
-        patterns.put("percentMagicPenetration", Pattern.compile("ignores (\\d+)% of the target's Magic Resist"));
-        patterns.put("goldPer10", Pattern.compile("\\+(\\d+) *Gold per 10 seconds *(<br>|</stats>|</passive>|$)"));
+        patterns.put("percentAttackDamage", Pattern.compile("\\+(\\d+)% Base Attack Damage"));
+        patterns.put("percentCooldownReduction", Pattern.compile("\\+(\\d+) *% Cooldown Reduction"));
+        patterns.put("flatArmorPenetation", Pattern.compile("\\+(\\d+) <a href='FlatArmorPen'>Armor Penetration</a>"));
         patterns.put("percentAbilityPower", Pattern.compile("Increases Ability Power by (\\d+)%"));
+        patterns.put("percentArmorPenetration", Pattern.compile("\\+(\\d+)% <a href='BonusArmorPen'>Bonus Armor Penetration</a>"));
+        patterns.put("flatMagicPenetration", Pattern.compile("\\+(\\d+) <a href='FlatMagicPen'>Magic Penetration</a>"));
+        patterns.put("percentMagicPenetration", Pattern.compile("\\+(\\d+)% <a href='TotalMagicPen'>Magic Penetration</a>"));
+        patterns.put("goldPer10", Pattern.compile("\\+(\\d+) *Gold per 10 seconds"));
+        patterns.put("percentLifeSteal", Pattern.compile("(?:Dealing physical damage heals for (\\d+)% of the damage dealt)|(?:\\+(\\d+)% Life Steal)"));
+        patterns.put("percentSpellVamp",
+                Pattern.compile("(?:\\+(\\d+)% <a href='SpellVamp'>Spell Vamp</a>)|(?:Your spells and abilities heal you for (\\d+)% of the damage dealt)"));
+        patterns.put("percentManaRegen", Pattern.compile("\\+(\\d+)% Base Mana Regen"));
+        patterns.put("percentHealthRegen", Pattern.compile("\\+(\\d+)% Base Health Regen"));
+        patterns.put("percentBonusHealth", Pattern.compile("\\+(\\d+)% Bonus Health"));
+        patterns.put("percentMovespeed", Pattern.compile("\\+(\\d+)% Movement Speed"));
+        patterns.put("tenacity", Pattern
+                .compile("Tenacity:</unique> Reduces the duration of stuns, slows, taunts, fears, silences, blinds, polymorphs, and immobilizes by (\\d+)%"));
 
         return patterns;
     }
