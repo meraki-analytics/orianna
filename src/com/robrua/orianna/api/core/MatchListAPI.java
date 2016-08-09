@@ -54,6 +54,10 @@ public abstract class MatchListAPI {
             list = BaseRiotAPI.getMatchList(summonerID, beginTime.getTime());
         }
 
+        if (list.getMatches() == null) {
+            return Collections.emptyList();
+        }
+
         final List<MatchReference> history = new ArrayList<>(list.getMatches().size());
         for(final com.robrua.orianna.type.dto.matchlist.MatchReference match : list.getMatches()) {
             history.add(new MatchReference(match));
