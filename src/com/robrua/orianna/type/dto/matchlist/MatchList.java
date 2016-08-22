@@ -1,5 +1,6 @@
 package com.robrua.orianna.type.dto.matchlist;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -112,6 +113,9 @@ public class MatchList extends OriannaDto {
      * @return the matches
      */
     public List<MatchReference> getMatches() {
+        if (matches == null) {
+            return Collections.emptyList();
+        }
         return matches;
     }
 
