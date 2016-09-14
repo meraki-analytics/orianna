@@ -207,23 +207,43 @@ public abstract class BaseRiotAPI {
 
                 // Handle API errors
                 if(response.getStatusLine().getStatusCode() == 429) {
-                    int retryAfter = 1;
-                    try {
-                        // Force rate limiter to wait after a 429
-                        retryAfter += Integer.parseInt(response.getFirstHeader("Retry-After").getValue());
-                        rateLimiter.resetIn(retryAfter * 1000L);
-                    }
-                    catch(final NullPointerException e) {
-                        // Retry-After wasn't sent. Back off for 1 second.
-                        rateLimiter.resetIn(retryAfter * 1000L);
-                    }
+                    if(response.getFirstHeader("X-Rate-Limit-Type") == null || "service".equals(response.getFirstHeader("X-Rate-Limit-Type"))) {
+                        // Release resources and exit from rate limited call
+                        response.close();
+                        rateLimiter.registerCall();
+                        registered = true;
 
-                    // Release resources and exit from rate limited call, then
-                    // retry call
-                    response.close();
-                    rateLimiter.registerCall();
-                    registered = true;
-                    return get(uri, staticServer);
+                        try {
+                            // Backoff for 1 second before trying again
+                            Thread.sleep(1000L);
+                        }
+                        catch(final InterruptedException e) {
+                            throw new OriannaException("Interrupted while attempting backoff for service 429!");
+                        }
+
+                        // Retry call
+                        return get(uri, staticServer);
+                    }
+                    else {
+                        int retryAfter = 1;
+                        try {
+                            // Force rate limiter to wait after a 429
+                            retryAfter += Integer.parseInt(response.getFirstHeader("Retry-After").getValue());
+                            rateLimiter.resetIn(retryAfter * 1000L);
+                        }
+                        catch(final NullPointerException e) {
+                            // Retry-After wasn't sent. Back off for 1 second.
+                            rateLimiter.resetIn(retryAfter * 1000L);
+                        }
+
+                        // Release resources and exit from rate limited call,
+                        // then
+                        // retry call
+                        response.close();
+                        rateLimiter.registerCall();
+                        registered = true;
+                        return get(uri, staticServer);
+                    }
                 }
                 else if(response.getStatusLine().getStatusCode() != 200) {
                     throw new APIException(uri.toString(), response.getStatusLine().getStatusCode());

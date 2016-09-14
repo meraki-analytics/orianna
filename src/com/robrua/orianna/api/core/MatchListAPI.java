@@ -24,7 +24,7 @@ public abstract class MatchListAPI {
     public static List<MatchReference> getMatchList(final long summonerID) {
         final MatchList list = BaseRiotAPI.getMatchList(summonerID);
 
-        if (list.getMatches() == null) {
+        if(list.getMatches() == null) {
             return Collections.emptyList();
         }
 
@@ -58,7 +58,7 @@ public abstract class MatchListAPI {
             list = BaseRiotAPI.getMatchList(summonerID, beginTime.getTime());
         }
 
-        if (list.getMatches() == null) {
+        if(list.getMatches() == null) {
             return Collections.emptyList();
         }
 
@@ -98,7 +98,7 @@ public abstract class MatchListAPI {
             list = BaseRiotAPI.getMatchList(summonerID, beginTime.getTime(), endTime.getTime());
         }
 
-        if (list.getMatches() == null) {
+        if(list.getMatches() == null) {
             return Collections.emptyList();
         }
 
@@ -140,7 +140,7 @@ public abstract class MatchListAPI {
             list = BaseRiotAPI.getMatchList(summonerID, beginTime.getTime(), endTime.getTime(), queueTypes);
         }
 
-        if (list.getMatches() == null) {
+        if(list.getMatches() == null) {
             return Collections.emptyList();
         }
 
@@ -185,7 +185,7 @@ public abstract class MatchListAPI {
             list = BaseRiotAPI.getMatchList(summonerID, beginTime.getTime(), endTime.getTime(), queueTypes, championIDs);
         }
 
-        if (list.getMatches() == null) {
+        if(list.getMatches() == null) {
             return Collections.emptyList();
         }
 
@@ -232,7 +232,7 @@ public abstract class MatchListAPI {
             list = BaseRiotAPI.getMatchList(summonerID, beginTime.getTime(), endTime.getTime(), queueTypes, championIDs, seasons);
         }
 
-        if (list.getMatches() == null) {
+        if(list.getMatches() == null) {
             return Collections.emptyList();
         }
 
@@ -260,7 +260,7 @@ public abstract class MatchListAPI {
     public static List<MatchReference> getMatchList(final long summonerID, final int numMatches) {
         final MatchList list = BaseRiotAPI.getMatchList(summonerID, numMatches);
 
-        if (list.getMatches() == null) {
+        if(list.getMatches() == null) {
             return Collections.emptyList();
         }
 
@@ -290,7 +290,7 @@ public abstract class MatchListAPI {
     public static List<MatchReference> getMatchList(final long summonerID, final int numMatches, final int beginIndex) {
         final MatchList list = BaseRiotAPI.getMatchList(summonerID, numMatches, beginIndex);
 
-        if (list.getMatches() == null) {
+        if(list.getMatches() == null) {
             return Collections.emptyList();
         }
 
@@ -328,7 +328,7 @@ public abstract class MatchListAPI {
             list = BaseRiotAPI.getMatchList(summonerID, numMatches, beginIndex, beginTime.getTime());
         }
 
-        if (list.getMatches() == null) {
+        if(list.getMatches() == null) {
             return Collections.emptyList();
         }
 
@@ -372,7 +372,7 @@ public abstract class MatchListAPI {
             list = BaseRiotAPI.getMatchList(summonerID, numMatches, beginIndex, beginTime.getTime(), endTime.getTime());
         }
 
-        if (list.getMatches() == null) {
+        if(list.getMatches() == null) {
             return Collections.emptyList();
         }
 
@@ -419,7 +419,7 @@ public abstract class MatchListAPI {
             list = BaseRiotAPI.getMatchList(summonerID, numMatches, beginIndex, beginTime.getTime(), endTime.getTime(), queueTypes);
         }
 
-        if (list.getMatches() == null) {
+        if(list.getMatches() == null) {
             return Collections.emptyList();
         }
 
@@ -468,7 +468,7 @@ public abstract class MatchListAPI {
             list = BaseRiotAPI.getMatchList(summonerID, numMatches, beginIndex, beginTime.getTime(), endTime.getTime(), queueTypes, championIDs);
         }
 
-        if (list.getMatches() == null) {
+        if(list.getMatches() == null) {
             return Collections.emptyList();
         }
 
@@ -519,7 +519,7 @@ public abstract class MatchListAPI {
             list = BaseRiotAPI.getMatchList(summonerID, numMatches, beginIndex, beginTime.getTime(), endTime.getTime(), queueTypes, championIDs, seasons);
         }
 
-        if (list.getMatches() == null) {
+        if(list.getMatches() == null) {
             return Collections.emptyList();
         }
 
