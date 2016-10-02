@@ -309,18 +309,6 @@ public abstract class RiotAPI {
     }
 
     /**
-     * Gets the default development rate limits
-     *
-     * @return default development rate limites
-     */
-    public static List<RateLimit> getDefaultDevelopmentRateLimits() {
-        final List<RateLimit> limits = new LinkedList<>();
-        limits.add(new RateLimit(10, 10));
-        limits.add(new RateLimit(500, 600));
-        return limits;
-    }
-
-    /**
      * @return the current featured games
      */
     public static List<CurrentGame> getFeaturedGames() {

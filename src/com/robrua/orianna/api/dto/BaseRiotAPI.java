@@ -77,7 +77,7 @@ public abstract class BaseRiotAPI {
     static String locale;
     private static boolean printCalls = false;
     private static HttpHost proxy;
-    private static RateLimiter rateLimiter = new MultiRateLimiter(RiotAPI.getDefaultDevelopmentRateLimits());
+    private static RateLimiter rateLimiter = new MultiRateLimiter(RateLimit.DEVELOPMENT_RATE_LIMITS);
     static Region region;
 
     static {
