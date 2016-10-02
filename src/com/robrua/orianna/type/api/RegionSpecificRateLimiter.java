@@ -1,5 +1,6 @@
 package com.robrua.orianna.type.api;
 
+import com.robrua.orianna.api.core.RiotAPI;
 import com.robrua.orianna.type.core.common.Region;
 
 import java.util.*;
@@ -22,6 +23,12 @@ public class RegionSpecificRateLimiter implements RateLimiter {
                 regionLimits.add(new SingleRateLimiter(limit));
             }
             regionRateLimits.put(region, regionLimits);
+        }
+    }
+
+    public RegionSpecificRateLimiter(final int callsPerEpoch, final int secondsPerEpoch) {
+        for (Region region : Region.values()) {
+            regionRateLimits.put(region, Collections.singleton(new SingleRateLimiter(callsPerEpoch, secondsPerEpoch)));
         }
     }
 

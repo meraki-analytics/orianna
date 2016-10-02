@@ -111,11 +111,14 @@ public class Example {
 
 Make sure you set your rate limit ONLY IF YOU HAVE APPLIED FOR AND RECIEVED A PRODUCTION-LEVEL API KEY. By default, Orianna will limit you to the Development rate limit. You can set the rate limit to your production limit (if you have one) as follows:
 ```java
-// 3,000 calls per 10 seconds
-RiotAPI.setRateLimit(3000, 10);
-// 3,000 calls per 10 seconds AND 180,000 calls per 10 minutes
-RiotAPI.setRateLimit(new RateLimit(3000, 10), new RateLimit(180000, 600));
+RiotAPI.setRateLimit(RateLimit.PRODUCTION_RATE_LIMITS);
 ```
+
+By default Orianna will limit your calls to the RiotAPI on a global scale, if you would like to use a regional specific rate limitation, you can do so as follows:
+```java
+RiotAPI.setRateLimitingType(RateLimitingType.REGIONAL);
+```
+
 
 You can also set a load policy for filling in foreign key values to optimize internal call usage. UPFRONT will load everything ASAP, and will batch together calls where possible to minimize call usage. LAZY will load things as you ask for them, so you can save calls if you don't use some values, but it won't be able to take as much advantage of bulk loading.
 

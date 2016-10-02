@@ -11,6 +11,7 @@ import com.robrua.orianna.store.Cache;
 import com.robrua.orianna.store.DataStore;
 import com.robrua.orianna.type.api.LoadPolicy;
 import com.robrua.orianna.type.api.RateLimit;
+import com.robrua.orianna.type.api.RateLimitingType;
 import com.robrua.orianna.type.core.champion.ChampionStatus;
 import com.robrua.orianna.type.core.championmastery.ChampionMastery;
 import com.robrua.orianna.type.core.common.QueueType;
@@ -2188,6 +2189,15 @@ public abstract class RiotAPI {
      */
     public static void setProxy(final String IP, final int port) {
         BaseRiotAPI.setProxy(IP, port);
+    }
+
+    /**
+     * Sets a new rate limiting type.
+     * @param newRateLimitingType
+     *              the new rate limiting policy.
+     */
+    public static void setRateLimitingType(RateLimitingType newRateLimitingType) {
+        BaseRiotAPI.setRateLimitingType(newRateLimitingType);
     }
 
     /**
