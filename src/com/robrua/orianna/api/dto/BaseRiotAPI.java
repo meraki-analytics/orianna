@@ -182,7 +182,7 @@ public abstract class BaseRiotAPI {
         // Wait for a call to be available if this is a call to a rate
         // limited server
         if(!staticServer) {
-            rateLimiter.waitForCall();
+            rateLimiter.waitForCall(region);
         }
 
         boolean registered = false;
@@ -210,7 +210,7 @@ public abstract class BaseRiotAPI {
                     if(response.getFirstHeader("X-Rate-Limit-Type") == null || "service".equals(response.getFirstHeader("X-Rate-Limit-Type"))) {
                         // Release resources and exit from rate limited call
                         response.close();
-                        rateLimiter.registerCall();
+                        rateLimiter.registerCall(region);
                         registered = true;
 
                         try {
@@ -229,18 +229,18 @@ public abstract class BaseRiotAPI {
                         try {
                             // Force rate limiter to wait after a 429
                             retryAfter += Integer.parseInt(response.getFirstHeader("Retry-After").getValue());
-                            rateLimiter.resetIn(retryAfter * 1000L);
+                            rateLimiter.resetIn(region, retryAfter * 1000L);
                         }
                         catch(final NullPointerException e) {
                             // Retry-After wasn't sent. Back off for 1 second.
-                            rateLimiter.resetIn(retryAfter * 1000L);
+                            rateLimiter.resetIn(region, retryAfter * 1000L);
                         }
 
                         // Release resources and exit from rate limited call,
                         // then
                         // retry call
                         response.close();
-                        rateLimiter.registerCall();
+                        rateLimiter.registerCall(region);
                         registered = true;
                         return get(uri, staticServer);
                     }
@@ -262,7 +262,7 @@ public abstract class BaseRiotAPI {
         }
         finally {
             if(!staticServer && !registered) {
-                rateLimiter.registerCall();
+                rateLimiter.registerCall(region);
             }
         }
     }
