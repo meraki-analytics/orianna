@@ -1,5 +1,7 @@
 package com.robrua.orianna.type.api;
 
+import com.robrua.orianna.type.core.common.Region;
+
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
@@ -52,7 +54,7 @@ public class SingleRateLimiter implements RateLimiter {
     }
 
     @Override
-    public synchronized void registerCall() {
+    public synchronized void registerCall(Region region) {
         if(resetter == null) {
             resetter = new ResetTask();
             timer.schedule(resetter, millisPerEpoch);
@@ -62,7 +64,7 @@ public class SingleRateLimiter implements RateLimiter {
     }
 
     @Override
-    public synchronized void resetIn(final long millis) {
+    public synchronized void resetIn(Region region, final long millis) {
         if(resetter != null) {
             resetter.cancel();
         }
@@ -72,7 +74,7 @@ public class SingleRateLimiter implements RateLimiter {
     }
 
     @Override
-    public void waitForCall() {
+    public void waitForCall(Region region) {
         semaphore.acquireUninterruptibly();
         current++;
     }

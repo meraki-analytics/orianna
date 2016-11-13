@@ -1,5 +1,7 @@
 package com.robrua.orianna.type.api;
 
+import com.robrua.orianna.type.core.common.Region;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -33,23 +35,23 @@ public class MultiRateLimiter implements RateLimiter {
     }
 
     @Override
-    public synchronized void registerCall() {
+    public synchronized void registerCall(Region region) {
         for(final RateLimiter limit : limits) {
-            limit.registerCall();
+            limit.registerCall(region);
         }
     }
 
     @Override
-    public synchronized void resetIn(final long millis) {
+    public synchronized void resetIn(Region region, final long millis) {
         for(final RateLimiter limit : limits) {
-            limit.resetIn(millis);
+            limit.resetIn(region, millis);
         }
     }
 
     @Override
-    public synchronized void waitForCall() {
+    public synchronized void waitForCall(Region region) {
         for(final RateLimiter limit : limits) {
-            limit.waitForCall();
+            limit.waitForCall(region);
         }
     }
 }

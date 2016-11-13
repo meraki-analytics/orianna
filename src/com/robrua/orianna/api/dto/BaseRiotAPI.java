@@ -4,12 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import com.robrua.orianna.type.api.*;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.NameValuePair;
@@ -24,11 +21,6 @@ import org.apache.http.util.EntityUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.robrua.orianna.api.core.RiotAPI;
-import com.robrua.orianna.type.api.MultiRateLimiter;
-import com.robrua.orianna.type.api.RateLimit;
-import com.robrua.orianna.type.api.RateLimiter;
-import com.robrua.orianna.type.api.SingleRateLimiter;
 import com.robrua.orianna.type.core.common.QueueType;
 import com.robrua.orianna.type.core.common.Region;
 import com.robrua.orianna.type.core.common.Season;
@@ -69,16 +61,24 @@ import com.robrua.orianna.type.exception.OriannaException;
  * @author Rob Rua (FatalElement - NA) (robrua@alumni.cmu.edu)
  */
 public abstract class BaseRiotAPI {
-    static final Map<String, String> API_VERSIONS;
-    private static String APIKey;
     private static CloseableHttpClient CLIENT = HttpClients.createDefault();
-    static final Gson GSON = new GsonBuilder().registerTypeAdapter(ChampionSpell.class, new ChampionSpellDeserializer())
+
+    private static final Gson GSON = new GsonBuilder()
+            .registerTypeAdapter(ChampionSpell.class, new ChampionSpellDeserializer())
             .registerTypeAdapter(SummonerSpell.class, new SummonerSpellDeserializer()).create();
-    static String locale;
-    private static boolean printCalls = false;
+
+    private static Region region;
+    private static String APIKey;
+
+    private static String locale;
     private static HttpHost proxy;
-    private static RateLimiter rateLimiter = new MultiRateLimiter(RiotAPI.getDefaultDevelopmentRateLimits());
-    static Region region;
+
+    private static boolean printCalls = false;
+
+    private static RateLimitingType rateLimitingType = RateLimitingType.GLOBAL;
+    private static RateLimiter rateLimiter = new MultiRateLimiter(RateLimit.DEVELOPMENT_RATE_LIMITS);
+
+    private static final Map<String, String> API_VERSIONS;
 
     static {
         API_VERSIONS = new HashMap<>();
@@ -182,7 +182,7 @@ public abstract class BaseRiotAPI {
         // Wait for a call to be available if this is a call to a rate
         // limited server
         if(!staticServer) {
-            rateLimiter.waitForCall();
+            rateLimiter.waitForCall(region);
         }
 
         boolean registered = false;
@@ -210,7 +210,7 @@ public abstract class BaseRiotAPI {
                     if(response.getFirstHeader("X-Rate-Limit-Type") == null || "service".equals(response.getFirstHeader("X-Rate-Limit-Type"))) {
                         // Release resources and exit from rate limited call
                         response.close();
-                        rateLimiter.registerCall();
+                        rateLimiter.registerCall(region);
                         registered = true;
 
                         try {
@@ -229,18 +229,18 @@ public abstract class BaseRiotAPI {
                         try {
                             // Force rate limiter to wait after a 429
                             retryAfter += Integer.parseInt(response.getFirstHeader("Retry-After").getValue());
-                            rateLimiter.resetIn(retryAfter * 1000L);
+                            rateLimiter.resetIn(region, retryAfter * 1000L);
                         }
                         catch(final NullPointerException e) {
                             // Retry-After wasn't sent. Back off for 1 second.
-                            rateLimiter.resetIn(retryAfter * 1000L);
+                            rateLimiter.resetIn(region, retryAfter * 1000L);
                         }
 
                         // Release resources and exit from rate limited call,
                         // then
                         // retry call
                         response.close();
-                        rateLimiter.registerCall();
+                        rateLimiter.registerCall(region);
                         registered = true;
                         return get(uri, staticServer);
                     }
@@ -262,7 +262,7 @@ public abstract class BaseRiotAPI {
         }
         finally {
             if(!staticServer && !registered) {
-                rateLimiter.registerCall();
+                rateLimiter.registerCall(region);
             }
         }
     }
@@ -1265,13 +1265,23 @@ public abstract class BaseRiotAPI {
     }
 
     /**
+     * Sets a new rate limiting type.
+     * @param newRateLimitingType
+     *              the new rate limiting policy.
+     */
+    public static void setRateLimitingType(final RateLimitingType newRateLimitingType) {
+        rateLimitingType = newRateLimitingType;
+    }
+
+    /**
      * Sets multiple new rate limits for the API, removing any old ones
      *
      * @param limits
      *            the rate limits to apply
      */
     public static void setRateLimit(final Collection<RateLimit> limits) {
-        rateLimiter = new MultiRateLimiter(limits);
+        rateLimiter = rateLimitingType == RateLimitingType.GLOBAL ?
+                new MultiRateLimiter(limits) : new RegionSpecificRateLimiter(limits);
     }
 
     /**
@@ -1283,7 +1293,8 @@ public abstract class BaseRiotAPI {
      *            the number of seconds in each epoch
      */
     public static void setRateLimit(final int callsPerEpoch, final int secondsPerEpoch) {
-        rateLimiter = new SingleRateLimiter(callsPerEpoch, secondsPerEpoch);
+        rateLimiter = rateLimitingType == RateLimitingType.GLOBAL ?
+                new SingleRateLimiter(callsPerEpoch, secondsPerEpoch) : new RegionSpecificRateLimiter(callsPerEpoch, secondsPerEpoch);
     }
 
     /**
@@ -1293,7 +1304,8 @@ public abstract class BaseRiotAPI {
      *            the rate limit
      */
     public static void setRateLimit(final RateLimit limit) {
-        rateLimiter = new SingleRateLimiter(limit);
+        rateLimiter = rateLimitingType == RateLimitingType.GLOBAL ?
+                new SingleRateLimiter(limit) : new RegionSpecificRateLimiter(limit);
     }
 
     /**
@@ -1303,7 +1315,8 @@ public abstract class BaseRiotAPI {
      *            the rate limits to apply
      */
     public static void setRateLimit(final RateLimit... limits) {
-        rateLimiter = new MultiRateLimiter(limits);
+        rateLimiter = rateLimitingType == RateLimitingType.GLOBAL ?
+                new MultiRateLimiter(limits) : new RegionSpecificRateLimiter(limits);
     }
 
     /**
