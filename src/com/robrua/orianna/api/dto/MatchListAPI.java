@@ -12,8 +12,8 @@ import com.robrua.orianna.type.core.common.Season;
 import com.robrua.orianna.type.dto.matchlist.MatchList;
 
 public abstract class MatchListAPI {
-    private static final Set<QueueType> RANKED_QUEUES = new HashSet<>(Arrays.asList(
-            new QueueType[] {QueueType.TEAM_BUILDER_DRAFT_RANKED_5x5, QueueType.RANKED_SOLO_5x5, QueueType.RANKED_TEAM_3x3, QueueType.RANKED_TEAM_5x5, QueueType.RANKED_FLEX_SR}));
+    private static final Set<QueueType> RANKED_QUEUES = new HashSet<>(Arrays.asList(new QueueType[] {QueueType.TEAM_BUILDER_DRAFT_RANKED_5x5,
+            QueueType.RANKED_SOLO_5x5, QueueType.RANKED_TEAM_3x3, QueueType.RANKED_TEAM_5x5, QueueType.RANKED_FLEX_SR, QueueType.RANKED_FLEX_TT}));
 
     /**
      * Gets the match history for the summoner

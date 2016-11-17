@@ -15,8 +15,8 @@ import com.robrua.orianna.type.core.common.QueueType;
 import com.robrua.orianna.type.dto.league.League;
 
 public abstract class LeagueAPI {
-    private static final Set<QueueType> RANKED_QUEUES = new HashSet<>(
-            Arrays.asList(new QueueType[] {QueueType.RANKED_SOLO_5x5, QueueType.RANKED_TEAM_3x3, QueueType.RANKED_TEAM_5x5}));
+    private static final Set<QueueType> RANKED_QUEUES = new HashSet<>(Arrays.asList(new QueueType[] {QueueType.TEAM_BUILDER_DRAFT_RANKED_5x5,
+            QueueType.RANKED_SOLO_5x5, QueueType.RANKED_TEAM_3x3, QueueType.RANKED_TEAM_5x5, QueueType.RANKED_FLEX_SR, QueueType.RANKED_FLEX_TT}));
 
     /**
      * @param queueType

@@ -9,9 +9,9 @@ public enum QueueType {
                     317), FIRSTBLOOD_1x1(72), FIRSTBLOOD_2x2(73), GROUP_FINDER_5x5(61), HEXAKILL(98), KING_PORO_5x5(300), NIGHTMARE_BOT_5x5_RANK1(
                             91), NIGHTMARE_BOT_5x5_RANK2(92), NIGHTMARE_BOT_5x5_RANK5(93), NORMAL_3x3(8), NORMAL_5x5_BLIND(2), NORMAL_5x5_DRAFT(
                                     14), ODIN_5x5_BLIND(16), ODIN_5x5_DRAFT(17), ONEFORALL_5x5(70), ONEFORALL_MIRRORMODE_5x5(78), RANKED_FLEX_SR(
-                                            440), RANKED_PREMADE_3x3(9), RANKED_PREMADE_5x5(6), RANKED_SOLO_5x5(4), RANKED_TEAM_3x3(41), RANKED_TEAM_5x5(
-                                                    42), SIEGE(315), SR_6x6(75), TEAM_BUILDER_DRAFT_RANKED_5x5(410), TEAM_BUILDER_DRAFT_UNRANKED_5x5(
-                                                            400), URF_5x5(76);
+                                            440), RANKED_FLEX_TT(9), RANKED_PREMADE_3x3(-1), RANKED_PREMADE_5x5(6), RANKED_SOLO_5x5(4), RANKED_TEAM_3x3(
+                                                    41), RANKED_TEAM_5x5(42), SIEGE(315), SR_6x6(75), TEAM_BUILDER_DRAFT_RANKED_5x5(
+                                                            410), TEAM_BUILDER_DRAFT_UNRANKED_5x5(400), URF_5x5(76);
 
     private static final Map<Long, QueueType> IDs = new HashMap<>();
 
