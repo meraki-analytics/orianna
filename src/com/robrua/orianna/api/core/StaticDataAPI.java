@@ -28,7 +28,7 @@ import com.robrua.orianna.type.dto.staticdata.SummonerSpellList;
 
 public abstract class StaticDataAPI {
     private static Set<Long> IGNORE_ITEMS = new HashSet<>(Arrays.asList(new Long[] {0L, 1080L, 1304L, 1309L, 1314L, 1319L, 1324L, 1329L, 2004L, 2037L, 2039L,
-            2040L, 3005L, 3039L, 3123L, 3128L, 3131L, 3160L, 3166L, 3167L, 3168L, 3169L, 3175L, 3176L, 3171L, 3186L, 3188L, 3205L, 3206L, 3207L, 3209L, 3210L,
+            2040L, 2043L, 3005L, 3039L, 3123L, 3128L, 3131L, 3160L, 3166L, 3167L, 3168L, 3169L, 3175L, 3176L, 3171L, 3186L, 3188L, 3205L, 3206L, 3207L, 3209L, 3210L,
             3244L, 3405L, 3406L, 3407L, 3408L, 3409L, 3410L, 3411L, 3412L, 3413L, 3414L, 3415L, 3416L, 3417L, 3419L, 3420L}));
     private static Set<Long> IGNORE_RUNES = new HashSet<>(Arrays.asList(new Long[] {8028L}));
     private static Set<Long> IGNORE_SPELLS = new HashSet<>(Arrays.asList(new Long[] {10L}));
