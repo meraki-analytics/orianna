@@ -1,0 +1,102 @@
+package com.merakianalytics.orianna.datapipeline.riotapi;
+
+import java.util.Iterator;
+import java.util.Map;
+
+import com.google.common.collect.ImmutableMap;
+import com.merakianalytics.datapipelines.PipelineContext;
+import com.merakianalytics.datapipelines.iterators.CloseableIterator;
+import com.merakianalytics.datapipelines.iterators.CloseableIterators;
+import com.merakianalytics.datapipelines.sources.Get;
+import com.merakianalytics.datapipelines.sources.GetMany;
+import com.merakianalytics.orianna.datapipeline.common.HTTPClient;
+import com.merakianalytics.orianna.datapipeline.common.RateLimiter;
+import com.merakianalytics.orianna.type.common.Platform;
+import com.merakianalytics.orianna.type.dto.champion.Champion;
+import com.merakianalytics.orianna.type.dto.champion.ChampionList;
+
+public class ChampionAPI extends RiotAPI.Service {
+    public ChampionAPI(final String key, final Map<Platform, RateLimiter> applicationRateLimiters, final HTTPClient client) {
+        super(key, applicationRateLimiters, client);
+    }
+
+    @Get(Champion.class)
+    public Champion getChampion(final Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        final long id = ((Number)query.get("id")).longValue();
+
+        final String endpoint = "lol/platform/v3/champions/" + id;
+        final Champion data = get(Champion.class, endpoint, platform, "lol/platform/v3/champions/id");
+
+        data.setPlatform(platform.getTag());
+        return data;
+    }
+
+    @Get(ChampionList.class)
+    public ChampionList getChampionList(final Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        final Boolean freeToPlay = (Boolean)query.get("freeToPlay");
+
+        final String endpoint = "lol/platform/v3/champions";
+        final ChampionList data = get(ChampionList.class, endpoint, platform, ImmutableMap.of("freeToPlay", freeToPlay.toString()),
+                                      "lol/platform/v3/champions");
+
+        data.setPlatform(platform.getTag());
+        data.setFreeToPlay(freeToPlay);
+        return data;
+    }
+
+    @SuppressWarnings("unchecked")
+    @GetMany(Champion.class)
+    public CloseableIterator<Champion> getManyChampion(final Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
+
+        final Iterator<Number> iterator = ids.iterator();
+        return CloseableIterators.from(new Iterator<Champion>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Champion next() {
+                final long id = iterator.next().longValue();
+
+                final String endpoint = "lol/platform/v3/champions/" + id;
+                final Champion data = get(Champion.class, endpoint, platform, "lol/platform/v3/champions/id");
+
+                data.setPlatform(platform.getTag());
+                return data;
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    @GetMany(ChampionList.class)
+    public CloseableIterator<ChampionList> getManyChampionList(final Map<String, Object> query, final PipelineContext context) {
+        final Boolean freeToPlay = (Boolean)query.get("freeToPlay");
+        final Iterable<Platform> platforms = (Iterable<Platform>)query.get("platforms");
+
+        final Iterator<Platform> iterator = platforms.iterator();
+        return CloseableIterators.from(new Iterator<ChampionList>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public ChampionList next() {
+                final Platform platform = iterator.next();
+
+                final String endpoint = "lol/platform/v3/champions";
+                final ChampionList data = get(ChampionList.class, endpoint, platform, ImmutableMap.of("freeToPlay", freeToPlay.toString()),
+                                              "lol/platform/v3/champions");
+
+                data.setPlatform(platform.getTag());
+                data.setFreeToPlay(freeToPlay);
+                return data;
+            }
+        });
+    }
+}

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.merakianalytics.orianna</groupId>
+	<artifactId>orianna</artifactId>
+	<version>3.0.0-SNAPSHOT</version>
+
+	<name>orianna</name>
+	<description>A Java adaptation of the Riot Games LoL API (https://developer.riotgames.com/)</description>
+	<url>https://github.com/meraki-analytics/orianna</url>
+
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>https://opensource.org/licenses/MIT</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<connection>scm:git:git@github.com:meraki-analytics/orianna.git</connection>
+		<developerConnection>scm:git:git@github.com:meraki-analytics/orianna.git</developerConnection>
+		<url>git@github.com:meraki-analytics/orianna.git</url>
+	</scm>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<datapipelines.version>0.0.1-SNAPSHOT</datapipelines.version>
+		<slf4j.version>1.7.25</slf4j.version>
+		<guava.version>22.0</guava.version>
+		<okhttp.version>3.8.1</okhttp.version>
+		<jackson.version>2.8.9</jackson.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>okhttp</artifactId>
+			<version>${okhttp.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>java</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+
+			<properties>
+				<jdk.version>1.8</jdk.version>
+			</properties>
+
+			<dependencies>
+				<dependency>
+					<groupId>com.merakianalytics.datapipelines</groupId>
+					<artifactId>datapipelines</artifactId>
+					<version>${datapipelines.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>com.google.guava</groupId>
+					<artifactId>guava</artifactId>
+					<version>${guava.version}</version>
+				</dependency>
+			</dependencies>
+
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<version>3.6.1</version>
+						<configuration>
+							<source>1.7</source>
+							<target>${jdk.version}</target>
+							<encoding>${project.build.sourceEncoding}</encoding>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>android</id>
+
+			<properties>
+				<jdk.version>1.7</jdk.version>
+				<profile.classifier>android</profile.classifier>
+			</properties>
+
+			<dependencies>
+				<dependency>
+					<groupId>com.merakianalytics.datapipelines</groupId>
+					<artifactId>datapipelines</artifactId>
+					<version>${datapipelines.version}</version>
+					<classifier>android</classifier>
+				</dependency>
+				<dependency>
+					<groupId>com.google.guava</groupId>
+					<artifactId>guava</artifactId>
+					<version>${guava.version}-android</version>
+				</dependency>
+			</dependencies>
+
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<version>3.6.1</version>
+						<configuration>
+							<source>1.7</source>
+							<target>${jdk.version}</target>
+							<encoding>${project.build.sourceEncoding}</encoding>
+						</configuration>
+					</plugin>
+					<plugin>
+						<artifactId>maven-jar-plugin</artifactId>
+						<version>3.0.2</version>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+								<configuration>
+									<classifier>${profile.classifier}</classifier>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>

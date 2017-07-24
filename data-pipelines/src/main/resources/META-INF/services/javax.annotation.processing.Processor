@@ -1,0 +1,5 @@
+com.merakianalytics.datapipelines.sources.GetProcessor
+com.merakianalytics.datapipelines.sources.GetManyProcessor
+com.merakianalytics.datapipelines.sinks.PutProcessor
+com.merakianalytics.datapipelines.sinks.PutManyProcessor
+com.merakianalytics.datapipelines.transformers.TransformProcessor
