@@ -11,33 +11,33 @@ import com.merakianalytics.datapipelines.sources.GetMany;
 import com.merakianalytics.orianna.datapipeline.common.HTTPClient;
 import com.merakianalytics.orianna.datapipeline.common.RateLimiter;
 import com.merakianalytics.orianna.type.common.Platform;
-import com.merakianalytics.orianna.type.dto.masteries.MasteryPages;
+import com.merakianalytics.orianna.type.dto.runes.RunePages;
 
-public class MasteriesAPI extends RiotAPI.Service {
-    public MasteriesAPI(final String key, final Map<Platform, RateLimiter> applicationRateLimiters, final HTTPClient client) {
+public class RunesAPI extends RiotAPI.Service {
+    public RunesAPI(final String key, final Map<Platform, RateLimiter> applicationRateLimiters, final HTTPClient client) {
         super(key, applicationRateLimiters, client);
     }
 
     @SuppressWarnings("unchecked")
-    @GetMany(MasteryPages.class)
-    public CloseableIterator<MasteryPages> getManyMasteryPages(final Map<String, Object> query, final PipelineContext context) {
+    @GetMany(RunePages.class)
+    public CloseableIterator<RunePages> getManyRunePages(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
         Utilities.checkNotNull(platform, "platform", summonerIds, "summonerIds");
 
         final Iterator<Number> iterator = summonerIds.iterator();
-        return CloseableIterators.from(new Iterator<MasteryPages>() {
+        return CloseableIterators.from(new Iterator<RunePages>() {
             @Override
             public boolean hasNext() {
                 return iterator.hasNext();
             }
 
             @Override
-            public MasteryPages next() {
+            public RunePages next() {
                 final Number summonerId = iterator.next();
 
-                final String endpoint = "lol/platform/v3/masteries/by-summoner/" + summonerId;
-                final MasteryPages data = get(MasteryPages.class, endpoint, platform, "lol/platform/v3/masteries/by-summoner/summonerId");
+                final String endpoint = "lol/platform/v3/runes/by-summoner/" + summonerId;
+                final RunePages data = get(RunePages.class, endpoint, platform, "lol/platform/v3/runes/by-summoner/summonerId");
 
                 data.setPlatform(platform.getTag());
                 return data;
@@ -45,14 +45,14 @@ public class MasteriesAPI extends RiotAPI.Service {
         });
     }
 
-    @Get(MasteryPages.class)
-    public MasteryPages getMasteryPages(final Map<String, Object> query, final PipelineContext context) {
+    @Get(RunePages.class)
+    public RunePages getRunePages(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         final Number summonerId = (Number)query.get("summonerId");
-        Utilities.checkNotNull(summonerId, "summonerId");
+        Utilities.checkNotNull(platform, "platform", summonerId, "summonerId");
 
-        final String endpoint = "lol/platform/v3/masteries/by-summoner/" + summonerId;
-        final MasteryPages data = get(MasteryPages.class, endpoint, platform, "lol/platform/v3/masteries/by-summoner/summonerId");
+        final String endpoint = "lol/platform/v3/runes/by-summoner/" + summonerId;
+        final RunePages data = get(RunePages.class, endpoint, platform, "lol/platform/v3/runes/by-summoner/summonerId");
 
         data.setPlatform(platform.getTag());
         return data;

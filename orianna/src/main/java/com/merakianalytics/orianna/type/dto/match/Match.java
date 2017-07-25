@@ -5,9 +5,9 @@ import java.util.List;
 import com.merakianalytics.orianna.type.dto.DataObject;
 
 public class Match extends DataObject {
-    private static final long serialVersionUID = -8788501834857625925L;
+    private static final long serialVersionUID = 6336180262863006928L;
     private long gameId, gameDuration, gameCreation, forAccountId;
-    private String gameVersion, platformId, gameMode, gameType;
+    private String gameVersion, platformId, gameMode, gameType, tournamentCode;
     private List<ParticipantIdentity> participantIdentities;
     private List<Participant> participants;
     private int seasonId, queueId, mapId;
@@ -97,6 +97,13 @@ public class Match extends DataObject {
                 return false;
             }
         } else if(!teams.equals(other.teams)) {
+            return false;
+        }
+        if(tournamentCode == null) {
+            if(other.tournamentCode != null) {
+                return false;
+            }
+        } else if(!tournamentCode.equals(other.tournamentCode)) {
             return false;
         }
         return true;
@@ -200,6 +207,13 @@ public class Match extends DataObject {
         return teams;
     }
 
+    /**
+     * @return the tournamentCode
+     */
+    public String getTournamentCode() {
+        return tournamentCode;
+    }
+
     /*
      * (non-Javadoc)
      * @see java.lang.Object#hashCode()
@@ -222,6 +236,7 @@ public class Match extends DataObject {
         result = prime * result + queueId;
         result = prime * result + seasonId;
         result = prime * result + (teams == null ? 0 : teams.hashCode());
+        result = prime * result + (tournamentCode == null ? 0 : tournamentCode.hashCode());
         return result;
     }
 
@@ -335,5 +350,13 @@ public class Match extends DataObject {
      */
     public void setTeams(final List<TeamStats> teams) {
         this.teams = teams;
+    }
+
+    /**
+     * @param tournamentCode
+     *        the tournamentCode to set
+     */
+    public void setTournamentCode(final String tournamentCode) {
+        this.tournamentCode = tournamentCode;
     }
 }

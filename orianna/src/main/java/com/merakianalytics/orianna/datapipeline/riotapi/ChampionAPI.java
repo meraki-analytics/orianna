@@ -23,7 +23,8 @@ public class ChampionAPI extends RiotAPI.Service {
     @Get(Champion.class)
     public Champion getChampion(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final long id = ((Number)query.get("id")).longValue();
+        final Number id = (Number)query.get("id");
+        Utilities.checkNotNull(platform, "platform", id, "id");
 
         final String endpoint = "lol/platform/v3/champions/" + id;
         final Champion data = get(Champion.class, endpoint, platform, "lol/platform/v3/champions/id");
@@ -35,7 +36,8 @@ public class ChampionAPI extends RiotAPI.Service {
     @Get(ChampionList.class)
     public ChampionList getChampionList(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final Boolean freeToPlay = (Boolean)query.get("freeToPlay");
+        final Boolean freeToPlay = query.get("freeToPlay") == null ? Boolean.FALSE : (Boolean)query.get("freeToPlay");
+        Utilities.checkNotNull(platform, "platform");
 
         final String endpoint = "lol/platform/v3/champions";
         final ChampionList data = get(ChampionList.class, endpoint, platform, ImmutableMap.of("freeToPlay", freeToPlay.toString()),
@@ -51,6 +53,7 @@ public class ChampionAPI extends RiotAPI.Service {
     public CloseableIterator<Champion> getManyChampion(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
+        Utilities.checkNotNull(platform, "platform", ids, "ids");
 
         final Iterator<Number> iterator = ids.iterator();
         return CloseableIterators.from(new Iterator<Champion>() {
@@ -61,7 +64,7 @@ public class ChampionAPI extends RiotAPI.Service {
 
             @Override
             public Champion next() {
-                final long id = iterator.next().longValue();
+                final Number id = iterator.next();
 
                 final String endpoint = "lol/platform/v3/champions/" + id;
                 final Champion data = get(Champion.class, endpoint, platform, "lol/platform/v3/champions/id");
@@ -75,8 +78,9 @@ public class ChampionAPI extends RiotAPI.Service {
     @SuppressWarnings("unchecked")
     @GetMany(ChampionList.class)
     public CloseableIterator<ChampionList> getManyChampionList(final Map<String, Object> query, final PipelineContext context) {
-        final Boolean freeToPlay = (Boolean)query.get("freeToPlay");
         final Iterable<Platform> platforms = (Iterable<Platform>)query.get("platforms");
+        final Boolean freeToPlay = query.get("freeToPlay") == null ? Boolean.FALSE : (Boolean)query.get("freeToPlay");
+        Utilities.checkNotNull(platforms, "platforms");
 
         final Iterator<Platform> iterator = platforms.iterator();
         return CloseableIterators.from(new Iterator<ChampionList>() {

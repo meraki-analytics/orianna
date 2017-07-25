@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -12,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.merakianalytics.datapipelines.iterators.CloseableIterator;
+import com.merakianalytics.datapipelines.iterators.CloseableIterators;
 import com.merakianalytics.datapipelines.sinks.Put;
 import com.merakianalytics.datapipelines.sinks.PutMany;
 import com.merakianalytics.datapipelines.sources.Get;
@@ -68,6 +70,16 @@ public abstract class AbstractDataStore implements DataStore {
             LOGGER.error("Failed to invoke getMany method for " + type.getCanonicalName() + ".", e);
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public <T> List<T> getManyAsList(final Class<T> type, final Map<String, Object> query, final PipelineContext context) {
+        return CloseableIterators.toList(getMany(type, query, context));
+    }
+
+    @Override
+    public <T> Set<T> getManyAsSet(final Class<T> type, final Map<String, Object> query, final PipelineContext context) {
+        return CloseableIterators.toSet(getMany(type, query, context));
     }
 
     private Map<Class<?>, Method> getManyMethods() {

@@ -11,9 +11,11 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.merakianalytics.orianna.type.dto.DataObject;
 
+@JsonDeserialize(using = Languages.Deserializer.class)
 public class Languages extends DataObject implements List<String> {
     public static class Deserializer extends StdDeserializer<Languages> {
         private static final long serialVersionUID = 4117329180076155940L;

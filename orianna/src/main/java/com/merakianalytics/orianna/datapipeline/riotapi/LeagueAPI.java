@@ -32,6 +32,7 @@ public class LeagueAPI extends RiotAPI.Service {
         final Platform platform = (Platform)query.get("platform");
         final Tier tier = (Tier)query.get("tier");
         final Queue queue = (Queue)query.get("queue");
+        Utilities.checkNotNull(platform, "platform", tier, "tier", queue, "queue");
 
         if(!LEAGUE_LIST_ENDPOINTS.containsKey(tier)) {
             return null;
@@ -55,6 +56,7 @@ public class LeagueAPI extends RiotAPI.Service {
         final Platform platform = (Platform)query.get("platform");
         final Tier tier = (Tier)query.get("tier");
         final Iterable<Queue> queues = (Iterable<Queue>)query.get("queues");
+        Utilities.checkNotNull(platform, "platform", tier, "tier", queues, "queues");
 
         if(!LEAGUE_LIST_ENDPOINTS.containsKey(tier)) {
             return CloseableIterators.empty();
@@ -90,6 +92,7 @@ public class LeagueAPI extends RiotAPI.Service {
     public CloseableIterator<SummonerLeagues> getManySummonerLeagues(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
+        Utilities.checkNotNull(platform, "platform", summonerIds, "summonerIds");
 
         final Iterator<Number> iterator = summonerIds.iterator();
         return CloseableIterators.from(new Iterator<SummonerLeagues>() {
@@ -100,15 +103,15 @@ public class LeagueAPI extends RiotAPI.Service {
 
             @Override
             public SummonerLeagues next() {
-                final long summonerId = iterator.next().longValue();
+                final Number summonerId = iterator.next();
 
                 final String endpoint = "lol/league/v3/leagues/by-summoner/" + summonerId;
                 final SummonerLeagues data = get(SummonerLeagues.class, endpoint, platform, "lol/league/v3/leagues/by-summoner/summonerId");
 
-                data.setSummonerId(summonerId);
+                data.setSummonerId(summonerId.longValue());
                 data.setPlatform(platform.getTag());
                 for(final LeagueList list : data) {
-                    list.setSummonerId(summonerId);
+                    list.setSummonerId(summonerId.longValue());
                     list.setPlatform(platform.getTag());
                 }
                 return data;
@@ -121,6 +124,7 @@ public class LeagueAPI extends RiotAPI.Service {
     public CloseableIterator<SummonerPositions> getManySummonerPositions(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
+        Utilities.checkNotNull(platform, "platform", summonerIds, "summonerIds");
 
         final Iterator<Number> iterator = summonerIds.iterator();
         return CloseableIterators.from(new Iterator<SummonerPositions>() {
@@ -131,12 +135,12 @@ public class LeagueAPI extends RiotAPI.Service {
 
             @Override
             public SummonerPositions next() {
-                final long summonerId = iterator.next().longValue();
+                final Number summonerId = iterator.next();
 
                 final String endpoint = "lol/league/v3/positions/by-summoner/" + summonerId;
                 final SummonerPositions data = get(SummonerPositions.class, endpoint, platform, "lol/league/v3/positions/by-summoner/summonerId");
 
-                data.setSummonerId(summonerId);
+                data.setSummonerId(summonerId.longValue());
                 data.setPlatform(platform.getTag());
                 for(final LeaguePosition position : data) {
                     position.setPlatform(platform.getTag());
@@ -149,15 +153,16 @@ public class LeagueAPI extends RiotAPI.Service {
     @Get(SummonerLeagues.class)
     public SummonerLeagues getSummonerLeagues(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final long summonerId = ((Number)query.get("summonerId")).longValue();
+        final Number summonerId = (Number)query.get("summonerId");
+        Utilities.checkNotNull(platform, "platform", summonerId, "summonerId");
 
         final String endpoint = "lol/league/v3/leagues/by-summoner/" + summonerId;
         final SummonerLeagues data = get(SummonerLeagues.class, endpoint, platform, "lol/league/v3/leagues/by-summoner/summonerId");
 
-        data.setSummonerId(summonerId);
+        data.setSummonerId(summonerId.longValue());
         data.setPlatform(platform.getTag());
         for(final LeagueList list : data) {
-            list.setSummonerId(summonerId);
+            list.setSummonerId(summonerId.longValue());
             list.setPlatform(platform.getTag());
         }
         return data;
@@ -166,12 +171,13 @@ public class LeagueAPI extends RiotAPI.Service {
     @Get(SummonerPositions.class)
     public SummonerPositions getSummonerPositions(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final long summonerId = ((Number)query.get("summonerId")).longValue();
+        final Number summonerId = (Number)query.get("summonerId");
+        Utilities.checkNotNull(platform, "platform", summonerId, "summonerId");
 
         final String endpoint = "lol/league/v3/positions/by-summoner/" + summonerId;
         final SummonerPositions data = get(SummonerPositions.class, endpoint, platform, "lol/league/v3/positions/by-summoner/summonerId");
 
-        data.setSummonerId(summonerId);
+        data.setSummonerId(summonerId.longValue());
         data.setPlatform(platform.getTag());
         for(final LeaguePosition position : data) {
             position.setPlatform(platform.getTag());

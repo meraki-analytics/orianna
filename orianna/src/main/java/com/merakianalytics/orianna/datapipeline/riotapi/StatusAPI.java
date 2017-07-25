@@ -22,6 +22,7 @@ public class StatusAPI extends RiotAPI.Service {
     @GetMany(ShardStatus.class)
     public CloseableIterator<ShardStatus> getManyShardStatus(final Map<String, Object> query, final PipelineContext context) {
         final Iterable<Platform> platforms = (Iterable<Platform>)query.get("platforms");
+        Utilities.checkNotNull(platforms, "platforms");
 
         final Iterator<Platform> iterator = platforms.iterator();
         return CloseableIterators.from(new Iterator<ShardStatus>() {
@@ -45,6 +46,7 @@ public class StatusAPI extends RiotAPI.Service {
     @Get(ShardStatus.class)
     public ShardStatus getShardStatus(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
 
         final String endpoint = "lol/status/v3/shard-data";
         final ShardStatus data = get(ShardStatus.class, endpoint, platform, "lol/status/v3/shard-data");

@@ -11,9 +11,11 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.merakianalytics.orianna.type.dto.DataObject;
 
+@JsonDeserialize(using = TournamentMatches.Deserializer.class)
 public class TournamentMatches extends DataObject implements List<Long> {
     public static class Deserializer extends StdDeserializer<TournamentMatches> {
         private static final long serialVersionUID = -6955746479477089189L;

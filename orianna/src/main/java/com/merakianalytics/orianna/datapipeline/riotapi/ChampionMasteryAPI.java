@@ -23,8 +23,9 @@ public class ChampionMasteryAPI extends RiotAPI.Service {
     @Get(ChampionMastery.class)
     public ChampionMastery getChampionMastery(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final long summonerId = ((Number)query.get("summonerId")).longValue();
-        final long championId = ((Number)query.get("championId")).longValue();
+        final Number summonerId = (Number)query.get("summonerId");
+        final Number championId = (Number)query.get("championId");
+        Utilities.checkNotNull(platform, "platform", summonerId, "summonerId", championId, "championId");
 
         final String endpoint = "lol/champion-mastery/v3/champion-masteries/by-summoner/" + summonerId + "/by-champion/" + championId;
         final ChampionMastery data = get(ChampionMastery.class, endpoint, platform,
@@ -37,13 +38,14 @@ public class ChampionMasteryAPI extends RiotAPI.Service {
     @Get(ChampionMasteries.class)
     public ChampionMasteries getChampionMasteryList(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final long summonerId = ((Number)query.get("summonerId")).longValue();
+        final Number summonerId = (Number)query.get("summonerId");
+        Utilities.checkNotNull(platform, "platform", summonerId, "summonerId");
 
         final String endpoint = "lol/champion-mastery/v3/champion-masteries/by-summoner/" + summonerId;
         final ChampionMasteries data = get(ChampionMasteries.class, endpoint, platform,
                                            "lol/champion-mastery/v3/champion-masteries/by-summoner/summonerId");
 
-        data.setSummonerId(summonerId);
+        data.setSummonerId(summonerId.longValue());
         data.setPlatform(platform.getTag());
         for(final ChampionMastery mastery : data) {
             mastery.setPlatform(platform.getTag());
@@ -54,13 +56,14 @@ public class ChampionMasteryAPI extends RiotAPI.Service {
     @Get(ChampionMasteryScore.class)
     public ChampionMasteryScore getChampionMasteryScore(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final long summonerId = ((Number)query.get("summonerId")).longValue();
+        final Number summonerId = (Number)query.get("summonerId");
+        Utilities.checkNotNull(platform, "platform", summonerId, "summonerId");
 
         final String endpoint = "lol/champion-mastery/v3/scores/by-summoner/" + summonerId;
         final ChampionMasteryScore data = get(ChampionMasteryScore.class, endpoint, platform, "lol/champion-mastery/v3/scores/by-summoner/summonerId");
 
         data.setPlatform(platform.getTag());
-        data.setSummonerId(summonerId);
+        data.setSummonerId(summonerId.longValue());
         return data;
     }
 
@@ -68,8 +71,9 @@ public class ChampionMasteryAPI extends RiotAPI.Service {
     @GetMany(ChampionMastery.class)
     public CloseableIterator<ChampionMastery> getManyChampionMastery(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final long summonerId = ((Number)query.get("summonerId")).longValue();
+        final Number summonerId = (Number)query.get("summonerId");
         final Iterable<Number> championIds = (Iterable<Number>)query.get("championIds");
+        Utilities.checkNotNull(platform, "platform", summonerId, "summonerId", championIds, "championIds");
 
         final Iterator<Number> iterator = championIds.iterator();
         return CloseableIterators.from(new Iterator<ChampionMastery>() {
@@ -80,7 +84,7 @@ public class ChampionMasteryAPI extends RiotAPI.Service {
 
             @Override
             public ChampionMastery next() {
-                final long championId = iterator.next().longValue();
+                final Number championId = iterator.next();
 
                 final String endpoint = "lol/champion-mastery/v3/champion-masteries/by-summoner/" + summonerId + "/by-champion/" + championId;
                 final ChampionMastery data = get(ChampionMastery.class, endpoint, platform,
@@ -97,6 +101,7 @@ public class ChampionMasteryAPI extends RiotAPI.Service {
     public CloseableIterator<ChampionMasteries> getManyChampionMasteryList(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
+        Utilities.checkNotNull(platform, "platform", summonerIds, "summonerIds");
 
         final Iterator<Number> iterator = summonerIds.iterator();
         return CloseableIterators.from(new Iterator<ChampionMasteries>() {
@@ -107,13 +112,13 @@ public class ChampionMasteryAPI extends RiotAPI.Service {
 
             @Override
             public ChampionMasteries next() {
-                final long summonerId = iterator.next().longValue();
+                final Number summonerId = iterator.next();
 
                 final String endpoint = "lol/champion-mastery/v3/champion-masteries/by-summoner/" + summonerId;
                 final ChampionMasteries data = get(ChampionMasteries.class, endpoint, platform,
                                                    "lol/champion-mastery/v3/champion-masteries/by-summoner/summonerId");
 
-                data.setSummonerId(summonerId);
+                data.setSummonerId(summonerId.longValue());
                 data.setPlatform(platform.getTag());
                 for(final ChampionMastery mastery : data) {
                     mastery.setPlatform(platform.getTag());
@@ -128,6 +133,7 @@ public class ChampionMasteryAPI extends RiotAPI.Service {
     public CloseableIterator<ChampionMasteryScore> getManyChampionMasteryScore(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
+        Utilities.checkNotNull(platform, "platform", summonerIds, "summonerIds");
 
         final Iterator<Number> iterator = summonerIds.iterator();
         return CloseableIterators.from(new Iterator<ChampionMasteryScore>() {
@@ -138,13 +144,13 @@ public class ChampionMasteryAPI extends RiotAPI.Service {
 
             @Override
             public ChampionMasteryScore next() {
-                final long summonerId = iterator.next().longValue();
+                final Number summonerId = iterator.next();
 
                 final String endpoint = "lol/champion-mastery/v3/scores/by-summoner/" + summonerId;
                 final ChampionMasteryScore data = get(ChampionMasteryScore.class, endpoint, platform, "lol/champion-mastery/v3/scores/by-summoner/summonerId");
 
                 data.setPlatform(platform.getTag());
-                data.setSummonerId(summonerId);
+                data.setSummonerId(summonerId.longValue());
                 return data;
             }
         });

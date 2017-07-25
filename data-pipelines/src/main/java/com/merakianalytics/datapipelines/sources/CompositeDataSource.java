@@ -10,6 +10,7 @@ import java.util.Set;
 
 import com.merakianalytics.datapipelines.PipelineContext;
 import com.merakianalytics.datapipelines.iterators.CloseableIterator;
+import com.merakianalytics.datapipelines.iterators.CloseableIterators;
 
 public class CompositeDataSource implements DataSource {
     private final Map<Class<?>, List<DataSource>> sources;
@@ -69,6 +70,16 @@ public class CompositeDataSource implements DataSource {
         }
 
         return null;
+    }
+
+    @Override
+    public <T> List<T> getManyAsList(final Class<T> type, final Map<String, Object> query, final PipelineContext context) {
+        return CloseableIterators.toList(getMany(type, query, context));
+    }
+
+    @Override
+    public <T> Set<T> getManyAsSet(final Class<T> type, final Map<String, Object> query, final PipelineContext context) {
+        return CloseableIterators.toSet(getMany(type, query, context));
     }
 
     @Override

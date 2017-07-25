@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.merakianalytics.datapipelines.iterators.CloseableIterator;
+import com.merakianalytics.datapipelines.iterators.CloseableIterators;
 
 public class CompositeDataStore implements DataStore {
     private final Map<Class<?>, List<DataStore>> getStores;
@@ -90,6 +91,16 @@ public class CompositeDataStore implements DataStore {
         }
 
         return null;
+    }
+
+    @Override
+    public <T> List<T> getManyAsList(final Class<T> type, final Map<String, Object> query, final PipelineContext context) {
+        return CloseableIterators.toList(getMany(type, query, context));
+    }
+
+    @Override
+    public <T> Set<T> getManyAsSet(final Class<T> type, final Map<String, Object> query, final PipelineContext context) {
+        return CloseableIterators.toSet(getMany(type, query, context));
     }
 
     @Override
