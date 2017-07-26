@@ -7,29 +7,23 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.merakianalytics.orianna.type.dto.DataObject;
 
 @JsonDeserialize(using = TournamentMatches.Deserializer.class)
+@JsonSerialize(using = TournamentMatches.Serializer.class)
 public class TournamentMatches extends DataObject implements List<Long> {
-    public static class Deserializer extends StdDeserializer<TournamentMatches> {
-        private static final long serialVersionUID = -6955746479477089189L;
-
-        public Deserializer() {
-            this(null);
-        }
-
-        protected Deserializer(final Class<?> vc) {
-            super(vc);
-        }
-
+    public static class Deserializer extends JsonDeserializer<TournamentMatches> {
         @Override
-        public TournamentMatches deserialize(final JsonParser parser, final DeserializationContext context) throws IOException, JsonProcessingException {
+        public TournamentMatches deserialize(final JsonParser parser, final DeserializationContext context) throws IOException {
             final List<Long> ids = parser.readValueAs(new TypeReference<ArrayList<Long>>() {});
             final TournamentMatches result = new TournamentMatches();
             result.ids = ids;
@@ -37,7 +31,15 @@ public class TournamentMatches extends DataObject implements List<Long> {
         }
     }
 
-    private static final long serialVersionUID = -8177611799836384800L;
+    public static class Serializer extends JsonSerializer<TournamentMatches> {
+        @Override
+        public void serialize(final TournamentMatches matches, final JsonGenerator generator, final SerializerProvider provider) throws IOException {
+            generator.writeObject(matches.ids);
+        }
+    }
+
+    private static final long serialVersionUID = -549176882393385794L;
+
     private List<Long> ids;
     private String platform, tournamentCode;
 

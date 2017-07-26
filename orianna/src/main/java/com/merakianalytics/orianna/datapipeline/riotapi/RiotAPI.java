@@ -187,7 +187,8 @@ public class RiotAPI extends CompositeDataSource {
 
     public static abstract class Service extends AbstractDataSource {
         private static final FailedRequestStrategy DEFAULT_404_STRATEGY = FailedRequestStrategies.returnNull();
-        private static final FailedRequestStrategy DEFAULT_429_STRATEGY = FailedRequestStrategies.throwException(); // TODO: Make this use "Retry-After" header once rate limiting is in place
+        private static final FailedRequestStrategy DEFAULT_429_STRATEGY = FailedRequestStrategies.throwException(); // TODO: Make this use "Retry-After" header
+                                                                                                                    // once rate limiting is in place
         private static final FailedRequestStrategy DEFAULT_500_STRATEGY = FailedRequestStrategies.exponentialBackoff();
         private static final FailedRequestStrategy DEFAULT_503_STRATEGY = FailedRequestStrategies.throwException();
         private static final FailedRequestStrategy DEFAULT_TIMEOUT_STRATEGY = FailedRequestStrategies.exponentialBackoff();

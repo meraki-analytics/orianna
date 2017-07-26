@@ -2,35 +2,36 @@ package com.merakianalytics.orianna.type.dto.championmastery;
 
 import java.io.IOException;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.merakianalytics.orianna.type.dto.DataObject;
 
 @JsonDeserialize(using = ChampionMasteryScore.Deserializer.class)
+@JsonSerialize(using = ChampionMasteryScore.Serializer.class)
 public class ChampionMasteryScore extends DataObject {
-    public static class Deserializer extends StdDeserializer<ChampionMasteryScore> {
-        private static final long serialVersionUID = -733268355769767064L;
-
-        public Deserializer() {
-            this(null);
-        }
-
-        protected Deserializer(final Class<?> vc) {
-            super(vc);
-        }
-
+    public static class Deserializer extends JsonDeserializer<ChampionMasteryScore> {
         @Override
-        public ChampionMasteryScore deserialize(final JsonParser parser, final DeserializationContext context) throws IOException, JsonProcessingException {
+        public ChampionMasteryScore deserialize(final JsonParser parser, final DeserializationContext context) throws IOException {
             final ChampionMasteryScore result = new ChampionMasteryScore();
             result.score = parser.readValueAs(Integer.class);
             return result;
         }
     }
 
-    private static final long serialVersionUID = 5193200526969041638L;
+    public static class Serializer extends JsonSerializer<ChampionMasteryScore> {
+        @Override
+        public void serialize(final ChampionMasteryScore score, final JsonGenerator generator, final SerializerProvider provider) throws IOException {
+            generator.writeObject(score.score);
+        }
+    }
+
+    private static final long serialVersionUID = 3028996515848181793L;
 
     private String platform;
     private int score;

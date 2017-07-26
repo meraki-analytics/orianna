@@ -6,29 +6,23 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.merakianalytics.orianna.type.dto.DataObject;
 
 @JsonDeserialize(using = SummonerPositions.Deserializer.class)
+@JsonSerialize(using = SummonerPositions.Serializer.class)
 public class SummonerPositions extends DataObject implements Set<LeaguePosition> {
-    public static class Deserializer extends StdDeserializer<SummonerPositions> {
-        private static final long serialVersionUID = 5004306891217083493L;
-
-        public Deserializer() {
-            this(null);
-        }
-
-        protected Deserializer(final Class<?> vc) {
-            super(vc);
-        }
-
+    public static class Deserializer extends JsonDeserializer<SummonerPositions> {
         @Override
-        public SummonerPositions deserialize(final JsonParser parser, final DeserializationContext context) throws IOException, JsonProcessingException {
+        public SummonerPositions deserialize(final JsonParser parser, final DeserializationContext context) throws IOException {
             final Set<LeaguePosition> leaguePositions = parser.readValueAs(new TypeReference<HashSet<LeaguePosition>>() {});
             final SummonerPositions result = new SummonerPositions();
             result.leaguePositions = leaguePositions;
@@ -36,7 +30,14 @@ public class SummonerPositions extends DataObject implements Set<LeaguePosition>
         }
     }
 
-    private static final long serialVersionUID = -8575164188621191128L;
+    public static class Serializer extends JsonSerializer<SummonerPositions> {
+        @Override
+        public void serialize(final SummonerPositions positions, final JsonGenerator generator, final SerializerProvider provider) throws IOException {
+            generator.writeObject(positions.leaguePositions);
+        }
+    }
+
+    private static final long serialVersionUID = 8391611374160392358L;
 
     private Set<LeaguePosition> leaguePositions;
     private String platform;

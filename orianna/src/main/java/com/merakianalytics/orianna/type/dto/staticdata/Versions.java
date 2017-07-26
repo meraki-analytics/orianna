@@ -7,29 +7,23 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.merakianalytics.orianna.type.dto.DataObject;
 
 @JsonDeserialize(using = Versions.Deserializer.class)
+@JsonSerialize(using = Versions.Serializer.class)
 public class Versions extends DataObject implements List<String> {
-    public static class Deserializer extends StdDeserializer<Versions> {
-        private static final long serialVersionUID = -6171575927291506395L;
-
-        public Deserializer() {
-            this(null);
-        }
-
-        protected Deserializer(final Class<?> vc) {
-            super(vc);
-        }
-
+    public static class Deserializer extends JsonDeserializer<Versions> {
         @Override
-        public Versions deserialize(final JsonParser parser, final DeserializationContext context) throws IOException, JsonProcessingException {
+        public Versions deserialize(final JsonParser parser, final DeserializationContext context) throws IOException {
             final List<String> versions = parser.readValueAs(new TypeReference<ArrayList<String>>() {});
             final Versions result = new Versions();
             result.versions = versions;
@@ -37,7 +31,14 @@ public class Versions extends DataObject implements List<String> {
         }
     }
 
-    private static final long serialVersionUID = -5692520197763698261L;
+    public static class Serializer extends JsonSerializer<Versions> {
+        @Override
+        public void serialize(final Versions versions, final JsonGenerator generator, final SerializerProvider provider) throws IOException {
+            generator.writeObject(versions.versions);
+        }
+    }
+
+    private static final long serialVersionUID = -8917553189012396125L;
 
     private String platform;
     private List<String> versions;

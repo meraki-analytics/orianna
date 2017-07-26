@@ -7,29 +7,23 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.merakianalytics.orianna.type.dto.DataObject;
 
 @JsonDeserialize(using = ChampionMasteries.Deserializer.class)
+@JsonSerialize(using = ChampionMasteries.Serializer.class)
 public class ChampionMasteries extends DataObject implements List<ChampionMastery> {
-    public static class Deserializer extends StdDeserializer<ChampionMasteries> {
-        private static final long serialVersionUID = 645525020072652859L;
-
-        public Deserializer() {
-            this(null);
-        }
-
-        protected Deserializer(final Class<?> vc) {
-            super(vc);
-        }
-
+    public static class Deserializer extends JsonDeserializer<ChampionMasteries> {
         @Override
-        public ChampionMasteries deserialize(final JsonParser parser, final DeserializationContext context) throws IOException, JsonProcessingException {
+        public ChampionMasteries deserialize(final JsonParser parser, final DeserializationContext context) throws IOException {
             final List<ChampionMastery> championMasteries = parser.readValueAs(new TypeReference<ArrayList<ChampionMastery>>() {});
             final ChampionMasteries result = new ChampionMasteries();
             result.championMasteries = championMasteries;
@@ -37,7 +31,14 @@ public class ChampionMasteries extends DataObject implements List<ChampionMaster
         }
     }
 
-    private static final long serialVersionUID = 4767167562752158008L;
+    public static class Serializer extends JsonSerializer<ChampionMasteries> {
+        @Override
+        public void serialize(final ChampionMasteries masteries, final JsonGenerator generator, final SerializerProvider provider) throws IOException {
+            generator.writeObject(masteries.championMasteries);
+        }
+    }
+
+    private static final long serialVersionUID = 6193594237368849840L;
 
     private List<ChampionMastery> championMasteries;
     private String platform;
