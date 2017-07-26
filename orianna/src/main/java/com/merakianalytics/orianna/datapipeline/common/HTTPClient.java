@@ -52,10 +52,18 @@ public class HTTPClient {
         }
     }
 
+    public static class TimeoutException extends OriannaException {
+        private static final long serialVersionUID = 1728889991776994308L;
+
+        public TimeoutException(final String message) {
+            super(message);
+        }
+    }
     private static final long DEFAULT_CONNECT_TIMEOUT = 5;
     private static final TimeUnit DEFAULT_CONNECT_TIMEOUT_UNIT = TimeUnit.SECONDS;
     private static final long DEFAULT_READ_TIMEOUT = 5;
     private static final TimeUnit DEFAULT_READ_TIMEOUT_UNIT = TimeUnit.SECONDS;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(HTTPClient.class);
 
     private final OkHttpClient client;
@@ -115,7 +123,7 @@ public class HTTPClient {
                 try(ResponseBody responseBody = response.body()) {
                     body = responseBody.string();
                 }
-            } catch(SocketTimeoutException e) {
+            } catch(final SocketTimeoutException e) {
                 throw new TimeoutException("HTTP GET request timed out!");
             }
         }
@@ -125,13 +133,5 @@ public class HTTPClient {
             mapBuilder = mapBuilder.putAll(key, responseHeaders.get(key));
         }
         return new Response(body, statusCode, mapBuilder.build());
-    }
-    
-    public static class TimeoutException extends OriannaException {
-        private static final long serialVersionUID = 1728889991776994308L;
-
-        public TimeoutException(String message) {
-            super(message);
-        }
     }
 }
