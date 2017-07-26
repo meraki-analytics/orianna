@@ -84,6 +84,46 @@ public class RiotAPI extends CompositeDataSource {
             public <T> T onFailedRequest(RiotAPI.Service service, RequestContext<T> context, Response response, OriannaException e);
         }
 
+        private static class LinearBackoff implements FailedRequestStrategy {
+            private static final long DEFAULT_BACKOFF = 1;
+            private static final TimeUnit DEFAULT_BACKOFF_UNIT = TimeUnit.SECONDS;
+            private static final int DEFAULT_MAX_ATTEMPTS = 4;
+            private static final FailedRequestStrategy DEFAULT_ON_FAILURE = FailedRequestStrategies.throwException();
+
+            private final long backoff;
+            private final TimeUnit backoffUnit;
+            private final int maxAttempts;
+            private final FailedRequestStrategy onFailure;
+
+            public LinearBackoff() {
+                this(DEFAULT_MAX_ATTEMPTS, DEFAULT_BACKOFF, DEFAULT_BACKOFF_UNIT, DEFAULT_ON_FAILURE);
+            }
+
+            public LinearBackoff(final int maxAttempts, final long backoff, final TimeUnit backoffUnit,
+                                 final FailedRequestStrategy onFailure) {
+                this.maxAttempts = maxAttempts;
+                this.backoff = backoff;
+                this.backoffUnit = backoffUnit;
+                this.onFailure = onFailure;
+            }
+
+            @Override
+            public <T> T onFailedRequest(final RiotAPI.Service service, final RequestContext<T> context, final Response response, final OriannaException e) {
+                final int attempts = context.attemptCount;
+                if(attempts > maxAttempts) {
+                    return onFailure.onFailedRequest(service, context, response, e);
+                }
+
+                try {
+                    backoffUnit.sleep(backoff);
+                } catch(final InterruptedException e1) {
+                    return onFailure.onFailedRequest(service, context, response, e);
+                }
+
+                return service.get(context);
+            }
+        }
+
         private static class ReturnNull implements FailedRequestStrategy {
             @Override
             public <T> T onFailedRequest(final RiotAPI.Service service, final RequestContext<T> context, final Response response, final OriannaException e) {
@@ -105,6 +145,15 @@ public class RiotAPI extends CompositeDataSource {
         public static FailedRequestStrategy exponentialBackoff(final int maxAttempts, final long initialBackoff, final int backoffFactor,
                                                                final TimeUnit backoffUnit, final FailedRequestStrategy onFailure) {
             return new ExponentialBackoff(maxAttempts, initialBackoff, backoffFactor, backoffUnit, onFailure);
+        }
+
+        public static FailedRequestStrategy linearBackoff() {
+            return new LinearBackoff();
+        }
+
+        public static FailedRequestStrategy linearBackoff(final int maxAttempts, final long backoff, final TimeUnit backoffUnit,
+                                                          final FailedRequestStrategy onFailure) {
+            return new LinearBackoff(maxAttempts, backoff, backoffUnit, onFailure);
         }
 
         public static FailedRequestStrategy returnNull() {
@@ -138,7 +187,7 @@ public class RiotAPI extends CompositeDataSource {
 
     public static abstract class Service extends AbstractDataSource {
         private static final FailedRequestStrategy DEFAULT_404_STRATEGY = FailedRequestStrategies.returnNull();
-        private static final FailedRequestStrategy DEFAULT_429_STRATEGY = FailedRequestStrategies.throwException(); // TODO: Make this use "Retry-After" header
+        private static final FailedRequestStrategy DEFAULT_429_STRATEGY = FailedRequestStrategies.throwException(); // TODO: Make this use "Retry-After" header once rate limiting is in place
         private static final FailedRequestStrategy DEFAULT_500_STRATEGY = FailedRequestStrategies.exponentialBackoff();
         private static final FailedRequestStrategy DEFAULT_503_STRATEGY = FailedRequestStrategies.throwException();
         private static final FailedRequestStrategy DEFAULT_TIMEOUT_STRATEGY = FailedRequestStrategies.exponentialBackoff();
