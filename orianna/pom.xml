@@ -29,6 +29,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<datapipelines.version>0.0.1-SNAPSHOT</datapipelines.version>
 		<slf4j.version>1.7.25</slf4j.version>
+		<junit.version>4.12</junit.version>
 		<guava.version>22.0</guava.version>
 		<okhttp.version>3.8.1</okhttp.version>
 		<jackson.version>2.8.9</jackson.version>
@@ -39,6 +40,12 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>

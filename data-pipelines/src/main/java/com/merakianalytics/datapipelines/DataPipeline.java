@@ -9,8 +9,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.merakianalytics.datapipelines.iterators.CloseableIterator;
+import com.merakianalytics.datapipelines.iterators.CloseableIterators;
 import com.merakianalytics.datapipelines.sinks.DataSink;
 import com.merakianalytics.datapipelines.sources.DataSource;
 import com.merakianalytics.datapipelines.transformers.DataTransformer;
@@ -45,10 +47,10 @@ public class DataPipeline {
         this.sources = Collections.unmodifiableList(sources);
         this.sinks = Collections.unmodifiableSet(sinks);
         sourceTargets = Collections.unmodifiableMap(targets);
-        sourceHandlers = new HashMap<>();
-        sinkHandlers = new HashMap<>();
-        sourceHandlerLocks = new HashMap<>();
-        sinkHandlerLocks = new HashMap<>();
+        sourceHandlers = new ConcurrentHashMap<>();
+        sinkHandlers = new ConcurrentHashMap<>();
+        sourceHandlerLocks = new ConcurrentHashMap<>();
+        sinkHandlerLocks = new ConcurrentHashMap<>();
     }
 
     public DataPipeline(final Collection<? extends DataTransformer> transformers, final PipelineElement... elements) {
@@ -137,8 +139,12 @@ public class DataPipeline {
         return best;
     }
 
-    @SuppressWarnings("unchecked") // Pipeline ensures the proper type will be returned from getMany
     public <T> CloseableIterator<T> getMany(final Class<T> type, final Map<String, Object> query) {
+        return getMany(type, query, false);
+    }
+
+    @SuppressWarnings("unchecked") // Pipeline ensures the proper type will be returned from getMany
+    public <T> CloseableIterator<T> getMany(final Class<T> type, final Map<String, Object> query, final boolean streaming) {
         final List<SourceHandler<?, ?>> handlers = getSourceHandlers(type);
 
         if(handlers.isEmpty()) {
@@ -148,7 +154,7 @@ public class DataPipeline {
         final PipelineContext context = newContext();
 
         for(final SourceHandler<?, ?> handler : handlers) {
-            final CloseableIterator<T> result = (CloseableIterator<T>)handler.getMany(query, context);
+            final CloseableIterator<T> result = (CloseableIterator<T>)handler.getMany(query, context, streaming);
             if(result != null) {
                 return result;
             }
@@ -156,16 +162,26 @@ public class DataPipeline {
         return null;
     }
 
+    public <T> List<T> getManyAsList(final Class<T> type, final Map<String, Object> query) {
+        return CloseableIterators.toList(getMany(type, query, false));
+    }
+
+    public <T> Set<T> getManyAsSet(final Class<T> type, final Map<String, Object> query) {
+        return CloseableIterators.toSet(getMany(type, query, false));
+    }
+
     private Set<SinkHandler<?, ?>> getSinkHandlers(final Class<?> type) {
         Set<SinkHandler<?, ?>> handlers = sinkHandlers.get(type);
 
         if(handlers == null) {
-            Object lock;
-            synchronized(sinkHandlerLocks) {
-                lock = sinkHandlerLocks.get(type);
-                if(lock == null) {
-                    lock = new Object();
-                    sinkHandlerLocks.put(type, lock);
+            Object lock = sinkHandlerLocks.get(type);
+            if(lock == null) {
+                synchronized(sinkHandlerLocks) {
+                    lock = sinkHandlerLocks.get(type);
+                    if(lock == null) {
+                        lock = new Object();
+                        sinkHandlerLocks.put(type, lock);
+                    }
                 }
             }
             synchronized(lock) {
@@ -184,12 +200,14 @@ public class DataPipeline {
         List<SourceHandler<?, ?>> handlers = sourceHandlers.get(type);
 
         if(handlers == null) {
-            Object lock;
-            synchronized(sourceHandlerLocks) {
-                lock = sourceHandlerLocks.get(type);
-                if(lock == null) {
-                    lock = new Object();
-                    sourceHandlerLocks.put(type, lock);
+            Object lock = sourceHandlerLocks.get(type);
+            if(lock == null) {
+                synchronized(sourceHandlerLocks) {
+                    lock = sourceHandlerLocks.get(type);
+                    if(lock == null) {
+                        lock = new Object();
+                        sourceHandlerLocks.put(type, lock);
+                    }
                 }
             }
             synchronized(lock) {

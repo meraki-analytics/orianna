@@ -1,13 +1,16 @@
 package com.merakianalytics.orianna.datapipeline.common;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.Multimap;
+import com.merakianalytics.orianna.type.common.OriannaException;
 
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
@@ -49,9 +52,21 @@ public class HTTPClient {
         }
     }
 
+    private static final long DEFAULT_CONNECT_TIMEOUT = 5;
+    private static final TimeUnit DEFAULT_CONNECT_TIMEOUT_UNIT = TimeUnit.SECONDS;
+    private static final long DEFAULT_READ_TIMEOUT = 5;
+    private static final TimeUnit DEFAULT_READ_TIMEOUT_UNIT = TimeUnit.SECONDS;
     private static final Logger LOGGER = LoggerFactory.getLogger(HTTPClient.class);
 
-    private final OkHttpClient client = new OkHttpClient();
+    private final OkHttpClient client;
+
+    public HTTPClient() {
+        this(DEFAULT_CONNECT_TIMEOUT, DEFAULT_CONNECT_TIMEOUT_UNIT, DEFAULT_READ_TIMEOUT, DEFAULT_READ_TIMEOUT_UNIT);
+    }
+
+    public HTTPClient(final long connectTimeout, final TimeUnit connectTimeoutUnit, final long readTimeout, final TimeUnit readTimeoutUnit) {
+        client = new OkHttpClient.Builder().connectTimeout(connectTimeout, connectTimeoutUnit).readTimeout(readTimeout, readTimeoutUnit).build();
+    }
 
     public Response get(final String host, final String url, final Map<String, String> parameters, final Map<String, String> headers) throws IOException {
         return get(host, url, parameters == null ? null : ImmutableListMultimap.copyOf(parameters.entrySet()), headers, null);
@@ -100,6 +115,8 @@ public class HTTPClient {
                 try(ResponseBody responseBody = response.body()) {
                     body = responseBody.string();
                 }
+            } catch(SocketTimeoutException e) {
+                throw new TimeoutException("HTTP GET request timed out!");
             }
         }
 
@@ -108,5 +125,13 @@ public class HTTPClient {
             mapBuilder = mapBuilder.putAll(key, responseHeaders.get(key));
         }
         return new Response(body, statusCode, mapBuilder.build());
+    }
+    
+    public static class TimeoutException extends OriannaException {
+        private static final long serialVersionUID = 1728889991776994308L;
+
+        public TimeoutException(String message) {
+            super(message);
+        }
     }
 }
