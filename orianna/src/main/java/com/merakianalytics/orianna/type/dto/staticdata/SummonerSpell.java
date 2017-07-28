@@ -1,47 +1,15 @@
 package com.merakianalytics.orianna.type.dto.staticdata;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.merakianalytics.orianna.type.dto.DataObject;
 
 public class SummonerSpell extends DataObject {
-    public static class RangeDeserializer extends JsonDeserializer<List<Integer>> {
-        @Override
-        public List<Integer> deserialize(final JsonParser parser, final DeserializationContext context) throws IOException {
-            try {
-                parser.getValueAsString();
-                return null;
-            } catch(final Exception e) {
-                return parser.readValueAs(new TypeReference<List<Integer>>() {});
-            }
-        }
-    }
+    private static final long serialVersionUID = -8184643049998361066L;
 
-    public static class RangeSerializer extends JsonSerializer<List<Integer>> {
-        @Override
-        public void serialize(final List<Integer> range, final JsonGenerator generator, final SerializerProvider provider) throws IOException {
-            if(range == null) {
-                generator.writeObject("self");
-            } else {
-                generator.writeObject(range);
-            }
-        }
-    }
-
-    private static final long serialVersionUID = 5640209081605896306L;
-
-    private List<Integer> cost;
+    private List<Double> cooldown;
+    private List<Integer> cost, range;
     private String costBurn, cooldownBurn, tooltip, rangeBurn, description, key, resource, name, costType, sanitizedDescription, sanitizedTooltip, platform,
             version, locale;
     private List<List<Double>> effect;
@@ -49,16 +17,9 @@ public class SummonerSpell extends DataObject {
     private Image image;
     private Set<String> includedData;
     private LevelTip leveltip;
-    private List<String> modes;
-    @JsonDeserialize(using = RangeDeserializer.class)
-    @JsonSerialize(using = RangeSerializer.class)
-    private List<Integer> range;
+    private List<String> modes, effectBurn;
     private List<SpellVars> vars;
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(final Object obj) {
         if(this == obj) {
@@ -71,6 +32,13 @@ public class SummonerSpell extends DataObject {
             return false;
         }
         final SummonerSpell other = (SummonerSpell)obj;
+        if(cooldown == null) {
+            if(other.cooldown != null) {
+                return false;
+            }
+        } else if(!cooldown.equals(other.cooldown)) {
+            return false;
+        }
         if(cooldownBurn == null) {
             if(other.cooldownBurn != null) {
                 return false;
@@ -111,6 +79,13 @@ public class SummonerSpell extends DataObject {
                 return false;
             }
         } else if(!effect.equals(other.effect)) {
+            return false;
+        }
+        if(effectBurn == null) {
+            if(other.effectBurn != null) {
+                return false;
+            }
+        } else if(!effectBurn.equals(other.effectBurn)) {
             return false;
         }
         if(id != other.id) {
@@ -238,6 +213,13 @@ public class SummonerSpell extends DataObject {
     }
 
     /**
+     * @return the cooldown
+     */
+    public List<Double> getCooldown() {
+        return cooldown;
+    }
+
+    /**
      * @return the cooldownBurn
      */
     public String getCooldownBurn() {
@@ -277,6 +259,13 @@ public class SummonerSpell extends DataObject {
      */
     public List<List<Double>> getEffect() {
         return effect;
+    }
+
+    /**
+     * @return the effectBurn
+     */
+    public List<String> getEffectBurn() {
+        return effectBurn;
     }
 
     /**
@@ -412,20 +401,18 @@ public class SummonerSpell extends DataObject {
         return version;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + (cooldown == null ? 0 : cooldown.hashCode());
         result = prime * result + (cooldownBurn == null ? 0 : cooldownBurn.hashCode());
         result = prime * result + (cost == null ? 0 : cost.hashCode());
         result = prime * result + (costBurn == null ? 0 : costBurn.hashCode());
         result = prime * result + (costType == null ? 0 : costType.hashCode());
         result = prime * result + (description == null ? 0 : description.hashCode());
         result = prime * result + (effect == null ? 0 : effect.hashCode());
+        result = prime * result + (effectBurn == null ? 0 : effectBurn.hashCode());
         result = prime * result + id;
         result = prime * result + (image == null ? 0 : image.hashCode());
         result = prime * result + (includedData == null ? 0 : includedData.hashCode());
@@ -446,6 +433,14 @@ public class SummonerSpell extends DataObject {
         result = prime * result + (vars == null ? 0 : vars.hashCode());
         result = prime * result + (version == null ? 0 : version.hashCode());
         return result;
+    }
+
+    /**
+     * @param cooldown
+     *        the cooldown to set
+     */
+    public void setCooldown(final List<Double> cooldown) {
+        this.cooldown = cooldown;
     }
 
     /**
@@ -494,6 +489,14 @@ public class SummonerSpell extends DataObject {
      */
     public void setEffect(final List<List<Double>> effect) {
         this.effect = effect;
+    }
+
+    /**
+     * @param effectBurn
+     *        the effectBurn to set
+     */
+    public void setEffectBurn(final List<String> effectBurn) {
+        this.effectBurn = effectBurn;
     }
 
     /**

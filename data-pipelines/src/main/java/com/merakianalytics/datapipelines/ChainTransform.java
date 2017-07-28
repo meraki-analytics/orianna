@@ -7,7 +7,7 @@ import com.merakianalytics.datapipelines.transformers.DataTransformer;
 @SuppressWarnings("rawtypes") // Class<?> specifier won't match the transform method signature. Have to pass it raw.
 public class ChainTransform<F, T> {
     public static <S> ChainTransform<S, S> identity(final Class<S> type) {
-        return new ChainTransform<S, S>(type, type, null, null);
+        return new ChainTransform<>(type, type, null, null);
     }
 
     private final List<DataTransformer> chain;

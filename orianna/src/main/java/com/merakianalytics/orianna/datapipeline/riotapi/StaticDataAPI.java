@@ -1,5 +1,6 @@
 package com.merakianalytics.orianna.datapipeline.riotapi;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -15,8 +16,7 @@ import com.merakianalytics.datapipelines.iterators.CloseableIterators;
 import com.merakianalytics.datapipelines.sources.Get;
 import com.merakianalytics.datapipelines.sources.GetMany;
 import com.merakianalytics.orianna.datapipeline.common.HTTPClient;
-import com.merakianalytics.orianna.datapipeline.common.RateLimiter;
-import com.merakianalytics.orianna.datapipeline.riotapi.RiotAPI.FailedRequestStrategies.FailedRequestStrategy;
+import com.merakianalytics.orianna.datapipeline.common.rates.RateLimiter;
 import com.merakianalytics.orianna.type.common.Platform;
 import com.merakianalytics.orianna.type.dto.staticdata.Champion;
 import com.merakianalytics.orianna.type.dto.staticdata.ChampionList;
@@ -43,14 +43,9 @@ public class StaticDataAPI extends RiotAPI.Service {
         return versions.get(0);
     }
 
-    public StaticDataAPI(final String key, final Map<Platform, RateLimiter> applicationRateLimiters, final HTTPClient client) {
-        super(key, applicationRateLimiters, client);
-    }
-
-    public StaticDataAPI(final String key, final Map<Platform, RateLimiter> applicationRateLimiters, final HTTPClient client,
-                         final FailedRequestStrategy timeoutStrategy, final FailedRequestStrategy http404Strategy, final FailedRequestStrategy http429Strategy,
-                         final FailedRequestStrategy http500Strategy, final FailedRequestStrategy http503Strategy) {
-        super(key, applicationRateLimiters, client, timeoutStrategy, http404Strategy, http429Strategy, http500Strategy, http503Strategy);
+    public StaticDataAPI(final String key, final Map<Platform, RateLimiter> applicationRateLimiters,
+                         final Collection<RateLimiter.Configuration> applicationLimiterConfigs, final HTTPClient client, final Configuration config) {
+        super(key, applicationRateLimiters, applicationLimiterConfigs, client, config);
     }
 
     @SuppressWarnings("unchecked")
@@ -87,7 +82,7 @@ public class StaticDataAPI extends RiotAPI.Service {
         final String version = (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
-        final Boolean dataById = (Boolean)query.get("dataById");
+        final Boolean dataById = query.get("dataById") == null ? Boolean.FALSE : (Boolean)query.get("dataById");
 
         final String endpoint = "lol/static-data/v3/champions";
 
@@ -259,7 +254,7 @@ public class StaticDataAPI extends RiotAPI.Service {
         Utilities.checkNotNull(platform, "platform", versions, "versions");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
-        final Boolean dataById = (Boolean)query.get("dataById");
+        final Boolean dataById = query.get("dataById") == null ? Boolean.FALSE : (Boolean)query.get("dataById");
 
         final Multimap<String, String> parameters = HashMultimap.create();
         parameters.put("locale", locale);

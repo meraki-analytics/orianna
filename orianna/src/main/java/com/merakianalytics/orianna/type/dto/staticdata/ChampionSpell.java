@@ -1,57 +1,21 @@
 package com.merakianalytics.orianna.type.dto.staticdata;
 
-import java.io.IOException;
 import java.util.List;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.merakianalytics.orianna.type.dto.DataObject;
 
 public class ChampionSpell extends DataObject {
-    public static class RangeDeserializer extends JsonDeserializer<List<Integer>> {
-        @Override
-        public List<Integer> deserialize(final JsonParser parser, final DeserializationContext context) throws IOException {
-            try {
-                parser.getValueAsString();
-                return null;
-            } catch(final Exception e) {
-                return parser.readValueAs(new TypeReference<List<Integer>>() {});
-            }
-        }
-    }
-
-    public static class RangeSerializer extends JsonSerializer<List<Integer>> {
-        @Override
-        public void serialize(final List<Integer> range, final JsonGenerator generator, final SerializerProvider provider) throws IOException {
-            if(range == null) {
-                generator.writeObject("self");
-            } else {
-                generator.writeObject(range);
-            }
-        }
-    }
-
     private static final long serialVersionUID = -4120852259618975907L;
 
     private List<Image> altImages;
     private List<Double> cooldown;
     private String cooldownBurn, resource, costType, sanitizedDescription, sanitizedTooltip, tooltip, costBurn, rangeBurn, key, description, name;
-    private List<Integer> cost;
+    private List<Integer> cost, range;
     private List<List<Double>> effect;
     private List<String> effectBurn;
     private Image image;
     private LevelTip leveltip;
     private int maxrank;
-    @JsonDeserialize(using = RangeDeserializer.class)
-    @JsonSerialize(using = RangeSerializer.class)
-    private List<Integer> range;
     private List<SpellVars> vars;
 
     /*
