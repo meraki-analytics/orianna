@@ -5,6 +5,7 @@ import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
+// TODO: Add lockout TimerTask kicked off by acquire to lock out of calls at earliest possible window reset time
 public class FixedWindowRateLimiter extends AbstractRateLimiter {
     private class Resetter extends TimerTask {
         private boolean cancelled = false;
@@ -25,13 +26,12 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
 
     private int currentlyProcessing = 0;
     private final Object currentlyProcessingLock = new Object();
-    private long epoch;
-    private TimeUnit epochUnit;
+    private final long epoch;
+    private final TimeUnit epochUnit;
     private int permits;
     private final Semaphore permitter;
     private Resetter resetter = null;
     private final Object resetterLock = new Object();
-    private long resetterStartTime = -1L;
     private final Timer timer = new Timer(true);
 
     public FixedWindowRateLimiter(final Configuration config) {
@@ -65,6 +65,31 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
     }
 
     @Override
+    public void cancel() {
+        synchronized(currentlyProcessingLock) {
+            currentlyProcessing -= 1;
+            permitter.release();
+        }
+    }
+
+    @Override
+    public long getEpoch() {
+        return epoch;
+    }
+
+    @Override
+    public TimeUnit getEpochUnit() {
+        return epochUnit;
+    }
+
+    @Override
+    public int getPermits() {
+        synchronized(resetterLock) {
+            return permits;
+        }
+    }
+
+    @Override
     public void release() {
         synchronized(currentlyProcessingLock) {
             currentlyProcessing -= 1;
@@ -75,7 +100,6 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
                 if(resetter == null) {
                     resetter = new Resetter();
                     timer.schedule(resetter, epochUnit.toMillis(epoch));
-                    resetterStartTime = System.currentTimeMillis();
                 }
             }
         }
@@ -93,32 +117,7 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
 
             resetter = new Resetter();
             timer.schedule(resetter, unit.toMillis(time));
-            resetterStartTime = -1L;
         }
-    }
-
-    @Override
-    public void setEpoch(final long time, final TimeUnit unit) {
-        if(unit.toMillis(time) > epochUnit.toMillis(time)) {
-            synchronized(resetterLock) {
-                if(resetter != null && resetterStartTime != -1L) {
-                    resetter.cancel();
-                    resetter.cancelled = true;
-
-                    resetter = new Resetter();
-                    final long delay = resetterStartTime + unit.toMillis(time) - System.currentTimeMillis();
-                    if(delay > 0) {
-                        timer.schedule(resetter, delay);
-                    } else {
-                        resetter.run();
-                    }
-                }
-
-            }
-        }
-
-        epoch = time;
-        epochUnit = unit;
     }
 
     @Override

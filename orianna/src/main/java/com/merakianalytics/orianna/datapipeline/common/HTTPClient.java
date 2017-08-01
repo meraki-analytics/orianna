@@ -22,11 +22,11 @@ import okhttp3.ResponseBody;
 
 public class HTTPClient {
     public static class Configuration {
-        private static final long DEFAULT_CONNECT_TIMEOUT = 5;
+        private static final long DEFAULT_CONNECT_TIMEOUT = 3;
         private static final TimeUnit DEFAULT_CONNECT_TIMEOUT_UNIT = TimeUnit.SECONDS;
         private static final long DEFAULT_RATE_LIMITER_TIMEOUT = 30;
         private static final TimeUnit DEFAULT_RATE_LIMITER_TIMEOUT_UNIT = TimeUnit.SECONDS;
-        private static final long DEFAULT_READ_TIMEOUT = 5;
+        private static final long DEFAULT_READ_TIMEOUT = 3;
         private static final TimeUnit DEFAULT_READ_TIMEOUT_UNIT = TimeUnit.SECONDS;
 
         private long connectTimeout = DEFAULT_CONNECT_TIMEOUT;
@@ -35,39 +35,6 @@ public class HTTPClient {
         private TimeUnit rateLimiterTimeoutUnit = DEFAULT_RATE_LIMITER_TIMEOUT_UNIT;
         private long readTimeout = DEFAULT_READ_TIMEOUT;
         private TimeUnit readTimeoutUnit = DEFAULT_READ_TIMEOUT_UNIT;
-
-        @Override
-        public boolean equals(final Object obj) {
-            if(this == obj) {
-                return true;
-            }
-            if(obj == null) {
-                return false;
-            }
-            if(getClass() != obj.getClass()) {
-                return false;
-            }
-            final Configuration other = (Configuration)obj;
-            if(connectTimeout != other.connectTimeout) {
-                return false;
-            }
-            if(connectTimeoutUnit != other.connectTimeoutUnit) {
-                return false;
-            }
-            if(rateLimiterTimeout != other.rateLimiterTimeout) {
-                return false;
-            }
-            if(rateLimiterTimeoutUnit != other.rateLimiterTimeoutUnit) {
-                return false;
-            }
-            if(readTimeout != other.readTimeout) {
-                return false;
-            }
-            if(readTimeoutUnit != other.readTimeoutUnit) {
-                return false;
-            }
-            return true;
-        }
 
         /**
          * @return the connectTimeout
@@ -109,19 +76,6 @@ public class HTTPClient {
          */
         public TimeUnit getReadTimeoutUnit() {
             return readTimeoutUnit;
-        }
-
-        @Override
-        public int hashCode() {
-            final int prime = 31;
-            int result = 1;
-            result = prime * result + (int)(connectTimeout ^ connectTimeout >>> 32);
-            result = prime * result + (connectTimeoutUnit == null ? 0 : connectTimeoutUnit.hashCode());
-            result = prime * result + (int)(rateLimiterTimeout ^ rateLimiterTimeout >>> 32);
-            result = prime * result + (rateLimiterTimeoutUnit == null ? 0 : rateLimiterTimeoutUnit.hashCode());
-            result = prime * result + (int)(readTimeout ^ readTimeout >>> 32);
-            result = prime * result + (readTimeoutUnit == null ? 0 : readTimeoutUnit.hashCode());
-            return result;
         }
 
         /**

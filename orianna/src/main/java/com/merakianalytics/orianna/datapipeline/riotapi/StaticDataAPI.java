@@ -468,7 +468,7 @@ public class StaticDataAPI extends RiotAPI.Service {
 
                 final String endpoint = "lol/static-data/v3/maps";
                 final MapData data = get(MapData.class, endpoint, platform, ImmutableMultimap.of("locale", locale, "version", version),
-                                         "lol/static-data/v3/maps");
+                    "lol/static-data/v3/maps");
 
                 data.setPlatform(platform.getTag());
                 data.setLocale(locale);
@@ -594,7 +594,7 @@ public class StaticDataAPI extends RiotAPI.Service {
 
                 final String endpoint = "lol/static-data/v3/profile-icons";
                 final ProfileIconData data = get(ProfileIconData.class, endpoint, platform, ImmutableMultimap.of("locale", locale, "version", version),
-                                                 "lol/static-data/v3/profile-icons");
+                    "lol/static-data/v3/profile-icons");
 
                 data.setPlatform(platform.getTag());
                 data.setLocale(locale);

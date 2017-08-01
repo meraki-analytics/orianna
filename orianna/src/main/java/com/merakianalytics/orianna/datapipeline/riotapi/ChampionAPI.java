@@ -43,7 +43,7 @@ public class ChampionAPI extends RiotAPI.Service {
 
         final String endpoint = "lol/platform/v3/champions";
         final ChampionList data = get(ChampionList.class, endpoint, platform, ImmutableMap.of("freeToPlay", freeToPlay.toString()),
-                                      "lol/platform/v3/champions");
+            "lol/platform/v3/champions");
 
         data.setPlatform(platform.getTag());
         data.setFreeToPlay(freeToPlay);
@@ -97,7 +97,7 @@ public class ChampionAPI extends RiotAPI.Service {
 
                 final String endpoint = "lol/platform/v3/champions";
                 final ChampionList data = get(ChampionList.class, endpoint, platform, ImmutableMap.of("freeToPlay", freeToPlay.toString()),
-                                              "lol/platform/v3/champions");
+                    "lol/platform/v3/champions");
 
                 data.setPlatform(platform.getTag());
                 data.setFreeToPlay(freeToPlay);

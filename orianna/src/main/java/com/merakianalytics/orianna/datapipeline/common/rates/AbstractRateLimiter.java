@@ -19,9 +19,12 @@ public abstract class AbstractRateLimiter implements RateLimiter {
     public <T> T call(final Callable<T> callable) throws InterruptedException, Exception {
         acquire();
         permitsIssued.incrementAndGet();
-        final T result = callable.call();
-        release();
-        return result;
+
+        try {
+            return callable.call();
+        } finally {
+            release();
+        }
     }
 
     @Override
@@ -31,17 +34,24 @@ public abstract class AbstractRateLimiter implements RateLimiter {
         }
 
         permitsIssued.incrementAndGet();
-        final T result = callable.call();
-        release();
-        return result;
+
+        try {
+            return callable.call();
+        } finally {
+            release();
+        }
     }
 
     @Override
     public void call(final Runnable runnable) throws InterruptedException {
         acquire();
         permitsIssued.incrementAndGet();
-        runnable.run();
-        release();
+
+        try {
+            runnable.run();
+        } finally {
+            release();
+        }
     }
 
     @Override
@@ -51,9 +61,19 @@ public abstract class AbstractRateLimiter implements RateLimiter {
         }
 
         permitsIssued.incrementAndGet();
-        runnable.run();
-        release();
+
+        try {
+            runnable.run();
+        } finally {
+            release();
+        }
     }
+
+    public abstract long getEpoch();
+
+    public abstract TimeUnit getEpochUnit();
+
+    public abstract int getPermits();
 
     @Override
     public int permitsIssued() {
@@ -65,8 +85,6 @@ public abstract class AbstractRateLimiter implements RateLimiter {
 
     @Override
     public abstract void restrictFor(final long time, final TimeUnit unit);
-
-    public abstract void setEpoch(final long time, final TimeUnit unit);
 
     public abstract void setPermits(final int permits);
 }

@@ -31,7 +31,7 @@ public class ChampionMasteryAPI extends RiotAPI.Service {
 
         final String endpoint = "lol/champion-mastery/v3/champion-masteries/by-summoner/" + summonerId + "/by-champion/" + championId;
         final ChampionMastery data = get(ChampionMastery.class, endpoint, platform,
-                                         "lol/champion-mastery/v3/champion-masteries/by-summoner/summonerId/by-champion/championId");
+            "lol/champion-mastery/v3/champion-masteries/by-summoner/summonerId/by-champion/championId");
 
         data.setPlatform(platform.getTag());
         return data;
@@ -45,7 +45,7 @@ public class ChampionMasteryAPI extends RiotAPI.Service {
 
         final String endpoint = "lol/champion-mastery/v3/champion-masteries/by-summoner/" + summonerId;
         final ChampionMasteries data = get(ChampionMasteries.class, endpoint, platform,
-                                           "lol/champion-mastery/v3/champion-masteries/by-summoner/summonerId");
+            "lol/champion-mastery/v3/champion-masteries/by-summoner/summonerId");
 
         data.setSummonerId(summonerId.longValue());
         data.setPlatform(platform.getTag());
@@ -90,7 +90,7 @@ public class ChampionMasteryAPI extends RiotAPI.Service {
 
                 final String endpoint = "lol/champion-mastery/v3/champion-masteries/by-summoner/" + summonerId + "/by-champion/" + championId;
                 final ChampionMastery data = get(ChampionMastery.class, endpoint, platform,
-                                                 "lol/champion-mastery/v3/champion-masteries/by-summoner/summonerId/by-champion/championId");
+                    "lol/champion-mastery/v3/champion-masteries/by-summoner/summonerId/by-champion/championId");
 
                 data.setPlatform(platform.getTag());
                 return data;
@@ -118,7 +118,7 @@ public class ChampionMasteryAPI extends RiotAPI.Service {
 
                 final String endpoint = "lol/champion-mastery/v3/champion-masteries/by-summoner/" + summonerId;
                 final ChampionMasteries data = get(ChampionMasteries.class, endpoint, platform,
-                                                   "lol/champion-mastery/v3/champion-masteries/by-summoner/summonerId");
+                    "lol/champion-mastery/v3/champion-masteries/by-summoner/summonerId");
 
                 data.setSummonerId(summonerId.longValue());
                 data.setPlatform(platform.getTag());

@@ -52,7 +52,7 @@ public class MultiRateLimiter implements RateLimiter {
                 acquired.add(limiter);
             } else {
                 for(final RateLimiter acquiredLimiter : acquired) {
-                    acquiredLimiter.release();
+                    acquiredLimiter.cancel();
                 }
                 return false;
             }
@@ -99,6 +99,13 @@ public class MultiRateLimiter implements RateLimiter {
         permitsIssued.incrementAndGet();
         runnable.run();
         release();
+    }
+
+    @Override
+    public void cancel() {
+        for(final RateLimiter limiter : limiters.values()) {
+            limiter.cancel();
+        }
     }
 
     public RateLimiter limiter(final String name) {

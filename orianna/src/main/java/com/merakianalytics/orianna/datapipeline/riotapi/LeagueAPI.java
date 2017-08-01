@@ -22,7 +22,7 @@ import com.merakianalytics.orianna.type.dto.league.SummonerPositions;
 
 public class LeagueAPI extends RiotAPI.Service {
     private static final Map<Tier, String> LEAGUE_LIST_ENDPOINTS = ImmutableMap.of(Tier.CHALLENGER, "lol/league/v3/challengerleagues/by-queue/",
-                                                                                   Tier.MASTER, "lol/league/v3/masterleagues/by-queue/");
+        Tier.MASTER, "lol/league/v3/masterleagues/by-queue/");
 
     public LeagueAPI(final String key, final Map<Platform, RateLimiter> applicationRateLimiters,
                      final Collection<RateLimiter.Configuration> applicationLimiterConfigs, final HTTPClient client, final Configuration config) {

@@ -3,6 +3,8 @@ package com.merakianalytics.orianna.datapipeline.riotapi;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -17,11 +19,13 @@ import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
+import com.merakianalytics.datapipelines.DataPipeline;
 import com.merakianalytics.datapipelines.sources.AbstractDataSource;
 import com.merakianalytics.datapipelines.sources.CompositeDataSource;
 import com.merakianalytics.orianna.datapipeline.common.HTTPClient;
 import com.merakianalytics.orianna.datapipeline.common.HTTPClient.Response;
 import com.merakianalytics.orianna.datapipeline.common.TimeoutException;
+import com.merakianalytics.orianna.datapipeline.common.rates.AbstractRateLimiter;
 import com.merakianalytics.orianna.datapipeline.common.rates.MultiRateLimiter;
 import com.merakianalytics.orianna.datapipeline.common.rates.RateLimiter;
 import com.merakianalytics.orianna.datapipeline.riotapi.RiotAPI.FailedRequestStrategies.FailedRequestStrategy;
@@ -34,62 +38,86 @@ import com.merakianalytics.orianna.datapipeline.riotapi.exceptions.ServiceUnavai
 import com.merakianalytics.orianna.datapipeline.riotapi.exceptions.UnsupportedMediaTypeException;
 import com.merakianalytics.orianna.type.common.OriannaException;
 import com.merakianalytics.orianna.type.common.Platform;
+import com.merakianalytics.orianna.type.dto.champion.Champion;
 
 public class RiotAPI extends CompositeDataSource {
     public static class Configuration {
+        private static Set<RateLimiter.Configuration> defaultApplicationLimiters() {
+            return ImmutableSet.of(RateLimiter.Configuration.of(20, 1L, TimeUnit.SECONDS), RateLimiter.Configuration.of(100, 2, TimeUnit.MINUTES));
+        }
+
         private static Set<Service.Configuration> defaultServices() {
-            final Set<Class<? extends Service>> services = ImmutableSet.of(ChampionAPI.class, ChampionMasteryAPI.class, LeagueAPI.class, MasteriesAPI.class,
-                                                                           MatchAPI.class, RunesAPI.class, SpectatorAPI.class, StaticDataAPI.class,
-                                                                           SummonerAPI.class);
+            final Map<String, Collection<RateLimiter.Configuration>> defaultMethodLimiters = ImmutableMap.<String, Collection<RateLimiter.Configuration>> of(
+                "default",
+                ImmutableSet.of(RateLimiter.Configuration.of(20000,
+                    10,
+                    TimeUnit.SECONDS)));
+
+            final Map<String, Collection<RateLimiter.Configuration>> useDefault = Collections.unmodifiableMap(
+                Collections.<String, Collection<RateLimiter.Configuration>> emptyMap());
+
+            Map<Class<? extends Service>, Map<String, Collection<RateLimiter.Configuration>>> services;
+            services = ImmutableMap.<Class<? extends Service>, Map<String, Collection<RateLimiter.Configuration>>> builder()
+                                   .put(ChampionAPI.class, useDefault)
+                                   .put(ChampionMasteryAPI.class, useDefault)
+                                   .put(LeagueAPI.class, useDefault)
+                                   .put(MasteriesAPI.class, useDefault)
+                                   .put(MatchAPI.class,
+                                       ImmutableMap.<String, Collection<RateLimiter.Configuration>> of(
+                                           "lol/match/v3/matches/matchId",
+                                           ImmutableSet.of(
+                                               RateLimiter.Configuration.of(
+                                                   500,
+                                                   10,
+                                                   TimeUnit.SECONDS)),
+                                           "lol/match/v3/timelines/by-match/matchId",
+                                           ImmutableSet.of(
+                                               RateLimiter.Configuration.of(
+                                                   500,
+                                                   10,
+                                                   TimeUnit.SECONDS)),
+                                           "lol/match/v3/matchlists/by-account/accountId",
+                                           ImmutableSet.of(
+                                               RateLimiter.Configuration.of(
+                                                   1000,
+                                                   10,
+                                                   TimeUnit.SECONDS)),
+                                           "lol/match/v3/matchlists/by-account/accountId/recent",
+                                           ImmutableSet.of(
+                                               RateLimiter.Configuration.of(
+                                                   1000,
+                                                   10,
+                                                   TimeUnit.SECONDS))))
+                                   .put(RunesAPI.class, useDefault)
+                                   .put(SpectatorAPI.class, useDefault)
+                                   .put(StaticDataAPI.class,
+                                       ImmutableMap.<String, Collection<RateLimiter.Configuration>> of("default",
+                                           ImmutableSet.of(RateLimiter.Configuration.of(10,
+                                               1,
+                                               TimeUnit.HOURS))))
+                                   .put(SummonerAPI.class, useDefault)
+                                   .build();
 
             final Set<Service.Configuration> configs = new HashSet<>();
-            for(final Class<? extends Service> service : services) {
+            for(final Class<? extends Service> service : services.keySet()) {
                 final Service.Configuration config = new Service.Configuration();
                 config.setType(service);
+
+                final Map<String, Collection<RateLimiter.Configuration>> limiters = new HashMap<>();
+                limiters.putAll(defaultMethodLimiters);
+                if(services.get(service) != null && !services.get(service).isEmpty()) {
+                    limiters.putAll(services.get(service));
+                }
+
+                config.setMethodLimiters(Collections.unmodifiableMap(limiters));
                 configs.add(config);
             }
             return configs;
         }
 
-        private Collection<RateLimiter.Configuration> applicationLimiters = RateLimiter.Configuration.defaultDeveloperRateLimits();
+        private Collection<RateLimiter.Configuration> applicationLimiters = defaultApplicationLimiters();
         private String key = System.getenv("RIOT_API_KEY");
         private Collection<Service.Configuration> services = defaultServices();
-
-        @Override
-        public boolean equals(final Object obj) {
-            if(this == obj) {
-                return true;
-            }
-            if(obj == null) {
-                return false;
-            }
-            if(getClass() != obj.getClass()) {
-                return false;
-            }
-            final Configuration other = (Configuration)obj;
-            if(applicationLimiters == null) {
-                if(other.applicationLimiters != null) {
-                    return false;
-                }
-            } else if(!applicationLimiters.equals(other.applicationLimiters)) {
-                return false;
-            }
-            if(key == null) {
-                if(other.key != null) {
-                    return false;
-                }
-            } else if(!key.equals(other.key)) {
-                return false;
-            }
-            if(services == null) {
-                if(other.services != null) {
-                    return false;
-                }
-            } else if(!services.equals(other.services)) {
-                return false;
-            }
-            return true;
-        }
 
         /**
          * @return the applicationLimiters
@@ -110,16 +138,6 @@ public class RiotAPI extends CompositeDataSource {
          */
         public Collection<Service.Configuration> getServices() {
             return services;
-        }
-
-        @Override
-        public int hashCode() {
-            final int prime = 31;
-            int result = 1;
-            result = prime * result + (applicationLimiters == null ? 0 : applicationLimiters.hashCode());
-            result = prime * result + (key == null ? 0 : key.hashCode());
-            result = prime * result + (services == null ? 0 : services.hashCode());
-            return result;
         }
 
         /**
@@ -195,6 +213,45 @@ public class RiotAPI extends CompositeDataSource {
             public <T> T onFailedRequest(RiotAPI.Service service, RequestContext<T> context, Response response, OriannaException e);
         }
 
+        private static class Handle429 implements FailedRequestStrategy {
+            private static final FailedRequestStrategy DEFAULT_ON_MISSING_RETRY_AFTER = FailedRequestStrategies.exponentialBackoff();
+            private final FailedRequestStrategy onMissingRetryAfter;
+
+            public Handle429() {
+                this(DEFAULT_ON_MISSING_RETRY_AFTER);
+            }
+
+            public Handle429(final FailedRequestStrategy onMissingRetryAfter) {
+                this.onMissingRetryAfter = onMissingRetryAfter;
+            }
+
+            @Override
+            public <T> T onFailedRequest(final Service service, final RequestContext<T> context, final Response response, final OriannaException e) {
+                final Collection<String> retryAfterHeaders = response.getHeaders().get("Retry-After");
+                if(retryAfterHeaders == null || retryAfterHeaders.isEmpty()) {
+                    onMissingRetryAfter.onFailedRequest(service, context, response, e);
+                }
+
+                final long retryAfter = Long.parseLong(retryAfterHeaders.iterator().next());
+                final String type = response.getHeaders().get("X-Rate-Limit-Type").iterator().next();
+                final boolean applicationLimiting = service.applicationLimiterConfigs != null && !service.applicationLimiterConfigs.isEmpty();
+                final boolean methodLimiting = service.methodLimiterConfigs != null && !service.methodLimiterConfigs.isEmpty();
+
+                if(!applicationLimiting && "application".equals(type) || !methodLimiting && "method".equals(type)) {
+                    throw new RateLimitExceededException("Riot API returned a \"Rate Limit Exceeded\" error for \"" + type + "\", but no " + type
+                                                         + " rate limiting was configured! You must follow the rate limits Riot specifies. Fix this before trying again.");
+                }
+
+                RateLimiter limiter = service.getRateLimiter(context.platform, context.rateLimiterName);
+                if(applicationLimiting && methodLimiting) {
+                    limiter = ((MultiRateLimiter)limiter).limiter(type);
+                }
+
+                limiter.restrictFor(retryAfter, TimeUnit.SECONDS);
+                return service.get(context);
+            }
+        }
+
         private static class LinearBackoff implements FailedRequestStrategy {
             private static final long DEFAULT_BACKOFF = 1;
             private static final TimeUnit DEFAULT_BACKOFF_UNIT = TimeUnit.SECONDS;
@@ -257,6 +314,14 @@ public class RiotAPI extends CompositeDataSource {
             return new ExponentialBackoff(maxAttempts, initialBackoff, backoffFactor, backoffUnit, onFailure);
         }
 
+        public static FailedRequestStrategy handle429() {
+            return new Handle429();
+        }
+
+        public static FailedRequestStrategy handle429(final FailedRequestStrategy onMissingRetryAfter) {
+            return new Handle429(onMissingRetryAfter);
+        }
+
         public static FailedRequestStrategy linearBackoff() {
             return new LinearBackoff();
         }
@@ -296,8 +361,9 @@ public class RiotAPI extends CompositeDataSource {
 
     public static abstract class Service extends AbstractDataSource {
         public static class Configuration {
+            // TODO: Make FailedRequestStrategies JSONable
             private static final FailedRequestStrategy DEFAULT_404_STRATEGY = FailedRequestStrategies.returnNull();
-            private static final FailedRequestStrategy DEFAULT_429_STRATEGY = FailedRequestStrategies.throwException(); // TODO: Make this use "Retry-After"
+            private static final FailedRequestStrategy DEFAULT_429_STRATEGY = FailedRequestStrategies.handle429();
             private static final FailedRequestStrategy DEFAULT_500_STRATEGY = FailedRequestStrategies.exponentialBackoff();
             private static final FailedRequestStrategy DEFAULT_503_STRATEGY = FailedRequestStrategies.throwException();
             private static final FailedRequestStrategy DEFAULT_TIMEOUT_STRATEGY = FailedRequestStrategies.exponentialBackoff();
@@ -305,73 +371,9 @@ public class RiotAPI extends CompositeDataSource {
             private FailedRequestStrategy http429Strategy = DEFAULT_429_STRATEGY;
             private FailedRequestStrategy http500Strategy = DEFAULT_500_STRATEGY;
             private FailedRequestStrategy http503Strategy = DEFAULT_503_STRATEGY;
-            private Collection<RateLimiter.Configuration> methodLimiters = RateLimiter.Configuration.defaultDeveloperRateLimits();
+            private Map<String, Collection<RateLimiter.Configuration>> methodLimiters;
             private FailedRequestStrategy timeoutStrategy = DEFAULT_TIMEOUT_STRATEGY;
             private Class<? extends Service> type;
-
-            @Override
-            public boolean equals(final Object obj) {
-                if(this == obj) {
-                    return true;
-                }
-                if(obj == null) {
-                    return false;
-                }
-                if(getClass() != obj.getClass()) {
-                    return false;
-                }
-                final Configuration other = (Configuration)obj;
-                if(http404Strategy == null) {
-                    if(other.http404Strategy != null) {
-                        return false;
-                    }
-                } else if(!http404Strategy.equals(other.http404Strategy)) {
-                    return false;
-                }
-                if(http429Strategy == null) {
-                    if(other.http429Strategy != null) {
-                        return false;
-                    }
-                } else if(!http429Strategy.equals(other.http429Strategy)) {
-                    return false;
-                }
-                if(http500Strategy == null) {
-                    if(other.http500Strategy != null) {
-                        return false;
-                    }
-                } else if(!http500Strategy.equals(other.http500Strategy)) {
-                    return false;
-                }
-                if(http503Strategy == null) {
-                    if(other.http503Strategy != null) {
-                        return false;
-                    }
-                } else if(!http503Strategy.equals(other.http503Strategy)) {
-                    return false;
-                }
-                if(methodLimiters == null) {
-                    if(other.methodLimiters != null) {
-                        return false;
-                    }
-                } else if(!methodLimiters.equals(other.methodLimiters)) {
-                    return false;
-                }
-                if(timeoutStrategy == null) {
-                    if(other.timeoutStrategy != null) {
-                        return false;
-                    }
-                } else if(!timeoutStrategy.equals(other.timeoutStrategy)) {
-                    return false;
-                }
-                if(type == null) {
-                    if(other.type != null) {
-                        return false;
-                    }
-                } else if(!type.equals(other.type)) {
-                    return false;
-                }
-                return true;
-            }
 
             /**
              * @return the http404Strategy
@@ -404,7 +406,7 @@ public class RiotAPI extends CompositeDataSource {
             /**
              * @return the methodLimiters
              */
-            public Collection<RateLimiter.Configuration> getMethodLimiters() {
+            public Map<String, Collection<RateLimiter.Configuration>> getMethodLimiters() {
                 return methodLimiters;
             }
 
@@ -420,20 +422,6 @@ public class RiotAPI extends CompositeDataSource {
              */
             public Class<? extends Service> getType() {
                 return type;
-            }
-
-            @Override
-            public int hashCode() {
-                final int prime = 31;
-                int result = 1;
-                result = prime * result + (http404Strategy == null ? 0 : http404Strategy.hashCode());
-                result = prime * result + (http429Strategy == null ? 0 : http429Strategy.hashCode());
-                result = prime * result + (http500Strategy == null ? 0 : http500Strategy.hashCode());
-                result = prime * result + (http503Strategy == null ? 0 : http503Strategy.hashCode());
-                result = prime * result + (methodLimiters == null ? 0 : methodLimiters.hashCode());
-                result = prime * result + (timeoutStrategy == null ? 0 : timeoutStrategy.hashCode());
-                result = prime * result + (type == null ? 0 : type.hashCode());
-                return result;
             }
 
             /**
@@ -472,7 +460,7 @@ public class RiotAPI extends CompositeDataSource {
              * @param methodLimiters
              *        the methodLimiters to set
              */
-            public void setMethodLimiters(final Collection<RateLimiter.Configuration> methodLimiters) {
+            public void setMethodLimiters(final Map<String, Collection<RateLimiter.Configuration>> methodLimiters) {
                 this.methodLimiters = methodLimiters;
             }
 
@@ -495,6 +483,15 @@ public class RiotAPI extends CompositeDataSource {
 
         private static final Logger LOGGER = LoggerFactory.getLogger(Service.class);
 
+        private static AbstractRateLimiter getSpecificLimiterForRate(final RateLimiter limiter, final String epochSeconds) {
+            if(limiter instanceof AbstractRateLimiter) {
+                return (AbstractRateLimiter)limiter;
+            } else {
+                final MultiRateLimiter multi = (MultiRateLimiter)limiter;
+                return (AbstractRateLimiter)multi.limiter(epochSeconds);
+            }
+        }
+
         private static RateLimiter newRateLimiter(final Collection<RateLimiter.Configuration> configs) {
             if(configs == null || configs.isEmpty()) {
                 return null;
@@ -509,10 +506,11 @@ public class RiotAPI extends CompositeDataSource {
                     throw new OriannaException("Failed to instantiate " + config.getType() + " Rate Limiter! Report this to the orianna team.", e);
                 }
             } else {
-                final Set<RateLimiter> limiters = new HashSet<>();
+                final Map<String, RateLimiter> limiters = new HashMap<>();
                 for(final RateLimiter.Configuration config : configs) {
                     try {
-                        limiters.add(config.getType().getLimiterClass().getConstructor(RateLimiter.Configuration.class).newInstance(config));
+                        limiters.put(Long.toString(config.getEpochUnit().toSeconds(config.getEpoch())),
+                            config.getType().getLimiterClass().getConstructor(RateLimiter.Configuration.class).newInstance(config));
                     } catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
                             | SecurityException e) {
                         LOGGER.error("Failed to instantiate " + config.getType() + " Rate Limiter!", e);
@@ -531,10 +529,9 @@ public class RiotAPI extends CompositeDataSource {
         private final FailedRequestStrategy http500Strategy;
         private final FailedRequestStrategy http503Strategy;
         private final ObjectMapper mapper;
-        private final Set<RateLimiter.Configuration> methodLimiterConfigs;
+        private final Map<String, Set<RateLimiter.Configuration>> methodLimiterConfigs;
         private final Map<Platform, Map<String, Object>> rateLimiterLocks;
         private final Map<Platform, Map<String, RateLimiter>> rateLimiters;
-
         private final FailedRequestStrategy timeoutStrategy;
 
         public Service(final String key, final Map<Platform, RateLimiter> applicationRateLimiters,
@@ -547,11 +544,71 @@ public class RiotAPI extends CompositeDataSource {
             http429Strategy = config.getHttp429Strategy();
             http500Strategy = config.getHttp500Strategy();
             http503Strategy = config.getHttp503Strategy();
-            methodLimiterConfigs = ImmutableSet.copyOf(config.getMethodLimiters());
             mapper = new ObjectMapper();
             defaultHeaders = ImmutableMap.of("X-Riot-Token", key);
             rateLimiters = new ConcurrentHashMap<>();
             rateLimiterLocks = new ConcurrentHashMap<>();
+
+            final ImmutableMap.Builder<String, Set<RateLimiter.Configuration>> builder = ImmutableMap.builder();
+            for(final String k : config.getMethodLimiters().keySet()) {
+                builder.put(k, ImmutableSet.copyOf(config.getMethodLimiters().get(k)));
+            }
+            methodLimiterConfigs = builder.build();
+        }
+
+        private void adjustRateLimitsIfNecessary(final RequestContext<?> context, final Response response) {
+            final Collection<String> applicationLimitHeaders = response.getHeaders().get("X-App-Rate-Limit");
+            final Collection<String> methodLimitHeaders = response.getHeaders().get("X-Method-Rate-Limit");
+
+            final boolean applicationLimiting = applicationLimiterConfigs != null && !applicationLimiterConfigs.isEmpty();
+            final boolean methodLimiting = methodLimiterConfigs != null && !methodLimiterConfigs.isEmpty();
+
+            if(!applicationLimiting && applicationLimitHeaders != null && !applicationLimitHeaders.isEmpty()) {
+                throw new OriannaException("Riot API response specified application rate limits but none were configured! You must follow the rate limits Riot specifies. Fix this before trying again.");
+            }
+            if(!methodLimiting && methodLimitHeaders != null && !methodLimitHeaders.isEmpty()) {
+                throw new OriannaException("Riot API response specified rate limits for the call but none were configured! You must follow the rate limits Riot specifies. Fix this before trying again.");
+            }
+
+            if(applicationLimitHeaders != null && !applicationLimitHeaders.isEmpty()) {
+                final String[] limits = applicationLimitHeaders.iterator().next().split(",");
+                final RateLimiter limiter = getRateLimiter(context.platform);
+                for(final String limit : limits) {
+                    final String[] parts = limit.split(":");
+                    final AbstractRateLimiter forRate = getSpecificLimiterForRate(limiter, parts[1]);
+                    if(forRate == null) {
+                        throw new OriannaException("Riot API response specified an application rate limit of " + parts[0] + " requests per " + parts[1]
+                                                   + " seconds, but no such limit was configured! You must follow the rate limits Riot specifies. Fix this before trying again.");
+                    }
+
+                    final int permits = Integer.parseInt(parts[0]);
+                    if(permits < forRate.getPermits()) {
+                        forRate.setPermits(permits);
+                    }
+                }
+            }
+
+            if(methodLimitHeaders != null && !methodLimitHeaders.isEmpty()) {
+                final String[] limits = methodLimitHeaders.iterator().next().split(",");
+                RateLimiter limiter = getRateLimiter(context.platform, context.rateLimiterName);
+                if(applicationLimiting) {
+                    limiter = ((MultiRateLimiter)limiter).limiter("method");
+                }
+
+                for(final String limit : limits) {
+                    final String[] parts = limit.split(":");
+                    final AbstractRateLimiter forRate = getSpecificLimiterForRate(limiter, parts[1]);
+                    if(forRate == null) {
+                        throw new OriannaException("Riot API response specified a method rate limit of " + parts[0] + " requests per " + parts[1]
+                                                   + " seconds, but no such limit was configured! You must follow the rate limits Riot specifies. Fix this before trying again.");
+                    }
+
+                    final int permits = Integer.parseInt(parts[0]);
+                    if(permits < forRate.getPermits()) {
+                        forRate.setPermits(permits);
+                    }
+                }
+            }
         }
 
         protected <T> T get(final Class<T> type, final String endpoint, final Platform platform) {
@@ -604,42 +661,42 @@ public class RiotAPI extends CompositeDataSource {
                 throw new OriannaException("Something went wrong with a request to the Riot API at " + host + "/" + context.endpoint
                                            + "! Report this to the orianna team.", e);
             }
-            
-            // TODO: Check headers for reduced rates and use them
+
+            adjustRateLimitsIfNecessary(context, response);
 
             switch(response.getStatusCode()) {
                 case 400:
                     LOGGER.error("Got \"Bad Request\" from " + host + "/" + context.endpoint + "!");
                     throw new BadRequestException("A Riot API request to " + host + "/" + context.endpoint
-                                                  + "returned \"Bad Request\". If the problem persists, report this to the orianna team.");
+                                                  + " returned \"Bad Request\". If the problem persists, report this to the orianna team.");
                 case 403:
                     LOGGER.error("Got \"Forbidden\" from " + host + "/" + context.endpoint + "!");
                     throw new ForbiddenException("A Riot API request to " + host + "/" + context.endpoint
-                                                 + "returned \"Forbidden\". Check to make sure you're using the right API key, and it hasn't expired. If the problem persists with a valid key, report this to the orianna team.");
+                                                 + " returned \"Forbidden\". Check to make sure you're using the right API key, and it hasn't expired. If the problem persists with a valid key, report this to the orianna team.");
                 case 404:
                     LOGGER.info("Got \"Not Found\" from " + host + "/" + context.endpoint + "!");
                     return http404Strategy.onFailedRequest(this, context, response,
-                                                           new NotFoundException("A Riot API request to " + host + "/" + context.endpoint
-                                                                                 + "returned \"Not Found\". If this was unexpected, check your query parameters to ensure they are correct."));
+                        new NotFoundException("A Riot API request to " + host + "/" + context.endpoint
+                                              + " returned \"Not Found\". If this was unexpected, check your query parameters to ensure they are correct."));
                 case 415:
                     LOGGER.error("Got \"Unsupported Media Type\" from " + host + "/" + context.endpoint + "!");
                     throw new UnsupportedMediaTypeException("A Riot API request to " + host + "/" + context.endpoint
-                                                            + "returned \"Unsupported Media Type\". If the problem persists, report this to the orianna team.");
+                                                            + " returned \"Unsupported Media Type\". If the problem persists, report this to the orianna team.");
                 case 429:
                     LOGGER.info("Got \"Rate Limit Exceeded\" from " + host + "/" + context.endpoint + "!");
                     return http429Strategy.onFailedRequest(this, context, response,
-                                                           new RateLimitExceededException("A Riot API request to " + host + "/" + context.endpoint
-                                                                                          + "returned \"Rate Limit Exceeded\". If this was unexpected, report it to the orianna team."));
+                        new RateLimitExceededException("A Riot API request to " + host + "/" + context.endpoint
+                                                       + " returned \"Rate Limit Exceeded\". If this was unexpected, report it to the orianna team."));
                 case 500:
                     LOGGER.error("Got \"Internal Server Error\" from " + host + "/" + context.endpoint + "!");
                     return http500Strategy.onFailedRequest(this, context, response,
-                                                           new InternalServerErrorException("A Riot API request to " + host + "/" + context.endpoint
-                                                                                            + "returned \"Bad Request\". Sometimes the Riot API experiences these when under extreme load. If the problem persists, try catching this exception, waiting briefly, and trying again."));
+                        new InternalServerErrorException("A Riot API request to " + host + "/" + context.endpoint
+                                                         + " returned \"Bad Request\". Sometimes the Riot API experiences these when under extreme load. If the problem persists, try catching this exception, waiting briefly, and trying again."));
                 case 503:
                     LOGGER.error("Got \"Service Unavailable\" from " + host + "/" + context.endpoint + "!");
                     return http503Strategy.onFailedRequest(this, context, response,
-                                                           new ServiceUnavailableException("A Riot API request to " + host + "/" + context.endpoint
-                                                                                           + "returned \"Service Unavailable\". This Riot API Service is likely to be down for a short period of time, and can't be used in the meantime."));
+                        new ServiceUnavailableException("A Riot API request to " + host + "/" + context.endpoint
+                                                        + " returned \"Service Unavailable\". This Riot API Service is likely to be down for a short period of time, and can't be used in the meantime."));
                 default:
                     if(response.getStatusCode() >= 400) {
                         LOGGER.error("Get request to " + host + "/" + context.endpoint + " returned " + response.getStatusCode() + ": " + response.getBody());
@@ -710,9 +767,9 @@ public class RiotAPI extends CompositeDataSource {
                 synchronized(lock) {
                     limiter = limiters.get(name);
                     if(limiter == null) {
-                        limiter = newRateLimiter(methodLimiterConfigs);
+                        limiter = newRateLimiter(methodLimiterConfigs.get(name) == null ? methodLimiterConfigs.get("default") : methodLimiterConfigs.get(name));
                         if(anyApplication) {
-                            limiter = new MultiRateLimiter(getRateLimiter(platform), limiter);
+                            limiter = new MultiRateLimiter(ImmutableMap.of("application", getRateLimiter(platform), "method", limiter));
                         }
                         limiters.put(name, limiter);
                     }
@@ -743,7 +800,7 @@ public class RiotAPI extends CompositeDataSource {
                 final Service source = serviceConfig.getType()
                                                     .getConstructor(String.class, Map.class, Collection.class, HTTPClient.class, Service.Configuration.class)
                                                     .newInstance(config.getKey(), applicationRateLimiters, config.getApplicationLimiters(), client,
-                                                                 serviceConfig);
+                                                        serviceConfig);
                 sources.add(source);
             } catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
                     | SecurityException e) {
@@ -753,6 +810,12 @@ public class RiotAPI extends CompositeDataSource {
             }
         }
         return new RiotAPI(sources);
+    }
+
+    public static void main(final String[] args) {
+        final DataPipeline api = new DataPipeline(RiotAPI.create());
+        final Champion annie = api.get(Champion.class, ImmutableMap.<String, Object> of("platform", Platform.NORTH_AMERICA, "id", 1));
+        System.out.println(annie.isFreeToPlay());
     }
 
     private RiotAPI(final Collection<? extends Service> sources) {

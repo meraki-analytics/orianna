@@ -1,57 +1,35 @@
 package com.merakianalytics.orianna.datapipeline.common.rates;
 
-import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-import com.google.common.collect.ImmutableSet;
-
 public interface RateLimiter {
     public static class Configuration {
-        public static Set<Configuration> defaultDeveloperRateLimits() {
-            final Configuration perSecond = new Configuration();
-            perSecond.setEpoch(1);
-            perSecond.setEpochUnit(TimeUnit.SECONDS);
-            perSecond.setPermits(20);
+        public static Configuration of(final int permits, final long epoch, final TimeUnit epochUnit) {
+            final Configuration config = new Configuration();
+            config.setPermits(permits);
+            config.setEpoch(epoch);
+            config.setEpochUnit(epochUnit);
+            return config;
+        }
 
-            final Configuration per2Minutes = new Configuration();
-            per2Minutes.setEpoch(2);
-            per2Minutes.setEpochUnit(TimeUnit.MINUTES);
-            per2Minutes.setPermits(100);
-
-            return ImmutableSet.of(perSecond, per2Minutes);
+        public static Configuration of(final Type type, final int permits, final long epoch, final TimeUnit epochUnit) {
+            final Configuration config = new Configuration();
+            config.setType(type);
+            config.setPermits(permits);
+            config.setEpoch(epoch);
+            config.setEpochUnit(epochUnit);
+            return config;
         }
 
         private long epoch;
+
         private TimeUnit epochUnit;
         private int permits;
-        private Type type = Type.BURST; // TODO: Change to SMOOTH
+        private Type type = Type.BURST;
 
-        @Override
-        public boolean equals(final Object obj) {
-            if(this == obj) {
-                return true;
-            }
-            if(obj == null) {
-                return false;
-            }
-            if(getClass() != obj.getClass()) {
-                return false;
-            }
-            final Configuration other = (Configuration)obj;
-            if(epoch != other.epoch) {
-                return false;
-            }
-            if(epochUnit != other.epochUnit) {
-                return false;
-            }
-            if(permits != other.permits) {
-                return false;
-            }
-            if(type != other.type) {
-                return false;
-            }
-            return true;
+        public Configuration() {
+
         }
 
         /**
@@ -80,17 +58,6 @@ public interface RateLimiter {
          */
         public Type getType() {
             return type;
-        }
-
-        @Override
-        public int hashCode() {
-            final int prime = 31;
-            int result = 1;
-            result = prime * result + (int)(epoch ^ epoch >>> 32);
-            result = prime * result + (epochUnit == null ? 0 : epochUnit.hashCode());
-            result = prime * result + permits;
-            result = prime * result + (type == null ? 0 : type.hashCode());
-            return result;
         }
 
         /**
@@ -128,8 +95,7 @@ public interface RateLimiter {
 
     public static enum Type {
         BURST(FixedWindowRateLimiter.class),
-        NONE(null),
-        SMOOTH(null); // TODO
+        NONE(null);
 
         private final Class<? extends AbstractRateLimiter> clazz;
 
@@ -153,6 +119,8 @@ public interface RateLimiter {
     public void call(final Runnable runnable) throws InterruptedException;
 
     public void call(final Runnable runnable, final long timeout, final TimeUnit unit) throws InterruptedException;
+
+    public void cancel();
 
     public int permitsIssued();
 

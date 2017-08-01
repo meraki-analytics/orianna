@@ -10,7 +10,6 @@ public enum Platform {
     LATIN_AMERICA_SOUTH("LA2", "es_AR"),
     NORTH_AMERICA("NA1", "en_US"),
     OCEANIA("OC1", "en_AU"),
-    PUBLIC_BETA_ENVIRONMENT("PBE1", "en_US"),
     RUSSIA("RU", "ru_RU"),
     TURKEY("TR1", "tr_TR");
 

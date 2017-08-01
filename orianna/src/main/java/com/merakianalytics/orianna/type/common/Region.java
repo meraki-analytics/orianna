@@ -10,7 +10,6 @@ public enum Region {
     LATIN_AMERICA_SOUTH("LAS", "es_AR"),
     NORTH_AMERICA("NA", "en_US"),
     OCEANIA("OCE", "en_AU"),
-    PUBLIC_BETA_ENVIRONMENT("PBE", "en_US"),
     RUSSIA("RU", "ru_RU"),
     TURKEY("TR", "tr_TR");
 
