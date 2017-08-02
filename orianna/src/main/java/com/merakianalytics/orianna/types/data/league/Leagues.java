@@ -1,4 +1,4 @@
-package com.merakianalytics.orianna.types.data.champion;
+package com.merakianalytics.orianna.types.data.league;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,46 +11,45 @@ import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.data.CoreData;
 
-public class ChampionStatuses extends CoreData implements List<ChampionStatus> {
-    private static final long serialVersionUID = -7185225840957807199L;
-
-    private boolean freeToPlay;
+public class Leagues extends CoreData implements List<League> {
+    private static final long serialVersionUID = -7434950182653725644L;
+    private final List<League> leagues = new ArrayList<>();
     private Platform platform;
-    private final List<ChampionStatus> statuses = new ArrayList<>();
+    private long summonerId;
 
     @Override
-    public boolean add(final ChampionStatus e) {
-        return statuses.add(e);
+    public void add(final int index, final League element) {
+        leagues.add(index, element);
     }
 
     @Override
-    public void add(final int index, final ChampionStatus element) {
-        statuses.add(index, element);
+    public boolean add(final League e) {
+        return leagues.add(e);
     }
 
     @Override
-    public boolean addAll(final Collection<? extends ChampionStatus> c) {
-        return statuses.addAll(c);
+    public boolean addAll(final Collection<? extends League> c) {
+        return leagues.addAll(c);
     }
 
     @Override
-    public boolean addAll(final int index, final Collection<? extends ChampionStatus> c) {
-        return statuses.addAll(index, c);
+    public boolean addAll(final int index, final Collection<? extends League> c) {
+        return leagues.addAll(index, c);
     }
 
     @Override
     public void clear() {
-        statuses.clear();
+        leagues.clear();
     }
 
     @Override
     public boolean contains(final Object o) {
-        return statuses.contains(o);
+        return leagues.contains(o);
     }
 
     @Override
     public boolean containsAll(final Collection<?> c) {
-        return statuses.containsAll(c);
+        return leagues.containsAll(c);
     }
 
     @Override
@@ -64,26 +63,26 @@ public class ChampionStatuses extends CoreData implements List<ChampionStatus> {
         if(getClass() != obj.getClass()) {
             return false;
         }
-        final ChampionStatuses other = (ChampionStatuses)obj;
-        if(statuses == null) {
-            if(other.statuses != null) {
+        final Leagues other = (Leagues)obj;
+        if(leagues == null) {
+            if(other.leagues != null) {
                 return false;
             }
-        } else if(!statuses.equals(other.statuses)) {
-            return false;
-        }
-        if(freeToPlay != other.freeToPlay) {
+        } else if(!leagues.equals(other.leagues)) {
             return false;
         }
         if(platform != other.platform) {
+            return false;
+        }
+        if(summonerId != other.summonerId) {
             return false;
         }
         return true;
     }
 
     @Override
-    public ChampionStatus get(final int index) {
-        return statuses.get(index);
+    public League get(final int index) {
+        return leagues.get(index);
     }
 
     /**
@@ -101,84 +100,76 @@ public class ChampionStatuses extends CoreData implements List<ChampionStatus> {
         return platform == null ? null : platform.getRegion();
     }
 
+    /**
+     * @return the summonerId
+     */
+    public long getSummonerId() {
+        return summonerId;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (statuses == null ? 0 : statuses.hashCode());
-        result = prime * result + (freeToPlay ? 1231 : 1237);
+        result = prime * result + (leagues == null ? 0 : leagues.hashCode());
         result = prime * result + (platform == null ? 0 : platform.hashCode());
+        result = prime * result + (int)(summonerId ^ summonerId >>> 32);
         return result;
     }
 
     @Override
     public int indexOf(final Object o) {
-        return statuses.indexOf(o);
+        return leagues.indexOf(o);
     }
 
     @Override
     public boolean isEmpty() {
-        return statuses.isEmpty();
-    }
-
-    /**
-     * @return the freeToPlay
-     */
-    public boolean isFreeToPlay() {
-        return freeToPlay;
+        return leagues.isEmpty();
     }
 
     @Override
-    public Iterator<ChampionStatus> iterator() {
-        return statuses.iterator();
+    public Iterator<League> iterator() {
+        return leagues.iterator();
     }
 
     @Override
     public int lastIndexOf(final Object o) {
-        return statuses.lastIndexOf(o);
+        return leagues.lastIndexOf(o);
     }
 
     @Override
-    public ListIterator<ChampionStatus> listIterator() {
-        return statuses.listIterator();
+    public ListIterator<League> listIterator() {
+        return leagues.listIterator();
     }
 
     @Override
-    public ListIterator<ChampionStatus> listIterator(final int index) {
-        return statuses.listIterator(index);
+    public ListIterator<League> listIterator(final int index) {
+        return leagues.listIterator(index);
     }
 
     @Override
-    public ChampionStatus remove(final int index) {
-        return statuses.remove(index);
+    public League remove(final int index) {
+        return leagues.remove(index);
     }
 
     @Override
     public boolean remove(final Object o) {
-        return statuses.remove(o);
+        return leagues.remove(o);
     }
 
     @Override
     public boolean removeAll(final Collection<?> c) {
-        return statuses.removeAll(c);
+        return leagues.removeAll(c);
     }
 
     @Override
     public boolean retainAll(final Collection<?> c) {
-        return statuses.retainAll(c);
+        return leagues.retainAll(c);
     }
 
     @Override
-    public ChampionStatus set(final int index, final ChampionStatus element) {
-        return statuses.set(index, element);
-    }
-
-    /**
-     * @param freeToPlay
-     *        the freeToPlay to set
-     */
-    public void setFreeToPlay(final boolean freeToPlay) {
-        this.freeToPlay = freeToPlay;
+    public League set(final int index, final League element) {
+        return leagues.set(index, element);
     }
 
     /**
@@ -197,23 +188,31 @@ public class ChampionStatuses extends CoreData implements List<ChampionStatus> {
         platform = region == null ? null : region.getPlatform();
     }
 
-    @Override
-    public int size() {
-        return statuses.size();
+    /**
+     * @param summonerId
+     *        the summonerId to set
+     */
+    public void setSummonerId(final long summonerId) {
+        this.summonerId = summonerId;
     }
 
     @Override
-    public List<ChampionStatus> subList(final int fromIndex, final int toIndex) {
-        return statuses.subList(fromIndex, toIndex);
+    public int size() {
+        return leagues.size();
+    }
+
+    @Override
+    public List<League> subList(final int fromIndex, final int toIndex) {
+        return leagues.subList(fromIndex, toIndex);
     }
 
     @Override
     public Object[] toArray() {
-        return statuses.toArray();
+        return leagues.toArray();
     }
 
     @Override
     public <T> T[] toArray(final T[] a) {
-        return statuses.toArray(a);
+        return leagues.toArray(a);
     }
 }

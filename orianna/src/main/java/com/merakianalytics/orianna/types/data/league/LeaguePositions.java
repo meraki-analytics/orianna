@@ -1,4 +1,4 @@
-package com.merakianalytics.orianna.types.data.championmastery;
+package com.merakianalytics.orianna.types.data.league;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,45 +11,45 @@ import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.data.CoreData;
 
-public class ChampionMasteries extends CoreData implements List<ChampionMastery> {
-    private static final long serialVersionUID = 3532345605312788979L;
-    private final List<ChampionMastery> masteries = new ArrayList<>();
+public class LeaguePositions extends CoreData implements List<LeaguePosition> {
+    private static final long serialVersionUID = 1457442481837252048L;
     private Platform platform;
+    private final List<LeaguePosition> positions = new ArrayList<>();
     private long summonerId;
 
     @Override
-    public boolean add(final ChampionMastery e) {
-        return masteries.add(e);
+    public void add(final int index, final LeaguePosition element) {
+        positions.add(index, element);
     }
 
     @Override
-    public void add(final int index, final ChampionMastery element) {
-        masteries.add(index, element);
+    public boolean add(final LeaguePosition e) {
+        return positions.add(e);
     }
 
     @Override
-    public boolean addAll(final Collection<? extends ChampionMastery> c) {
-        return masteries.addAll(c);
+    public boolean addAll(final Collection<? extends LeaguePosition> c) {
+        return positions.addAll(c);
     }
 
     @Override
-    public boolean addAll(final int index, final Collection<? extends ChampionMastery> c) {
-        return masteries.addAll(index, c);
+    public boolean addAll(final int index, final Collection<? extends LeaguePosition> c) {
+        return positions.addAll(index, c);
     }
 
     @Override
     public void clear() {
-        masteries.clear();
+        positions.clear();
     }
 
     @Override
     public boolean contains(final Object o) {
-        return masteries.contains(o);
+        return positions.contains(o);
     }
 
     @Override
     public boolean containsAll(final Collection<?> c) {
-        return masteries.containsAll(c);
+        return positions.containsAll(c);
     }
 
     @Override
@@ -63,15 +63,15 @@ public class ChampionMasteries extends CoreData implements List<ChampionMastery>
         if(getClass() != obj.getClass()) {
             return false;
         }
-        final ChampionMasteries other = (ChampionMasteries)obj;
-        if(masteries == null) {
-            if(other.masteries != null) {
-                return false;
-            }
-        } else if(!masteries.equals(other.masteries)) {
+        final LeaguePositions other = (LeaguePositions)obj;
+        if(platform != other.platform) {
             return false;
         }
-        if(platform != other.platform) {
+        if(positions == null) {
+            if(other.positions != null) {
+                return false;
+            }
+        } else if(!positions.equals(other.positions)) {
             return false;
         }
         if(summonerId != other.summonerId) {
@@ -81,8 +81,8 @@ public class ChampionMasteries extends CoreData implements List<ChampionMastery>
     }
 
     @Override
-    public ChampionMastery get(final int index) {
-        return masteries.get(index);
+    public LeaguePosition get(final int index) {
+        return positions.get(index);
     }
 
     /**
@@ -111,65 +111,65 @@ public class ChampionMasteries extends CoreData implements List<ChampionMastery>
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (masteries == null ? 0 : masteries.hashCode());
         result = prime * result + (platform == null ? 0 : platform.hashCode());
+        result = prime * result + (positions == null ? 0 : positions.hashCode());
         result = prime * result + (int)(summonerId ^ summonerId >>> 32);
         return result;
     }
 
     @Override
     public int indexOf(final Object o) {
-        return masteries.indexOf(o);
+        return positions.indexOf(o);
     }
 
     @Override
     public boolean isEmpty() {
-        return masteries.isEmpty();
+        return positions.isEmpty();
     }
 
     @Override
-    public Iterator<ChampionMastery> iterator() {
-        return masteries.iterator();
+    public Iterator<LeaguePosition> iterator() {
+        return positions.iterator();
     }
 
     @Override
     public int lastIndexOf(final Object o) {
-        return masteries.lastIndexOf(o);
+        return positions.lastIndexOf(o);
     }
 
     @Override
-    public ListIterator<ChampionMastery> listIterator() {
-        return masteries.listIterator();
+    public ListIterator<LeaguePosition> listIterator() {
+        return positions.listIterator();
     }
 
     @Override
-    public ListIterator<ChampionMastery> listIterator(final int index) {
-        return masteries.listIterator(index);
+    public ListIterator<LeaguePosition> listIterator(final int index) {
+        return positions.listIterator(index);
     }
 
     @Override
-    public ChampionMastery remove(final int index) {
-        return masteries.remove(index);
+    public LeaguePosition remove(final int index) {
+        return positions.remove(index);
     }
 
     @Override
     public boolean remove(final Object o) {
-        return masteries.remove(o);
+        return positions.remove(o);
     }
 
     @Override
     public boolean removeAll(final Collection<?> c) {
-        return masteries.removeAll(c);
+        return positions.removeAll(c);
     }
 
     @Override
     public boolean retainAll(final Collection<?> c) {
-        return masteries.retainAll(c);
+        return positions.retainAll(c);
     }
 
     @Override
-    public ChampionMastery set(final int index, final ChampionMastery element) {
-        return masteries.set(index, element);
+    public LeaguePosition set(final int index, final LeaguePosition element) {
+        return positions.set(index, element);
     }
 
     /**
@@ -198,21 +198,21 @@ public class ChampionMasteries extends CoreData implements List<ChampionMastery>
 
     @Override
     public int size() {
-        return masteries.size();
+        return positions.size();
     }
 
     @Override
-    public List<ChampionMastery> subList(final int fromIndex, final int toIndex) {
-        return masteries.subList(fromIndex, toIndex);
+    public List<LeaguePosition> subList(final int fromIndex, final int toIndex) {
+        return positions.subList(fromIndex, toIndex);
     }
 
     @Override
     public Object[] toArray() {
-        return masteries.toArray();
+        return positions.toArray();
     }
 
     @Override
     public <T> T[] toArray(final T[] a) {
-        return masteries.toArray(a);
+        return positions.toArray(a);
     }
 }
