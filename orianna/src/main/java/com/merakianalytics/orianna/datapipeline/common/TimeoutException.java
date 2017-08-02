@@ -1,6 +1,6 @@
 package com.merakianalytics.orianna.datapipeline.common;
 
-import com.merakianalytics.orianna.type.common.OriannaException;
+import com.merakianalytics.orianna.types.common.OriannaException;
 
 public class TimeoutException extends OriannaException {
     public static enum Type {

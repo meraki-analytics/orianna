@@ -11,10 +11,10 @@ import com.merakianalytics.datapipelines.sources.Get;
 import com.merakianalytics.datapipelines.sources.GetMany;
 import com.merakianalytics.orianna.datapipeline.common.HTTPClient;
 import com.merakianalytics.orianna.datapipeline.common.rates.RateLimiter;
-import com.merakianalytics.orianna.type.common.Platform;
-import com.merakianalytics.orianna.type.dto.championmastery.ChampionMasteries;
-import com.merakianalytics.orianna.type.dto.championmastery.ChampionMastery;
-import com.merakianalytics.orianna.type.dto.championmastery.ChampionMasteryScore;
+import com.merakianalytics.orianna.types.common.Platform;
+import com.merakianalytics.orianna.types.dto.championmastery.ChampionMasteries;
+import com.merakianalytics.orianna.types.dto.championmastery.ChampionMastery;
+import com.merakianalytics.orianna.types.dto.championmastery.ChampionMasteryScore;
 
 public class ChampionMasteryAPI extends RiotAPI.Service {
     public ChampionMasteryAPI(final String key, final Map<Platform, RateLimiter> applicationRateLimiters,

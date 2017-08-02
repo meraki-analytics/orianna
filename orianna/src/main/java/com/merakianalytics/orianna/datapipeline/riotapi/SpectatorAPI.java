@@ -11,9 +11,9 @@ import com.merakianalytics.datapipelines.sources.Get;
 import com.merakianalytics.datapipelines.sources.GetMany;
 import com.merakianalytics.orianna.datapipeline.common.HTTPClient;
 import com.merakianalytics.orianna.datapipeline.common.rates.RateLimiter;
-import com.merakianalytics.orianna.type.common.Platform;
-import com.merakianalytics.orianna.type.dto.spectator.CurrentGameInfo;
-import com.merakianalytics.orianna.type.dto.spectator.FeaturedGames;
+import com.merakianalytics.orianna.types.common.Platform;
+import com.merakianalytics.orianna.types.dto.spectator.CurrentGameInfo;
+import com.merakianalytics.orianna.types.dto.spectator.FeaturedGames;
 
 public class SpectatorAPI extends RiotAPI.Service {
     public SpectatorAPI(final String key, final Map<Platform, RateLimiter> applicationRateLimiters,

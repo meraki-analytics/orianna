@@ -15,12 +15,12 @@ import com.merakianalytics.datapipelines.sources.Get;
 import com.merakianalytics.datapipelines.sources.GetMany;
 import com.merakianalytics.orianna.datapipeline.common.HTTPClient;
 import com.merakianalytics.orianna.datapipeline.common.rates.RateLimiter;
-import com.merakianalytics.orianna.type.common.Platform;
-import com.merakianalytics.orianna.type.dto.match.Match;
-import com.merakianalytics.orianna.type.dto.match.MatchReference;
-import com.merakianalytics.orianna.type.dto.match.MatchTimeline;
-import com.merakianalytics.orianna.type.dto.match.Matchlist;
-import com.merakianalytics.orianna.type.dto.match.TournamentMatches;
+import com.merakianalytics.orianna.types.common.Platform;
+import com.merakianalytics.orianna.types.dto.match.Match;
+import com.merakianalytics.orianna.types.dto.match.MatchReference;
+import com.merakianalytics.orianna.types.dto.match.MatchTimeline;
+import com.merakianalytics.orianna.types.dto.match.Matchlist;
+import com.merakianalytics.orianna.types.dto.match.TournamentMatches;
 
 public class MatchAPI extends RiotAPI.Service {
     public MatchAPI(final String key, final Map<Platform, RateLimiter> applicationRateLimiters,

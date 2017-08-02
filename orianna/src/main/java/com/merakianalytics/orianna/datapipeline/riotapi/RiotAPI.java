@@ -36,21 +36,21 @@ import com.merakianalytics.orianna.datapipeline.riotapi.exceptions.NotFoundExcep
 import com.merakianalytics.orianna.datapipeline.riotapi.exceptions.RateLimitExceededException;
 import com.merakianalytics.orianna.datapipeline.riotapi.exceptions.ServiceUnavailableException;
 import com.merakianalytics.orianna.datapipeline.riotapi.exceptions.UnsupportedMediaTypeException;
-import com.merakianalytics.orianna.type.common.OriannaException;
-import com.merakianalytics.orianna.type.common.Platform;
-import com.merakianalytics.orianna.type.dto.champion.Champion;
+import com.merakianalytics.orianna.types.common.OriannaException;
+import com.merakianalytics.orianna.types.common.Platform;
+import com.merakianalytics.orianna.types.dto.champion.Champion;
 
 public class RiotAPI extends CompositeDataSource {
     public static class Configuration {
         private static Set<RateLimiter.Configuration> defaultApplicationLimiters() {
-            return ImmutableSet.of(RateLimiter.Configuration.of(20, 1L, TimeUnit.SECONDS), RateLimiter.Configuration.of(100, 2, TimeUnit.MINUTES));
+            return ImmutableSet.of(RateLimiter.Configuration.of(20, 1L, TimeUnit.SECONDS), RateLimiter.Configuration.of(100, 2L, TimeUnit.MINUTES));
         }
 
         private static Set<Service.Configuration> defaultServices() {
             final Map<String, Collection<RateLimiter.Configuration>> defaultMethodLimiters = ImmutableMap.<String, Collection<RateLimiter.Configuration>> of(
                 "default",
                 ImmutableSet.of(RateLimiter.Configuration.of(20000,
-                    10,
+                    10L,
                     TimeUnit.SECONDS)));
 
             final Map<String, Collection<RateLimiter.Configuration>> useDefault = Collections.unmodifiableMap(
@@ -68,32 +68,32 @@ public class RiotAPI extends CompositeDataSource {
                                            ImmutableSet.of(
                                                RateLimiter.Configuration.of(
                                                    500,
-                                                   10,
+                                                   10L,
                                                    TimeUnit.SECONDS)),
                                            "lol/match/v3/timelines/by-match/matchId",
                                            ImmutableSet.of(
                                                RateLimiter.Configuration.of(
                                                    500,
-                                                   10,
+                                                   10L,
                                                    TimeUnit.SECONDS)),
                                            "lol/match/v3/matchlists/by-account/accountId",
                                            ImmutableSet.of(
                                                RateLimiter.Configuration.of(
                                                    1000,
-                                                   10,
+                                                   10L,
                                                    TimeUnit.SECONDS)),
                                            "lol/match/v3/matchlists/by-account/accountId/recent",
                                            ImmutableSet.of(
                                                RateLimiter.Configuration.of(
                                                    1000,
-                                                   10,
+                                                   10L,
                                                    TimeUnit.SECONDS))))
                                    .put(RunesAPI.class, useDefault)
                                    .put(SpectatorAPI.class, useDefault)
                                    .put(StaticDataAPI.class,
                                        ImmutableMap.<String, Collection<RateLimiter.Configuration>> of("default",
                                            ImmutableSet.of(RateLimiter.Configuration.of(10,
-                                               1,
+                                               1L,
                                                TimeUnit.HOURS))))
                                    .put(SummonerAPI.class, useDefault)
                                    .build();

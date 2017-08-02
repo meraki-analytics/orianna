@@ -12,13 +12,13 @@ import com.merakianalytics.datapipelines.sources.Get;
 import com.merakianalytics.datapipelines.sources.GetMany;
 import com.merakianalytics.orianna.datapipeline.common.HTTPClient;
 import com.merakianalytics.orianna.datapipeline.common.rates.RateLimiter;
-import com.merakianalytics.orianna.type.common.Platform;
-import com.merakianalytics.orianna.type.common.Queue;
-import com.merakianalytics.orianna.type.common.Tier;
-import com.merakianalytics.orianna.type.dto.league.LeagueList;
-import com.merakianalytics.orianna.type.dto.league.LeaguePosition;
-import com.merakianalytics.orianna.type.dto.league.SummonerLeagues;
-import com.merakianalytics.orianna.type.dto.league.SummonerPositions;
+import com.merakianalytics.orianna.types.common.Platform;
+import com.merakianalytics.orianna.types.common.Queue;
+import com.merakianalytics.orianna.types.common.Tier;
+import com.merakianalytics.orianna.types.dto.league.LeagueList;
+import com.merakianalytics.orianna.types.dto.league.LeaguePosition;
+import com.merakianalytics.orianna.types.dto.league.SummonerLeagues;
+import com.merakianalytics.orianna.types.dto.league.SummonerPositions;
 
 public class LeagueAPI extends RiotAPI.Service {
     private static final Map<Tier, String> LEAGUE_LIST_ENDPOINTS = ImmutableMap.of(Tier.CHALLENGER, "lol/league/v3/challengerleagues/by-queue/",
