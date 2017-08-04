@@ -13,8 +13,8 @@ public enum Platform {
     RUSSIA("RU", "ru_RU"),
     TURKEY("TR1", "tr_TR");
 
-    private String defaultLocale;
-    private String tag;
+    private final String defaultLocale;
+    private final String tag;
 
     private Platform(final String tag, final String defaultLocale) {
         this.tag = tag;

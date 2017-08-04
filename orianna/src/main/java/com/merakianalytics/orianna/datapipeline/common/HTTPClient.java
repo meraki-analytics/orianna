@@ -16,6 +16,7 @@ import com.merakianalytics.orianna.datapipeline.common.rates.RateLimiter;
 
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.ResponseBody;
@@ -129,11 +130,21 @@ public class HTTPClient {
 
     public static class Response {
         private final String body;
+
+        private final byte[] bytes;
         private final Multimap<String, String> headers;
         private final int statusCode;
 
+        public Response(final byte[] bytes, final int statusCode, final Multimap<String, String> headers) {
+            this.bytes = bytes;
+            body = null;
+            this.statusCode = statusCode;
+            this.headers = headers;
+        }
+
         public Response(final String body, final int statusCode, final Multimap<String, String> headers) {
             this.body = body;
+            bytes = null;
             this.statusCode = statusCode;
             this.headers = headers;
         }
@@ -143,6 +154,13 @@ public class HTTPClient {
          */
         public String getBody() {
             return body;
+        }
+
+        /**
+         * @return the bytes
+         */
+        public byte[] getBytes() {
+            return bytes;
         }
 
         /**
@@ -157,6 +175,10 @@ public class HTTPClient {
          */
         public int getStatusCode() {
             return statusCode;
+        }
+
+        public boolean isString() {
+            return body != null;
         }
     }
 
@@ -175,6 +197,15 @@ public class HTTPClient {
                                            .readTimeout(config.getReadTimeout(), config.getReadTimeoutUnit()).build();
         rateLimiterTimeout = config.getRateLimiterTimeout();
         rateLimiterTimeoutUnit = config.getRateLimiterTimeoutUnit();
+    }
+
+    public Response get(final String url) throws IOException {
+        final HttpUrl parsed = HttpUrl.parse(url);
+        return get(parsed.host(), parsed.encodedPath(), (Multimap<String, String>)null, null, null);
+    }
+
+    public Response get(final String host, final String url) throws IOException {
+        return get(host, url, (Multimap<String, String>)null, null, null);
     }
 
     public Response get(final String host, final String url, final Map<String, String> parameters, final Map<String, String> headers) throws IOException {
@@ -212,14 +243,19 @@ public class HTTPClient {
             @Override
             public Response call() throws IOException {
                 LOGGER.info("Making GET request to " + httpURL);
-                String body;
+                String body = null;
+                byte[] bytes = null;
                 int statusCode;
                 Headers responseHeaders;
                 try(okhttp3.Response response = client.newCall(request).execute()) {
                     statusCode = response.code();
                     responseHeaders = response.headers();
                     try(ResponseBody responseBody = response.body()) {
-                        body = responseBody.string();
+                        if(MediaType.parse("application/json").equals(responseBody.contentType())) {
+                            body = responseBody.string();
+                        } else {
+                            bytes = responseBody.bytes();
+                        }
                     }
                 } catch(final SocketTimeoutException e) {
                     throw new TimeoutException("HTTP GET request timed out!", Type.HTTP);
@@ -229,7 +265,12 @@ public class HTTPClient {
                 for(final String key : responseHeaders.names()) {
                     mapBuilder = mapBuilder.putAll(key, responseHeaders.get(key));
                 }
-                return new Response(body, statusCode, mapBuilder.build());
+
+                if(body != null) {
+                    return new Response(body, statusCode, mapBuilder.build());
+                } else {
+                    return new Response(bytes, statusCode, mapBuilder.build());
+                }
             }
         };
 

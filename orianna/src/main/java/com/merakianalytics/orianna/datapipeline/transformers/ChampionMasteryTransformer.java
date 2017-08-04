@@ -10,10 +10,10 @@ import com.merakianalytics.orianna.types.data.championmastery.ChampionMasteries;
 import com.merakianalytics.orianna.types.data.championmastery.ChampionMastery;
 import com.merakianalytics.orianna.types.data.championmastery.ChampionMasteryScore;
 
-public class ChampionMasteryAPITransformer extends AbstractDataTransformer {
+public class ChampionMasteryTransformer extends AbstractDataTransformer {
     @Transform(from = ChampionMasteries.class, to = com.merakianalytics.orianna.types.dto.championmastery.ChampionMasteries.class)
     public com.merakianalytics.orianna.types.dto.championmastery.ChampionMasteries transform(final ChampionMasteries item, final PipelineContext context) {
-        final com.merakianalytics.orianna.types.dto.championmastery.ChampionMasteries masteries = new com.merakianalytics.orianna.types.dto.championmastery.ChampionMasteries();
+        final com.merakianalytics.orianna.types.dto.championmastery.ChampionMasteries masteries = new com.merakianalytics.orianna.types.dto.championmastery.ChampionMasteries(item.size());
         for(final ChampionMastery mastery : item) {
             masteries.add(transform(mastery, context));
         }
@@ -50,7 +50,7 @@ public class ChampionMasteryAPITransformer extends AbstractDataTransformer {
 
     @Transform(from = com.merakianalytics.orianna.types.dto.championmastery.ChampionMasteries.class, to = ChampionMasteries.class)
     public ChampionMasteries transform(final com.merakianalytics.orianna.types.dto.championmastery.ChampionMasteries item, final PipelineContext context) {
-        final ChampionMasteries masteries = new ChampionMasteries();
+        final ChampionMasteries masteries = new ChampionMasteries(item.size());
         for(final com.merakianalytics.orianna.types.dto.championmastery.ChampionMastery mastery : item) {
             masteries.add(transform(mastery, context));
         }

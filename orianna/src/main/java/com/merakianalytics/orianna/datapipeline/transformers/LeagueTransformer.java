@@ -1,5 +1,8 @@
 package com.merakianalytics.orianna.datapipeline.transformers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.merakianalytics.datapipelines.PipelineContext;
 import com.merakianalytics.datapipelines.transformers.AbstractDataTransformer;
 import com.merakianalytics.datapipelines.transformers.Transform;
@@ -19,7 +22,7 @@ import com.merakianalytics.orianna.types.dto.league.MiniSeries;
 import com.merakianalytics.orianna.types.dto.league.SummonerLeagues;
 import com.merakianalytics.orianna.types.dto.league.SummonerPositions;
 
-public class LeagueAPITransformer extends AbstractDataTransformer {
+public class LeagueTransformer extends AbstractDataTransformer {
     @Transform(from = com.merakianalytics.orianna.types.dto.league.LeaguePosition.class, to = LeaguePosition.class)
     public LeaguePosition transform(final com.merakianalytics.orianna.types.dto.league.LeaguePosition item, final PipelineContext context) {
         final LeaguePosition position = new LeaguePosition();
@@ -44,9 +47,11 @@ public class LeagueAPITransformer extends AbstractDataTransformer {
     @Transform(from = League.class, to = LeagueList.class)
     public LeagueList transform(final League item, final PipelineContext context) {
         final LeagueList list = new LeagueList();
+        final List<LeagueItem> entries = new ArrayList<>(item.size());
         for(final LeagueEntry entry : item) {
-            list.getEntries().add(transform(entry, context));
+            entries.add(transform(entry, context));
         }
+        list.setEntries(entries);
         list.setName(item.getName());
         list.setPlatform(item.getPlatform().toString());
         list.setQueue(item.getQueue().toString());
@@ -91,7 +96,7 @@ public class LeagueAPITransformer extends AbstractDataTransformer {
 
     @Transform(from = LeagueList.class, to = League.class)
     public League transform(final LeagueList item, final PipelineContext context) {
-        final League league = new League();
+        final League league = new League(item.getEntries().size());
         for(final LeagueItem entry : item.getEntries()) {
             league.add(transform(entry, context));
         }
@@ -168,7 +173,7 @@ public class LeagueAPITransformer extends AbstractDataTransformer {
 
     @Transform(from = SummonerLeagues.class, to = Leagues.class)
     public Leagues transform(final SummonerLeagues item, final PipelineContext context) {
-        final Leagues leagues = new Leagues();
+        final Leagues leagues = new Leagues(item.size());
         for(final LeagueList list : item) {
             leagues.add(transform(list, context));
         }
@@ -179,7 +184,7 @@ public class LeagueAPITransformer extends AbstractDataTransformer {
 
     @Transform(from = SummonerPositions.class, to = LeaguePositions.class)
     public LeaguePositions transform(final SummonerPositions item, final PipelineContext context) {
-        final LeaguePositions positions = new LeaguePositions();
+        final LeaguePositions positions = new LeaguePositions(item.size());
         for(final com.merakianalytics.orianna.types.dto.league.LeaguePosition position : item) {
             positions.add(transform(position, context));
         }

@@ -1,10 +1,8 @@
 package com.merakianalytics.orianna.types.data.league;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.merakianalytics.orianna.types.common.Division;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Queue;
-import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.common.Tier;
 import com.merakianalytics.orianna.types.data.CoreData;
 
@@ -139,14 +137,6 @@ public class LeaguePosition extends CoreData {
      */
     public Queue getQueue() {
         return queue;
-    }
-
-    /**
-     * @return the region
-     */
-    @JsonIgnore
-    public Region getRegion() {
-        return platform == null ? null : platform.getRegion();
     }
 
     /**
@@ -305,14 +295,6 @@ public class LeaguePosition extends CoreData {
      */
     public void setQueue(final Queue queue) {
         this.queue = queue;
-    }
-
-    /**
-     * @param region
-     *        the region to set
-     */
-    public void setRegion(final Region region) {
-        platform = region == null ? null : region.getPlatform();
     }
 
     /**

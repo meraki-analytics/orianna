@@ -14,7 +14,6 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -38,6 +37,7 @@ import com.merakianalytics.orianna.datapipeline.riotapi.exceptions.ServiceUnavai
 import com.merakianalytics.orianna.datapipeline.riotapi.exceptions.UnsupportedMediaTypeException;
 import com.merakianalytics.orianna.types.common.OriannaException;
 import com.merakianalytics.orianna.types.common.Platform;
+import com.merakianalytics.orianna.types.dto.DataObject;
 import com.merakianalytics.orianna.types.dto.champion.Champion;
 
 public class RiotAPI extends CompositeDataSource {
@@ -192,7 +192,8 @@ public class RiotAPI extends CompositeDataSource {
             }
 
             @Override
-            public <T> T onFailedRequest(final RiotAPI.Service service, final RequestContext<T> context, final Response response, final OriannaException e) {
+            public <T extends DataObject> T onFailedRequest(final RiotAPI.Service service, final RequestContext<T> context, final Response response,
+                                                            final OriannaException e) {
                 final int attempts = context.attemptCount;
                 if(attempts > maxAttempts) {
                     return onFailure.onFailedRequest(service, context, response, e);
@@ -210,7 +211,7 @@ public class RiotAPI extends CompositeDataSource {
         }
 
         public static interface FailedRequestStrategy {
-            public <T> T onFailedRequest(RiotAPI.Service service, RequestContext<T> context, Response response, OriannaException e);
+            public <T extends DataObject> T onFailedRequest(RiotAPI.Service service, RequestContext<T> context, Response response, OriannaException e);
         }
 
         private static class Handle429 implements FailedRequestStrategy {
@@ -226,7 +227,8 @@ public class RiotAPI extends CompositeDataSource {
             }
 
             @Override
-            public <T> T onFailedRequest(final Service service, final RequestContext<T> context, final Response response, final OriannaException e) {
+            public <T extends DataObject> T onFailedRequest(final Service service, final RequestContext<T> context, final Response response,
+                                                            final OriannaException e) {
                 final Collection<String> retryAfterHeaders = response.getHeaders().get("Retry-After");
                 if(retryAfterHeaders == null || retryAfterHeaders.isEmpty()) {
                     onMissingRetryAfter.onFailedRequest(service, context, response, e);
@@ -275,7 +277,8 @@ public class RiotAPI extends CompositeDataSource {
             }
 
             @Override
-            public <T> T onFailedRequest(final RiotAPI.Service service, final RequestContext<T> context, final Response response, final OriannaException e) {
+            public <T extends DataObject> T onFailedRequest(final RiotAPI.Service service, final RequestContext<T> context, final Response response,
+                                                            final OriannaException e) {
                 final int attempts = context.attemptCount;
                 if(attempts > maxAttempts) {
                     return onFailure.onFailedRequest(service, context, response, e);
@@ -293,14 +296,16 @@ public class RiotAPI extends CompositeDataSource {
 
         private static class ReturnNull implements FailedRequestStrategy {
             @Override
-            public <T> T onFailedRequest(final RiotAPI.Service service, final RequestContext<T> context, final Response response, final OriannaException e) {
+            public <T extends DataObject> T onFailedRequest(final RiotAPI.Service service, final RequestContext<T> context, final Response response,
+                                                            final OriannaException e) {
                 return null;
             }
         }
 
         private static class ThrowException implements FailedRequestStrategy {
             @Override
-            public <T> T onFailedRequest(final RiotAPI.Service service, final RequestContext<T> context, final Response response, final OriannaException e) {
+            public <T extends DataObject> T onFailedRequest(final RiotAPI.Service service, final RequestContext<T> context, final Response response,
+                                                            final OriannaException e) {
                 throw e;
             }
         }
@@ -528,7 +533,6 @@ public class RiotAPI extends CompositeDataSource {
         private final FailedRequestStrategy http429Strategy;
         private final FailedRequestStrategy http500Strategy;
         private final FailedRequestStrategy http503Strategy;
-        private final ObjectMapper mapper;
         private final Map<String, Set<RateLimiter.Configuration>> methodLimiterConfigs;
         private final Map<Platform, Map<String, Object>> rateLimiterLocks;
         private final Map<Platform, Map<String, RateLimiter>> rateLimiters;
@@ -544,7 +548,6 @@ public class RiotAPI extends CompositeDataSource {
             http429Strategy = config.getHttp429Strategy();
             http500Strategy = config.getHttp500Strategy();
             http503Strategy = config.getHttp503Strategy();
-            mapper = new ObjectMapper();
             defaultHeaders = ImmutableMap.of("X-Riot-Token", key);
             rateLimiters = new ConcurrentHashMap<>();
             rateLimiterLocks = new ConcurrentHashMap<>();
@@ -611,42 +614,42 @@ public class RiotAPI extends CompositeDataSource {
             }
         }
 
-        protected <T> T get(final Class<T> type, final String endpoint, final Platform platform) {
+        protected <T extends DataObject> T get(final Class<T> type, final String endpoint, final Platform platform) {
             final RequestContext<T> context = new RequestContext<>(type, endpoint, platform, null, null);
             return get(context);
         }
 
-        protected <T> T get(final Class<T> type, final String endpoint, final Platform platform, final Map<String, String> parameters) {
+        protected <T extends DataObject> T get(final Class<T> type, final String endpoint, final Platform platform, final Map<String, String> parameters) {
             final RequestContext<T> context = new RequestContext<>(type, endpoint, platform,
                                                                    parameters == null ? null : ImmutableListMultimap.copyOf(parameters.entrySet()), null);
             return get(context);
         }
 
-        protected <T> T get(final Class<T> type, final String endpoint, final Platform platform, final Map<String, String> parameters,
-                            final String rateLimiterName) {
+        protected <T extends DataObject> T get(final Class<T> type, final String endpoint, final Platform platform, final Map<String, String> parameters,
+                                               final String rateLimiterName) {
             final RequestContext<T> context = new RequestContext<>(type, endpoint, platform,
                                                                    parameters == null ? null : ImmutableListMultimap.copyOf(parameters.entrySet()),
                                                                    rateLimiterName);
             return get(context);
         }
 
-        protected <T> T get(final Class<T> type, final String endpoint, final Platform platform, final Multimap<String, String> parameters) {
+        protected <T extends DataObject> T get(final Class<T> type, final String endpoint, final Platform platform, final Multimap<String, String> parameters) {
             final RequestContext<T> context = new RequestContext<>(type, endpoint, platform, parameters, null);
             return get(context);
         }
 
-        protected <T> T get(final Class<T> type, final String endpoint, final Platform platform, final Multimap<String, String> parameters,
-                            final String rateLimiterName) {
+        protected <T extends DataObject> T get(final Class<T> type, final String endpoint, final Platform platform, final Multimap<String, String> parameters,
+                                               final String rateLimiterName) {
             final RequestContext<T> context = new RequestContext<>(type, endpoint, platform, parameters, rateLimiterName);
             return get(context);
         }
 
-        protected <T> T get(final Class<T> type, final String endpoint, final Platform platform, final String rateLimiterName) {
+        protected <T extends DataObject> T get(final Class<T> type, final String endpoint, final Platform platform, final String rateLimiterName) {
             final RequestContext<T> context = new RequestContext<>(type, endpoint, platform, null, rateLimiterName);
             return get(context);
         }
 
-        private <T> T get(final RequestContext<T> context) {
+        private <T extends DataObject> T get(final RequestContext<T> context) {
             context.attemptCount += 1;
             final String host = context.platform.getTag().toLowerCase() + ".api.riotgames.com";
 
@@ -706,13 +709,7 @@ public class RiotAPI extends CompositeDataSource {
                     break;
             }
 
-            try {
-                return mapper.readValue(response.getBody(), context.type);
-            } catch(final IOException e) {
-                LOGGER.error("Failed to deserialize response body for type " + context.type.getCanonicalName() + "!", e);
-                throw new OriannaException("Couldn't deserialize the response from the Riot API at " + host + "/" + context.endpoint + " into "
-                                           + context.type.getCanonicalName() + "! Report this to the orianna team.", e);
-            }
+            return DataObject.fromJSON(context.type, response.getBody());
         }
 
         private RateLimiter getRateLimiter(final Platform platform) {

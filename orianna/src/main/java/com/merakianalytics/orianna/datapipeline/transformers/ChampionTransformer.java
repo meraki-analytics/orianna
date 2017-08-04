@@ -1,5 +1,8 @@
 package com.merakianalytics.orianna.datapipeline.transformers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.merakianalytics.datapipelines.PipelineContext;
 import com.merakianalytics.datapipelines.transformers.AbstractDataTransformer;
 import com.merakianalytics.datapipelines.transformers.Transform;
@@ -9,7 +12,7 @@ import com.merakianalytics.orianna.types.data.champion.ChampionStatuses;
 import com.merakianalytics.orianna.types.dto.champion.Champion;
 import com.merakianalytics.orianna.types.dto.champion.ChampionList;
 
-public class ChampionAPITransformer extends AbstractDataTransformer {
+public class ChampionTransformer extends AbstractDataTransformer {
     @Transform(from = Champion.class, to = ChampionStatus.class)
     public ChampionStatus transform(final Champion item, final PipelineContext context) {
         final ChampionStatus status = new ChampionStatus();
@@ -25,7 +28,7 @@ public class ChampionAPITransformer extends AbstractDataTransformer {
 
     @Transform(from = ChampionList.class, to = ChampionStatuses.class)
     public ChampionStatuses transform(final ChampionList item, final PipelineContext context) {
-        final ChampionStatuses statuses = new ChampionStatuses();
+        final ChampionStatuses statuses = new ChampionStatuses(item.getChampions().size());
         for(final Champion champion : item.getChampions()) {
             statuses.add(transform(champion, context));
         }
@@ -50,9 +53,11 @@ public class ChampionAPITransformer extends AbstractDataTransformer {
     @Transform(from = ChampionStatuses.class, to = ChampionList.class)
     public ChampionList transform(final ChampionStatuses item, final PipelineContext context) {
         final ChampionList statuses = new ChampionList();
+        final List<Champion> stats = new ArrayList<>(item.size());
         for(final ChampionStatus status : item) {
-            statuses.getChampions().add(transform(status, context));
+            stats.add(transform(status, context));
         }
+        statuses.setChampions(stats);
         statuses.setFreeToPlay(item.isFreeToPlay());
         statuses.setPlatform(item.getPlatform().toString());
         return statuses;

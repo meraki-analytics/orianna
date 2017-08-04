@@ -53,7 +53,7 @@ public enum Queue {
     URF_5x5(76);
 
     public static final Set<Queue> RANKED = ImmutableSet.of(RANKED_SOLO_5x5, RANKED_FLEX_SR, RANKED_FLEX_TT);
-    private int id;
+    private final int id;
 
     private Queue(final int id) {
         this.id = id;

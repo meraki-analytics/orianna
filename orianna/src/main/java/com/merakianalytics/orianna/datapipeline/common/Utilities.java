@@ -1,4 +1,4 @@
-package com.merakianalytics.orianna.datapipeline.riotapi;
+package com.merakianalytics.orianna.datapipeline.common;
 
 import com.google.common.base.Preconditions;
 

@@ -2,9 +2,7 @@ package com.merakianalytics.orianna.types.data.championmastery;
 
 import org.joda.time.DateTime;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.merakianalytics.orianna.types.common.Platform;
-import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class ChampionMastery extends CoreData {
@@ -121,14 +119,6 @@ public class ChampionMastery extends CoreData {
     }
 
     /**
-     * @return the region
-     */
-    @JsonIgnore
-    public Region getRegion() {
-        return platform == null ? null : platform.getRegion();
-    }
-
-    /**
      * @return the tokens
      */
     public int getTokens() {
@@ -229,14 +219,6 @@ public class ChampionMastery extends CoreData {
      */
     public void setPointsUntilNextLevel(final long pointsUntilNextLevel) {
         this.pointsUntilNextLevel = pointsUntilNextLevel;
-    }
-
-    /**
-     * @param region
-     *        the region to set
-     */
-    public void setRegion(final Region region) {
-        platform = region == null ? null : region.getPlatform();
     }
 
     /**

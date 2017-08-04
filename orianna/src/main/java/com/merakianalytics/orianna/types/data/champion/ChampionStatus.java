@@ -1,8 +1,6 @@
 package com.merakianalytics.orianna.types.data.champion;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.merakianalytics.orianna.types.common.Platform;
-import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class ChampionStatus extends CoreData {
@@ -23,14 +21,6 @@ public class ChampionStatus extends CoreData {
      */
     public Platform getPlatform() {
         return platform;
-    }
-
-    /**
-     * @return the region
-     */
-    @JsonIgnore
-    public Region getRegion() {
-        return platform == null ? null : platform.getRegion();
     }
 
     /**
@@ -122,13 +112,5 @@ public class ChampionStatus extends CoreData {
      */
     public void setPlatform(final Platform platform) {
         this.platform = platform;
-    }
-
-    /**
-     * @param region
-     *        the region to set
-     */
-    public void setRegion(final Region region) {
-        platform = region == null ? null : region.getPlatform();
     }
 }

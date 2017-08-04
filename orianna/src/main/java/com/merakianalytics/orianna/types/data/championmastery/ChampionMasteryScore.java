@@ -1,8 +1,6 @@
 package com.merakianalytics.orianna.types.data.championmastery;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.merakianalytics.orianna.types.common.Platform;
-import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class ChampionMasteryScore extends CoreData {
@@ -43,14 +41,6 @@ public class ChampionMasteryScore extends CoreData {
     }
 
     /**
-     * @return the region
-     */
-    @JsonIgnore
-    public Region getRegion() {
-        return platform == null ? null : platform.getRegion();
-    }
-
-    /**
      * @return the score
      */
     public int getScore() {
@@ -80,14 +70,6 @@ public class ChampionMasteryScore extends CoreData {
      */
     public void setPlatform(final Platform platform) {
         this.platform = platform;
-    }
-
-    /**
-     * @param region
-     *        the region to set
-     */
-    public void setRegion(final Region region) {
-        platform = region == null ? null : region.getPlatform();
     }
 
     /**

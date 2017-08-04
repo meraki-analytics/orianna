@@ -13,8 +13,8 @@ public enum Region {
     RUSSIA("RU", "ru_RU"),
     TURKEY("TR", "tr_TR");
 
-    private String defaultLocale;
-    private String tag;
+    private final String defaultLocale;
+    private final String tag;
 
     private Region(final String tag, final String defaultLocale) {
         this.tag = tag;
