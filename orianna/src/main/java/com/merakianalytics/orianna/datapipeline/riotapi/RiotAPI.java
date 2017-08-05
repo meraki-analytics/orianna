@@ -18,7 +18,6 @@ import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
-import com.merakianalytics.datapipelines.DataPipeline;
 import com.merakianalytics.datapipelines.sources.AbstractDataSource;
 import com.merakianalytics.datapipelines.sources.CompositeDataSource;
 import com.merakianalytics.orianna.datapipeline.common.HTTPClient;
@@ -38,7 +37,6 @@ import com.merakianalytics.orianna.datapipeline.riotapi.exceptions.UnsupportedMe
 import com.merakianalytics.orianna.types.common.OriannaException;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.dto.DataObject;
-import com.merakianalytics.orianna.types.dto.champion.Champion;
 
 public class RiotAPI extends CompositeDataSource {
     public static class Configuration {
@@ -807,12 +805,6 @@ public class RiotAPI extends CompositeDataSource {
             }
         }
         return new RiotAPI(sources);
-    }
-
-    public static void main(final String[] args) {
-        final DataPipeline api = new DataPipeline(RiotAPI.create());
-        final Champion annie = api.get(Champion.class, ImmutableMap.<String, Object> of("platform", Platform.NORTH_AMERICA, "id", 1));
-        System.out.println(annie.isFreeToPlay());
     }
 
     private RiotAPI(final Collection<? extends Service> sources) {
