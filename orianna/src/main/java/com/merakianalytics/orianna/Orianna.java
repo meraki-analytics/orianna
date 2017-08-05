@@ -32,5 +32,5 @@ public class Orianna {
 
     private Orianna(final Configuration configuration) {
         settings = new Settings();
-    };
+    }
 }

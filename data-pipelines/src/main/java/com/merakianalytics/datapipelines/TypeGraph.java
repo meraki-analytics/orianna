@@ -31,9 +31,16 @@ public class TypeGraph {
         for(final DataTransformer transformer : transformers) {
             final Map<Class<?>, Set<Class<?>>> transforms = transformer.transforms();
             for(final Class<?> from : transforms.keySet()) {
+                Map<Class<?>, DataTransformer> cheapestTo = cheapestTransformer.get(from);
+                if(cheapestTo == null) {
+                    cheapestTo = new HashMap<>();
+                    cheapestTransformer.put(from, cheapestTo);
+                }
+
                 for(final Class<?> to : transforms.get(from)) {
-                    if(transformer.cost() < cheapestTransformer.get(from).get(to).cost()) {
-                        cheapestTransformer.get(from).put(to, transformer);
+                    final DataTransformer cheapest = cheapestTo.get(to);
+                    if(cheapest == null || transformer.cost() < cheapest.cost()) {
+                        cheapestTo.put(to, transformer);
                     }
                 }
             }
@@ -69,6 +76,10 @@ public class TypeGraph {
         }).build();
 
         final List<Class<?>> path = (List<Class<?>>)Hipster.createDijkstra(problem).search(to).getOptimalPaths().get(0);
+        if(path == null || !path.get(path.size() - 1).equals(to)) {
+            return null;
+        }
+
         final List<DataTransformer> transform = new LinkedList<>();
         for(int i = 1; i < path.size(); i++) {
             transform.add(cheapest.get(path.get(i - 1)).get(path.get(i)));

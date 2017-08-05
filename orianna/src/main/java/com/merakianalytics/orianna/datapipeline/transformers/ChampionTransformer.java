@@ -22,7 +22,7 @@ public class ChampionTransformer extends AbstractDataTransformer {
         status.setEnabledInRanked(item.isRankedPlayEnabled());
         status.setFreeToPlay(item.isFreeToPlay());
         status.setId(item.getId());
-        status.setPlatform(Platform.valueOf(item.getPlatform()));
+        status.setPlatform(Platform.withTag(item.getPlatform()));
         return status;
     }
 
@@ -33,7 +33,7 @@ public class ChampionTransformer extends AbstractDataTransformer {
             statuses.add(transform(champion, context));
         }
         statuses.setFreeToPlay(item.isFreeToPlay());
-        statuses.setPlatform(Platform.valueOf(item.getPlatform()));
+        statuses.setPlatform(Platform.withTag(item.getPlatform()));
         return statuses;
     }
 
@@ -46,7 +46,7 @@ public class ChampionTransformer extends AbstractDataTransformer {
         status.setRankedPlayEnabled(item.isEnabledInRanked());
         status.setFreeToPlay(item.isFreeToPlay());
         status.setId(item.getId());
-        status.setPlatform(item.getPlatform().toString());
+        status.setPlatform(item.getPlatform().getTag());
         return status;
     }
 
@@ -59,7 +59,7 @@ public class ChampionTransformer extends AbstractDataTransformer {
         }
         statuses.setChampions(stats);
         statuses.setFreeToPlay(item.isFreeToPlay());
-        statuses.setPlatform(item.getPlatform().toString());
+        statuses.setPlatform(item.getPlatform().getTag());
         return statuses;
     }
 }

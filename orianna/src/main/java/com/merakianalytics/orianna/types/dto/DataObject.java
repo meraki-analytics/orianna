@@ -251,53 +251,54 @@ public abstract class DataObject implements Serializable {
 
     }
 
+    private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
     private static final Logger LOGGER = LoggerFactory.getLogger(DataObject.class);
-    private static final ObjectMapper MAPPER = new ObjectMapper(new MessagePackFactory());
+    private static final ObjectMapper MSGPACK_MAPPER = new ObjectMapper(new MessagePackFactory());
     private static final long serialVersionUID = 844645829337854049L;
 
     public static <T extends DataObject> T fromBytes(final Class<T> type, final byte[] msgpack) {
         try {
-            return MAPPER.readValue(msgpack, type);
+            return MSGPACK_MAPPER.readValue(msgpack, type);
         } catch(final IOException e) {
             LOGGER.error("Failed to deserialize " + type.getCanonicalName() + "!", e);
-            throw new OriannaException("Failed to deserialize object of type " + type.getName() + " from MsgPack! Report this to the orianna team.");
+            throw new OriannaException("Failed to deserialize object of type " + type.getName() + " from MsgPack! Report this to the orianna team.", e);
         }
     }
 
     public static <T extends DataObject> T fromJSON(final Class<T> type, final String json) {
         try {
-            return MAPPER.readValue(json, type);
+            return JSON_MAPPER.readValue(json, type);
         } catch(final IOException e) {
             LOGGER.error("Failed to deserialize " + type.getCanonicalName() + "!", e);
-            throw new OriannaException("Failed to deserialize object of type " + type.getName() + " from JSON! Report this to the orianna team.");
+            throw new OriannaException("Failed to deserialize object of type " + type.getName() + " from JSON! Report this to the orianna team.", e);
         }
     }
 
     public byte[] toBytes() {
         try {
-            return MAPPER.writeValueAsBytes(this);
+            return MSGPACK_MAPPER.writeValueAsBytes(this);
         } catch(final JsonProcessingException e) {
             LOGGER.error("Failed to serialize " + this.getClass().getCanonicalName() + "!", e);
-            throw new OriannaException("Failed to serialize object of type " + this.getClass().getName() + " to JSON! Report this to the orianna team.");
+            throw new OriannaException("Failed to serialize object of type " + this.getClass().getName() + " to JSON! Report this to the orianna team.", e);
         }
     }
 
     public String toJSON() {
         try {
-            return MAPPER.writeValueAsString(this);
+            return JSON_MAPPER.writeValueAsString(this);
         } catch(final JsonProcessingException e) {
             LOGGER.error("Failed to serialize " + this.getClass().getCanonicalName() + "!", e);
-            throw new OriannaException("Failed to serialize object of type " + this.getClass().getName() + " to JSON! Report this to the orianna team.");
+            throw new OriannaException("Failed to serialize object of type " + this.getClass().getName() + " to JSON! Report this to the orianna team.", e);
         }
     }
 
     @Override
     public String toString() {
         try {
-            return MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(this);
+            return JSON_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(this);
         } catch(final JsonProcessingException e) {
             LOGGER.error("Failed to serialize " + this.getClass().getCanonicalName() + "!", e);
-            throw new OriannaException("Failed to serialize object of type " + this.getClass().getName() + " to JSON! Report this to the orianna team.");
+            throw new OriannaException("Failed to serialize object of type " + this.getClass().getName() + " to JSON! Report this to the orianna team.", e);
         }
     }
 }

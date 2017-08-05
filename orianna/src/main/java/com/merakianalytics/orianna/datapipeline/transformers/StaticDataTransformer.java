@@ -11,6 +11,7 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 import com.merakianalytics.datapipelines.PipelineContext;
+import com.merakianalytics.datapipelines.transformers.AbstractDataTransformer;
 import com.merakianalytics.datapipelines.transformers.Transform;
 import com.merakianalytics.orianna.types.common.GameMode;
 import com.merakianalytics.orianna.types.common.Platform;
@@ -25,6 +26,8 @@ import com.merakianalytics.orianna.types.data.staticdata.ItemSet;
 import com.merakianalytics.orianna.types.data.staticdata.ItemStats;
 import com.merakianalytics.orianna.types.data.staticdata.ItemTree;
 import com.merakianalytics.orianna.types.data.staticdata.Items;
+import com.merakianalytics.orianna.types.data.staticdata.LanguageStrings;
+import com.merakianalytics.orianna.types.data.staticdata.Languages;
 import com.merakianalytics.orianna.types.data.staticdata.Passive;
 import com.merakianalytics.orianna.types.data.staticdata.RecommendedItems;
 import com.merakianalytics.orianna.types.data.staticdata.Skin;
@@ -42,7 +45,7 @@ import com.merakianalytics.orianna.types.dto.staticdata.LevelTip;
 import com.merakianalytics.orianna.types.dto.staticdata.Recommended;
 import com.merakianalytics.orianna.types.dto.staticdata.SpellVars;
 
-public class StaticDataTransformer {
+public class StaticDataTransformer extends AbstractDataTransformer {
     private static final BiMap<String, com.merakianalytics.orianna.types.common.Map> RECOMMENDED_ITEMS_MAP_CONVERSIONS = ImmutableBiMap.of("SR",
         com.merakianalytics.orianna.types.common.Map.SUMMONERS_RIFT, "TT", com.merakianalytics.orianna.types.common.Map.TWISTED_TREELINE, "HA",
         com.merakianalytics.orianna.types.common.Map.HOWLING_ABYSS, "CS", com.merakianalytics.orianna.types.common.Map.THE_CRYSTAL_SCAR);
@@ -80,7 +83,7 @@ public class StaticDataTransformer {
         champion.setLore(item.getLore());
         champion.setName(item.getName());
         champion.setPassive(transform(item.getPassive(), context));
-        champion.setPlatform(item.getPlatform().toString());
+        champion.setPlatform(item.getPlatform().getTag());
         final List<Recommended> items = new ArrayList<>(item.getRecommendedItems().size());
         for(final RecommendedItems rec : item.getRecommendedItems()) {
             items.add(transform(rec, context));
@@ -113,7 +116,7 @@ public class StaticDataTransformer {
         champions.setFormat(item.getFormat());
         champions.setIncludedData(new HashSet<>(item.getIncludedData()));
         champions.setLocale(item.getLocale());
-        champions.setPlatform(Platform.valueOf(item.getPlatform()));
+        champions.setPlatform(Platform.withTag(item.getPlatform()));
         champions.setType(item.getType());
         champions.setVersion(item.getVersion());
         return champions;
@@ -133,7 +136,7 @@ public class StaticDataTransformer {
         champions.setFormat(item.getFormat());
         champions.setIncludedData(new HashSet<>(item.getIncludedData()));
         champions.setLocale(item.getLocale());
-        champions.setPlatform(item.getPlatform().toString());
+        champions.setPlatform(item.getPlatform().getTag());
         champions.setType(item.getType());
         champions.setVersion(item.getVersion());
         return champions;
@@ -223,7 +226,7 @@ public class StaticDataTransformer {
         champion.setName(item.getName());
         champion.setPassive(transform(item.getPassive(), context));
         champion.setPhysicalRating(item.getInfo().getAttack());
-        champion.setPlatform(Platform.valueOf(item.getPlatform()));
+        champion.setPlatform(Platform.withTag(item.getPlatform()));
         final List<RecommendedItems> items = new ArrayList<>(item.getRecommended().size());
         for(final Recommended rec : item.getRecommended()) {
             items.add(transform(rec, context));
@@ -340,7 +343,7 @@ public class StaticDataTransformer {
         converted.setMaxStacks(item.getStacks());
         converted.setName(item.getName());
         converted.setPlaintext(item.getPlaintext());
-        converted.setPlatform(Platform.valueOf(item.getPlatform()));
+        converted.setPlatform(Platform.withTag(item.getPlatform()));
         converted.setPurchasable(item.getGold().isPurchasable());
         converted.setRequiredChampionKey(item.getRequiredChampion());
         converted.setSanitizedDescription(item.getSanitizedDescription());
@@ -359,6 +362,25 @@ public class StaticDataTransformer {
         tree.setHeader(item.getHeader());
         tree.setTags(new ArrayList<>(item.getTags()));
         return tree;
+    }
+
+    @Transform(from = com.merakianalytics.orianna.types.dto.staticdata.Languages.class, to = Languages.class)
+    public Languages transform(final com.merakianalytics.orianna.types.dto.staticdata.Languages item, final PipelineContext context) {
+        final Languages languages = new Languages();
+        languages.addAll(item);
+        languages.setPlatform(Platform.withTag(item.getPlatform()));
+        return languages;
+    }
+
+    @Transform(from = com.merakianalytics.orianna.types.dto.staticdata.LanguageStrings.class, to = LanguageStrings.class)
+    public LanguageStrings transform(final com.merakianalytics.orianna.types.dto.staticdata.LanguageStrings item, final PipelineContext context) {
+        final LanguageStrings strings = new LanguageStrings();
+        strings.putAll(item.getData());
+        strings.setLocale(item.getLocale());
+        strings.setPlatform(Platform.withTag(item.getPlatform()));
+        strings.setType(item.getType());
+        strings.setVersion(item.getVersion());
+        return strings;
     }
 
     @Transform(from = com.merakianalytics.orianna.types.dto.staticdata.Passive.class, to = Passive.class)
@@ -505,7 +527,7 @@ public class StaticDataTransformer {
         converted.setStacks(item.getMaxStacks());
         converted.setName(item.getName());
         converted.setPlaintext(item.getPlaintext());
-        converted.setPlatform(item.getPlatform().toString());
+        converted.setPlatform(item.getPlatform().getTag());
         converted.setRequiredChampion(item.getRequiredChampionKey());
         converted.setSanitizedDescription(item.getSanitizedDescription());
         converted.setSpecialRecipe(item.getSource());
@@ -536,7 +558,7 @@ public class StaticDataTransformer {
         items.setGroups(groups);
         items.setIncludedData(new HashSet<>(item.getIncludedData()));
         items.setLocale(item.getLocale());
-        items.setPlatform(Platform.valueOf(item.getPlatform()));
+        items.setPlatform(Platform.withTag(item.getPlatform()));
         final List<ItemTree> tree = new ArrayList<>(item.getTree().size());
         for(final com.merakianalytics.orianna.types.dto.staticdata.ItemTree t : item.getTree()) {
             tree.add(transform(t, context));
@@ -562,7 +584,7 @@ public class StaticDataTransformer {
         items.setGroups(groups);
         items.setIncludedData(new HashSet<>(item.getIncludedData()));
         items.setLocale(item.getLocale());
-        items.setPlatform(item.getPlatform().toString());
+        items.setPlatform(item.getPlatform().getTag());
         final List<com.merakianalytics.orianna.types.dto.staticdata.ItemTree> tree = new ArrayList<>(item.getTree().size());
         for(final ItemTree t : item.getTree()) {
             tree.add(transform(t, context));
@@ -633,6 +655,25 @@ public class StaticDataTransformer {
         tree.setHeader(item.getHeader());
         tree.setTags(new ArrayList<>(item.getTags()));
         return tree;
+    }
+
+    @Transform(from = Languages.class, to = com.merakianalytics.orianna.types.dto.staticdata.Languages.class)
+    public com.merakianalytics.orianna.types.dto.staticdata.Languages transform(final Languages item, final PipelineContext context) {
+        final com.merakianalytics.orianna.types.dto.staticdata.Languages languages = new com.merakianalytics.orianna.types.dto.staticdata.Languages();
+        languages.addAll(item);
+        languages.setPlatform(item.getPlatform().getTag());
+        return languages;
+    }
+
+    @Transform(from = LanguageStrings.class, to = com.merakianalytics.orianna.types.dto.staticdata.LanguageStrings.class)
+    public com.merakianalytics.orianna.types.dto.staticdata.LanguageStrings transform(final LanguageStrings item, final PipelineContext context) {
+        final com.merakianalytics.orianna.types.dto.staticdata.LanguageStrings strings = new com.merakianalytics.orianna.types.dto.staticdata.LanguageStrings();
+        strings.setData(new HashMap<>(item));
+        strings.setLocale(item.getLocale());
+        strings.setPlatform(item.getPlatform().getTag());
+        strings.setType(item.getType());
+        strings.setVersion(item.getVersion());
+        return strings;
     }
 
     @Transform(from = Passive.class, to = com.merakianalytics.orianna.types.dto.staticdata.Passive.class)

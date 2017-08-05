@@ -57,7 +57,7 @@ public class AbstractDataTransformer implements DataTransformer {
     @SuppressWarnings("unchecked") // (T) cast will be safe as long as Transform to type matches return type
     public <F, T> T transform(final Class<F> fromType, final Class<T> toType, final F item, final PipelineContext context) {
         try {
-            return (T)transformMethods().get(fromType).get(toType).invoke(item, context);
+            return (T)transformMethods().get(fromType).get(toType).invoke(this, item, context);
         } catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
             LOGGER.error("Failed to invoke transform method from " + fromType.getCanonicalName() + " to " + toType.getCanonicalName() + ".", e);
             throw new RuntimeException(e);
@@ -69,7 +69,7 @@ public class AbstractDataTransformer implements DataTransformer {
             initialize();
         }
 
-        return transformMethods();
+        return transformMethods;
     }
 
     @Override

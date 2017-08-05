@@ -17,7 +17,7 @@ public class ChampionMasteryTransformer extends AbstractDataTransformer {
         for(final ChampionMastery mastery : item) {
             masteries.add(transform(mastery, context));
         }
-        masteries.setPlatform(item.getPlatform().toString());
+        masteries.setPlatform(item.getPlatform().getTag());
         masteries.setSummonerId(item.getSummonerId());
         return masteries;
     }
@@ -32,7 +32,7 @@ public class ChampionMasteryTransformer extends AbstractDataTransformer {
         mastery.setChampionPointsUntilNextLevel(item.getPointsUntilNextLevel());
         mastery.setChestGranted(item.isChestGranted());
         mastery.setLastPlayTime(item.getLastPlayed().getMillis());
-        mastery.setPlatform(item.getPlatform().toString());
+        mastery.setPlatform(item.getPlatform().getTag());
         mastery.setPlayerId(item.getPlayerId());
         mastery.setTokensEarned(item.getTokens());
         return mastery;
@@ -42,7 +42,7 @@ public class ChampionMasteryTransformer extends AbstractDataTransformer {
     public com.merakianalytics.orianna.types.dto.championmastery.ChampionMasteryScore transform(final ChampionMasteryScore item,
                                                                                                 final PipelineContext context) {
         final com.merakianalytics.orianna.types.dto.championmastery.ChampionMasteryScore score = new com.merakianalytics.orianna.types.dto.championmastery.ChampionMasteryScore();
-        score.setPlatform(item.getPlatform().toString());
+        score.setPlatform(item.getPlatform().getTag());
         score.setScore(item.getScore());
         score.setSummonerId(item.getSummonerId());
         return score;
@@ -54,7 +54,7 @@ public class ChampionMasteryTransformer extends AbstractDataTransformer {
         for(final com.merakianalytics.orianna.types.dto.championmastery.ChampionMastery mastery : item) {
             masteries.add(transform(mastery, context));
         }
-        masteries.setPlatform(Platform.valueOf(item.getPlatform()));
+        masteries.setPlatform(Platform.withTag(item.getPlatform()));
         masteries.setSummonerId(item.getSummonerId());
         return masteries;
     }
@@ -66,7 +66,7 @@ public class ChampionMasteryTransformer extends AbstractDataTransformer {
         mastery.setChestGranted(item.isChestGranted());
         mastery.setLastPlayed(new DateTime(item.getLastPlayTime()));
         mastery.setLevel(item.getChampionLevel());
-        mastery.setPlatform(Platform.valueOf(item.getPlatform()));
+        mastery.setPlatform(Platform.withTag(item.getPlatform()));
         mastery.setPlayerId(item.getPlayerId());
         mastery.setPoints(item.getChampionPoints());
         mastery.setPointsSinceLastLevel(item.getChampionPointsSinceLastLevel());
@@ -79,7 +79,7 @@ public class ChampionMasteryTransformer extends AbstractDataTransformer {
     public ChampionMasteryScore transform(final com.merakianalytics.orianna.types.dto.championmastery.ChampionMasteryScore item,
                                           final PipelineContext context) {
         final ChampionMasteryScore score = new ChampionMasteryScore();
-        score.setPlatform(Platform.valueOf(item.getPlatform()));
+        score.setPlatform(Platform.withTag(item.getPlatform()));
         score.setScore(item.getScore());
         score.setSummonerId(item.getSummonerId());
         return score;

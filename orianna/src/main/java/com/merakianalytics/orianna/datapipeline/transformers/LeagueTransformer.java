@@ -33,7 +33,7 @@ public class LeagueTransformer extends AbstractDataTransformer {
         position.setLosses(item.getLosses());
         position.setName(item.getLeagueName());
         position.setOnHotStreak(item.isHotStreak());
-        position.setPlatform(Platform.valueOf(item.getPlatform()));
+        position.setPlatform(Platform.withTag(item.getPlatform()));
         position.setPromos(transform(item.getMiniSeries(), context));
         position.setQueue(Queue.valueOf(item.getQueueType()));
         position.setSummonerId(Long.parseLong(item.getPlayerOrTeamId()));
@@ -53,7 +53,7 @@ public class LeagueTransformer extends AbstractDataTransformer {
         }
         list.setEntries(entries);
         list.setName(item.getName());
-        list.setPlatform(item.getPlatform().toString());
+        list.setPlatform(item.getPlatform().getTag());
         list.setQueue(item.getQueue().toString());
         list.setSummonerId(item.getSummonerId());
         list.setTier(item.getTier().toString());
@@ -101,7 +101,7 @@ public class LeagueTransformer extends AbstractDataTransformer {
             league.add(transform(entry, context));
         }
         league.setName(item.getName());
-        league.setPlatform(Platform.valueOf(item.getPlatform()));
+        league.setPlatform(Platform.withTag(item.getPlatform()));
         league.setQueue(Queue.valueOf(item.getQueue()));
         league.setSummonerId(item.getSummonerId());
         league.setTier(Tier.valueOf(item.getTier()));
@@ -118,7 +118,7 @@ public class LeagueTransformer extends AbstractDataTransformer {
         position.setLosses(item.getLosses());
         position.setLeagueName(item.getName());
         position.setHotStreak(item.isOnHotStreak());
-        position.setPlatform(item.getPlatform().toString());
+        position.setPlatform(item.getPlatform().getTag());
         position.setMiniSeries(transform(item.getPromos(), context));
         position.setQueueType(item.getQueue().toString());
         position.setPlayerOrTeamId(Long.toString(item.getSummonerId()));
@@ -135,7 +135,7 @@ public class LeagueTransformer extends AbstractDataTransformer {
         for(final LeaguePosition position : item) {
             positions.add(transform(position, context));
         }
-        positions.setPlatform(item.getPlatform().toString());
+        positions.setPlatform(item.getPlatform().getTag());
         positions.setSummonerId(item.getSummonerId());
         return positions;
     }
@@ -146,7 +146,7 @@ public class LeagueTransformer extends AbstractDataTransformer {
         for(final League league : item) {
             leagues.add(transform(league, context));
         }
-        leagues.setPlatform(item.getPlatform().toString());
+        leagues.setPlatform(item.getPlatform().getTag());
         leagues.setSummonerId(item.getSummonerId());
         return leagues;
     }
@@ -177,7 +177,7 @@ public class LeagueTransformer extends AbstractDataTransformer {
         for(final LeagueList list : item) {
             leagues.add(transform(list, context));
         }
-        leagues.setPlatform(Platform.valueOf(item.getPlatform()));
+        leagues.setPlatform(Platform.withTag(item.getPlatform()));
         leagues.setSummonerId(item.getSummonerId());
         return leagues;
     }
@@ -188,7 +188,7 @@ public class LeagueTransformer extends AbstractDataTransformer {
         for(final com.merakianalytics.orianna.types.dto.league.LeaguePosition position : item) {
             positions.add(transform(position, context));
         }
-        positions.setPlatform(Platform.valueOf(item.getPlatform()));
+        positions.setPlatform(Platform.withTag(item.getPlatform()));
         positions.setSummonerId(item.getSummonerId());
         return positions;
     }
