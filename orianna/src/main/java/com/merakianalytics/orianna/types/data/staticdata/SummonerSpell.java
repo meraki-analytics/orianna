@@ -1,23 +1,25 @@
-package com.merakianalytics.orianna.types.dto.staticdata;
+package com.merakianalytics.orianna.types.data.staticdata;
 
 import java.util.List;
 import java.util.Set;
 
-import com.merakianalytics.orianna.types.dto.DataObject;
+import com.merakianalytics.orianna.types.common.GameMode;
+import com.merakianalytics.orianna.types.common.Platform;
+import com.merakianalytics.orianna.types.data.CoreData;
 
-public class SummonerSpell extends DataObject {
-    private static final long serialVersionUID = -8184643049998361066L;
-    private List<Double> cooldown;
-    private List<Integer> cost, range;
-    private String costBurn, cooldownBurn, tooltip, rangeBurn, description, key, resource, name, costType, sanitizedDescription, sanitizedTooltip, platform,
-            version, locale;
-    private List<List<Double>> effect;
-    private int id, maxrank, summonerLevel;
+public class SummonerSpell extends CoreData {
+    private static final long serialVersionUID = 2110625692594925345L;
+    private List<Double> cooldowns;
+    private List<Integer> costs, ranges;
+    private List<List<Double>> effects;
+    private int id, maxRank, summonerLevelRequirement;
     private Image image;
     private Set<String> includedData;
-    private LevelTip leveltip;
-    private List<String> modes, effectBurn;
-    private List<SpellVars> vars;
+    private List<String> levelUpKeywords, levelUpEffects;
+    private Set<GameMode> modes;
+    private Platform platform;
+    private String tooltip, description, key, resourceDescription, name, resource, sanitizedDescription, sanitizedTooltip, version, locale;
+    private List<SpellVariables> variables;
 
     @Override
     public boolean equals(final Object obj) {
@@ -31,39 +33,18 @@ public class SummonerSpell extends DataObject {
             return false;
         }
         final SummonerSpell other = (SummonerSpell)obj;
-        if(cooldown == null) {
-            if(other.cooldown != null) {
+        if(cooldowns == null) {
+            if(other.cooldowns != null) {
                 return false;
             }
-        } else if(!cooldown.equals(other.cooldown)) {
+        } else if(!cooldowns.equals(other.cooldowns)) {
             return false;
         }
-        if(cooldownBurn == null) {
-            if(other.cooldownBurn != null) {
+        if(costs == null) {
+            if(other.costs != null) {
                 return false;
             }
-        } else if(!cooldownBurn.equals(other.cooldownBurn)) {
-            return false;
-        }
-        if(cost == null) {
-            if(other.cost != null) {
-                return false;
-            }
-        } else if(!cost.equals(other.cost)) {
-            return false;
-        }
-        if(costBurn == null) {
-            if(other.costBurn != null) {
-                return false;
-            }
-        } else if(!costBurn.equals(other.costBurn)) {
-            return false;
-        }
-        if(costType == null) {
-            if(other.costType != null) {
-                return false;
-            }
-        } else if(!costType.equals(other.costType)) {
+        } else if(!costs.equals(other.costs)) {
             return false;
         }
         if(description == null) {
@@ -73,18 +54,11 @@ public class SummonerSpell extends DataObject {
         } else if(!description.equals(other.description)) {
             return false;
         }
-        if(effect == null) {
-            if(other.effect != null) {
+        if(effects == null) {
+            if(other.effects != null) {
                 return false;
             }
-        } else if(!effect.equals(other.effect)) {
-            return false;
-        }
-        if(effectBurn == null) {
-            if(other.effectBurn != null) {
-                return false;
-            }
-        } else if(!effectBurn.equals(other.effectBurn)) {
+        } else if(!effects.equals(other.effects)) {
             return false;
         }
         if(id != other.id) {
@@ -111,11 +85,18 @@ public class SummonerSpell extends DataObject {
         } else if(!key.equals(other.key)) {
             return false;
         }
-        if(leveltip == null) {
-            if(other.leveltip != null) {
+        if(levelUpEffects == null) {
+            if(other.levelUpEffects != null) {
                 return false;
             }
-        } else if(!leveltip.equals(other.leveltip)) {
+        } else if(!levelUpEffects.equals(other.levelUpEffects)) {
+            return false;
+        }
+        if(levelUpKeywords == null) {
+            if(other.levelUpKeywords != null) {
+                return false;
+            }
+        } else if(!levelUpKeywords.equals(other.levelUpKeywords)) {
             return false;
         }
         if(locale == null) {
@@ -125,7 +106,7 @@ public class SummonerSpell extends DataObject {
         } else if(!locale.equals(other.locale)) {
             return false;
         }
-        if(maxrank != other.maxrank) {
+        if(maxRank != other.maxRank) {
             return false;
         }
         if(modes == null) {
@@ -142,25 +123,14 @@ public class SummonerSpell extends DataObject {
         } else if(!name.equals(other.name)) {
             return false;
         }
-        if(platform == null) {
-            if(other.platform != null) {
-                return false;
-            }
-        } else if(!platform.equals(other.platform)) {
+        if(platform != other.platform) {
             return false;
         }
-        if(range == null) {
-            if(other.range != null) {
+        if(ranges == null) {
+            if(other.ranges != null) {
                 return false;
             }
-        } else if(!range.equals(other.range)) {
-            return false;
-        }
-        if(rangeBurn == null) {
-            if(other.rangeBurn != null) {
-                return false;
-            }
-        } else if(!rangeBurn.equals(other.rangeBurn)) {
+        } else if(!ranges.equals(other.ranges)) {
             return false;
         }
         if(resource == null) {
@@ -168,6 +138,13 @@ public class SummonerSpell extends DataObject {
                 return false;
             }
         } else if(!resource.equals(other.resource)) {
+            return false;
+        }
+        if(resourceDescription == null) {
+            if(other.resourceDescription != null) {
+                return false;
+            }
+        } else if(!resourceDescription.equals(other.resourceDescription)) {
             return false;
         }
         if(sanitizedDescription == null) {
@@ -184,7 +161,7 @@ public class SummonerSpell extends DataObject {
         } else if(!sanitizedTooltip.equals(other.sanitizedTooltip)) {
             return false;
         }
-        if(summonerLevel != other.summonerLevel) {
+        if(summonerLevelRequirement != other.summonerLevelRequirement) {
             return false;
         }
         if(tooltip == null) {
@@ -194,11 +171,11 @@ public class SummonerSpell extends DataObject {
         } else if(!tooltip.equals(other.tooltip)) {
             return false;
         }
-        if(vars == null) {
-            if(other.vars != null) {
+        if(variables == null) {
+            if(other.variables != null) {
                 return false;
             }
-        } else if(!vars.equals(other.vars)) {
+        } else if(!variables.equals(other.variables)) {
             return false;
         }
         if(version == null) {
@@ -212,38 +189,17 @@ public class SummonerSpell extends DataObject {
     }
 
     /**
-     * @return the cooldown
+     * @return the cooldowns
      */
-    public List<Double> getCooldown() {
-        return cooldown;
+    public List<Double> getCooldowns() {
+        return cooldowns;
     }
 
     /**
-     * @return the cooldownBurn
+     * @return the costs
      */
-    public String getCooldownBurn() {
-        return cooldownBurn;
-    }
-
-    /**
-     * @return the cost
-     */
-    public List<Integer> getCost() {
-        return cost;
-    }
-
-    /**
-     * @return the costBurn
-     */
-    public String getCostBurn() {
-        return costBurn;
-    }
-
-    /**
-     * @return the costType
-     */
-    public String getCostType() {
-        return costType;
+    public List<Integer> getCosts() {
+        return costs;
     }
 
     /**
@@ -254,17 +210,10 @@ public class SummonerSpell extends DataObject {
     }
 
     /**
-     * @return the effect
+     * @return the effects
      */
-    public List<List<Double>> getEffect() {
-        return effect;
-    }
-
-    /**
-     * @return the effectBurn
-     */
-    public List<String> getEffectBurn() {
-        return effectBurn;
+    public List<List<Double>> getEffects() {
+        return effects;
     }
 
     /**
@@ -296,10 +245,17 @@ public class SummonerSpell extends DataObject {
     }
 
     /**
-     * @return the leveltip
+     * @return the levelUpEffects
      */
-    public LevelTip getLeveltip() {
-        return leveltip;
+    public List<String> getLevelUpEffects() {
+        return levelUpEffects;
+    }
+
+    /**
+     * @return the levelUpKeywords
+     */
+    public List<String> getLevelUpKeywords() {
+        return levelUpKeywords;
     }
 
     /**
@@ -310,16 +266,16 @@ public class SummonerSpell extends DataObject {
     }
 
     /**
-     * @return the maxrank
+     * @return the maxRank
      */
-    public int getMaxrank() {
-        return maxrank;
+    public int getMaxRank() {
+        return maxRank;
     }
 
     /**
      * @return the modes
      */
-    public List<String> getModes() {
+    public Set<GameMode> getModes() {
         return modes;
     }
 
@@ -333,22 +289,15 @@ public class SummonerSpell extends DataObject {
     /**
      * @return the platform
      */
-    public String getPlatform() {
+    public Platform getPlatform() {
         return platform;
     }
 
     /**
-     * @return the range
+     * @return the ranges
      */
-    public List<Integer> getRange() {
-        return range;
-    }
-
-    /**
-     * @return the rangeBurn
-     */
-    public String getRangeBurn() {
-        return rangeBurn;
+    public List<Integer> getRanges() {
+        return ranges;
     }
 
     /**
@@ -356,6 +305,13 @@ public class SummonerSpell extends DataObject {
      */
     public String getResource() {
         return resource;
+    }
+
+    /**
+     * @return the resourceDescription
+     */
+    public String getResourceDescription() {
+        return resourceDescription;
     }
 
     /**
@@ -373,10 +329,10 @@ public class SummonerSpell extends DataObject {
     }
 
     /**
-     * @return the summonerLevel
+     * @return the summonerLevelRequirement
      */
-    public int getSummonerLevel() {
-        return summonerLevel;
+    public int getSummonerLevelRequirement() {
+        return summonerLevelRequirement;
     }
 
     /**
@@ -387,10 +343,10 @@ public class SummonerSpell extends DataObject {
     }
 
     /**
-     * @return the vars
+     * @return the variables
      */
-    public List<SpellVars> getVars() {
-        return vars;
+    public List<SpellVariables> getVariables() {
+        return variables;
     }
 
     /**
@@ -404,74 +360,47 @@ public class SummonerSpell extends DataObject {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (cooldown == null ? 0 : cooldown.hashCode());
-        result = prime * result + (cooldownBurn == null ? 0 : cooldownBurn.hashCode());
-        result = prime * result + (cost == null ? 0 : cost.hashCode());
-        result = prime * result + (costBurn == null ? 0 : costBurn.hashCode());
-        result = prime * result + (costType == null ? 0 : costType.hashCode());
+        result = prime * result + (cooldowns == null ? 0 : cooldowns.hashCode());
+        result = prime * result + (costs == null ? 0 : costs.hashCode());
         result = prime * result + (description == null ? 0 : description.hashCode());
-        result = prime * result + (effect == null ? 0 : effect.hashCode());
-        result = prime * result + (effectBurn == null ? 0 : effectBurn.hashCode());
+        result = prime * result + (effects == null ? 0 : effects.hashCode());
         result = prime * result + id;
         result = prime * result + (image == null ? 0 : image.hashCode());
         result = prime * result + (includedData == null ? 0 : includedData.hashCode());
         result = prime * result + (key == null ? 0 : key.hashCode());
-        result = prime * result + (leveltip == null ? 0 : leveltip.hashCode());
+        result = prime * result + (levelUpEffects == null ? 0 : levelUpEffects.hashCode());
+        result = prime * result + (levelUpKeywords == null ? 0 : levelUpKeywords.hashCode());
         result = prime * result + (locale == null ? 0 : locale.hashCode());
-        result = prime * result + maxrank;
+        result = prime * result + maxRank;
         result = prime * result + (modes == null ? 0 : modes.hashCode());
         result = prime * result + (name == null ? 0 : name.hashCode());
         result = prime * result + (platform == null ? 0 : platform.hashCode());
-        result = prime * result + (range == null ? 0 : range.hashCode());
-        result = prime * result + (rangeBurn == null ? 0 : rangeBurn.hashCode());
+        result = prime * result + (ranges == null ? 0 : ranges.hashCode());
         result = prime * result + (resource == null ? 0 : resource.hashCode());
+        result = prime * result + (resourceDescription == null ? 0 : resourceDescription.hashCode());
         result = prime * result + (sanitizedDescription == null ? 0 : sanitizedDescription.hashCode());
         result = prime * result + (sanitizedTooltip == null ? 0 : sanitizedTooltip.hashCode());
-        result = prime * result + summonerLevel;
+        result = prime * result + summonerLevelRequirement;
         result = prime * result + (tooltip == null ? 0 : tooltip.hashCode());
-        result = prime * result + (vars == null ? 0 : vars.hashCode());
+        result = prime * result + (variables == null ? 0 : variables.hashCode());
         result = prime * result + (version == null ? 0 : version.hashCode());
         return result;
     }
 
     /**
-     * @param cooldown
-     *        the cooldown to set
+     * @param cooldowns
+     *        the cooldowns to set
      */
-    public void setCooldown(final List<Double> cooldown) {
-        this.cooldown = cooldown;
+    public void setCooldowns(final List<Double> cooldowns) {
+        this.cooldowns = cooldowns;
     }
 
     /**
-     * @param cooldownBurn
-     *        the cooldownBurn to set
+     * @param costs
+     *        the costs to set
      */
-    public void setCooldownBurn(final String cooldownBurn) {
-        this.cooldownBurn = cooldownBurn;
-    }
-
-    /**
-     * @param cost
-     *        the cost to set
-     */
-    public void setCost(final List<Integer> cost) {
-        this.cost = cost;
-    }
-
-    /**
-     * @param costBurn
-     *        the costBurn to set
-     */
-    public void setCostBurn(final String costBurn) {
-        this.costBurn = costBurn;
-    }
-
-    /**
-     * @param costType
-     *        the costType to set
-     */
-    public void setCostType(final String costType) {
-        this.costType = costType;
+    public void setCosts(final List<Integer> costs) {
+        this.costs = costs;
     }
 
     /**
@@ -483,19 +412,11 @@ public class SummonerSpell extends DataObject {
     }
 
     /**
-     * @param effect
-     *        the effect to set
+     * @param effects
+     *        the effects to set
      */
-    public void setEffect(final List<List<Double>> effect) {
-        this.effect = effect;
-    }
-
-    /**
-     * @param effectBurn
-     *        the effectBurn to set
-     */
-    public void setEffectBurn(final List<String> effectBurn) {
-        this.effectBurn = effectBurn;
+    public void setEffects(final List<List<Double>> effects) {
+        this.effects = effects;
     }
 
     /**
@@ -531,11 +452,19 @@ public class SummonerSpell extends DataObject {
     }
 
     /**
-     * @param leveltip
-     *        the leveltip to set
+     * @param levelUpEffects
+     *        the levelUpEffects to set
      */
-    public void setLeveltip(final LevelTip leveltip) {
-        this.leveltip = leveltip;
+    public void setLevelUpEffects(final List<String> levelUpEffects) {
+        this.levelUpEffects = levelUpEffects;
+    }
+
+    /**
+     * @param levelUpKeywords
+     *        the levelUpKeywords to set
+     */
+    public void setLevelUpKeywords(final List<String> levelUpKeywords) {
+        this.levelUpKeywords = levelUpKeywords;
     }
 
     /**
@@ -547,18 +476,18 @@ public class SummonerSpell extends DataObject {
     }
 
     /**
-     * @param maxrank
-     *        the maxrank to set
+     * @param maxRank
+     *        the maxRank to set
      */
-    public void setMaxrank(final int maxrank) {
-        this.maxrank = maxrank;
+    public void setMaxRank(final int maxRank) {
+        this.maxRank = maxRank;
     }
 
     /**
      * @param modes
      *        the modes to set
      */
-    public void setModes(final List<String> modes) {
+    public void setModes(final Set<GameMode> modes) {
         this.modes = modes;
     }
 
@@ -574,24 +503,16 @@ public class SummonerSpell extends DataObject {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final String platform) {
+    public void setPlatform(final Platform platform) {
         this.platform = platform;
     }
 
     /**
-     * @param range
-     *        the range to set
+     * @param ranges
+     *        the ranges to set
      */
-    public void setRange(final List<Integer> range) {
-        this.range = range;
-    }
-
-    /**
-     * @param rangeBurn
-     *        the rangeBurn to set
-     */
-    public void setRangeBurn(final String rangeBurn) {
-        this.rangeBurn = rangeBurn;
+    public void setRanges(final List<Integer> ranges) {
+        this.ranges = ranges;
     }
 
     /**
@@ -600,6 +521,14 @@ public class SummonerSpell extends DataObject {
      */
     public void setResource(final String resource) {
         this.resource = resource;
+    }
+
+    /**
+     * @param resourceDescription
+     *        the resourceDescription to set
+     */
+    public void setResourceDescription(final String resourceDescription) {
+        this.resourceDescription = resourceDescription;
     }
 
     /**
@@ -619,11 +548,11 @@ public class SummonerSpell extends DataObject {
     }
 
     /**
-     * @param summonerLevel
-     *        the summonerLevel to set
+     * @param summonerLevelRequirement
+     *        the summonerLevelRequirement to set
      */
-    public void setSummonerLevel(final int summonerLevel) {
-        this.summonerLevel = summonerLevel;
+    public void setSummonerLevelRequirement(final int summonerLevelRequirement) {
+        this.summonerLevelRequirement = summonerLevelRequirement;
     }
 
     /**
@@ -635,11 +564,11 @@ public class SummonerSpell extends DataObject {
     }
 
     /**
-     * @param vars
-     *        the vars to set
+     * @param variables
+     *        the variables to set
      */
-    public void setVars(final List<SpellVars> vars) {
-        this.vars = vars;
+    public void setVariables(final List<SpellVariables> variables) {
+        this.variables = variables;
     }
 
     /**

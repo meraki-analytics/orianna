@@ -46,6 +46,9 @@ import com.merakianalytics.orianna.types.data.staticdata.Runes;
 import com.merakianalytics.orianna.types.data.staticdata.Skin;
 import com.merakianalytics.orianna.types.data.staticdata.SpellVariables;
 import com.merakianalytics.orianna.types.data.staticdata.Sprite;
+import com.merakianalytics.orianna.types.data.staticdata.SummonerSpell;
+import com.merakianalytics.orianna.types.data.staticdata.SummonerSpells;
+import com.merakianalytics.orianna.types.data.staticdata.Versions;
 import com.merakianalytics.orianna.types.dto.staticdata.Block;
 import com.merakianalytics.orianna.types.dto.staticdata.BlockItem;
 import com.merakianalytics.orianna.types.dto.staticdata.ChampionList;
@@ -65,6 +68,7 @@ import com.merakianalytics.orianna.types.dto.staticdata.ProfileIconDetails;
 import com.merakianalytics.orianna.types.dto.staticdata.Recommended;
 import com.merakianalytics.orianna.types.dto.staticdata.RuneList;
 import com.merakianalytics.orianna.types.dto.staticdata.SpellVars;
+import com.merakianalytics.orianna.types.dto.staticdata.SummonerSpellList;
 
 public class StaticDataTransformer extends AbstractDataTransformer {
     private static final BiMap<String, com.merakianalytics.orianna.types.common.Map> RECOMMENDED_ITEMS_MAP_CONVERSIONS = ImmutableBiMap.of("SR",
@@ -194,14 +198,12 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         spell.setCostBurn(getBurn(item.getCosts()));
         spell.setDescription(item.getDescription());
         final List<List<Double>> effects = new ArrayList<>(item.getEffects().size());
-        for(final List<Double> effect : item.getEffects()) {
-            effects.add(new ArrayList<>(effect));
-        }
-        spell.setEffect(effects);
         final List<String> effectBurn = new ArrayList<>(item.getEffects().size());
         for(final List<Double> effect : item.getEffects()) {
+            effects.add(new ArrayList<>(effect));
             effectBurn.add(getBurn(effect));
         }
+        spell.setEffect(effects);
         spell.setEffectBurn(effectBurn);
         spell.setImage(transform(item.getImage(), context));
         spell.setKey(item.getKey());
@@ -648,6 +650,56 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         stats.setManaRegenPerLevel(item.getMpregenperlevel());
         stats.setMovespeed(item.getMovespeed());
         return stats;
+    }
+
+    @Transform(from = com.merakianalytics.orianna.types.dto.staticdata.SummonerSpell.class, to = SummonerSpell.class)
+    public SummonerSpell transform(final com.merakianalytics.orianna.types.dto.staticdata.SummonerSpell item, final PipelineContext context) {
+        final Object previous = context.put("version", item.getVersion());
+        final SummonerSpell spell = new SummonerSpell();
+        spell.setCooldowns(new ArrayList<>(item.getCooldown()));
+        spell.setCosts(new ArrayList<>(item.getCost()));
+        spell.setDescription(item.getDescription());
+        final List<List<Double>> effects = new ArrayList<>(item.getEffect().size());
+        for(final List<Double> effect : item.getEffect()) {
+            effects.add(new ArrayList<>(effect));
+        }
+        spell.setEffects(effects);
+        spell.setId(item.getId());
+        spell.setImage(transform(item.getImage(), context));
+        spell.setIncludedData(new HashSet<>(item.getIncludedData()));
+        spell.setKey(item.getKey());
+        spell.setLevelUpEffects(new ArrayList<>(item.getLeveltip().getEffect()));
+        spell.setLevelUpKeywords(new ArrayList<>(item.getLeveltip().getLabel()));
+        spell.setLocale(item.getLocale());
+        spell.setMaxRank(item.getMaxrank());
+        final Set<GameMode> modes = new HashSet<>();
+        for(final String mode : item.getModes()) {
+            modes.add(GameMode.valueOf(mode));
+        }
+        spell.setModes(modes);
+        spell.setName(item.getName());
+        spell.setPlatform(Platform.withTag(item.getPlatform()));
+        spell.setRanges(new ArrayList<>(item.getRange()));
+        spell.setResource(item.getCostType());
+        spell.setResourceDescription(item.getResource());
+        spell.setSanitizedDescription(item.getSanitizedDescription());
+        spell.setSanitizedTooltip(item.getSanitizedTooltip());
+        final List<SpellVariables> variables = new ArrayList<>(item.getVars().size());
+        for(final SpellVars vars : item.getVars()) {
+            variables.add(transform(vars, context));
+        }
+        spell.setVariables(variables);
+        spell.setVersion(item.getVersion());
+        context.put("version", previous);
+        return spell;
+    }
+
+    @Transform(from = com.merakianalytics.orianna.types.dto.staticdata.Versions.class, to = Versions.class)
+    public Versions transform(final com.merakianalytics.orianna.types.dto.staticdata.Versions item, final PipelineContext context) {
+        final Versions versions = new Versions(item.size());
+        versions.addAll(item);
+        versions.setPlatform(Platform.withTag(item.getPlatform()));
+        return versions;
     }
 
     @Transform(from = Group.class, to = ItemGroup.class)
@@ -1298,5 +1350,91 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         variables.setLink(item.getLink());
         variables.setRanksWith(item.getRanksWith());
         return variables;
+    }
+
+    @Transform(from = SummonerSpell.class, to = com.merakianalytics.orianna.types.dto.staticdata.SummonerSpell.class)
+    public com.merakianalytics.orianna.types.dto.staticdata.SummonerSpell transform(final SummonerSpell item, final PipelineContext context) {
+        final com.merakianalytics.orianna.types.dto.staticdata.SummonerSpell spell = new com.merakianalytics.orianna.types.dto.staticdata.SummonerSpell();
+        spell.setCooldown(new ArrayList<>(item.getCooldowns()));
+        spell.setCooldownBurn(getBurn(item.getCooldowns()));
+        spell.setCost(new ArrayList<>(item.getCosts()));
+        spell.setCostBurn(getBurn(item.getCosts()));
+        spell.setDescription(item.getDescription());
+        final List<List<Double>> effects = new ArrayList<>(item.getEffects().size());
+        final List<String> effectBurn = new ArrayList<>(item.getEffects().size());
+        for(final List<Double> effect : item.getEffects()) {
+            effects.add(new ArrayList<>(effect));
+            effectBurn.add(getBurn(effect));
+        }
+        spell.setEffect(effects);
+        spell.setEffectBurn(effectBurn);
+        spell.setId(item.getId());
+        spell.setImage(transform(item.getImage(), context));
+        spell.setIncludedData(new HashSet<>(item.getIncludedData()));
+        spell.setKey(item.getKey());
+        final LevelTip tip = new LevelTip();
+        tip.setEffect(new ArrayList<>(item.getLevelUpEffects()));
+        tip.setLabel(new ArrayList<>(item.getLevelUpKeywords()));
+        spell.setLeveltip(tip);
+        spell.setLocale(item.getLocale());
+        spell.setMaxrank(item.getMaxRank());
+        final List<String> modes = new ArrayList<>(item.getModes().size());
+        for(final GameMode mode : item.getModes()) {
+            modes.add(mode.toString());
+        }
+        spell.setModes(modes);
+        spell.setName(item.getName());
+        spell.setPlatform(item.getPlatform().getTag());
+        spell.setRange(new ArrayList<>(item.getRanges()));
+        spell.setRangeBurn(getBurn(item.getRanges()));
+        spell.setCostType(item.getResource());
+        spell.setResource(item.getResourceDescription());
+        spell.setSanitizedDescription(item.getSanitizedDescription());
+        spell.setSanitizedTooltip(item.getSanitizedTooltip());
+        final List<SpellVars> variables = new ArrayList<>(item.getVariables().size());
+        for(final SpellVariables vars : item.getVariables()) {
+            variables.add(transform(vars, context));
+        }
+        spell.setVars(variables);
+        spell.setVersion(item.getVersion());
+        return spell;
+    }
+
+    @Transform(from = SummonerSpellList.class, to = SummonerSpells.class)
+    public SummonerSpells transform(final SummonerSpellList item, final PipelineContext context) {
+        final SummonerSpells spells = new SummonerSpells(item.getData().size());
+        for(final com.merakianalytics.orianna.types.dto.staticdata.SummonerSpell spell : item.getData().values()) {
+            spells.add(transform(spell, context));
+        }
+        spells.setIncludedData(new HashSet<>(item.getIncludedData()));
+        spells.setLocale(item.getLocale());
+        spells.setPlatform(Platform.withTag(item.getPlatform()));
+        spells.setType(item.getType());
+        spells.setVersion(item.getVersion());
+        return spells;
+    }
+
+    @Transform(from = SummonerSpells.class, to = SummonerSpellList.class)
+    public SummonerSpellList transform(final SummonerSpells item, final PipelineContext context) {
+        final SummonerSpellList spells = new SummonerSpellList();
+        final Map<String, com.merakianalytics.orianna.types.dto.staticdata.SummonerSpell> data = new HashMap<>();
+        for(final SummonerSpell spell : item) {
+            data.put(Integer.toString(spell.getId()), transform(spell, context));
+        }
+        spells.setData(data);
+        spells.setIncludedData(new HashSet<>(item.getIncludedData()));
+        spells.setLocale(item.getLocale());
+        spells.setPlatform(item.getPlatform().getTag());
+        spells.setType(item.getType());
+        spells.setVersion(item.getVersion());
+        return spells;
+    }
+
+    @Transform(from = Versions.class, to = com.merakianalytics.orianna.types.dto.staticdata.Versions.class)
+    public com.merakianalytics.orianna.types.dto.staticdata.Versions transform(final Versions item, final PipelineContext context) {
+        final com.merakianalytics.orianna.types.dto.staticdata.Versions versions = new com.merakianalytics.orianna.types.dto.staticdata.Versions(item.size());
+        versions.addAll(item);
+        versions.setPlatform(item.getPlatform().getTag());
+        return versions;
     }
 }

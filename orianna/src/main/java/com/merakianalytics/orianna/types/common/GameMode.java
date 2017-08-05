@@ -7,6 +7,7 @@ public enum GameMode {
     ASSASSINATE,
     CLASSIC,
     DARKSTAR,
+    DOOMBOTSTEEMO,
     FIRSTBLOOD,
     INTRO,
     KINGPORO,
