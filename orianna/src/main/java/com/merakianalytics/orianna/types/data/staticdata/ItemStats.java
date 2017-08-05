@@ -3,9 +3,9 @@ package com.merakianalytics.orianna.types.data.staticdata;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class ItemStats extends CoreData {
-    private static final long serialVersionUID = 4750614026630281574L;
+    private static final long serialVersionUID = -4225498074415380418L;
     private double percentCriticalStrikeChance, percentMagicResist, percentHealthRegen, percentMovespeed, magicResist, criticalStrikeDamage,
-            energy, percentLifeStreal, mana, movespeed, percentAttackSpeed, block, percentBlock,
+            energy, percentLifesteal, mana, movespeed, percentAttackSpeed, block, percentBlock,
             energyRegen, percentSpellVamp, manaRegen, percentDodge, attackSpeed, armor, healthRegen, percentAbilityPower,
             percentMana, abilityPower, percentManaRegen, percentAttackDamage, attackDamage, percentHealth, percentArmor,
             percentCriticalStrikeChange, percentExperience, health, criticalStrikeChance, experience;
@@ -41,9 +41,6 @@ public class ItemStats extends CoreData {
             return false;
         }
         if(Double.doubleToLongBits(criticalStrikeDamage) != Double.doubleToLongBits(other.criticalStrikeDamage)) {
-            return false;
-        }
-        if(Double.doubleToLongBits(percentDodge) != Double.doubleToLongBits(other.percentDodge)) {
             return false;
         }
         if(Double.doubleToLongBits(energy) != Double.doubleToLongBits(other.energy)) {
@@ -94,6 +91,9 @@ public class ItemStats extends CoreData {
         if(Double.doubleToLongBits(percentCriticalStrikeChange) != Double.doubleToLongBits(other.percentCriticalStrikeChange)) {
             return false;
         }
+        if(Double.doubleToLongBits(percentDodge) != Double.doubleToLongBits(other.percentDodge)) {
+            return false;
+        }
         if(Double.doubleToLongBits(percentExperience) != Double.doubleToLongBits(other.percentExperience)) {
             return false;
         }
@@ -103,7 +103,7 @@ public class ItemStats extends CoreData {
         if(Double.doubleToLongBits(percentHealthRegen) != Double.doubleToLongBits(other.percentHealthRegen)) {
             return false;
         }
-        if(Double.doubleToLongBits(percentLifeStreal) != Double.doubleToLongBits(other.percentLifeStreal)) {
+        if(Double.doubleToLongBits(percentLifesteal) != Double.doubleToLongBits(other.percentLifesteal)) {
             return false;
         }
         if(Double.doubleToLongBits(percentMagicResist) != Double.doubleToLongBits(other.percentMagicResist)) {
@@ -314,10 +314,10 @@ public class ItemStats extends CoreData {
     }
 
     /**
-     * @return the percentLifeStreal
+     * @return the percentLifesteal
      */
-    public double getPercentLifeStreal() {
-        return percentLifeStreal;
+    public double getPercentLifesteal() {
+        return percentLifesteal;
     }
 
     /**
@@ -374,8 +374,6 @@ public class ItemStats extends CoreData {
         result = prime * result + (int)(temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(criticalStrikeDamage);
         result = prime * result + (int)(temp ^ temp >>> 32);
-        temp = Double.doubleToLongBits(percentDodge);
-        result = prime * result + (int)(temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(energy);
         result = prime * result + (int)(temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(energyRegen);
@@ -408,13 +406,15 @@ public class ItemStats extends CoreData {
         result = prime * result + (int)(temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(percentCriticalStrikeChange);
         result = prime * result + (int)(temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(percentDodge);
+        result = prime * result + (int)(temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(percentExperience);
         result = prime * result + (int)(temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(percentHealth);
         result = prime * result + (int)(temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(percentHealthRegen);
         result = prime * result + (int)(temp ^ temp >>> 32);
-        temp = Double.doubleToLongBits(percentLifeStreal);
+        temp = Double.doubleToLongBits(percentLifesteal);
         result = prime * result + (int)(temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(percentMagicResist);
         result = prime * result + (int)(temp ^ temp >>> 32);
@@ -646,11 +646,11 @@ public class ItemStats extends CoreData {
     }
 
     /**
-     * @param percentLifeStreal
-     *        the percentLifeStreal to set
+     * @param percentLifesteal
+     *        the percentLifesteal to set
      */
-    public void setPercentLifeStreal(final double percentLifeStreal) {
-        this.percentLifeStreal = percentLifeStreal;
+    public void setPercentLifesteal(final double percentLifesteal) {
+        this.percentLifesteal = percentLifesteal;
     }
 
     /**

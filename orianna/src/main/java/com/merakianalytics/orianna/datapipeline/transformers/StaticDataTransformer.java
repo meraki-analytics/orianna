@@ -15,6 +15,7 @@ import com.merakianalytics.datapipelines.transformers.AbstractDataTransformer;
 import com.merakianalytics.datapipelines.transformers.Transform;
 import com.merakianalytics.orianna.types.common.GameMode;
 import com.merakianalytics.orianna.types.common.Platform;
+import com.merakianalytics.orianna.types.common.RuneType;
 import com.merakianalytics.orianna.types.data.staticdata.Champion;
 import com.merakianalytics.orianna.types.data.staticdata.ChampionSpell;
 import com.merakianalytics.orianna.types.data.staticdata.ChampionStats;
@@ -28,8 +29,20 @@ import com.merakianalytics.orianna.types.data.staticdata.ItemTree;
 import com.merakianalytics.orianna.types.data.staticdata.Items;
 import com.merakianalytics.orianna.types.data.staticdata.LanguageStrings;
 import com.merakianalytics.orianna.types.data.staticdata.Languages;
+import com.merakianalytics.orianna.types.data.staticdata.Maps;
+import com.merakianalytics.orianna.types.data.staticdata.Masteries;
+import com.merakianalytics.orianna.types.data.staticdata.Mastery;
+import com.merakianalytics.orianna.types.data.staticdata.MasteryTree;
+import com.merakianalytics.orianna.types.data.staticdata.MasteryTreeItem;
+import com.merakianalytics.orianna.types.data.staticdata.MasteryTreeTier;
 import com.merakianalytics.orianna.types.data.staticdata.Passive;
+import com.merakianalytics.orianna.types.data.staticdata.ProfileIcon;
+import com.merakianalytics.orianna.types.data.staticdata.ProfileIcons;
+import com.merakianalytics.orianna.types.data.staticdata.Realm;
 import com.merakianalytics.orianna.types.data.staticdata.RecommendedItems;
+import com.merakianalytics.orianna.types.data.staticdata.Rune;
+import com.merakianalytics.orianna.types.data.staticdata.RuneStats;
+import com.merakianalytics.orianna.types.data.staticdata.Runes;
 import com.merakianalytics.orianna.types.data.staticdata.Skin;
 import com.merakianalytics.orianna.types.data.staticdata.SpellVariables;
 import com.merakianalytics.orianna.types.data.staticdata.Sprite;
@@ -42,13 +55,38 @@ import com.merakianalytics.orianna.types.dto.staticdata.Info;
 import com.merakianalytics.orianna.types.dto.staticdata.InventoryDataStats;
 import com.merakianalytics.orianna.types.dto.staticdata.ItemList;
 import com.merakianalytics.orianna.types.dto.staticdata.LevelTip;
+import com.merakianalytics.orianna.types.dto.staticdata.MapData;
+import com.merakianalytics.orianna.types.dto.staticdata.MapDetails;
+import com.merakianalytics.orianna.types.dto.staticdata.MasteryList;
+import com.merakianalytics.orianna.types.dto.staticdata.MasteryTreeList;
+import com.merakianalytics.orianna.types.dto.staticdata.MetaData;
+import com.merakianalytics.orianna.types.dto.staticdata.ProfileIconData;
+import com.merakianalytics.orianna.types.dto.staticdata.ProfileIconDetails;
 import com.merakianalytics.orianna.types.dto.staticdata.Recommended;
+import com.merakianalytics.orianna.types.dto.staticdata.RuneList;
 import com.merakianalytics.orianna.types.dto.staticdata.SpellVars;
 
 public class StaticDataTransformer extends AbstractDataTransformer {
     private static final BiMap<String, com.merakianalytics.orianna.types.common.Map> RECOMMENDED_ITEMS_MAP_CONVERSIONS = ImmutableBiMap.of("SR",
         com.merakianalytics.orianna.types.common.Map.SUMMONERS_RIFT, "TT", com.merakianalytics.orianna.types.common.Map.TWISTED_TREELINE, "HA",
         com.merakianalytics.orianna.types.common.Map.HOWLING_ABYSS, "CS", com.merakianalytics.orianna.types.common.Map.THE_CRYSTAL_SCAR);
+
+    private static final BiMap<String, RuneType> RUNE_TYPE_CONVERSIONS = ImmutableBiMap.of("red", RuneType.MARK, "yellow", RuneType.SEAL, "blue",
+        RuneType.GLYPH, "black", RuneType.QUINTESSENCE);
+
+    private static String getBurn(final List<? extends Number> data) {
+        if(data == null || data.isEmpty()) {
+            return "";
+        }
+
+        final Number value = data.get(0);
+        for(int i = 1; i < data.size(); i++) {
+            if(!data.get(i).equals(value)) {
+                return Joiner.on("/").join(data);
+            }
+        }
+        return value.toString();
+    }
 
     @Transform(from = Block.class, to = ItemSet.class)
     public ItemSet transform(final Block item, final PipelineContext context) {
@@ -151,13 +189,20 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         }
         spell.setAltImages(alternativeImages);
         spell.setCooldown(new ArrayList<>(item.getCooldowns()));
+        spell.setCooldownBurn(getBurn(item.getCooldowns()));
         spell.setCost(new ArrayList<>(item.getCosts()));
+        spell.setCostBurn(getBurn(item.getCosts()));
         spell.setDescription(item.getDescription());
         final List<List<Double>> effects = new ArrayList<>(item.getEffects().size());
         for(final List<Double> effect : item.getEffects()) {
             effects.add(new ArrayList<>(effect));
         }
         spell.setEffect(effects);
+        final List<String> effectBurn = new ArrayList<>(item.getEffects().size());
+        for(final List<Double> effect : item.getEffects()) {
+            effectBurn.add(getBurn(effect));
+        }
+        spell.setEffectBurn(effectBurn);
         spell.setImage(transform(item.getImage(), context));
         spell.setKey(item.getKey());
         final LevelTip tip = new LevelTip();
@@ -167,6 +212,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         spell.setMaxrank(item.getMaxRank());
         spell.setName(item.getName());
         spell.setRange(new ArrayList<>(item.getRanges()));
+        spell.setRangeBurn(getBurn(item.getRanges()));
         spell.setCostType(item.getResource());
         spell.setResource(item.getResourceDescription());
         spell.setSanitizedDescription(item.getSanitizedDescription());
@@ -206,8 +252,26 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         return stats;
     }
 
+    @Transform(from = com.merakianalytics.orianna.types.data.staticdata.Map.class, to = MapDetails.class)
+    public MapDetails transform(final com.merakianalytics.orianna.types.data.staticdata.Map item, final PipelineContext context) {
+        final MapDetails map = new MapDetails();
+        map.setMapId(item.getId());
+        map.setImage(transform(item.getImage(), context));
+        map.setLocale(item.getLocale());
+        map.setMapName(item.getName());
+        map.setPlatform(item.getPlatform().getTag());
+        final List<Long> items = new ArrayList<>(item.getUnpurchasableItems().size());
+        for(final Integer it : item.getUnpurchasableItems()) {
+            items.add(it.longValue());
+        }
+        map.setUnpurchasableItemList(items);
+        map.setVersion(item.getVersion());
+        return map;
+    }
+
     @Transform(from = com.merakianalytics.orianna.types.dto.staticdata.Champion.class, to = Champion.class)
     public Champion transform(final com.merakianalytics.orianna.types.dto.staticdata.Champion item, final PipelineContext context) {
+        final Object previous = context.put("version", item.getVersion());
         final Champion champion = new Champion();
         champion.setAllyTips(new ArrayList<>(item.getAllytips()));
         champion.setBlurb(item.getBlurb());
@@ -216,8 +280,6 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         champion.setEnemyTips(new ArrayList<>(item.getEnemytips()));
         champion.setId(item.getId());
         champion.setImage(transform(item.getImage(), context));
-        champion.getImage().setVersion(item.getVersion());
-        champion.getImage().getSprite().setVersion(item.getVersion());
         champion.setIncludedData(new HashSet<>(item.getIncludedData()));
         champion.setKey(item.getKey());
         champion.setLocale(item.getLocale());
@@ -247,6 +309,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         champion.setTags(new ArrayList<>(item.getTags()));
         champion.setTitle(item.getTitle());
         champion.setVersion(item.getVersion());
+        context.put("version", previous);
         return champion;
     }
 
@@ -291,18 +354,21 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         final Image image = new Image();
         image.setFull(item.getFull());
         image.setGroup(item.getGroup());
+        image.setVersion((String)context.get("version"));
         final Sprite sprite = new Sprite();
         sprite.setFull(item.getSprite());
         sprite.setHeight(item.getH());
         sprite.setWidth(item.getW());
         sprite.setX(item.getX());
         sprite.setY(item.getY());
+        sprite.setVersion((String)context.get("version"));
         image.setSprite(sprite);
         return image;
     }
 
     @Transform(from = com.merakianalytics.orianna.types.dto.staticdata.Item.class, to = Item.class)
     public Item transform(final com.merakianalytics.orianna.types.dto.staticdata.Item item, final PipelineContext context) {
+        final Object previous = context.put("version", item.getVersion());
         final Item converted = new Item();
         converted.setBasePrice(item.getGold().getBase());
         final List<Integer> buildsFrom = new ArrayList<>(item.getFrom().size());
@@ -323,8 +389,6 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         converted.setHiddenFromAll(item.isHideFromAll());
         converted.setId(item.getId());
         converted.setImage(transform(item.getImage(), context));
-        converted.getImage().setVersion(item.getVersion());
-        converted.getImage().getSprite().setVersion(item.getVersion());
         converted.setIncludedData(new HashSet<>(item.getIncludedData()));
         converted.setInStore(item.isInStore());
         final Set<String> keywords = new HashSet<>();
@@ -353,6 +417,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         converted.setTier(item.getDepth());
         converted.setTotalPrice(item.getGold().getTotal());
         converted.setVersion(item.getVersion());
+        context.put("version", previous);
         return converted;
     }
 
@@ -383,6 +448,55 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         return strings;
     }
 
+    @Transform(from = com.merakianalytics.orianna.types.dto.staticdata.Mastery.class, to = Mastery.class)
+    public Mastery transform(final com.merakianalytics.orianna.types.dto.staticdata.Mastery item, final PipelineContext context) {
+        final Object previous = context.put("version", item.getVersion());
+        final Mastery mastery = new Mastery();
+        mastery.setDescriptions(new ArrayList<>(item.getDescription()));
+        mastery.setId(item.getId());
+        mastery.setImage(transform(item.getImage(), context));
+        mastery.setIncludedData(new HashSet<>(item.getIncludedData()));
+        mastery.setLocale(item.getLocale());
+        mastery.setName(item.getName());
+        mastery.setPlatform(Platform.withTag(item.getPlatform()));
+        mastery.setPoints(item.getRanks());
+        mastery.setPrerequisite(Integer.parseInt(item.getPrereq()));
+        mastery.setSanitizedDescriptions(new ArrayList<>(item.getSanitizedDescription()));
+        mastery.setTree(com.merakianalytics.orianna.types.common.MasteryTree.valueOf(item.getMasteryTree().toUpperCase()));
+        mastery.setVersion(item.getVersion());
+        context.put("version", previous);
+        return mastery;
+    }
+
+    @Transform(from = com.merakianalytics.orianna.types.dto.staticdata.MasteryTree.class, to = MasteryTree.class)
+    public MasteryTree transform(final com.merakianalytics.orianna.types.dto.staticdata.MasteryTree item, final PipelineContext context) {
+        final MasteryTree tree = new MasteryTree();
+        List<MasteryTreeTier> tiers = new ArrayList<>(item.getCunning().size());
+        for(final MasteryTreeList list : item.getCunning()) {
+            tiers.add(transform(list, context));
+        }
+        tree.setCunning(tiers);
+        tiers = new ArrayList<>(item.getFerocity().size());
+        for(final MasteryTreeList list : item.getFerocity()) {
+            tiers.add(transform(list, context));
+        }
+        tree.setFerocity(tiers);
+        tiers = new ArrayList<>(item.getResolve().size());
+        for(final MasteryTreeList list : item.getResolve()) {
+            tiers.add(transform(list, context));
+        }
+        tree.setResolve(tiers);
+        return tree;
+    }
+
+    @Transform(from = com.merakianalytics.orianna.types.dto.staticdata.MasteryTreeItem.class, to = MasteryTreeItem.class)
+    public MasteryTreeItem transform(final com.merakianalytics.orianna.types.dto.staticdata.MasteryTreeItem item, final PipelineContext context) {
+        final MasteryTreeItem converted = new MasteryTreeItem();
+        converted.setId(item.getMasteryId());
+        converted.setPrerequisite(Integer.parseInt(item.getPrereq()));
+        return converted;
+    }
+
     @Transform(from = com.merakianalytics.orianna.types.dto.staticdata.Passive.class, to = Passive.class)
     public Passive transform(final com.merakianalytics.orianna.types.dto.staticdata.Passive item, final PipelineContext context) {
         final Passive passive = new Passive();
@@ -391,6 +505,114 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         passive.setName(item.getName());
         passive.setSanitizedDescription(item.getSanitizedDescription());
         return passive;
+    }
+
+    @Transform(from = com.merakianalytics.orianna.types.dto.staticdata.Realm.class, to = Realm.class)
+    public Realm transform(final com.merakianalytics.orianna.types.dto.staticdata.Realm item, final PipelineContext context) {
+        final Realm realm = new Realm();
+        realm.setCDN(item.getCdn());
+        realm.setCSSVersion(item.getCss());
+        realm.setDefaultLocale(item.getL());
+        realm.setLatestDataDragon(item.getDd());
+        realm.setLatestVersions(new HashMap<>(item.getN()));
+        realm.setLegacyMode(item.getL());
+        realm.setMaxProfileIconId(item.getProfileiconmax());
+        realm.setPlatform(Platform.withTag(item.getPlatform()));
+        realm.setStore(item.getStore());
+        realm.setVersion(item.getV());
+        return realm;
+    }
+
+    @Transform(from = com.merakianalytics.orianna.types.dto.staticdata.Rune.class, to = Rune.class)
+    public Rune transform(final com.merakianalytics.orianna.types.dto.staticdata.Rune item, final PipelineContext context) {
+        final Object previous = context.put("version", item.getVersion());
+        final Rune rune = new Rune();
+        rune.setDescription(item.getDescription());
+        rune.setId(item.getId());
+        rune.setImage(transform(item.getImage(), context));
+        rune.setIncludedData(new HashSet<>(item.getIncludedData()));
+        rune.setLocale(item.getLocale());
+        rune.setName(item.getName());
+        rune.setPlatform(Platform.withTag(item.getPlatform()));
+        rune.setSanitizedDescription(item.getSanitizedDescription());
+        rune.setStats(transform(item.getStats(), context));
+        rune.setTags(new ArrayList<>(item.getTags()));
+        rune.setTier(Integer.parseInt(item.getRune().getTier()));
+        rune.setType(RUNE_TYPE_CONVERSIONS.get(item.getRune().getType()));
+        rune.setVersion(item.getVersion());
+        context.put("version", previous);
+        return rune;
+    }
+
+    @Transform(from = com.merakianalytics.orianna.types.dto.staticdata.RuneStats.class, to = RuneStats.class)
+    public RuneStats transform(final com.merakianalytics.orianna.types.dto.staticdata.RuneStats item, final PipelineContext context) {
+        final RuneStats stats = new RuneStats();
+        stats.setAbilityPower(item.getFlatMagicDamageMod());
+        stats.setAbilityPowerPerLevel(item.getFlatMagicDamageModPerLevel());
+        stats.setArmor(item.getFlatArmorMod());
+        stats.setArmorPenetration(item.getFlatArmorPenetrationMod());
+        stats.setArmorPenetrationPerLevel(item.getFlatArmorPenetrationModPerLevel());
+        stats.setArmorPerLevel(item.getFlatArmorModPerLevel());
+        stats.setAttackDamage(item.getFlatPhysicalDamageMod());
+        stats.setAttackDamagePerLevel(item.getFlatPhysicalDamageModPerLevel());
+        stats.setAttackSpeed(item.getFlatAttackSpeedMod());
+        stats.setBlock(item.getFlatBlockMod());
+        stats.setCriticalStrikeChance(item.getFlatCritChanceMod());
+        stats.setCriticalStrikeChancePerLevel(item.getFlatCritChanceModPerLevel());
+        stats.setCriticalStrikeDamage(item.getFlatCritDamageMod());
+        stats.setCriticalStrikeDamagePerLevel(item.getFlatCritDamageModPerLevel());
+        stats.setDodge(item.getFlatDodgeMod());
+        stats.setDodgePerLevel(item.getFlatDodgeModPerLevel());
+        stats.setEnergy(item.getFlatEnergyPoolMod());
+        stats.setEnergyPerLevel(item.getFlatEnergyModPerLevel());
+        stats.setEnergyRegen(item.getFlatEnergyRegenMod());
+        stats.setEnergyRegenPerLevel(item.getFlatEnergyRegenModPerLevel());
+        stats.setExperience(item.getFlatEXPBonus());
+        stats.setGoldPer10(item.getFlatGoldPer10Mod());
+        stats.setHealth(item.getFlatHPPoolMod());
+        stats.setHealthPerLevel(item.getFlatHPModPerLevel());
+        stats.setHealthRegen(item.getFlatHPRegenMod());
+        stats.setHealthRegenPerLevel(item.getFlatHPRegenModPerLevel());
+        stats.setMagicPenetration(item.getFlatMagicPenetrationMod());
+        stats.setMagicPenetrationPerLevel(item.getFlatMagicPenetrationModPerLevel());
+        stats.setMagicResist(item.getFlatSpellBlockMod());
+        stats.setMagicResistPerLevel(item.getFlatSpellBlockModPerLevel());
+        stats.setMana(item.getFlatMPPoolMod());
+        stats.setManaPerLevel(item.getFlatMPModPerLevel());
+        stats.setManaRegen(item.getFlatMPRegenMod());
+        stats.setManaRegenPerLevel(item.getFlatMPRegenModPerLevel());
+        stats.setMovespeed(item.getFlatMovementSpeedMod());
+        stats.setMovespeedPerLevel(item.getFlatMovementSpeedModPerLevel());
+        stats.setPercentAbilityPower(item.getPercentMagicDamageMod());
+        stats.setPercentArmor(item.getPercentArmorMod());
+        stats.setPercentArmorPenetration(item.getPercentArmorPenetrationMod());
+        stats.setPercentArmorPenetrationPerLevel(item.getPercentArmorPenetrationModPerLevel());
+        stats.setPercentAttackDamage(item.getPercentPhysicalDamageMod());
+        stats.setPercentAttackSpeed(item.getPercentAttackSpeedMod());
+        stats.setPercentAttackSpeedPerLevel(item.getPercentAttackSpeedModPerLevel());
+        stats.setPercentBlock(item.getPercentBlockMod());
+        stats.setPercentCooldownReduction(item.getPercentCooldownMod());
+        stats.setPercentCooldownReductionPerLevel(item.getPercentCooldownModPerLevel());
+        stats.setPercentCriticalStrikeChance(item.getFlatCritChanceModPerLevel());
+        stats.setPercentCriticalStrikeDamage(item.getFlatCritDamageModPerLevel());
+        stats.setPercentDodge(item.getPercentDodgeMod());
+        stats.setPercentExperience(item.getPercentEXPBonus());
+        stats.setPercentHealth(item.getPercentHPPoolMod());
+        stats.setPercentHealthRegen(item.getPercentHPRegenMod());
+        stats.setPercentLifesteal(item.getPercentLifeStealMod());
+        stats.setPercentMagicPenetration(item.getPercentMagicPenetrationMod());
+        stats.setPercentMagicPenetrationPerLevel(item.getPercentMagicPenetrationModPerLevel());
+        stats.setPercentMagicResist(item.getPercentSpellBlockMod());
+        stats.setPercentMana(item.getPercentMPPoolMod());
+        stats.setPercentManaRegen(item.getPercentMPRegenMod());
+        stats.setPercentMovespeed(item.getPercentMovementSpeedMod());
+        stats.setPercentMovespeedPerLevel(item.getPercentMovementSpeedModPerLevel());
+        stats.setPercentSpellVamp(item.getPercentSpellVampMod());
+        stats.setPercentTimeSpentDead(item.getPercentTimeDeadMod());
+        stats.setPercentTimeSpentDeadPerLevel(item.getPercentTimeDeadModPerLevel());
+        stats.setTimeSpentDead(item.getFlatTimeDeadMod());
+        stats.setTimeSpentDeadPerLevel(item.getFlatTimeDeadModPerLevel());
+        return stats;
     }
 
     @Transform(from = com.merakianalytics.orianna.types.dto.staticdata.Skin.class, to = Skin.class)
@@ -479,7 +701,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         stats.setPercentExperience(item.getPercentEXPBonus());
         stats.setPercentHealth(item.getPercentHPPoolMod());
         stats.setPercentHealthRegen(item.getPercentHPRegenMod());
-        stats.setPercentLifeStreal(item.getPercentLifeStealMod());
+        stats.setPercentLifesteal(item.getPercentLifeStealMod());
         stats.setPercentMagicResist(item.getPercentSpellBlockMod());
         stats.setPercentMana(item.getPercentMPPoolMod());
         stats.setPercentManaRegen(item.getPercentMPRegenMod());
@@ -640,7 +862,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         stats.setPercentEXPBonus(item.getPercentExperience());
         stats.setPercentHPPoolMod(item.getPercentHealth());
         stats.setPercentHPRegenMod(item.getPercentHealthRegen());
-        stats.setPercentLifeStealMod(item.getPercentLifeStreal());
+        stats.setPercentLifeStealMod(item.getPercentLifesteal());
         stats.setPercentSpellBlockMod(item.getPercentMagicResist());
         stats.setPercentMPPoolMod(item.getPercentMana());
         stats.setPercentMPRegenMod(item.getPercentManaRegen());
@@ -676,6 +898,144 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         return strings;
     }
 
+    @Transform(from = MapData.class, to = Maps.class)
+    public Maps transform(final MapData item, final PipelineContext context) {
+        final Maps maps = new Maps(item.getData().size());
+        for(final MapDetails map : item.getData().values()) {
+            maps.add(transform(map, context));
+        }
+        maps.setLocale(item.getLocale());
+        maps.setPlatform(Platform.withTag(item.getPlatform()));
+        maps.setType(item.getType());
+        maps.setVersion(item.getVersion());
+        return maps;
+    }
+
+    @Transform(from = MapDetails.class, to = com.merakianalytics.orianna.types.data.staticdata.Map.class)
+    public com.merakianalytics.orianna.types.data.staticdata.Map transform(final MapDetails item, final PipelineContext context) {
+        final Object previous = context.put("version", item.getVersion());
+        final com.merakianalytics.orianna.types.data.staticdata.Map map = new com.merakianalytics.orianna.types.data.staticdata.Map();
+        map.setId((int)item.getMapId());
+        map.setImage(transform(item.getImage(), context));
+        map.setLocale(item.getLocale());
+        map.setName(item.getMapName());
+        map.setPlatform(Platform.withTag(item.getPlatform()));
+        final List<Integer> items = new ArrayList<>(item.getUnpurchasableItemList().size());
+        for(final Long it : item.getUnpurchasableItemList()) {
+            items.add(it.intValue());
+        }
+        map.setUnpurchasableItems(items);
+        map.setVersion(item.getVersion());
+        context.put("version", previous);
+        return map;
+    }
+
+    @Transform(from = Maps.class, to = MapData.class)
+    public MapData transform(final Maps item, final PipelineContext context) {
+        final MapData maps = new MapData();
+        final Map<String, MapDetails> data = new HashMap<>();
+        for(final com.merakianalytics.orianna.types.data.staticdata.Map map : item) {
+            data.put(Integer.toString(map.getId()), transform(map, context));
+        }
+        maps.setData(data);
+        maps.setLocale(item.getLocale());
+        maps.setPlatform(item.getPlatform().getTag());
+        maps.setType(item.getType());
+        maps.setVersion(item.getVersion());
+        return maps;
+    }
+
+    @Transform(from = Masteries.class, to = MasteryList.class)
+    public MasteryList transform(final Masteries item, final PipelineContext context) {
+        final MasteryList masteries = new MasteryList();
+        masteries.setIncludedData(new HashSet<>(item.getIncludedData()));
+        masteries.setLocale(item.getLocale());
+        masteries.setPlatform(item.getPlatform().getTag());
+        masteries.setTree(transform(item.getTree(), context));
+        masteries.setType(item.getType());
+        masteries.setVersion(item.getVersion());
+        return masteries;
+    }
+
+    @Transform(from = Mastery.class, to = com.merakianalytics.orianna.types.dto.staticdata.Mastery.class)
+    public com.merakianalytics.orianna.types.dto.staticdata.Mastery transform(final Mastery item, final PipelineContext context) {
+        final com.merakianalytics.orianna.types.dto.staticdata.Mastery mastery = new com.merakianalytics.orianna.types.dto.staticdata.Mastery();
+        mastery.setDescription(new ArrayList<>(item.getDescriptions()));
+        mastery.setId(item.getId());
+        mastery.setImage(transform(item.getImage(), context));
+        mastery.setIncludedData(new HashSet<>(item.getIncludedData()));
+        mastery.setLocale(item.getLocale());
+        mastery.setName(item.getName());
+        mastery.setPlatform(item.getPlatform().getTag());
+        mastery.setRanks(item.getPoints());
+        mastery.setPrereq(Integer.toString(item.getPrerequisite()));
+        mastery.setSanitizedDescription(new ArrayList<>(item.getSanitizedDescriptions()));
+        mastery.setMasteryTree(item.getTree().toString().substring(0, 1) + item.getTree().toString().toLowerCase().substring(1));
+        mastery.setVersion(item.getVersion());
+        return mastery;
+    }
+
+    @Transform(from = MasteryList.class, to = Masteries.class)
+    public Masteries transform(final MasteryList item, final PipelineContext context) {
+        final Masteries masteries = new Masteries();
+        masteries.setIncludedData(new HashSet<>(item.getIncludedData()));
+        masteries.setLocale(item.getLocale());
+        masteries.setPlatform(Platform.withTag(item.getPlatform()));
+        masteries.setTree(transform(item.getTree(), context));
+        masteries.setType(item.getType());
+        masteries.setVersion(item.getVersion());
+        return masteries;
+    }
+
+    @Transform(from = MasteryTree.class, to = com.merakianalytics.orianna.types.dto.staticdata.MasteryTree.class)
+    public com.merakianalytics.orianna.types.dto.staticdata.MasteryTree transform(final MasteryTree item, final PipelineContext context) {
+        final com.merakianalytics.orianna.types.dto.staticdata.MasteryTree tree = new com.merakianalytics.orianna.types.dto.staticdata.MasteryTree();
+        List<MasteryTreeList> tiers = new ArrayList<>(item.getCunning().size());
+        for(final MasteryTreeTier list : item.getCunning()) {
+            tiers.add(transform(list, context));
+        }
+        tree.setCunning(tiers);
+        tiers = new ArrayList<>(item.getFerocity().size());
+        for(final MasteryTreeTier list : item.getFerocity()) {
+            tiers.add(transform(list, context));
+        }
+        tree.setFerocity(tiers);
+        tiers = new ArrayList<>(item.getResolve().size());
+        for(final MasteryTreeTier list : item.getResolve()) {
+            tiers.add(transform(list, context));
+        }
+        tree.setResolve(tiers);
+        return tree;
+    }
+
+    @Transform(from = MasteryTreeItem.class, to = com.merakianalytics.orianna.types.dto.staticdata.MasteryTreeItem.class)
+    public com.merakianalytics.orianna.types.dto.staticdata.MasteryTreeItem transform(final MasteryTreeItem item, final PipelineContext context) {
+        final com.merakianalytics.orianna.types.dto.staticdata.MasteryTreeItem converted = new com.merakianalytics.orianna.types.dto.staticdata.MasteryTreeItem();
+        converted.setMasteryId(item.getId());
+        converted.setPrereq(Integer.toString(item.getPrerequisite()));
+        return converted;
+    }
+
+    @Transform(from = MasteryTreeList.class, to = MasteryTreeTier.class)
+    public MasteryTreeTier transform(final MasteryTreeList item, final PipelineContext context) {
+        final MasteryTreeTier tier = new MasteryTreeTier(item.getMasteryTreeItems().size());
+        for(final com.merakianalytics.orianna.types.dto.staticdata.MasteryTreeItem it : item.getMasteryTreeItems()) {
+            tier.add(transform(it, context));
+        }
+        return tier;
+    }
+
+    @Transform(from = MasteryTreeTier.class, to = MasteryTreeList.class)
+    public MasteryTreeList transform(final MasteryTreeTier item, final PipelineContext context) {
+        final MasteryTreeList tier = new MasteryTreeList();
+        final List<com.merakianalytics.orianna.types.dto.staticdata.MasteryTreeItem> items = new ArrayList<>();
+        for(final MasteryTreeItem it : item) {
+            items.add(transform(it, context));
+        }
+        tier.setMasteryTreeItems(items);
+        return tier;
+    }
+
     @Transform(from = Passive.class, to = com.merakianalytics.orianna.types.dto.staticdata.Passive.class)
     public com.merakianalytics.orianna.types.dto.staticdata.Passive transform(final Passive item, final PipelineContext context) {
         final com.merakianalytics.orianna.types.dto.staticdata.Passive passive = new com.merakianalytics.orianna.types.dto.staticdata.Passive();
@@ -684,6 +1044,74 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         passive.setName(item.getName());
         passive.setSanitizedDescription(item.getSanitizedDescription());
         return passive;
+    }
+
+    @Transform(from = ProfileIcon.class, to = ProfileIconDetails.class)
+    public ProfileIconDetails transform(final ProfileIcon item, final PipelineContext context) {
+        final ProfileIconDetails icon = new ProfileIconDetails();
+        icon.setId(icon.getId());
+        icon.setImage(transform(item.getImage(), context));
+        icon.setLocale(item.getLocale());
+        icon.setPlatform(item.getPlatform().getTag());
+        icon.setVersion(item.getVersion());
+        return icon;
+    }
+
+    @Transform(from = ProfileIconData.class, to = ProfileIcons.class)
+    public ProfileIcons transform(final ProfileIconData item, final PipelineContext context) {
+        final ProfileIcons icons = new ProfileIcons(item.getData().size());
+        for(final ProfileIconDetails icon : item.getData().values()) {
+            icons.add(transform(icon, context));
+        }
+        icons.setLocale(item.getLocale());
+        icons.setPlatform(Platform.withTag(item.getPlatform()));
+        icons.setType(item.getType());
+        icons.setVersion(item.getVersion());
+        return icons;
+    }
+
+    @Transform(from = ProfileIconDetails.class, to = ProfileIcon.class)
+    public ProfileIcon transform(final ProfileIconDetails item, final PipelineContext context) {
+        final Object previous = context.put("version", item.getVersion());
+        final ProfileIcon icon = new ProfileIcon();
+        icon.setId(icon.getId());
+        icon.setImage(transform(item.getImage(), context));
+        icon.setLocale(item.getLocale());
+        icon.setPlatform(Platform.withTag(item.getPlatform()));
+        icon.setVersion(item.getVersion());
+        context.put("version", previous);
+        return icon;
+    }
+
+    @Transform(from = ProfileIcons.class, to = ProfileIconData.class)
+    public ProfileIconData transform(final ProfileIcons item, final PipelineContext context) {
+        final ProfileIconData icons = new ProfileIconData();
+        final Map<String, ProfileIconDetails> data = new HashMap<>();
+        for(final ProfileIcon icon : item) {
+            data.put(Integer.toString(icon.getId()), transform(icon, context));
+        }
+        icons.setData(data);
+        icons.setLocale(item.getLocale());
+        icons.setPlatform(item.getPlatform().getTag());
+        icons.setType(item.getType());
+        icons.setVersion(item.getVersion());
+        return icons;
+    }
+
+    @Transform(from = Realm.class, to = com.merakianalytics.orianna.types.dto.staticdata.Realm.class)
+    public com.merakianalytics.orianna.types.dto.staticdata.Realm transform(final Realm item, final PipelineContext context) {
+        final com.merakianalytics.orianna.types.dto.staticdata.Realm realm = new com.merakianalytics.orianna.types.dto.staticdata.Realm();
+        realm.setCdn(item.getCDN());
+        realm.setCss(item.getCSSVersion());
+        realm.setL(item.getDefaultLocale());
+        realm.setDd(item.getLatestDataDragon());
+        realm.setN(new HashMap<>(item.getLatestVersions()));
+        realm.setL(item.getLegacyMode());
+        realm.setProfileiconmax(item.getMaxProfileIconId());
+        realm.setPlatform(item.getPlatform().getTag());
+        realm.setStore(item.getStore());
+        realm.setV(item.getVersion());
+        return realm;
     }
 
     @Transform(from = Recommended.class, to = RecommendedItems.class)
@@ -716,6 +1144,129 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         items.setTitle(item.getTitle());
         items.setType(item.getType());
         return items;
+    }
+
+    @Transform(from = Rune.class, to = com.merakianalytics.orianna.types.dto.staticdata.Rune.class)
+    public com.merakianalytics.orianna.types.dto.staticdata.Rune transform(final Rune item, final PipelineContext context) {
+        final com.merakianalytics.orianna.types.dto.staticdata.Rune rune = new com.merakianalytics.orianna.types.dto.staticdata.Rune();
+        rune.setDescription(item.getDescription());
+        rune.setId(item.getId());
+        rune.setImage(transform(item.getImage(), context));
+        rune.setIncludedData(new HashSet<>(item.getIncludedData()));
+        rune.setLocale(item.getLocale());
+        rune.setName(item.getName());
+        rune.setPlatform(item.getPlatform().getTag());
+        rune.setSanitizedDescription(item.getSanitizedDescription());
+        rune.setStats(transform(item.getStats(), context));
+        rune.setTags(new ArrayList<>(item.getTags()));
+        final MetaData metadata = new MetaData();
+        metadata.setRune(true);
+        metadata.setTier(Integer.toString(item.getTier()));
+        metadata.setType(RUNE_TYPE_CONVERSIONS.inverse().get(item.getType()));
+        rune.setRune(metadata);
+        rune.setVersion(item.getVersion());
+        return rune;
+    }
+
+    @Transform(from = RuneList.class, to = Runes.class)
+    public Runes transform(final RuneList item, final PipelineContext context) {
+        final Runes runes = new Runes(item.getData().size());
+        for(final com.merakianalytics.orianna.types.dto.staticdata.Rune rune : item.getData().values()) {
+            runes.add(transform(rune, context));
+        }
+        runes.setIncludedData(new HashSet<>(item.getIncludedData()));
+        runes.setLocale(item.getLocale());
+        runes.setPlatform(Platform.withTag(item.getPlatform()));
+        runes.setType(item.getType());
+        runes.setVersion(item.getVersion());
+        return runes;
+    }
+
+    @Transform(from = Runes.class, to = RuneList.class)
+    public RuneList transform(final Runes item, final PipelineContext context) {
+        final RuneList runes = new RuneList();
+        final Map<String, com.merakianalytics.orianna.types.dto.staticdata.Rune> data = new HashMap<>();
+        for(final Rune rune : item) {
+            data.put(Integer.toString(rune.getId()), transform(rune, context));
+        }
+        runes.setData(data);
+        runes.setIncludedData(new HashSet<>(item.getIncludedData()));
+        runes.setLocale(item.getLocale());
+        runes.setPlatform(item.getPlatform().getTag());
+        runes.setType(item.getType());
+        runes.setVersion(item.getVersion());
+        return runes;
+    }
+
+    @Transform(from = RuneStats.class, to = com.merakianalytics.orianna.types.dto.staticdata.RuneStats.class)
+    public com.merakianalytics.orianna.types.dto.staticdata.RuneStats transform(final RuneStats item, final PipelineContext context) {
+        final com.merakianalytics.orianna.types.dto.staticdata.RuneStats stats = new com.merakianalytics.orianna.types.dto.staticdata.RuneStats();
+        stats.setFlatMagicDamageMod(item.getAbilityPower());
+        stats.setFlatMagicDamageModPerLevel(item.getAbilityPowerPerLevel());
+        stats.setFlatArmorMod(item.getArmor());
+        stats.setFlatArmorPenetrationMod(item.getArmorPenetration());
+        stats.setFlatArmorPenetrationModPerLevel(item.getArmorPenetrationPerLevel());
+        stats.setFlatArmorModPerLevel(item.getArmorPerLevel());
+        stats.setFlatPhysicalDamageMod(item.getAttackDamage());
+        stats.setFlatPhysicalDamageModPerLevel(item.getAttackDamagePerLevel());
+        stats.setFlatAttackSpeedMod(item.getAttackSpeed());
+        stats.setFlatBlockMod(item.getBlock());
+        stats.setFlatCritChanceMod(item.getCriticalStrikeChance());
+        stats.setFlatCritChanceModPerLevel(item.getCriticalStrikeChancePerLevel());
+        stats.setFlatCritDamageMod(item.getCriticalStrikeDamage());
+        stats.setFlatCritDamageModPerLevel(item.getCriticalStrikeDamagePerLevel());
+        stats.setFlatDodgeMod(item.getDodge());
+        stats.setFlatDodgeModPerLevel(item.getDodgePerLevel());
+        stats.setFlatEnergyPoolMod(item.getEnergy());
+        stats.setFlatEnergyModPerLevel(item.getEnergyPerLevel());
+        stats.setFlatEnergyRegenMod(item.getEnergyRegen());
+        stats.setFlatEnergyRegenModPerLevel(item.getEnergyRegenPerLevel());
+        stats.setFlatEXPBonus(item.getExperience());
+        stats.setFlatGoldPer10Mod(item.getGoldPer10());
+        stats.setFlatHPPoolMod(item.getHealth());
+        stats.setFlatHPModPerLevel(item.getHealthPerLevel());
+        stats.setFlatHPRegenMod(item.getHealthRegen());
+        stats.setFlatHPRegenModPerLevel(item.getHealthRegenPerLevel());
+        stats.setFlatMagicPenetrationMod(item.getMagicPenetration());
+        stats.setFlatMagicPenetrationModPerLevel(item.getMagicPenetrationPerLevel());
+        stats.setFlatSpellBlockMod(item.getMagicResist());
+        stats.setFlatSpellBlockModPerLevel(item.getMagicResistPerLevel());
+        stats.setFlatMPPoolMod(item.getMana());
+        stats.setFlatMPModPerLevel(item.getManaPerLevel());
+        stats.setFlatMPRegenMod(item.getManaRegen());
+        stats.setFlatMPRegenModPerLevel(item.getManaRegenPerLevel());
+        stats.setFlatMovementSpeedMod(item.getMovespeed());
+        stats.setFlatMovementSpeedModPerLevel(item.getMovespeedPerLevel());
+        stats.setPercentMagicDamageMod(item.getPercentAbilityPower());
+        stats.setPercentArmorMod(item.getPercentArmor());
+        stats.setPercentArmorPenetrationMod(item.getPercentArmorPenetration());
+        stats.setPercentArmorPenetrationModPerLevel(item.getPercentArmorPenetrationPerLevel());
+        stats.setPercentPhysicalDamageMod(item.getPercentAttackDamage());
+        stats.setPercentAttackSpeedMod(item.getPercentAttackSpeed());
+        stats.setPercentAttackSpeedModPerLevel(item.getPercentAttackSpeedPerLevel());
+        stats.setPercentBlockMod(item.getPercentBlock());
+        stats.setPercentCooldownMod(item.getPercentCooldownReduction());
+        stats.setPercentCooldownModPerLevel(item.getPercentCooldownReductionPerLevel());
+        stats.setFlatCritChanceModPerLevel(item.getPercentCriticalStrikeChance());
+        stats.setFlatCritDamageModPerLevel(item.getPercentCriticalStrikeDamage());
+        stats.setPercentDodgeMod(item.getPercentDodge());
+        stats.setPercentEXPBonus(item.getPercentExperience());
+        stats.setPercentHPPoolMod(item.getPercentHealth());
+        stats.setPercentHPRegenMod(item.getPercentHealthRegen());
+        stats.setPercentLifeStealMod(item.getPercentLifesteal());
+        stats.setPercentMagicPenetrationMod(item.getPercentMagicPenetration());
+        stats.setPercentMagicPenetrationModPerLevel(item.getPercentMagicPenetrationPerLevel());
+        stats.setPercentSpellBlockMod(item.getPercentMagicResist());
+        stats.setPercentMPPoolMod(item.getPercentMana());
+        stats.setPercentMPRegenMod(item.getPercentManaRegen());
+        stats.setPercentMovementSpeedMod(item.getPercentMovespeed());
+        stats.setPercentMovementSpeedModPerLevel(item.getPercentMovespeedPerLevel());
+        stats.setPercentSpellVampMod(item.getPercentSpellVamp());
+        stats.setPercentTimeDeadMod(item.getPercentTimeSpentDead());
+        stats.setPercentTimeDeadModPerLevel(item.getPercentTimeSpentDeadPerLevel());
+        stats.setFlatTimeDeadMod(item.getTimeSpentDead());
+        stats.setFlatTimeDeadModPerLevel(item.getTimeSpentDeadPerLevel());
+        return stats;
     }
 
     @Transform(from = Skin.class, to = com.merakianalytics.orianna.types.dto.staticdata.Skin.class)

@@ -1,15 +1,13 @@
 package com.merakianalytics.orianna.types.dto.staticdata;
 
+import java.util.List;
+
 import com.merakianalytics.orianna.types.dto.DataObject;
 
 public class MasteryTree extends DataObject {
-    private static final long serialVersionUID = -1580961535611704744L;
-    private MasteryTreeList Resolve, Ferocity, Cunning;
+    private static final long serialVersionUID = -254598603489598202L;
+    private List<MasteryTreeList> Resolve, Ferocity, Cunning;
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(final Object obj) {
         if(this == obj) {
@@ -49,28 +47,24 @@ public class MasteryTree extends DataObject {
     /**
      * @return the cunning
      */
-    public MasteryTreeList getCunning() {
+    public List<MasteryTreeList> getCunning() {
         return Cunning;
     }
 
     /**
      * @return the ferocity
      */
-    public MasteryTreeList getFerocity() {
+    public List<MasteryTreeList> getFerocity() {
         return Ferocity;
     }
 
     /**
      * @return the resolve
      */
-    public MasteryTreeList getResolve() {
+    public List<MasteryTreeList> getResolve() {
         return Resolve;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -85,7 +79,7 @@ public class MasteryTree extends DataObject {
      * @param cunning
      *        the cunning to set
      */
-    public void setCunning(final MasteryTreeList cunning) {
+    public void setCunning(final List<MasteryTreeList> cunning) {
         Cunning = cunning;
     }
 
@@ -93,7 +87,7 @@ public class MasteryTree extends DataObject {
      * @param ferocity
      *        the ferocity to set
      */
-    public void setFerocity(final MasteryTreeList ferocity) {
+    public void setFerocity(final List<MasteryTreeList> ferocity) {
         Ferocity = ferocity;
     }
 
@@ -101,7 +95,7 @@ public class MasteryTree extends DataObject {
      * @param resolve
      *        the resolve to set
      */
-    public void setResolve(final MasteryTreeList resolve) {
+    public void setResolve(final List<MasteryTreeList> resolve) {
         Resolve = resolve;
     }
 }
