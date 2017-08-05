@@ -14,6 +14,7 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
         public void run() {
             synchronized(resetterLock) {
                 if(!cancelled) {
+                    permitter.drainPermits();
                     synchronized(currentlyProcessingLock) {
                         permitter.release(permits - currentlyProcessing);
                     }
