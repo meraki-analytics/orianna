@@ -40,8 +40,8 @@ import com.merakianalytics.orianna.types.dto.staticdata.Versions;
 
 public class StaticDataAPI extends RiotAPI.Service {
     private static String getCurrentVersion(final Platform platform, final PipelineContext context) {
-        final Versions versions = context.getPipeline().get(Versions.class, ImmutableMap.<String, Object> of("platform", platform));
-        return versions.get(0);
+        final Realm realm = context.getPipeline().get(Realm.class, ImmutableMap.<String, Object> of("platform", platform));
+        return realm.getV();
     }
 
     public StaticDataAPI(final String key, final Map<Platform, RateLimiter> applicationRateLimiters,
