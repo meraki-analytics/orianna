@@ -13,6 +13,15 @@ public class PipelineContext extends ConcurrentHashMap<String, Object> {
         return pipeline;
     }
 
+    @Override
+    public Object put(final String key, final Object value) {
+        if(value == null) {
+            return get(key);
+        } else {
+            return super.put(key, value);
+        }
+    }
+
     /**
      * @param pipeline
      *        the pipeline to set
