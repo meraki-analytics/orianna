@@ -2,6 +2,8 @@ package com.merakianalytics.orianna.types.common;
 
 import java.util.Set;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMap.Builder;
 import com.google.common.collect.ImmutableSet;
 
 public enum Queue {
@@ -52,7 +54,21 @@ public enum Queue {
     TEAM_BUILDER_RANKED_SOLO(420),
     URF_5x5(76);
 
+    private static final java.util.Map<Integer, Queue> BY_ID = getById();
     public static final Set<Queue> RANKED = ImmutableSet.of(RANKED_SOLO_5x5, RANKED_FLEX_SR, RANKED_FLEX_TT);
+
+    private static final java.util.Map<Integer, Queue> getById() {
+        final Builder<Integer, Queue> builder = ImmutableMap.builder();
+        for(final Queue queue : values()) {
+            builder.put(queue.id, queue);
+        }
+        return builder.build();
+    }
+
+    public static Queue withId(final int id) {
+        return BY_ID.get(id);
+    }
+
     private final int id;
 
     private Queue(final int id) {

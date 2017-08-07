@@ -6,12 +6,12 @@ import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class ChampionMastery extends CoreData {
-    private static final long serialVersionUID = -316425968873497130L;
-    private long championId, playerId, pointsUntilNextLevel, pointsSinceLastLevel;
+    private static final long serialVersionUID = -6106614907596583032L;
     private boolean chestGranted;
     private DateTime lastPlayed;
-    private int level, points, tokens;
+    private int level, points, tokens, championId, pointsUntilNextLevel, pointsSinceLastLevel;
     private Platform platform;
+    private long playerId;
 
     @Override
     public boolean equals(final Object obj) {
@@ -65,7 +65,7 @@ public class ChampionMastery extends CoreData {
     /**
      * @return the championId
      */
-    public long getChampionId() {
+    public int getChampionId() {
         return championId;
     }
 
@@ -107,14 +107,14 @@ public class ChampionMastery extends CoreData {
     /**
      * @return the pointsSinceLastLevel
      */
-    public long getPointsSinceLastLevel() {
+    public int getPointsSinceLastLevel() {
         return pointsSinceLastLevel;
     }
 
     /**
      * @return the pointsUntilNextLevel
      */
-    public long getPointsUntilNextLevel() {
+    public int getPointsUntilNextLevel() {
         return pointsUntilNextLevel;
     }
 
@@ -129,15 +129,15 @@ public class ChampionMastery extends CoreData {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (int)(championId ^ championId >>> 32);
+        result = prime * result + championId;
         result = prime * result + (chestGranted ? 1231 : 1237);
         result = prime * result + (lastPlayed == null ? 0 : lastPlayed.hashCode());
         result = prime * result + level;
         result = prime * result + (platform == null ? 0 : platform.hashCode());
         result = prime * result + (int)(playerId ^ playerId >>> 32);
         result = prime * result + points;
-        result = prime * result + (int)(pointsSinceLastLevel ^ pointsSinceLastLevel >>> 32);
-        result = prime * result + (int)(pointsUntilNextLevel ^ pointsUntilNextLevel >>> 32);
+        result = prime * result + pointsSinceLastLevel;
+        result = prime * result + pointsUntilNextLevel;
         result = prime * result + tokens;
         return result;
     }
@@ -153,7 +153,7 @@ public class ChampionMastery extends CoreData {
      * @param championId
      *        the championId to set
      */
-    public void setChampionId(final long championId) {
+    public void setChampionId(final int championId) {
         this.championId = championId;
     }
 
@@ -209,7 +209,7 @@ public class ChampionMastery extends CoreData {
      * @param pointsSinceLastLevel
      *        the pointsSinceLastLevel to set
      */
-    public void setPointsSinceLastLevel(final long pointsSinceLastLevel) {
+    public void setPointsSinceLastLevel(final int pointsSinceLastLevel) {
         this.pointsSinceLastLevel = pointsSinceLastLevel;
     }
 
@@ -217,7 +217,7 @@ public class ChampionMastery extends CoreData {
      * @param pointsUntilNextLevel
      *        the pointsUntilNextLevel to set
      */
-    public void setPointsUntilNextLevel(final long pointsUntilNextLevel) {
+    public void setPointsUntilNextLevel(final int pointsUntilNextLevel) {
         this.pointsUntilNextLevel = pointsUntilNextLevel;
     }
 

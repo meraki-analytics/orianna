@@ -5,16 +5,14 @@ import com.merakianalytics.orianna.types.data.CoreData;
 public class RuneStats extends CoreData {
     private static final long serialVersionUID = -5080946844563036159L;
     private double percentTimeSpentDeadPerLevel, percentArmorPenetrationPerLevel, percentCriticalStrikeDamage, percentMagicResist, percentHealthRegen,
-            percentMovespeed, magicResist, energyRegenPerLevel, energy, magicPenetrationPerLevel, percentLifesteal,
-            mana, percentCooldownReduction, percentMagicPenetration, armorPenetrationPerLevel, movespeed, timeSpentDeadPerLevel,
-            armorPerLevel, percentAttackSpeed, dodgePerLevel, percentAbilityPower, percentBlock, dodge, energyRegen,
-            healthPerLevel, percentAttackSpeedPerLevel, percentSpellVamp, manaRegen, percentHealth, percentDodge, attackSpeed,
-            armor, abilityPowerPerLevel, healthRegen, percentAttackDamage, criticalStrikeChancePerLevel, magicResistPerLevel,
-            percentTimeSpentDead, block, percentMana, abilityPower, percentManaRegen, percentMovespeedPerLevel,
-            percentCooldownReductionPerLevel, manaPerLevel, energyPerLevel, attackDamage, healthRegenPerLevel, criticalStrikeDamage,
-            percentArmor, magicPenetration, percentCriticalStrikeChance, attackDamagePerLevel, percentArmorPenetration, percentExperience,
-            manaRegenPerLevel, percentMagicPenetrationPerLevel, timeSpentDead, movespeedPerLevel, goldPer10,
-            armorPenetration, criticalStrikeDamagePerLevel, health, criticalStrikeChance, experience;
+            percentMovespeed, magicResist, energyRegenPerLevel, energy, magicPenetrationPerLevel, percentLifesteal, mana, percentCooldownReduction,
+            percentMagicPenetration, armorPenetrationPerLevel, movespeed, timeSpentDeadPerLevel, armorPerLevel, percentAttackSpeed, dodgePerLevel,
+            percentAbilityPower, percentBlock, dodge, energyRegen, healthPerLevel, percentAttackSpeedPerLevel, percentSpellVamp, manaRegen, percentHealth,
+            percentDodge, attackSpeed, armor, abilityPowerPerLevel, healthRegen, percentAttackDamage, criticalStrikeChancePerLevel, magicResistPerLevel,
+            percentTimeSpentDead, block, percentMana, abilityPower, percentManaRegen, percentMovespeedPerLevel, percentCooldownReductionPerLevel, manaPerLevel,
+            energyPerLevel, attackDamage, healthRegenPerLevel, criticalStrikeDamage, percentArmor, magicPenetration, percentCriticalStrikeChance,
+            attackDamagePerLevel, percentArmorPenetration, percentExperience, manaRegenPerLevel, percentMagicPenetrationPerLevel, timeSpentDead,
+            movespeedPerLevel, goldPer10, armorPenetration, criticalStrikeDamagePerLevel, health, criticalStrikeChance, experience;
 
     @Override
     public boolean equals(final Object obj) {

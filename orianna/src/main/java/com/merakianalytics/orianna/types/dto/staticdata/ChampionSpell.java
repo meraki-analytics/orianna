@@ -6,7 +6,6 @@ import com.merakianalytics.orianna.types.dto.DataObject;
 
 public class ChampionSpell extends DataObject {
     private static final long serialVersionUID = -4120852259618975907L;
-
     private List<Image> altImages;
     private List<Double> cooldown;
     private String cooldownBurn, resource, costType, sanitizedDescription, sanitizedTooltip, tooltip, costBurn, rangeBurn, key, description, name;

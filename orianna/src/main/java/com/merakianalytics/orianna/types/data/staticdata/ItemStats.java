@@ -4,11 +4,10 @@ import com.merakianalytics.orianna.types.data.CoreData;
 
 public class ItemStats extends CoreData {
     private static final long serialVersionUID = -4225498074415380418L;
-    private double percentCriticalStrikeChance, percentMagicResist, percentHealthRegen, percentMovespeed, magicResist, criticalStrikeDamage,
-            energy, percentLifesteal, mana, movespeed, percentAttackSpeed, block, percentBlock,
-            energyRegen, percentSpellVamp, manaRegen, percentDodge, attackSpeed, armor, healthRegen, percentAbilityPower,
-            percentMana, abilityPower, percentManaRegen, percentAttackDamage, attackDamage, percentHealth, percentArmor,
-            percentCriticalStrikeChange, percentExperience, health, criticalStrikeChance, experience;
+    private double percentCriticalStrikeChance, percentMagicResist, percentHealthRegen, percentMovespeed, magicResist, criticalStrikeDamage, energy,
+            percentLifesteal, mana, movespeed, percentAttackSpeed, block, percentBlock, energyRegen, percentSpellVamp, manaRegen, percentDodge, attackSpeed,
+            armor, healthRegen, percentAbilityPower, percentMana, abilityPower, percentManaRegen, percentAttackDamage, attackDamage, percentHealth,
+            percentArmor, percentCriticalStrikeChange, percentExperience, health, criticalStrikeChance, experience;
 
     @Override
     public boolean equals(final Object obj) {

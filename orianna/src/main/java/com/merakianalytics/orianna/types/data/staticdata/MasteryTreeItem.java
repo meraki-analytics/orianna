@@ -3,9 +3,8 @@ package com.merakianalytics.orianna.types.data.staticdata;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class MasteryTreeItem extends CoreData {
-    private static final long serialVersionUID = 1994278995376469638L;
-    private int id;
-    private int prerequisite;
+    private static final long serialVersionUID = 6992480779119108141L;
+    private int id, prerequisiteId;
 
     @Override
     public boolean equals(final Object obj) {
@@ -22,7 +21,7 @@ public class MasteryTreeItem extends CoreData {
         if(id != other.id) {
             return false;
         }
-        if(prerequisite != other.prerequisite) {
+        if(prerequisiteId != other.prerequisiteId) {
             return false;
         }
         return true;
@@ -36,10 +35,10 @@ public class MasteryTreeItem extends CoreData {
     }
 
     /**
-     * @return the prerequisite
+     * @return the prerequisiteId
      */
-    public int getPrerequisite() {
-        return prerequisite;
+    public int getPrerequisiteId() {
+        return prerequisiteId;
     }
 
     @Override
@@ -47,7 +46,7 @@ public class MasteryTreeItem extends CoreData {
         final int prime = 31;
         int result = 1;
         result = prime * result + id;
-        result = prime * result + prerequisite;
+        result = prime * result + prerequisiteId;
         return result;
     }
 
@@ -60,10 +59,10 @@ public class MasteryTreeItem extends CoreData {
     }
 
     /**
-     * @param prerequisite
-     *        the prerequisite to set
+     * @param prerequisiteId
+     *        the prerequisiteId to set
      */
-    public void setPrerequisite(final int prerequisite) {
-        this.prerequisite = prerequisite;
+    public void setPrerequisiteId(final int prerequisiteId) {
+        this.prerequisiteId = prerequisiteId;
     }
 }

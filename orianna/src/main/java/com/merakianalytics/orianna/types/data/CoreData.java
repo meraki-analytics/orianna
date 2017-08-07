@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.merakianalytics.orianna.types.common.OriannaException;
 
 public abstract class CoreData implements Serializable {
@@ -254,9 +255,9 @@ public abstract class CoreData implements Serializable {
         }
     }
 
-    private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
+    private static final ObjectMapper JSON_MAPPER = new ObjectMapper().registerModule(new JodaModule());
     private static final Logger LOGGER = LoggerFactory.getLogger(CoreData.class);
-    private static final ObjectMapper MSGPACK_MAPPER = new ObjectMapper(new MessagePackFactory());
+    private static final ObjectMapper MSGPACK_MAPPER = new ObjectMapper(new MessagePackFactory()).registerModule(new JodaModule());
     private static final long serialVersionUID = 4701497355193788806L;
 
     public static <T extends CoreData> T fromBytes(final Class<T> type, final byte[] msgpack) {

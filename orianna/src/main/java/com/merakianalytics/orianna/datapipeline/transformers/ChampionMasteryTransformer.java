@@ -62,15 +62,15 @@ public class ChampionMasteryTransformer extends AbstractDataTransformer {
     @Transform(from = com.merakianalytics.orianna.types.dto.championmastery.ChampionMastery.class, to = ChampionMastery.class)
     public ChampionMastery transform(final com.merakianalytics.orianna.types.dto.championmastery.ChampionMastery item, final PipelineContext context) {
         final ChampionMastery mastery = new ChampionMastery();
-        mastery.setChampionId(item.getChampionId());
+        mastery.setChampionId((int)item.getChampionId());
         mastery.setChestGranted(item.isChestGranted());
         mastery.setLastPlayed(new DateTime(item.getLastPlayTime()));
         mastery.setLevel(item.getChampionLevel());
         mastery.setPlatform(Platform.withTag(item.getPlatform()));
         mastery.setPlayerId(item.getPlayerId());
         mastery.setPoints(item.getChampionPoints());
-        mastery.setPointsSinceLastLevel(item.getChampionPointsSinceLastLevel());
-        mastery.setPointsUntilNextLevel(item.getChampionPointsUntilNextLevel());
+        mastery.setPointsSinceLastLevel((int)item.getChampionPointsSinceLastLevel());
+        mastery.setPointsUntilNextLevel((int)item.getChampionPointsUntilNextLevel());
         mastery.setTokens(item.getTokensEarned());
         return mastery;
     }

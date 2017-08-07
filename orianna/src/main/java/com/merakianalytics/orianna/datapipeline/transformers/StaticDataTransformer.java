@@ -495,7 +495,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
     public MasteryTreeItem transform(final com.merakianalytics.orianna.types.dto.staticdata.MasteryTreeItem item, final PipelineContext context) {
         final MasteryTreeItem converted = new MasteryTreeItem();
         converted.setId(item.getMasteryId());
-        converted.setPrerequisite(Integer.parseInt(item.getPrereq()));
+        converted.setPrerequisiteId(Integer.parseInt(item.getPrereq()));
         return converted;
     }
 
@@ -1064,7 +1064,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
     public com.merakianalytics.orianna.types.dto.staticdata.MasteryTreeItem transform(final MasteryTreeItem item, final PipelineContext context) {
         final com.merakianalytics.orianna.types.dto.staticdata.MasteryTreeItem converted = new com.merakianalytics.orianna.types.dto.staticdata.MasteryTreeItem();
         converted.setMasteryId(item.getId());
-        converted.setPrereq(Integer.toString(item.getPrerequisite()));
+        converted.setPrereq(Integer.toString(item.getPrerequisiteId()));
         return converted;
     }
 
