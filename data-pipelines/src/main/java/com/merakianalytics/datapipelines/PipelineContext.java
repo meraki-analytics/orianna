@@ -16,7 +16,7 @@ public class PipelineContext extends ConcurrentHashMap<String, Object> {
     @Override
     public Object put(final String key, final Object value) {
         if(value == null) {
-            return get(key);
+            return remove(key);
         } else {
             return super.put(key, value);
         }
