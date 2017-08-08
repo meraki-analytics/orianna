@@ -93,6 +93,7 @@ public class RiotAPI extends CompositeDataSource {
                                            ImmutableSet.of(RateLimiter.Configuration.of(10,
                                                1L,
                                                TimeUnit.HOURS))))
+                                   .put(StatusAPI.class, useDefault)
                                    .put(SummonerAPI.class, useDefault)
                                    .build();
 
