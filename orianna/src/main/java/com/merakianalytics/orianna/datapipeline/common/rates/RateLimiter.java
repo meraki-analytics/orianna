@@ -93,6 +93,12 @@ public interface RateLimiter {
         }
     }
 
+    public static interface ReservedPermit {
+        public void acquire();
+
+        public void cancel();
+    }
+
     public static enum Type {
         BURST(FixedWindowRateLimiter.class),
         NONE(null);
@@ -120,11 +126,13 @@ public interface RateLimiter {
 
     public void call(final Runnable runnable, final long timeout, final TimeUnit unit) throws InterruptedException;
 
-    public void cancel();
-
     public int permitsIssued();
 
     public void release();
+
+    public ReservedPermit reserve() throws InterruptedException;
+
+    public ReservedPermit reserve(final long timeout, final TimeUnit unit) throws InterruptedException;
 
     public void restrictFor(final long time, final TimeUnit unit);
 }

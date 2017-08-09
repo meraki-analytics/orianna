@@ -5,8 +5,20 @@ import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-// TODO: Add lockout TimerTask kicked off by acquire to lock out of calls at earliest possible window reset time
 public class FixedWindowRateLimiter extends AbstractRateLimiter {
+    private class Drainer extends TimerTask {
+        private boolean cancelled = false;
+
+        @Override
+        public void run() {
+            synchronized(resetterLock) {
+                if(!cancelled) {
+                    permitter.drainPermits();
+                }
+            }
+        }
+    }
+
     private class Resetter extends TimerTask {
         private boolean cancelled = false;
 
@@ -19,6 +31,7 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
                         permitter.release(permits - currentlyProcessing);
                     }
                     resetter = null;
+                    drainer = null;
                     timer.purge();
                 }
             }
@@ -27,6 +40,7 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
 
     private int currentlyProcessing = 0;
     private final Object currentlyProcessingLock = new Object();
+    private Drainer drainer = null;
     private final long epoch;
     private final TimeUnit epochUnit;
     private int permits;
@@ -49,6 +63,16 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
     @Override
     public void acquire() throws InterruptedException {
         permitter.acquire();
+
+        if(drainer == null) {
+            synchronized(resetterLock) {
+                if(drainer == null) {
+                    drainer = new Drainer();
+                    timer.schedule(drainer, epochUnit.toMillis(epoch));
+                }
+            }
+        }
+
         synchronized(currentlyProcessingLock) {
             currentlyProcessing += 1;
         }
@@ -59,18 +83,21 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
         if(!permitter.tryAcquire(timeout, unit)) {
             return false;
         }
+
         synchronized(currentlyProcessingLock) {
             currentlyProcessing += 1;
         }
-        return true;
-    }
 
-    @Override
-    public void cancel() {
-        synchronized(currentlyProcessingLock) {
-            currentlyProcessing -= 1;
-            permitter.release();
+        if(drainer == null) {
+            synchronized(resetterLock) {
+                if(drainer == null) {
+                    drainer = new Drainer();
+                    timer.schedule(drainer, epochUnit.toMillis(epoch));
+                }
+            }
         }
+
+        return true;
     }
 
     @Override
@@ -107,9 +134,69 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
     }
 
     @Override
+    public ReservedPermit reserve() throws InterruptedException {
+        permitter.acquire();
+
+        synchronized(currentlyProcessingLock) {
+            currentlyProcessing += 1;
+        }
+
+        return new ReservedPermit() {
+            @Override
+            public void acquire() {}
+
+            @Override
+            public void cancel() {
+                synchronized(currentlyProcessingLock) {
+                    currentlyProcessing -= 1;
+                    permitter.release();
+                }
+            }
+        };
+    }
+
+    @Override
+    public ReservedPermit reserve(final long timeout, final TimeUnit unit) throws InterruptedException {
+        if(!permitter.tryAcquire(timeout, unit)) {
+            return null;
+        }
+
+        synchronized(currentlyProcessingLock) {
+            currentlyProcessing += 1;
+        }
+
+        return new ReservedPermit() {
+            @Override
+            public void acquire() {
+                if(drainer == null) {
+                    synchronized(resetterLock) {
+                        if(drainer == null) {
+                            drainer = new Drainer();
+                            timer.schedule(drainer, epochUnit.toMillis(epoch));
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void cancel() {
+                synchronized(currentlyProcessingLock) {
+                    currentlyProcessing -= 1;
+                    permitter.release();
+                }
+            }
+        };
+    }
+
+    @Override
     public void restrictFor(final long time, final TimeUnit unit) {
         synchronized(resetterLock) {
             permitter.drainPermits();
+
+            if(drainer != null) {
+                drainer.cancel();
+                drainer.cancelled = true;
+            }
 
             if(resetter != null) {
                 resetter.cancel();

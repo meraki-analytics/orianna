@@ -1,12 +1,12 @@
 package com.merakianalytics.orianna.datapipeline.common.rates;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -14,7 +14,29 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.merakianalytics.orianna.datapipeline.common.TimeoutException;
 
 public class MultiRateLimiter implements RateLimiter {
+    public class AggregateReservedPermit implements ReservedPermit {
+        private final Set<ReservedPermit> reservations;
+
+        public AggregateReservedPermit(final Set<ReservedPermit> reservations) {
+            this.reservations = reservations;
+        }
+
+        @Override
+        public void acquire() {
+            for(final ReservedPermit permit : reservations) {
+                permit.acquire();
+            }
+        }
+
+        @Override
+        public void cancel() {
+            for(final ReservedPermit permit : reservations) {
+                permit.cancel();
+            }
+        }
+    }
     private final Map<String, RateLimiter> limiters;
+
     private final AtomicInteger permitsIssued = new AtomicInteger(0);
 
     public MultiRateLimiter(final Collection<? extends RateLimiter> limiters) {
@@ -45,17 +67,29 @@ public class MultiRateLimiter implements RateLimiter {
     public boolean acquire(final long timeout, final TimeUnit unit) throws InterruptedException {
         final long deadline = System.currentTimeMillis() + unit.toMillis(timeout);
 
-        final List<RateLimiter> acquired = new ArrayList<>(limiters.size());
+        final Set<ReservedPermit> reservations = new HashSet<>();
         for(final RateLimiter limiter : limiters.values()) {
             final long left = deadline - System.currentTimeMillis();
-            if(limiter.acquire(left, TimeUnit.MILLISECONDS)) {
-                acquired.add(limiter);
-            } else {
-                for(final RateLimiter acquiredLimiter : acquired) {
-                    acquiredLimiter.cancel();
+            try {
+                final ReservedPermit reservation = limiter.reserve(left, TimeUnit.MILLISECONDS);
+                if(reservation == null) {
+                    for(final ReservedPermit permit : reservations) {
+                        permit.cancel();
+                    }
+                    return false;
+                } else {
+                    reservations.add(reservation);
                 }
-                return false;
+            } catch(final InterruptedException e) {
+                for(final ReservedPermit permit : reservations) {
+                    permit.cancel();
+                }
+                throw e;
             }
+        }
+
+        for(final ReservedPermit permit : reservations) {
+            permit.acquire();
         }
 
         return true;
@@ -101,13 +135,6 @@ public class MultiRateLimiter implements RateLimiter {
         release();
     }
 
-    @Override
-    public void cancel() {
-        for(final RateLimiter limiter : limiters.values()) {
-            limiter.cancel();
-        }
-    }
-
     public RateLimiter limiter(final String name) {
         return limiters.get(name);
     }
@@ -126,6 +153,50 @@ public class MultiRateLimiter implements RateLimiter {
         for(final RateLimiter limiter : limiters.values()) {
             limiter.release();
         }
+    }
+
+    @Override
+    public ReservedPermit reserve() throws InterruptedException {
+        final Set<ReservedPermit> reservations = new HashSet<>();
+        for(final RateLimiter limiter : limiters.values()) {
+            try {
+                reservations.add(limiter.reserve());
+            } catch(final InterruptedException e) {
+                for(final ReservedPermit permit : reservations) {
+                    permit.cancel();
+                }
+                throw e;
+            }
+        }
+        return new AggregateReservedPermit(reservations);
+    }
+
+    @Override
+    public ReservedPermit reserve(final long timeout, final TimeUnit unit) throws InterruptedException {
+        final long deadline = System.currentTimeMillis() + unit.toMillis(timeout);
+
+        final Set<ReservedPermit> reservations = new HashSet<>();
+        for(final RateLimiter limiter : limiters.values()) {
+            final long left = deadline - System.currentTimeMillis();
+            try {
+                final ReservedPermit reservation = limiter.reserve(left, TimeUnit.MILLISECONDS);
+                if(reservation == null) {
+                    for(final ReservedPermit permit : reservations) {
+                        permit.cancel();
+                    }
+                    return null;
+                } else {
+                    reservations.add(reservation);
+                }
+            } catch(final InterruptedException e) {
+                for(final ReservedPermit permit : reservations) {
+                    permit.cancel();
+                }
+                throw e;
+            }
+        }
+
+        return new AggregateReservedPermit(reservations);
     }
 
     @Override
