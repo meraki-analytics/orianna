@@ -69,10 +69,8 @@ public class RiotAPI extends CompositeDataSource {
         }
 
         private String key = System.getenv("RIOT_API_KEY");
-
         private double limitingShare = DEFAULT_RATE_LIMITING_SHARE;
         private RateLimiter.Type limitingType = DEFAULT_RATE_LIMITING_TYPE;
-
         private Collection<Service.Configuration> services = defaultServices();
 
         /**

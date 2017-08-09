@@ -48,7 +48,7 @@ public abstract class DataObject implements Serializable {
 
         @Override
         public boolean addAll(final int index, final Collection<? extends T> items) {
-            return data.addAll(items);
+            return data.addAll(index, items);
         }
 
         @Override
