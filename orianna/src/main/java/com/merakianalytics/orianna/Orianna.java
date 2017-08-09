@@ -24,7 +24,7 @@ public class Orianna {
         return instance.settings;
     }
 
-    private final Settings settings;;
+    private final Settings settings;
 
     private Orianna() {
         this(new Configuration());

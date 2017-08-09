@@ -201,7 +201,7 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
             drainer = new Drainer();
             timer.schedule(drainer, afterUnit.toMillis(afterTime));
             resetter = new Resetter();
-            timer.schedule(resetter, forUnit.toMillis(forTime));
+            timer.schedule(resetter, afterUnit.toMillis(afterTime) + forUnit.toMillis(forTime));
         }
     }
 
