@@ -61,7 +61,10 @@ public abstract class AbstractDataSink implements DataSink {
     public <T> void put(final Class<T> type, final T item, final PipelineContext context) {
         try {
             putMethods().get(type).invoke(this, item, context);
-        } catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+        } catch(final InvocationTargetException e) {
+            LOGGER.error("Failed to invoke put method for " + type.getCanonicalName() + ".", e);
+            throw new RuntimeException(e.getCause());
+        } catch(IllegalAccessException | IllegalArgumentException e) {
             LOGGER.error("Failed to invoke put method for " + type.getCanonicalName() + ".", e);
             throw new RuntimeException(e);
         }
@@ -71,7 +74,10 @@ public abstract class AbstractDataSink implements DataSink {
     public <T> void putMany(final Class<T> type, final Iterable<T> items, final PipelineContext context) {
         try {
             putManyMethods().get(type).invoke(this, items, context);
-        } catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+        } catch(final InvocationTargetException e) {
+            LOGGER.error("Failed to invoke putMany method for " + type.getCanonicalName() + ".", e);
+            throw new RuntimeException(e.getCause());
+        } catch(IllegalAccessException | IllegalArgumentException e) {
             LOGGER.error("Failed to invoke putMany method for " + type.getCanonicalName() + ".", e);
             throw new RuntimeException(e);
         }
