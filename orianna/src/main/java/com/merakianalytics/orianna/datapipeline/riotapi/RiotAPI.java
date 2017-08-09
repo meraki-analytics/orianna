@@ -2,10 +2,11 @@ package com.merakianalytics.orianna.datapipeline.riotapi;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -40,96 +41,59 @@ import com.merakianalytics.orianna.types.dto.DataObject;
 
 public class RiotAPI extends CompositeDataSource {
     public static class Configuration {
-        private static Set<RateLimiter.Configuration> defaultApplicationLimiters() {
-            return ImmutableSet.of(RateLimiter.Configuration.of(20, 1L, TimeUnit.SECONDS), RateLimiter.Configuration.of(100, 2L, TimeUnit.MINUTES));
-        }
+        private static final double DEFAULT_RATE_LIMITING_SHARE = 1.0;
+
+        private static final RateLimiter.Type DEFAULT_RATE_LIMITING_TYPE = RateLimiter.Type.BURST;
 
         private static Set<Service.Configuration> defaultServices() {
-            final Map<String, Collection<RateLimiter.Configuration>> defaultMethodLimiters = ImmutableMap.<String, Collection<RateLimiter.Configuration>> of(
-                "default",
-                ImmutableSet.of(RateLimiter.Configuration.of(20000,
-                    10L,
-                    TimeUnit.SECONDS)));
-
-            final Map<String, Collection<RateLimiter.Configuration>> useDefault = Collections.unmodifiableMap(
-                Collections.<String, Collection<RateLimiter.Configuration>> emptyMap());
-
-            Map<Class<? extends Service>, Map<String, Collection<RateLimiter.Configuration>>> services;
-            services = ImmutableMap.<Class<? extends Service>, Map<String, Collection<RateLimiter.Configuration>>> builder()
-                                   .put(ChampionAPI.class, useDefault)
-                                   .put(ChampionMasteryAPI.class, useDefault)
-                                   .put(LeagueAPI.class, useDefault)
-                                   .put(MasteriesAPI.class, useDefault)
-                                   .put(MatchAPI.class,
-                                       ImmutableMap.<String, Collection<RateLimiter.Configuration>> of(
-                                           "lol/match/v3/matches/matchId",
-                                           ImmutableSet.of(
-                                               RateLimiter.Configuration.of(
-                                                   500,
-                                                   10L,
-                                                   TimeUnit.SECONDS)),
-                                           "lol/match/v3/timelines/by-match/matchId",
-                                           ImmutableSet.of(
-                                               RateLimiter.Configuration.of(
-                                                   500,
-                                                   10L,
-                                                   TimeUnit.SECONDS)),
-                                           "lol/match/v3/matchlists/by-account/accountId",
-                                           ImmutableSet.of(
-                                               RateLimiter.Configuration.of(
-                                                   1000,
-                                                   10L,
-                                                   TimeUnit.SECONDS)),
-                                           "lol/match/v3/matchlists/by-account/accountId/recent",
-                                           ImmutableSet.of(
-                                               RateLimiter.Configuration.of(
-                                                   1000,
-                                                   10L,
-                                                   TimeUnit.SECONDS))))
-                                   .put(RunesAPI.class, useDefault)
-                                   .put(SpectatorAPI.class, useDefault)
-                                   .put(StaticDataAPI.class,
-                                       ImmutableMap.<String, Collection<RateLimiter.Configuration>> of("default",
-                                           ImmutableSet.of(RateLimiter.Configuration.of(10,
-                                               1L,
-                                               TimeUnit.HOURS))))
-                                   .put(StatusAPI.class, useDefault)
-                                   .put(SummonerAPI.class, useDefault)
-                                   .build();
+            final Set<Class<? extends Service>> services = ImmutableSet.<Class<? extends Service>> builder()
+                                                                       .add(ChampionAPI.class)
+                                                                       .add(ChampionMasteryAPI.class)
+                                                                       .add(LeagueAPI.class)
+                                                                       .add(MasteriesAPI.class)
+                                                                       .add(MatchAPI.class)
+                                                                       .add(RunesAPI.class)
+                                                                       .add(SpectatorAPI.class)
+                                                                       .add(StaticDataAPI.class)
+                                                                       .add(StatusAPI.class)
+                                                                       .add(SummonerAPI.class)
+                                                                       .build();
 
             final Set<Service.Configuration> configs = new HashSet<>();
-            for(final Class<? extends Service> service : services.keySet()) {
+            for(final Class<? extends Service> service : services) {
                 final Service.Configuration config = new Service.Configuration();
                 config.setType(service);
-
-                final Map<String, Collection<RateLimiter.Configuration>> limiters = new HashMap<>();
-                limiters.putAll(defaultMethodLimiters);
-                if(services.get(service) != null && !services.get(service).isEmpty()) {
-                    limiters.putAll(services.get(service));
-                }
-
-                config.setMethodLimiters(Collections.unmodifiableMap(limiters));
                 configs.add(config);
             }
             return configs;
         }
 
-        private Collection<RateLimiter.Configuration> applicationLimiters = defaultApplicationLimiters();
         private String key = System.getenv("RIOT_API_KEY");
-        private Collection<Service.Configuration> services = defaultServices();
 
-        /**
-         * @return the applicationLimiters
-         */
-        public Collection<RateLimiter.Configuration> getApplicationLimiters() {
-            return applicationLimiters;
-        }
+        private double limitingShare = DEFAULT_RATE_LIMITING_SHARE;
+        private RateLimiter.Type limitingType = DEFAULT_RATE_LIMITING_TYPE;
+
+        private Collection<Service.Configuration> services = defaultServices();
 
         /**
          * @return the key
          */
         public String getKey() {
             return key;
+        }
+
+        /**
+         * @return the limitingShare
+         */
+        public double getLimitingShare() {
+            return limitingShare;
+        }
+
+        /**
+         * @return the limitingType
+         */
+        public RateLimiter.Type getLimitingType() {
+            return limitingType;
         }
 
         /**
@@ -140,19 +104,27 @@ public class RiotAPI extends CompositeDataSource {
         }
 
         /**
-         * @param applicationLimiters
-         *        the applicationLimiters to set
-         */
-        public void setApplicationLimiters(final Collection<RateLimiter.Configuration> applicationLimiters) {
-            this.applicationLimiters = applicationLimiters;
-        }
-
-        /**
          * @param key
          *        the key to set
          */
         public void setKey(final String key) {
             this.key = key;
+        }
+
+        /**
+         * @param limitingShare
+         *        the limitingShare to set
+         */
+        public void setLimitingShare(final double limitingShare) {
+            this.limitingShare = limitingShare;
+        }
+
+        /**
+         * @param limitingType
+         *        the limitingType to set
+         */
+        public void setLimitingType(final RateLimiter.Type limitingType) {
+            this.limitingType = limitingType;
         }
 
         /**
@@ -235,19 +207,9 @@ public class RiotAPI extends CompositeDataSource {
 
                 final long retryAfter = Long.parseLong(retryAfterHeaders.iterator().next());
                 final String type = response.getHeaders().get("X-Rate-Limit-Type").iterator().next();
-                final boolean applicationLimiting = service.applicationLimiterConfigs != null && !service.applicationLimiterConfigs.isEmpty();
-                final boolean methodLimiting = service.methodLimiterConfigs != null && !service.methodLimiterConfigs.isEmpty();
-
-                if(!applicationLimiting && "application".equals(type) || !methodLimiting && "method".equals(type)) {
-                    throw new RateLimitExceededException("Riot API returned a \"Rate Limit Exceeded\" error for \"" + type + "\", but no " + type
-                                                         + " rate limiting was configured! You must follow the rate limits Riot specifies. Fix this before trying again.");
-                }
 
                 RateLimiter limiter = service.getRateLimiter(context.platform, context.rateLimiterName);
-                if(applicationLimiting && methodLimiting) {
-                    limiter = ((MultiRateLimiter)limiter).limiter(type);
-                }
-
+                limiter = ((MultiRateLimiter)limiter).limiter(type);
                 limiter.restrictFor(retryAfter, TimeUnit.SECONDS);
                 return service.get(context);
             }
@@ -365,7 +327,6 @@ public class RiotAPI extends CompositeDataSource {
 
     public static abstract class Service extends AbstractDataSource {
         public static class Configuration {
-            // TODO: Make FailedRequestStrategies JSONable
             private static final FailedRequestStrategy DEFAULT_404_STRATEGY = FailedRequestStrategies.returnNull();
             private static final FailedRequestStrategy DEFAULT_429_STRATEGY = FailedRequestStrategies.handle429();
             private static final FailedRequestStrategy DEFAULT_500_STRATEGY = FailedRequestStrategies.exponentialBackoff();
@@ -375,7 +336,6 @@ public class RiotAPI extends CompositeDataSource {
             private FailedRequestStrategy http429Strategy = DEFAULT_429_STRATEGY;
             private FailedRequestStrategy http500Strategy = DEFAULT_500_STRATEGY;
             private FailedRequestStrategy http503Strategy = DEFAULT_503_STRATEGY;
-            private Map<String, Collection<RateLimiter.Configuration>> methodLimiters;
             private FailedRequestStrategy timeoutStrategy = DEFAULT_TIMEOUT_STRATEGY;
             private Class<? extends Service> type;
 
@@ -405,13 +365,6 @@ public class RiotAPI extends CompositeDataSource {
              */
             public FailedRequestStrategy getHttp503Strategy() {
                 return http503Strategy;
-            }
-
-            /**
-             * @return the methodLimiters
-             */
-            public Map<String, Collection<RateLimiter.Configuration>> getMethodLimiters() {
-                return methodLimiters;
             }
 
             /**
@@ -461,14 +414,6 @@ public class RiotAPI extends CompositeDataSource {
             }
 
             /**
-             * @param methodLimiters
-             *        the methodLimiters to set
-             */
-            public void setMethodLimiters(final Map<String, Collection<RateLimiter.Configuration>> methodLimiters) {
-                this.methodLimiters = methodLimiters;
-            }
-
-            /**
              * @param timeoutStrategy
              *        the timeoutStrategy to set
              */
@@ -496,35 +441,6 @@ public class RiotAPI extends CompositeDataSource {
             }
         }
 
-        private static RateLimiter newRateLimiter(final Collection<RateLimiter.Configuration> configs) {
-            if(configs == null || configs.isEmpty()) {
-                return null;
-            }
-            if(configs.size() == 1) {
-                final RateLimiter.Configuration config = configs.iterator().next();
-                try {
-                    return config.getType().getLimiterClass().getConstructor(RateLimiter.Configuration.class).newInstance(config);
-                } catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-                        | SecurityException e) {
-                    LOGGER.error("Failed to instantiate " + config.getType() + " Rate Limiter!", e);
-                    throw new OriannaException("Failed to instantiate " + config.getType() + " Rate Limiter! Report this to the orianna team.", e);
-                }
-            } else {
-                final Map<String, RateLimiter> limiters = new HashMap<>();
-                for(final RateLimiter.Configuration config : configs) {
-                    try {
-                        limiters.put(Long.toString(config.getEpochUnit().toSeconds(config.getEpoch())),
-                            config.getType().getLimiterClass().getConstructor(RateLimiter.Configuration.class).newInstance(config));
-                    } catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-                            | SecurityException e) {
-                        LOGGER.error("Failed to instantiate " + config.getType() + " Rate Limiter!", e);
-                        throw new OriannaException("Failed to instantiate " + config.getType() + " Rate Limiter! Report this to the orianna team.", e);
-                    }
-                }
-                return new MultiRateLimiter(limiters);
-            }
-        }
-        private final Set<RateLimiter.Configuration> applicationLimiterConfigs;
         private final Map<Platform, RateLimiter> applicationRateLimiters;
         private final HTTPClient client;
         private final Map<String, String> defaultHeaders;
@@ -532,16 +448,18 @@ public class RiotAPI extends CompositeDataSource {
         private final FailedRequestStrategy http429Strategy;
         private final FailedRequestStrategy http500Strategy;
         private final FailedRequestStrategy http503Strategy;
-        private final Map<String, Set<RateLimiter.Configuration>> methodLimiterConfigs;
+        private final double limitingShare;
+        private final RateLimiter.Type limitingType;
         private final Map<Platform, Map<String, Object>> rateLimiterLocks;
         private final Map<Platform, Map<String, RateLimiter>> rateLimiters;
         private final FailedRequestStrategy timeoutStrategy;
 
-        public Service(final String key, final Map<Platform, RateLimiter> applicationRateLimiters,
-                       final Collection<RateLimiter.Configuration> applicationLimiterConfigs, final HTTPClient client, final Configuration config) {
+        public Service(final String key, final Map<Platform, RateLimiter> applicationRateLimiters, final RateLimiter.Type limitingType,
+                       final double limitingShare, final HTTPClient client, final Configuration config) {
             this.client = client;
             this.applicationRateLimiters = applicationRateLimiters;
-            this.applicationLimiterConfigs = ImmutableSet.copyOf(applicationLimiterConfigs);
+            this.limitingType = limitingType;
+            this.limitingShare = limitingShare;
             timeoutStrategy = config.getTimeoutStrategy();
             http404Strategy = config.getHttp404Strategy();
             http429Strategy = config.getHttp429Strategy();
@@ -550,64 +468,120 @@ public class RiotAPI extends CompositeDataSource {
             defaultHeaders = ImmutableMap.of("X-Riot-Token", key);
             rateLimiters = new ConcurrentHashMap<>();
             rateLimiterLocks = new ConcurrentHashMap<>();
-
-            final ImmutableMap.Builder<String, Set<RateLimiter.Configuration>> builder = ImmutableMap.builder();
-            for(final String k : config.getMethodLimiters().keySet()) {
-                builder.put(k, ImmutableSet.copyOf(config.getMethodLimiters().get(k)));
-            }
-            methodLimiterConfigs = builder.build();
         }
 
-        private void adjustRateLimitsIfNecessary(final RequestContext<?> context, final Response response) {
+        private void adjustRateLimitsIfNecessary(final RequestContext<?> context, final Response response, final long timeBeforeRequest,
+                                                 final long timeAfterRequest) {
             final Collection<String> applicationLimitHeaders = response.getHeaders().get("X-App-Rate-Limit");
-            final Collection<String> methodLimitHeaders = response.getHeaders().get("X-Method-Rate-Limit");
-
-            final boolean applicationLimiting = applicationLimiterConfigs != null && !applicationLimiterConfigs.isEmpty();
-            final boolean methodLimiting = methodLimiterConfigs != null && !methodLimiterConfigs.isEmpty();
-
-            if(!applicationLimiting && applicationLimitHeaders != null && !applicationLimitHeaders.isEmpty()) {
-                throw new OriannaException("Riot API response specified application rate limits but none were configured! You must follow the rate limits Riot specifies. Fix this before trying again.");
-            }
-            if(!methodLimiting && methodLimitHeaders != null && !methodLimitHeaders.isEmpty()) {
-                throw new OriannaException("Riot API response specified rate limits for the call but none were configured! You must follow the rate limits Riot specifies. Fix this before trying again.");
-            }
-
             if(applicationLimitHeaders != null && !applicationLimitHeaders.isEmpty()) {
                 final String[] limits = applicationLimitHeaders.iterator().next().split(",");
                 final RateLimiter limiter = getRateLimiter(context.platform);
-                for(final String limit : limits) {
-                    final String[] parts = limit.split(":");
-                    final AbstractRateLimiter forRate = getSpecificLimiterForRate(limiter, parts[1]);
-                    if(forRate == null) {
-                        throw new OriannaException("Riot API response specified an application rate limit of " + parts[0] + " requests per " + parts[1]
-                                                   + " seconds, but no such limit was configured! You must follow the rate limits Riot specifies. Fix this before trying again.");
+                if(limiter == null) {
+                    final List<Long> epochsInSeconds = new ArrayList<>(limits.length);
+                    final List<Integer> epochLimits = new ArrayList<>(limits.length);
+                    for(final String limit : limits) {
+                        final String[] parts = limit.split(":");
+                        epochsInSeconds.add(Long.parseLong(parts[1]));
+                        epochLimits.add((int)(Double.parseDouble(parts[0]) * limitingShare));
                     }
+                    createRateLimiter(context.platform, epochsInSeconds, epochLimits, timeBeforeRequest, timeAfterRequest);
+                } else {
+                    for(final String limit : limits) {
+                        final String[] parts = limit.split(":");
+                        final AbstractRateLimiter forRate = getSpecificLimiterForRate(limiter, parts[1]);
+                        if(forRate == null) {
+                            throw new OriannaException("Riot API response specified an application rate limit of " + parts[0] + " requests per " + parts[1]
+                                                       + " seconds, but no such limit was configured! You must follow the rate limits Riot specifies. Fix this before trying again.");
+                        }
 
-                    final int permits = Integer.parseInt(parts[0]);
-                    if(permits < forRate.getPermits()) {
-                        forRate.setPermits(permits);
+                        final int permits = (int)(Double.parseDouble(parts[0]) * limitingShare);
+                        if(permits != forRate.getPermits()) {
+                            forRate.setPermits(permits);
+                        }
                     }
                 }
             }
 
+            final Collection<String> methodLimitHeaders = response.getHeaders().get("X-Method-Rate-Limit");
             if(methodLimitHeaders != null && !methodLimitHeaders.isEmpty()) {
                 final String[] limits = methodLimitHeaders.iterator().next().split(",");
                 RateLimiter limiter = getRateLimiter(context.platform, context.rateLimiterName);
-                if(applicationLimiting) {
+                if(limiter == null) {
+                    final List<Long> epochsInSeconds = new ArrayList<>(limits.length);
+                    final List<Integer> epochLimits = new ArrayList<>(limits.length);
+                    for(final String limit : limits) {
+                        final String[] parts = limit.split(":");
+                        epochsInSeconds.add(Long.parseLong(parts[1]));
+                        epochLimits.add((int)(Double.parseDouble(parts[0]) * limitingShare));
+                    }
+                    createRateLimiter(context.platform, context.rateLimiterName, epochsInSeconds, epochLimits, timeBeforeRequest, timeAfterRequest);
+                } else {
                     limiter = ((MultiRateLimiter)limiter).limiter("method");
+                    for(final String limit : limits) {
+                        final String[] parts = limit.split(":");
+                        final AbstractRateLimiter forRate = getSpecificLimiterForRate(limiter, parts[1]);
+                        if(forRate == null) {
+                            throw new OriannaException("Riot API response specified an application rate limit of " + parts[0] + " requests per " + parts[1]
+                                                       + " seconds, but no such limit was configured! You must follow the rate limits Riot specifies. Fix this before trying again.");
+                        }
+
+                        final int permits = (int)(Double.parseDouble(parts[0]) * limitingShare);
+                        if(permits != forRate.getPermits()) {
+                            forRate.setPermits(permits);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void createRateLimiter(final Platform platform, final List<Long> epochsInSeconds, final List<Integer> limits, final long windowLowerBound,
+                                       final long windowUpperBound) {
+            RateLimiter limiter = applicationRateLimiters.get(platform);
+            if(limiter == null) {
+                synchronized(applicationRateLimiters) {
+                    limiter = applicationRateLimiters.get(platform);
+                    if(limiter == null) {
+                        limiter = newRateLimiter(epochsInSeconds, limits, windowLowerBound, windowUpperBound);
+                        applicationRateLimiters.put(platform, limiter);
+                    }
+                }
+            }
+        }
+
+        private void createRateLimiter(final Platform platform, final String name, final List<Long> epochsInSeconds, final List<Integer> limits,
+                                       final long windowLowerBound, final long windowUpperBound) {
+            Map<String, RateLimiter> limiters = rateLimiters.get(platform);
+            if(limiters == null) {
+                synchronized(rateLimiters) {
+                    limiters = rateLimiters.get(platform);
+                    if(limiters == null) {
+                        limiters = new ConcurrentHashMap<>();
+                        rateLimiters.put(platform, limiters);
+                        rateLimiterLocks.put(platform, new ConcurrentHashMap<String, Object>());
+                    }
+                }
+            }
+
+            RateLimiter limiter = limiters.get(name);
+            if(limiter == null) {
+                final Map<String, Object> locks = rateLimiterLocks.get(platform);
+                Object lock = locks.get(name);
+                if(lock == null) {
+                    synchronized(locks) {
+                        lock = locks.get(name);
+                        if(lock == null) {
+                            lock = new Object();
+                            locks.put(name, locks);
+                        }
+                    }
                 }
 
-                for(final String limit : limits) {
-                    final String[] parts = limit.split(":");
-                    final AbstractRateLimiter forRate = getSpecificLimiterForRate(limiter, parts[1]);
-                    if(forRate == null) {
-                        throw new OriannaException("Riot API response specified a method rate limit of " + parts[0] + " requests per " + parts[1]
-                                                   + " seconds, but no such limit was configured! You must follow the rate limits Riot specifies. Fix this before trying again.");
-                    }
-
-                    final int permits = Integer.parseInt(parts[0]);
-                    if(permits < forRate.getPermits()) {
-                        forRate.setPermits(permits);
+                synchronized(lock) {
+                    limiter = limiters.get(name);
+                    if(limiter == null) {
+                        limiter = newRateLimiter(epochsInSeconds, limits, windowLowerBound, windowUpperBound);
+                        limiter = new MultiRateLimiter(ImmutableMap.of("application", getRateLimiter(platform), "method", limiter));
+                        limiters.put(name, limiter);
                     }
                 }
             }
@@ -653,8 +627,13 @@ public class RiotAPI extends CompositeDataSource {
             final String host = context.platform.getTag().toLowerCase() + ".api.riotgames.com";
 
             Response response;
+            long timeBefore;
+            long timeAfter;
             try {
+                timeBefore = System.currentTimeMillis();
                 response = client.get(host, context.endpoint, context.parameters, defaultHeaders, getRateLimiter(context.platform, context.rateLimiterName));
+                timeAfter = System.currentTimeMillis();
+                LOGGER.info("Get request to " + host + "/" + context.endpoint + " completed in " + (timeAfter - timeBefore) + "ms.");
             } catch(final TimeoutException e) {
                 LOGGER.info("Get request timed out to " + host + "/" + context.endpoint + "!", e);
                 return timeoutStrategy.onFailedRequest(this, context, null, e);
@@ -664,7 +643,7 @@ public class RiotAPI extends CompositeDataSource {
                                            + "! Report this to the orianna team.", e);
             }
 
-            adjustRateLimitsIfNecessary(context, response);
+            adjustRateLimitsIfNecessary(context, response, timeBefore, timeAfter);
 
             switch(response.getStatusCode()) {
                 case 400:
@@ -712,67 +691,38 @@ public class RiotAPI extends CompositeDataSource {
         }
 
         private RateLimiter getRateLimiter(final Platform platform) {
-            RateLimiter limiter = applicationRateLimiters.get(platform);
-            if(limiter == null && applicationLimiterConfigs != null && !applicationLimiterConfigs.isEmpty()) {
-                synchronized(applicationRateLimiters) {
-                    limiter = applicationRateLimiters.get(platform);
-                    if(limiter == null) {
-                        limiter = newRateLimiter(applicationLimiterConfigs);
-                        applicationRateLimiters.put(platform, limiter);
-                    }
-                }
-            }
-            return limiter;
+            return applicationRateLimiters.get(platform);
         }
 
         private RateLimiter getRateLimiter(final Platform platform, final String name) {
-            final boolean anyApplication = applicationLimiterConfigs != null && !applicationLimiterConfigs.isEmpty();
-            final boolean anyMethod = methodLimiterConfigs != null && !methodLimiterConfigs.isEmpty();
-            if(!anyApplication && !anyMethod) {
-                return null;
-            } else if(anyApplication && !anyMethod) {
-                return getRateLimiter(platform);
-            }
-
-            Map<String, RateLimiter> limiters = rateLimiters.get(platform);
+            final Map<String, RateLimiter> limiters = rateLimiters.get(platform);
             if(limiters == null) {
-                synchronized(rateLimiters) {
-                    limiters = rateLimiters.get(platform);
-                    if(limiters == null) {
-                        limiters = new ConcurrentHashMap<>();
-                        rateLimiters.put(platform, limiters);
-                        rateLimiterLocks.put(platform, new ConcurrentHashMap<String, Object>());
-                    }
-                }
+                return null;
             }
 
-            RateLimiter limiter = limiters.get(name);
-            if(limiter == null) {
-                final Map<String, Object> locks = rateLimiterLocks.get(platform);
-                Object lock = locks.get(name);
-                if(lock == null) {
-                    synchronized(locks) {
-                        lock = locks.get(name);
-                        if(lock == null) {
-                            lock = new Object();
-                            locks.put(name, locks);
-                        }
-                    }
+            return limiters.get(name);
+        }
+
+        private RateLimiter newRateLimiter(final List<Long> epochsInSeconds, final List<Integer> limits, final long windowLowerBound,
+                                           final long windowUpperBound) {
+            final Map<String, RateLimiter> limiters = new HashMap<>();
+            for(int i = 0; i < epochsInSeconds.size(); i++) {
+                try {
+                    final AbstractRateLimiter limiter = limitingType.getLimiterClass().getConstructor(int.class, long.class, TimeUnit.class)
+                                                                    .newInstance(limits.get(i), epochsInSeconds.get(i), TimeUnit.SECONDS);
+                    limiter.restrict(TimeUnit.SECONDS.toMillis(epochsInSeconds.get(i)) + windowLowerBound, TimeUnit.MILLISECONDS,
+                        windowUpperBound - windowLowerBound, TimeUnit.MILLISECONDS);
+                    limiter.acquire();
+                    limiter.release();
+                    limiters.put(epochsInSeconds.get(i).toString(), limiter);
+                } catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+                        | SecurityException | InterruptedException e) {
+                    LOGGER.error("Failed to instantiate " + limitingType + " Rate Limiter!", e);
+                    throw new OriannaException("Failed to instantiate " + limitingType + " Rate Limiter! Report this to the orianna team.", e);
                 }
 
-                synchronized(lock) {
-                    limiter = limiters.get(name);
-                    if(limiter == null) {
-                        limiter = newRateLimiter(methodLimiterConfigs.get(name) == null ? methodLimiterConfigs.get("default") : methodLimiterConfigs.get(name));
-                        if(anyApplication) {
-                            limiter = new MultiRateLimiter(ImmutableMap.of("application", getRateLimiter(platform), "method", limiter));
-                        }
-                        limiters.put(name, limiter);
-                    }
-                }
             }
-
-            return limiter;
+            return new MultiRateLimiter(limiters);
         }
     }
 
@@ -794,9 +744,10 @@ public class RiotAPI extends CompositeDataSource {
         for(final Service.Configuration serviceConfig : config.getServices()) {
             try {
                 final Service source = serviceConfig.getType()
-                                                    .getConstructor(String.class, Map.class, Collection.class, HTTPClient.class, Service.Configuration.class)
-                                                    .newInstance(config.getKey(), applicationRateLimiters, config.getApplicationLimiters(), client,
-                                                        serviceConfig);
+                                                    .getConstructor(String.class, Map.class, RateLimiter.Type.class, double.class, HTTPClient.class,
+                                                        Service.Configuration.class)
+                                                    .newInstance(config.getKey(), applicationRateLimiters, config.getLimitingType(), config.getLimitingShare(),
+                                                        client, serviceConfig);
                 sources.add(source);
             } catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
                     | SecurityException e) {

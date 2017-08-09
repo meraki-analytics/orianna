@@ -1,6 +1,5 @@
 package com.merakianalytics.orianna.datapipeline.riotapi;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -25,9 +24,9 @@ public class LeagueAPI extends RiotAPI.Service {
     private static final Map<Tier, String> LEAGUE_LIST_ENDPOINTS = ImmutableMap.of(Tier.CHALLENGER, "lol/league/v3/challengerleagues/by-queue/",
         Tier.MASTER, "lol/league/v3/masterleagues/by-queue/");
 
-    public LeagueAPI(final String key, final Map<Platform, RateLimiter> applicationRateLimiters,
-                     final Collection<RateLimiter.Configuration> applicationLimiterConfigs, final HTTPClient client, final Configuration config) {
-        super(key, applicationRateLimiters, applicationLimiterConfigs, client, config);
+    public LeagueAPI(final String key, final Map<Platform, RateLimiter> applicationRateLimiters, final RateLimiter.Type limitingType,
+                     final double limitingShare, final HTTPClient client, final Configuration config) {
+        super(key, applicationRateLimiters, limitingType, limitingShare, client, config);
     }
 
     @Get(LeagueList.class)

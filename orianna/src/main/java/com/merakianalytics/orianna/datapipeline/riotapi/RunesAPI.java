@@ -1,6 +1,5 @@
 package com.merakianalytics.orianna.datapipeline.riotapi;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -16,9 +15,9 @@ import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.dto.runes.RunePages;
 
 public class RunesAPI extends RiotAPI.Service {
-    public RunesAPI(final String key, final Map<Platform, RateLimiter> applicationRateLimiters,
-                    final Collection<RateLimiter.Configuration> applicationLimiterConfigs, final HTTPClient client, final Configuration config) {
-        super(key, applicationRateLimiters, applicationLimiterConfigs, client, config);
+    public RunesAPI(final String key, final Map<Platform, RateLimiter> applicationRateLimiters, final RateLimiter.Type limitingType, final double limitingShare,
+                    final HTTPClient client, final Configuration config) {
+        super(key, applicationRateLimiters, limitingType, limitingShare, client, config);
     }
 
     @SuppressWarnings("unchecked")

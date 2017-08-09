@@ -1,6 +1,5 @@
 package com.merakianalytics.orianna.datapipeline.riotapi;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
@@ -24,9 +23,9 @@ import com.merakianalytics.orianna.types.dto.match.Matchlist;
 import com.merakianalytics.orianna.types.dto.match.TournamentMatches;
 
 public class MatchAPI extends RiotAPI.Service {
-    public MatchAPI(final String key, final Map<Platform, RateLimiter> applicationRateLimiters,
-                    final Collection<RateLimiter.Configuration> applicationLimiterConfigs, final HTTPClient client, final Configuration config) {
-        super(key, applicationRateLimiters, applicationLimiterConfigs, client, config);
+    public MatchAPI(final String key, final Map<Platform, RateLimiter> applicationRateLimiters, final RateLimiter.Type limitingType, final double limitingShare,
+                    final HTTPClient client, final Configuration config) {
+        super(key, applicationRateLimiters, limitingType, limitingShare, client, config);
     }
 
     @SuppressWarnings("unchecked")

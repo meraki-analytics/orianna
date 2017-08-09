@@ -200,6 +200,13 @@ public class MultiRateLimiter implements RateLimiter {
     }
 
     @Override
+    public void restrict(final long afterTime, final TimeUnit afterUnit, final long forTime, final TimeUnit forUnit) {
+        for(final RateLimiter limiter : limiters.values()) {
+            limiter.restrict(afterTime, afterUnit, forTime, forUnit);
+        }
+    }
+
+    @Override
     public void restrictFor(final long time, final TimeUnit unit) {
         for(final RateLimiter limiter : limiters.values()) {
             limiter.restrictFor(time, unit);

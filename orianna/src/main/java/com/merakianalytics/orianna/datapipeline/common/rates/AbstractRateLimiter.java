@@ -9,6 +9,8 @@ import com.merakianalytics.orianna.datapipeline.common.TimeoutException;
 public abstract class AbstractRateLimiter implements RateLimiter {
     private final AtomicInteger permitsIssued = new AtomicInteger(0);
 
+    public AbstractRateLimiter(final int permits, final long epoch, final TimeUnit epochUnit) {}
+
     @Override
     public abstract void acquire() throws InterruptedException;
 

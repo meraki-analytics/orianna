@@ -1,6 +1,5 @@
 package com.merakianalytics.orianna.datapipeline.riotapi;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -18,9 +17,9 @@ import com.merakianalytics.orianna.types.dto.champion.Champion;
 import com.merakianalytics.orianna.types.dto.champion.ChampionList;
 
 public class ChampionAPI extends RiotAPI.Service {
-    public ChampionAPI(final String key, final Map<Platform, RateLimiter> applicationRateLimiters,
-                       final Collection<RateLimiter.Configuration> applicationLimiterConfigs, final HTTPClient client, final Configuration config) {
-        super(key, applicationRateLimiters, applicationLimiterConfigs, client, config);
+    public ChampionAPI(final String key, final Map<Platform, RateLimiter> applicationRateLimiters, final RateLimiter.Type limitingType,
+                       final double limitingShare, final HTTPClient client, final Configuration config) {
+        super(key, applicationRateLimiters, limitingType, limitingShare, client, config);
     }
 
     @Get(Champion.class)

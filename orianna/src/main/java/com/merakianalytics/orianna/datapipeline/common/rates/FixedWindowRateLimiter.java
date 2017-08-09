@@ -49,11 +49,8 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
     private final Object resetterLock = new Object();
     private final Timer timer = new Timer(true);
 
-    public FixedWindowRateLimiter(final Configuration config) {
-        this(config.getPermits(), config.getEpoch(), config.getEpochUnit());
-    }
-
     public FixedWindowRateLimiter(final int permits, final long epoch, final TimeUnit epochUnit) {
+        super(permits, epoch, epochUnit);
         this.permits = permits;
         this.epoch = epoch;
         this.epochUnit = epochUnit;
@@ -186,6 +183,26 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
                 }
             }
         };
+    }
+
+    @Override
+    public void restrict(final long afterTime, final TimeUnit afterUnit, final long forTime, final TimeUnit forUnit) {
+        synchronized(resetterLock) {
+            if(drainer != null) {
+                drainer.cancel();
+                drainer.cancelled = true;
+            }
+
+            if(resetter != null) {
+                resetter.cancel();
+                resetter.cancelled = true;
+            }
+
+            drainer = new Drainer();
+            timer.schedule(drainer, afterUnit.toMillis(afterTime));
+            resetter = new Resetter();
+            timer.schedule(resetter, forUnit.toMillis(forTime));
+        }
     }
 
     @Override

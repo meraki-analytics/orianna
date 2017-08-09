@@ -1,6 +1,5 @@
 package com.merakianalytics.orianna.datapipeline.riotapi;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -44,9 +43,9 @@ public class StaticDataAPI extends RiotAPI.Service {
         return realm.getV();
     }
 
-    public StaticDataAPI(final String key, final Map<Platform, RateLimiter> applicationRateLimiters,
-                         final Collection<RateLimiter.Configuration> applicationLimiterConfigs, final HTTPClient client, final Configuration config) {
-        super(key, applicationRateLimiters, applicationLimiterConfigs, client, config);
+    public StaticDataAPI(final String key, final Map<Platform, RateLimiter> applicationRateLimiters, final RateLimiter.Type limitingType,
+                         final double limitingShare, final HTTPClient client, final Configuration config) {
+        super(key, applicationRateLimiters, limitingType, limitingShare, client, config);
     }
 
     @SuppressWarnings("unchecked")
