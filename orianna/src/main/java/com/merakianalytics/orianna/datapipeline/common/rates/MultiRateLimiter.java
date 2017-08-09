@@ -99,9 +99,12 @@ public class MultiRateLimiter implements RateLimiter {
     public <T> T call(final Callable<T> callable) throws InterruptedException, Exception {
         acquire();
         permitsIssued.incrementAndGet();
-        final T result = callable.call();
-        release();
-        return result;
+
+        try {
+            return callable.call();
+        } finally {
+            release();
+        }
     }
 
     @Override
@@ -111,17 +114,24 @@ public class MultiRateLimiter implements RateLimiter {
         }
 
         permitsIssued.incrementAndGet();
-        final T result = callable.call();
-        release();
-        return result;
+
+        try {
+            return callable.call();
+        } finally {
+            release();
+        }
     }
 
     @Override
     public void call(final Runnable runnable) throws InterruptedException {
         acquire();
         permitsIssued.incrementAndGet();
-        runnable.run();
-        release();
+
+        try {
+            runnable.run();
+        } finally {
+            release();
+        }
     }
 
     @Override
@@ -131,8 +141,12 @@ public class MultiRateLimiter implements RateLimiter {
         }
 
         permitsIssued.incrementAndGet();
-        runnable.run();
-        release();
+
+        try {
+            runnable.run();
+        } finally {
+            release();
+        }
     }
 
     public RateLimiter limiter(final String name) {

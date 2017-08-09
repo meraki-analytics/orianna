@@ -617,7 +617,7 @@ public class RiotAPI extends CompositeDataSource {
             context.attemptCount += 1;
             final String host = context.platform.getTag().toLowerCase() + ".api.riotgames.com";
 
-            Response response;
+            Response response = null;
             MultiRateLimiter limiter = getRateLimiter(context.platform, context.rateLimiterName);
             try {
                 if(limiter == null) {
@@ -628,11 +628,11 @@ public class RiotAPI extends CompositeDataSource {
                             response = client.get(host, context.endpoint, context.parameters, defaultHeaders, null);
                             final long timeAfter = System.currentTimeMillis();
                             createRateLimiter(context.platform, context.rateLimiterName, response, timeBefore, timeAfter);
-                        } else {
-                            response = client.get(host, context.endpoint, context.parameters, defaultHeaders, limiter);
                         }
                     }
-                } else {
+                }
+
+                if(limiter != null) {
                     response = client.get(host, context.endpoint, context.parameters, defaultHeaders, limiter);
                 }
             } catch(final TimeoutException e) {
