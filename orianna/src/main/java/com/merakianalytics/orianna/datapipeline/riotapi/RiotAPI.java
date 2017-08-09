@@ -204,6 +204,9 @@ public class RiotAPI extends CompositeDataSource {
                 }
 
                 final long retryAfter = Long.parseLong(retryAfterHeaders.iterator().next());
+                if(retryAfter <= 0) {
+                    onMissingRetryAfter.onFailedRequest(service, context, response, e);
+                }
                 final String type = response.getHeaders().get("X-Rate-Limit-Type").iterator().next();
 
                 final RateLimiter limiter = service.getRateLimiter(context.platform, context.rateLimiterName).limiter(type);
