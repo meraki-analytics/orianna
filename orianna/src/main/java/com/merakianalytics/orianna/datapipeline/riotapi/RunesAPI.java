@@ -11,13 +11,14 @@ import com.merakianalytics.datapipelines.sources.GetMany;
 import com.merakianalytics.orianna.datapipeline.common.HTTPClient;
 import com.merakianalytics.orianna.datapipeline.common.Utilities;
 import com.merakianalytics.orianna.datapipeline.common.rates.RateLimiter;
+import com.merakianalytics.orianna.datapipeline.riotapi.RiotAPI.Configuration;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.dto.runes.RunePages;
 
-public class RunesAPI extends RiotAPI.Service {
-    public RunesAPI(final String key, final Map<Platform, RateLimiter> applicationRateLimiters, final RateLimiter.Type limitingType, final double limitingShare,
-                    final HTTPClient client, final Configuration config) {
-        super(key, applicationRateLimiters, limitingType, limitingShare, client, config);
+public class RunesAPI extends RiotAPIService {
+    public RunesAPI(final Configuration config, final HTTPClient client, final Map<Platform, RateLimiter> applicationRateLimiters,
+                    final Map<Platform, Object> applicationRateLimiterLocks) {
+        super(config, client, applicationRateLimiters, applicationRateLimiterLocks);
     }
 
     @SuppressWarnings("unchecked")

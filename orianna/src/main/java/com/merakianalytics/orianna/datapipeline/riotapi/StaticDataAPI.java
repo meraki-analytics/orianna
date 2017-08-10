@@ -17,6 +17,7 @@ import com.merakianalytics.datapipelines.sources.GetMany;
 import com.merakianalytics.orianna.datapipeline.common.HTTPClient;
 import com.merakianalytics.orianna.datapipeline.common.Utilities;
 import com.merakianalytics.orianna.datapipeline.common.rates.RateLimiter;
+import com.merakianalytics.orianna.datapipeline.riotapi.RiotAPI.Configuration;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.dto.staticdata.Champion;
 import com.merakianalytics.orianna.types.dto.staticdata.ChampionList;
@@ -37,15 +38,15 @@ import com.merakianalytics.orianna.types.dto.staticdata.SummonerSpell;
 import com.merakianalytics.orianna.types.dto.staticdata.SummonerSpellList;
 import com.merakianalytics.orianna.types.dto.staticdata.Versions;
 
-public class StaticDataAPI extends RiotAPI.Service {
+public class StaticDataAPI extends RiotAPIService {
     private static String getCurrentVersion(final Platform platform, final PipelineContext context) {
         final Realm realm = context.getPipeline().get(Realm.class, ImmutableMap.<String, Object> of("platform", platform));
         return realm.getV();
     }
 
-    public StaticDataAPI(final String key, final Map<Platform, RateLimiter> applicationRateLimiters, final RateLimiter.Type limitingType,
-                         final double limitingShare, final HTTPClient client, final Configuration config) {
-        super(key, applicationRateLimiters, limitingType, limitingShare, client, config);
+    public StaticDataAPI(final Configuration config, final HTTPClient client, final Map<Platform, RateLimiter> applicationRateLimiters,
+                         final Map<Platform, Object> applicationRateLimiterLocks) {
+        super(config, client, applicationRateLimiters, applicationRateLimiterLocks);
     }
 
     @SuppressWarnings("unchecked")

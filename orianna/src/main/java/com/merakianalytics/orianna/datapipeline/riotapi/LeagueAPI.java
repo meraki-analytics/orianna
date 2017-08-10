@@ -12,6 +12,7 @@ import com.merakianalytics.datapipelines.sources.GetMany;
 import com.merakianalytics.orianna.datapipeline.common.HTTPClient;
 import com.merakianalytics.orianna.datapipeline.common.Utilities;
 import com.merakianalytics.orianna.datapipeline.common.rates.RateLimiter;
+import com.merakianalytics.orianna.datapipeline.riotapi.RiotAPI.Configuration;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Queue;
 import com.merakianalytics.orianna.types.common.Tier;
@@ -20,13 +21,13 @@ import com.merakianalytics.orianna.types.dto.league.LeaguePosition;
 import com.merakianalytics.orianna.types.dto.league.SummonerLeagues;
 import com.merakianalytics.orianna.types.dto.league.SummonerPositions;
 
-public class LeagueAPI extends RiotAPI.Service {
+public class LeagueAPI extends RiotAPIService {
     private static final Map<Tier, String> LEAGUE_LIST_ENDPOINTS = ImmutableMap.of(Tier.CHALLENGER, "lol/league/v3/challengerleagues/by-queue/",
         Tier.MASTER, "lol/league/v3/masterleagues/by-queue/");
 
-    public LeagueAPI(final String key, final Map<Platform, RateLimiter> applicationRateLimiters, final RateLimiter.Type limitingType,
-                     final double limitingShare, final HTTPClient client, final Configuration config) {
-        super(key, applicationRateLimiters, limitingType, limitingShare, client, config);
+    public LeagueAPI(final Configuration config, final HTTPClient client, final Map<Platform, RateLimiter> applicationRateLimiters,
+                     final Map<Platform, Object> applicationRateLimiterLocks) {
+        super(config, client, applicationRateLimiters, applicationRateLimiterLocks);
     }
 
     @Get(LeagueList.class)

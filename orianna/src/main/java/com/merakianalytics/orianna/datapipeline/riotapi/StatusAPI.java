@@ -11,13 +11,14 @@ import com.merakianalytics.datapipelines.sources.GetMany;
 import com.merakianalytics.orianna.datapipeline.common.HTTPClient;
 import com.merakianalytics.orianna.datapipeline.common.Utilities;
 import com.merakianalytics.orianna.datapipeline.common.rates.RateLimiter;
+import com.merakianalytics.orianna.datapipeline.riotapi.RiotAPI.Configuration;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.dto.status.ShardStatus;
 
-public class StatusAPI extends RiotAPI.Service {
-    public StatusAPI(final String key, final Map<Platform, RateLimiter> applicationRateLimiters, final RateLimiter.Type limitingType,
-                     final double limitingShare, final HTTPClient client, final Configuration config) {
-        super(key, applicationRateLimiters, limitingType, limitingShare, client, config);
+public class StatusAPI extends RiotAPIService {
+    public StatusAPI(final Configuration config, final HTTPClient client, final Map<Platform, RateLimiter> applicationRateLimiters,
+                     final Map<Platform, Object> applicationRateLimiterLocks) {
+        super(config, client, applicationRateLimiters, applicationRateLimiterLocks);
     }
 
     @SuppressWarnings("unchecked")

@@ -15,6 +15,7 @@ import com.merakianalytics.datapipelines.sources.GetMany;
 import com.merakianalytics.orianna.datapipeline.common.HTTPClient;
 import com.merakianalytics.orianna.datapipeline.common.Utilities;
 import com.merakianalytics.orianna.datapipeline.common.rates.RateLimiter;
+import com.merakianalytics.orianna.datapipeline.riotapi.RiotAPI.Configuration;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.dto.match.Match;
 import com.merakianalytics.orianna.types.dto.match.MatchReference;
@@ -22,10 +23,10 @@ import com.merakianalytics.orianna.types.dto.match.MatchTimeline;
 import com.merakianalytics.orianna.types.dto.match.Matchlist;
 import com.merakianalytics.orianna.types.dto.match.TournamentMatches;
 
-public class MatchAPI extends RiotAPI.Service {
-    public MatchAPI(final String key, final Map<Platform, RateLimiter> applicationRateLimiters, final RateLimiter.Type limitingType, final double limitingShare,
-                    final HTTPClient client, final Configuration config) {
-        super(key, applicationRateLimiters, limitingType, limitingShare, client, config);
+public class MatchAPI extends RiotAPIService {
+    public MatchAPI(final Configuration config, final HTTPClient client, final Map<Platform, RateLimiter> applicationRateLimiters,
+                    final Map<Platform, Object> applicationRateLimiterLocks) {
+        super(config, client, applicationRateLimiters, applicationRateLimiterLocks);
     }
 
     @SuppressWarnings("unchecked")
