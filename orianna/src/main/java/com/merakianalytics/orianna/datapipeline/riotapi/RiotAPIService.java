@@ -504,11 +504,6 @@ public class RiotAPIService extends AbstractDataSource {
             for(final String limit : limits) {
                 final String[] parts = limit.split(":");
                 final AbstractRateLimiter forRate = getSpecificLimiterForRate(limiter, parts[1]);
-                if(forRate == null) {
-                    throw new OriannaException("Riot API response specified an application rate limit of " + parts[0] + " requests per " + parts[1]
-                                               + " seconds, but no such limit was configured! You must follow the rate limits Riot specifies. Fix this before trying again.");
-                }
-
                 final int permits = (int)(Double.parseDouble(parts[0]) * limitingShare);
                 if(permits != forRate.getPermits()) {
                     forRate.setPermits(permits);
@@ -523,11 +518,6 @@ public class RiotAPIService extends AbstractDataSource {
             for(final String limit : limits) {
                 final String[] parts = limit.split(":");
                 final AbstractRateLimiter forRate = getSpecificLimiterForRate(limiter, parts[1]);
-                if(forRate == null) {
-                    throw new OriannaException("Riot API response specified an application rate limit of " + parts[0] + " requests per " + parts[1]
-                                               + " seconds, but no such limit was configured! You must follow the rate limits Riot specifies. Fix this before trying again.");
-                }
-
                 final int permits = (int)(Double.parseDouble(parts[0]) * limitingShare);
                 if(permits != forRate.getPermits()) {
                     forRate.setPermits(permits);
@@ -684,7 +674,7 @@ public class RiotAPIService extends AbstractDataSource {
             case 403:
                 LOGGER.error("Got \"Forbidden\" from " + host + "/" + context.endpoint + "!");
                 throw new ForbiddenException("A Riot API request to " + host + "/" + context.endpoint
-                                             + " returned \"Forbidden\". Check to make sure you're using the right API key, and it hasn't expired. If the problem persists with a valid key, report this to the orianna team.");
+                                             + " returned \"Forbidden\". Check to make sure you're using the right API key, it hasn't expired, and you haven't been blacklisted. If the problem persists with a valid key, report this to the orianna team.");
             case 404:
                 LOGGER.info("Got \"Not Found\" from " + host + "/" + context.endpoint + "!");
                 return http404Strategy.onFailedRequest(this, context, response,
