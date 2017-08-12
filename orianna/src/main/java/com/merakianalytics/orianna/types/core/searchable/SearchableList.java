@@ -9,6 +9,7 @@ import java.util.ListIterator;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.base.Predicate;
 import com.merakianalytics.datapipelines.iterators.CloseableIterator;
 import com.merakianalytics.orianna.types.core.LazyList;
 
@@ -114,6 +115,55 @@ public class SearchableList<T> extends SearchableObject implements List<T> {
         return true;
     }
 
+    public SearchableList<T> filter(final Predicate<T> predicate) {
+        return filter(predicate, false);
+    }
+
+    public SearchableList<T> filter(final Predicate<T> predicate, final boolean streaming) {
+        if(!streaming) {
+            final List<T> results = new ArrayList<>();
+            for(final T element : list) {
+                if(predicate.apply(element)) {
+                    results.add(element);
+                }
+            }
+            return new SearchableList<>(results);
+        } else {
+            final CloseableIterator<T> iterator = new CloseableIterator<T>() {
+                private final Iterator<T> iterator = list.iterator();
+                private T next = null;
+
+                @Override
+                public void close() {}
+
+                @Override
+                public boolean hasNext() {
+                    if(next != null) {
+                        return true;
+                    }
+
+                    while(iterator.hasNext()) {
+                        final T n = iterator.next();
+                        if(predicate.apply(n)) {
+                            next = n;
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+
+                @Override
+                public T next() {
+                    final T n = next;
+                    next = null;
+                    return n;
+                }
+            };
+
+            return new SearchableList<>(new LazyList<>(iterator));
+        }
+    }
+
     public T find(final Object item) {
         for(final T element : list) {
             if(contains(element, item)) {
@@ -192,48 +242,26 @@ public class SearchableList<T> extends SearchableObject implements List<T> {
     }
 
     public SearchableList<T> search(final Object item, final boolean streaming) {
-        if(!streaming) {
-            final List<T> results = new ArrayList<>();
-            for(final T element : list) {
-                if(contains(element, item)) {
-                    results.add(element);
-                }
-            }
-            return new SearchableList<>(results);
-        } else {
-            final CloseableIterator<T> iterator = new CloseableIterator<T>() {
-                private final Iterator<T> iterator = list.iterator();
-                private T next = null;
-
-                @Override
-                public void close() {}
-
-                @Override
-                public boolean hasNext() {
-                    if(next != null) {
-                        return true;
-                    }
-
-                    while(iterator.hasNext()) {
-                        final T n = iterator.next();
-                        if(contains(n, item)) {
-                            next = n;
-                            return true;
-                        }
-                    }
+        return filter(new Predicate<T>() {
+            @Override
+            public boolean apply(final T element) {
+                if(item == null && element == null) {
+                    return true;
+                } else if(item == null || element == null) {
                     return false;
                 }
 
-                @Override
-                public T next() {
-                    final T n = next;
-                    next = null;
-                    return n;
+                if(item.equals(element)) {
+                    return true;
+                } else if(element instanceof SearchableObject) {
+                    final SearchableObject obj = (SearchableObject)element;
+                    if(obj.contains(item)) {
+                        return true;
+                    }
                 }
-            };
-
-            return new SearchableList<>(new LazyList<>(iterator));
-        }
+                return false;
+            }
+        }, streaming);
     }
 
     @Override
@@ -260,5 +288,14 @@ public class SearchableList<T> extends SearchableObject implements List<T> {
     @Override
     public <T> T[] toArray(final T[] a) {
         return list.toArray(a);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        for(final T element : this) {
+            sb.append(", " + element);
+        }
+        return "[" + sb.substring(2) + "]";
     }
 }

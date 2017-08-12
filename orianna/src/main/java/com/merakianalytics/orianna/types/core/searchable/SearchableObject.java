@@ -22,10 +22,6 @@ public abstract class SearchableObject {
             return false;
         }
 
-        if(item.equals(this)) {
-            return true;
-        }
-
         final Collection<Method> targets = getSearchTypes().get(item.getClass());
         if(targets == null || targets.isEmpty()) {
             return false;
