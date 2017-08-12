@@ -71,6 +71,11 @@ public class SpectatorAPI extends RiotAPIService {
                 data.setSummonerId(summonerId.longValue());
                 return data;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
         });
     }
 
@@ -96,6 +101,11 @@ public class SpectatorAPI extends RiotAPIService {
 
                 data.setPlatform(platform.getTag());
                 return data;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
             }
         });
     }

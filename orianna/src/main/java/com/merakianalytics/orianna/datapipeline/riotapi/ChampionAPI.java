@@ -75,6 +75,11 @@ public class ChampionAPI extends RiotAPIService {
                 data.setPlatform(platform.getTag());
                 return data;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
         });
     }
 
@@ -103,6 +108,11 @@ public class ChampionAPI extends RiotAPIService {
                 data.setPlatform(platform.getTag());
                 data.setFreeToPlay(freeToPlay);
                 return data;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
             }
         });
     }

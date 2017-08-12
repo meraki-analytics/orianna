@@ -58,15 +58,14 @@ public class SearchableList<T> extends SearchableObject implements List<T> {
     private boolean contains(final T element, final Object item) {
         if(item == null && element == null) {
             return true;
-        } else if(item == null) {
+        } else if(item == null || element == null) {
             return false;
         } else if(item.equals(element)) {
             return true;
         } else if(element instanceof SearchableObject && ((SearchableObject)element).contains(item)) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     @Override
@@ -80,9 +79,18 @@ public class SearchableList<T> extends SearchableObject implements List<T> {
     }
 
     public void delete(final Object item) {
+        delete(new Predicate<T>() {
+            @Override
+            public boolean apply(final T element) {
+                return contains(element, item);
+            }
+        });
+    }
+
+    public void delete(final Predicate<T> predicate) {
         final Set<Integer> toRemove = new HashSet<>();
         for(int i = 0; i < list.size(); i++) {
-            if(contains(list.get(i), item)) {
+            if(predicate.apply(list.get(i))) {
                 toRemove.add(i);
             }
         }
@@ -158,6 +166,11 @@ public class SearchableList<T> extends SearchableObject implements List<T> {
                     next = null;
                     return n;
                 }
+
+                @Override
+                public void remove() {
+                    throw new UnsupportedOperationException();
+                }
             };
 
             return new SearchableList<>(new LazyList<>(iterator));
@@ -165,8 +178,17 @@ public class SearchableList<T> extends SearchableObject implements List<T> {
     }
 
     public T find(final Object item) {
+        return find(new Predicate<T>() {
+            @Override
+            public boolean apply(final T element) {
+                return contains(element, item);
+            }
+        });
+    }
+
+    public T find(final Predicate<T> predicate) {
         for(final T element : list) {
-            if(contains(element, item)) {
+            if(predicate.apply(element)) {
                 return element;
             }
         }
@@ -245,21 +267,7 @@ public class SearchableList<T> extends SearchableObject implements List<T> {
         return filter(new Predicate<T>() {
             @Override
             public boolean apply(final T element) {
-                if(item == null && element == null) {
-                    return true;
-                } else if(item == null || element == null) {
-                    return false;
-                }
-
-                if(item.equals(element)) {
-                    return true;
-                } else if(element instanceof SearchableObject) {
-                    final SearchableObject obj = (SearchableObject)element;
-                    if(obj.contains(item)) {
-                        return true;
-                    }
-                }
-                return false;
+                return contains(element, item);
             }
         }, streaming);
     }

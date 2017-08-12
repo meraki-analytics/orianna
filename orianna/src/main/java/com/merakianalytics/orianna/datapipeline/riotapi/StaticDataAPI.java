@@ -244,6 +244,11 @@ public class StaticDataAPI extends RiotAPIService {
                 final Number id = iterator.next();
                 return data.getData().get(id.toString());
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
         });
     }
 
@@ -291,6 +296,11 @@ public class StaticDataAPI extends RiotAPIService {
                 }
                 return data;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
         });
     }
 
@@ -337,6 +347,11 @@ public class StaticDataAPI extends RiotAPIService {
                 final Number id = iterator.next();
                 return data.getData().get(id.toString());
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
         });
     }
 
@@ -382,6 +397,11 @@ public class StaticDataAPI extends RiotAPIService {
                 }
                 return data;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
         });
     }
 
@@ -407,6 +427,11 @@ public class StaticDataAPI extends RiotAPIService {
 
                 data.setPlatform(platform.getTag());
                 return data;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
             }
         });
     }
@@ -445,6 +470,11 @@ public class StaticDataAPI extends RiotAPIService {
                 data.setLocale(locale);
                 return data;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
         });
     }
 
@@ -479,6 +509,11 @@ public class StaticDataAPI extends RiotAPIService {
                     map.setLocale(locale);
                 }
                 return data;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
             }
         });
     }
@@ -526,6 +561,11 @@ public class StaticDataAPI extends RiotAPIService {
                 final Number id = iterator.next();
                 return data.getData().get(id.toString());
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
         });
     }
 
@@ -571,6 +611,11 @@ public class StaticDataAPI extends RiotAPIService {
                 }
                 return data;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
         });
     }
 
@@ -606,6 +651,11 @@ public class StaticDataAPI extends RiotAPIService {
                 }
                 return data;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
         });
     }
 
@@ -631,6 +681,11 @@ public class StaticDataAPI extends RiotAPIService {
 
                 data.setPlatform(platform.getTag());
                 return data;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
             }
         });
     }
@@ -678,6 +733,11 @@ public class StaticDataAPI extends RiotAPIService {
                 final Number id = iterator.next();
                 return data.getData().get(id.toString());
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
         });
     }
 
@@ -722,6 +782,11 @@ public class StaticDataAPI extends RiotAPIService {
                     rune.setIncludedData(includedData);
                 }
                 return data;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
             }
         });
     }
@@ -769,6 +834,11 @@ public class StaticDataAPI extends RiotAPIService {
                 final Number id = iterator.next();
                 return data.getData().get(id.toString());
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
         });
     }
 
@@ -814,6 +884,11 @@ public class StaticDataAPI extends RiotAPIService {
                 }
                 return data;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
         });
     }
 
@@ -839,6 +914,11 @@ public class StaticDataAPI extends RiotAPIService {
 
                 data.setPlatform(platform.getTag());
                 return data;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
             }
         });
     }

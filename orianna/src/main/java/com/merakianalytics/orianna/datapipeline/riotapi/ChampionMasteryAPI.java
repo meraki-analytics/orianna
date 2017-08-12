@@ -96,6 +96,11 @@ public class ChampionMasteryAPI extends RiotAPIService {
                 data.setPlatform(platform.getTag());
                 return data;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
         });
     }
 
@@ -128,6 +133,11 @@ public class ChampionMasteryAPI extends RiotAPIService {
                 }
                 return data;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
         });
     }
 
@@ -155,6 +165,11 @@ public class ChampionMasteryAPI extends RiotAPIService {
                 data.setPlatform(platform.getTag());
                 data.setSummonerId(summonerId.longValue());
                 return data;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
             }
         });
     }

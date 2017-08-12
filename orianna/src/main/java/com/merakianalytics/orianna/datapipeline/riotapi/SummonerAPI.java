@@ -65,6 +65,11 @@ public class SummonerAPI extends RiotAPIService {
                 data.setPlatform(platform.getTag());
                 return data;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
         });
     }
 

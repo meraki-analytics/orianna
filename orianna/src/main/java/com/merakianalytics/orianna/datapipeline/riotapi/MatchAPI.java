@@ -63,6 +63,11 @@ public class MatchAPI extends RiotAPIService {
                 data.setForAccountId(forAccountId.longValue());
                 return data;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
         });
     }
 
@@ -143,6 +148,11 @@ public class MatchAPI extends RiotAPIService {
                 data.setAccountId(accountId.longValue());
                 return data;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
         });
     }
 
@@ -171,6 +181,11 @@ public class MatchAPI extends RiotAPIService {
                 data.setMatchId(matchId.longValue());
                 return data;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
         });
     }
 
@@ -198,6 +213,11 @@ public class MatchAPI extends RiotAPIService {
                 data.setPlatform(platform.getTag());
                 data.setTournamentCode(tournamentCode);
                 return data;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
             }
         });
     }

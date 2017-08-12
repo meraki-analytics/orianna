@@ -63,6 +63,11 @@ public class ImageDataSource extends AbstractDataSource {
                     throw new OriannaException("Failed to download image from " + url, e);
                 }
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
         });
     }
 }

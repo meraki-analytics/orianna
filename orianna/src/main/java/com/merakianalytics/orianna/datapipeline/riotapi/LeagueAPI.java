@@ -87,6 +87,11 @@ public class LeagueAPI extends RiotAPIService {
                 data.setSummonerId(-1L);
                 return data;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
         });
     }
 
@@ -119,6 +124,11 @@ public class LeagueAPI extends RiotAPIService {
                 }
                 return data;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
         });
     }
 
@@ -149,6 +159,11 @@ public class LeagueAPI extends RiotAPIService {
                     position.setPlatform(platform.getTag());
                 }
                 return data;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
             }
         });
     }
