@@ -21,7 +21,7 @@ public class ChampionTransformer extends AbstractDataTransformer {
         status.setEnabledInCustoms(item.isBotEnabled());
         status.setEnabledInRanked(item.isRankedPlayEnabled());
         status.setFreeToPlay(item.isFreeToPlay());
-        status.setId(item.getId());
+        status.setId((int)item.getId());
         status.setPlatform(Platform.withTag(item.getPlatform()));
         return status;
     }

@@ -3,8 +3,8 @@ package com.merakianalytics.orianna.types.data.staticdata;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class Skin extends CoreData {
-    private static final long serialVersionUID = 9096126189525714311L;
-    private String name;
+    private static final long serialVersionUID = -3932839942794265363L;
+    private String name, championKey;
     private int number, id;
 
     @Override
@@ -19,6 +19,13 @@ public class Skin extends CoreData {
             return false;
         }
         final Skin other = (Skin)obj;
+        if(championKey == null) {
+            if(other.championKey != null) {
+                return false;
+            }
+        } else if(!championKey.equals(other.championKey)) {
+            return false;
+        }
         if(id != other.id) {
             return false;
         }
@@ -33,6 +40,13 @@ public class Skin extends CoreData {
             return false;
         }
         return true;
+    }
+
+    /**
+     * @return the championKey
+     */
+    public String getChampionKey() {
+        return championKey;
     }
 
     /**
@@ -60,10 +74,19 @@ public class Skin extends CoreData {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + (championKey == null ? 0 : championKey.hashCode());
         result = prime * result + id;
         result = prime * result + (name == null ? 0 : name.hashCode());
         result = prime * result + number;
         return result;
+    }
+
+    /**
+     * @param championKey
+     *        the championKey to set
+     */
+    public void setChampionKey(final String championKey) {
+        this.championKey = championKey;
     }
 
     /**

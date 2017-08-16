@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.merakianalytics.orianna.types.common.OriannaException;
 
 public abstract class DataObject implements Serializable {
-    public static abstract class ListProxy<T> extends DataObject implements List<T> {
+    public static class ListProxy<T> extends DataObject implements List<T> {
         private static final long serialVersionUID = -6488565174043313928L;
         private final List<T> data;
 

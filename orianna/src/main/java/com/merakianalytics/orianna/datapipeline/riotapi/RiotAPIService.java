@@ -559,7 +559,10 @@ public class RiotAPIService extends AbstractDataSource {
                 limiter = limiters.get(name);
                 if(limiter == null) {
                     limiter = newRateLimiter(epochsInSeconds, limits, windowLowerBound, windowUpperBound);
-                    limiter = new MultiRateLimiter(ImmutableMap.of("application", getRateLimiter(platform), "method", limiter));
+                    final RateLimiter application = getRateLimiter(platform);
+                    if(application != null) {
+                        limiter = new MultiRateLimiter(ImmutableMap.of("application", application, "method", limiter));
+                    }
                     limiters.put(name, limiter);
                 }
             }

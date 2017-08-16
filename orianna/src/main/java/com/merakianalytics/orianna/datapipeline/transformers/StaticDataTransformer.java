@@ -95,18 +95,20 @@ public class StaticDataTransformer extends AbstractDataTransformer {
     @Transform(from = Block.class, to = ItemSet.class)
     public ItemSet transform(final Block item, final PipelineContext context) {
         final ItemSet set = new ItemSet();
-        final Map<Integer, Integer> items = new HashMap<>();
         for(final BlockItem it : item.getItems()) {
-            items.put(it.getId(), it.getCount());
+            set.put(it.getId(), it.getCount());
         }
-        set.setItems(items);
         set.setRecMath(item.isRecMath());
         set.setType(item.getType());
+        set.setPlatform((Platform)context.get("platform"));
+        set.setVersion((String)context.get("version"));
+        set.setLocale((String)context.get("locale"));
         return set;
     }
 
     @Transform(from = Champion.class, to = com.merakianalytics.orianna.types.dto.staticdata.Champion.class)
     public com.merakianalytics.orianna.types.dto.staticdata.Champion transform(final Champion item, final PipelineContext context) {
+        final Object previous = context.put("key", item.getKey());
         final com.merakianalytics.orianna.types.dto.staticdata.Champion champion = new com.merakianalytics.orianna.types.dto.staticdata.Champion();
         champion.setAllytips(new ArrayList<>(item.getAllyTips()));
         champion.setBlurb(item.getBlurb());
@@ -146,6 +148,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         champion.setTags(new ArrayList<>(item.getTags()));
         champion.setTitle(item.getTitle());
         champion.setVersion(item.getVersion());
+        context.put("key", previous);
         return champion;
     }
 
@@ -273,7 +276,10 @@ public class StaticDataTransformer extends AbstractDataTransformer {
 
     @Transform(from = com.merakianalytics.orianna.types.dto.staticdata.Champion.class, to = Champion.class)
     public Champion transform(final com.merakianalytics.orianna.types.dto.staticdata.Champion item, final PipelineContext context) {
-        final Object previous = context.put("version", item.getVersion());
+        final Object previousPlatform = context.put("platform", Platform.withTag(item.getPlatform()));
+        final Object previousVersion = context.put("version", item.getVersion());
+        final Object previousLocale = context.put("locale", item.getLocale());
+        final Object previousKey = context.put("key", item.getKey());
         final Champion champion = new Champion();
         champion.setAllyTips(new ArrayList<>(item.getAllytips()));
         champion.setBlurb(item.getBlurb());
@@ -311,24 +317,29 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         champion.setTags(new ArrayList<>(item.getTags()));
         champion.setTitle(item.getTitle());
         champion.setVersion(item.getVersion());
-        context.put("version", previous);
+        context.put("platform", previousPlatform);
+        context.put("version", previousVersion);
+        context.put("locale", previousLocale);
+        context.put("key", previousKey);
         return champion;
     }
 
     @Transform(from = com.merakianalytics.orianna.types.dto.staticdata.ChampionSpell.class, to = ChampionSpell.class)
     public ChampionSpell transform(final com.merakianalytics.orianna.types.dto.staticdata.ChampionSpell item, final PipelineContext context) {
         final ChampionSpell spell = new ChampionSpell();
-        final List<Image> alternativeImages = new ArrayList<>(item.getAltImages().size());
-        for(final com.merakianalytics.orianna.types.dto.staticdata.Image image : item.getAltImages()) {
-            alternativeImages.add(transform(image, context));
+        if(item.getAltImages() != null) {
+            final List<Image> alternativeImages = new ArrayList<>(item.getAltImages().size());
+            for(final com.merakianalytics.orianna.types.dto.staticdata.Image image : item.getAltImages()) {
+                alternativeImages.add(transform(image, context));
+            }
+            spell.setAlternativeImages(alternativeImages);
         }
-        spell.setAlternativeImages(alternativeImages);
         spell.setCooldowns(new ArrayList<>(item.getCooldown()));
         spell.setCosts(new ArrayList<>(item.getCost()));
         spell.setDescription(item.getDescription());
         final List<List<Double>> effects = new ArrayList<>(item.getEffect().size());
         for(final List<Double> effect : item.getEffect()) {
-            effects.add(new ArrayList<>(effect));
+            effects.add(effect == null ? null : new ArrayList<>(effect));
         }
         spell.setEffects(effects);
         spell.setImage(transform(item.getImage(), context));
@@ -623,6 +634,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         skin.setId(item.getId());
         skin.setName(item.getName());
         skin.setNumber(item.getNum());
+        skin.setChampionKey((String)context.get("key"));
         return skin;
     }
 
@@ -872,10 +884,10 @@ public class StaticDataTransformer extends AbstractDataTransformer {
     @Transform(from = ItemSet.class, to = Block.class)
     public Block transform(final ItemSet item, final PipelineContext context) {
         final Block block = new Block();
-        final List<BlockItem> items = new ArrayList<>(item.getItems().size());
-        for(final Integer itemId : item.getItems().keySet()) {
+        final List<BlockItem> items = new ArrayList<>(item.size());
+        for(final Integer itemId : item.keySet()) {
             final BlockItem it = new BlockItem();
-            it.setCount(item.getItems().get(itemId));
+            it.setCount(item.get(itemId));
             it.setId(itemId);
         }
         block.setItems(items);
@@ -1172,7 +1184,6 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         for(final Block block : item.getBlocks()) {
             items.add(transform(block, context));
         }
-        items.setChampionKey(item.getChampion());
         items.setMap(RECOMMENDED_ITEMS_MAP_CONVERSIONS.get(item.getMap()));
         items.setMode(GameMode.valueOf(item.getMode()));
         items.setPriority(item.isPriority());
@@ -1189,7 +1200,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
             blocks.add(transform(set, context));
         }
         items.setBlocks(blocks);
-        items.setChampion(item.getChampionKey());
+        items.setChampion((String)context.get("key"));
         items.setMap(RECOMMENDED_ITEMS_MAP_CONVERSIONS.inverse().get(item.getMap()));
         items.setMode(item.getMode().toString());
         items.setPriority(item.isPriority());

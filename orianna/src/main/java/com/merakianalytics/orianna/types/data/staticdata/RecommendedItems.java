@@ -5,11 +5,11 @@ import com.merakianalytics.orianna.types.common.Map;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class RecommendedItems extends CoreData.ListProxy<ItemSet> {
-    private static final long serialVersionUID = -4247123516487669766L;
-    private String championKey, title, type;
+    private static final long serialVersionUID = 5561349679228162999L;
     private Map map;
     private GameMode mode;
     private boolean priority;
+    private String title, type;
 
     public RecommendedItems() {
         super();
@@ -31,13 +31,6 @@ public class RecommendedItems extends CoreData.ListProxy<ItemSet> {
             return false;
         }
         final RecommendedItems other = (RecommendedItems)obj;
-        if(championKey == null) {
-            if(other.championKey != null) {
-                return false;
-            }
-        } else if(!championKey.equals(other.championKey)) {
-            return false;
-        }
         if(map != other.map) {
             return false;
         }
@@ -62,13 +55,6 @@ public class RecommendedItems extends CoreData.ListProxy<ItemSet> {
             return false;
         }
         return true;
-    }
-
-    /**
-     * @return the championKey
-     */
-    public String getChampionKey() {
-        return championKey;
     }
 
     /**
@@ -103,7 +89,6 @@ public class RecommendedItems extends CoreData.ListProxy<ItemSet> {
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + (championKey == null ? 0 : championKey.hashCode());
         result = prime * result + (map == null ? 0 : map.hashCode());
         result = prime * result + (mode == null ? 0 : mode.hashCode());
         result = prime * result + (priority ? 1231 : 1237);
@@ -117,14 +102,6 @@ public class RecommendedItems extends CoreData.ListProxy<ItemSet> {
      */
     public boolean isPriority() {
         return priority;
-    }
-
-    /**
-     * @param championKey
-     *        the championKey to set
-     */
-    public void setChampionKey(final String championKey) {
-        this.championKey = championKey;
     }
 
     /**

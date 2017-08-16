@@ -22,8 +22,8 @@ import com.merakianalytics.orianna.types.common.OriannaException;
 public class ImageDataSource extends AbstractDataSource {
     private final HTTPClient client;
 
-    public ImageDataSource(final HTTPClient client) {
-        this.client = client;
+    public ImageDataSource() {
+        client = new HTTPClient();
     }
 
     @Get(BufferedImage.class)

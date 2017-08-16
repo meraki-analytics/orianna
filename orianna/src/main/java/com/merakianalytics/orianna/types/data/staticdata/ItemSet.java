@@ -1,52 +1,28 @@
 package com.merakianalytics.orianna.types.data.staticdata;
 
-import java.util.Map;
-
+import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.CoreData;
 
-public class ItemSet extends CoreData {
-    private static final long serialVersionUID = -3457297676429499262L;
-    private Map<Integer, Integer> items;
+public class ItemSet extends CoreData.MapProxy<Integer, Integer> {
+    private static final long serialVersionUID = 4668994735378556124L;
+    private String locale;
+    private Platform platform;
     private boolean recMath;
     private String type;
+    private String version;
 
-    @Override
-    public boolean equals(final Object obj) {
-        if(this == obj) {
-            return true;
-        }
-        if(obj == null) {
-            return false;
-        }
-        if(getClass() != obj.getClass()) {
-            return false;
-        }
-        final ItemSet other = (ItemSet)obj;
-        if(items == null) {
-            if(other.items != null) {
-                return false;
-            }
-        } else if(!items.equals(other.items)) {
-            return false;
-        }
-        if(recMath != other.recMath) {
-            return false;
-        }
-        if(type == null) {
-            if(other.type != null) {
-                return false;
-            }
-        } else if(!type.equals(other.type)) {
-            return false;
-        }
-        return true;
+    /**
+     * @return the locale
+     */
+    public String getLocale() {
+        return locale;
     }
 
     /**
-     * @return the items
+     * @return the platform
      */
-    public Map<Integer, Integer> getItems() {
-        return items;
+    public Platform getPlatform() {
+        return platform;
     }
 
     /**
@@ -56,14 +32,11 @@ public class ItemSet extends CoreData {
         return type;
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (items == null ? 0 : items.hashCode());
-        result = prime * result + (recMath ? 1231 : 1237);
-        result = prime * result + (type == null ? 0 : type.hashCode());
-        return result;
+    /**
+     * @return the version
+     */
+    public String getVersion() {
+        return version;
     }
 
     /**
@@ -74,11 +47,19 @@ public class ItemSet extends CoreData {
     }
 
     /**
-     * @param items
-     *        the items to set
+     * @param locale
+     *        the locale to set
      */
-    public void setItems(final Map<Integer, Integer> items) {
-        this.items = items;
+    public void setLocale(final String locale) {
+        this.locale = locale;
+    }
+
+    /**
+     * @param platform
+     *        the platform to set
+     */
+    public void setPlatform(final Platform platform) {
+        this.platform = platform;
     }
 
     /**
@@ -95,5 +76,13 @@ public class ItemSet extends CoreData {
      */
     public void setType(final String type) {
         this.type = type;
+    }
+
+    /**
+     * @param version
+     *        the version to set
+     */
+    public void setVersion(final String version) {
+        this.version = version;
     }
 }

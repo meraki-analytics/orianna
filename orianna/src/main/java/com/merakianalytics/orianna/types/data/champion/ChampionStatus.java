@@ -6,13 +6,13 @@ import com.merakianalytics.orianna.types.data.CoreData;
 public class ChampionStatus extends CoreData {
     private static final long serialVersionUID = 4229915263452433550L;
     private boolean enabledInRanked, enabledInCustoms, enabledInCoopVsAI, enabled, freeToPlay;
-    private long id;
+    private int id;
     private Platform platform;
 
     /**
      * @return the id
      */
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -102,7 +102,7 @@ public class ChampionStatus extends CoreData {
      * @param id
      *        the id to set
      */
-    public void setId(final long id) {
+    public void setId(final int id) {
         this.id = id;
     }
 

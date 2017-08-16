@@ -25,7 +25,7 @@ import com.merakianalytics.orianna.types.common.OriannaException;
 
 public abstract class CoreData implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-    public static abstract class ListProxy<T> extends CoreData implements List<T> {
+    public static class ListProxy<T> extends CoreData implements List<T> {
         private static final long serialVersionUID = 4033035619862826400L;
 
         @JsonProperty
