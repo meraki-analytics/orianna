@@ -18,8 +18,11 @@ import com.merakianalytics.orianna.types.data.champion.ChampionStatus;
 
 public class Champion extends GhostObject<ChampionData> {
     public static class ChampionData extends CoreData {
-        private static final long serialVersionUID = -7102360131668168080L;
+        private static final long serialVersionUID = 1112973464778520534L;
         private com.merakianalytics.orianna.types.data.staticdata.Champion champion;
+        private Integer id;
+        private String name, version, locale;
+        private Platform platform;
         private ChampionStatus status;
 
         public ChampionData() {
@@ -58,11 +61,42 @@ public class Champion extends GhostObject<ChampionData> {
             } else if(!champion.equals(other.champion)) {
                 return false;
             }
+            if(id == null) {
+                if(other.id != null) {
+                    return false;
+                }
+            } else if(!id.equals(other.id)) {
+                return false;
+            }
+            if(locale == null) {
+                if(other.locale != null) {
+                    return false;
+                }
+            } else if(!locale.equals(other.locale)) {
+                return false;
+            }
+            if(name == null) {
+                if(other.name != null) {
+                    return false;
+                }
+            } else if(!name.equals(other.name)) {
+                return false;
+            }
+            if(platform != other.platform) {
+                return false;
+            }
             if(status == null) {
                 if(other.status != null) {
                     return false;
                 }
             } else if(!status.equals(other.status)) {
+                return false;
+            }
+            if(version == null) {
+                if(other.version != null) {
+                    return false;
+                }
+            } else if(!version.equals(other.version)) {
                 return false;
             }
             return true;
@@ -76,10 +110,45 @@ public class Champion extends GhostObject<ChampionData> {
         }
 
         /**
+         * @return the id
+         */
+        public Integer getId() {
+            return id;
+        }
+
+        /**
+         * @return the locale
+         */
+        public String getLocale() {
+            return locale;
+        }
+
+        /**
+         * @return the name
+         */
+        public String getName() {
+            return name;
+        }
+
+        /**
+         * @return the platform
+         */
+        public Platform getPlatform() {
+            return platform;
+        }
+
+        /**
          * @return the status
          */
         public ChampionStatus getStatus() {
             return status;
+        }
+
+        /**
+         * @return the version
+         */
+        public String getVersion() {
+            return version;
         }
 
         @Override
@@ -87,7 +156,12 @@ public class Champion extends GhostObject<ChampionData> {
             final int prime = 31;
             int result = 1;
             result = prime * result + (champion == null ? 0 : champion.hashCode());
+            result = prime * result + (id == null ? 0 : id.hashCode());
+            result = prime * result + (locale == null ? 0 : locale.hashCode());
+            result = prime * result + (name == null ? 0 : name.hashCode());
+            result = prime * result + (platform == null ? 0 : platform.hashCode());
             result = prime * result + (status == null ? 0 : status.hashCode());
+            result = prime * result + (version == null ? 0 : version.hashCode());
             return result;
         }
 
@@ -97,6 +171,43 @@ public class Champion extends GhostObject<ChampionData> {
          */
         public void setChampion(final com.merakianalytics.orianna.types.data.staticdata.Champion champion) {
             this.champion = champion;
+            id = champion.getId();
+            locale = champion.getLocale();
+            name = champion.getName();
+            platform = champion.getPlatform();
+            version = champion.getVersion();
+        }
+
+        /**
+         * @param id
+         *        the id to set
+         */
+        public void setId(final Integer id) {
+            this.id = id;
+        }
+
+        /**
+         * @param locale
+         *        the locale to set
+         */
+        public void setLocale(final String locale) {
+            this.locale = locale;
+        }
+
+        /**
+         * @param name
+         *        the name to set
+         */
+        public void setName(final String name) {
+            this.name = name;
+        }
+
+        /**
+         * @param platform
+         *        the platform to set
+         */
+        public void setPlatform(final Platform platform) {
+            this.platform = platform;
         }
 
         /**
@@ -105,11 +216,21 @@ public class Champion extends GhostObject<ChampionData> {
          */
         public void setStatus(final ChampionStatus status) {
             this.status = status;
+            id = status.getId();
+            platform = status.getPlatform();
+        }
+
+        /**
+         * @param version
+         *        the version to set
+         */
+        public void setVersion(final String version) {
+            this.version = version;
         }
     }
 
     private static final String CHAMPION_LOAD_GROUP = "champion";
-    private static final long serialVersionUID = 8187636141258147929L;
+    private static final long serialVersionUID = -754838389625423311L;
     private static final String STATUS_LOAD_GROUP = "status";
 
     public static Champion withId(final int id) {
@@ -150,8 +271,6 @@ public class Champion extends GhostObject<ChampionData> {
         }
     });
 
-    private Integer id;
-
     private final Supplier<Image> image = Suppliers.memoize(new Supplier<Image>() {
         @Override
         public Image get() {
@@ -172,9 +291,6 @@ public class Champion extends GhostObject<ChampionData> {
         }
     });
 
-    private String locale;
-    private String name;
-
     private final Supplier<Passive> passive = Suppliers.memoize(new Supplier<Passive>() {
         @Override
         public Passive get() {
@@ -184,8 +300,6 @@ public class Champion extends GhostObject<ChampionData> {
             return new Passive(coreData.getChampion().getPassive());
         }
     });
-
-    private Platform platform;
 
     private final Supplier<List<RecommendedItems>> recommendedItems = Suppliers.memoize(new Supplier<List<RecommendedItems>>() {
         @Override
@@ -249,41 +363,20 @@ public class Champion extends GhostObject<ChampionData> {
         }
     });
 
-    private String version;
+    public Champion(final ChampionData coreData) {
+        super(coreData);
+    }
 
     public Champion(final ChampionStatus status) {
         super(new ChampionData(status));
-        id = status.getId();
-        platform = status.getPlatform();
-        version = Orianna.getSettings().getCurrentVersion();
-        locale = status.getPlatform().getDefaultLocale();
     }
 
     public Champion(final com.merakianalytics.orianna.types.data.staticdata.Champion champion) {
         super(new ChampionData(champion));
-        id = champion.getId();
-        name = champion.getName();
-        platform = champion.getPlatform();
-        version = champion.getVersion();
-        locale = champion.getLocale();
     }
 
     public Champion(final com.merakianalytics.orianna.types.data.staticdata.Champion champion, final ChampionStatus status) {
         super(new ChampionData(champion, status));
-        id = champion.getId();
-        name = champion.getName();
-        platform = champion.getPlatform();
-        version = champion.getVersion();
-        locale = champion.getLocale();
-    }
-
-    public Champion(final Integer id, final String name, final Platform platform, final String version, final String locale) {
-        super(new ChampionData());
-        this.id = id;
-        this.name = name;
-        this.platform = platform;
-        this.version = version;
-        this.locale = locale;
     }
 
     public List<String> getAllyTips() {
@@ -316,10 +409,10 @@ public class Champion extends GhostObject<ChampionData> {
     }
 
     public int getId() {
-        if(id == null) {
+        if(coreData.getId() == null) {
             load(CHAMPION_LOAD_GROUP);
         }
-        return id;
+        return coreData.getId();
     }
 
     public Image getImage() {
@@ -338,7 +431,7 @@ public class Champion extends GhostObject<ChampionData> {
     }
 
     public String getLocale() {
-        return locale;
+        return coreData.getLocale();
     }
 
     public String getLore() {
@@ -356,10 +449,10 @@ public class Champion extends GhostObject<ChampionData> {
     }
 
     public String getName() {
-        if(name == null) {
+        if(coreData.getName() == null) {
             load(CHAMPION_LOAD_GROUP);
         }
-        return name;
+        return coreData.getName();
     }
 
     public Passive getPassive() {
@@ -374,7 +467,7 @@ public class Champion extends GhostObject<ChampionData> {
     }
 
     public Platform getPlatform() {
-        return platform;
+        return coreData.getPlatform();
     }
 
     public List<RecommendedItems> getRecommendedItems() {
@@ -382,7 +475,7 @@ public class Champion extends GhostObject<ChampionData> {
     }
 
     public Region getRegion() {
-        return platform.getRegion();
+        return coreData.getPlatform().getRegion();
     }
 
     public String getResource() {
@@ -416,7 +509,7 @@ public class Champion extends GhostObject<ChampionData> {
     }
 
     public String getVersion() {
-        return version;
+        return coreData.getVersion();
     }
 
     public boolean isEnabled() {
@@ -460,23 +553,16 @@ public class Champion extends GhostObject<ChampionData> {
             case CHAMPION_LOAD_GROUP:
                 coreData.setChampion(Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Champion.class,
                     ImmutableMap.<String, Object> of(
-                        "id", id,
-                        "platform", platform,
-                        "version", version,
-                        "locale", locale)));
-                id = coreData.getChampion().getId();
-                name = coreData.getChampion().getName();
-                platform = coreData.getChampion().getPlatform();
-                version = coreData.getChampion().getVersion();
-                locale = coreData.getChampion().getLocale();
+                        "id", coreData.getId(),
+                        "platform", coreData.getPlatform(),
+                        "version", coreData.getVersion(),
+                        "locale", coreData.getLocale())));
                 break;
             case STATUS_LOAD_GROUP:
                 coreData.setStatus(Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.champion.ChampionStatus.class,
                     ImmutableMap.<String, Object> of(
-                        "id", id,
-                        "platform", platform)));
-                id = coreData.getStatus().getId();
-                platform = coreData.getStatus().getPlatform();
+                        "id", coreData.getId(),
+                        "platform", coreData.getPlatform())));
                 break;
             default:
                 break;

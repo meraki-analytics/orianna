@@ -514,7 +514,10 @@ public class RiotAPIService extends AbstractDataSource {
         final Collection<String> methodLimitHeaders = response.getHeaders().get("X-Method-Rate-Limit");
         if(methodLimitHeaders != null && !methodLimitHeaders.isEmpty()) {
             final String[] limits = methodLimitHeaders.iterator().next().split(",");
-            final RateLimiter limiter = multiLimiter.limiter("method");
+            RateLimiter limiter = multiLimiter.limiter("method");
+            if(limiter == null) {
+                limiter = multiLimiter;
+            }
             for(final String limit : limits) {
                 final String[] parts = limit.split(":");
                 final AbstractRateLimiter forRate = getSpecificLimiterForRate(limiter, parts[1]);

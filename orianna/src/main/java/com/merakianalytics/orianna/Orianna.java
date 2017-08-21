@@ -20,8 +20,9 @@ import com.google.common.io.Files;
 import com.google.common.io.Resources;
 import com.merakianalytics.datapipelines.DataPipeline;
 import com.merakianalytics.datapipelines.transformers.DataTransformer;
-import com.merakianalytics.orianna.datapipeline.GhostDataSource;
 import com.merakianalytics.orianna.datapipeline.ImageDataSource;
+import com.merakianalytics.orianna.datapipeline.InMemoryCache;
+import com.merakianalytics.orianna.datapipeline.UnloadedGhostObjectSource;
 import com.merakianalytics.orianna.datapipeline.riotapi.RiotAPI;
 import com.merakianalytics.orianna.datapipeline.transformers.ChampionMasteryTransformer;
 import com.merakianalytics.orianna.datapipeline.transformers.ChampionTransformer;
@@ -52,7 +53,8 @@ public abstract class Orianna {
                                                                   .build();
 
             return new DataPipeline(transformers,
-                                    new GhostDataSource(),
+                                    new InMemoryCache(),
+                                    new UnloadedGhostObjectSource(),
                                     new ImageDataSource(),
                                     new RiotAPI());
         }

@@ -9,9 +9,10 @@ import com.merakianalytics.datapipelines.sources.Get;
 import com.merakianalytics.orianna.datapipeline.common.Utilities;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
+import com.merakianalytics.orianna.types.core.staticdata.Champion.ChampionData;
 import com.merakianalytics.orianna.types.dto.staticdata.Realm;
 
-public class GhostDataSource extends AbstractDataSource {
+public class UnloadedGhostObjectSource extends AbstractDataSource {
     private static String getCurrentVersion(final Platform platform, final PipelineContext context) {
         final Realm realm = context.getPipeline().get(Realm.class, ImmutableMap.<String, Object> of("platform", platform));
         return realm.getV();
@@ -27,6 +28,12 @@ public class GhostDataSource extends AbstractDataSource {
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
 
-        return new Champion(id, name, platform, version, locale);
+        final ChampionData data = new ChampionData();
+        data.setId(id);
+        data.setName(name);
+        data.setLocale(locale);
+        data.setVersion(version);
+        data.setPlatform(platform);
+        return new Champion(data);
     }
 }

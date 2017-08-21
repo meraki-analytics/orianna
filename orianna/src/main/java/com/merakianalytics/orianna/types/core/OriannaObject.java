@@ -456,7 +456,7 @@ public abstract class OriannaObject<T extends CoreData> extends AbstractSearchab
         return true;
     }
 
-    public T getData() {
+    public T getCoreData() {
         return coreData;
     }
 
