@@ -1,22 +1,23 @@
 package com.merakianalytics.orianna.types.core;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public abstract class GhostObject<T extends CoreData> extends OriannaObject<T> {
     public static interface LoadHook {
         public void call();
     }
+
     private static final long serialVersionUID = -1133820478440391056L;
     private final Map<String, Object> groupLocks = new ConcurrentHashMap<>();
     private final Map<String, Boolean> groups = new ConcurrentHashMap<>();
-
-    private final Multimap<String, LoadHook> loadHooks = Multimaps.synchronizedMultimap(HashMultimap.<String, LoadHook> create());
+    private final Object loadHookLock = new Object();
+    private Map<String, Set<LoadHook>> loadHooks;
 
     public GhostObject() {
         super(null);
@@ -51,10 +52,15 @@ public abstract class GhostObject<T extends CoreData> extends OriannaObject<T> {
             }
 
             if(callHooks) {
-                for(final LoadHook hook : loadHooks.get(group)) {
-                    hook.call();
+                synchronized(loadHookLock) {
+                    for(final LoadHook hook : loadHooks.get(group)) {
+                        hook.call();
+                    }
+                    loadHooks.remove(group);
+                    if(loadHooks.isEmpty()) {
+                        loadHooks = null;
+                    }
                 }
-                loadHooks.removeAll(group);
             }
         }
     }
@@ -64,7 +70,17 @@ public abstract class GhostObject<T extends CoreData> extends OriannaObject<T> {
     public void registerGhostLoadHook(final LoadHook hook, final String group) {
         final Boolean loaded = groups.get(group);
         if(loaded == null || !loaded) {
-            loadHooks.put(group, hook);
+            synchronized(loadHookLock) {
+                if(loadHooks == null) {
+                    loadHooks = new HashMap<>();
+                }
+                Set<LoadHook> hooks = loadHooks.get(group);
+                if(hooks == null) {
+                    hooks = new HashSet<>();
+                    loadHooks.put(group, hooks);
+                }
+                hooks.add(hook);
+            }
         }
     }
 }
