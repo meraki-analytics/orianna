@@ -20,6 +20,7 @@ import com.merakianalytics.datapipelines.sinks.Put;
 import com.merakianalytics.datapipelines.sources.Get;
 import com.merakianalytics.orianna.types.UniqueKeys;
 import com.merakianalytics.orianna.types.common.OriannaException;
+import com.merakianalytics.orianna.types.core.GhostObject.LoadHook;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 
 public class InMemoryCache extends AbstractDataStore {
@@ -54,7 +55,6 @@ public class InMemoryCache extends AbstractDataStore {
     private static final Logger LOGGER = LoggerFactory.getLogger(InMemoryCache.class);
 
     private final Cache<Integer, Object> cache;
-
     private final Map<Class<?>, Long> expirationPeriods;
 
     public InMemoryCache() {
@@ -91,6 +91,19 @@ public class InMemoryCache extends AbstractDataStore {
     @Put(Champion.class)
     public void putChampion(final Champion champion, final PipelineContext context) {
         final int[] keys = UniqueKeys.forChampion(champion);
+
+        if(keys.length < 2) {
+            final LoadHook hook = new LoadHook() {
+                @Override
+                public void call() {
+                    putChampion(champion, null);
+                }
+            };
+
+            champion.registerGhostLoadHook(hook, Champion.CHAMPION_LOAD_GROUP);
+            champion.registerGhostLoadHook(hook, Champion.STATUS_LOAD_GROUP);
+        }
+
         for(final int key : keys) {
             cache.put(key, champion);
         }

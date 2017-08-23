@@ -243,7 +243,6 @@ public class HTTPClient {
         final Callable<Response> requestor = new Callable<Response>() {
             @Override
             public Response call() throws IOException {
-                System.out.println("MAKING GET REQUEST TO " + httpURL);
                 LOGGER.info("Making GET request to " + httpURL);
                 String body = null;
                 byte[] bytes = null;

@@ -183,6 +183,22 @@ public abstract class Orianna {
         return Champion.withId(id, platform, version, locale);
     }
 
+    public static Champion getChampion(final String name) {
+        return Champion.named(name);
+    }
+
+    public static Champion getChampion(final String name, final Platform platform) {
+        return Champion.named(name, platform);
+    }
+
+    public static Champion getChampion(final String name, final Platform platform, final String version) {
+        return Champion.named(name, platform, version);
+    }
+
+    public static Champion getChampion(final String name, final Platform platform, final String version, final String locale) {
+        return Champion.named(name, platform, version, locale);
+    }
+
     public static Settings getSettings() {
         return settings;
     }

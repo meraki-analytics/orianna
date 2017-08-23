@@ -229,9 +229,27 @@ public class Champion extends GhostObject<ChampionData> {
         }
     }
 
-    private static final String CHAMPION_LOAD_GROUP = "champion";
+    public static final String CHAMPION_LOAD_GROUP = "champion";
     private static final long serialVersionUID = -754838389625423311L;
-    private static final String STATUS_LOAD_GROUP = "status";
+    public static final String STATUS_LOAD_GROUP = "status";
+
+    public static Champion named(final String name) {
+        return named(name, Orianna.getSettings().getDefaultPlatform(), Orianna.getSettings().getCurrentVersion(),
+            Orianna.getSettings().getDefaultPlatform().getDefaultLocale());
+    }
+
+    public static Champion named(final String name, final Platform platform) {
+        return named(name, platform, Orianna.getSettings().getCurrentVersion(), platform.getDefaultLocale());
+    }
+
+    public static Champion named(final String name, final Platform platform, final String version) {
+        return named(name, platform, version, platform.getDefaultLocale());
+    }
+
+    public static Champion named(final String name, final Platform platform, final String version, final String locale) {
+        return Orianna.getSettings().getPipeline().get(Champion.class,
+            ImmutableMap.<String, Object> of("name", name, "platform", platform, "version", version, "locale", locale));
+    }
 
     public static Champion withId(final int id) {
         return withId(id, Orianna.getSettings().getDefaultPlatform(), Orianna.getSettings().getCurrentVersion(),
