@@ -6,7 +6,7 @@ import com.merakianalytics.orianna.types.common.Platform;
 public class Item {
     public static Item withId(final int id) {
         return withId(id, Orianna.getSettings().getDefaultPlatform(), Orianna.getSettings().getCurrentVersion(),
-            Orianna.getSettings().getDefaultPlatform().getDefaultLocale());
+            Orianna.getSettings().getDefaultLocale());
     }
 
     public static Item withId(final int id, final Platform platform) {

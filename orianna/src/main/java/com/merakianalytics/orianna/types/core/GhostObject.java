@@ -14,17 +14,15 @@ public abstract class GhostObject<T extends CoreData> extends OriannaObject<T> {
     }
 
     private static final long serialVersionUID = -1133820478440391056L;
-    private final Map<String, Object> groupLocks = new ConcurrentHashMap<>();
-    private final Map<String, Boolean> groups = new ConcurrentHashMap<>();
+    private final Map<String, Object> groupLocks;
+    private final Map<String, Boolean> groups;
     private final Object loadHookLock = new Object();
     private Map<String, Set<LoadHook>> loadHooks;
 
-    public GhostObject() {
-        super(null);
-    }
-
-    public GhostObject(final T coreData) {
+    public GhostObject(final T coreData, final int loadGroups) {
         super(coreData);
+        groupLocks = new ConcurrentHashMap<>(loadGroups);
+        groups = new ConcurrentHashMap<>(loadGroups);
     }
 
     protected void load(final String group) {

@@ -28,12 +28,7 @@ public class UnloadedGhostObjectSource extends AbstractDataSource {
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
 
-        final ChampionData data = new ChampionData();
-        data.setId(id);
-        data.setName(name);
-        data.setLocale(locale);
-        data.setVersion(version);
-        data.setPlatform(platform);
+        final ChampionData data = new ChampionData(id == null ? 0 : id.intValue(), name, platform, version, locale);
         return new Champion(data);
     }
 }

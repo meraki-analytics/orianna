@@ -10,19 +10,19 @@ import com.merakianalytics.orianna.types.core.staticdata.Champion.ChampionData;
 public abstract class UniqueKeys {
     public static int[] forChampion(final Champion champion) {
         final ChampionData data = champion.getCoreData();
-        if(data.getId() != null && data.getName() != null) {
+        if(data.getChampion().getId() != 0 && data.getChampion().getName() != null) {
             return new int[] {
                               Arrays.hashCode(new Object[] {Champion.class.getCanonicalName(), champion.getPlatform().toString(), champion.getVersion(),
                                                             champion.getLocale(), champion.getId()}),
                               Arrays.hashCode(new Object[] {Champion.class.getCanonicalName(), champion.getPlatform().toString(), champion.getVersion(),
                                                             champion.getLocale(), champion.getName()})
             };
-        } else if(data.getId() != null) {
+        } else if(data.getChampion().getId() != 0) {
             return new int[] {
                               Arrays.hashCode(new Object[] {Champion.class.getCanonicalName(), champion.getPlatform().toString(), champion.getVersion(),
                                                             champion.getLocale(), champion.getId()})
             };
-        } else if(data.getName() != null) {
+        } else if(data.getChampion().getName() != null) {
             return new int[] {
                               Arrays.hashCode(new Object[] {Champion.class.getCanonicalName(), champion.getPlatform().toString(), champion.getVersion(),
                                                             champion.getLocale(), champion.getName()})

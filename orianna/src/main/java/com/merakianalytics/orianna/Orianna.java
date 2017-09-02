@@ -36,6 +36,7 @@ import com.merakianalytics.orianna.datapipeline.transformers.StatusTransformer;
 import com.merakianalytics.orianna.datapipeline.transformers.SummonerTransformer;
 import com.merakianalytics.orianna.types.common.OriannaException;
 import com.merakianalytics.orianna.types.common.Platform;
+import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.dto.staticdata.Realm;
 
@@ -43,6 +44,7 @@ public abstract class Orianna {
     public static class Configuration {
         private static final long DEFAULT_CURRENT_VERSION_EXPIRATION = 6;
         private static final TimeUnit DEFAULT_CURRENT_VERSION_EXPIRATION_UNIT = TimeUnit.HOURS;
+        private static final String DEFAULT_DEFAULT_LOCALE = null;
         private static final Platform DEFAULT_DEFAULT_PLATFORM = Platform.NORTH_AMERICA;
 
         private static DataPipeline getDefaultPipeline() {
@@ -61,6 +63,7 @@ public abstract class Orianna {
 
         private long currentVersionExpiration = DEFAULT_CURRENT_VERSION_EXPIRATION;
         private TimeUnit currentVersionExpirationUnit = DEFAULT_CURRENT_VERSION_EXPIRATION_UNIT;
+        private String defaultLocale = DEFAULT_DEFAULT_LOCALE;
         private Platform defaultPlatform = DEFAULT_DEFAULT_PLATFORM;
         private DataPipeline pipeline = getDefaultPipeline();
 
@@ -76,6 +79,13 @@ public abstract class Orianna {
          */
         public TimeUnit getCurrentVersionExpirationUnit() {
             return currentVersionExpirationUnit;
+        }
+
+        /**
+         * @return the defaultLocale
+         */
+        public String getDefaultLocale() {
+            return defaultLocale;
         }
 
         /**
@@ -109,6 +119,14 @@ public abstract class Orianna {
         }
 
         /**
+         * @param defaultLocale
+         *        the defaultLocale to set
+         */
+        public void setDefaultLocale(final String defaultLocale) {
+            this.defaultLocale = defaultLocale;
+        }
+
+        /**
          * @param defaultPlatform
          *        the defaultPlatform to set
          */
@@ -127,12 +145,14 @@ public abstract class Orianna {
 
     public static class Settings {
         private final Supplier<String> currentVersion;
+        private final String defaultLocale;
         private final Platform defaultPlatform;
         private final DataPipeline pipeline;
 
         public Settings(final Configuration config) {
             pipeline = config.getPipeline();
             defaultPlatform = config.getDefaultPlatform();
+            defaultLocale = config.getDefaultLocale();
             currentVersion = Suppliers.memoizeWithExpiration(new Supplier<String>() {
                 @Override
                 public String get() {
@@ -146,6 +166,13 @@ public abstract class Orianna {
          */
         public String getCurrentVersion() {
             return currentVersion.get();
+        }
+
+        /**
+         * @return the defaultLocale
+         */
+        public String getDefaultLocale() {
+            return defaultLocale == null ? defaultPlatform.getDefaultLocale() : defaultLocale;
         }
 
         /**
@@ -164,7 +191,6 @@ public abstract class Orianna {
     }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Orianna.class);
-
     private static Settings settings = new Settings(new Configuration());
 
     public static Champion getChampion(final int id) {
@@ -183,6 +209,18 @@ public abstract class Orianna {
         return Champion.withId(id, platform, version, locale);
     }
 
+    public static Champion getChampion(final int id, final Region region) {
+        return Champion.withId(id, region);
+    }
+
+    public static Champion getChampion(final int id, final Region region, final String version) {
+        return Champion.withId(id, region, version);
+    }
+
+    public static Champion getChampion(final int id, final Region region, final String version, final String locale) {
+        return Champion.withId(id, region, version, locale);
+    }
+
     public static Champion getChampion(final String name) {
         return Champion.named(name);
     }
@@ -197,6 +235,18 @@ public abstract class Orianna {
 
     public static Champion getChampion(final String name, final Platform platform, final String version, final String locale) {
         return Champion.named(name, platform, version, locale);
+    }
+
+    public static Champion getChampion(final String name, final Region region) {
+        return Champion.named(name, region);
+    }
+
+    public static Champion getChampion(final String name, final Region region, final String version) {
+        return Champion.named(name, region, version);
+    }
+
+    public static Champion getChampion(final String name, final Region region, final String version, final String locale) {
+        return Champion.named(name, region, version, locale);
     }
 
     public static Settings getSettings() {
