@@ -1,22 +1,18 @@
 package com.merakianalytics.orianna.datapipeline.riotapi;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.collect.ImmutableSet;
 import com.merakianalytics.datapipelines.sources.CompositeDataSource;
 import com.merakianalytics.orianna.datapipeline.common.HTTPClient;
 import com.merakianalytics.orianna.datapipeline.common.rates.RateLimiter;
 import com.merakianalytics.orianna.datapipeline.common.rates.RateLimiter.Type;
 import com.merakianalytics.orianna.datapipeline.riotapi.RiotAPIService.FailedRequestStrategy;
-import com.merakianalytics.orianna.types.common.OriannaException;
-import com.merakianalytics.orianna.types.common.Platform;
+import com.merakianalytics.orianna.types.common.*;
+import org.slf4j.*;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class RiotAPI extends CompositeDataSource {
     public static class Configuration {

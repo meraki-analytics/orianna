@@ -1,18 +1,16 @@
 package com.merakianalytics.orianna.types.core.staticdata;
 
-import java.util.Collections;
-import java.util.List;
-
-import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
+import com.google.common.base.*;
 import com.merakianalytics.orianna.types.core.OriannaObject;
+
+import java.util.*;
 
 public class SpellVariables extends OriannaObject<com.merakianalytics.orianna.types.data.staticdata.SpellVariables> {
     private static final long serialVersionUID = -8759913162668284032L;
 
-    private final Supplier<List<Double>> coefficients = Suppliers.memoize(new Supplier<List<Double>>() {
+    private final Supplier<List<Number>> coefficients = Suppliers.memoize(new Supplier<List<Number>>() {
         @Override
-        public List<Double> get() {
+        public List<Number> get() {
             return Collections.unmodifiableList(coreData.getCoefficients());
         }
     });
@@ -21,7 +19,7 @@ public class SpellVariables extends OriannaObject<com.merakianalytics.orianna.ty
         super(coreData);
     }
 
-    public List<Double> getCoefficients() {
+    public List<Number> getCoefficients() {
         return coefficients.get();
     }
 

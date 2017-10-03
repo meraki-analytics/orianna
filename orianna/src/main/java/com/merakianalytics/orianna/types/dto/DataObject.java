@@ -1,22 +1,13 @@
 package com.merakianalytics.orianna.types.dto;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Set;
-
-import org.msgpack.jackson.dataformat.MessagePackFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.*;
 import com.merakianalytics.orianna.types.common.OriannaException;
+import org.msgpack.jackson.dataformat.MessagePackFactory;
+import org.slf4j.*;
+
+import java.io.*;
+import java.util.*;
 
 public abstract class DataObject implements Serializable {
     public static class ListProxy<T> extends DataObject implements List<T> {
@@ -251,7 +242,7 @@ public abstract class DataObject implements Serializable {
 
     }
 
-    private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
+    private static final ObjectMapper JSON_MAPPER = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     private static final Logger LOGGER = LoggerFactory.getLogger(DataObject.class);
     private static final ObjectMapper MSGPACK_MAPPER = new ObjectMapper(new MessagePackFactory());
     private static final long serialVersionUID = 844645829337854049L;
