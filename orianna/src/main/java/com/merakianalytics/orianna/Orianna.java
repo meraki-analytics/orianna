@@ -1,44 +1,25 @@
 package com.merakianalytics.orianna;
 
-import java.io.File;
-import java.io.IOException;
+import com.fasterxml.jackson.core.JsonParser.Feature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.*;
+import com.google.common.collect.*;
+import com.google.common.io.*;
+import com.merakianalytics.datapipelines.DataPipeline;
+import com.merakianalytics.datapipelines.transformers.DataTransformer;
+import com.merakianalytics.orianna.datapipeline.*;
+import com.merakianalytics.orianna.datapipeline.riotapi.*;
+import com.merakianalytics.orianna.datapipeline.transformers.*;
+import com.merakianalytics.orianna.types.common.*;
+import com.merakianalytics.orianna.types.common.Platform;
+import com.merakianalytics.orianna.types.core.staticdata.Champion;
+import com.merakianalytics.orianna.types.dto.staticdata.Realm;
+import org.slf4j.*;
+
+import java.io.*;
 import java.nio.charset.Charset;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.core.JsonParser.Feature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.io.CharSource;
-import com.google.common.io.Files;
-import com.google.common.io.Resources;
-import com.merakianalytics.datapipelines.DataPipeline;
-import com.merakianalytics.datapipelines.transformers.DataTransformer;
-import com.merakianalytics.orianna.datapipeline.ImageDataSource;
-import com.merakianalytics.orianna.datapipeline.InMemoryCache;
-import com.merakianalytics.orianna.datapipeline.UnloadedGhostObjectSource;
-import com.merakianalytics.orianna.datapipeline.riotapi.RiotAPI;
-import com.merakianalytics.orianna.datapipeline.transformers.ChampionMasteryTransformer;
-import com.merakianalytics.orianna.datapipeline.transformers.ChampionTransformer;
-import com.merakianalytics.orianna.datapipeline.transformers.LeagueTransformer;
-import com.merakianalytics.orianna.datapipeline.transformers.MasteriesTransformer;
-import com.merakianalytics.orianna.datapipeline.transformers.MatchTransformer;
-import com.merakianalytics.orianna.datapipeline.transformers.RunesTransformer;
-import com.merakianalytics.orianna.datapipeline.transformers.SpectatorTransformer;
-import com.merakianalytics.orianna.datapipeline.transformers.StaticDataTransformer;
-import com.merakianalytics.orianna.datapipeline.transformers.StatusTransformer;
-import com.merakianalytics.orianna.datapipeline.transformers.SummonerTransformer;
-import com.merakianalytics.orianna.types.common.OriannaException;
-import com.merakianalytics.orianna.types.common.Platform;
-import com.merakianalytics.orianna.types.common.Region;
-import com.merakianalytics.orianna.types.core.staticdata.Champion;
-import com.merakianalytics.orianna.types.dto.staticdata.Realm;
 
 public abstract class Orianna {
     public static class Configuration {
@@ -58,7 +39,10 @@ public abstract class Orianna {
                                     new InMemoryCache(),
                                     new UnloadedGhostObjectSource(),
                                     new ImageDataSource(),
-                                    new RiotAPI());
+                                    new JSONDataSource(),
+                                    new DataDragonSource(),
+                                    new RiotAPI()
+            );
         }
 
         private long currentVersionExpiration = DEFAULT_CURRENT_VERSION_EXPIRATION;
