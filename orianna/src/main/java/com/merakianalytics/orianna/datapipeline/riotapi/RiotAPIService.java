@@ -721,6 +721,7 @@ public class RiotAPIService extends AbstractDataSource {
         Object lock = applicationRateLimiterLocks.get(platform);
         if(lock == null) {
             synchronized(applicationRateLimiterLocks) {
+                lock = applicationRateLimiterLocks.get(platform);
                 if(lock == null) {
                     lock = new Object();
                     applicationRateLimiterLocks.put(platform, lock);

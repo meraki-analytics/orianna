@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +15,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Function;
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -51,14 +55,52 @@ import com.merakianalytics.orianna.types.dto.staticdata.Versions;
 
 public class DataDragon extends AbstractDataSource {
     public static class Configuration {
+        private static final long DEFAULT_CACHE_DURATION = 6;
+
+        private static final TimeUnit DEFAULT_CACHE_DURATION_UNIT = TimeUnit.HOURS;
+
         private static final HTTPClient.Configuration DEFAULT_REQUESTS = new HTTPClient.Configuration();
+
+        private long cacheDuration = DEFAULT_CACHE_DURATION;
+
+        private TimeUnit cacheDurationUnit = DEFAULT_CACHE_DURATION_UNIT;
         private HTTPClient.Configuration requests = DEFAULT_REQUESTS;
+
+        /**
+         * @return the cacheDuration
+         */
+        public long getCacheDuration() {
+            return cacheDuration;
+        }
+
+        /**
+         * @return the cacheDurationUnit
+         */
+        public TimeUnit getCacheDurationUnit() {
+            return cacheDurationUnit;
+        }
 
         /**
          * @return the requests
          */
         public HTTPClient.Configuration getRequests() {
             return requests;
+        }
+
+        /**
+         * @param cacheDuration
+         *        the cacheDuration to set
+         */
+        public void setCacheDuration(final long cacheDuration) {
+            this.cacheDuration = cacheDuration;
+        }
+
+        /**
+         * @param cacheDurationUnit
+         *        the cacheDurationUnit to set
+         */
+        public void setCacheDurationUnit(final TimeUnit cacheDurationUnit) {
+            this.cacheDurationUnit = cacheDurationUnit;
         }
 
         /**
@@ -92,6 +134,56 @@ public class DataDragon extends AbstractDataSource {
 
             ((ObjectNode)tree).retain(includedData);
             return tree;
+        }
+    }
+
+    private static class RequestMetadata {
+        public String file, version, locale;
+
+        @Override
+        public boolean equals(final Object obj) {
+            if(this == obj) {
+                return true;
+            }
+            if(obj == null) {
+                return false;
+            }
+            if(getClass() != obj.getClass()) {
+                return false;
+            }
+            final RequestMetadata other = (RequestMetadata)obj;
+            if(file == null) {
+                if(other.file != null) {
+                    return false;
+                }
+            } else if(!file.equals(other.file)) {
+                return false;
+            }
+            if(locale == null) {
+                if(other.locale != null) {
+                    return false;
+                }
+            } else if(!locale.equals(other.locale)) {
+                return false;
+            }
+            if(version == null) {
+                if(other.version != null) {
+                    return false;
+                }
+            } else if(!version.equals(other.version)) {
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + (file == null ? 0 : file.hashCode());
+            result = prime * result + (locale == null ? 0 : locale.hashCode());
+            result = prime * result + (version == null ? 0 : version.hashCode());
+            return result;
         }
     }
 
@@ -165,6 +257,10 @@ public class DataDragon extends AbstractDataSource {
         final Realm realm = context.getPipeline().get(Realm.class, ImmutableMap.<String, Object> of("platform", platform));
         return realm.getV();
     }
+    private final ConcurrentHashMap<RequestMetadata, Supplier<String>> cache = new ConcurrentHashMap<>();
+    private final long cacheDuration;
+    private final TimeUnit cacheDurationUnit;
+    private final ConcurrentHashMap<RequestMetadata, Object> cacheLocks = new ConcurrentHashMap<>();
 
     private final HTTPClient client;
 
@@ -174,24 +270,60 @@ public class DataDragon extends AbstractDataSource {
 
     public DataDragon(final Configuration config) {
         client = new HTTPClient(config.getRequests());
+        cacheDuration = config.getCacheDuration();
+        cacheDurationUnit = config.getCacheDurationUnit();
     }
 
     private String get(final String file, final String version, final String locale) {
-        String URL = "http://ddragon.leagueoflegends.com";
-        if(version != null && locale != null) {
-            URL += "/cdn/" + version + "/data/" + locale + "/";
-        }
-        URL += file + ".json";
+        final RequestMetadata metadata = new RequestMetadata();
+        metadata.file = file;
+        metadata.version = version;
+        metadata.locale = locale;
 
-        try {
-            return client.get(URL).getBody();
-        } catch(final TimeoutException e) {
-            LOGGER.info("Get request timed out to " + URL + "!", e);
-            return null;
-        } catch(final IOException e) {
-            LOGGER.error("Get request failed to " + URL + "!", e);
-            throw new OriannaException("Something went wrong with a request to DataDragon API at " + URL + "! Report this to the orianna team.", e);
+        Supplier<String> supplier = cache.get(metadata);
+        if(supplier == null) {
+            Object lock = cacheLocks.get(metadata);
+            if(lock == null) {
+                synchronized(cacheLocks) {
+                    lock = cacheLocks.get(metadata);
+                    if(lock == null) {
+                        lock = new Object();
+                        cacheLocks.put(metadata, lock);
+                    }
+                }
+            }
+
+            synchronized(lock) {
+                supplier = cache.get(metadata);
+                if(supplier == null) {
+                    supplier = Suppliers.memoizeWithExpiration(new Supplier<String>() {
+                        @Override
+                        public String get() {
+                            String URL = "http://ddragon.leagueoflegends.com";
+                            if(version != null && locale != null) {
+                                URL += "/cdn/" + version + "/data/" + locale + "/";
+                            }
+                            URL += file + ".json";
+
+                            try {
+                                System.out.println("RUNNING THE GET");
+                                return client.get(URL).getBody();
+                            } catch(final TimeoutException e) {
+                                LOGGER.info("Get request timed out to " + URL + "!", e);
+                                return null;
+                            } catch(final IOException e) {
+                                LOGGER.error("Get request failed to " + URL + "!", e);
+                                throw new OriannaException("Something went wrong with a request to DataDragon API at " + URL
+                                                           + "! Report this to the orianna team.", e);
+                            }
+                        }
+                    }, cacheDuration, cacheDurationUnit);
+                    cache.put(metadata, supplier);
+                }
+            }
         }
+
+        return supplier.get();
     }
 
     @SuppressWarnings("unchecked")
