@@ -819,7 +819,7 @@ public class DataDragon extends AbstractDataSource {
             public Realm next() {
                 final Platform platform = iterator.next();
 
-                final String content = get("/realms/" + platform.getTag().replaceAll("[0-9]", ""), null, null);
+                final String content = get("/realms/" + platform.getRegion().getTag(), null, null);
                 final Realm data = DataObject.fromJSON(Realm.class, content);
 
                 data.setPlatform(platform.getTag());
@@ -1130,7 +1130,7 @@ public class DataDragon extends AbstractDataSource {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
 
-        final String content = get("/realms/" + platform.getTag().replaceAll("[0-9]", ""), null, null);
+        final String content = get("/realms/" + platform.getRegion().getTag(), null, null);
         final Realm data = DataObject.fromJSON(Realm.class, content);
 
         data.setPlatform(platform.getTag());
