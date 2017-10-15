@@ -10,13 +10,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Function;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
 import com.merakianalytics.datapipelines.PipelineContext;
 import com.merakianalytics.datapipelines.iterators.CloseableIterator;
 import com.merakianalytics.datapipelines.iterators.CloseableIterators;
@@ -69,49 +70,76 @@ public class DataDragon extends AbstractDataSource {
         }
     }
 
-    private static final Function<JsonNode, JsonNode> CHAMPION_COEFF_PROCESSOR = new Function<JsonNode, JsonNode>() {
+    private static class IncludedDataProcessor implements Function<JsonNode, JsonNode> {
+        public static final Set<String> DEFAULT_CHAMPION_TAGS = ImmutableSet.of("title", "id", "key", "name");
+        public static final Set<String> DEFAULT_ITEM_TAGS = ImmutableSet.of("plaintext", "description", "id", "name");
+        public static final Set<String> DEFAULT_MASTERY_TAGS = ImmutableSet.of("description", "id", "name");
+        public static final Set<String> DEFAULT_RUNE_TAGS = ImmutableSet.of("description", "rune", "id", "name");
+        public static final Set<String> DEFAULT_SUMMONER_SPELL_TAGS = ImmutableSet.of("name", "key", "summonerLevel", "id", "description");
+        private final boolean all;
+        private final Set<String> includedData;
+
+        public IncludedDataProcessor(final Set<String> includedData) {
+            this.includedData = includedData;
+            all = includedData.contains("all");
+        }
+
+        @Override
+        public JsonNode apply(final JsonNode tree) {
+            if(all) {
+                return tree;
+            }
+
+            ((ObjectNode)tree).retain(includedData);
+            return tree;
+        }
+    }
+
+    private static final Function<JsonNode, JsonNode> CHAMPION_PROCESSOR = new Function<JsonNode, JsonNode>() {
         @Override
         public JsonNode apply(final JsonNode championTree) {
             if(championTree == null) {
                 return championTree;
             }
 
+            // Swap key and id. They're reversed between ddragon and the API.
+            if(championTree.has("key") && championTree.has("id")) {
+                final ObjectNode champion = (ObjectNode)championTree;
+                final String id = champion.get("key").asText();
+                champion.set("key", champion.get("id"));
+                champion.set("id", new IntNode(Integer.parseInt(id)));
+            }
+
+            // Fix spell coeff field
             final JsonNode temp = championTree.get("spells");
             if(temp == null) {
                 return championTree;
             }
 
             for(final JsonNode spell : temp) {
-                SPELL_COEFF_PROCESSOR.apply(spell);
+                SPELL_PROCESSOR.apply(spell);
             }
             return championTree;
         }
     };
 
-    private static final Function<JsonNode, JsonNode> CHAMPION_LIST_COEFF_PROCESSOR = new Function<JsonNode, JsonNode>() {
-        @Override
-        public JsonNode apply(final JsonNode championListTree) {
-            if(championListTree == null) {
-                return championListTree;
-            }
-
-            final JsonNode temp = championListTree.get("data");
-            if(temp == null) {
-                return championListTree;
-            }
-
-            for(final JsonNode champion : temp) {
-                CHAMPION_COEFF_PROCESSOR.apply(champion);
-            }
-            return championListTree;
-        }
-    };
-
     private static final Logger LOGGER = LoggerFactory.getLogger(DataDragon.class);
 
-    private static final Function<JsonNode, JsonNode> SPELL_COEFF_PROCESSOR = new Function<JsonNode, JsonNode>() {
+    private static final Function<JsonNode, JsonNode> SPELL_PROCESSOR = new Function<JsonNode, JsonNode>() {
         @Override
         public JsonNode apply(final JsonNode spellTree) {
+            if(spellTree == null) {
+                return spellTree;
+            }
+
+            // Swap key and id. They're reversed between ddragon and the API.
+            if(spellTree.has("key") && spellTree.has("id")) {
+                final ObjectNode spell = (ObjectNode)spellTree;
+                final String id = spell.get("key").asText();
+                spell.set("key", spell.get("id"));
+                spell.set("id", new IntNode(Integer.parseInt(id)));
+            }
+
             final JsonNode temp = spellTree.get("vars");
             if(temp == null) {
                 return spellTree;
@@ -132,87 +160,6 @@ public class DataDragon extends AbstractDataSource {
             return spellTree;
         }
     };
-
-    private static final Function<JsonNode, JsonNode> SPELL_LIST_COEFF_PROCESSOR = new Function<JsonNode, JsonNode>() {
-        @Override
-        public JsonNode apply(final JsonNode spellListTree) {
-            final JsonNode temp = spellListTree.get("data");
-            if(temp == null) {
-                return spellListTree;
-            }
-
-            for(final JsonNode spell : temp) {
-                SPELL_COEFF_PROCESSOR.apply(spell);
-            }
-            return spellListTree;
-        }
-    };
-
-    private static String filterToField(final String json, final String field, final String value) {
-        try {
-            final JsonNode parent = new ObjectMapper().readTree(json).get("data");
-            for(final Iterator<String> it = parent.fieldNames(); it.hasNext();) {
-                final String fieldName = it.next();
-                final JsonNode child = parent.get(fieldName);
-
-                if(child instanceof ObjectNode) {
-                    final ObjectNode childObject = (ObjectNode)child;
-                    if("USE_PARENT".equalsIgnoreCase(field) && fieldName.equalsIgnoreCase(value)) {
-                        return childObject.toString();
-                    }
-
-                    if(child.has(field) && childObject.get(field).asText().equalsIgnoreCase(value)) {
-                        return childObject.toString();
-                    }
-                }
-            }
-            return json;
-        } catch(final IOException e) {
-            e.printStackTrace();
-            return json;
-        }
-
-    }
-
-    private static String filterToTags(final String json, final Set<String> includedData) {
-        if(includedData.contains("all")) {
-            return json;
-        }
-
-        final Set<String> defaultChampionTags = ImmutableSet.of("title", "id", /* "key", */ "name");
-        final Set<String> defaultItemTags = ImmutableSet.of("plaintext", "description", "id", "name");
-        final Set<String> defaultMasteryTags = ImmutableSet.of("description", "id", "name");
-        final Set<String> defaultRuneTags = ImmutableSet.of("description", "rune", "id", "name");
-        final Set<String> defaultSummonerSpellTags = ImmutableSet.of("name", /* "key", */ "summonerLevel", "id", "description");
-
-        final Set<String> okTags = new ImmutableSet.Builder<String>().addAll(defaultChampionTags)
-                                                                     .addAll(defaultItemTags)
-                                                                     .addAll(defaultMasteryTags)
-                                                                     .addAll(defaultRuneTags)
-                                                                     .addAll(defaultSummonerSpellTags)
-                                                                     .addAll(includedData)
-                                                                     .build();
-
-        try {
-            final JsonNode parent = new ObjectMapper().readTree(json);
-            final JsonNode data = parent.get("data");
-            for(final JsonNode child : data) {
-                if(child instanceof ObjectNode) {
-                    final ObjectNode childObject = (ObjectNode)child;
-
-                    if(childObject.get("key") != null) {
-                        childObject.set("id", childObject.get("key"));
-                    }
-
-                    childObject.retain(okTags);
-                }
-            }
-            return parent.toString();
-        } catch(final IOException e) {
-            e.printStackTrace();
-            return json;
-        }
-    }
 
     private static String getCurrentVersion(final Platform platform, final PipelineContext context) {
         final Realm realm = context.getPipeline().get(Realm.class, ImmutableMap.<String, Object> of("platform", platform));
@@ -260,13 +207,36 @@ public class DataDragon extends AbstractDataSource {
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
 
         final String content = get("championFull", version, locale);
-        final String filteredToTags = filterToTags(makeById(content), includedData);
-        final String filteredToId = id == null ? filterToField(filteredToTags, "name", name) : filterToField(filteredToTags, "id", id.toString());
 
-        final Champion data = DataObject.fromJSON(Champion.class, CHAMPION_COEFF_PROCESSOR, filteredToId);
-        if(data.getId() == 0) {
-            return null;
-        }
+        final Champion data = DataObject.fromJSON(Champion.class, new Function<JsonNode, JsonNode>() {
+            private final Function<JsonNode, JsonNode> INCLUDED_DATA_PROCESSOR = new IncludedDataProcessor(Sets.union(includedData,
+                IncludedDataProcessor.DEFAULT_CHAMPION_TAGS));
+
+            @Override
+            public JsonNode apply(final JsonNode tree) {
+                if(tree == null) {
+                    return tree;
+                }
+
+                final JsonNode temp = tree.get("data");
+                if(temp == null) {
+                    return tree;
+                }
+
+                for(final JsonNode champion : temp) {
+                    final JsonNode idNode = champion.get("key");
+                    final JsonNode nameNode = champion.get("name");
+
+                    if(id != null && idNode != null && id.intValue() == idNode.asInt() || name != null && nameNode != null && name.equals(nameNode.asText())) {
+                        INCLUDED_DATA_PROCESSOR.apply(champion);
+                        CHAMPION_PROCESSOR.apply(champion);
+                        return champion;
+                    }
+                }
+
+                return tree;
+            }
+        }, content);
 
         data.setPlatform(platform.getTag());
         data.setVersion(version);
@@ -285,9 +255,38 @@ public class DataDragon extends AbstractDataSource {
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
         final Boolean dataById = query.get("dataById") == null ? Boolean.FALSE : (Boolean)query.get("dataById");
 
-        final String content = swapKeyAndId(get("championFull", version, locale));
-        final String filteredToTags = filterToTags(dataById ? makeById(content) : content, includedData);
-        final ChampionList data = DataObject.fromJSON(ChampionList.class, CHAMPION_LIST_COEFF_PROCESSOR, filteredToTags);
+        final String content = get("championFull", version, locale);
+
+        final ChampionList data = DataObject.fromJSON(ChampionList.class, new Function<JsonNode, JsonNode>() {
+            private final Function<JsonNode, JsonNode> INCLUDED_DATA_PROCESSOR = new IncludedDataProcessor(Sets.union(includedData,
+                IncludedDataProcessor.DEFAULT_CHAMPION_TAGS));
+
+            @Override
+            public JsonNode apply(final JsonNode tree) {
+                if(tree == null) {
+                    return tree;
+                }
+
+                final ObjectNode data = (ObjectNode)tree.get("data");
+                if(data == null) {
+                    return tree;
+                }
+
+                for(final JsonNode champion : data) {
+                    INCLUDED_DATA_PROCESSOR.apply(champion);
+                    CHAMPION_PROCESSOR.apply(champion);
+
+                    if(dataById) {
+                        final String key = champion.get("key").asText();
+                        final int id = champion.get("id").asInt();
+
+                        data.remove(key);
+                        data.set(Integer.toString(id), champion);
+                    }
+                }
+                return tree;
+            }
+        }, content);
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -312,13 +311,38 @@ public class DataDragon extends AbstractDataSource {
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
 
         final String content = get("item", version, locale);
-        final String filteredToTags = filterToTags(content, includedData);
-        final String filteredToId = filterToField(filteredToTags, "USE_PARENT", id.toString());
-        final Item data = DataObject.fromJSON(Item.class, filteredToId);
 
-        if(data.getId() == 0) {
-            return null;
-        }
+        final Item data = DataObject.fromJSON(Item.class, new Function<JsonNode, JsonNode>() {
+            private final Function<JsonNode, JsonNode> INCLUDED_DATA_PROCESSOR = new IncludedDataProcessor(Sets.union(includedData,
+                IncludedDataProcessor.DEFAULT_ITEM_TAGS));
+
+            @Override
+            public JsonNode apply(final JsonNode tree) {
+                if(tree == null) {
+                    return tree;
+                }
+
+                final JsonNode temp = tree.get("data");
+                if(temp == null) {
+                    return tree;
+                }
+
+                final Iterator<String> ids = temp.fieldNames();
+                while(ids.hasNext()) {
+                    final String itemId = ids.next();
+
+                    if(id.intValue() == Integer.parseInt(itemId)) {
+                        final ObjectNode item = (ObjectNode)temp.get(itemId);
+                        item.set("id", new IntNode(id.intValue()));
+
+                        INCLUDED_DATA_PROCESSOR.apply(item);
+                        return item;
+                    }
+                }
+
+                return tree;
+            }
+        }, content);
 
         data.setPlatform(platform.getTag());
         data.setVersion(version);
@@ -337,8 +361,35 @@ public class DataDragon extends AbstractDataSource {
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
 
         final String content = get("item", version, locale);
-        final String filteredToTags = filterToTags(content, includedData);
-        final ItemList data = DataObject.fromJSON(ItemList.class, filteredToTags);
+
+        final ItemList data = DataObject.fromJSON(ItemList.class, new Function<JsonNode, JsonNode>() {
+            private final Function<JsonNode, JsonNode> INCLUDED_DATA_PROCESSOR = new IncludedDataProcessor(Sets.union(includedData,
+                IncludedDataProcessor.DEFAULT_ITEM_TAGS));
+
+            @Override
+            public JsonNode apply(final JsonNode tree) {
+                if(tree == null) {
+                    return tree;
+                }
+
+                final JsonNode temp = tree.get("data");
+                if(temp == null) {
+                    return tree;
+                }
+
+                final Iterator<String> ids = temp.fieldNames();
+                while(ids.hasNext()) {
+                    final String itemId = ids.next();
+
+                    final ObjectNode item = (ObjectNode)temp.get(itemId);
+                    item.set("id", new IntNode(Integer.parseInt(itemId)));
+
+                    INCLUDED_DATA_PROCESSOR.apply(item);
+                }
+
+                return tree;
+            }
+        }, content);
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -392,9 +443,35 @@ public class DataDragon extends AbstractDataSource {
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
 
         final String content = get("championFull", version, locale);
-        final String filteredToTags = filterToTags(makeById(content), includedData);
 
-        final ChampionList data = DataObject.fromJSON(ChampionList.class, CHAMPION_COEFF_PROCESSOR, filteredToTags);
+        final ChampionList data = DataObject.fromJSON(ChampionList.class, new Function<JsonNode, JsonNode>() {
+            private final Function<JsonNode, JsonNode> INCLUDED_DATA_PROCESSOR = new IncludedDataProcessor(Sets.union(includedData,
+                IncludedDataProcessor.DEFAULT_CHAMPION_TAGS));
+
+            @Override
+            public JsonNode apply(final JsonNode tree) {
+                if(tree == null) {
+                    return tree;
+                }
+
+                final ObjectNode data = (ObjectNode)tree.get("data");
+                if(data == null) {
+                    return tree;
+                }
+
+                for(final JsonNode champion : data) {
+                    INCLUDED_DATA_PROCESSOR.apply(champion);
+                    CHAMPION_PROCESSOR.apply(champion);
+
+                    final String key = champion.get("key").asText();
+                    final int id = champion.get("id").asInt();
+
+                    data.remove(key);
+                    data.set(Integer.toString(id), champion);
+                }
+                return tree;
+            }
+        }, content);
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -462,9 +539,38 @@ public class DataDragon extends AbstractDataSource {
             public ChampionList next() {
                 final String version = iterator.next();
 
-                final String content = swapKeyAndId(get("championFull", version, locale));
-                final String filteredToTags = filterToTags(dataById ? makeById(content) : content, includedData);
-                final ChampionList data = DataObject.fromJSON(ChampionList.class, CHAMPION_LIST_COEFF_PROCESSOR, filteredToTags);
+                final String content = get("championFull", version, locale);
+
+                final ChampionList data = DataObject.fromJSON(ChampionList.class, new Function<JsonNode, JsonNode>() {
+                    private final Function<JsonNode, JsonNode> INCLUDED_DATA_PROCESSOR = new IncludedDataProcessor(Sets.union(includedData,
+                        IncludedDataProcessor.DEFAULT_CHAMPION_TAGS));
+
+                    @Override
+                    public JsonNode apply(final JsonNode tree) {
+                        if(tree == null) {
+                            return tree;
+                        }
+
+                        final ObjectNode data = (ObjectNode)tree.get("data");
+                        if(data == null) {
+                            return tree;
+                        }
+
+                        for(final JsonNode champion : data) {
+                            INCLUDED_DATA_PROCESSOR.apply(champion);
+                            CHAMPION_PROCESSOR.apply(champion);
+
+                            if(dataById) {
+                                final String key = champion.get("key").asText();
+                                final int id = champion.get("id").asInt();
+
+                                data.remove(key);
+                                data.set(Integer.toString(id), champion);
+                            }
+                        }
+                        return tree;
+                    }
+                }, content);
 
                 data.setPlatform(platform.getTag());
                 data.setLocale(locale);
@@ -496,8 +602,35 @@ public class DataDragon extends AbstractDataSource {
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
 
         final String content = get("item", version, locale);
-        final String filteredToTags = filterToTags(content, includedData);
-        final ItemList data = DataObject.fromJSON(ItemList.class, filteredToTags);
+
+        final ItemList data = DataObject.fromJSON(ItemList.class, new Function<JsonNode, JsonNode>() {
+            private final Function<JsonNode, JsonNode> INCLUDED_DATA_PROCESSOR = new IncludedDataProcessor(Sets.union(includedData,
+                IncludedDataProcessor.DEFAULT_ITEM_TAGS));
+
+            @Override
+            public JsonNode apply(final JsonNode tree) {
+                if(tree == null) {
+                    return tree;
+                }
+
+                final JsonNode temp = tree.get("data");
+                if(temp == null) {
+                    return tree;
+                }
+
+                final Iterator<String> ids = temp.fieldNames();
+                while(ids.hasNext()) {
+                    final String itemId = ids.next();
+
+                    final ObjectNode item = (ObjectNode)temp.get(itemId);
+                    item.set("id", new IntNode(Integer.parseInt(itemId)));
+
+                    INCLUDED_DATA_PROCESSOR.apply(item);
+                }
+
+                return tree;
+            }
+        }, content);
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -550,8 +683,35 @@ public class DataDragon extends AbstractDataSource {
                 final String version = iterator.next();
 
                 final String content = get("item", version, locale);
-                final String filteredToTags = filterToTags(content, includedData);
-                final ItemList data = DataObject.fromJSON(ItemList.class, filteredToTags);
+
+                final ItemList data = DataObject.fromJSON(ItemList.class, new Function<JsonNode, JsonNode>() {
+                    private final Function<JsonNode, JsonNode> INCLUDED_DATA_PROCESSOR = new IncludedDataProcessor(Sets.union(includedData,
+                        IncludedDataProcessor.DEFAULT_ITEM_TAGS));
+
+                    @Override
+                    public JsonNode apply(final JsonNode tree) {
+                        if(tree == null) {
+                            return tree;
+                        }
+
+                        final JsonNode temp = tree.get("data");
+                        if(temp == null) {
+                            return tree;
+                        }
+
+                        final Iterator<String> ids = temp.fieldNames();
+                        while(ids.hasNext()) {
+                            final String itemId = ids.next();
+
+                            final ObjectNode item = (ObjectNode)temp.get(itemId);
+                            item.set("id", new IntNode(Integer.parseInt(itemId)));
+
+                            INCLUDED_DATA_PROCESSOR.apply(item);
+                        }
+
+                        return tree;
+                    }
+                }, content);
 
                 data.setPlatform(platform.getTag());
                 data.setLocale(locale);
@@ -687,8 +847,29 @@ public class DataDragon extends AbstractDataSource {
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
 
         final String content = get("mastery", version, locale);
-        final String filteredToTags = filterToTags(content, includedData);
-        final MasteryList data = DataObject.fromJSON(MasteryList.class, filteredToTags);
+
+        final MasteryList data = DataObject.fromJSON(MasteryList.class, new Function<JsonNode, JsonNode>() {
+            private final Function<JsonNode, JsonNode> INCLUDED_DATA_PROCESSOR = new IncludedDataProcessor(Sets.union(includedData,
+                IncludedDataProcessor.DEFAULT_MASTERY_TAGS));
+
+            @Override
+            public JsonNode apply(final JsonNode tree) {
+                if(tree == null) {
+                    return tree;
+                }
+
+                final JsonNode temp = tree.get("data");
+                if(temp == null) {
+                    return tree;
+                }
+
+                for(final JsonNode mastery : temp) {
+                    INCLUDED_DATA_PROCESSOR.apply(mastery);
+                }
+
+                return tree;
+            }
+        }, content);
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -741,8 +922,29 @@ public class DataDragon extends AbstractDataSource {
                 final String version = iterator.next();
 
                 final String content = get("mastery", version, locale);
-                final String filteredToTags = filterToTags(content, includedData);
-                final MasteryList data = DataObject.fromJSON(MasteryList.class, filteredToTags);
+
+                final MasteryList data = DataObject.fromJSON(MasteryList.class, new Function<JsonNode, JsonNode>() {
+                    private final Function<JsonNode, JsonNode> INCLUDED_DATA_PROCESSOR = new IncludedDataProcessor(Sets.union(includedData,
+                        IncludedDataProcessor.DEFAULT_MASTERY_TAGS));
+
+                    @Override
+                    public JsonNode apply(final JsonNode tree) {
+                        if(tree == null) {
+                            return tree;
+                        }
+
+                        final JsonNode temp = tree.get("data");
+                        if(temp == null) {
+                            return tree;
+                        }
+
+                        for(final JsonNode mastery : temp) {
+                            INCLUDED_DATA_PROCESSOR.apply(mastery);
+                        }
+
+                        return tree;
+                    }
+                }, content);
 
                 data.setPlatform(platform.getTag());
                 data.setLocale(locale);
@@ -844,8 +1046,35 @@ public class DataDragon extends AbstractDataSource {
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
 
         final String content = get("rune", version, locale);
-        final String filteredToTags = filterToTags(content, includedData);
-        final RuneList data = DataObject.fromJSON(RuneList.class, filteredToTags);
+
+        final RuneList data = DataObject.fromJSON(RuneList.class, new Function<JsonNode, JsonNode>() {
+            private final Function<JsonNode, JsonNode> INCLUDED_DATA_PROCESSOR = new IncludedDataProcessor(Sets.union(includedData,
+                IncludedDataProcessor.DEFAULT_RUNE_TAGS));
+
+            @Override
+            public JsonNode apply(final JsonNode tree) {
+                if(tree == null) {
+                    return tree;
+                }
+
+                final JsonNode temp = tree.get("data");
+                if(temp == null) {
+                    return tree;
+                }
+
+                final Iterator<String> ids = temp.fieldNames();
+                while(ids.hasNext()) {
+                    final String runeId = ids.next();
+
+                    final ObjectNode rune = (ObjectNode)temp.get(runeId);
+                    rune.set("id", new IntNode(Integer.parseInt(runeId)));
+
+                    INCLUDED_DATA_PROCESSOR.apply(rune);
+                }
+
+                return tree;
+            }
+        }, content);
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -898,8 +1127,35 @@ public class DataDragon extends AbstractDataSource {
                 final String version = iterator.next();
 
                 final String content = get("rune", version, locale);
-                final String filteredToTags = filterToTags(content, includedData);
-                final RuneList data = DataObject.fromJSON(RuneList.class, filteredToTags);
+
+                final RuneList data = DataObject.fromJSON(RuneList.class, new Function<JsonNode, JsonNode>() {
+                    private final Function<JsonNode, JsonNode> INCLUDED_DATA_PROCESSOR = new IncludedDataProcessor(Sets.union(includedData,
+                        IncludedDataProcessor.DEFAULT_RUNE_TAGS));
+
+                    @Override
+                    public JsonNode apply(final JsonNode tree) {
+                        if(tree == null) {
+                            return tree;
+                        }
+
+                        final JsonNode temp = tree.get("data");
+                        if(temp == null) {
+                            return tree;
+                        }
+
+                        final Iterator<String> ids = temp.fieldNames();
+                        while(ids.hasNext()) {
+                            final String runeId = ids.next();
+
+                            final ObjectNode rune = (ObjectNode)temp.get(runeId);
+                            rune.set("id", new IntNode(Integer.parseInt(runeId)));
+
+                            INCLUDED_DATA_PROCESSOR.apply(rune);
+                        }
+
+                        return tree;
+                    }
+                }, content);
 
                 data.setPlatform(platform.getTag());
                 data.setLocale(locale);
@@ -929,11 +1185,41 @@ public class DataDragon extends AbstractDataSource {
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
+        final Boolean dataById = query.get("dataById") == null ? Boolean.FALSE : (Boolean)query.get("dataById");
 
         final String content = get("summoner", version, locale);
-        final String filtered = filterToTags(content, includedData);
 
-        final SummonerSpellList data = DataObject.fromJSON(SummonerSpellList.class, SPELL_COEFF_PROCESSOR, filtered);
+        final SummonerSpellList data = DataObject.fromJSON(SummonerSpellList.class, new Function<JsonNode, JsonNode>() {
+            private final Function<JsonNode, JsonNode> INCLUDED_DATA_PROCESSOR = new IncludedDataProcessor(Sets.union(includedData,
+                IncludedDataProcessor.DEFAULT_SUMMONER_SPELL_TAGS));
+
+            @Override
+            public JsonNode apply(final JsonNode tree) {
+                if(tree == null) {
+                    return tree;
+                }
+
+                final ObjectNode data = (ObjectNode)tree.get("data");
+                if(data == null) {
+                    return tree;
+                }
+
+                for(final JsonNode spell : data) {
+                    INCLUDED_DATA_PROCESSOR.apply(spell);
+                    SPELL_PROCESSOR.apply(spell);
+
+                    if(dataById) {
+                        final String key = spell.get("key").asText();
+                        final int id = spell.get("id").asInt();
+
+                        data.remove(key);
+                        data.set(Integer.toString(id), spell);
+                    }
+                }
+                return tree;
+            }
+        }, content);
+
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
         data.setIncludedData(includedData);
@@ -972,6 +1258,7 @@ public class DataDragon extends AbstractDataSource {
         Utilities.checkNotNull(platform, "platform", versions, "versions");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
+        final Boolean dataById = query.get("dataById") == null ? Boolean.FALSE : (Boolean)query.get("dataById");
 
         final Iterator<String> iterator = versions.iterator();
         return CloseableIterators.from(new Iterator<SummonerSpellList>() {
@@ -985,9 +1272,38 @@ public class DataDragon extends AbstractDataSource {
                 final String version = iterator.next();
 
                 final String content = get("summoner", version, locale);
-                final String filtered = filterToTags(content, includedData);
 
-                final SummonerSpellList data = DataObject.fromJSON(SummonerSpellList.class, SPELL_LIST_COEFF_PROCESSOR, filtered);
+                final SummonerSpellList data = DataObject.fromJSON(SummonerSpellList.class, new Function<JsonNode, JsonNode>() {
+                    private final Function<JsonNode, JsonNode> INCLUDED_DATA_PROCESSOR = new IncludedDataProcessor(Sets.union(includedData,
+                        IncludedDataProcessor.DEFAULT_SUMMONER_SPELL_TAGS));
+
+                    @Override
+                    public JsonNode apply(final JsonNode tree) {
+                        if(tree == null) {
+                            return tree;
+                        }
+
+                        final ObjectNode data = (ObjectNode)tree.get("data");
+                        if(data == null) {
+                            return tree;
+                        }
+
+                        for(final JsonNode spell : data) {
+                            INCLUDED_DATA_PROCESSOR.apply(spell);
+                            SPELL_PROCESSOR.apply(spell);
+
+                            if(dataById) {
+                                final String key = spell.get("key").asText();
+                                final int id = spell.get("id").asInt();
+
+                                data.remove(key);
+                                data.set(Integer.toString(id), spell);
+                            }
+                        }
+                        return tree;
+                    }
+                }, content);
+
                 data.setPlatform(platform.getTag());
                 data.setLocale(locale);
                 data.setIncludedData(includedData);
@@ -1070,9 +1386,34 @@ public class DataDragon extends AbstractDataSource {
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
 
         final String content = get("mastery", version, locale);
-        final String filteredToTags = filterToTags(content, includedData);
-        final String filteredToId = filterToField(filteredToTags, "USE_PARENT", id.toString());
-        final Mastery data = DataObject.fromJSON(Mastery.class, filteredToId);
+
+        final Mastery data = DataObject.fromJSON(Mastery.class, new Function<JsonNode, JsonNode>() {
+            private final Function<JsonNode, JsonNode> INCLUDED_DATA_PROCESSOR = new IncludedDataProcessor(Sets.union(includedData,
+                IncludedDataProcessor.DEFAULT_MASTERY_TAGS));
+
+            @Override
+            public JsonNode apply(final JsonNode tree) {
+                if(tree == null) {
+                    return tree;
+                }
+
+                final JsonNode temp = tree.get("data");
+                if(temp == null) {
+                    return tree;
+                }
+
+                for(final JsonNode mastery : temp) {
+                    final JsonNode idNode = mastery.get("id");
+
+                    if(idNode != null && id.intValue() == idNode.asInt()) {
+                        INCLUDED_DATA_PROCESSOR.apply(mastery);
+                        return mastery;
+                    }
+                }
+
+                return tree;
+            }
+        }, content);
 
         data.setPlatform(platform.getTag());
         data.setVersion(version);
@@ -1091,8 +1432,29 @@ public class DataDragon extends AbstractDataSource {
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
 
         final String content = get("mastery", version, locale);
-        final String filteredToTags = filterToTags(content, includedData);
-        final MasteryList data = DataObject.fromJSON(MasteryList.class, filteredToTags);
+
+        final MasteryList data = DataObject.fromJSON(MasteryList.class, new Function<JsonNode, JsonNode>() {
+            private final Function<JsonNode, JsonNode> INCLUDED_DATA_PROCESSOR = new IncludedDataProcessor(Sets.union(includedData,
+                IncludedDataProcessor.DEFAULT_MASTERY_TAGS));
+
+            @Override
+            public JsonNode apply(final JsonNode tree) {
+                if(tree == null) {
+                    return tree;
+                }
+
+                final JsonNode temp = tree.get("data");
+                if(temp == null) {
+                    return tree;
+                }
+
+                for(final JsonNode mastery : temp) {
+                    INCLUDED_DATA_PROCESSOR.apply(mastery);
+                }
+
+                return tree;
+            }
+        }, content);
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -1148,9 +1510,39 @@ public class DataDragon extends AbstractDataSource {
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
 
         final String content = get("rune", version, locale);
-        final String filteredToTags = filterToTags(content, includedData);
-        final String filteredToId = filterToField(filteredToTags, "USE_PARENT", id.toString());
-        final Rune data = DataObject.fromJSON(Rune.class, filteredToId);
+
+        final Rune data = DataObject.fromJSON(Rune.class, new Function<JsonNode, JsonNode>() {
+            private final Function<JsonNode, JsonNode> INCLUDED_DATA_PROCESSOR = new IncludedDataProcessor(Sets.union(includedData,
+                IncludedDataProcessor.DEFAULT_RUNE_TAGS));
+
+            @Override
+            public JsonNode apply(final JsonNode tree) {
+                if(tree == null) {
+                    return tree;
+                }
+
+                final JsonNode temp = tree.get("data");
+                if(temp == null) {
+                    return tree;
+                }
+
+                final Iterator<String> ids = temp.fieldNames();
+                while(ids.hasNext()) {
+                    final String runeId = ids.next();
+                    final int idValue = Integer.parseInt(runeId);
+
+                    if(idValue == id.intValue()) {
+                        final ObjectNode rune = (ObjectNode)temp.get(runeId);
+                        rune.set("id", new IntNode(idValue));
+
+                        INCLUDED_DATA_PROCESSOR.apply(rune);
+                        return rune;
+                    }
+                }
+
+                return tree;
+            }
+        }, content);
 
         data.setPlatform(platform.getTag());
         data.setVersion(version);
@@ -1169,8 +1561,35 @@ public class DataDragon extends AbstractDataSource {
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
 
         final String content = get("rune", version, locale);
-        final String filteredToTags = filterToTags(content, includedData);
-        final RuneList data = DataObject.fromJSON(RuneList.class, filteredToTags);
+
+        final RuneList data = DataObject.fromJSON(RuneList.class, new Function<JsonNode, JsonNode>() {
+            private final Function<JsonNode, JsonNode> INCLUDED_DATA_PROCESSOR = new IncludedDataProcessor(Sets.union(includedData,
+                IncludedDataProcessor.DEFAULT_RUNE_TAGS));
+
+            @Override
+            public JsonNode apply(final JsonNode tree) {
+                if(tree == null) {
+                    return tree;
+                }
+
+                final JsonNode temp = tree.get("data");
+                if(temp == null) {
+                    return tree;
+                }
+
+                final Iterator<String> ids = temp.fieldNames();
+                while(ids.hasNext()) {
+                    final String runeId = ids.next();
+
+                    final ObjectNode rune = (ObjectNode)temp.get(runeId);
+                    rune.set("id", new IntNode(Integer.parseInt(runeId)));
+
+                    INCLUDED_DATA_PROCESSOR.apply(rune);
+                }
+
+                return tree;
+            }
+        }, content);
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -1195,10 +1614,35 @@ public class DataDragon extends AbstractDataSource {
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
 
         final String content = get("summoner", version, locale);
-        final String filteredToTag = filterToTags(content, includedData);
-        final String filteredToId = filterToField(filteredToTag, "id", id.toString());
 
-        final SummonerSpell data = DataObject.fromJSON(SummonerSpell.class, SPELL_COEFF_PROCESSOR, filteredToId);
+        final SummonerSpell data = DataObject.fromJSON(SummonerSpell.class, new Function<JsonNode, JsonNode>() {
+            private final Function<JsonNode, JsonNode> INCLUDED_DATA_PROCESSOR = new IncludedDataProcessor(Sets.union(includedData,
+                IncludedDataProcessor.DEFAULT_SUMMONER_SPELL_TAGS));
+
+            @Override
+            public JsonNode apply(final JsonNode tree) {
+                if(tree == null) {
+                    return tree;
+                }
+
+                final ObjectNode data = (ObjectNode)tree.get("data");
+                if(data == null) {
+                    return tree;
+                }
+
+                for(final JsonNode spell : data) {
+                    final JsonNode idNode = spell.get("key");
+
+                    if(idNode != null && id.intValue() == idNode.asInt()) {
+                        INCLUDED_DATA_PROCESSOR.apply(spell);
+                        CHAMPION_PROCESSOR.apply(spell);
+                        return spell;
+                    }
+                }
+                return tree;
+            }
+        }, content);
+
         data.setPlatform(platform.getTag());
         data.setVersion(version);
         data.setLocale(locale);
@@ -1214,11 +1658,41 @@ public class DataDragon extends AbstractDataSource {
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
+        final Boolean dataById = query.get("dataById") == null ? Boolean.FALSE : (Boolean)query.get("dataById");
 
         final String content = get("summoner", version, locale);
-        final String filtered = filterToTags(content, includedData);
 
-        final SummonerSpellList data = DataObject.fromJSON(SummonerSpellList.class, SPELL_LIST_COEFF_PROCESSOR, filtered);
+        final SummonerSpellList data = DataObject.fromJSON(SummonerSpellList.class, new Function<JsonNode, JsonNode>() {
+            private final Function<JsonNode, JsonNode> INCLUDED_DATA_PROCESSOR = new IncludedDataProcessor(Sets.union(includedData,
+                IncludedDataProcessor.DEFAULT_SUMMONER_SPELL_TAGS));
+
+            @Override
+            public JsonNode apply(final JsonNode tree) {
+                if(tree == null) {
+                    return tree;
+                }
+
+                final ObjectNode data = (ObjectNode)tree.get("data");
+                if(data == null) {
+                    return tree;
+                }
+
+                for(final JsonNode spell : data) {
+                    INCLUDED_DATA_PROCESSOR.apply(spell);
+                    SPELL_PROCESSOR.apply(spell);
+
+                    if(dataById) {
+                        final String key = spell.get("key").asText();
+                        final int id = spell.get("id").asInt();
+
+                        data.remove(key);
+                        data.set(Integer.toString(id), spell);
+                    }
+                }
+                return tree;
+            }
+        }, content);
+
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
         data.setIncludedData(includedData);
@@ -1242,51 +1716,5 @@ public class DataDragon extends AbstractDataSource {
         data.setPlatform(platform.getTag());
 
         return data;
-    }
-
-    private String makeById(final String json) {
-        try {
-            final JsonNode dataClone = new ObjectMapper().readTree(json).get("data");
-
-            final JsonNode parent = new ObjectMapper().readTree(json);
-            final ObjectNode data = (ObjectNode)parent.get("data");
-
-            for(final JsonNode child : dataClone) {
-                if(child instanceof ObjectNode) {
-                    final ObjectNode childObject = (ObjectNode)child;
-                    childObject.set("id", childObject.get("key"));
-                    data.set(childObject.get("key").asText(), child);
-                }
-            }
-
-            for(final Iterator<String> iterator = dataClone.fieldNames(); iterator.hasNext();) {
-                final String field = iterator.next();
-                data.remove(field);
-            }
-
-            return parent.toString();
-        } catch(final IOException e) {
-            e.printStackTrace();
-            return json;
-        }
-    }
-
-    private String swapKeyAndId(final String json) {
-        try {
-            final JsonNode parent = new ObjectMapper().readTree(json);
-            final ObjectNode data = (ObjectNode)parent.get("data");
-
-            for(final JsonNode child : data) {
-                if(child instanceof ObjectNode) {
-                    final ObjectNode childObject = (ObjectNode)child;
-                    childObject.set("id", childObject.get("key"));
-                }
-            }
-
-            return parent.toString();
-        } catch(final IOException e) {
-            e.printStackTrace();
-            return json;
-        }
     }
 }

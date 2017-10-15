@@ -890,10 +890,12 @@ public class StaticDataAPI extends RiotAPIService {
         Utilities.checkNotNull(platform, "platform", versions, "versions");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
+        final Boolean dataById = query.get("dataById") == null ? Boolean.FALSE : (Boolean)query.get("dataById");
 
         final Multimap<String, String> parameters = HashMultimap.create();
         parameters.put("locale", locale);
         parameters.putAll("tags", includedData);
+        parameters.put("dataById", dataById.toString());
 
         final Iterator<String> iterator = versions.iterator();
         return CloseableIterators.from(new Iterator<SummonerSpellList>() {
@@ -1178,6 +1180,7 @@ public class StaticDataAPI extends RiotAPIService {
         final String version = (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
+        final Boolean dataById = query.get("dataById") == null ? Boolean.FALSE : (Boolean)query.get("dataById");
 
         final String endpoint = "lol/static-data/v3/summoner-spells";
 
@@ -1187,6 +1190,7 @@ public class StaticDataAPI extends RiotAPIService {
             parameters.put("version", version);
         }
         parameters.putAll("tags", includedData);
+        parameters.put("dataById", dataById.toString());
 
         final SummonerSpellList data = get(SummonerSpellList.class, endpoint, platform, parameters, "lol/static-data/v3/summoner-spells");
 
