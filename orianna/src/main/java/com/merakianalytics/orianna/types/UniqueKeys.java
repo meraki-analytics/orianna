@@ -12,20 +12,20 @@ public abstract class UniqueKeys {
         final ChampionData data = champion.getCoreData();
         if(data.getChampion().getId() != 0 && data.getChampion().getName() != null) {
             return new int[] {
-                              Arrays.hashCode(new Object[] {Champion.class.getCanonicalName(), champion.getPlatform().toString(), champion.getVersion(),
-                                                            champion.getLocale(), champion.getId()}),
-                              Arrays.hashCode(new Object[] {Champion.class.getCanonicalName(), champion.getPlatform().toString(), champion.getVersion(),
-                                                            champion.getLocale(), champion.getName()})
+                Arrays.hashCode(new Object[] {Champion.class.getCanonicalName(), champion.getPlatform().toString(), champion.getVersion(),
+                    champion.getLocale(), champion.getId()}),
+                Arrays.hashCode(new Object[] {Champion.class.getCanonicalName(), champion.getPlatform().toString(), champion.getVersion(),
+                    champion.getLocale(), champion.getName()})
             };
         } else if(data.getChampion().getId() != 0) {
             return new int[] {
-                              Arrays.hashCode(new Object[] {Champion.class.getCanonicalName(), champion.getPlatform().toString(), champion.getVersion(),
-                                                            champion.getLocale(), champion.getId()})
+                Arrays.hashCode(new Object[] {Champion.class.getCanonicalName(), champion.getPlatform().toString(), champion.getVersion(),
+                    champion.getLocale(), champion.getId()})
             };
         } else if(data.getChampion().getName() != null) {
             return new int[] {
-                              Arrays.hashCode(new Object[] {Champion.class.getCanonicalName(), champion.getPlatform().toString(), champion.getVersion(),
-                                                            champion.getLocale(), champion.getName()})
+                Arrays.hashCode(new Object[] {Champion.class.getCanonicalName(), champion.getPlatform().toString(), champion.getVersion(),
+                    champion.getLocale(), champion.getName()})
             };
         } else {
             throw new IllegalArgumentException("Can't get key for champion without ID or name!");
@@ -36,7 +36,8 @@ public abstract class UniqueKeys {
         final Integer id = (Integer)query.get("id");
         final String name = (String)query.get("name");
         return Arrays.hashCode(new Object[] {Champion.class.getCanonicalName(), ((Platform)query.get("platform")).toString(), (String)query.get("version"),
-                                             (String)query.get("locale"),
-                                             id == null ? name : id.intValue()});
+            (String)query.get("locale"),
+            id == null ? name : id.intValue()});
     }
+
 }

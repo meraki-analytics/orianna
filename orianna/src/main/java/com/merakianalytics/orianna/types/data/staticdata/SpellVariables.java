@@ -1,12 +1,12 @@
 package com.merakianalytics.orianna.types.data.staticdata;
 
-import com.merakianalytics.orianna.types.data.CoreData;
-
 import java.util.List;
+
+import com.merakianalytics.orianna.types.data.CoreData;
 
 public class SpellVariables extends CoreData {
     private static final long serialVersionUID = 448643445379458097L;
-    private List<Number> coefficients;
+    private List<Double> coefficients;
     private String ranksWith, dynamic, link, key;
 
     @Override
@@ -62,7 +62,7 @@ public class SpellVariables extends CoreData {
     /**
      * @return the coefficients
      */
-    public List<Number> getCoefficients() {
+    public List<Double> getCoefficients() {
         return coefficients;
     }
 
@@ -110,7 +110,7 @@ public class SpellVariables extends CoreData {
      * @param coefficients
      *        the coefficients to set
      */
-    public void setCoefficients(final List<Number> coefficients) {
+    public void setCoefficients(final List<Double> coefficients) {
         this.coefficients = coefficients;
     }
 

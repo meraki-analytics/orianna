@@ -1,13 +1,25 @@
 package com.merakianalytics.orianna.types.dto;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.*;
-import com.merakianalytics.orianna.types.common.OriannaException;
-import org.msgpack.jackson.dataformat.MessagePackFactory;
-import org.slf4j.*;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Set;
 
-import java.io.*;
-import java.util.*;
+import org.msgpack.jackson.dataformat.MessagePackFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Function;
+import com.merakianalytics.orianna.types.common.OriannaException;
 
 public abstract class DataObject implements Serializable {
     public static class ListProxy<T> extends DataObject implements List<T> {
@@ -242,41 +254,73 @@ public abstract class DataObject implements Serializable {
 
     }
 
-    private static final ObjectMapper JSON_MAPPER = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    private static final ObjectMapper JSON_MAPPER = new ObjectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
     private static final Logger LOGGER = LoggerFactory.getLogger(DataObject.class);
-    private static final ObjectMapper MSGPACK_MAPPER = new ObjectMapper(new MessagePackFactory());
+    private static final ObjectMapper MSGPACK_MAPPER = new ObjectMapper(new MessagePackFactory()).disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
     private static final long serialVersionUID = 844645829337854049L;
 
     public static <T extends DataObject> T fromBytes(final Class<T> type, final byte[] msgpack) {
+        return fromBytes(type, null, msgpack);
+    }
+
+    public static <T extends DataObject> T fromBytes(final Class<T> type, final Function<JsonNode, JsonNode> preprocessor, final byte[] msgpack) {
         try {
-            return MSGPACK_MAPPER.readValue(msgpack, type);
+            if(preprocessor != null) {
+                final JsonNode tree = preprocessor.apply(MSGPACK_MAPPER.readTree(msgpack));
+                return MSGPACK_MAPPER.treeToValue(tree, type);
+            } else {
+                return MSGPACK_MAPPER.readValue(msgpack, type);
+            }
         } catch(final IOException e) {
             LOGGER.error("Failed to deserialize " + type.getCanonicalName() + "!", e);
             throw new OriannaException("Failed to deserialize object of type " + type.getName() + " from MsgPack! Report this to the orianna team.", e);
         }
     }
 
-    public static <T extends DataObject> T fromJSON(final Class<T> type, final String json) {
+    public static <T extends DataObject> T fromJSON(final Class<T> type, final Function<JsonNode, JsonNode> preprocessor, final String json) {
         try {
-            return JSON_MAPPER.readValue(json, type);
+            if(preprocessor != null) {
+                final JsonNode tree = preprocessor.apply(JSON_MAPPER.readTree(json));
+                return JSON_MAPPER.treeToValue(tree, type);
+            } else {
+                return JSON_MAPPER.readValue(json, type);
+            }
         } catch(final IOException e) {
             LOGGER.error("Failed to deserialize " + type.getCanonicalName() + "!", e);
             throw new OriannaException("Failed to deserialize object of type " + type.getName() + " from JSON! Report this to the orianna team.", e);
         }
     }
 
+    public static <T extends DataObject> T fromJSON(final Class<T> type, final String json) {
+        return fromJSON(type, null, json);
+    }
+
     public byte[] toBytes() {
+        return toBytes(null);
+    }
+
+    public byte[] toBytes(final Function<JsonNode, JsonNode> postprocessor) {
         try {
-            return MSGPACK_MAPPER.writeValueAsBytes(this);
+            if(postprocessor != null) {
+                final JsonNode tree = postprocessor.apply(MSGPACK_MAPPER.valueToTree(this));
+                return MSGPACK_MAPPER.writeValueAsBytes(tree);
+            } else {
+                return MSGPACK_MAPPER.writeValueAsBytes(this);
+            }
         } catch(final JsonProcessingException e) {
             LOGGER.error("Failed to serialize " + this.getClass().getCanonicalName() + "!", e);
             throw new OriannaException("Failed to serialize object of type " + this.getClass().getName() + " to JSON! Report this to the orianna team.", e);
         }
     }
 
-    public String toJSON() {
+    public String toJSON(final Function<JsonNode, JsonNode> postprocessor) {
         try {
-            return JSON_MAPPER.writeValueAsString(this);
+            if(postprocessor != null) {
+                final JsonNode tree = postprocessor.apply(JSON_MAPPER.valueToTree(this));
+                return JSON_MAPPER.writeValueAsString(tree);
+            } else {
+                return JSON_MAPPER.writeValueAsString(this);
+            }
         } catch(final JsonProcessingException e) {
             LOGGER.error("Failed to serialize " + this.getClass().getCanonicalName() + "!", e);
             throw new OriannaException("Failed to serialize object of type " + this.getClass().getName() + " to JSON! Report this to the orianna team.", e);
