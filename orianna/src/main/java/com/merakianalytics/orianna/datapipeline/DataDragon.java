@@ -56,13 +56,9 @@ import com.merakianalytics.orianna.types.dto.staticdata.Versions;
 public class DataDragon extends AbstractDataSource {
     public static class Configuration {
         private static final long DEFAULT_CACHE_DURATION = 6;
-
         private static final TimeUnit DEFAULT_CACHE_DURATION_UNIT = TimeUnit.HOURS;
-
         private static final HTTPClient.Configuration DEFAULT_REQUESTS = new HTTPClient.Configuration();
-
         private long cacheDuration = DEFAULT_CACHE_DURATION;
-
         private TimeUnit cacheDurationUnit = DEFAULT_CACHE_DURATION_UNIT;
         private HTTPClient.Configuration requests = DEFAULT_REQUESTS;
 
@@ -306,7 +302,6 @@ public class DataDragon extends AbstractDataSource {
                             URL += file + ".json";
 
                             try {
-                                System.out.println("RUNNING THE GET");
                                 return client.get(URL).getBody();
                             } catch(final TimeoutException e) {
                                 LOGGER.info("Get request timed out to " + URL + "!", e);
