@@ -37,7 +37,6 @@ import com.merakianalytics.orianna.datapipeline.transformers.StatusTransformer;
 import com.merakianalytics.orianna.datapipeline.transformers.SummonerTransformer;
 import com.merakianalytics.orianna.types.common.OriannaException;
 import com.merakianalytics.orianna.types.common.Platform;
-import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.dto.staticdata.Realm;
 
@@ -195,60 +194,12 @@ public abstract class Orianna {
     private static final Logger LOGGER = LoggerFactory.getLogger(Orianna.class);
     private static Settings settings = new Settings(new Configuration());
 
-    public static Champion getChampion(final int id) {
-        return Champion.withId(id);
-    }
-
-    public static Champion getChampion(final int id, final Platform platform) {
-        return Champion.withId(id, platform);
-    }
-
-    public static Champion getChampion(final int id, final Platform platform, final String version) {
-        return Champion.withId(id, platform, version);
-    }
-
-    public static Champion getChampion(final int id, final Platform platform, final String version, final String locale) {
-        return Champion.withId(id, platform, version, locale);
-    }
-
-    public static Champion getChampion(final int id, final Region region) {
-        return Champion.withId(id, region);
-    }
-
-    public static Champion getChampion(final int id, final Region region, final String version) {
-        return Champion.withId(id, region, version);
-    }
-
-    public static Champion getChampion(final int id, final Region region, final String version, final String locale) {
-        return Champion.withId(id, region, version, locale);
-    }
-
-    public static Champion getChampion(final String name) {
+    public static Champion.Builder championNamed(final String name) {
         return Champion.named(name);
     }
 
-    public static Champion getChampion(final String name, final Platform platform) {
-        return Champion.named(name, platform);
-    }
-
-    public static Champion getChampion(final String name, final Platform platform, final String version) {
-        return Champion.named(name, platform, version);
-    }
-
-    public static Champion getChampion(final String name, final Platform platform, final String version, final String locale) {
-        return Champion.named(name, platform, version, locale);
-    }
-
-    public static Champion getChampion(final String name, final Region region) {
-        return Champion.named(name, region);
-    }
-
-    public static Champion getChampion(final String name, final Region region, final String version) {
-        return Champion.named(name, region, version);
-    }
-
-    public static Champion getChampion(final String name, final Region region, final String version, final String locale) {
-        return Champion.named(name, region, version, locale);
+    public static Champion.Builder championWithId(final int id) {
+        return Champion.withId(id);
     }
 
     public static Settings getSettings() {

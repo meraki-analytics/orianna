@@ -8,6 +8,7 @@ import java.util.Set;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Region;
@@ -17,6 +18,76 @@ import com.merakianalytics.orianna.types.data.CoreData;
 import com.merakianalytics.orianna.types.data.champion.ChampionStatus;
 
 public class Champion extends GhostObject<ChampionData> {
+    public static class Builder {
+        private Integer id;
+        private Set<String> includedData;
+        private String name, version, locale;
+        private Platform platform;
+
+        public Builder fromPlatform(final Platform platform) {
+            this.platform = platform;
+            return this;
+        }
+
+        public Champion get() {
+            if(name == null && id == null) {
+                throw new IllegalStateException("Must set an ID or name for the champion!");
+            }
+
+            if(version == null) {
+                version = Orianna.getSettings().getCurrentVersion();
+            }
+
+            if(platform == null) {
+                platform = Orianna.getSettings().getDefaultPlatform();
+            }
+
+            if(locale == null) {
+                locale = platform.getDefaultLocale();
+            }
+
+            if(includedData == null) {
+                includedData = ImmutableSet.of("all");
+            }
+
+            final ImmutableMap.Builder<String, Object> builder = ImmutableMap.<String, Object> builder().put("platform", platform).put("version", version)
+                                                                             .put("locale", locale).put("includedData", includedData);
+
+            if(id != null) {
+                builder.put("id", id);
+            } else {
+                builder.put("name", name);
+            }
+
+            return Orianna.getSettings().getPipeline().get(Champion.class, builder.build());
+        }
+
+        public Builder named(final String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder onVersion(final String version) {
+            this.version = version;
+            return this;
+        }
+
+        public Builder withId(final int id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder withIncludedData(final Set<String> includedData) {
+            this.includedData = includedData;
+            return this;
+        }
+
+        public Builder withLocale(final String locale) {
+            this.locale = locale;
+            return this;
+        }
+    }
+
     public static class ChampionData extends CoreData {
         private static final long serialVersionUID = 8024144237694671276L;
         private com.merakianalytics.orianna.types.data.staticdata.Champion champion;
@@ -72,69 +143,17 @@ public class Champion extends GhostObject<ChampionData> {
             this.status = status;
         }
     }
-
     public static final String CHAMPION_LOAD_GROUP = "champion";
     private static final long serialVersionUID = -2685748491353023270L;
+
     public static final String STATUS_LOAD_GROUP = "status";
 
-    public static Champion named(final String name) {
-        return named(name, Orianna.getSettings().getDefaultPlatform(), Orianna.getSettings().getCurrentVersion(),
-            Orianna.getSettings().getDefaultLocale());
+    public static Builder named(final String name) {
+        return new Builder().named(name);
     }
 
-    public static Champion named(final String name, final Platform platform) {
-        return named(name, platform, Orianna.getSettings().getCurrentVersion(), platform.getDefaultLocale());
-    }
-
-    public static Champion named(final String name, final Platform platform, final String version) {
-        return named(name, platform, version, platform.getDefaultLocale());
-    }
-
-    public static Champion named(final String name, final Platform platform, final String version, final String locale) {
-        return Orianna.getSettings().getPipeline().get(Champion.class,
-            ImmutableMap.<String, Object> of("name", name, "platform", platform, "version", version, "locale", locale));
-    }
-
-    public static Champion named(final String name, final Region region) {
-        return named(name, region.getPlatform(), Orianna.getSettings().getCurrentVersion(), region.getPlatform().getDefaultLocale());
-    }
-
-    public static Champion named(final String name, final Region region, final String version) {
-        return named(name, region.getPlatform(), version, region.getPlatform().getDefaultLocale());
-    }
-
-    public static Champion named(final String name, final Region region, final String version, final String locale) {
-        return named(name, region.getPlatform(), version, locale);
-    }
-
-    public static Champion withId(final int id) {
-        return withId(id, Orianna.getSettings().getDefaultPlatform(), Orianna.getSettings().getCurrentVersion(),
-            Orianna.getSettings().getDefaultLocale());
-    }
-
-    public static Champion withId(final int id, final Platform platform) {
-        return withId(id, platform, Orianna.getSettings().getCurrentVersion(), platform.getDefaultLocale());
-    }
-
-    public static Champion withId(final int id, final Platform platform, final String version) {
-        return withId(id, platform, version, platform.getDefaultLocale());
-    }
-
-    public static Champion withId(final int id, final Platform platform, final String version, final String locale) {
-        return Orianna.getSettings().getPipeline().get(Champion.class,
-            ImmutableMap.<String, Object> of("id", id, "platform", platform, "version", version, "locale", locale));
-    }
-
-    public static Champion withId(final int id, final Region region) {
-        return withId(id, region.getPlatform(), Orianna.getSettings().getCurrentVersion(), region.getPlatform().getDefaultLocale());
-    }
-
-    public static Champion withId(final int id, final Region region, final String version) {
-        return withId(id, region.getPlatform(), version, region.getPlatform().getDefaultLocale());
-    }
-
-    public static Champion withId(final int id, final Region region, final String version, final String locale) {
-        return withId(id, region.getPlatform(), version, locale);
+    public static Builder withId(final int id) {
+        return new Builder().withId(id);
     }
 
     private final Supplier<List<String>> allyTips = Suppliers.memoize(new Supplier<List<String>>() {

@@ -253,6 +253,7 @@ public class DataDragon extends AbstractDataSource {
         final Realm realm = context.getPipeline().get(Realm.class, ImmutableMap.<String, Object> of("platform", platform));
         return realm.getV();
     }
+
     private final ConcurrentHashMap<RequestMetadata, Supplier<String>> cache = new ConcurrentHashMap<>();
     private final long cacheDuration;
     private final TimeUnit cacheDurationUnit;
