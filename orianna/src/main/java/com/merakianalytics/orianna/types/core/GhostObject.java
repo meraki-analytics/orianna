@@ -51,12 +51,14 @@ public abstract class GhostObject<T extends CoreData> extends OriannaObject<T> {
 
             if(callHooks) {
                 synchronized(loadHookLock) {
-                    for(final LoadHook hook : loadHooks.get(group)) {
-                        hook.call();
-                    }
-                    loadHooks.remove(group);
-                    if(loadHooks.isEmpty()) {
-                        loadHooks = null;
+                    if(loadHooks != null) {
+                        for(final LoadHook hook : loadHooks.get(group)) {
+                            hook.call();
+                        }
+                        loadHooks.remove(group);
+                        if(loadHooks.isEmpty()) {
+                            loadHooks = null;
+                        }
                     }
                 }
             }

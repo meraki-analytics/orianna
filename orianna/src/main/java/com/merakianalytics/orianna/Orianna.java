@@ -194,12 +194,12 @@ public abstract class Orianna {
     private static final Logger LOGGER = LoggerFactory.getLogger(Orianna.class);
     private static Settings settings = new Settings(new Configuration());
 
-    public static Champion.Builder championNamed(final String name) {
-        return Champion.named(name);
+    public static Champion.Builder getChampion(final int id) {
+        return Champion.withId(id);
     }
 
-    public static Champion.Builder championWithId(final int id) {
-        return Champion.withId(id);
+    public static Champion.Builder getChampion(final String name) {
+        return Champion.named(name);
     }
 
     public static Settings getSettings() {
@@ -228,6 +228,4 @@ public abstract class Orianna {
     public static void loadConfiguration(final String configJSONResourcePath) {
         loadConfiguration(Resources.asCharSource(Resources.getResource(configJSONResourcePath), Charset.forName("UTF-8")));
     }
-
-    private Orianna() {}
 }

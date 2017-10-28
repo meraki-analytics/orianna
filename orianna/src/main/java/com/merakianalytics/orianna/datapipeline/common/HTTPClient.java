@@ -5,6 +5,8 @@ import java.net.SocketTimeoutException;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -185,8 +187,17 @@ public class HTTPClient {
     private static final MediaType JSON_MEDIA_TYPE = MediaType.parse("application/json");
     private static final Logger LOGGER = LoggerFactory.getLogger(HTTPClient.class);
 
+    private static String removeLeadingSlashes(final String url) {
+        final Pattern pattern = Pattern.compile("^(/*)(.*)");
+        final Matcher matcher = pattern.matcher(url);
+        if(!matcher.matches()) {
+            return url;
+        }
+        return matcher.group(2);
+    }
     private final OkHttpClient client;
     private final long rateLimiterTimeout;
+
     private final TimeUnit rateLimiterTimeoutUnit;
 
     public HTTPClient() {
@@ -224,7 +235,7 @@ public class HTTPClient {
 
     public Response get(final String host, final String url, final Multimap<String, String> parameters, final Map<String, String> headers,
                         final RateLimiter rateLimiter) throws IOException {
-        HttpUrl.Builder urlBuilder = new HttpUrl.Builder().scheme("https").host(host).addPathSegments(url);
+        HttpUrl.Builder urlBuilder = new HttpUrl.Builder().scheme("https").host(host).addPathSegments(removeLeadingSlashes(url));
         if(parameters != null && !parameters.isEmpty()) {
             for(final String key : parameters.keySet()) {
                 for(final String value : parameters.get(key)) {

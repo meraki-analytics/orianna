@@ -296,9 +296,9 @@ public class DataDragon extends AbstractDataSource {
                     supplier = Suppliers.memoizeWithExpiration(new Supplier<String>() {
                         @Override
                         public String get() {
-                            String URL = "http://ddragon.leagueoflegends.com";
+                            String URL = "https://ddragon.leagueoflegends.com/";
                             if(version != null && locale != null) {
-                                URL += "/cdn/" + version + "/data/" + locale + "/";
+                                URL += "cdn/" + version + "/data/" + locale + "/";
                             }
                             URL += file + ".json";
 
@@ -536,7 +536,7 @@ public class DataDragon extends AbstractDataSource {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
 
-        final String content = get("/cdn/languages", null, null);
+        final String content = get("cdn/languages", null, null);
         final Languages data = DataObject.fromJSON(Languages.class, content);
 
         data.setPlatform(platform.getTag());
@@ -877,7 +877,7 @@ public class DataDragon extends AbstractDataSource {
             public Languages next() {
                 final Platform platform = iterator.next();
 
-                final String content = get("/cdn/languages", null, null);
+                final String content = get("cdn/languages", null, null);
                 final Languages data = DataObject.fromJSON(Languages.class, content);
 
                 data.setPlatform(platform.getTag());
@@ -1149,7 +1149,7 @@ public class DataDragon extends AbstractDataSource {
             public Realm next() {
                 final Platform platform = iterator.next();
 
-                final String content = get("/realms/" + platform.getRegion().getTag(), null, null);
+                final String content = get("realms/" + platform.getRegion().getTag().toLowerCase(), null, null);
                 final Realm data = DataObject.fromJSON(Realm.class, content);
 
                 data.setPlatform(platform.getTag());
@@ -1469,7 +1469,7 @@ public class DataDragon extends AbstractDataSource {
                 final Platform platform = iterator.next();
                 Utilities.checkNotNull(platform, "platform");
 
-                final String content = get("/api/versions", null, null);
+                final String content = get("api/versions", null, null);
 
                 final Versions data = DataObject.fromJSON(Versions.class, content);
                 data.setPlatform(platform.getTag());
@@ -1620,7 +1620,7 @@ public class DataDragon extends AbstractDataSource {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
 
-        final String content = get("/realms/" + platform.getRegion().getTag(), null, null);
+        final String content = get("realms/" + platform.getRegion().getTag().toLowerCase(), null, null);
         final Realm data = DataObject.fromJSON(Realm.class, content);
 
         data.setPlatform(platform.getTag());
@@ -1838,7 +1838,7 @@ public class DataDragon extends AbstractDataSource {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
 
-        final String content = get("/api/versions", null, null);
+        final String content = get("api/versions", null, null);
 
         final Versions data = DataObject.fromJSON(Versions.class, content);
         data.setPlatform(platform.getTag());

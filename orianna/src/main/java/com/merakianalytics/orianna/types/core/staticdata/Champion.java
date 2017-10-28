@@ -93,24 +93,18 @@ public class Champion extends GhostObject<ChampionData> {
         private com.merakianalytics.orianna.types.data.staticdata.Champion champion;
         private ChampionStatus status;
 
-        public ChampionData(final int id, final Platform platform, final String version, final String locale) {
-            this(id, null, platform, version, locale);
-        }
-
-        public ChampionData(final int id, final String name, final Platform platform, final String version, final String locale) {
+        public ChampionData(final int id, final String name, final Platform platform, final String version, final String locale,
+                            final Set<String> includedData) {
             champion = new com.merakianalytics.orianna.types.data.staticdata.Champion();
             champion.setId(id);
             champion.setName(name);
             champion.setPlatform(platform);
             champion.setVersion(version);
             champion.setLocale(locale);
+            champion.setIncludedData(ImmutableSet.copyOf(includedData));
             status = new ChampionStatus();
             status.setId(id);
             status.setPlatform(platform);
-        }
-
-        public ChampionData(final String name, final Platform platform, final String version, final String locale) {
-            this(0, name, platform, version, locale);
         }
 
         /**
@@ -143,9 +137,9 @@ public class Champion extends GhostObject<ChampionData> {
             this.status = status;
         }
     }
+
     public static final String CHAMPION_LOAD_GROUP = "champion";
     private static final long serialVersionUID = -2685748491353023270L;
-
     public static final String STATUS_LOAD_GROUP = "status";
 
     public static Builder named(final String name) {
@@ -183,7 +177,6 @@ public class Champion extends GhostObject<ChampionData> {
     private final Supplier<Set<String>> includedData = Suppliers.memoize(new Supplier<Set<String>>() {
         @Override
         public Set<String> get() {
-            load(CHAMPION_LOAD_GROUP);
             return Collections.unmodifiableSet(coreData.getChampion().getIncludedData());
         }
     });
@@ -250,14 +243,6 @@ public class Champion extends GhostObject<ChampionData> {
 
     public Champion(final ChampionData coreData) {
         super(coreData, 2);
-    }
-
-    public Champion(final int id, final Platform platform, final String version, final String locale) {
-        super(new ChampionData(id, platform, version, locale), 2);
-    }
-
-    public Champion(final String name, final Platform platform, final String version, final String locale) {
-        super(new ChampionData(name, platform, version, locale), 2);
     }
 
     public List<String> getAllyTips() {
