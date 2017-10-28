@@ -168,7 +168,6 @@ public abstract class OriannaObject<T extends CoreData> extends AbstractSearchab
                 throw new OriannaException("Failed to instantiate type " + coreType.getCanonicalName() + "! Report this to the orianna team!", e);
             }
             if(!streaming) {
-
                 final List<T> results = new ArrayList<>();
                 for(int i = 0; i < size(); i++) {
                     final T element = this.data.get(i);

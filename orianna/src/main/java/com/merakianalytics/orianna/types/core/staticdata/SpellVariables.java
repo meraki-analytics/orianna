@@ -6,6 +6,7 @@ import java.util.List;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.merakianalytics.orianna.types.core.OriannaObject;
+import com.merakianalytics.orianna.types.core.searchable.Searchable;
 
 public class SpellVariables extends OriannaObject<com.merakianalytics.orianna.types.data.staticdata.SpellVariables> {
     private static final long serialVersionUID = -8759913162668284032L;
@@ -23,12 +24,13 @@ public class SpellVariables extends OriannaObject<com.merakianalytics.orianna.ty
 
     public List<Double> getCoefficients() {
         return coefficients.get();
-    }
+    }   
 
     public String getDynamic() {
         return coreData.getDynamic();
     }
 
+    @Searchable(String.class)
     public String getKey() {
         return coreData.getKey();
     }

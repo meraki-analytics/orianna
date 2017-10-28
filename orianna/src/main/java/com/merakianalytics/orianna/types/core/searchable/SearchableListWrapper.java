@@ -17,6 +17,10 @@ public class SearchableListWrapper<T> implements SearchableList<T> {
     public SearchableListWrapper(final List<T> list) {
         this.list = list;
     }
+    
+    public static <T> SearchableList<T> of(List<T> list) {
+        return new SearchableListWrapper<T>(list);
+    }
 
     @Override
     public void add(final int index, final T item) {

@@ -13,6 +13,9 @@ import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.GhostObject;
+import com.merakianalytics.orianna.types.core.searchable.Searchable;
+import com.merakianalytics.orianna.types.core.searchable.SearchableList;
+import com.merakianalytics.orianna.types.core.searchable.SearchableListWrapper;
 import com.merakianalytics.orianna.types.core.staticdata.Champion.ChampionData;
 import com.merakianalytics.orianna.types.data.CoreData;
 import com.merakianalytics.orianna.types.data.champion.ChampionStatus;
@@ -189,39 +192,39 @@ public class Champion extends GhostObject<ChampionData> {
         }
     });
 
-    private final Supplier<List<RecommendedItems>> recommendedItems = Suppliers.memoize(new Supplier<List<RecommendedItems>>() {
+    private final Supplier<SearchableList<RecommendedItems>> recommendedItems = Suppliers.memoize(new Supplier<SearchableList<RecommendedItems>>() {
         @Override
-        public List<RecommendedItems> get() {
+        public SearchableList<RecommendedItems> get() {
             load(CHAMPION_LOAD_GROUP);
             final List<RecommendedItems> recommendedItems = new ArrayList<>(coreData.getChampion().getRecommendedItems().size());
             for(final com.merakianalytics.orianna.types.data.staticdata.RecommendedItems items : coreData.getChampion().getRecommendedItems()) {
                 recommendedItems.add(new RecommendedItems(items));
             }
-            return Collections.unmodifiableList(recommendedItems);
+            return SearchableListWrapper.of(Collections.unmodifiableList(recommendedItems));
         }
     });
 
-    private final Supplier<List<Skin>> skins = Suppliers.memoize(new Supplier<List<Skin>>() {
+    private final Supplier<SearchableList<Skin>> skins = Suppliers.memoize(new Supplier<SearchableList<Skin>>() {
         @Override
-        public List<Skin> get() {
+        public SearchableList<Skin> get() {
             load(CHAMPION_LOAD_GROUP);
             final List<Skin> skins = new ArrayList<>(coreData.getChampion().getSkins().size());
             for(final com.merakianalytics.orianna.types.data.staticdata.Skin skin : coreData.getChampion().getSkins()) {
                 skins.add(new Skin(skin));
             }
-            return Collections.unmodifiableList(skins);
+            return SearchableListWrapper.of(Collections.unmodifiableList(skins));
         }
     });
 
-    private final Supplier<List<ChampionSpell>> spells = Suppliers.memoize(new Supplier<List<ChampionSpell>>() {
+    private final Supplier<SearchableList<ChampionSpell>> spells = Suppliers.memoize(new Supplier<SearchableList<ChampionSpell>>() {
         @Override
-        public List<ChampionSpell> get() {
+        public SearchableList<ChampionSpell> get() {
             load(CHAMPION_LOAD_GROUP);
             final List<ChampionSpell> spells = new ArrayList<>(coreData.getChampion().getSpells().size());
             for(final com.merakianalytics.orianna.types.data.staticdata.ChampionSpell spell : coreData.getChampion().getSpells()) {
                 spells.add(new ChampionSpell(spell));
             }
-            return Collections.unmodifiableList(spells);
+            return SearchableListWrapper.of(Collections.unmodifiableList(spells));
         }
     });
 
@@ -268,6 +271,7 @@ public class Champion extends GhostObject<ChampionData> {
         return enemyTips.get();
     }
 
+    @Searchable({int.class})
     public int getId() {
         if(coreData.getChampion().getId() == 0) {
             load(CHAMPION_LOAD_GROUP);
@@ -283,6 +287,7 @@ public class Champion extends GhostObject<ChampionData> {
         return includedData.get();
     }
 
+    @Searchable(String.class)
     public String getKey() {
         load(CHAMPION_LOAD_GROUP);
         return coreData.getChampion().getKey();
@@ -302,6 +307,7 @@ public class Champion extends GhostObject<ChampionData> {
         return coreData.getChampion().getMagicRating();
     }
 
+    @Searchable(String.class)
     public String getName() {
         if(coreData.getChampion().getName() == null) {
             load(CHAMPION_LOAD_GROUP);
@@ -322,7 +328,7 @@ public class Champion extends GhostObject<ChampionData> {
         return coreData.getChampion().getPlatform();
     }
 
-    public List<RecommendedItems> getRecommendedItems() {
+    public SearchableList<RecommendedItems> getRecommendedItems() {
         return recommendedItems.get();
     }
 
@@ -335,11 +341,11 @@ public class Champion extends GhostObject<ChampionData> {
         return coreData.getChampion().getResource();
     }
 
-    public List<Skin> getSkins() {
+    public SearchableList<Skin> getSkins() {
         return skins.get();
     }
 
-    public List<ChampionSpell> getSpells() {
+    public SearchableList<ChampionSpell> getSpells() {
         return spells.get();
     }
 
@@ -351,6 +357,7 @@ public class Champion extends GhostObject<ChampionData> {
         return tags.get();
     }
 
+    @Searchable(String.class)
     public String getTitle() {
         load(CHAMPION_LOAD_GROUP);
         return coreData.getChampion().getTitle();

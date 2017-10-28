@@ -3,6 +3,7 @@ package com.merakianalytics.orianna.types.core.staticdata;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.merakianalytics.orianna.types.core.OriannaObject;
+import com.merakianalytics.orianna.types.core.searchable.Searchable;
 
 public class Passive extends OriannaObject<com.merakianalytics.orianna.types.data.staticdata.Passive> {
     private static final long serialVersionUID = -5691212908005996446L;
@@ -25,6 +26,7 @@ public class Passive extends OriannaObject<com.merakianalytics.orianna.types.dat
         return image.get();
     }
 
+    @Searchable(String.class)
     public String getName() {
         return coreData.getName();
     }
