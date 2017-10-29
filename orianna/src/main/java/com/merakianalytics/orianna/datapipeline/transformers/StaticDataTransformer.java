@@ -384,16 +384,20 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         final Object previous = context.put("version", item.getVersion());
         final Item converted = new Item();
         converted.setBasePrice(item.getGold().getBase());
-        final List<Integer> buildsFrom = new ArrayList<>(item.getFrom().size());
-        for(final String id : item.getFrom()) {
-            buildsFrom.add(Integer.parseInt(id));
+        if(item.getFrom() != null) {
+            final List<Integer> buildsFrom = new ArrayList<>(item.getFrom().size());
+            for(final String id : item.getFrom()) {
+                buildsFrom.add(Integer.parseInt(id));
+            }
+            converted.setBuildsFrom(buildsFrom);
         }
-        converted.setBuildsFrom(buildsFrom);
-        final List<Integer> buildsInto = new ArrayList<>(item.getInto().size());
-        for(final String id : item.getInto()) {
-            buildsInto.add(Integer.parseInt(id));
+        if(item.getInto() != null) {
+            final List<Integer> buildsInto = new ArrayList<>(item.getInto().size());
+            for(final String id : item.getInto()) {
+                buildsInto.add(Integer.parseInt(id));
+            }
+            converted.setBuildsInto(buildsInto);
         }
-        converted.setBuildsInto(buildsInto);
         converted.setConsumed(item.isConsumed());
         converted.setConsumedWhenFull(item.isConsumeOnFull());
         converted.setDescription(item.getDescription());
@@ -426,6 +430,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         converted.setSanitizedDescription(item.getSanitizedDescription());
         converted.setSellPrice(item.getGold().getSell());
         converted.setSource(item.getSpecialRecipe());
+        converted.setStats(transform(item.getStats(), context));
         converted.setTags(new ArrayList<>(item.getTags()));
         converted.setTier(item.getDepth());
         converted.setTotalPrice(item.getGold().getTotal());
@@ -783,16 +788,20 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         gold.setSell(item.getSellPrice());
         gold.setTotal(item.getTotalPrice());
         converted.setGold(gold);
-        final List<String> from = new ArrayList<>(item.getBuildsFrom().size());
-        for(final Integer id : item.getBuildsFrom()) {
-            from.add(id.toString());
+        if(item.getBuildsFrom() != null) {
+            final List<String> from = new ArrayList<>(item.getBuildsFrom().size());
+            for(final Integer id : item.getBuildsFrom()) {
+                from.add(id.toString());
+            }
+            converted.setFrom(from);
         }
-        converted.setFrom(from);
-        final List<String> into = new ArrayList<>(item.getBuildsInto().size());
-        for(final Integer id : item.getBuildsInto()) {
-            into.add(id.toString());
+        if(item.getBuildsInto() != null) {
+            final List<String> into = new ArrayList<>(item.getBuildsInto().size());
+            for(final Integer id : item.getBuildsInto()) {
+                into.add(id.toString());
+            }
+            converted.setInto(into);
         }
-        converted.setInto(into);
         converted.setConsumed(item.isConsumed());
         converted.setConsumeOnFull(item.isConsumedWhenFull());
         converted.setDescription(item.getDescription());
@@ -817,6 +826,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         converted.setRequiredChampion(item.getRequiredChampionKey());
         converted.setSanitizedDescription(item.getSanitizedDescription());
         converted.setSpecialRecipe(item.getSource());
+        converted.setStats(transform(item.getStats(), context));
         converted.setTags(new ArrayList<>(item.getTags()));
         converted.setDepth(item.getTier());
         converted.setVersion(item.getVersion());

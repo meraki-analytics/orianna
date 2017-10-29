@@ -24,7 +24,7 @@ public class SpellVariables extends OriannaObject<com.merakianalytics.orianna.ty
 
     public List<Double> getCoefficients() {
         return coefficients.get();
-    }   
+    }
 
     public String getDynamic() {
         return coreData.getDynamic();

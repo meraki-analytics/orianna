@@ -32,9 +32,14 @@ public class Champion extends GhostObject<ChampionData> {
             return this;
         }
 
+        public Builder fromRegion(final Region region) {
+            platform = region.getPlatform();
+            return this;
+        }
+
         public Champion get() {
             if(name == null && id == null) {
-                throw new IllegalStateException("Must set an ID or name for the champion!");
+                throw new IllegalStateException("Must set an ID or name for the Champion!");
             }
 
             if(version == null) {
@@ -95,20 +100,6 @@ public class Champion extends GhostObject<ChampionData> {
         private static final long serialVersionUID = 8024144237694671276L;
         private com.merakianalytics.orianna.types.data.staticdata.Champion champion;
         private ChampionStatus status;
-
-        public ChampionData(final int id, final String name, final Platform platform, final String version, final String locale,
-                            final Set<String> includedData) {
-            champion = new com.merakianalytics.orianna.types.data.staticdata.Champion();
-            champion.setId(id);
-            champion.setName(name);
-            champion.setPlatform(platform);
-            champion.setVersion(version);
-            champion.setLocale(locale);
-            champion.setIncludedData(ImmutableSet.copyOf(includedData));
-            status = new ChampionStatus();
-            status.setId(id);
-            status.setPlatform(platform);
-        }
 
         /**
          * @return the champion

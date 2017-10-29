@@ -12,14 +12,14 @@ import com.merakianalytics.datapipelines.iterators.CloseableIterator;
 import com.merakianalytics.datapipelines.iterators.LazyList;
 
 public class SearchableListWrapper<T> implements SearchableList<T> {
+    public static <T> SearchableList<T> of(final List<T> list) {
+        return new SearchableListWrapper<>(list);
+    }
+
     private final List<T> list;
 
     public SearchableListWrapper(final List<T> list) {
         this.list = list;
-    }
-    
-    public static <T> SearchableList<T> of(List<T> list) {
-        return new SearchableListWrapper<T>(list);
     }
 
     @Override

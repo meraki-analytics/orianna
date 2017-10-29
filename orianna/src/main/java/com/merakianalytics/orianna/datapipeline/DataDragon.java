@@ -343,12 +343,12 @@ public class DataDragon extends AbstractDataSource {
             @Override
             public JsonNode apply(final JsonNode tree) {
                 if(tree == null) {
-                    return tree;
+                    return null;
                 }
 
                 final JsonNode temp = tree.get("data");
                 if(temp == null) {
-                    return tree;
+                    return null;
                 }
 
                 for(final JsonNode champion : temp) {
@@ -362,9 +362,12 @@ public class DataDragon extends AbstractDataSource {
                     }
                 }
 
-                return tree;
+                return null;
             }
         }, content);
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setVersion(version);
@@ -415,6 +418,9 @@ public class DataDragon extends AbstractDataSource {
                 return tree;
             }
         }, content);
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -449,12 +455,12 @@ public class DataDragon extends AbstractDataSource {
             @Override
             public JsonNode apply(final JsonNode tree) {
                 if(tree == null) {
-                    return tree;
+                    return null;
                 }
 
                 final JsonNode temp = tree.get("data");
                 if(temp == null) {
-                    return tree;
+                    return null;
                 }
 
                 final Iterator<String> ids = temp.fieldNames();
@@ -464,16 +470,19 @@ public class DataDragon extends AbstractDataSource {
                     final String itemName = item.get("name").asText();
 
                     if(id != null && id.intValue() == Integer.parseInt(itemId) || name.equals(itemName)) {
-                        item.set("id", new IntNode(id.intValue()));
+                        item.set("id", new IntNode(Integer.parseInt(itemId)));
 
                         INCLUDED_DATA_PROCESSOR.apply(item);
                         return item;
                     }
                 }
 
-                return tree;
+                return null;
             }
         }, content);
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setVersion(version);
@@ -521,6 +530,9 @@ public class DataDragon extends AbstractDataSource {
                 return tree;
             }
         }, content);
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -541,6 +553,9 @@ public class DataDragon extends AbstractDataSource {
 
         final String content = get("cdn/languages", null, null);
         final Languages data = DataObject.fromJSON(Languages.class, content);
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         return data;
@@ -555,6 +570,9 @@ public class DataDragon extends AbstractDataSource {
 
         final String content = get("language", version, locale);
         final LanguageStrings data = DataObject.fromJSON(LanguageStrings.class, content);
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -603,6 +621,9 @@ public class DataDragon extends AbstractDataSource {
                 return tree;
             }
         }, content);
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -702,6 +723,9 @@ public class DataDragon extends AbstractDataSource {
                         return tree;
                     }
                 }, content);
+                if(data == null) {
+                    return null;
+                }
 
                 data.setPlatform(platform.getTag());
                 data.setLocale(locale);
@@ -763,6 +787,9 @@ public class DataDragon extends AbstractDataSource {
                 return tree;
             }
         }, content);
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -854,6 +881,9 @@ public class DataDragon extends AbstractDataSource {
                         return tree;
                     }
                 }, content);
+                if(data == null) {
+                    return null;
+                }
 
                 data.setPlatform(platform.getTag());
                 data.setLocale(locale);
@@ -893,6 +923,9 @@ public class DataDragon extends AbstractDataSource {
 
                 final String content = get("cdn/languages", null, null);
                 final Languages data = DataObject.fromJSON(Languages.class, content);
+                if(data == null) {
+                    return null;
+                }
 
                 data.setPlatform(platform.getTag());
                 return data;
@@ -926,6 +959,9 @@ public class DataDragon extends AbstractDataSource {
 
                 final String content = get("language", version, locale);
                 final LanguageStrings data = DataObject.fromJSON(LanguageStrings.class, content);
+                if(data == null) {
+                    return null;
+                }
 
                 data.setPlatform(platform.getTag());
                 data.setLocale(locale);
@@ -960,6 +996,9 @@ public class DataDragon extends AbstractDataSource {
 
                 final String content = get("map", version, locale);
                 final MapData data = DataObject.fromJSON(MapData.class, content);
+                if(data == null) {
+                    return null;
+                }
 
                 data.setPlatform(platform.getTag());
                 data.setLocale(locale);
@@ -1012,6 +1051,9 @@ public class DataDragon extends AbstractDataSource {
                 return tree;
             }
         }, content);
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -1087,6 +1129,9 @@ public class DataDragon extends AbstractDataSource {
                         return tree;
                     }
                 }, content);
+                if(data == null) {
+                    return null;
+                }
 
                 data.setPlatform(platform.getTag());
                 data.setLocale(locale);
@@ -1128,6 +1173,9 @@ public class DataDragon extends AbstractDataSource {
 
                 final String content = get("profileicon", version, locale);
                 final ProfileIconData data = DataObject.fromJSON(ProfileIconData.class, content);
+                if(data == null) {
+                    return null;
+                }
 
                 data.setPlatform(platform.getTag());
                 data.setLocale(locale);
@@ -1165,6 +1213,9 @@ public class DataDragon extends AbstractDataSource {
 
                 final String content = get("realms/" + platform.getRegion().getTag().toLowerCase(), null, null);
                 final Realm data = DataObject.fromJSON(Realm.class, content);
+                if(data == null) {
+                    return null;
+                }
 
                 data.setPlatform(platform.getTag());
                 return data;
@@ -1217,6 +1268,9 @@ public class DataDragon extends AbstractDataSource {
                 return tree;
             }
         }, content);
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -1298,6 +1352,9 @@ public class DataDragon extends AbstractDataSource {
                         return tree;
                     }
                 }, content);
+                if(data == null) {
+                    return null;
+                }
 
                 data.setPlatform(platform.getTag());
                 data.setLocale(locale);
@@ -1361,6 +1418,9 @@ public class DataDragon extends AbstractDataSource {
                 return tree;
             }
         }, content);
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -1445,6 +1505,9 @@ public class DataDragon extends AbstractDataSource {
                         return tree;
                     }
                 }, content);
+                if(data == null) {
+                    return null;
+                }
 
                 data.setPlatform(platform.getTag());
                 data.setLocale(locale);
@@ -1486,8 +1549,11 @@ public class DataDragon extends AbstractDataSource {
                 final String content = get("api/versions", null, null);
 
                 final Versions data = DataObject.fromJSON(Versions.class, content);
-                data.setPlatform(platform.getTag());
+                if(data == null) {
+                    return null;
+                }
 
+                data.setPlatform(platform.getTag());
                 return data;
             }
 
@@ -1507,6 +1573,10 @@ public class DataDragon extends AbstractDataSource {
 
         final String content = get("map", version, locale);
         final MapData data = DataObject.fromJSON(MapData.class, content);
+        if(data == null) {
+            return null;
+        }
+
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
         for(final MapDetails map : data.getData().values()) {
@@ -1536,12 +1606,12 @@ public class DataDragon extends AbstractDataSource {
             @Override
             public JsonNode apply(final JsonNode tree) {
                 if(tree == null) {
-                    return tree;
+                    return null;
                 }
 
                 final JsonNode temp = tree.get("data");
                 if(temp == null) {
-                    return tree;
+                    return null;
                 }
 
                 for(final JsonNode mastery : temp) {
@@ -1553,9 +1623,12 @@ public class DataDragon extends AbstractDataSource {
                     }
                 }
 
-                return tree;
+                return null;
             }
         }, content);
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setVersion(version);
@@ -1597,6 +1670,9 @@ public class DataDragon extends AbstractDataSource {
                 return tree;
             }
         }, content);
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -1619,6 +1695,10 @@ public class DataDragon extends AbstractDataSource {
 
         final String content = get("profileicon", version, locale);
         final ProfileIconData data = DataObject.fromJSON(ProfileIconData.class, content);
+        if(data == null) {
+            return null;
+        }
+
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
         for(final ProfileIconDetails icon : data.getData().values()) {
@@ -1636,6 +1716,9 @@ public class DataDragon extends AbstractDataSource {
 
         final String content = get("realms/" + platform.getRegion().getTag().toLowerCase(), null, null);
         final Realm data = DataObject.fromJSON(Realm.class, content);
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         return data;
@@ -1660,12 +1743,12 @@ public class DataDragon extends AbstractDataSource {
             @Override
             public JsonNode apply(final JsonNode tree) {
                 if(tree == null) {
-                    return tree;
+                    return null;
                 }
 
                 final JsonNode temp = tree.get("data");
                 if(temp == null) {
-                    return tree;
+                    return null;
                 }
 
                 final Iterator<String> ids = temp.fieldNames();
@@ -1682,9 +1765,12 @@ public class DataDragon extends AbstractDataSource {
                     }
                 }
 
-                return tree;
+                return null;
             }
         }, content);
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setVersion(version);
@@ -1732,6 +1818,9 @@ public class DataDragon extends AbstractDataSource {
                 return tree;
             }
         }, content);
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -1764,12 +1853,12 @@ public class DataDragon extends AbstractDataSource {
             @Override
             public JsonNode apply(final JsonNode tree) {
                 if(tree == null) {
-                    return tree;
+                    return null;
                 }
 
                 final ObjectNode data = (ObjectNode)tree.get("data");
                 if(data == null) {
-                    return tree;
+                    return null;
                 }
 
                 for(final JsonNode spell : data) {
@@ -1781,9 +1870,12 @@ public class DataDragon extends AbstractDataSource {
                         return spell;
                     }
                 }
-                return tree;
+                return null;
             }
         }, content);
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setVersion(version);
@@ -1834,6 +1926,9 @@ public class DataDragon extends AbstractDataSource {
                 return tree;
             }
         }, content);
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -1855,8 +1950,11 @@ public class DataDragon extends AbstractDataSource {
         final String content = get("api/versions", null, null);
 
         final Versions data = DataObject.fromJSON(Versions.class, content);
-        data.setPlatform(platform.getTag());
+        if(data == null) {
+            return null;
+        }
 
+        data.setPlatform(platform.getTag());
         return data;
     }
 }

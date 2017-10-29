@@ -8,7 +8,7 @@ import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class Item extends CoreData {
-    private static final long serialVersionUID = 4911958013259080054L;
+    private static final long serialVersionUID = -1333137928493187932L;
     private List<Integer> buildsInto, buildsFrom;
     private Map<String, String> effects;
     private Image image;
@@ -18,6 +18,7 @@ public class Item extends CoreData {
     private Platform platform;
     private boolean purchasable, hiddenFromAll, inStore, consumedWhenFull, consumed;
     private int sellPrice, basePrice, totalPrice, id, source, tier, maxStacks;
+    private ItemStats stats;
     private List<String> tags;
 
     @Override
@@ -161,6 +162,13 @@ public class Item extends CoreData {
             return false;
         }
         if(source != other.source) {
+            return false;
+        }
+        if(stats == null) {
+            if(other.stats != null) {
+                return false;
+            }
+        } else if(!stats.equals(other.stats)) {
             return false;
         }
         if(tags == null) {
@@ -327,6 +335,13 @@ public class Item extends CoreData {
     }
 
     /**
+     * @return the stats
+     */
+    public ItemStats getStats() {
+        return stats;
+    }
+
+    /**
      * @return the tags
      */
     public List<String> getTags() {
@@ -383,6 +398,7 @@ public class Item extends CoreData {
         result = prime * result + (sanitizedDescription == null ? 0 : sanitizedDescription.hashCode());
         result = prime * result + sellPrice;
         result = prime * result + source;
+        result = prime * result + (stats == null ? 0 : stats.hashCode());
         result = prime * result + (tags == null ? 0 : tags.hashCode());
         result = prime * result + tier;
         result = prime * result + totalPrice;
@@ -623,6 +639,14 @@ public class Item extends CoreData {
      */
     public void setSource(final int source) {
         this.source = source;
+    }
+
+    /**
+     * @param stats
+     *        the stats to set
+     */
+    public void setStats(final ItemStats stats) {
+        this.stats = stats;
     }
 
     /**

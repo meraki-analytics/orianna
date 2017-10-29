@@ -267,6 +267,9 @@ public abstract class DataObject implements Serializable {
         try {
             if(preprocessor != null) {
                 final JsonNode tree = preprocessor.apply(MSGPACK_MAPPER.readTree(msgpack));
+                if(tree == null) {
+                    return null;
+                }
                 return MSGPACK_MAPPER.treeToValue(tree, type);
             } else {
                 return MSGPACK_MAPPER.readValue(msgpack, type);
@@ -281,6 +284,9 @@ public abstract class DataObject implements Serializable {
         try {
             if(preprocessor != null) {
                 final JsonNode tree = preprocessor.apply(JSON_MAPPER.readTree(json));
+                if(tree == null) {
+                    return null;
+                }
                 return JSON_MAPPER.treeToValue(tree, type);
             } else {
                 return JSON_MAPPER.readValue(json, type);
@@ -303,6 +309,9 @@ public abstract class DataObject implements Serializable {
         try {
             if(postprocessor != null) {
                 final JsonNode tree = postprocessor.apply(MSGPACK_MAPPER.valueToTree(this));
+                if(tree == null) {
+                    return null;
+                }
                 return MSGPACK_MAPPER.writeValueAsBytes(tree);
             } else {
                 return MSGPACK_MAPPER.writeValueAsBytes(this);
@@ -317,6 +326,9 @@ public abstract class DataObject implements Serializable {
         try {
             if(postprocessor != null) {
                 final JsonNode tree = postprocessor.apply(JSON_MAPPER.valueToTree(this));
+                if(tree == null) {
+                    return null;
+                }
                 return JSON_MAPPER.writeValueAsString(tree);
             } else {
                 return JSON_MAPPER.writeValueAsString(this);

@@ -103,7 +103,7 @@ public class ChampionSpell extends OriannaObject<com.merakianalytics.orianna.typ
 
     public List<Integer> getCosts() {
         return costs.get();
-    }   
+    }
 
     public String getDescription() {
         return coreData.getDescription();

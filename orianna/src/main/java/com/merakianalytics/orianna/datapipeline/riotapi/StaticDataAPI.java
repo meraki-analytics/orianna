@@ -121,6 +121,9 @@ public class StaticDataAPI extends RiotAPIService {
         parameters.put("dataById", dataById.toString());
 
         final ChampionList data = get(ChampionList.class, endpoint, platform, parameters, "lol/static-data/v3/champions");
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -202,6 +205,9 @@ public class StaticDataAPI extends RiotAPIService {
         parameters.putAll("tags", includedData);
 
         final ItemList data = get(ItemList.class, endpoint, platform, parameters, "lol/static-data/v3/items");
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -222,6 +228,9 @@ public class StaticDataAPI extends RiotAPIService {
 
         final String endpoint = "lol/static-data/v3/languages";
         final Languages data = get(Languages.class, endpoint, platform, "lol/static-data/v3/languages");
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         return data;
@@ -242,6 +251,9 @@ public class StaticDataAPI extends RiotAPIService {
 
         final String endpoint = "lol/static-data/v3/language-strings";
         final LanguageStrings data = get(LanguageStrings.class, endpoint, platform, parameters, "lol/static-data/v3/language-strings");
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -271,6 +283,9 @@ public class StaticDataAPI extends RiotAPIService {
         parameters.put("dataById", Boolean.TRUE.toString());
 
         final ChampionList data = get(ChampionList.class, endpoint, platform, parameters, "lol/static-data/v3/champions");
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -344,6 +359,9 @@ public class StaticDataAPI extends RiotAPIService {
                 params.put("version", version);
 
                 final ChampionList data = get(ChampionList.class, endpoint, platform, params, "lol/static-data/v3/champions");
+                if(data == null) {
+                    return null;
+                }
 
                 data.setPlatform(platform.getTag());
                 data.setLocale(locale);
@@ -386,6 +404,9 @@ public class StaticDataAPI extends RiotAPIService {
         parameters.putAll("tags", includedData);
 
         final ItemList data = get(ItemList.class, endpoint, platform, parameters, "lol/static-data/v3/items");
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -457,6 +478,9 @@ public class StaticDataAPI extends RiotAPIService {
                 params.put("version", version);
 
                 final ItemList data = get(ItemList.class, endpoint, platform, params, "lol/static-data/v3/items");
+                if(data == null) {
+                    return null;
+                }
 
                 data.setPlatform(platform.getTag());
                 data.setLocale(locale);
@@ -496,6 +520,9 @@ public class StaticDataAPI extends RiotAPIService {
 
                 final String endpoint = "lol/static-data/v3/languages";
                 final Languages data = get(Languages.class, endpoint, platform, "lol/static-data/v3/languages");
+                if(data == null) {
+                    return null;
+                }
 
                 data.setPlatform(platform.getTag());
                 return data;
@@ -537,6 +564,9 @@ public class StaticDataAPI extends RiotAPIService {
 
                 final String endpoint = "lol/static-data/v3/language-strings";
                 final LanguageStrings data = get(LanguageStrings.class, endpoint, platform, params, "lol/static-data/v3/language-strings");
+                if(data == null) {
+                    return null;
+                }
 
                 data.setPlatform(platform.getTag());
                 data.setLocale(locale);
@@ -572,6 +602,9 @@ public class StaticDataAPI extends RiotAPIService {
                 final String endpoint = "lol/static-data/v3/maps";
                 final MapData data = get(MapData.class, endpoint, platform, ImmutableMultimap.of("locale", locale, "version", version),
                     "lol/static-data/v3/maps");
+                if(data == null) {
+                    return null;
+                }
 
                 data.setPlatform(platform.getTag());
                 data.setLocale(locale);
@@ -610,6 +643,9 @@ public class StaticDataAPI extends RiotAPIService {
         parameters.putAll("tags", includedData);
 
         final MasteryList data = get(MasteryList.class, endpoint, platform, parameters, "lol/static-data/v3/masteries");
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -671,6 +707,9 @@ public class StaticDataAPI extends RiotAPIService {
                 params.put("version", version);
 
                 final MasteryList data = get(MasteryList.class, endpoint, platform, params, "lol/static-data/v3/masteries");
+                if(data == null) {
+                    return null;
+                }
 
                 data.setPlatform(platform.getTag());
                 data.setLocale(locale);
@@ -713,6 +752,9 @@ public class StaticDataAPI extends RiotAPIService {
                 final String endpoint = "lol/static-data/v3/profile-icons";
                 final ProfileIconData data = get(ProfileIconData.class, endpoint, platform, ImmutableMultimap.of("locale", locale, "version", version),
                     "lol/static-data/v3/profile-icons");
+                if(data == null) {
+                    return null;
+                }
 
                 data.setPlatform(platform.getTag());
                 data.setLocale(locale);
@@ -750,6 +792,9 @@ public class StaticDataAPI extends RiotAPIService {
 
                 final String endpoint = "lol/static-data/v3/realms";
                 final Realm data = get(Realm.class, endpoint, platform, "lol/static-data/v3/realms");
+                if(data == null) {
+                    return null;
+                }
 
                 data.setPlatform(platform.getTag());
                 return data;
@@ -782,6 +827,9 @@ public class StaticDataAPI extends RiotAPIService {
         parameters.putAll("tags", includedData);
 
         final RuneList data = get(RuneList.class, endpoint, platform, parameters, "lol/static-data/v3/runes");
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -843,6 +891,9 @@ public class StaticDataAPI extends RiotAPIService {
                 params.put("version", version);
 
                 final RuneList data = get(RuneList.class, endpoint, platform, params, "lol/static-data/v3/runes");
+                if(data == null) {
+                    return null;
+                }
 
                 data.setPlatform(platform.getTag());
                 data.setLocale(locale);
@@ -883,6 +934,9 @@ public class StaticDataAPI extends RiotAPIService {
         parameters.putAll("tags", includedData);
 
         final SummonerSpellList data = get(SummonerSpellList.class, endpoint, platform, parameters, "lol/static-data/v3/summoner-spells");
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -946,6 +1000,9 @@ public class StaticDataAPI extends RiotAPIService {
                 params.put("version", version);
 
                 final SummonerSpellList data = get(SummonerSpellList.class, endpoint, platform, params, "lol/static-data/v3/summoner-spells");
+                if(data == null) {
+                    return null;
+                }
 
                 data.setPlatform(platform.getTag());
                 data.setLocale(locale);
@@ -985,6 +1042,9 @@ public class StaticDataAPI extends RiotAPIService {
 
                 final String endpoint = "lol/static-data/v3/versions";
                 final Versions data = get(Versions.class, endpoint, platform, "lol/static-data/v3/versions");
+                if(data == null) {
+                    return null;
+                }
 
                 data.setPlatform(platform.getTag());
                 return data;
@@ -1013,6 +1073,9 @@ public class StaticDataAPI extends RiotAPIService {
         }
 
         final MapData data = get(MapData.class, endpoint, platform, parameters, "lol/static-data/v3/maps");
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -1042,6 +1105,9 @@ public class StaticDataAPI extends RiotAPIService {
         parameters.putAll("tags", includedData);
 
         final Mastery data = get(Mastery.class, endpoint, platform, parameters, "lol/static-data/v3/masteries/id");
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setVersion(version);
@@ -1069,6 +1135,9 @@ public class StaticDataAPI extends RiotAPIService {
         parameters.putAll("tags", includedData);
 
         final MasteryList data = get(MasteryList.class, endpoint, platform, parameters, "lol/static-data/v3/masteries");
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -1097,6 +1166,9 @@ public class StaticDataAPI extends RiotAPIService {
 
         final String endpoint = "lol/static-data/v3/profile-icons";
         final ProfileIconData data = get(ProfileIconData.class, endpoint, platform, parameters, "lol/static-data/v3/profile-icons");
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -1115,6 +1187,9 @@ public class StaticDataAPI extends RiotAPIService {
 
         final String endpoint = "lol/static-data/v3/realms";
         final Realm data = get(Realm.class, endpoint, platform, "lol/static-data/v3/realms");
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         return data;
@@ -1138,6 +1213,9 @@ public class StaticDataAPI extends RiotAPIService {
         parameters.putAll("tags", includedData);
 
         final Rune data = get(Rune.class, endpoint, platform, parameters, "lol/static-data/v3/runes/id");
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setVersion(version);
@@ -1165,6 +1243,9 @@ public class StaticDataAPI extends RiotAPIService {
         parameters.putAll("tags", includedData);
 
         final RuneList data = get(RuneList.class, endpoint, platform, parameters, "lol/static-data/v3/runes");
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -1196,6 +1277,9 @@ public class StaticDataAPI extends RiotAPIService {
         parameters.putAll("tags", includedData);
 
         final SummonerSpell data = get(SummonerSpell.class, endpoint, platform, parameters, "lol/static-data/v3/summoner-spells/id");
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setVersion(version);
@@ -1225,6 +1309,9 @@ public class StaticDataAPI extends RiotAPIService {
         parameters.put("dataById", dataById.toString());
 
         final SummonerSpellList data = get(SummonerSpellList.class, endpoint, platform, parameters, "lol/static-data/v3/summoner-spells");
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
@@ -1245,6 +1332,9 @@ public class StaticDataAPI extends RiotAPIService {
 
         final String endpoint = "lol/static-data/v3/versions";
         final Versions data = get(Versions.class, endpoint, platform, "lol/static-data/v3/versions");
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         return data;
