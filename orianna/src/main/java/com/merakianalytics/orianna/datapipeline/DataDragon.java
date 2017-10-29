@@ -432,8 +432,10 @@ public class DataDragon extends AbstractDataSource {
     @Get(Item.class)
     public Item getItem(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
         final Number id = (Number)query.get("id");
-        Utilities.checkNotNull(platform, "platform", id, "id");
+        final String name = (String)query.get("name");
+        Utilities.checkAtLeastOneNotNull(id, "id", name, "name");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
@@ -458,9 +460,10 @@ public class DataDragon extends AbstractDataSource {
                 final Iterator<String> ids = temp.fieldNames();
                 while(ids.hasNext()) {
                     final String itemId = ids.next();
+                    final ObjectNode item = (ObjectNode)temp.get(itemId);
+                    final String itemName = item.get("name").asText();
 
-                    if(id.intValue() == Integer.parseInt(itemId)) {
-                        final ObjectNode item = (ObjectNode)temp.get(itemId);
+                    if(id != null && id.intValue() == Integer.parseInt(itemId) || name.equals(itemName)) {
                         item.set("id", new IntNode(id.intValue()));
 
                         INCLUDED_DATA_PROCESSOR.apply(item);
@@ -723,8 +726,9 @@ public class DataDragon extends AbstractDataSource {
     @GetMany(Item.class)
     public CloseableIterator<Item> getManyItem(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
         final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
-        Utilities.checkNotNull(platform, "platform", ids, "ids");
+        final Iterable<String> names = (Iterable<String>)query.get("names");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
@@ -763,14 +767,19 @@ public class DataDragon extends AbstractDataSource {
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
         data.setIncludedData(includedData);
+        final Map<String, Item> byName = ids == null ? new HashMap<String, Item>() : null;
         for(final Item item : data.getData().values()) {
             item.setPlatform(platform.getTag());
             item.setVersion(data.getVersion());
             item.setLocale(locale);
             item.setIncludedData(includedData);
+
+            if(ids == null) {
+                byName.put(item.getName(), item);
+            }
         }
 
-        final Iterator<Number> iterator = ids.iterator();
+        final Iterator<?> iterator = ids == null ? names.iterator() : ids.iterator();
         return CloseableIterators.from(new Iterator<Item>() {
             @Override
             public boolean hasNext() {
@@ -779,8 +788,13 @@ public class DataDragon extends AbstractDataSource {
 
             @Override
             public Item next() {
-                final Number id = iterator.next();
-                return data.getData().get(id.toString());
+                if(ids != null) {
+                    final Number id = (Number)iterator.next();
+                    return data.getData().get(id.toString());
+                } else {
+                    final String name = (String)iterator.next();
+                    return byName.get(name);
+                }
             }
 
             @Override

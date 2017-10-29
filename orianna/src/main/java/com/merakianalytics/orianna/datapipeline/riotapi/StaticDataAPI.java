@@ -88,9 +88,9 @@ public class StaticDataAPI extends RiotAPIService {
                     break;
                 }
             }
-            if(data == null) {
-                return null;
-            }
+        }
+        if(data == null) {
+            return null;
         }
 
         data.setPlatform(platform.getTag());
@@ -138,20 +138,40 @@ public class StaticDataAPI extends RiotAPIService {
     @Get(Item.class)
     public Item getItem(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
         final Number id = (Number)query.get("id");
-        Utilities.checkNotNull(platform, "platform", id, "id");
+        final String name = (String)query.get("name");
+        Utilities.checkAtLeastOneNotNull(id, "id", name, "name");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
 
-        final String endpoint = "lol/static-data/v3/items/" + id;
+        Item data = null;
+        if(id != null) {
+            final String endpoint = "lol/static-data/v3/items/" + id;
 
-        final Multimap<String, String> parameters = HashMultimap.create();
-        parameters.put("locale", locale);
-        parameters.put("version", version);
-        parameters.putAll("tags", includedData);
+            final Multimap<String, String> parameters = HashMultimap.create();
+            parameters.put("locale", locale);
+            parameters.put("version", version);
+            parameters.putAll("tags", includedData);
 
-        final Item data = get(Item.class, endpoint, platform, parameters, "lol/static-data/v3/items/id");
+            data = get(Item.class, endpoint, platform, parameters, "lol/static-data/v3/items/id");
+        } else {
+            final String endpoint = "lol/static-data/v3/items";
+
+            final Multimap<String, String> parameters = HashMultimap.create();
+            parameters.put("locale", locale);
+            parameters.put("version", version);
+            parameters.putAll("tags", includedData);
+
+            final ItemList list = get(ItemList.class, endpoint, platform, parameters, "lol/static-data/v3/items");
+            for(final Item item : list.getData().values()) {
+                if(name.equals(item.getName())) {
+                    data = item;
+                    break;
+                }
+            }
+        }
         if(data == null) {
             return null;
         }
@@ -348,8 +368,10 @@ public class StaticDataAPI extends RiotAPIService {
     @GetMany(Item.class)
     public CloseableIterator<Item> getManyItem(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
         final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
-        Utilities.checkNotNull(platform, "platform", ids, "ids");
+        final Iterable<String> names = (Iterable<String>)query.get("names");
+        Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names");
         final String version = (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
@@ -368,14 +390,19 @@ public class StaticDataAPI extends RiotAPIService {
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
         data.setIncludedData(includedData);
+        final Map<String, Item> byName = ids == null ? new HashMap<String, Item>() : null;
         for(final Item item : data.getData().values()) {
             item.setPlatform(platform.getTag());
             item.setVersion(data.getVersion());
             item.setLocale(locale);
             item.setIncludedData(includedData);
+
+            if(ids == null) {
+                byName.put(item.getName(), item);
+            }
         }
 
-        final Iterator<Number> iterator = ids.iterator();
+        final Iterator<?> iterator = ids == null ? names.iterator() : ids.iterator();
         return CloseableIterators.from(new Iterator<Item>() {
             @Override
             public boolean hasNext() {
@@ -384,8 +411,13 @@ public class StaticDataAPI extends RiotAPIService {
 
             @Override
             public Item next() {
-                final Number id = iterator.next();
-                return data.getData().get(id.toString());
+                if(ids != null) {
+                    final Number id = (Number)iterator.next();
+                    return data.getData().get(id.toString());
+                } else {
+                    final String name = (String)iterator.next();
+                    return byName.get(name);
+                }
             }
 
             @Override
