@@ -13,6 +13,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Languages;
 import com.merakianalytics.orianna.types.core.staticdata.Maps;
 import com.merakianalytics.orianna.types.core.staticdata.Mastery;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
+import com.merakianalytics.orianna.types.core.staticdata.Realm;
 
 public abstract class UniqueKeys {
     public static int[] forChampion(final Champion champion) {
@@ -182,6 +183,18 @@ public abstract class UniqueKeys {
     public static int forProfileIconsQuery(final Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             ProfileIcons.class.getCanonicalName(), ((Platform)query.get("platform")).toString(), (String)query.get("version"), (String)query.get("locale")
+        });
+    }
+
+    public static int forRealm(final Realm realm) {
+        return Arrays.hashCode(new Object[] {
+            Realm.class.getCanonicalName(), realm.getPlatform().toString()
+        });
+    }
+
+    public static int forRealmQuery(final Map<String, Object> query) {
+        return Arrays.hashCode(new Object[] {
+            Realm.class.getCanonicalName(), ((Platform)query.get("platform")).toString()
         });
     }
 

@@ -18,11 +18,12 @@ import com.merakianalytics.orianna.types.core.staticdata.Languages;
 import com.merakianalytics.orianna.types.core.staticdata.Maps;
 import com.merakianalytics.orianna.types.core.staticdata.Mastery;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
-import com.merakianalytics.orianna.types.dto.staticdata.Realm;
+import com.merakianalytics.orianna.types.core.staticdata.Realm;
 
 public class UnloadedGhostObjectSource extends AbstractDataSource {
     private static String getCurrentVersion(final Platform platform, final PipelineContext context) {
-        final Realm realm = context.getPipeline().get(Realm.class, ImmutableMap.<String, Object> of("platform", platform));
+        final com.merakianalytics.orianna.types.dto.staticdata.Realm realm =
+            context.getPipeline().get(com.merakianalytics.orianna.types.dto.staticdata.Realm.class, ImmutableMap.<String, Object> of("platform", platform));
         return realm.getV();
     }
 
@@ -144,5 +145,15 @@ public class UnloadedGhostObjectSource extends AbstractDataSource {
         data.setVersion(version);
         data.setLocale(locale);
         return new ProfileIcons(data);
+    }
+
+    @Get(Realm.class)
+    public Realm getRealm(final Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
+
+        final com.merakianalytics.orianna.types.data.staticdata.Realm data = new com.merakianalytics.orianna.types.data.staticdata.Realm();
+        data.setPlatform(platform);
+        return new Realm(data);
     }
 }

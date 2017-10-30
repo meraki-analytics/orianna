@@ -28,6 +28,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Languages;
 import com.merakianalytics.orianna.types.core.staticdata.Maps;
 import com.merakianalytics.orianna.types.core.staticdata.Mastery;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
+import com.merakianalytics.orianna.types.core.staticdata.Realm;
 
 public class InMemoryCache extends AbstractDataStore {
     public static class Configuration {
@@ -64,6 +65,7 @@ public class InMemoryCache extends AbstractDataStore {
         .put(Maps.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
         .put(Mastery.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
         .put(ProfileIcons.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
+        .put(Realm.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
         .build();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InMemoryCache.class);
@@ -135,6 +137,12 @@ public class InMemoryCache extends AbstractDataStore {
     public ProfileIcons getProfileIcons(final Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forProfileIconsQuery(query);
         return (ProfileIcons)cache.get(key);
+    }
+
+    @Get(Realm.class)
+    public Realm getRealm(final Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forRealmQuery(query);
+        return (Realm)cache.get(key);
     }
 
     @Put(Champion.class)
@@ -220,5 +228,11 @@ public class InMemoryCache extends AbstractDataStore {
     public void putProfileIcons(final ProfileIcons profileIcons, final PipelineContext context) {
         final int key = UniqueKeys.forProfileIcons(profileIcons);
         cache.put(key, profileIcons);
+    }
+
+    @Put(Realm.class)
+    public void putRealm(final Realm realm, final PipelineContext context) {
+        final int key = UniqueKeys.forRealm(realm);
+        cache.put(key, realm);
     }
 }

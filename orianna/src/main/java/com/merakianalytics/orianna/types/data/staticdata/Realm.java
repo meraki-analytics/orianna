@@ -1,11 +1,13 @@
 package com.merakianalytics.orianna.types.data.staticdata;
 
+import java.util.Map;
+
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class Realm extends CoreData {
     private static final long serialVersionUID = 1322693251232626677L;
-    private java.util.Map<String, String> latestVersions;
+    private Map<String, String> latestVersions;
     private String legacyMode, latestDataDragon, store, defaultLocale, version, CDN, CSSVersion;
     private int maxProfileIconId;
     private Platform platform;
@@ -88,14 +90,14 @@ public class Realm extends CoreData {
     }
 
     /**
-     * @return the cDN
+     * @return the DDN
      */
     public String getCDN() {
         return CDN;
     }
 
     /**
-     * @return the cSSVersion
+     * @return the CSSVersion
      */
     public String getCSSVersion() {
         return CSSVersion;
@@ -118,7 +120,7 @@ public class Realm extends CoreData {
     /**
      * @return the latestVersions
      */
-    public java.util.Map<String, String> getLatestVersions() {
+    public Map<String, String> getLatestVersions() {
         return latestVersions;
     }
 
@@ -210,7 +212,7 @@ public class Realm extends CoreData {
      * @param latestVersions
      *        the latestVersions to set
      */
-    public void setLatestVersions(final java.util.Map<String, String> latestVersions) {
+    public void setLatestVersions(final Map<String, String> latestVersions) {
         this.latestVersions = latestVersions;
     }
 
