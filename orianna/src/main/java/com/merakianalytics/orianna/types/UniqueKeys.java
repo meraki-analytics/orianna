@@ -10,6 +10,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Champion.ChampionData;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
 import com.merakianalytics.orianna.types.core.staticdata.LanguageStrings;
 import com.merakianalytics.orianna.types.core.staticdata.Languages;
+import com.merakianalytics.orianna.types.core.staticdata.Maps;
 
 public abstract class UniqueKeys {
     public static int[] forChampion(final Champion champion) {
@@ -113,6 +114,18 @@ public abstract class UniqueKeys {
     public static int forLanguageStringsQuery(final Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             LanguageStrings.class.getCanonicalName(), ((Platform)query.get("platform")).toString(), (String)query.get("version"), (String)query.get("locale")
+        });
+    }
+
+    public static int forMaps(final Maps maps) {
+        return Arrays.hashCode(new Object[] {
+            Maps.class.getCanonicalName(), maps.getPlatform().toString(), maps.getVersion(), maps.getLocale()
+        });
+    }
+
+    public static int forMapsQuery(final Map<String, Object> query) {
+        return Arrays.hashCode(new Object[] {
+            Maps.class.getCanonicalName(), ((Platform)query.get("platform")).toString(), (String)query.get("version"), (String)query.get("locale")
         });
     }
 }

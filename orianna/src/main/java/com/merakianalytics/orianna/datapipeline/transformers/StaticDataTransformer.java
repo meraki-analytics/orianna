@@ -265,11 +265,13 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         map.setLocale(item.getLocale());
         map.setMapName(item.getName());
         map.setPlatform(item.getPlatform().getTag());
-        final List<Long> items = new ArrayList<>(item.getUnpurchasableItems().size());
-        for(final Integer it : item.getUnpurchasableItems()) {
-            items.add(it.longValue());
+        if(item.getUnpurchasableItems() != null) {
+            final List<Long> items = new ArrayList<>(item.getUnpurchasableItems().size());
+            for(final Integer it : item.getUnpurchasableItems()) {
+                items.add(it.longValue());
+            }
+            map.setUnpurchasableItemList(items);
         }
-        map.setUnpurchasableItemList(items);
         map.setVersion(item.getVersion());
         return map;
     }
@@ -994,11 +996,13 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         map.setLocale(item.getLocale());
         map.setName(item.getMapName());
         map.setPlatform(Platform.withTag(item.getPlatform()));
-        final List<Integer> items = new ArrayList<>(item.getUnpurchasableItemList().size());
-        for(final Long it : item.getUnpurchasableItemList()) {
-            items.add(it.intValue());
+        if(item.getUnpurchasableItemList() != null) {
+            final List<Integer> items = new ArrayList<>(item.getUnpurchasableItemList().size());
+            for(final Long it : item.getUnpurchasableItemList()) {
+                items.add(it.intValue());
+            }
+            map.setUnpurchasableItems(items);
         }
-        map.setUnpurchasableItems(items);
         map.setVersion(item.getVersion());
         context.put("version", previous);
         return map;

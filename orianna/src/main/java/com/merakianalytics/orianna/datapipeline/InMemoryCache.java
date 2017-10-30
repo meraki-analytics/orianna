@@ -25,6 +25,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
 import com.merakianalytics.orianna.types.core.staticdata.LanguageStrings;
 import com.merakianalytics.orianna.types.core.staticdata.Languages;
+import com.merakianalytics.orianna.types.core.staticdata.Maps;
 
 public class InMemoryCache extends AbstractDataStore {
     public static class Configuration {
@@ -58,6 +59,7 @@ public class InMemoryCache extends AbstractDataStore {
         .put(Item.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
         .put(LanguageStrings.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
         .put(Languages.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
+        .put(Maps.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
         .build();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InMemoryCache.class);
@@ -113,6 +115,12 @@ public class InMemoryCache extends AbstractDataStore {
         return (LanguageStrings)cache.get(key);
     }
 
+    @Get(Maps.class)
+    public Maps getMaps(final Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forMapsQuery(query);
+        return (Maps)cache.get(key);
+    }
+
     @Put(Champion.class)
     public void putChampion(final Champion champion, final PipelineContext context) {
         final int[] keys = UniqueKeys.forChampion(champion);
@@ -164,5 +172,11 @@ public class InMemoryCache extends AbstractDataStore {
     public void putLanguageStrings(final LanguageStrings languageStrings, final PipelineContext context) {
         final int key = UniqueKeys.forLanguageStrings(languageStrings);
         cache.put(key, languageStrings);
+    }
+
+    @Put(Maps.class)
+    public void putMaps(final Maps maps, final PipelineContext context) {
+        final int key = UniqueKeys.forMaps(maps);
+        cache.put(key, maps);
     }
 }

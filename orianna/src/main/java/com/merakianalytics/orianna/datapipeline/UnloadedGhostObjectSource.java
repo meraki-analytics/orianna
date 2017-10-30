@@ -15,6 +15,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Champion.ChampionData;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
 import com.merakianalytics.orianna.types.core.staticdata.LanguageStrings;
 import com.merakianalytics.orianna.types.core.staticdata.Languages;
+import com.merakianalytics.orianna.types.core.staticdata.Maps;
 import com.merakianalytics.orianna.types.dto.staticdata.Realm;
 
 public class UnloadedGhostObjectSource extends AbstractDataSource {
@@ -91,5 +92,19 @@ public class UnloadedGhostObjectSource extends AbstractDataSource {
         data.setVersion(version);
         data.setLocale(locale);
         return new LanguageStrings(data);
+    }
+
+    @Get(Maps.class)
+    public Maps getMaps(final Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
+        final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
+        final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
+
+        final com.merakianalytics.orianna.types.data.staticdata.Maps data = new com.merakianalytics.orianna.types.data.staticdata.Maps();
+        data.setPlatform(platform);
+        data.setVersion(version);
+        data.setLocale(locale);
+        return new Maps(data);
     }
 }
