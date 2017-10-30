@@ -27,6 +27,7 @@ import com.merakianalytics.orianna.types.core.staticdata.LanguageStrings;
 import com.merakianalytics.orianna.types.core.staticdata.Languages;
 import com.merakianalytics.orianna.types.core.staticdata.Maps;
 import com.merakianalytics.orianna.types.core.staticdata.Mastery;
+import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
 
 public class InMemoryCache extends AbstractDataStore {
     public static class Configuration {
@@ -62,6 +63,7 @@ public class InMemoryCache extends AbstractDataStore {
         .put(Languages.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
         .put(Maps.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
         .put(Mastery.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
+        .put(ProfileIcons.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
         .build();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InMemoryCache.class);
@@ -127,6 +129,12 @@ public class InMemoryCache extends AbstractDataStore {
     public Mastery getMastery(final Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forMasteryQuery(query);
         return (Mastery)cache.get(key);
+    }
+
+    @Get(ProfileIcons.class)
+    public ProfileIcons getProfileIcons(final Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forProfileIconsQuery(query);
+        return (ProfileIcons)cache.get(key);
     }
 
     @Put(Champion.class)
@@ -206,5 +214,11 @@ public class InMemoryCache extends AbstractDataStore {
         for(final int key : keys) {
             cache.put(key, item);
         }
+    }
+
+    @Put(ProfileIcons.class)
+    public void putProfileIcons(final ProfileIcons profileIcons, final PipelineContext context) {
+        final int key = UniqueKeys.forProfileIcons(profileIcons);
+        cache.put(key, profileIcons);
     }
 }
