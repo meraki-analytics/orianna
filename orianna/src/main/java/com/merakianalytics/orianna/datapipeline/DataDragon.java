@@ -752,6 +752,7 @@ public class DataDragon extends AbstractDataSource {
         Utilities.checkNotNull(platform, "platform");
         final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
         final Iterable<String> names = (Iterable<String>)query.get("names");
+        Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
@@ -1020,8 +1021,10 @@ public class DataDragon extends AbstractDataSource {
     @GetMany(Mastery.class)
     public CloseableIterator<Mastery> getManyMastery(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
         final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
-        Utilities.checkNotNull(platform, "platform", ids, "ids");
+        final Iterable<String> names = (Iterable<String>)query.get("names");
+        Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
@@ -1057,14 +1060,19 @@ public class DataDragon extends AbstractDataSource {
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
         data.setIncludedData(includedData);
+        final Map<String, Mastery> byName = ids == null ? new HashMap<String, Mastery>() : null;
         for(final Mastery mastery : data.getData().values()) {
             mastery.setPlatform(platform.getTag());
             mastery.setVersion(data.getVersion());
             mastery.setLocale(locale);
             mastery.setIncludedData(includedData);
+
+            if(ids == null) {
+                byName.put(mastery.getName(), mastery);
+            }
         }
 
-        final Iterator<Number> iterator = ids.iterator();
+        final Iterator<?> iterator = ids == null ? names.iterator() : ids.iterator();
         return CloseableIterators.from(new Iterator<Mastery>() {
             @Override
             public boolean hasNext() {
@@ -1073,8 +1081,13 @@ public class DataDragon extends AbstractDataSource {
 
             @Override
             public Mastery next() {
-                final Number id = iterator.next();
-                return data.getData().get(id.toString());
+                if(ids != null) {
+                    final Number id = (Number)iterator.next();
+                    return data.getData().get(id.toString());
+                } else {
+                    final String name = (String)iterator.next();
+                    return byName.get(name);
+                }
             }
 
             @Override
@@ -1231,8 +1244,10 @@ public class DataDragon extends AbstractDataSource {
     @GetMany(Rune.class)
     public CloseableIterator<Rune> getManyRune(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
         final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
-        Utilities.checkNotNull(platform, "platform", ids, "ids");
+        final Iterable<String> names = (Iterable<String>)query.get("names");
+        Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
@@ -1274,14 +1289,19 @@ public class DataDragon extends AbstractDataSource {
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
         data.setIncludedData(includedData);
+        final Map<String, Rune> byName = ids == null ? new HashMap<String, Rune>() : null;
         for(final Rune rune : data.getData().values()) {
             rune.setPlatform(platform.getTag());
             rune.setVersion(data.getVersion());
             rune.setLocale(locale);
             rune.setIncludedData(includedData);
+
+            if(ids == null) {
+                byName.put(rune.getName(), rune);
+            }
         }
 
-        final Iterator<Number> iterator = ids.iterator();
+        final Iterator<?> iterator = ids == null ? names.iterator() : ids.iterator();
         return CloseableIterators.from(new Iterator<Rune>() {
             @Override
             public boolean hasNext() {
@@ -1290,8 +1310,13 @@ public class DataDragon extends AbstractDataSource {
 
             @Override
             public Rune next() {
-                final Number id = iterator.next();
-                return data.getData().get(id.toString());
+                if(ids != null) {
+                    final Number id = (Number)iterator.next();
+                    return data.getData().get(id.toString());
+                } else {
+                    final String name = (String)iterator.next();
+                    return byName.get(name);
+                }
             }
 
             @Override
@@ -1378,8 +1403,10 @@ public class DataDragon extends AbstractDataSource {
     @GetMany(SummonerSpell.class)
     public CloseableIterator<SummonerSpell> getManySummonerSpell(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
         final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
-        Utilities.checkNotNull(platform, "platform", ids, "ids");
+        final Iterable<String> names = (Iterable<String>)query.get("names");
+        Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
@@ -1424,14 +1451,19 @@ public class DataDragon extends AbstractDataSource {
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
         data.setIncludedData(includedData);
+        final Map<String, SummonerSpell> byName = ids == null ? new HashMap<String, SummonerSpell>() : null;
         for(final SummonerSpell spell : data.getData().values()) {
             spell.setPlatform(platform.getTag());
             spell.setVersion(data.getVersion());
             spell.setLocale(locale);
             spell.setIncludedData(includedData);
+
+            if(ids == null) {
+                byName.put(spell.getName(), spell);
+            }
         }
 
-        final Iterator<Number> iterator = ids.iterator();
+        final Iterator<?> iterator = ids == null ? names.iterator() : ids.iterator();
         return CloseableIterators.from(new Iterator<SummonerSpell>() {
             @Override
             public boolean hasNext() {
@@ -1440,8 +1472,13 @@ public class DataDragon extends AbstractDataSource {
 
             @Override
             public SummonerSpell next() {
-                final Number id = iterator.next();
-                return data.getData().get(id.toString());
+                if(ids != null) {
+                    final Number id = (Number)iterator.next();
+                    return data.getData().get(id.toString());
+                } else {
+                    final String name = (String)iterator.next();
+                    return byName.get(name);
+                }
             }
 
             @Override
@@ -1590,8 +1627,10 @@ public class DataDragon extends AbstractDataSource {
     @Get(Mastery.class)
     public Mastery getMastery(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
         final Number id = (Number)query.get("id");
-        Utilities.checkNotNull(platform, "platform", id, "id");
+        final String name = (String)query.get("name");
+        Utilities.checkAtLeastOneNotNull(id, "id", name, "name");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
@@ -1615,8 +1654,9 @@ public class DataDragon extends AbstractDataSource {
 
                 for(final JsonNode mastery : temp) {
                     final JsonNode idNode = mastery.get("id");
+                    final String masteryName = mastery.get("name").asText();
 
-                    if(idNode != null && id.intValue() == idNode.asInt()) {
+                    if(idNode != null && id.intValue() == idNode.asInt() || name.equals(masteryName)) {
                         INCLUDED_DATA_PROCESSOR.apply(mastery);
                         return mastery;
                     }
@@ -1727,8 +1767,10 @@ public class DataDragon extends AbstractDataSource {
     @Get(Rune.class)
     public Rune getRune(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
         final Number id = (Number)query.get("id");
-        Utilities.checkNotNull(platform, "platform", id, "id");
+        final String name = (String)query.get("name");
+        Utilities.checkAtLeastOneNotNull(id, "id", name, "name");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
@@ -1753,11 +1795,11 @@ public class DataDragon extends AbstractDataSource {
                 final Iterator<String> ids = temp.fieldNames();
                 while(ids.hasNext()) {
                     final String runeId = ids.next();
-                    final int idValue = Integer.parseInt(runeId);
+                    final ObjectNode rune = (ObjectNode)temp.get(runeId);
+                    final String runeName = rune.get("name").asText();
 
-                    if(idValue == id.intValue()) {
-                        final ObjectNode rune = (ObjectNode)temp.get(runeId);
-                        rune.set("id", new IntNode(idValue));
+                    if(id != null && id.intValue() == Integer.parseInt(runeId) || name.equals(runeName)) {
+                        rune.set("id", new IntNode(Integer.parseInt(runeId)));
 
                         INCLUDED_DATA_PROCESSOR.apply(rune);
                         return rune;
@@ -1837,8 +1879,10 @@ public class DataDragon extends AbstractDataSource {
     @Get(SummonerSpell.class)
     public SummonerSpell getSummonerSpell(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
         final Number id = (Number)query.get("id");
-        Utilities.checkNotNull(platform, "platform", id, "id");
+        final String name = (String)query.get("name");
+        Utilities.checkAtLeastOneNotNull(id, "id", name, "name");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
@@ -1862,8 +1906,9 @@ public class DataDragon extends AbstractDataSource {
 
                 for(final JsonNode spell : data) {
                     final JsonNode idNode = spell.get("key");
+                    final String spellName = spell.get("name").asText();
 
-                    if(idNode != null && id.intValue() == idNode.asInt()) {
+                    if(idNode != null && id.intValue() == idNode.asInt() || name.equals(spellName)) {
                         INCLUDED_DATA_PROCESSOR.apply(spell);
                         CHAMPION_PROCESSOR.apply(spell);
                         return spell;
