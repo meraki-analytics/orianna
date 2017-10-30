@@ -190,11 +190,13 @@ public class StaticDataTransformer extends AbstractDataTransformer {
     @Transform(from = ChampionSpell.class, to = com.merakianalytics.orianna.types.dto.staticdata.ChampionSpell.class)
     public com.merakianalytics.orianna.types.dto.staticdata.ChampionSpell transform(final ChampionSpell item, final PipelineContext context) {
         final com.merakianalytics.orianna.types.dto.staticdata.ChampionSpell spell = new com.merakianalytics.orianna.types.dto.staticdata.ChampionSpell();
-        final List<com.merakianalytics.orianna.types.dto.staticdata.Image> alternativeImages = new ArrayList<>(item.getAlternativeImages().size());
-        for(final Image image : item.getAlternativeImages()) {
-            alternativeImages.add(transform(image, context));
+        if(item.getAlternativeImages() != null) {
+            final List<com.merakianalytics.orianna.types.dto.staticdata.Image> alternativeImages = new ArrayList<>(item.getAlternativeImages().size());
+            for(final Image image : item.getAlternativeImages()) {
+                alternativeImages.add(transform(image, context));
+            }
+            spell.setAltImages(alternativeImages);
         }
-        spell.setAltImages(alternativeImages);
         spell.setCooldown(new ArrayList<>(item.getCooldowns()));
         spell.setCooldownBurn(getBurn(item.getCooldowns()));
         spell.setCost(new ArrayList<>(item.getCosts()));
@@ -682,17 +684,21 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         spell.setCooldowns(new ArrayList<>(item.getCooldown()));
         spell.setCosts(new ArrayList<>(item.getCost()));
         spell.setDescription(item.getDescription());
-        final List<List<Double>> effects = new ArrayList<>(item.getEffect().size());
-        for(final List<Double> effect : item.getEffect()) {
-            effects.add(new ArrayList<>(effect));
+        if(item.getEffect() != null) {
+            final List<List<Double>> effects = new ArrayList<>(item.getEffect().size());
+            for(final List<Double> effect : item.getEffect()) {
+                effects.add(effect == null ? null : new ArrayList<>(effect));
+            }
+            spell.setEffects(effects);
         }
-        spell.setEffects(effects);
         spell.setId(item.getId());
         spell.setImage(transform(item.getImage(), context));
         spell.setIncludedData(new HashSet<>(item.getIncludedData()));
         spell.setKey(item.getKey());
-        spell.setLevelUpEffects(new ArrayList<>(item.getLeveltip().getEffect()));
-        spell.setLevelUpKeywords(new ArrayList<>(item.getLeveltip().getLabel()));
+        if(item.getLeveltip() != null) {
+            spell.setLevelUpEffects(new ArrayList<>(item.getLeveltip().getEffect()));
+            spell.setLevelUpKeywords(new ArrayList<>(item.getLeveltip().getLabel()));
+        }
         spell.setLocale(item.getLocale());
         spell.setMaxRank(item.getMaxrank());
         final Set<GameMode> modes = new HashSet<>();
@@ -1051,8 +1057,12 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         mastery.setPlatform(item.getPlatform().getTag());
         mastery.setRanks(item.getPoints());
         mastery.setPrereq(Integer.toString(item.getPrerequisite()));
-        mastery.setSanitizedDescription(new ArrayList<>(item.getSanitizedDescriptions()));
-        mastery.setMasteryTree(item.getTree().toString().substring(0, 1) + item.getTree().toString().toLowerCase().substring(1));
+        if(item.getSanitizedDescriptions() != null) {
+            mastery.setSanitizedDescription(new ArrayList<>(item.getSanitizedDescriptions()));
+        }
+        if(item.getTree() != null) {
+            mastery.setMasteryTree(item.getTree().toString().substring(0, 1) + item.getTree().toString().toLowerCase().substring(1));
+        }
         mastery.setVersion(item.getVersion());
         return mastery;
     }
@@ -1390,14 +1400,16 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         spell.setCost(new ArrayList<>(item.getCosts()));
         spell.setCostBurn(getBurn(item.getCosts()));
         spell.setDescription(item.getDescription());
-        final List<List<Double>> effects = new ArrayList<>(item.getEffects().size());
-        final List<String> effectBurn = new ArrayList<>(item.getEffects().size());
-        for(final List<Double> effect : item.getEffects()) {
-            effects.add(new ArrayList<>(effect));
-            effectBurn.add(getBurn(effect));
+        if(item.getEffects() != null) {
+            final List<List<Double>> effects = new ArrayList<>(item.getEffects().size());
+            final List<String> effectBurn = new ArrayList<>(item.getEffects().size());
+            for(final List<Double> effect : item.getEffects()) {
+                effects.add(new ArrayList<>(effect));
+                effectBurn.add(getBurn(effect));
+            }
+            spell.setEffect(effects);
+            spell.setEffectBurn(effectBurn);
         }
-        spell.setEffect(effects);
-        spell.setEffectBurn(effectBurn);
         spell.setId(item.getId());
         spell.setImage(transform(item.getImage(), context));
         spell.setIncludedData(new HashSet<>(item.getIncludedData()));

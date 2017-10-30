@@ -15,6 +15,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Mastery;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
 import com.merakianalytics.orianna.types.core.staticdata.Realm;
 import com.merakianalytics.orianna.types.core.staticdata.Rune;
+import com.merakianalytics.orianna.types.core.staticdata.SummonerSpell;
 
 public abstract class UniqueKeys {
     public static int[] forChampion(final Champion champion) {
@@ -233,6 +234,48 @@ public abstract class UniqueKeys {
         final String name = (String)query.get("name");
         return Arrays.hashCode(new Object[] {
             Rune.class.getCanonicalName(), ((Platform)query.get("platform")).toString(), (String)query.get("version"), (String)query.get("locale"),
+            id == null ? name : id.intValue(), (Set<String>)query.get("includedData")
+        });
+    }
+
+    public static int[] forSummonerSpell(final SummonerSpell summonerSpell) {
+        final com.merakianalytics.orianna.types.data.staticdata.SummonerSpell data = summonerSpell.getCoreData();
+        if(data.getId() != 0 && data.getName() != null) {
+            return new int[] {
+                Arrays.hashCode(new Object[] {
+                    SummonerSpell.class.getCanonicalName(), summonerSpell.getPlatform().toString(), summonerSpell.getVersion(), summonerSpell.getLocale(),
+                    summonerSpell.getId(), summonerSpell.getIncludedData()
+                }),
+                Arrays.hashCode(new Object[] {
+                    SummonerSpell.class.getCanonicalName(), summonerSpell.getPlatform().toString(), summonerSpell.getVersion(), summonerSpell.getLocale(),
+                    summonerSpell.getName(), summonerSpell.getIncludedData()
+                })
+            };
+        } else if(data.getId() != 0) {
+            return new int[] {
+                Arrays.hashCode(new Object[] {
+                    SummonerSpell.class.getCanonicalName(), summonerSpell.getPlatform().toString(), summonerSpell.getVersion(), summonerSpell.getLocale(),
+                    summonerSpell.getId(), summonerSpell.getIncludedData()
+                })
+            };
+        } else if(data.getName() != null) {
+            return new int[] {
+                Arrays.hashCode(new Object[] {
+                    SummonerSpell.class.getCanonicalName(), summonerSpell.getPlatform().toString(), summonerSpell.getVersion(), summonerSpell.getLocale(),
+                    summonerSpell.getName(), summonerSpell.getIncludedData()
+                })
+            };
+        } else {
+            throw new IllegalArgumentException("Can't get key for Item without ID or name!");
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static int forSummonerSpellQuery(final Map<String, Object> query) {
+        final Integer id = (Integer)query.get("id");
+        final String name = (String)query.get("name");
+        return Arrays.hashCode(new Object[] {
+            SummonerSpell.class.getCanonicalName(), ((Platform)query.get("platform")).toString(), (String)query.get("version"), (String)query.get("locale"),
             id == null ? name : id.intValue(), (Set<String>)query.get("includedData")
         });
     }

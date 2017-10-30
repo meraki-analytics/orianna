@@ -20,6 +20,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Mastery;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
 import com.merakianalytics.orianna.types.core.staticdata.Realm;
 import com.merakianalytics.orianna.types.core.staticdata.Rune;
+import com.merakianalytics.orianna.types.core.staticdata.SummonerSpell;
 
 public class UnloadedGhostObjectSource extends AbstractDataSource {
     private static String getCurrentVersion(final Platform platform, final PipelineContext context) {
@@ -178,5 +179,27 @@ public class UnloadedGhostObjectSource extends AbstractDataSource {
         data.setLocale(locale);
         data.setIncludedData(includedData);
         return new Rune(data);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Get(SummonerSpell.class)
+    public SummonerSpell getSummonerSpell(final Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
+        final Integer id = (Integer)query.get("id");
+        final String name = (String)query.get("name");
+        Utilities.checkAtLeastOneNotNull(id, "id", name, "name");
+        final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
+        final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
+        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
+
+        final com.merakianalytics.orianna.types.data.staticdata.SummonerSpell data = new com.merakianalytics.orianna.types.data.staticdata.SummonerSpell();
+        data.setId(id == null ? 0 : id.intValue());
+        data.setName(name);
+        data.setPlatform(platform);
+        data.setVersion(version);
+        data.setLocale(locale);
+        data.setIncludedData(includedData);
+        return new SummonerSpell(data);
     }
 }

@@ -14,5 +14,6 @@ public enum GameMode {
         ODIN,
         ONEFORALL,
         SIEGE,
-        TUTORIAL;
+        TUTORIAL,
+        URF;
 }
