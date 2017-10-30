@@ -21,6 +21,7 @@ import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
 import com.merakianalytics.orianna.types.core.staticdata.Realm;
 import com.merakianalytics.orianna.types.core.staticdata.Rune;
 import com.merakianalytics.orianna.types.core.staticdata.SummonerSpell;
+import com.merakianalytics.orianna.types.core.staticdata.Versions;
 
 public class UnloadedGhostObjectSource extends AbstractDataSource {
     private static String getCurrentVersion(final Platform platform, final PipelineContext context) {
@@ -201,5 +202,15 @@ public class UnloadedGhostObjectSource extends AbstractDataSource {
         data.setLocale(locale);
         data.setIncludedData(includedData);
         return new SummonerSpell(data);
+    }
+
+    @Get(Versions.class)
+    public Versions getVersions(final Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
+
+        final com.merakianalytics.orianna.types.data.staticdata.Versions data = new com.merakianalytics.orianna.types.data.staticdata.Versions();
+        data.setPlatform(platform);
+        return new Versions(data);
     }
 }

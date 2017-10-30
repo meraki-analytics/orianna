@@ -31,6 +31,7 @@ import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
 import com.merakianalytics.orianna.types.core.staticdata.Realm;
 import com.merakianalytics.orianna.types.core.staticdata.Rune;
 import com.merakianalytics.orianna.types.core.staticdata.SummonerSpell;
+import com.merakianalytics.orianna.types.core.staticdata.Versions;
 
 public class InMemoryCache extends AbstractDataStore {
     public static class Configuration {
@@ -70,6 +71,7 @@ public class InMemoryCache extends AbstractDataStore {
         .put(Realm.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
         .put(Rune.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
         .put(SummonerSpell.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
+        .put(Versions.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
         .build();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InMemoryCache.class);
@@ -161,6 +163,12 @@ public class InMemoryCache extends AbstractDataStore {
         return (SummonerSpell)cache.get(key);
     }
 
+    @Get(Versions.class)
+    public Versions getVersions(final Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forVersionsQuery(query);
+        return (Versions)cache.get(key);
+    }
+
     @Put(Champion.class)
     public void putChampion(final Champion champion, final PipelineContext context) {
         final int[] keys = UniqueKeys.forChampion(champion);
@@ -206,6 +214,12 @@ public class InMemoryCache extends AbstractDataStore {
     public void putLanguages(final Languages languages, final PipelineContext context) {
         final int key = UniqueKeys.forLanguages(languages);
         cache.put(key, languages);
+    }
+
+    @Put(Versions.class)
+    public void putLanguages(final Versions versions, final PipelineContext context) {
+        final int key = UniqueKeys.forVersions(versions);
+        cache.put(key, versions);
     }
 
     @Put(LanguageStrings.class)

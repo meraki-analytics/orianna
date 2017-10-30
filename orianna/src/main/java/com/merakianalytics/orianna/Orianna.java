@@ -48,6 +48,7 @@ import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
 import com.merakianalytics.orianna.types.core.staticdata.Realm;
 import com.merakianalytics.orianna.types.core.staticdata.Rune;
 import com.merakianalytics.orianna.types.core.staticdata.SummonerSpell;
+import com.merakianalytics.orianna.types.core.staticdata.Versions;
 
 public abstract class Orianna {
     public static class Configuration {
@@ -331,6 +332,18 @@ public abstract class Orianna {
 
     public static SummonerSpell.Builder getSummonerSpellWithId(final int id) {
         return SummonerSpell.withId(id);
+    }
+
+    public static Versions getVersions() {
+        return Versions.get();
+    }
+
+    public static Versions.Builder getVersionsWithPlatform(final Platform platform) {
+        return Versions.withPlatform(platform);
+    }
+
+    public static Versions.Builder getVersionsWithRegion(final Region region) {
+        return Versions.withRegion(region);
     }
 
     public static void loadConfiguration(final CharSource configJSON) {
