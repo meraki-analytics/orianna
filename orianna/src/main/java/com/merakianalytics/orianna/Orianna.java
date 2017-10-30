@@ -37,7 +37,13 @@ import com.merakianalytics.orianna.datapipeline.transformers.StatusTransformer;
 import com.merakianalytics.orianna.datapipeline.transformers.SummonerTransformer;
 import com.merakianalytics.orianna.types.common.OriannaException;
 import com.merakianalytics.orianna.types.common.Platform;
+import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
+import com.merakianalytics.orianna.types.core.staticdata.Item;
+import com.merakianalytics.orianna.types.core.staticdata.LanguageStrings;
+import com.merakianalytics.orianna.types.core.staticdata.Languages;
+import com.merakianalytics.orianna.types.core.staticdata.Maps;
+import com.merakianalytics.orianna.types.core.staticdata.Mastery;
 import com.merakianalytics.orianna.types.dto.staticdata.Realm;
 
 public abstract class Orianna {
@@ -194,12 +200,80 @@ public abstract class Orianna {
     private static final Logger LOGGER = LoggerFactory.getLogger(Orianna.class);
     private static Settings settings = new Settings(new Configuration());
 
-    public static Champion.Builder getChampion(final int id) {
+    public static Champion.Builder getChampionNamed(final String name) {
+        return Champion.named(name);
+    }
+
+    public static Champion.Builder getChampionWithId(final int id) {
         return Champion.withId(id);
     }
 
-    public static Champion.Builder getChampion(final String name) {
-        return Champion.named(name);
+    public static Item.Builder getItemNamed(final String name) {
+        return Item.named(name);
+    }
+
+    public static Item.Builder getItemWithId(final int id) {
+        return Item.withId(id);
+    }
+
+    public static Languages getLanguages() {
+        return Languages.get();
+    }
+
+    public static LanguageStrings getLanguageStrings() {
+        return LanguageStrings.get();
+    }
+
+    public static LanguageStrings.Builder getLanguageStringsWithLocale(final String locale) {
+        return LanguageStrings.withLocale(locale);
+    }
+
+    public static LanguageStrings.Builder getLanguageStringsWithPlatform(final Platform platform) {
+        return LanguageStrings.withPlatform(platform);
+    }
+
+    public static LanguageStrings.Builder getLanguageStringsWithRegion(final Region region) {
+        return LanguageStrings.withRegion(region);
+    }
+
+    public static LanguageStrings.Builder getLanguageStringsWithVersion(final String version) {
+        return LanguageStrings.withVersion(version);
+    }
+
+    public static Languages.Builder getLanguagesWithPlatform(final Platform platform) {
+        return Languages.withPlatform(platform);
+    }
+
+    public static Languages.Builder getLanguagesWithRegion(final Region region) {
+        return Languages.withRegion(region);
+    }
+
+    public static Maps getMaps() {
+        return Maps.get();
+    }
+
+    public static Maps.Builder getMapsWithLocale(final String locale) {
+        return Maps.withLocale(locale);
+    }
+
+    public static Maps.Builder getMapsWithPlatform(final Platform platform) {
+        return Maps.withPlatform(platform);
+    }
+
+    public static Maps.Builder getMapsWithRegion(final Region region) {
+        return Maps.withRegion(region);
+    }
+
+    public static Maps.Builder getMapsWithVersion(final String version) {
+        return Maps.withVersion(version);
+    }
+
+    public static Mastery.Builder getMasteryNamed(final String name) {
+        return Mastery.named(name);
+    }
+
+    public static Mastery.Builder getMasteryWithId(final int id) {
+        return Mastery.withId(id);
     }
 
     public static Settings getSettings() {

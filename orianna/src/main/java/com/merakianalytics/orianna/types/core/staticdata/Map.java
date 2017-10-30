@@ -27,6 +27,7 @@ public class Map extends OriannaObject<com.merakianalytics.orianna.types.data.st
         @Override
         public SearchableList<Item> get() {
             final List<Item> items = new ArrayList<>(coreData.getUnpurchasableItems().size());
+            // TODO: use a getMany from Items instead of get from Item
             for(final Integer id : coreData.getUnpurchasableItems()) {
                 items.add(Item.withId(id).withPlatform(coreData.getPlatform()).withVersion(coreData.getVersion()).withLocale(coreData.getLocale()).get());
             }
@@ -49,6 +50,10 @@ public class Map extends OriannaObject<com.merakianalytics.orianna.types.data.st
 
     public String getLocale() {
         return coreData.getLocale();
+    }
+
+    public com.merakianalytics.orianna.types.common.Map getMap() {
+        return com.merakianalytics.orianna.types.common.Map.withId(coreData.getId());
     }
 
     @Searchable(String.class)

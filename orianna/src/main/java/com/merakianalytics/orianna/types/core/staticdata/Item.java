@@ -107,6 +107,7 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
         @Override
         public SearchableList<Item> get() {
             load(ITEM_LOAD_GROUP);
+            // TODO: use a getMany from Items instead of get from Item
             final List<Item> buildsFrom = new ArrayList<>(coreData.getBuildsFrom().size());
             for(final Integer id : coreData.getBuildsFrom()) {
                 buildsFrom.add(Item.withId(id).withPlatform(coreData.getPlatform()).withVersion(coreData.getVersion()).withLocale(coreData.getLocale()).get());
@@ -119,6 +120,7 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
         @Override
         public SearchableList<Item> get() {
             load(ITEM_LOAD_GROUP);
+            // TODO: use a getMany from Items instead of get from Item
             final List<Item> buildsInto = new ArrayList<>(coreData.getBuildsInto().size());
             for(final Integer id : coreData.getBuildsInto()) {
                 buildsInto.add(Item.withId(id).withPlatform(coreData.getPlatform()).withVersion(coreData.getVersion()).withLocale(coreData.getLocale()).get());
