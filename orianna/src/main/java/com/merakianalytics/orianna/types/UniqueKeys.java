@@ -14,6 +14,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Maps;
 import com.merakianalytics.orianna.types.core.staticdata.Mastery;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
 import com.merakianalytics.orianna.types.core.staticdata.Realm;
+import com.merakianalytics.orianna.types.core.staticdata.Rune;
 
 public abstract class UniqueKeys {
     public static int[] forChampion(final Champion champion) {
@@ -195,6 +196,44 @@ public abstract class UniqueKeys {
     public static int forRealmQuery(final Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             Realm.class.getCanonicalName(), ((Platform)query.get("platform")).toString()
+        });
+    }
+
+    public static int[] forRune(final Rune rune) {
+        final com.merakianalytics.orianna.types.data.staticdata.Rune data = rune.getCoreData();
+        if(data.getId() != 0 && data.getName() != null) {
+            return new int[] {
+                Arrays.hashCode(new Object[] {
+                    Rune.class.getCanonicalName(), rune.getPlatform().toString(), rune.getVersion(), rune.getLocale(), rune.getId(), rune.getIncludedData()
+                }),
+                Arrays.hashCode(new Object[] {
+                    Rune.class.getCanonicalName(), rune.getPlatform().toString(), rune.getVersion(), rune.getLocale(), rune.getName(), rune.getIncludedData()
+                })
+            };
+        } else if(data.getId() != 0) {
+            return new int[] {
+                Arrays.hashCode(new Object[] {
+                    Rune.class.getCanonicalName(), rune.getPlatform().toString(), rune.getVersion(), rune.getLocale(), rune.getId(), rune.getIncludedData()
+                })
+            };
+        } else if(data.getName() != null) {
+            return new int[] {
+                Arrays.hashCode(new Object[] {
+                    Rune.class.getCanonicalName(), rune.getPlatform().toString(), rune.getVersion(), rune.getLocale(), rune.getName(), rune.getIncludedData()
+                })
+            };
+        } else {
+            throw new IllegalArgumentException("Can't get key for Item without ID or name!");
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static int forRuneQuery(final Map<String, Object> query) {
+        final Integer id = (Integer)query.get("id");
+        final String name = (String)query.get("name");
+        return Arrays.hashCode(new Object[] {
+            Rune.class.getCanonicalName(), ((Platform)query.get("platform")).toString(), (String)query.get("version"), (String)query.get("locale"),
+            id == null ? name : id.intValue(), (Set<String>)query.get("includedData")
         });
     }
 

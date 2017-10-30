@@ -44,7 +44,9 @@ import com.merakianalytics.orianna.types.core.staticdata.LanguageStrings;
 import com.merakianalytics.orianna.types.core.staticdata.Languages;
 import com.merakianalytics.orianna.types.core.staticdata.Maps;
 import com.merakianalytics.orianna.types.core.staticdata.Mastery;
-import com.merakianalytics.orianna.types.dto.staticdata.Realm;
+import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
+import com.merakianalytics.orianna.types.core.staticdata.Realm;
+import com.merakianalytics.orianna.types.core.staticdata.Rune;
 
 public abstract class Orianna {
     public static class Configuration {
@@ -163,7 +165,9 @@ public abstract class Orianna {
             currentVersion = Suppliers.memoizeWithExpiration(new Supplier<String>() {
                 @Override
                 public String get() {
-                    return pipeline.get(Realm.class, ImmutableMap.<String, Object> of("platform", defaultPlatform)).getV();
+                    return pipeline
+                        .get(com.merakianalytics.orianna.types.dto.staticdata.Realm.class, ImmutableMap.<String, Object> of("platform", defaultPlatform))
+                        .getV();
                 }
             }, config.getCurrentVersionExpiration(), config.getCurrentVersionExpirationUnit());
         }
@@ -274,6 +278,46 @@ public abstract class Orianna {
 
     public static Mastery.Builder getMasteryWithId(final int id) {
         return Mastery.withId(id);
+    }
+
+    public static ProfileIcons getProfileIcons() {
+        return ProfileIcons.get();
+    }
+
+    public static ProfileIcons.Builder getProfileIconsWithLocale(final String locale) {
+        return ProfileIcons.withLocale(locale);
+    }
+
+    public static ProfileIcons.Builder getProfileIconsWithPlatform(final Platform platform) {
+        return ProfileIcons.withPlatform(platform);
+    }
+
+    public static ProfileIcons.Builder getProfileIconsWithRegion(final Region region) {
+        return ProfileIcons.withRegion(region);
+    }
+
+    public static ProfileIcons.Builder getProfileIconsWithVersion(final String version) {
+        return ProfileIcons.withVersion(version);
+    }
+
+    public static Realm getRealm() {
+        return Realm.get();
+    }
+
+    public static Realm.Builder getRealmWithPlatform(final Platform platform) {
+        return Realm.withPlatform(platform);
+    }
+
+    public static Realm.Builder getRealmWithRegion(final Region region) {
+        return Realm.withRegion(region);
+    }
+
+    public static Rune.Builder getRuneNamed(final String name) {
+        return Rune.named(name);
+    }
+
+    public static Rune.Builder getRuneWithId(final int id) {
+        return Rune.withId(id);
     }
 
     public static Settings getSettings() {

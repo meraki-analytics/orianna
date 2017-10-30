@@ -54,6 +54,10 @@ public class ProfileIcons extends GhostObject.ListProxy<ProfileIcon, com.merakia
 
     private static final long serialVersionUID = -8957363143121010944L;
 
+    public static ProfileIcons get() {
+        return new Builder().get();
+    }
+
     public static Builder withLocale(final String locale) {
         return new Builder().withLocale(locale);
     }
@@ -77,10 +81,6 @@ public class ProfileIcons extends GhostObject.ListProxy<ProfileIcon, com.merakia
                 return new ProfileIcon(icon);
             }
         });
-    }
-
-    public ProfileIcons get() {
-        return new Builder().get();
     }
 
     public String getLocale() {

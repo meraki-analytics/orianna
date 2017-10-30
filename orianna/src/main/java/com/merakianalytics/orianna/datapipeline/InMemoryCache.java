@@ -29,6 +29,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Maps;
 import com.merakianalytics.orianna.types.core.staticdata.Mastery;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
 import com.merakianalytics.orianna.types.core.staticdata.Realm;
+import com.merakianalytics.orianna.types.core.staticdata.Rune;
 
 public class InMemoryCache extends AbstractDataStore {
     public static class Configuration {
@@ -66,6 +67,7 @@ public class InMemoryCache extends AbstractDataStore {
         .put(Mastery.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
         .put(ProfileIcons.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
         .put(Realm.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
+        .put(Rune.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
         .build();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InMemoryCache.class);
@@ -143,6 +145,12 @@ public class InMemoryCache extends AbstractDataStore {
     public Realm getRealm(final Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forRealmQuery(query);
         return (Realm)cache.get(key);
+    }
+
+    @Get(Rune.class)
+    public Rune getRune(final Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forRuneQuery(query);
+        return (Rune)cache.get(key);
     }
 
     @Put(Champion.class)
@@ -234,5 +242,25 @@ public class InMemoryCache extends AbstractDataStore {
     public void putRealm(final Realm realm, final PipelineContext context) {
         final int key = UniqueKeys.forRealm(realm);
         cache.put(key, realm);
+    }
+
+    @Put(Rune.class)
+    public void putRune(final Rune rune, final PipelineContext context) {
+        final int[] keys = UniqueKeys.forRune(rune);
+
+        if(keys.length < 2) {
+            final LoadHook hook = new LoadHook() {
+                @Override
+                public void call() {
+                    putRune(rune, null);
+                }
+            };
+
+            rune.registerGhostLoadHook(hook, Rune.RUNE_LOAD_GROUP);
+        }
+
+        for(final int key : keys) {
+            cache.put(key, rune);
+        }
     }
 }
