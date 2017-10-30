@@ -55,7 +55,7 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
             }
 
             final ImmutableMap.Builder<String, Object> builder = ImmutableMap.<String, Object> builder().put("platform", platform).put("version", version)
-                                                                             .put("locale", locale).put("includedData", includedData);
+                .put("locale", locale).put("includedData", includedData);
 
             if(id != null) {
                 builder.put("id", id);
@@ -173,7 +173,7 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
             // TODO: Champion by key
             load(ITEM_LOAD_GROUP);
             return Champion.named(coreData.getRequiredChampionKey()).withPlatform(coreData.getPlatform()).withVersion(coreData.getVersion())
-                           .withLocale(coreData.getLocale()).get();
+                .withLocale(coreData.getLocale()).get();
         }
     });
 

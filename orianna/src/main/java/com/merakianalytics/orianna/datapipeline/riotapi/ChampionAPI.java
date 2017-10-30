@@ -19,7 +19,7 @@ import com.merakianalytics.orianna.types.dto.champion.ChampionList;
 
 public class ChampionAPI extends RiotAPIService {
     public ChampionAPI(final Configuration config, final HTTPClient client, final Map<Platform, RateLimiter> applicationRateLimiters,
-                       final Map<Platform, Object> applicationRateLimiterLocks) {
+        final Map<Platform, Object> applicationRateLimiterLocks) {
         super(config, client, applicationRateLimiters, applicationRateLimiterLocks);
     }
 

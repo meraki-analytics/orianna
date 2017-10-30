@@ -206,7 +206,7 @@ public class HTTPClient {
 
     public HTTPClient(final Configuration config) {
         client = new OkHttpClient.Builder().connectTimeout(config.getConnectTimeout(), config.getConnectTimeoutUnit())
-                                           .readTimeout(config.getReadTimeout(), config.getReadTimeoutUnit()).build();
+            .readTimeout(config.getReadTimeout(), config.getReadTimeoutUnit()).build();
         rateLimiterTimeout = config.getRateLimiterTimeout();
         rateLimiterTimeoutUnit = config.getRateLimiterTimeoutUnit();
     }
@@ -225,7 +225,7 @@ public class HTTPClient {
     }
 
     public Response get(final String host, final String url, final Map<String, String> parameters, final Map<String, String> headers,
-                        final RateLimiter rateLimiter) throws IOException {
+        final RateLimiter rateLimiter) throws IOException {
         return get(host, url, parameters == null ? null : ImmutableListMultimap.copyOf(parameters.entrySet()), headers, rateLimiter);
     }
 
@@ -234,7 +234,7 @@ public class HTTPClient {
     }
 
     public Response get(final String host, final String url, final Multimap<String, String> parameters, final Map<String, String> headers,
-                        final RateLimiter rateLimiter) throws IOException {
+        final RateLimiter rateLimiter) throws IOException {
         HttpUrl.Builder urlBuilder = new HttpUrl.Builder().scheme("https").host(host).addPathSegments(removeLeadingSlashes(url));
         if(parameters != null && !parameters.isEmpty()) {
             for(final String key : parameters.keySet()) {
@@ -264,7 +264,7 @@ public class HTTPClient {
                     responseHeaders = response.headers();
                     try(ResponseBody responseBody = response.body()) {
                         if(JSON_MEDIA_TYPE.type().equals(responseBody.contentType().type())
-                           && JSON_MEDIA_TYPE.subtype().equals(responseBody.contentType().subtype())) {
+                            && JSON_MEDIA_TYPE.subtype().equals(responseBody.contentType().subtype())) {
                             body = responseBody.string();
                         } else {
                             bytes = responseBody.bytes();

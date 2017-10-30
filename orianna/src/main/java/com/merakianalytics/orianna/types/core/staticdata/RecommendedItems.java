@@ -15,7 +15,7 @@ public class RecommendedItems extends OriannaObject.ListProxy<ItemSet, com.merak
             public ItemSet apply(final com.merakianalytics.orianna.types.data.staticdata.ItemSet set) {
                 return new ItemSet(set);
             }
-        }, com.merakianalytics.orianna.types.data.staticdata.RecommendedItems.class);
+        });
     }
 
     @Searchable(Map.class)

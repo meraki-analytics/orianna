@@ -258,7 +258,6 @@ public class DataDragon extends AbstractDataSource {
     private final long cacheDuration;
     private final TimeUnit cacheDurationUnit;
     private final ConcurrentHashMap<RequestMetadata, Object> cacheLocks = new ConcurrentHashMap<>();
-
     private final HTTPClient client;
 
     public DataDragon() {
@@ -310,7 +309,7 @@ public class DataDragon extends AbstractDataSource {
                             } catch(final IOException e) {
                                 LOGGER.error("Get request failed to " + URL + "!", e);
                                 throw new OriannaException("Something went wrong with a request to DataDragon API at " + URL
-                                                           + "! Report this to the orianna team.", e);
+                                    + "! Report this to the orianna team.", e);
                             }
                         }
                     }, cacheDuration, cacheDurationUnit);
@@ -563,7 +562,6 @@ public class DataDragon extends AbstractDataSource {
 
     @Get(LanguageStrings.class)
     public LanguageStrings getLanguageStrings(final Map<String, Object> query, final PipelineContext context) {
-        System.out.println("DDRAGON");
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");

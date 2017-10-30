@@ -4,10 +4,10 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 
 public enum Skill {
-    E(3),
-    Q(1),
-    R(4),
-    W(2);
+        E(3),
+        Q(1),
+        R(4),
+        W(2);
 
     private static final java.util.Map<Integer, Skill> BY_SLOT = getBySlot();
 

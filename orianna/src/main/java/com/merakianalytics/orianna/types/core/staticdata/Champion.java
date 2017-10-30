@@ -57,7 +57,7 @@ public class Champion extends GhostObject<ChampionData> {
             }
 
             final ImmutableMap.Builder<String, Object> builder = ImmutableMap.<String, Object> builder().put("platform", platform).put("version", version)
-                                                                             .put("locale", locale).put("includedData", includedData);
+                .put("locale", locale).put("includedData", includedData);
 
             if(id != null) {
                 builder.put("id", id);

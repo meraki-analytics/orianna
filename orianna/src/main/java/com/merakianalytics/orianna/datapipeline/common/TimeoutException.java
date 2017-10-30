@@ -4,8 +4,8 @@ import com.merakianalytics.orianna.types.common.OriannaException;
 
 public class TimeoutException extends OriannaException {
     public static enum Type {
-        HTTP,
-        RATE_LIMITER;
+            HTTP,
+            RATE_LIMITER;
     }
 
     private static final long serialVersionUID = -1889177348125407210L;

@@ -11,16 +11,6 @@ public class LanguageStrings extends GhostObject.MapProxy<String, String, String
         private Platform platform;
         private String version, locale;
 
-        public Builder fromPlatform(final Platform platform) {
-            this.platform = platform;
-            return this;
-        }
-
-        public Builder fromRegion(final Region region) {
-            platform = region.getPlatform();
-            return this;
-        }
-
         public LanguageStrings get() {
             if(version == null) {
                 version = Orianna.getSettings().getCurrentVersion();
@@ -35,18 +25,28 @@ public class LanguageStrings extends GhostObject.MapProxy<String, String, String
             }
 
             final ImmutableMap.Builder<String, Object> builder = ImmutableMap.<String, Object> builder().put("platform", platform).put("version", version)
-                                                                             .put("locale", locale);
+                .put("locale", locale);
 
             return Orianna.getSettings().getPipeline().get(LanguageStrings.class, builder.build());
         }
 
-        public Builder onVersion(final String version) {
-            this.version = version;
+        public Builder withLocale(final String locale) {
+            this.locale = locale;
             return this;
         }
 
-        public Builder withLocale(final String locale) {
-            this.locale = locale;
+        public Builder withPlatform(final Platform platform) {
+            this.platform = platform;
+            return this;
+        }
+
+        public Builder withRegion(final Region region) {
+            platform = region.getPlatform();
+            return this;
+        }
+
+        public Builder withVersion(final String version) {
+            this.version = version;
             return this;
         }
     }
@@ -62,15 +62,15 @@ public class LanguageStrings extends GhostObject.MapProxy<String, String, String
     }
 
     public static Builder withPlatform(final Platform platform) {
-        return new Builder().fromPlatform(platform);
+        return new Builder().withPlatform(platform);
     }
 
     public static Builder withRegion(final Region region) {
-        return new Builder().fromRegion(region);
+        return new Builder().withRegion(region);
     }
 
     public static Builder withVersion(final String version) {
-        return new Builder().onVersion(version);
+        return new Builder().withVersion(version);
     }
 
     public LanguageStrings(final com.merakianalytics.orianna.types.data.staticdata.LanguageStrings coreData) {

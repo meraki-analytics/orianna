@@ -1,9 +1,13 @@
 package com.merakianalytics.orianna.types.core;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,13 +16,215 @@ import com.google.common.base.Function;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public abstract class GhostObject<T extends CoreData> extends OriannaObject<T> {
+    public static abstract class ListProxy<T, C, L extends CoreData.ListProxy<C>> extends GhostObject<L> implements List<T> {
+        public class ListProxyIterator implements ListIterator<T> {
+            private final ListIterator<T> iterator = data.listIterator();
+
+            @Override
+            public void add(final T item) {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public boolean hasPrevious() {
+                return iterator.hasPrevious();
+            }
+
+            @Override
+            public T next() {
+                return iterator.next();
+            }
+
+            @Override
+            public int nextIndex() {
+                return iterator.nextIndex();
+            }
+
+            @Override
+            public T previous() {
+                return iterator.previous();
+            }
+
+            @Override
+            public int previousIndex() {
+                return iterator.previousIndex();
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public void set(final T item) {
+                throw new UnsupportedOperationException();
+            }
+        }
+
+        public static final String LIST_PROXY_LOAD_GROUP = "list-proxy";
+        private static final long serialVersionUID = 781726166394753316L;
+        private List<T> data;
+        private Function<C, T> transform;
+
+        public ListProxy(final L coreData, final int loadGroups) {
+            super(coreData, loadGroups);
+        }
+
+        public ListProxy(final L coreData, final int loadGroups, final Function<C, T> transform) {
+            super(coreData, loadGroups);
+            this.transform = transform;
+        }
+
+        @Override
+        public void add(final int index, final T item) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public boolean add(final T item) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public boolean addAll(final Collection<? extends T> items) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public boolean addAll(final int index, final Collection<? extends T> items) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void clear() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public boolean containsAll(final Collection<?> items) {
+            load(LIST_PROXY_LOAD_GROUP);
+            return data.containsAll(items);
+        }
+
+        @Override
+        public T get(final int index) {
+            load(LIST_PROXY_LOAD_GROUP);
+            return data.get(index);
+        }
+
+        @Override
+        public int indexOf(final Object item) {
+            load(LIST_PROXY_LOAD_GROUP);
+            return data.indexOf(item);
+        }
+
+        @Override
+        public boolean isEmpty() {
+            load(LIST_PROXY_LOAD_GROUP);
+            return data.isEmpty();
+        }
+
+        @Override
+        public Iterator<T> iterator() {
+            load(LIST_PROXY_LOAD_GROUP);
+            return new ListProxyIterator();
+        }
+
+        @Override
+        public int lastIndexOf(final Object item) {
+            load(LIST_PROXY_LOAD_GROUP);
+            return data.lastIndexOf(item);
+        }
+
+        @Override
+        public ListIterator<T> listIterator() {
+            load(LIST_PROXY_LOAD_GROUP);
+            return new ListProxyIterator();
+        }
+
+        @Override
+        public ListIterator<T> listIterator(final int index) {
+            load(LIST_PROXY_LOAD_GROUP);
+            return new ListProxyIterator();
+        }
+
+        @SuppressWarnings("unchecked")
+        protected void loadListProxyData() {
+            if(transform == null) {
+                data = (List<T>)Collections.unmodifiableList(coreData);
+            } else {
+                data = new ArrayList<>(coreData.size());
+                for(final C item : coreData) {
+                    data.add(transform.apply(item));
+                }
+                data = Collections.unmodifiableList(data);
+                transform = null;
+            }
+        }
+
+        @Override
+        public T remove(final int index) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public boolean remove(final Object item) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public boolean removeAll(final Collection<?> items) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public boolean retainAll(final Collection<?> items) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public T set(final int index, final T item) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public int size() {
+            load(LIST_PROXY_LOAD_GROUP);
+            return data.size();
+        }
+
+        @Override
+        public List<T> subList(final int fromIndex, final int toIndex) {
+            load(LIST_PROXY_LOAD_GROUP);
+            return data.subList(fromIndex, toIndex);
+        }
+
+        @Override
+        public Object[] toArray() {
+            load(LIST_PROXY_LOAD_GROUP);
+            return data.toArray();
+        }
+
+        @SuppressWarnings("hiding")
+        @Override
+        public <T> T[] toArray(final T[] array) {
+            load(LIST_PROXY_LOAD_GROUP);
+            return data.toArray(array);
+        }
+    }
+
     public static interface LoadHook {
         public void call();
     }
 
     public abstract static class MapProxy<K, V, CK, CV, P extends CoreData.MapProxy<CK, CV>> extends GhostObject<P> implements Map<K, V> {
         public static final String MAP_PROXY_LOAD_GROUP = "map-proxy";
-        private static final long serialVersionUID = 2266943596124327746L;
+        private static final long serialVersionUID = 3151240839151598711L;
         private Map<K, V> data;
         private Function<CK, K> keyTransform;
         private Function<CV, V> valueTransform;
@@ -28,7 +234,7 @@ public abstract class GhostObject<T extends CoreData> extends OriannaObject<T> {
         }
 
         public MapProxy(final P coreData, final int loadGroups, final Function<CK, K> keyTransform,
-                        final Function<CV, V> valueTransform) {
+            final Function<CV, V> valueTransform) {
             super(coreData, loadGroups);
 
             this.keyTransform = keyTransform;
@@ -88,6 +294,7 @@ public abstract class GhostObject<T extends CoreData> extends OriannaObject<T> {
                     final V value = valueTransform.apply(coreValue);
                     data.put(key, value);
                 }
+                data = Collections.unmodifiableMap(data);
                 keyTransform = null;
                 valueTransform = null;
             }

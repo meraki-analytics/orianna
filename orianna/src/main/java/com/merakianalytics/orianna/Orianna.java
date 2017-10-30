@@ -49,17 +49,17 @@ public abstract class Orianna {
 
         private static DataPipeline getDefaultPipeline() {
             final Set<DataTransformer> transformers = ImmutableSet.<DataTransformer> builder().add(new ChampionMasteryTransformer())
-                                                                  .add(new ChampionTransformer()).add(new LeagueTransformer()).add(new MasteriesTransformer())
-                                                                  .add(new MatchTransformer()).add(new RunesTransformer()).add(new SpectatorTransformer())
-                                                                  .add(new StaticDataTransformer()).add(new StatusTransformer()).add(new SummonerTransformer())
-                                                                  .build();
+                .add(new ChampionTransformer()).add(new LeagueTransformer()).add(new MasteriesTransformer())
+                .add(new MatchTransformer()).add(new RunesTransformer()).add(new SpectatorTransformer())
+                .add(new StaticDataTransformer()).add(new StatusTransformer()).add(new SummonerTransformer())
+                .build();
 
             return new DataPipeline(transformers,
-                                    new InMemoryCache(),
-                                    new UnloadedGhostObjectSource(),
-                                    new DataDragon(),
-                                    new RiotAPI(),
-                                    new ImageDataSource());
+                new InMemoryCache(),
+                new UnloadedGhostObjectSource(),
+                new DataDragon(),
+                new RiotAPI(),
+                new ImageDataSource());
         }
 
         private long currentVersionExpiration = DEFAULT_CURRENT_VERSION_EXPIRATION;

@@ -756,7 +756,8 @@ public class MatchTransformer extends AbstractDataTransformer {
 
     @Transform(from = TournamentMatches.class, to = com.merakianalytics.orianna.types.dto.match.TournamentMatches.class)
     public com.merakianalytics.orianna.types.dto.match.TournamentMatches transform(final TournamentMatches item, final PipelineContext context) {
-        final com.merakianalytics.orianna.types.dto.match.TournamentMatches matches = new com.merakianalytics.orianna.types.dto.match.TournamentMatches(item.size());
+        final com.merakianalytics.orianna.types.dto.match.TournamentMatches matches =
+            new com.merakianalytics.orianna.types.dto.match.TournamentMatches(item.size());
         matches.addAll(item);
         matches.setPlatform(item.getPlatform().getTag());
         matches.setTournamentCode(item.getTournamentCode());

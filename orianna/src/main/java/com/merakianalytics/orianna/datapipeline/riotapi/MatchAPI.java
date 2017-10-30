@@ -25,7 +25,7 @@ import com.merakianalytics.orianna.types.dto.match.TournamentMatches;
 
 public class MatchAPI extends RiotAPIService {
     public MatchAPI(final Configuration config, final HTTPClient client, final Map<Platform, RateLimiter> applicationRateLimiters,
-                    final Map<Platform, Object> applicationRateLimiterLocks) {
+        final Map<Platform, Object> applicationRateLimiterLocks) {
         super(config, client, applicationRateLimiters, applicationRateLimiterLocks);
     }
 

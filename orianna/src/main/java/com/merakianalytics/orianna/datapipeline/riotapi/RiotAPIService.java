@@ -202,10 +202,10 @@ public class RiotAPIService extends AbstractDataSource {
                 try {
                     return config.getType().getType().getConstructor(Configuration.class).newInstance(config);
                 } catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-                        | SecurityException e) {
+                    | SecurityException e) {
                     LOGGER.error("Failed to instantiate strategy " + config.getType().getType().getCanonicalName() + "!", e);
                     throw new OriannaException("Failed to instantiate strategy " + config.getType().getType().getCanonicalName()
-                                               + "! Report this to the orianna team.", e);
+                        + "! Report this to the orianna team.", e);
                 }
             }
         }
@@ -248,7 +248,7 @@ public class RiotAPIService extends AbstractDataSource {
 
             @Override
             public <T extends DataObject> T onFailedRequest(final RiotAPIService service, final RequestContext<T> context, final Response response,
-                                                            final OriannaException e) {
+                final OriannaException e) {
                 final int attempts = context.attemptCount;
                 if(attempts > maxAttempts) {
                     return backupStrategy.onFailedRequest(service, context, response, e);
@@ -299,7 +299,7 @@ public class RiotAPIService extends AbstractDataSource {
 
             @Override
             public <T extends DataObject> T onFailedRequest(final RiotAPIService service, final RequestContext<T> context, final Response response,
-                                                            final OriannaException e) {
+                final OriannaException e) {
                 final int attempts = context.attemptCount;
                 if(attempts > maxAttempts) {
                     return backupStrategy.onFailedRequest(service, context, response, e);
@@ -337,7 +337,7 @@ public class RiotAPIService extends AbstractDataSource {
 
             @Override
             public <T extends DataObject> T onFailedRequest(final RiotAPIService service, final RequestContext<T> context, final Response response,
-                                                            final OriannaException e) {
+                final OriannaException e) {
                 final Collection<String> retryAfterHeaders = response.getHeaders().get("Retry-After");
                 if(retryAfterHeaders == null || retryAfterHeaders.isEmpty()) {
                     backupStrategy.onFailedRequest(service, context, response, e);
@@ -365,7 +365,7 @@ public class RiotAPIService extends AbstractDataSource {
 
             @Override
             public <T extends DataObject> T onFailedRequest(final RiotAPIService service, final RequestContext<T> context, final Response response,
-                                                            final OriannaException e) {
+                final OriannaException e) {
                 return null;
             }
         }
@@ -387,17 +387,17 @@ public class RiotAPIService extends AbstractDataSource {
 
             @Override
             public <T extends DataObject> T onFailedRequest(final RiotAPIService service, final RequestContext<T> context, final Response response,
-                                                            final OriannaException e) {
+                final OriannaException e) {
                 throw e;
             }
         }
 
         public static enum Type {
-            EXPONENTIAL_BACKOFF(ExponentialBackoff.class),
-            LINEAR_BACKOFF(LinearBackoff.class),
-            RETRY_FROM_HEADERS(RetryFromHeaders.class),
-            RETURN_NULL(ReturnNull.class),
-            THROW_EXCEPTION(ThrowException.class);
+                EXPONENTIAL_BACKOFF(ExponentialBackoff.class),
+                LINEAR_BACKOFF(LinearBackoff.class),
+                RETRY_FROM_HEADERS(RetryFromHeaders.class),
+                RETURN_NULL(ReturnNull.class),
+                THROW_EXCEPTION(ThrowException.class);
 
             private static final Map<Class<? extends FailedRequestStrategy>, Type> FOR_CLASS = getForClass();
 
@@ -439,7 +439,7 @@ public class RiotAPIService extends AbstractDataSource {
         public Class<T> type;
 
         public RequestContext(final Class<T> type, final String endpoint, final Platform platform, final Multimap<String, String> parameters,
-                              final String rateLimiterName) {
+            final String rateLimiterName) {
             this.type = type;
             this.endpoint = endpoint;
             this.platform = platform;
@@ -478,7 +478,7 @@ public class RiotAPIService extends AbstractDataSource {
     private final Map<Platform, Map<String, MultiRateLimiter>> rateLimiters;
 
     public RiotAPIService(final Configuration config, final HTTPClient client, final Map<Platform, RateLimiter> applicationRateLimiters,
-                          final Map<Platform, Object> applicationRateLimiterLocks) {
+        final Map<Platform, Object> applicationRateLimiterLocks) {
         this.client = client;
         this.applicationRateLimiters = applicationRateLimiters;
         this.applicationRateLimiterLocks = applicationRateLimiterLocks;
@@ -530,7 +530,7 @@ public class RiotAPIService extends AbstractDataSource {
     }
 
     private void createRateLimiter(final Platform platform, final List<Long> epochsInSeconds, final List<Integer> limits, final long windowLowerBound,
-                                   final long windowUpperBound) {
+        final long windowUpperBound) {
         RateLimiter limiter = applicationRateLimiters.get(platform);
         if(limiter == null) {
             synchronized(getCreateRateLimiterLock(platform)) {
@@ -544,7 +544,7 @@ public class RiotAPIService extends AbstractDataSource {
     }
 
     private void createRateLimiter(final Platform platform, final String name, final List<Long> epochsInSeconds, final List<Integer> limits,
-                                   final long windowLowerBound, final long windowUpperBound) {
+        final long windowLowerBound, final long windowUpperBound) {
         Map<String, MultiRateLimiter> limiters = rateLimiters.get(platform);
         if(limiters == null) {
             synchronized(rateLimiters) {
@@ -573,7 +573,7 @@ public class RiotAPIService extends AbstractDataSource {
     }
 
     private void createRateLimiter(final Platform platform, final String rateLimiterName, final Response response, final long timeBeforeRequest,
-                                   final long timeAfterRequest) {
+        final long timeAfterRequest) {
         final Collection<String> applicationLimitHeaders = response.getHeaders().get("X-App-Rate-Limit");
         if(applicationLimitHeaders != null && !applicationLimitHeaders.isEmpty()) {
             final String[] limits = applicationLimitHeaders.iterator().next().split(",");
@@ -608,15 +608,15 @@ public class RiotAPIService extends AbstractDataSource {
 
     protected <T extends DataObject> T get(final Class<T> type, final String endpoint, final Platform platform, final Map<String, String> parameters) {
         final RequestContext<T> context = new RequestContext<>(type, endpoint, platform,
-                                                               parameters == null ? null : ImmutableListMultimap.copyOf(parameters.entrySet()), null);
+            parameters == null ? null : ImmutableListMultimap.copyOf(parameters.entrySet()), null);
         return get(context);
     }
 
     protected <T extends DataObject> T get(final Class<T> type, final String endpoint, final Platform platform, final Map<String, String> parameters,
-                                           final String rateLimiterName) {
+        final String rateLimiterName) {
         final RequestContext<T> context = new RequestContext<>(type, endpoint, platform,
-                                                               parameters == null ? null : ImmutableListMultimap.copyOf(parameters.entrySet()),
-                                                               rateLimiterName);
+            parameters == null ? null : ImmutableListMultimap.copyOf(parameters.entrySet()),
+            rateLimiterName);
         return get(context);
     }
 
@@ -626,7 +626,7 @@ public class RiotAPIService extends AbstractDataSource {
     }
 
     protected <T extends DataObject> T get(final Class<T> type, final String endpoint, final Platform platform, final Multimap<String, String> parameters,
-                                           final String rateLimiterName) {
+        final String rateLimiterName) {
         final RequestContext<T> context = new RequestContext<>(type, endpoint, platform, parameters, rateLimiterName);
         return get(context);
     }
@@ -661,11 +661,11 @@ public class RiotAPIService extends AbstractDataSource {
         } catch(final TimeoutException e) {
             LOGGER.info("Get request timed out to " + host + "/" + context.endpoint + "!", e);
             return Type.RATE_LIMITER == e.getType() ? limiterTimeoutStrategy.onFailedRequest(this, context, null, e)
-                                                    : httpTimeoutStrategy.onFailedRequest(this, context, null, e);
+                : httpTimeoutStrategy.onFailedRequest(this, context, null, e);
         } catch(final IOException e) {
             LOGGER.error("Get request failed to " + host + "/" + context.endpoint + "!", e);
             throw new OriannaException("Something went wrong with a request to the Riot API at " + host + "/" + context.endpoint
-                                       + "! Report this to the orianna team.", e);
+                + "! Report this to the orianna team.", e);
         }
 
         if(limiter != null) {
@@ -676,40 +676,40 @@ public class RiotAPIService extends AbstractDataSource {
             case 400:
                 LOGGER.error("Got \"Bad Request\" from " + host + "/" + context.endpoint + "!");
                 throw new BadRequestException("A Riot API request to " + host + "/" + context.endpoint
-                                              + " returned \"Bad Request\". If the problem persists, report this to the orianna team.");
+                    + " returned \"Bad Request\". If the problem persists, report this to the orianna team.");
             case 403:
                 LOGGER.error("Got \"Forbidden\" from " + host + "/" + context.endpoint + "!");
                 throw new ForbiddenException("A Riot API request to " + host + "/" + context.endpoint
-                                             + " returned \"Forbidden\". Check to make sure you're using the right API key, it hasn't expired, and you haven't been blacklisted. If the problem persists with a valid key, report this to the orianna team.");
+                    + " returned \"Forbidden\". Check to make sure you're using the right API key, it hasn't expired, and you haven't been blacklisted. If the problem persists with a valid key, report this to the orianna team.");
             case 404:
                 LOGGER.info("Got \"Not Found\" from " + host + "/" + context.endpoint + "!");
                 return http404Strategy.onFailedRequest(this, context, response,
                     new NotFoundException("A Riot API request to " + host + "/" + context.endpoint
-                                          + " returned \"Not Found\". If this was unexpected, check your query parameters to ensure they are correct."));
+                        + " returned \"Not Found\". If this was unexpected, check your query parameters to ensure they are correct."));
             case 415:
                 LOGGER.error("Got \"Unsupported Media Type\" from " + host + "/" + context.endpoint + "!");
                 throw new UnsupportedMediaTypeException("A Riot API request to " + host + "/" + context.endpoint
-                                                        + " returned \"Unsupported Media Type\". If the problem persists, report this to the orianna team.");
+                    + " returned \"Unsupported Media Type\". If the problem persists, report this to the orianna team.");
             case 429:
                 LOGGER.info("Got \"Rate Limit Exceeded\" from " + host + "/" + context.endpoint + "!");
                 return http429Strategy.onFailedRequest(this, context, response,
                     new RateLimitExceededException("A Riot API request to " + host + "/" + context.endpoint
-                                                   + " returned \"Rate Limit Exceeded\". If this was unexpected, report it to the orianna team."));
+                        + " returned \"Rate Limit Exceeded\". If this was unexpected, report it to the orianna team."));
             case 500:
                 LOGGER.error("Got \"Internal Server Error\" from " + host + "/" + context.endpoint + "!");
                 return http500Strategy.onFailedRequest(this, context, response,
                     new InternalServerErrorException("A Riot API request to " + host + "/" + context.endpoint
-                                                     + " returned \"Bad Request\". Sometimes the Riot API experiences these when under extreme load. If the problem persists, try catching this exception, waiting briefly, and trying again."));
+                        + " returned \"Bad Request\". Sometimes the Riot API experiences these when under extreme load. If the problem persists, try catching this exception, waiting briefly, and trying again."));
             case 503:
                 LOGGER.error("Got \"Service Unavailable\" from " + host + "/" + context.endpoint + "!");
                 return http503Strategy.onFailedRequest(this, context, response,
                     new ServiceUnavailableException("A Riot API request to " + host + "/" + context.endpoint
-                                                    + " returned \"Service Unavailable\". This Riot API Service is likely to be down for a short period of time, and can't be used in the meantime."));
+                        + " returned \"Service Unavailable\". This Riot API Service is likely to be down for a short period of time, and can't be used in the meantime."));
             default:
                 if(response.getStatusCode() >= 400) {
                     LOGGER.error("Get request to " + host + "/" + context.endpoint + " returned " + response.getStatusCode() + ": " + response.getBody());
                     throw new OriannaException("An unknown error code (" + response.getStatusCode() + ") was returned from the Riot API with message: "
-                                               + response.getBody());
+                        + response.getBody());
                 }
                 break;
         }
@@ -771,19 +771,19 @@ public class RiotAPIService extends AbstractDataSource {
     }
 
     private MultiRateLimiter newRateLimiter(final List<Long> epochsInSeconds, final List<Integer> limits, final long windowLowerBound,
-                                            final long windowUpperBound) {
+        final long windowUpperBound) {
         final Map<String, AbstractRateLimiter> limiters = new HashMap<>();
         for(int i = 0; i < epochsInSeconds.size(); i++) {
             try {
                 final AbstractRateLimiter limiter = limitingType.getLimiterClass().getConstructor(int.class, long.class, TimeUnit.class)
-                                                                .newInstance(limits.get(i), epochsInSeconds.get(i), TimeUnit.SECONDS);
+                    .newInstance(limits.get(i), epochsInSeconds.get(i), TimeUnit.SECONDS);
                 final long windowLockoutIn = Math.max(0, TimeUnit.SECONDS.toMillis(epochsInSeconds.get(i)) + windowLowerBound - System.currentTimeMillis());
                 limiter.restrict(windowLockoutIn, TimeUnit.MILLISECONDS, windowUpperBound - windowLowerBound, TimeUnit.MILLISECONDS);
                 limiter.acquire();
                 limiter.release();
                 limiters.put(epochsInSeconds.get(i).toString(), limiter);
             } catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-                    | SecurityException | InterruptedException e) {
+                | SecurityException | InterruptedException e) {
                 LOGGER.error("Failed to instantiate " + limitingType + " Rate Limiter!", e);
                 throw new OriannaException("Failed to instantiate " + limitingType + " Rate Limiter! Report this to the orianna team.", e);
             }

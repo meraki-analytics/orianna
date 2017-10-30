@@ -4,8 +4,8 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 
 public enum Team {
-    BLUE(100),
-    RED(200);
+        BLUE(100),
+        RED(200);
 
     private static final java.util.Map<Integer, Team> BY_ID = getById();
 

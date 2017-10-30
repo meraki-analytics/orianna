@@ -17,7 +17,7 @@ import com.merakianalytics.orianna.types.dto.runes.RunePages;
 
 public class RunesAPI extends RiotAPIService {
     public RunesAPI(final Configuration config, final HTTPClient client, final Map<Platform, RateLimiter> applicationRateLimiters,
-                    final Map<Platform, Object> applicationRateLimiterLocks) {
+        final Map<Platform, Object> applicationRateLimiterLocks) {
         super(config, client, applicationRateLimiters, applicationRateLimiterLocks);
     }
 

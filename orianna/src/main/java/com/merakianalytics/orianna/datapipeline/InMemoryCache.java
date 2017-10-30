@@ -24,6 +24,7 @@ import com.merakianalytics.orianna.types.core.GhostObject.LoadHook;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
 import com.merakianalytics.orianna.types.core.staticdata.LanguageStrings;
+import com.merakianalytics.orianna.types.core.staticdata.Languages;
 
 public class InMemoryCache extends AbstractDataStore {
     public static class Configuration {
@@ -52,13 +53,14 @@ public class InMemoryCache extends AbstractDataStore {
         }
     }
 
-    private static final Map<Class<?>, Long> DEFAULT_EXPIRATION_PERIODS = ImmutableMap.<Class<?>, Long> builder().put(Champion.class,
-        new Long(Hours.hours(6).toStandardDuration().getMillis())).put(Item.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
-                                                                                      .put(LanguageStrings.class,
-                                                                                          new Long(Hours.hours(6).toStandardDuration().getMillis()))
-                                                                                      .build();
-    private static final Logger LOGGER = LoggerFactory.getLogger(InMemoryCache.class);
+    private static final Map<Class<?>, Long> DEFAULT_EXPIRATION_PERIODS = ImmutableMap.<Class<?>, Long> builder()
+        .put(Champion.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
+        .put(Item.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
+        .put(LanguageStrings.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
+        .put(Languages.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
+        .build();
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(InMemoryCache.class);
     private final Cache<Integer, Object> cache;
     private final Map<Class<?>, Long> expirationPeriods;
 
@@ -84,7 +86,7 @@ public class InMemoryCache extends AbstractDataStore {
         expirationPeriods = Collections.unmodifiableMap(periods);
 
         cache = new Cache2kBuilder<Integer, Object>() {}.disableLastModificationTime(true).disableStatistics(true).expiryPolicy(new Policy())
-                                                        .keepDataAfterExpired(false).permitNullValues(false).storeByReference(true).build();
+            .keepDataAfterExpired(false).permitNullValues(false).storeByReference(true).build();
     }
 
     @Get(Champion.class)
@@ -97,6 +99,12 @@ public class InMemoryCache extends AbstractDataStore {
     public Item getItem(final Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forItemQuery(query);
         return (Item)cache.get(key);
+    }
+
+    @Get(Languages.class)
+    public Languages getLanguages(final Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forLanguagesQuery(query);
+        return (Languages)cache.get(key);
     }
 
     @Get(LanguageStrings.class)
@@ -144,6 +152,12 @@ public class InMemoryCache extends AbstractDataStore {
         for(final int key : keys) {
             cache.put(key, item);
         }
+    }
+
+    @Put(Languages.class)
+    public void putLanguages(final Languages languages, final PipelineContext context) {
+        final int key = UniqueKeys.forLanguages(languages);
+        cache.put(key, languages);
     }
 
     @Put(LanguageStrings.class)

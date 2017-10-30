@@ -11,7 +11,7 @@ public interface RateLimiter {
     }
 
     public static enum Type {
-        BURST(FixedWindowRateLimiter.class);
+            BURST(FixedWindowRateLimiter.class);
 
         private final Class<? extends AbstractRateLimiter> clazz;
 

@@ -14,6 +14,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Champion.ChampionData;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
 import com.merakianalytics.orianna.types.core.staticdata.LanguageStrings;
+import com.merakianalytics.orianna.types.core.staticdata.Languages;
 import com.merakianalytics.orianna.types.dto.staticdata.Realm;
 
 public class UnloadedGhostObjectSource extends AbstractDataSource {
@@ -68,9 +69,18 @@ public class UnloadedGhostObjectSource extends AbstractDataSource {
         return new Item(data);
     }
 
+    @Get(Languages.class)
+    public Languages getLanguages(final Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
+
+        final com.merakianalytics.orianna.types.data.staticdata.Languages data = new com.merakianalytics.orianna.types.data.staticdata.Languages();
+        data.setPlatform(platform);
+        return new Languages(data);
+    }
+
     @Get(LanguageStrings.class)
     public LanguageStrings getLanguageStrings(final Map<String, Object> query, final PipelineContext context) {
-        System.out.println("GHOSTSOURCE");
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");

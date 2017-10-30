@@ -3,6 +3,7 @@ package com.merakianalytics.orianna.types.core;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -77,18 +78,20 @@ public abstract class OriannaObject<T extends CoreData> extends AbstractSearchab
         private static final long serialVersionUID = -3228932387340246571L;
         private final List<T> data;
 
-        public ListProxy(final L coreData, final Function<C, T> transform, final Class<L> coreType) {
+        @SuppressWarnings("unchecked")
+        public ListProxy(final L coreData) {
             super(coreData);
-
-            data = new ArrayList<>(coreData.size());
-            for(final C item : coreData) {
-                data.add(transform.apply(item));
-            }
+            data = (List<T>)Collections.unmodifiableList(coreData);
         }
 
-        private ListProxy(final L coreData, final List<T> data, final Class<L> coreType) {
+        public ListProxy(final L coreData, final Function<C, T> transform) {
             super(coreData);
-            this.data = data;
+
+            final List<T> d = new ArrayList<>(coreData.size());
+            for(final C item : coreData) {
+                d.add(transform.apply(item));
+            }
+            data = Collections.unmodifiableList(d);
         }
 
         @Override
@@ -207,17 +210,24 @@ public abstract class OriannaObject<T extends CoreData> extends AbstractSearchab
         private static final long serialVersionUID = 2266943596124327746L;
         private final Map<K, V> data;
 
+        @SuppressWarnings("unchecked")
+        public MapProxy(final P coreData) {
+            super(coreData);
+            data = (Map<K, V>)Collections.unmodifiableMap(coreData);
+        }
+
         public MapProxy(final P coreData, final Function<CK, K> keyTransform,
-                        final Function<CV, V> valueTransform) {
+            final Function<CV, V> valueTransform) {
             super(coreData);
 
-            data = new HashMap<>();
+            final Map<K, V> d = new HashMap<>();
             for(final CK coreKey : coreData.keySet()) {
                 final CV coreValue = coreData.get(coreKey);
                 final K key = keyTransform.apply(coreKey);
                 final V value = valueTransform.apply(coreValue);
-                data.put(key, value);
+                d.put(key, value);
             }
+            data = Collections.unmodifiableMap(d);
         }
 
         @Override

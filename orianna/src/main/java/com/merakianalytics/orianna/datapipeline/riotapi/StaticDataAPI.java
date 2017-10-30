@@ -46,7 +46,7 @@ public class StaticDataAPI extends RiotAPIService {
     }
 
     public StaticDataAPI(final Configuration config, final HTTPClient client, final Map<Platform, RateLimiter> applicationRateLimiters,
-                         final Map<Platform, Object> applicationRateLimiterLocks) {
+        final Map<Platform, Object> applicationRateLimiterLocks) {
         super(config, client, applicationRateLimiters, applicationRateLimiterLocks);
     }
 

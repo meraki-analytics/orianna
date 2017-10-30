@@ -330,10 +330,10 @@ public class RiotAPI extends CompositeDataSource {
                     client, applicationRateLimiters, applicationRateLimiterLocks);
                 services.add(service);
             } catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-                    | SecurityException e) {
+                | SecurityException e) {
                 LOGGER.error("Failed to instantiate service " + serviceType.getCanonicalName() + "!", e);
                 throw new OriannaException("Failed to instantiate Riot API Service " + serviceType.getCanonicalName() + "! Report this to the orianna team.",
-                                           e);
+                    e);
             }
         }
         return services;

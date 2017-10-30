@@ -26,7 +26,7 @@ public class LeagueAPI extends RiotAPIService {
         Tier.MASTER, "lol/league/v3/masterleagues/by-queue/");
 
     public LeagueAPI(final Configuration config, final HTTPClient client, final Map<Platform, RateLimiter> applicationRateLimiters,
-                     final Map<Platform, Object> applicationRateLimiterLocks) {
+        final Map<Platform, Object> applicationRateLimiterLocks) {
         super(config, client, applicationRateLimiters, applicationRateLimiterLocks);
     }
 
