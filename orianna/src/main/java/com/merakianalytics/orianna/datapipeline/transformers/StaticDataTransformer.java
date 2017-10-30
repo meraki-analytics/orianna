@@ -481,8 +481,12 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         mastery.setPlatform(Platform.withTag(item.getPlatform()));
         mastery.setPoints(item.getRanks());
         mastery.setPrerequisite(Integer.parseInt(item.getPrereq()));
-        mastery.setSanitizedDescriptions(new ArrayList<>(item.getSanitizedDescription()));
-        mastery.setTree(com.merakianalytics.orianna.types.common.MasteryTree.valueOf(item.getMasteryTree().toUpperCase()));
+        if(item.getSanitizedDescription() != null) {
+            mastery.setSanitizedDescriptions(new ArrayList<>(item.getSanitizedDescription()));
+        }
+        if(item.getMasteryTree() != null) {
+            mastery.setTree(com.merakianalytics.orianna.types.common.MasteryTree.valueOf(item.getMasteryTree().toUpperCase()));
+        }
         mastery.setVersion(item.getVersion());
         context.put("version", previous);
         return mastery;

@@ -11,6 +11,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Item;
 import com.merakianalytics.orianna.types.core.staticdata.LanguageStrings;
 import com.merakianalytics.orianna.types.core.staticdata.Languages;
 import com.merakianalytics.orianna.types.core.staticdata.Maps;
+import com.merakianalytics.orianna.types.core.staticdata.Mastery;
 
 public abstract class UniqueKeys {
     public static int[] forChampion(final Champion champion) {
@@ -41,7 +42,7 @@ public abstract class UniqueKeys {
                 })
             };
         } else {
-            throw new IllegalArgumentException("Can't get key for champion without ID or name!");
+            throw new IllegalArgumentException("Can't get key for Champion without ID or name!");
         }
     }
 
@@ -79,7 +80,7 @@ public abstract class UniqueKeys {
                 })
             };
         } else {
-            throw new IllegalArgumentException("Can't get key for champion without ID or name!");
+            throw new IllegalArgumentException("Can't get key for Item without ID or name!");
         }
     }
 
@@ -128,4 +129,47 @@ public abstract class UniqueKeys {
             Maps.class.getCanonicalName(), ((Platform)query.get("platform")).toString(), (String)query.get("version"), (String)query.get("locale")
         });
     }
+
+    public static int[] forMastery(final Mastery mastery) {
+        final com.merakianalytics.orianna.types.data.staticdata.Mastery data = mastery.getCoreData();
+        if(data.getId() != 0 && data.getName() != null) {
+            return new int[] {
+                Arrays.hashCode(new Object[] {
+                    Mastery.class.getCanonicalName(), mastery.getPlatform().toString(), mastery.getVersion(), mastery.getLocale(), mastery.getId(),
+                    mastery.getIncludedData()
+                }),
+                Arrays.hashCode(new Object[] {
+                    Mastery.class.getCanonicalName(), mastery.getPlatform().toString(), mastery.getVersion(), mastery.getLocale(), mastery.getName(),
+                    mastery.getIncludedData()
+                })
+            };
+        } else if(data.getId() != 0) {
+            return new int[] {
+                Arrays.hashCode(new Object[] {
+                    Mastery.class.getCanonicalName(), mastery.getPlatform().toString(), mastery.getVersion(), mastery.getLocale(), mastery.getId(),
+                    mastery.getIncludedData()
+                })
+            };
+        } else if(data.getName() != null) {
+            return new int[] {
+                Arrays.hashCode(new Object[] {
+                    Mastery.class.getCanonicalName(), mastery.getPlatform().toString(), mastery.getVersion(), mastery.getLocale(), mastery.getName(),
+                    mastery.getIncludedData()
+                })
+            };
+        } else {
+            throw new IllegalArgumentException("Can't get key for Mastery without ID or name!");
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static int forMasteryQuery(final Map<String, Object> query) {
+        final Integer id = (Integer)query.get("id");
+        final String name = (String)query.get("name");
+        return Arrays.hashCode(new Object[] {
+            Mastery.class.getCanonicalName(), ((Platform)query.get("platform")).toString(), (String)query.get("version"), (String)query.get("locale"),
+            id == null ? name : id.intValue(), (Set<String>)query.get("includedData")
+        });
+    }
+
 }

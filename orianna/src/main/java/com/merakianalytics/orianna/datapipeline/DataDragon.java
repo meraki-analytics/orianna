@@ -1656,7 +1656,7 @@ public class DataDragon extends AbstractDataSource {
                     final JsonNode idNode = mastery.get("id");
                     final String masteryName = mastery.get("name").asText();
 
-                    if(idNode != null && id.intValue() == idNode.asInt() || name.equals(masteryName)) {
+                    if(id != null && idNode != null && id.intValue() == idNode.asInt() || name.equals(masteryName)) {
                         INCLUDED_DATA_PROCESSOR.apply(mastery);
                         return mastery;
                     }
@@ -1908,7 +1908,7 @@ public class DataDragon extends AbstractDataSource {
                     final JsonNode idNode = spell.get("key");
                     final String spellName = spell.get("name").asText();
 
-                    if(idNode != null && id.intValue() == idNode.asInt() || name.equals(spellName)) {
+                    if(id != null && idNode != null && id.intValue() == idNode.asInt() || name.equals(spellName)) {
                         INCLUDED_DATA_PROCESSOR.apply(spell);
                         CHAMPION_PROCESSOR.apply(spell);
                         return spell;
