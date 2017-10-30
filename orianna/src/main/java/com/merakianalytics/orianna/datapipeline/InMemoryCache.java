@@ -23,6 +23,7 @@ import com.merakianalytics.orianna.types.common.OriannaException;
 import com.merakianalytics.orianna.types.core.GhostObject.LoadHook;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
+import com.merakianalytics.orianna.types.core.staticdata.LanguageStrings;
 
 public class InMemoryCache extends AbstractDataStore {
     public static class Configuration {
@@ -52,7 +53,10 @@ public class InMemoryCache extends AbstractDataStore {
     }
 
     private static final Map<Class<?>, Long> DEFAULT_EXPIRATION_PERIODS = ImmutableMap.<Class<?>, Long> builder().put(Champion.class,
-        new Long(Hours.hours(6).toStandardDuration().getMillis())).put(Item.class, new Long(Hours.hours(6).toStandardDuration().getMillis())).build();
+        new Long(Hours.hours(6).toStandardDuration().getMillis())).put(Item.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
+                                                                                      .put(LanguageStrings.class,
+                                                                                          new Long(Hours.hours(6).toStandardDuration().getMillis()))
+                                                                                      .build();
     private static final Logger LOGGER = LoggerFactory.getLogger(InMemoryCache.class);
 
     private final Cache<Integer, Object> cache;
@@ -95,6 +99,12 @@ public class InMemoryCache extends AbstractDataStore {
         return (Item)cache.get(key);
     }
 
+    @Get(LanguageStrings.class)
+    public LanguageStrings getLanguageStrings(final Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forLanguageStringsQuery(query);
+        return (LanguageStrings)cache.get(key);
+    }
+
     @Put(Champion.class)
     public void putChampion(final Champion champion, final PipelineContext context) {
         final int[] keys = UniqueKeys.forChampion(champion);
@@ -134,5 +144,11 @@ public class InMemoryCache extends AbstractDataStore {
         for(final int key : keys) {
             cache.put(key, item);
         }
+    }
+
+    @Put(LanguageStrings.class)
+    public void putLanguageStrings(final LanguageStrings languageStrings, final PipelineContext context) {
+        final int key = UniqueKeys.forLanguageStrings(languageStrings);
+        cache.put(key, languageStrings);
     }
 }

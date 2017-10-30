@@ -563,6 +563,7 @@ public class DataDragon extends AbstractDataSource {
 
     @Get(LanguageStrings.class)
     public LanguageStrings getLanguageStrings(final Map<String, Object> query, final PipelineContext context) {
+        System.out.println("DDRAGON");
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");

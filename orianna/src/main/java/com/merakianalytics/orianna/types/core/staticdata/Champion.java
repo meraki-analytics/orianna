@@ -27,14 +27,12 @@ public class Champion extends GhostObject<ChampionData> {
         private String name, version, locale;
         private Platform platform;
 
-        public Builder fromPlatform(final Platform platform) {
-            this.platform = platform;
-            return this;
+        public Builder(final int id) {
+            this.id = id;
         }
 
-        public Builder fromRegion(final Region region) {
-            platform = region.getPlatform();
-            return this;
+        public Builder(final String name) {
+            this.name = name;
         }
 
         public Champion get() {
@@ -70,21 +68,6 @@ public class Champion extends GhostObject<ChampionData> {
             return Orianna.getSettings().getPipeline().get(Champion.class, builder.build());
         }
 
-        public Builder named(final String name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder onVersion(final String version) {
-            this.version = version;
-            return this;
-        }
-
-        public Builder withId(final int id) {
-            this.id = id;
-            return this;
-        }
-
         public Builder withIncludedData(final Set<String> includedData) {
             this.includedData = includedData;
             return this;
@@ -92,6 +75,21 @@ public class Champion extends GhostObject<ChampionData> {
 
         public Builder withLocale(final String locale) {
             this.locale = locale;
+            return this;
+        }
+
+        public Builder withPlatform(final Platform platform) {
+            this.platform = platform;
+            return this;
+        }
+
+        public Builder withRegion(final Region region) {
+            platform = region.getPlatform();
+            return this;
+        }
+
+        public Builder withVersion(final String version) {
+            this.version = version;
             return this;
         }
     }
@@ -137,11 +135,11 @@ public class Champion extends GhostObject<ChampionData> {
     public static final String STATUS_LOAD_GROUP = "status";
 
     public static Builder named(final String name) {
-        return new Builder().named(name);
+        return new Builder(name);
     }
 
     public static Builder withId(final int id) {
-        return new Builder().withId(id);
+        return new Builder(id);
     }
 
     private final Supplier<List<String>> allyTips = Suppliers.memoize(new Supplier<List<String>>() {

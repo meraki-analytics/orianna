@@ -11,7 +11,7 @@ public class ItemSet extends OriannaObject.MapProxy<Item, Integer, Integer, Inte
         super(coreData, new Function<Integer, Item>() {
             @Override
             public Item apply(final Integer id) {
-                return Item.withId(id).fromPlatform(coreData.getPlatform()).onVersion(coreData.getVersion()).withLocale(coreData.getLocale()).get();
+                return Item.withId(id).withPlatform(coreData.getPlatform()).withVersion(coreData.getVersion()).withLocale(coreData.getLocale()).get();
             }
         }, Functions.<Integer> identity());
     }

@@ -25,14 +25,12 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
         private String name, version, locale;
         private Platform platform;
 
-        public Builder fromPlatform(final Platform platform) {
-            this.platform = platform;
-            return this;
+        public Builder(final int id) {
+            this.id = id;
         }
 
-        public Builder fromRegion(final Region region) {
-            platform = region.getPlatform();
-            return this;
+        public Builder(final String name) {
+            this.name = name;
         }
 
         public Item get() {
@@ -68,21 +66,6 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
             return Orianna.getSettings().getPipeline().get(Item.class, builder.build());
         }
 
-        public Builder named(final String name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder onVersion(final String version) {
-            this.version = version;
-            return this;
-        }
-
-        public Builder withId(final int id) {
-            this.id = id;
-            return this;
-        }
-
         public Builder withIncludedData(final Set<String> includedData) {
             this.includedData = includedData;
             return this;
@@ -92,17 +75,32 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
             this.locale = locale;
             return this;
         }
+
+        public Builder withPlatform(final Platform platform) {
+            this.platform = platform;
+            return this;
+        }
+
+        public Builder withRegion(final Region region) {
+            platform = region.getPlatform();
+            return this;
+        }
+
+        public Builder withVersion(final String version) {
+            this.version = version;
+            return this;
+        }
     }
 
     public static final String ITEM_LOAD_GROUP = "item";
     private static final long serialVersionUID = 307765113960787815L;
 
     public static Builder named(final String name) {
-        return new Builder().named(name);
+        return new Builder(name);
     }
 
     public static Builder withId(final int id) {
-        return new Builder().withId(id);
+        return new Builder(id);
     }
 
     private final Supplier<SearchableList<Item>> buildsFrom = Suppliers.memoize(new Supplier<SearchableList<Item>>() {
@@ -111,7 +109,7 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
             load(ITEM_LOAD_GROUP);
             final List<Item> buildsFrom = new ArrayList<>(coreData.getBuildsFrom().size());
             for(final Integer id : coreData.getBuildsFrom()) {
-                buildsFrom.add(Item.withId(id).fromPlatform(coreData.getPlatform()).onVersion(coreData.getVersion()).withLocale(coreData.getLocale()).get());
+                buildsFrom.add(Item.withId(id).withPlatform(coreData.getPlatform()).withVersion(coreData.getVersion()).withLocale(coreData.getLocale()).get());
             }
             return SearchableListWrapper.of(Collections.unmodifiableList(buildsFrom));
         }
@@ -123,7 +121,7 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
             load(ITEM_LOAD_GROUP);
             final List<Item> buildsInto = new ArrayList<>(coreData.getBuildsInto().size());
             for(final Integer id : coreData.getBuildsInto()) {
-                buildsInto.add(Item.withId(id).fromPlatform(coreData.getPlatform()).onVersion(coreData.getVersion()).withLocale(coreData.getLocale()).get());
+                buildsInto.add(Item.withId(id).withPlatform(coreData.getPlatform()).withVersion(coreData.getVersion()).withLocale(coreData.getLocale()).get());
             }
             return SearchableListWrapper.of(Collections.unmodifiableList(buildsInto));
         }
@@ -174,7 +172,7 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
         public Champion get() {
             // TODO: Champion by key
             load(ITEM_LOAD_GROUP);
-            return Champion.named(coreData.getRequiredChampionKey()).fromPlatform(coreData.getPlatform()).onVersion(coreData.getVersion())
+            return Champion.named(coreData.getRequiredChampionKey()).withPlatform(coreData.getPlatform()).withVersion(coreData.getVersion())
                            .withLocale(coreData.getLocale()).get();
         }
     });

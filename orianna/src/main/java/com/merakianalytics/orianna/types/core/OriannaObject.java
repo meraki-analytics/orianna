@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.msgpack.jackson.dataformat.MessagePackFactory;
@@ -20,17 +19,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.merakianalytics.datapipelines.iterators.CloseableIterator;
-import com.merakianalytics.datapipelines.iterators.LazyList;
 import com.merakianalytics.orianna.types.common.OriannaException;
 import com.merakianalytics.orianna.types.core.searchable.AbstractSearchableObject;
-import com.merakianalytics.orianna.types.core.searchable.SearchableList;
-import com.merakianalytics.orianna.types.core.searchable.SearchableObject;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public abstract class OriannaObject<T extends CoreData> extends AbstractSearchableObject implements Serializable {
-    public static class ListProxy<T, C, L extends CoreData.ListProxy<C>> extends OriannaObject<L> implements SearchableList<T> {
+    public static abstract class ListProxy<T, C, L extends CoreData.ListProxy<C>> extends OriannaObject<L> implements List<T> {
         public class ListProxyIterator implements ListIterator<T> {
             private final ListIterator<T> iterator = data.listIterator();
 
@@ -81,12 +75,10 @@ public abstract class OriannaObject<T extends CoreData> extends AbstractSearchab
         }
 
         private static final long serialVersionUID = -3228932387340246571L;
-        private final Class<L> coreType;
         private final List<T> data;
 
         public ListProxy(final L coreData, final Function<C, T> transform, final Class<L> coreType) {
             super(coreData);
-            this.coreType = coreType;
 
             data = new ArrayList<>(coreData.size());
             for(final C item : coreData) {
@@ -97,7 +89,6 @@ public abstract class OriannaObject<T extends CoreData> extends AbstractSearchab
         private ListProxy(final L coreData, final List<T> data, final Class<L> coreType) {
             super(coreData);
             this.data = data;
-            this.coreType = coreType;
         }
 
         @Override
@@ -125,124 +116,9 @@ public abstract class OriannaObject<T extends CoreData> extends AbstractSearchab
             throw new UnsupportedOperationException();
         }
 
-        private boolean contains(final T element, final Object item) {
-            if(item == null && element == null) {
-                return true;
-            } else if(item == null || element == null) {
-                return false;
-            } else if(item.equals(element)) {
-                return true;
-            } else if(element instanceof SearchableObject && ((SearchableObject)element).contains(item)) {
-                return true;
-            }
-            return false;
-        }
-
         @Override
         public boolean containsAll(final Collection<?> items) {
             return data.containsAll(items);
-        }
-
-        @Override
-        public void delete(final Object query) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public void delete(final Predicate<T> predicate) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public ListProxy<T, C, L> filter(final Predicate<T> predicate) {
-            return filter(predicate, false);
-        }
-
-        @Override
-        public ListProxy<T, C, L> filter(final Predicate<T> predicate, final boolean streaming) {
-            final L data;
-            try {
-                data = coreType.newInstance();
-            } catch(InstantiationException | IllegalAccessException e) {
-                LOGGER.error("Failed to instantiate type " + coreType.getCanonicalName());
-                throw new OriannaException("Failed to instantiate type " + coreType.getCanonicalName() + "! Report this to the orianna team!", e);
-            }
-            if(!streaming) {
-                final List<T> results = new ArrayList<>();
-                for(int i = 0; i < size(); i++) {
-                    final T element = this.data.get(i);
-                    if(predicate.apply(element)) {
-                        data.add(coreData.get(i));
-                        results.add(element);
-                    }
-                }
-                return new ListProxy<>(data, results, coreType);
-            } else {
-                final CloseableIterator<T> iterator = new CloseableIterator<T>() {
-                    private int index = -1;
-                    private final Iterator<T> iterator = iterator();
-                    private T next = null;
-
-                    @Override
-                    public void close() {}
-
-                    @Override
-                    public boolean hasNext() {
-                        if(next != null) {
-                            return true;
-                        }
-
-                        while(iterator.hasNext()) {
-                            final T n = iterator.next();
-                            index++;
-                            if(predicate.apply(n)) {
-                                next = n;
-                                return true;
-                            }
-                        }
-                        return false;
-                    }
-
-                    @Override
-                    public T next() {
-                        if(!hasNext()) {
-                            throw new NoSuchElementException();
-                        }
-
-                        final T n = next;
-                        next = null;
-                        data.add(coreData.get(index));
-                        return n;
-                    }
-
-                    @Override
-                    public void remove() {
-                        throw new UnsupportedOperationException();
-                    }
-                };
-
-                return new ListProxy<>(data, new LazyList<>(iterator), coreType);
-            }
-        }
-
-        @Override
-        public T find(final Object item) {
-            return find(new Predicate<T>() {
-                @Override
-                public boolean apply(final T element) {
-                    return contains(element, item);
-                }
-            });
-        }
-
-        @Override
-        public T find(final Predicate<T> predicate) {
-            for(final T element : this) {
-                if(predicate.apply(element)) {
-                    return element;
-                }
-            }
-            return null;
         }
 
         @Override
@@ -301,21 +177,6 @@ public abstract class OriannaObject<T extends CoreData> extends AbstractSearchab
         }
 
         @Override
-        public ListProxy<T, C, L> search(final Object item) {
-            return search(item, false);
-        }
-
-        @Override
-        public ListProxy<T, C, L> search(final Object item, final boolean streaming) {
-            return filter(new Predicate<T>() {
-                @Override
-                public boolean apply(final T element) {
-                    return contains(element, item);
-                }
-            }, streaming);
-        }
-
-        @Override
         public T set(final int index, final T item) {
             throw new UnsupportedOperationException();
         }
@@ -342,7 +203,7 @@ public abstract class OriannaObject<T extends CoreData> extends AbstractSearchab
         }
     }
 
-    public static class MapProxy<K, V, CK, CV, P extends CoreData.MapProxy<CK, CV>> extends OriannaObject<P> implements Map<K, V> {
+    public static abstract class MapProxy<K, V, CK, CV, P extends CoreData.MapProxy<CK, CV>> extends OriannaObject<P> implements Map<K, V> {
         private static final long serialVersionUID = 2266943596124327746L;
         private final Map<K, V> data;
 
