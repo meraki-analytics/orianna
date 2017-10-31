@@ -7,6 +7,7 @@ import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.GhostObject;
+import com.merakianalytics.orianna.types.core.searchable.Searchable;
 
 public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data.summoner.Summoner> {
     public static class Builder {
@@ -78,6 +79,7 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
         super(coreData, 1);
     }
 
+    @Searchable(long.class)
     public long getAccountId() {
         if(coreData.getAccountId() == 0L) {
             load(SUMMONER_LOAD_GROUP);
@@ -85,6 +87,7 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
         return coreData.getAccountId();
     }
 
+    @Searchable(long.class)
     public long getId() {
         if(coreData.getId() == 0L) {
             load(SUMMONER_LOAD_GROUP);
@@ -97,6 +100,7 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
         return coreData.getLevel();
     }
 
+    @Searchable(String.class)
     public String getName() {
         if(coreData.getName() == null) {
             load(SUMMONER_LOAD_GROUP);

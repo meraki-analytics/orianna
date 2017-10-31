@@ -49,6 +49,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Realm;
 import com.merakianalytics.orianna.types.core.staticdata.Rune;
 import com.merakianalytics.orianna.types.core.staticdata.SummonerSpell;
 import com.merakianalytics.orianna.types.core.staticdata.Versions;
+import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
 public abstract class Orianna {
     public static class Configuration {
@@ -326,12 +327,24 @@ public abstract class Orianna {
         return settings;
     }
 
+    public static Summoner.Builder getSummonerNamed(final String name) {
+        return Summoner.named(name);
+    }
+
     public static SummonerSpell.Builder getSummonerSpellNamed(final String name) {
         return SummonerSpell.named(name);
     }
 
     public static SummonerSpell.Builder getSummonerSpellWithId(final int id) {
         return SummonerSpell.withId(id);
+    }
+
+    public static Summoner.Builder getSummonerWithAccountId(final long id) {
+        return Summoner.withAccountId(id);
+    }
+
+    public static Summoner.Builder getSummonerWithId(final long id) {
+        return Summoner.withId(id);
     }
 
     public static Versions getVersions() {
