@@ -32,6 +32,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Realm;
 import com.merakianalytics.orianna.types.core.staticdata.Rune;
 import com.merakianalytics.orianna.types.core.staticdata.SummonerSpell;
 import com.merakianalytics.orianna.types.core.staticdata.Versions;
+import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
 public class InMemoryCache extends AbstractDataStore {
     public static class Configuration {
@@ -72,6 +73,7 @@ public class InMemoryCache extends AbstractDataStore {
         .put(Rune.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
         .put(SummonerSpell.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
         .put(Versions.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
+        .put(Summoner.class, new Long(Minutes.minutes(30).toStandardDuration().getMillis()))
         .build();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InMemoryCache.class);
@@ -155,6 +157,12 @@ public class InMemoryCache extends AbstractDataStore {
     public Rune getRune(final Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forRuneQuery(query);
         return (Rune)cache.get(key);
+    }
+
+    @Get(Summoner.class)
+    public Summoner getSummoner(final Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forSummonerQuery(query);
+        return (Summoner)cache.get(key);
     }
 
     @Get(SummonerSpell.class)
@@ -283,6 +291,26 @@ public class InMemoryCache extends AbstractDataStore {
 
         for(final int key : keys) {
             cache.put(key, rune);
+        }
+    }
+
+    @Put(Summoner.class)
+    public void putSummoner(final Summoner summoner, final PipelineContext context) {
+        final int[] keys = UniqueKeys.forSummoner(summoner);
+
+        if(keys.length < 3) {
+            final LoadHook hook = new LoadHook() {
+                @Override
+                public void call() {
+                    putSummoner(summoner, null);
+                }
+            };
+
+            summoner.registerGhostLoadHook(hook, Summoner.SUMMONER_LOAD_GROUP);
+        }
+
+        for(final int key : keys) {
+            cache.put(key, summoner);
         }
     }
 

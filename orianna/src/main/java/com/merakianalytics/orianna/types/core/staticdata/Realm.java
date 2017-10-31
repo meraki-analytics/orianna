@@ -15,6 +15,8 @@ public class Realm extends GhostObject<com.merakianalytics.orianna.types.data.st
     public static class Builder {
         private Platform platform;
 
+        private Builder() {}
+
         public Realm get() {
             if(platform == null) {
                 platform = Orianna.getSettings().getDefaultPlatform();

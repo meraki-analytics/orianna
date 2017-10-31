@@ -76,9 +76,9 @@ public class SummonerAPI extends RiotAPIService {
     @Get(Summoner.class)
     public Summoner getSummoner(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final Number summonerId = (Number)query.get("summonerId");
+        final Number summonerId = (Number)query.get("id");
         final Number accountId = (Number)query.get("accountId");
-        final String summonerName = (String)query.get("summonerName");
+        final String summonerName = (String)query.get("name");
 
         String endpoint;
         String limiter;

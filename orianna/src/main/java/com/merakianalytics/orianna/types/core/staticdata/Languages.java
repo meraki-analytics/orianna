@@ -10,6 +10,8 @@ public class Languages extends GhostObject.ListProxy<String, String, com.merakia
     public static class Builder {
         private Platform platform;
 
+        private Builder() {}
+
         public Languages get() {
             if(platform == null) {
                 platform = Orianna.getSettings().getDefaultPlatform();

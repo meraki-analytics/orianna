@@ -382,6 +382,42 @@ public abstract class GhostObject<T extends CoreData> extends OriannaObject<T> {
 
     protected abstract void loadCoreData(String group);
 
+    public void markAsGhostLoaded(final String group) {
+        Boolean loaded = groups.get(group);
+        if(loaded == null || !loaded) {
+            Object lock = groupLocks.get(group);
+            if(lock == null) {
+                synchronized(groupLocks) {
+                    lock = groupLocks.get(group);
+                    if(lock == null) {
+                        lock = new Object();
+                        groupLocks.put(group, lock);
+                    }
+                }
+            }
+
+            boolean removeHooks = false;
+            synchronized(lock) {
+                loaded = groups.get(group);
+                if(loaded == null || !loaded) {
+                    groups.put(group, Boolean.TRUE);
+                    removeHooks = true;
+                }
+            }
+
+            if(removeHooks) {
+                synchronized(loadHookLock) {
+                    if(loadHooks != null) {
+                        loadHooks.remove(group);
+                        if(loadHooks.isEmpty()) {
+                            loadHooks = null;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     public void registerGhostLoadHook(final LoadHook hook, final String group) {
         final Boolean loaded = groups.get(group);
         if(loaded == null || !loaded) {

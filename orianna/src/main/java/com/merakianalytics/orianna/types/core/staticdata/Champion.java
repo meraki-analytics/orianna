@@ -27,11 +27,11 @@ public class Champion extends GhostObject<ChampionData> {
         private String name, version, locale;
         private Platform platform;
 
-        public Builder(final int id) {
+        private Builder(final int id) {
             this.id = id;
         }
 
-        public Builder(final String name) {
+        private Builder(final String name) {
             this.name = name;
         }
 

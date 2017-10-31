@@ -22,6 +22,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Realm;
 import com.merakianalytics.orianna.types.core.staticdata.Rune;
 import com.merakianalytics.orianna.types.core.staticdata.SummonerSpell;
 import com.merakianalytics.orianna.types.core.staticdata.Versions;
+import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
 public class UnloadedGhostObjectSource extends AbstractDataSource {
     private static String getCurrentVersion(final Platform platform, final PipelineContext context) {
@@ -180,6 +181,23 @@ public class UnloadedGhostObjectSource extends AbstractDataSource {
         data.setLocale(locale);
         data.setIncludedData(includedData);
         return new Rune(data);
+    }
+
+    @Get(Summoner.class)
+    public Summoner getSummoner(final Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
+        final Long id = (Long)query.get("id");
+        final Long accountId = (Long)query.get("accountId");
+        final String name = (String)query.get("name");
+        Utilities.checkAtLeastOneNotNull(id, "id", name, "name", accountId, "accountId");
+
+        final com.merakianalytics.orianna.types.data.summoner.Summoner data = new com.merakianalytics.orianna.types.data.summoner.Summoner();
+        data.setPlatform(platform);
+        data.setName(name);
+        data.setId(id == null ? 0 : id.longValue());
+        data.setAccountId(accountId == null ? 0 : accountId.longValue());
+        return new Summoner(data);
     }
 
     @SuppressWarnings("unchecked")

@@ -11,6 +11,8 @@ public class LanguageStrings extends GhostObject.MapProxy<String, String, String
         private Platform platform;
         private String version, locale;
 
+        private Builder() {}
+
         public LanguageStrings get() {
             if(version == null) {
                 version = Orianna.getSettings().getCurrentVersion();

@@ -17,6 +17,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Realm;
 import com.merakianalytics.orianna.types.core.staticdata.Rune;
 import com.merakianalytics.orianna.types.core.staticdata.SummonerSpell;
 import com.merakianalytics.orianna.types.core.staticdata.Versions;
+import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
 public abstract class UniqueKeys {
     public static int[] forChampion(final Champion champion) {
@@ -236,6 +237,70 @@ public abstract class UniqueKeys {
         return Arrays.hashCode(new Object[] {
             Rune.class.getCanonicalName(), ((Platform)query.get("platform")).toString(), (String)query.get("version"), (String)query.get("locale"),
             id == null ? name : id.intValue(), (Set<String>)query.get("includedData")
+        });
+    }
+
+    public static int[] forSummoner(final Summoner summoner) {
+        final com.merakianalytics.orianna.types.data.summoner.Summoner data = summoner.getCoreData();
+        if(data.getId() != 0L && data.getAccountId() != 0L && data.getName() != null) {
+            return new int[] {
+                Arrays.hashCode(new Object[] {
+                    Summoner.class.getCanonicalName(), summoner.getPlatform().toString(), summoner.getId()
+                }),
+                Arrays.hashCode(new Object[] {
+                    Summoner.class.getCanonicalName(), summoner.getPlatform().toString(), summoner.getAccountId()
+                }),
+                Arrays.hashCode(new Object[] {
+                    Summoner.class.getCanonicalName(), summoner.getPlatform().toString(), summoner.getName()
+                })
+            };
+        } else if(data.getId() != 0L && data.getAccountId() != 0L) {
+            return new int[] {
+                Arrays.hashCode(new Object[] {
+                    Summoner.class.getCanonicalName(), summoner.getPlatform().toString(), summoner.getId()
+                }),
+                Arrays.hashCode(new Object[] {
+                    Summoner.class.getCanonicalName(), summoner.getPlatform().toString(), summoner.getAccountId()
+                }),
+            };
+        } else if(data.getId() != 0L && data.getName() != null) {
+            return new int[] {
+                Arrays.hashCode(new Object[] {
+                    Summoner.class.getCanonicalName(), summoner.getPlatform().toString(), summoner.getId()
+                }),
+                Arrays.hashCode(new Object[] {
+                    Summoner.class.getCanonicalName(), summoner.getPlatform().toString(), summoner.getName()
+                })
+            };
+        } else if(data.getId() != 0L) {
+            return new int[] {
+                Arrays.hashCode(new Object[] {
+                    Summoner.class.getCanonicalName(), summoner.getPlatform().toString(), summoner.getId()
+                })
+            };
+        } else if(data.getAccountId() != 0L) {
+            return new int[] {
+                Arrays.hashCode(new Object[] {
+                    Summoner.class.getCanonicalName(), summoner.getPlatform().toString(), summoner.getAccountId()
+                })
+            };
+        } else if(data.getName() != null) {
+            return new int[] {
+                Arrays.hashCode(new Object[] {
+                    Summoner.class.getCanonicalName(), summoner.getPlatform().toString(), summoner.getName()
+                })
+            };
+        } else {
+            throw new IllegalArgumentException("Can't get key for Summoner without ID, account ID, or name!");
+        }
+    }
+
+    public static int forSummonerQuery(final Map<String, Object> query) {
+        final Long id = (Long)query.get("id");
+        final Long accountId = (Long)query.get("accountId");
+        final String name = (String)query.get("name");
+        return Arrays.hashCode(new Object[] {
+            Summoner.class.getCanonicalName(), ((Platform)query.get("platform")).toString(), id == null ? accountId == null ? name : accountId : id
         });
     }
 

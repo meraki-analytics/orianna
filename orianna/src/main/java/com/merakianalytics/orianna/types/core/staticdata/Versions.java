@@ -10,6 +10,8 @@ public class Versions extends GhostObject.ListProxy<String, String, com.merakian
     public static class Builder {
         private Platform platform;
 
+        private Builder() {}
+
         public Versions get() {
             if(platform == null) {
                 platform = Orianna.getSettings().getDefaultPlatform();

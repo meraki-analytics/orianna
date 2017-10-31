@@ -12,6 +12,8 @@ public class Maps extends GhostObject.ListProxy<Map, com.merakianalytics.orianna
         private Platform platform;
         private String version, locale;
 
+        private Builder() {}
+
         public Maps get() {
             if(version == null) {
                 version = Orianna.getSettings().getCurrentVersion();

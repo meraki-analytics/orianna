@@ -12,6 +12,8 @@ public class ProfileIcons extends GhostObject.ListProxy<ProfileIcon, com.merakia
         private Platform platform;
         private String version, locale;
 
+        private Builder() {}
+
         public ProfileIcons get() {
             if(version == null) {
                 version = Orianna.getSettings().getCurrentVersion();
