@@ -1,4 +1,4 @@
-package com.merakianalytics.orianna.datapipeline.transformers;
+package com.merakianalytics.orianna.datapipeline.transformers.dtodata;
 
 import java.util.ArrayList;
 import java.util.List;
