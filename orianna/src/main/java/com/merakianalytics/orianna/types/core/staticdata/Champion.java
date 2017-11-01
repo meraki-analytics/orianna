@@ -96,8 +96,8 @@ public class Champion extends GhostObject<ChampionData> {
 
     public static class ChampionData extends CoreData {
         private static final long serialVersionUID = 8024144237694671276L;
-        private com.merakianalytics.orianna.types.data.staticdata.Champion champion;
-        private ChampionStatus status;
+        private com.merakianalytics.orianna.types.data.staticdata.Champion champion = new com.merakianalytics.orianna.types.data.staticdata.Champion();
+        private ChampionStatus status = new ChampionStatus();
 
         /**
          * @return the champion
