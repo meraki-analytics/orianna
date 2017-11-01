@@ -314,14 +314,14 @@ public class MatchAPI extends RiotAPIService {
     @Get(MatchTimeline.class)
     public MatchTimeline getMatchTimeline(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final Number matchId = (Number)query.get("matchId");
-        Utilities.checkNotNull(platform, "platform", matchId, "matchId");
+        final Number id = (Number)query.get("id");
+        Utilities.checkNotNull(platform, "platform", id, "id");
 
-        final String endpoint = "lol/match/v3/timelines/by-match/" + matchId;
+        final String endpoint = "lol/match/v3/timelines/by-match/" + id;
         final MatchTimeline data = get(MatchTimeline.class, endpoint, platform, "lol/match/v3/timelines/by-match/matchId");
 
         data.setPlatform(platform.getTag());
-        data.setMatchId(matchId.longValue());
+        data.setMatchId(id.longValue());
         return data;
     }
 

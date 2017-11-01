@@ -10,6 +10,7 @@ import com.merakianalytics.orianna.types.core.OriannaObject;
 
 public class Image extends OriannaObject<com.merakianalytics.orianna.types.data.staticdata.Image> {
     private static final long serialVersionUID = -6752564052626945287L;
+
     private final Supplier<Sprite> sprite = Suppliers.memoize(new Supplier<Sprite>() {
         @Override
         public Sprite get() {

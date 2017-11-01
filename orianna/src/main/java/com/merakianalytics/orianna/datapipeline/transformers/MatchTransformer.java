@@ -286,27 +286,52 @@ public class MatchTransformer extends AbstractDataTransformer {
     public MatchEvent transform(final Event item, final PipelineContext context) {
         final MatchEvent event = new MatchEvent();
         event.setAfterId(item.getAfterId());
-        event.setAscendedType(item.getAscensionType().toString());
-        event.setAssistingParticipantIds(new ArrayList<>(item.getAssistingParticipants()));
+        if(item.getAscensionType() != null) {
+            event.setAscendedType(item.getAscensionType().toString());
+        }
+        if(item.getAssistingParticipants() != null) {
+            event.setAssistingParticipantIds(new ArrayList<>(item.getAssistingParticipants()));
+        }
         event.setBeforeId(item.getBeforeId());
-        event.setBuildingType(item.getBuildingType().toString());
-        event.setPointCaptured(item.getCapturedPoint().toString());
+        if(item.getBuildingType() != null) {
+            event.setBuildingType(item.getBuildingType().toString());
+        }
+        if(item.getCapturedPoint() != null) {
+            event.setPointCaptured(item.getCapturedPoint().toString());
+        }
         event.setCreatorId(item.getCreatorId());
-        event.setEventType(null);
         event.setItemId(item.getItemId());
         event.setKillerId(item.getKillerId());
-        event.setLaneType(item.getLaneType().toString());
-        event.setLevelUpType(item.getLevelUpType().toString());
-        event.setMonsterSubType(item.getMonsterSubType().toString());
+        if(item.getLaneType() != null) {
+            event.setLaneType(item.getLaneType().toString());
+        }
+        if(item.getLevelUpType() != null) {
+            event.setLevelUpType(item.getLevelUpType().toString());
+        }
+        if(item.getMonsterSubType() != null) {
+            event.setMonsterSubType(item.getMonsterSubType().toString());
+        }
         event.setParticipantId(item.getParticipantId());
-        event.setPosition(transform(item.getPosition(), context));
-        event.setSkillSlot(item.getSkill().getSlot());
-        event.setTeamId(item.getTeam().getId());
+        if(item.getPosition() != null) {
+            event.setPosition(transform(item.getPosition(), context));
+        }
+        if(item.getSkill() != null) {
+            event.setSkillSlot(item.getSkill().getSlot());
+        }
+        if(item.getTeam() != null) {
+            event.setTeamId(item.getTeam().getId());
+        }
         event.setTimestamp(item.getTimestamp().getMillis());
-        event.setTowerType(item.getTurretType().toString());
-        event.setType(item.getType().toString());
+        if(item.getTurretType() != null) {
+            event.setTowerType(item.getTurretType().toString());
+        }
+        if(item.getType() != null) {
+            event.setType(item.getType().toString());
+        }
         event.setVictimId(item.getVictimId());
-        event.setWardType(item.getWardType().toString());
+        if(item.getWardType() != null) {
+            event.setWardType(item.getWardType().toString());
+        }
         return event;
     }
 
@@ -375,26 +400,52 @@ public class MatchTransformer extends AbstractDataTransformer {
     public Event transform(final MatchEvent item, final PipelineContext context) {
         final Event event = new Event();
         event.setAfterId(item.getAfterId());
-        event.setAscensionType(AscensionType.valueOf(item.getAscendedType()));
-        event.setAssistingParticipants(new ArrayList<>(item.getAssistingParticipantIds()));
+        if(item.getAscendedType() != null) {
+            event.setAscensionType(AscensionType.valueOf(item.getAscendedType()));
+        }
+        if(item.getAssistingParticipantIds() != null) {
+            event.setAssistingParticipants(new ArrayList<>(item.getAssistingParticipantIds()));
+        }
         event.setBeforeId(item.getBeforeId());
-        event.setBuildingType(BuildingType.valueOf(item.getBuildingType()));
-        event.setCapturedPoint(Point.valueOf(item.getPointCaptured()));
+        if(item.getBuildingType() != null) {
+            event.setBuildingType(BuildingType.valueOf(item.getBuildingType()));
+        }
+        if(item.getPointCaptured() != null) {
+            event.setCapturedPoint(Point.valueOf(item.getPointCaptured()));
+        }
         event.setCreatorId(item.getCreatorId());
         event.setItemId(item.getItemId());
         event.setKillerId(item.getKillerId());
-        event.setLaneType(LaneType.valueOf(item.getLaneType()));
-        event.setLevelUpType(LevelUpType.valueOf(item.getLevelUpType()));
-        event.setMonsterSubType(MonsterSubType.valueOf(item.getMonsterSubType()));
+        if(item.getLaneType() != null) {
+            event.setLaneType(LaneType.valueOf(item.getLaneType()));
+        }
+        if(item.getLevelUpType() != null) {
+            event.setLevelUpType(LevelUpType.valueOf(item.getLevelUpType()));
+        }
+        if(item.getMonsterSubType() != null) {
+            event.setMonsterSubType(MonsterSubType.valueOf(item.getMonsterSubType()));
+        }
         event.setParticipantId(item.getParticipantId());
-        event.setPosition(transform(item.getPosition(), context));
-        event.setSkill(Skill.withId(item.getSkillSlot()));
-        event.setTeam(com.merakianalytics.orianna.types.common.Team.withId(item.getTeamId()));
+        if(item.getPosition() != null) {
+            event.setPosition(transform(item.getPosition(), context));
+        }
+        if(item.getSkillSlot() != 0) {
+            event.setSkill(Skill.withId(item.getSkillSlot()));
+        }
+        if(item.getTeamId() != 0) {
+            event.setTeam(com.merakianalytics.orianna.types.common.Team.withId(item.getTeamId()));
+        }
         event.setTimestamp(Duration.millis(item.getTimestamp()));
-        event.setTurretType(TurretType.valueOf(item.getTowerType()));
-        event.setType(EventType.valueOf(item.getType()));
+        if(item.getTowerType() != null) {
+            event.setTurretType(TurretType.valueOf(item.getTowerType()));
+        }
+        if(item.getType() != null) {
+            event.setType(EventType.valueOf(item.getType()));
+        }
         event.setVictimId(item.getVictimId());
-        event.setWardType(WardType.valueOf(item.getWardType()));
+        if(item.getWardType() != null) {
+            event.setWardType(WardType.valueOf(item.getWardType()));
+        }
         return event;
     }
 
