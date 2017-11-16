@@ -14,10 +14,6 @@
 	<name>orianna</name>
 	<description>A Java adaptation of the Riot Games LoL API (https://developer.riotgames.com/)</description>
 	<url>https://github.com/meraki-analytics/orianna</url>
-	
-	<properties>
-		<cache2k.version>1.0.1.Final</cache2k.version>
-	</properties>
 
 	<dependencies>
 		<dependency>
@@ -59,7 +55,6 @@
 		<dependency>
 			<groupId>org.cache2k</groupId>
 			<artifactId>cache2k-core</artifactId>
-			<version>${cache2k.version}</version>
 		</dependency>
 	</dependencies>
 </project>
