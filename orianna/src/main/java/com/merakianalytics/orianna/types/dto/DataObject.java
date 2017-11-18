@@ -14,6 +14,7 @@ import org.msgpack.jackson.dataformat.MessagePackFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -254,9 +255,11 @@ public abstract class DataObject implements Serializable {
 
     }
 
-    private static final ObjectMapper JSON_MAPPER = new ObjectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    private static final ObjectMapper JSON_MAPPER =
+        new ObjectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES).setSerializationInclusion(Include.NON_DEFAULT);
     private static final Logger LOGGER = LoggerFactory.getLogger(DataObject.class);
-    private static final ObjectMapper MSGPACK_MAPPER = new ObjectMapper(new MessagePackFactory()).disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    private static final ObjectMapper MSGPACK_MAPPER =
+        new ObjectMapper(new MessagePackFactory()).disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES).setSerializationInclusion(Include.NON_DEFAULT);
     private static final long serialVersionUID = 844645829337854049L;
 
     public static <T extends DataObject> T fromBytes(final Class<T> type, final byte[] msgpack) {

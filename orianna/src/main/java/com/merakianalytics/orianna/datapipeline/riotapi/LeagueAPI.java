@@ -60,7 +60,6 @@ public class LeagueAPI extends RiotAPIService {
         }
 
         data.setPlatform(platform.getTag());
-        data.setSummonerId(-1L);
         return data;
     }
 
@@ -107,7 +106,6 @@ public class LeagueAPI extends RiotAPIService {
                 }
 
                 data.setPlatform(platform.getTag());
-                data.setSummonerId(-1L);
                 return data;
             }
 

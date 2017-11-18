@@ -15,6 +15,7 @@ import org.msgpack.jackson.dataformat.MessagePackFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -291,9 +292,10 @@ public abstract class OriannaObject<T extends CoreData> extends AbstractSearchab
         }
     }
 
-    private static final ObjectMapper JSON_MAPPER = new ObjectMapper().registerModule(new JodaModule());
+    private static final ObjectMapper JSON_MAPPER = new ObjectMapper().registerModule(new JodaModule()).setSerializationInclusion(Include.NON_DEFAULT);
     private static final Logger LOGGER = LoggerFactory.getLogger(OriannaObject.class);
-    private static final ObjectMapper MSGPACK_MAPPER = new ObjectMapper(new MessagePackFactory()).registerModule(new JodaModule());
+    private static final ObjectMapper MSGPACK_MAPPER =
+        new ObjectMapper(new MessagePackFactory()).registerModule(new JodaModule()).setSerializationInclusion(Include.NON_DEFAULT);
     private static final long serialVersionUID = 5467384615747172442L;
 
     @JsonValue
