@@ -1,15 +1,16 @@
 package com.merakianalytics.orianna.types.data.spectator;
 
-import java.util.Map;
+import java.util.List;
 
 import com.merakianalytics.orianna.types.common.Team;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class Player extends CoreData {
-    private static final long serialVersionUID = -8251450200432275083L;
+    private static final long serialVersionUID = -49676996922510887L;
     private boolean bot;
-    private Map<Integer, Integer> masteries, runes;
+    private List<GameCustomizationObject> customizationObjects;
     private int profileIconId, championId, summonerSpellDId, summonerSpellFId;
+    private Runes runes;
     private long summonerId;
     private String summonerName;
     private Team team;
@@ -32,11 +33,11 @@ public class Player extends CoreData {
         if(championId != other.championId) {
             return false;
         }
-        if(masteries == null) {
-            if(other.masteries != null) {
+        if(customizationObjects == null) {
+            if(other.customizationObjects != null) {
                 return false;
             }
-        } else if(!masteries.equals(other.masteries)) {
+        } else if(!customizationObjects.equals(other.customizationObjects)) {
             return false;
         }
         if(profileIconId != other.profileIconId) {
@@ -79,10 +80,10 @@ public class Player extends CoreData {
     }
 
     /**
-     * @return the masteries
+     * @return the customizationObjects
      */
-    public Map<Integer, Integer> getMasteries() {
-        return masteries;
+    public List<GameCustomizationObject> getCustomizationObjects() {
+        return customizationObjects;
     }
 
     /**
@@ -95,7 +96,7 @@ public class Player extends CoreData {
     /**
      * @return the runes
      */
-    public Map<Integer, Integer> getRunes() {
+    public Runes getRunes() {
         return runes;
     }
 
@@ -140,7 +141,7 @@ public class Player extends CoreData {
         int result = 1;
         result = prime * result + (bot ? 1231 : 1237);
         result = prime * result + championId;
-        result = prime * result + (masteries == null ? 0 : masteries.hashCode());
+        result = prime * result + (customizationObjects == null ? 0 : customizationObjects.hashCode());
         result = prime * result + profileIconId;
         result = prime * result + (runes == null ? 0 : runes.hashCode());
         result = prime * result + (int)(summonerId ^ summonerId >>> 32);
@@ -175,11 +176,11 @@ public class Player extends CoreData {
     }
 
     /**
-     * @param masteries
-     *        the masteries to set
+     * @param customizationObjects
+     *        the customizationObjects to set
      */
-    public void setMasteries(final Map<Integer, Integer> masteries) {
-        this.masteries = masteries;
+    public void setCustomizationObjects(final List<GameCustomizationObject> customizationObjects) {
+        this.customizationObjects = customizationObjects;
     }
 
     /**
@@ -194,7 +195,7 @@ public class Player extends CoreData {
      * @param runes
      *        the runes to set
      */
-    public void setRunes(final Map<Integer, Integer> runes) {
+    public void setRunes(final Runes runes) {
         this.runes = runes;
     }
 

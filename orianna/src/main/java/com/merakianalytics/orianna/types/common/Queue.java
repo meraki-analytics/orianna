@@ -1,5 +1,6 @@
 package com.merakianalytics.orianna.types.common;
 
+import java.util.Map;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableMap;
@@ -54,10 +55,10 @@ public enum Queue {
         TEAM_BUILDER_RANKED_SOLO(420),
         URF_5x5(76);
 
-    private static final java.util.Map<Integer, Queue> BY_ID = getById();
+    private static final Map<Integer, Queue> BY_ID = getById();
     public static final Set<Queue> RANKED = ImmutableSet.of(RANKED_SOLO_5x5, RANKED_FLEX_SR, RANKED_FLEX_TT);
 
-    private static final java.util.Map<Integer, Queue> getById() {
+    private static final Map<Integer, Queue> getById() {
         final Builder<Integer, Queue> builder = ImmutableMap.builder();
         for(final Queue queue : values()) {
             builder.put(queue.id, queue);

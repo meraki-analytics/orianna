@@ -1,9 +1,7 @@
 package com.merakianalytics.orianna.datapipeline.transformers.dtodata;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
@@ -15,19 +13,21 @@ import com.merakianalytics.orianna.types.common.GameMode;
 import com.merakianalytics.orianna.types.common.GameType;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Queue;
+import com.merakianalytics.orianna.types.common.RunePath;
 import com.merakianalytics.orianna.types.common.Team;
 import com.merakianalytics.orianna.types.data.spectator.CurrentGame;
 import com.merakianalytics.orianna.types.data.spectator.FeaturedGame;
 import com.merakianalytics.orianna.types.data.spectator.FeaturedGames;
+import com.merakianalytics.orianna.types.data.spectator.GameCustomizationObject;
 import com.merakianalytics.orianna.types.data.spectator.Participant;
 import com.merakianalytics.orianna.types.data.spectator.Player;
+import com.merakianalytics.orianna.types.data.spectator.Runes;
 import com.merakianalytics.orianna.types.dto.spectator.BannedChampion;
 import com.merakianalytics.orianna.types.dto.spectator.CurrentGameInfo;
 import com.merakianalytics.orianna.types.dto.spectator.CurrentGameParticipant;
 import com.merakianalytics.orianna.types.dto.spectator.FeaturedGameInfo;
-import com.merakianalytics.orianna.types.dto.spectator.Mastery;
 import com.merakianalytics.orianna.types.dto.spectator.Observer;
-import com.merakianalytics.orianna.types.dto.spectator.Rune;
+import com.merakianalytics.orianna.types.dto.spectator.Perks;
 
 public class SpectatorTransformer extends AbstractDataTransformer {
     @Transform(from = com.merakianalytics.orianna.types.dto.spectator.FeaturedGames.class, to = FeaturedGames.class)
@@ -39,6 +39,15 @@ public class SpectatorTransformer extends AbstractDataTransformer {
         games.setPlatform(Platform.withTag(item.getPlatform()));
         games.setRefreshInterval(Duration.millis(item.getClientRefreshInterval()));
         return games;
+    }
+
+    @Transform(from = com.merakianalytics.orianna.types.dto.spectator.GameCustomizationObject.class, to = GameCustomizationObject.class)
+    public GameCustomizationObject transform(final com.merakianalytics.orianna.types.dto.spectator.GameCustomizationObject item,
+        final PipelineContext context) {
+        final GameCustomizationObject object = new GameCustomizationObject();
+        object.setCategory(item.getCategory());
+        object.setContent(item.getContent());
+        return object;
     }
 
     @Transform(from = com.merakianalytics.orianna.types.dto.spectator.Participant.class, to = Participant.class)
@@ -154,17 +163,13 @@ public class SpectatorTransformer extends AbstractDataTransformer {
         final Player player = new Player();
         player.setBot(item.isBot());
         player.setChampionId((int)item.getChampionId());
-        Map<Integer, Integer> counts = new HashMap<>();
-        for(final Mastery mastery : item.getMasteries()) {
-            counts.put((int)mastery.getMasteryId(), mastery.getRank());
-        }
-        player.setMasteries(counts);
         player.setProfileIconId((int)item.getProfileIconId());
-        counts = new HashMap<>();
-        for(final Rune rune : item.getRunes()) {
-            counts.put((int)rune.getRuneId(), rune.getCount());
+        player.setRunes(transform(item.getPerks(), context));
+        final List<GameCustomizationObject> objects = new ArrayList<>();
+        for(final com.merakianalytics.orianna.types.dto.spectator.GameCustomizationObject object : item.getGameCustomizationObjects()) {
+            objects.add(transform(object, context));
         }
-        player.setRunes(counts);
+        player.setCustomizationObjects(objects);
         player.setSummonerId(item.getSummonerId());
         player.setSummonerName(item.getSummonerName());
         player.setSummonerSpellDId((int)item.getSpell1Id());
@@ -279,6 +284,16 @@ public class SpectatorTransformer extends AbstractDataTransformer {
         return games;
     }
 
+    @Transform(from = GameCustomizationObject.class, to = com.merakianalytics.orianna.types.dto.spectator.GameCustomizationObject.class)
+    public com.merakianalytics.orianna.types.dto.spectator.GameCustomizationObject transform(final GameCustomizationObject item,
+        final PipelineContext context) {
+        final com.merakianalytics.orianna.types.dto.spectator.GameCustomizationObject object =
+            new com.merakianalytics.orianna.types.dto.spectator.GameCustomizationObject();
+        object.setCategory(item.getCategory());
+        object.setContent(item.getContent());
+        return object;
+    }
+
     @Transform(from = Participant.class, to = com.merakianalytics.orianna.types.dto.spectator.Participant.class)
     public com.merakianalytics.orianna.types.dto.spectator.Participant transform(final Participant item, final PipelineContext context) {
         final com.merakianalytics.orianna.types.dto.spectator.Participant player = new com.merakianalytics.orianna.types.dto.spectator.Participant();
@@ -292,31 +307,47 @@ public class SpectatorTransformer extends AbstractDataTransformer {
         return player;
     }
 
+    @Transform(from = Perks.class, to = Runes.class)
+    public Runes transform(final Perks item, final PipelineContext context) {
+        final Runes runes = new Runes(item.getPerkIds().size());
+        for(final Long id : item.getPerkIds()) {
+            runes.add(id.intValue());
+        }
+        runes.setPrimaryPath(RunePath.withId((int)item.getPerkStyle()));
+        runes.setSecondaryPath(RunePath.withId((int)item.getPerkStyle()));
+        return runes;
+    }
+
     @Transform(from = Player.class, to = CurrentGameParticipant.class)
     public CurrentGameParticipant transform(final Player item, final PipelineContext context) {
         final CurrentGameParticipant player = new CurrentGameParticipant();
         player.setBot(item.isBot());
         player.setChampionId(item.getChampionId());
-        final List<Mastery> masteries = new ArrayList<>(item.getMasteries().size());
-        for(final Integer id : item.getMasteries().keySet()) {
-            final Mastery mastery = new Mastery();
-            mastery.setMasteryId(id);
-            mastery.setRank(item.getMasteries().get(id));
-        }
-        player.setMasteries(masteries);
         player.setProfileIconId(item.getProfileIconId());
-        final List<Rune> runes = new ArrayList<>(item.getRunes().size());
-        for(final Integer id : item.getRunes().keySet()) {
-            final Rune rune = new Rune();
-            rune.setCount(item.getRunes().get(id));
-            rune.setRuneId(id);
+        player.setPerks(transform(item.getRunes(), context));
+        final List<com.merakianalytics.orianna.types.dto.spectator.GameCustomizationObject> objects = new ArrayList<>();
+        for(final GameCustomizationObject object : item.getCustomizationObjects()) {
+            objects.add(transform(object, context));
         }
-        player.setRunes(runes);
+        player.setGameCustomizationObjects(objects);
         player.setSummonerId(item.getSummonerId());
         player.setSummonerName(item.getSummonerName());
         player.setSpell1Id(item.getSummonerSpellDId());
         player.setSpell2Id(item.getSummonerSpellFId());
         player.setTeamId(item.getTeam().getId());
         return player;
+    }
+
+    @Transform(from = Runes.class, to = Perks.class)
+    public Perks transform(final Runes item, final PipelineContext context) {
+        final Perks perks = new Perks();
+        final List<Long> perkIds = new ArrayList<>(item.size());
+        for(final Integer id : item) {
+            perkIds.add(id.longValue());
+        }
+        perks.setPerkIds(perkIds);
+        perks.setPerkStyle(item.getPrimaryPath().getId());
+        perks.setPerkSubStyle(item.getSecondaryPath().getId());
+        return perks;
     }
 }

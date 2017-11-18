@@ -5,17 +5,13 @@ import java.util.List;
 import com.merakianalytics.orianna.types.dto.DataObject;
 
 public class CurrentGameParticipant extends DataObject {
-    private static final long serialVersionUID = -1450269492846583071L;
+    private static final long serialVersionUID = -3010619107564679228L;
     private boolean bot;
-    private List<Mastery> masteries;
+    private List<GameCustomizationObject> gameCustomizationObjects;
+    private Perks perks;
     private long profileIconId, championId, teamId, spell2Id, spell1Id, summonerId;
-    private List<Rune> runes;
     private String summonerName;
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(final Object obj) {
         if(this == obj) {
@@ -34,21 +30,21 @@ public class CurrentGameParticipant extends DataObject {
         if(championId != other.championId) {
             return false;
         }
-        if(masteries == null) {
-            if(other.masteries != null) {
+        if(gameCustomizationObjects == null) {
+            if(other.gameCustomizationObjects != null) {
                 return false;
             }
-        } else if(!masteries.equals(other.masteries)) {
+        } else if(!gameCustomizationObjects.equals(other.gameCustomizationObjects)) {
+            return false;
+        }
+        if(perks == null) {
+            if(other.perks != null) {
+                return false;
+            }
+        } else if(!perks.equals(other.perks)) {
             return false;
         }
         if(profileIconId != other.profileIconId) {
-            return false;
-        }
-        if(runes == null) {
-            if(other.runes != null) {
-                return false;
-            }
-        } else if(!runes.equals(other.runes)) {
             return false;
         }
         if(spell1Id != other.spell1Id) {
@@ -81,10 +77,17 @@ public class CurrentGameParticipant extends DataObject {
     }
 
     /**
-     * @return the masteries
+     * @return the gameCustomizationObjects
      */
-    public List<Mastery> getMasteries() {
-        return masteries;
+    public List<GameCustomizationObject> getGameCustomizationObjects() {
+        return gameCustomizationObjects;
+    }
+
+    /**
+     * @return the perks
+     */
+    public Perks getPerks() {
+        return perks;
     }
 
     /**
@@ -92,13 +95,6 @@ public class CurrentGameParticipant extends DataObject {
      */
     public long getProfileIconId() {
         return profileIconId;
-    }
-
-    /**
-     * @return the runes
-     */
-    public List<Rune> getRunes() {
-        return runes;
     }
 
     /**
@@ -136,19 +132,15 @@ public class CurrentGameParticipant extends DataObject {
         return teamId;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + (bot ? 1231 : 1237);
         result = prime * result + (int)(championId ^ championId >>> 32);
-        result = prime * result + (masteries == null ? 0 : masteries.hashCode());
+        result = prime * result + (gameCustomizationObjects == null ? 0 : gameCustomizationObjects.hashCode());
+        result = prime * result + (perks == null ? 0 : perks.hashCode());
         result = prime * result + (int)(profileIconId ^ profileIconId >>> 32);
-        result = prime * result + (runes == null ? 0 : runes.hashCode());
         result = prime * result + (int)(spell1Id ^ spell1Id >>> 32);
         result = prime * result + (int)(spell2Id ^ spell2Id >>> 32);
         result = prime * result + (int)(summonerId ^ summonerId >>> 32);
@@ -181,11 +173,19 @@ public class CurrentGameParticipant extends DataObject {
     }
 
     /**
-     * @param masteries
-     *        the masteries to set
+     * @param gameCustomizationObjects
+     *        the gameCustomizationObjects to set
      */
-    public void setMasteries(final List<Mastery> masteries) {
-        this.masteries = masteries;
+    public void setGameCustomizationObjects(final List<GameCustomizationObject> gameCustomizationObjects) {
+        this.gameCustomizationObjects = gameCustomizationObjects;
+    }
+
+    /**
+     * @param perks
+     *        the perks to set
+     */
+    public void setPerks(final Perks perks) {
+        this.perks = perks;
     }
 
     /**
@@ -194,14 +194,6 @@ public class CurrentGameParticipant extends DataObject {
      */
     public void setProfileIconId(final long profileIconId) {
         this.profileIconId = profileIconId;
-    }
-
-    /**
-     * @param runes
-     *        the runes to set
-     */
-    public void setRunes(final List<Rune> runes) {
-        this.runes = runes;
     }
 
     /**
