@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -356,6 +357,14 @@ public class RiotAPIService extends AbstractDataSource {
         }
 
         public static class ReturnNull implements FailedRequestStrategy {
+            public ReturnNull() {
+                this(new Configuration());
+            }
+
+            public ReturnNull(final Configuration config) {
+
+            }
+
             @Override
             public Configuration getConfiguration() {
                 final Configuration config = new Configuration();
@@ -378,6 +387,14 @@ public class RiotAPIService extends AbstractDataSource {
         }
 
         public static class ThrowException implements FailedRequestStrategy {
+            public ThrowException() {
+                this(new Configuration());
+            }
+
+            public ThrowException(final Configuration config) {
+
+            }
+
             @Override
             public Configuration getConfiguration() {
                 final Configuration config = new Configuration();
@@ -425,6 +442,7 @@ public class RiotAPIService extends AbstractDataSource {
 
         }
 
+        @JsonValue
         public Configuration getConfiguration();
 
         public <T extends DataObject> T onFailedRequest(RiotAPIService service, RequestContext<T> context, Response response, OriannaException e);
