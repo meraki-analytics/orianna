@@ -7,9 +7,9 @@ import com.merakianalytics.orianna.types.common.Tier;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class LeaguePosition extends CoreData {
-    private static final long serialVersionUID = -7949352225542936843L;
+    private static final long serialVersionUID = 7398886260430348060L;
     private Division division;
-    private String name, summonerName;
+    private String name, summonerName, leagueId;
     private boolean onHotStreak, veteran, inactive, freshBlood;
     private Platform platform;
     private Series promos;
@@ -37,6 +37,13 @@ public class LeaguePosition extends CoreData {
             return false;
         }
         if(inactive != other.inactive) {
+            return false;
+        }
+        if(leagueId == null) {
+            if(other.leagueId != null) {
+                return false;
+            }
+        } else if(!leagueId.equals(other.leagueId)) {
             return false;
         }
         if(leaguePoints != other.leaguePoints) {
@@ -95,6 +102,13 @@ public class LeaguePosition extends CoreData {
      */
     public Division getDivision() {
         return division;
+    }
+
+    /**
+     * @return the leagueId
+     */
+    public String getLeagueId() {
+        return leagueId;
     }
 
     /**
@@ -174,6 +188,7 @@ public class LeaguePosition extends CoreData {
         result = prime * result + (division == null ? 0 : division.hashCode());
         result = prime * result + (freshBlood ? 1231 : 1237);
         result = prime * result + (inactive ? 1231 : 1237);
+        result = prime * result + (leagueId == null ? 0 : leagueId.hashCode());
         result = prime * result + leaguePoints;
         result = prime * result + losses;
         result = prime * result + (name == null ? 0 : name.hashCode());
@@ -239,6 +254,14 @@ public class LeaguePosition extends CoreData {
      */
     public void setInactive(final boolean inactive) {
         this.inactive = inactive;
+    }
+
+    /**
+     * @param leagueId
+     *        the leagueId to set
+     */
+    public void setLeagueId(final String leagueId) {
+        this.leagueId = leagueId;
     }
 
     /**

@@ -6,8 +6,8 @@ import com.merakianalytics.orianna.types.common.Tier;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class League extends CoreData.ListProxy<LeagueEntry> {
-    private static final long serialVersionUID = 5526677710583481492L;
-    private String name;
+    private static final long serialVersionUID = 3245370669991790747L;
+    private String name, id;
     private Platform platform;
     private Queue queue;
     private long summonerId;
@@ -33,6 +33,13 @@ public class League extends CoreData.ListProxy<LeagueEntry> {
             return false;
         }
         final League other = (League)obj;
+        if(id == null) {
+            if(other.id != null) {
+                return false;
+            }
+        } else if(!id.equals(other.id)) {
+            return false;
+        }
         if(name == null) {
             if(other.name != null) {
                 return false;
@@ -53,6 +60,13 @@ public class League extends CoreData.ListProxy<LeagueEntry> {
             return false;
         }
         return true;
+    }
+
+    /**
+     * @return the id
+     */
+    public String getId() {
+        return id;
     }
 
     /**
@@ -94,12 +108,21 @@ public class League extends CoreData.ListProxy<LeagueEntry> {
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
+        result = prime * result + (id == null ? 0 : id.hashCode());
         result = prime * result + (name == null ? 0 : name.hashCode());
         result = prime * result + (platform == null ? 0 : platform.hashCode());
         result = prime * result + (queue == null ? 0 : queue.hashCode());
         result = prime * result + (int)(summonerId ^ summonerId >>> 32);
         result = prime * result + (tier == null ? 0 : tier.hashCode());
         return result;
+    }
+
+    /**
+     * @param id
+     *        the id to set
+     */
+    public void setId(final String id) {
+        this.id = id;
     }
 
     /**

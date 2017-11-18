@@ -33,20 +33,31 @@ public class LeagueAPI extends RiotAPIService {
     @Get(LeagueList.class)
     public LeagueList getLeagueList(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
         final Tier tier = (Tier)query.get("tier");
         final Queue queue = (Queue)query.get("queue");
-        Utilities.checkNotNull(platform, "platform", tier, "tier", queue, "queue");
+        final String leagueId = (String)query.get("leagueId");
 
-        if(!LEAGUE_LIST_ENDPOINTS.containsKey(tier)) {
+        if(leagueId == null && (tier == null || queue == null)) {
+            throw new IllegalArgumentException("Query was missing required parameters! Either leagueId or tier and queue  must be included!");
+        }
+
+        if(leagueId == null && !LEAGUE_LIST_ENDPOINTS.containsKey(tier)) {
             return null;
         }
 
-        if(!Queue.RANKED.contains(queue)) {
+        if(leagueId == null && !Queue.RANKED.contains(queue)) {
             return null;
         }
 
-        final String endpoint = LEAGUE_LIST_ENDPOINTS.get(tier) + queue;
-        final LeagueList data = get(LeagueList.class, endpoint, platform, LEAGUE_LIST_ENDPOINTS.get(tier) + "/queue");
+        LeagueList data;
+        if(leagueId == null) {
+            final String endpoint = LEAGUE_LIST_ENDPOINTS.get(tier) + queue;
+            data = get(LeagueList.class, endpoint, platform, LEAGUE_LIST_ENDPOINTS.get(tier) + "/queue");
+        } else {
+            final String endpoint = "lol/league/v3/leagues/" + leagueId;
+            data = get(LeagueList.class, endpoint, platform, "lol/league/v3/leagues/leagueId");
+        }
 
         data.setPlatform(platform.getTag());
         data.setSummonerId(-1L);
@@ -57,15 +68,20 @@ public class LeagueAPI extends RiotAPIService {
     @GetMany(LeagueList.class)
     public CloseableIterator<LeagueList> getManyLeagueList(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
         final Tier tier = (Tier)query.get("tier");
         final Iterable<Queue> queues = (Iterable<Queue>)query.get("queues");
-        Utilities.checkNotNull(platform, "platform", tier, "tier", queues, "queues");
+        final Iterable<String> leagueIds = (Iterable<String>)query.get("leagueIds");
 
-        if(!LEAGUE_LIST_ENDPOINTS.containsKey(tier)) {
+        if(leagueIds == null && (tier == null || queues == null)) {
+            throw new IllegalArgumentException("Query was missing required parameters! Either leagueIds or tier and queues must be included!");
+        }
+
+        if(leagueIds != null && !LEAGUE_LIST_ENDPOINTS.containsKey(tier)) {
             return CloseableIterators.empty();
         }
 
-        final Iterator<Queue> iterator = queues.iterator();
+        final Iterator<?> iterator = leagueIds == null ? queues.iterator() : leagueIds.iterator();
         return CloseableIterators.from(new Iterator<LeagueList>() {
             @Override
             public boolean hasNext() {
@@ -74,14 +90,21 @@ public class LeagueAPI extends RiotAPIService {
 
             @Override
             public LeagueList next() {
-                final Queue queue = iterator.next();
+                LeagueList data;
+                if(leagueIds == null) {
+                    final Queue queue = (Queue)iterator.next();
 
-                if(!Queue.RANKED.contains(queue)) {
-                    return null;
+                    if(!Queue.RANKED.contains(queue)) {
+                        return null;
+                    }
+
+                    final String endpoint = LEAGUE_LIST_ENDPOINTS.get(tier) + queue;
+                    data = get(LeagueList.class, endpoint, platform, LEAGUE_LIST_ENDPOINTS.get(tier) + "/queue");
+                } else {
+                    final String leagueId = (String)iterator.next();
+                    final String endpoint = "lol/league/v3/leagues/" + leagueId;
+                    data = get(LeagueList.class, endpoint, platform, "lol/league/v3/leagues/leagueId");
                 }
-
-                final String endpoint = LEAGUE_LIST_ENDPOINTS.get(tier) + queue;
-                final LeagueList data = get(LeagueList.class, endpoint, platform, LEAGUE_LIST_ENDPOINTS.get(tier) + "/queue");
 
                 data.setPlatform(platform.getTag());
                 data.setSummonerId(-1L);

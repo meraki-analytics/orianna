@@ -26,6 +26,7 @@ public class LeagueTransformer extends AbstractDataTransformer {
     @Transform(from = com.merakianalytics.orianna.types.dto.league.LeaguePosition.class, to = LeaguePosition.class)
     public LeaguePosition transform(final com.merakianalytics.orianna.types.dto.league.LeaguePosition item, final PipelineContext context) {
         final LeaguePosition position = new LeaguePosition();
+        position.setLeagueId(item.getLeagueId());
         position.setDivision(Division.valueOf(item.getRank()));
         position.setFreshBlood(item.isFreshBlood());
         position.setInactive(item.isInactive());
@@ -52,6 +53,7 @@ public class LeagueTransformer extends AbstractDataTransformer {
             entries.add(transform(entry, context));
         }
         list.setEntries(entries);
+        list.setLeagueId(item.getId());
         list.setName(item.getName());
         list.setPlatform(item.getPlatform().getTag());
         list.setQueue(item.getQueue().toString());
@@ -100,6 +102,7 @@ public class LeagueTransformer extends AbstractDataTransformer {
         for(final LeagueItem entry : item.getEntries()) {
             league.add(transform(entry, context));
         }
+        league.setId(item.getLeagueId());
         league.setName(item.getName());
         league.setPlatform(Platform.withTag(item.getPlatform()));
         league.setQueue(Queue.valueOf(item.getQueue()));
@@ -111,6 +114,7 @@ public class LeagueTransformer extends AbstractDataTransformer {
     @Transform(from = LeaguePosition.class, to = com.merakianalytics.orianna.types.dto.league.LeaguePosition.class)
     public com.merakianalytics.orianna.types.dto.league.LeaguePosition transform(final LeaguePosition item, final PipelineContext context) {
         final com.merakianalytics.orianna.types.dto.league.LeaguePosition position = new com.merakianalytics.orianna.types.dto.league.LeaguePosition();
+        position.setLeagueId(item.getLeagueId());
         position.setRank(item.getDivision().toString());
         position.setFreshBlood(item.isFreshBlood());
         position.setInactive(item.isInactive());

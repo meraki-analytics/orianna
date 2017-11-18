@@ -5,15 +5,11 @@ import java.util.List;
 import com.merakianalytics.orianna.types.dto.DataObject;
 
 public class LeagueList extends DataObject {
-    private static final long serialVersionUID = 2539248155562606360L;
+    private static final long serialVersionUID = 4191507968433712121L;
     private List<LeagueItem> entries;
     private long summonerId;
-    private String tier, queue, name, platform;
+    private String tier, queue, name, platform, leagueId;
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(final Object obj) {
         if(this == obj) {
@@ -31,6 +27,13 @@ public class LeagueList extends DataObject {
                 return false;
             }
         } else if(!entries.equals(other.entries)) {
+            return false;
+        }
+        if(leagueId == null) {
+            if(other.leagueId != null) {
+                return false;
+            }
+        } else if(!leagueId.equals(other.leagueId)) {
             return false;
         }
         if(name == null) {
@@ -75,6 +78,13 @@ public class LeagueList extends DataObject {
     }
 
     /**
+     * @return the leagueId
+     */
+    public String getLeagueId() {
+        return leagueId;
+    }
+
+    /**
      * @return the name
      */
     public String getName() {
@@ -109,15 +119,12 @@ public class LeagueList extends DataObject {
         return tier;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + (entries == null ? 0 : entries.hashCode());
+        result = prime * result + (leagueId == null ? 0 : leagueId.hashCode());
         result = prime * result + (name == null ? 0 : name.hashCode());
         result = prime * result + (platform == null ? 0 : platform.hashCode());
         result = prime * result + (queue == null ? 0 : queue.hashCode());
@@ -132,6 +139,14 @@ public class LeagueList extends DataObject {
      */
     public void setEntries(final List<LeagueItem> entries) {
         this.entries = entries;
+    }
+
+    /**
+     * @param leagueId
+     *        the leagueId to set
+     */
+    public void setLeagueId(final String leagueId) {
+        this.leagueId = leagueId;
     }
 
     /**

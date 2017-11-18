@@ -3,16 +3,12 @@ package com.merakianalytics.orianna.types.dto.league;
 import com.merakianalytics.orianna.types.dto.DataObject;
 
 public class LeaguePosition extends DataObject {
-    private static final long serialVersionUID = 6030550146338466519L;
+    private static final long serialVersionUID = -8412637506825155695L;
     private boolean hotStreak, veteran, inactive, freshBlood;
     private MiniSeries miniSeries;
-    private String rank, queueType, playerOrTeamId, leagueName, playerOrTeamName, tier, platform;
+    private String rank, queueType, playerOrTeamId, leagueName, playerOrTeamName, tier, platform, leagueId;
     private int wins, losses, leaguePoints;
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(final Object obj) {
         if(this == obj) {
@@ -32,6 +28,13 @@ public class LeaguePosition extends DataObject {
             return false;
         }
         if(inactive != other.inactive) {
+            return false;
+        }
+        if(leagueId == null) {
+            if(other.leagueId != null) {
+                return false;
+            }
+        } else if(!leagueId.equals(other.leagueId)) {
             return false;
         }
         if(leagueName == null) {
@@ -103,6 +106,13 @@ public class LeaguePosition extends DataObject {
             return false;
         }
         return true;
+    }
+
+    /**
+     * @return the leagueId
+     */
+    public String getLeagueId() {
+        return leagueId;
     }
 
     /**
@@ -182,10 +192,6 @@ public class LeaguePosition extends DataObject {
         return wins;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -193,6 +199,7 @@ public class LeaguePosition extends DataObject {
         result = prime * result + (freshBlood ? 1231 : 1237);
         result = prime * result + (hotStreak ? 1231 : 1237);
         result = prime * result + (inactive ? 1231 : 1237);
+        result = prime * result + (leagueId == null ? 0 : leagueId.hashCode());
         result = prime * result + (leagueName == null ? 0 : leagueName.hashCode());
         result = prime * result + leaguePoints;
         result = prime * result + losses;
@@ -258,6 +265,14 @@ public class LeaguePosition extends DataObject {
      */
     public void setInactive(final boolean inactive) {
         this.inactive = inactive;
+    }
+
+    /**
+     * @param leagueId
+     *        the leagueId to set
+     */
+    public void setLeagueId(final String leagueId) {
+        this.leagueId = leagueId;
     }
 
     /**

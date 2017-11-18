@@ -322,6 +322,10 @@ public abstract class DataObject implements Serializable {
         }
     }
 
+    public String toJSON() {
+        return toJSON(null);
+    }
+
     public String toJSON(final Function<JsonNode, JsonNode> postprocessor) {
         try {
             if(postprocessor != null) {
