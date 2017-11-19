@@ -22,7 +22,7 @@ public class Match extends CoreData {
     private Map map;
     private GameMode mode;
     private Platform platform;
-    private List<Player> players;
+    private List<Participant> players;
     private Queue queue;
     private Season season;
     private GameType type;
@@ -175,7 +175,7 @@ public class Match extends CoreData {
     /**
      * @return the players
      */
-    public List<Player> getPlayers() {
+    public List<Participant> getPlayers() {
         return players;
     }
 
@@ -311,7 +311,7 @@ public class Match extends CoreData {
      * @param players
      *        the players to set
      */
-    public void setPlayers(final List<Player> players) {
+    public void setPlayers(final List<Participant> players) {
         this.players = players;
     }
 

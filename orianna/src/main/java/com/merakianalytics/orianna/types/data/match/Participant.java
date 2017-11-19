@@ -5,7 +5,7 @@ import com.merakianalytics.orianna.types.common.Team;
 import com.merakianalytics.orianna.types.common.Tier;
 import com.merakianalytics.orianna.types.data.CoreData;
 
-public class Player extends CoreData {
+public class Participant extends CoreData {
     private static final long serialVersionUID = 1992039734399932614L;
     private long currentAccountId, summonerId, accountId;
     private Platform currentPlatform, platform;
@@ -27,7 +27,7 @@ public class Player extends CoreData {
         if(getClass() != obj.getClass()) {
             return false;
         }
-        final Player other = (Player)obj;
+        final Participant other = (Participant)obj;
         if(accountId != other.accountId) {
             return false;
         }

@@ -41,7 +41,7 @@ import com.merakianalytics.orianna.types.data.match.MatchReference;
 import com.merakianalytics.orianna.types.data.match.ParticipantFrame;
 import com.merakianalytics.orianna.types.data.match.ParticipantStats;
 import com.merakianalytics.orianna.types.data.match.ParticipantTimeline;
-import com.merakianalytics.orianna.types.data.match.Player;
+import com.merakianalytics.orianna.types.data.match.Participant;
 import com.merakianalytics.orianna.types.data.match.Position;
 import com.merakianalytics.orianna.types.data.match.Rune;
 import com.merakianalytics.orianna.types.data.match.StatTotals;
@@ -54,7 +54,6 @@ import com.merakianalytics.orianna.types.dto.match.MatchParticipantFrame;
 import com.merakianalytics.orianna.types.dto.match.MatchPosition;
 import com.merakianalytics.orianna.types.dto.match.MatchTimeline;
 import com.merakianalytics.orianna.types.dto.match.Matchlist;
-import com.merakianalytics.orianna.types.dto.match.Participant;
 import com.merakianalytics.orianna.types.dto.match.ParticipantIdentity;
 import com.merakianalytics.orianna.types.dto.match.TeamBans;
 import com.merakianalytics.orianna.types.dto.match.TeamStats;
@@ -108,16 +107,16 @@ public class MatchTransformer extends AbstractDataTransformer {
         match.setMode(GameMode.valueOf(item.getGameMode()));
         match.setPlatform(Platform.withTag(item.getPlatformId()));
 
-        final List<Player> players = new ArrayList<>(item.getParticipantIdentities().size());
-        final Map<Integer, Participant> byId = new HashMap<>();
-        for(final Participant participant : item.getParticipants()) {
+        final List<Participant> players = new ArrayList<>(item.getParticipantIdentities().size());
+        final Map<Integer, com.merakianalytics.orianna.types.dto.match.Participant> byId = new HashMap<>();
+        for(final com.merakianalytics.orianna.types.dto.match.Participant participant : item.getParticipants()) {
             byId.put(participant.getParticipantId(), participant);
         }
         final Object previousPlayer = context.get("player");
         for(int i = 0; i < item.getParticipantIdentities().size(); i++) {
             final int participantId = item.getParticipantIdentities().get(i).getParticipantId();
             final com.merakianalytics.orianna.types.dto.match.Player player = item.getParticipantIdentities().get(i).getPlayer();
-            final Participant participant = byId.get(participantId);
+            final com.merakianalytics.orianna.types.dto.match.Participant participant = byId.get(participantId);
             context.put("player", player);
             players.add(transform(participant, context));
         }
@@ -297,9 +296,9 @@ public class MatchTransformer extends AbstractDataTransformer {
         return timeline;
     }
 
-    @Transform(from = com.merakianalytics.orianna.types.dto.match.Player.class, to = Player.class)
-    public Player transform(final com.merakianalytics.orianna.types.dto.match.Player item, final PipelineContext context) {
-        final Player player = new Player();
+    @Transform(from = com.merakianalytics.orianna.types.dto.match.Player.class, to = Participant.class)
+    public Participant transform(final com.merakianalytics.orianna.types.dto.match.Player item, final PipelineContext context) {
+        final Participant player = new Participant();
         player.setAccountId(item.getAccountId());
         player.setCurrentAccountId(item.getCurrentAccountId());
         player.setCurrentPlatform(Platform.withTag(item.getCurrentPlatformId()));
@@ -308,7 +307,7 @@ public class MatchTransformer extends AbstractDataTransformer {
         player.setProfileIconId(item.getProfileIcon());
         player.setSummonerId(item.getSummonerId());
         player.setSummonerName(item.getSummonerName());
-        final Participant participant = (Participant)context.get("participant");
+        final com.merakianalytics.orianna.types.dto.match.Participant participant = (com.merakianalytics.orianna.types.dto.match.Participant)context.get("participant");
         player.setChampionId(participant.getChampionId());
         player.setHighestTierInSeason(Tier.valueOf(participant.getHighestAchievedSeasonTier()));
         player.setStats(transform(participant.getStats(), context));
@@ -413,10 +412,10 @@ public class MatchTransformer extends AbstractDataTransformer {
         match.setGameVersion(item.getVersion());
         match.setMapId(item.getMap().getId());
         final List<ParticipantIdentity> identities = new ArrayList<>(item.getPlayers().size());
-        final List<Participant> participants = new ArrayList<>(item.getPlayers().size());
+        final List<com.merakianalytics.orianna.types.dto.match.Participant> participants = new ArrayList<>(item.getPlayers().size());
         final int id = 1;
         final Object previousParticipantId = context.put("participantId", id);
-        for(final Player player : item.getPlayers()) {
+        for(final Participant player : item.getPlayers()) {
             context.put("participantId", id);
             final ParticipantIdentity identity = new ParticipantIdentity();
             identity.setParticipantId(id);
@@ -614,9 +613,9 @@ public class MatchTransformer extends AbstractDataTransformer {
         return timeline;
     }
 
-    @Transform(from = Participant.class, to = Player.class)
-    public Player transform(final Participant item, final PipelineContext context) {
-        final Player converted = new Player();
+    @Transform(from = com.merakianalytics.orianna.types.dto.match.Participant.class, to = Participant.class)
+    public Participant transform(final com.merakianalytics.orianna.types.dto.match.Participant item, final PipelineContext context) {
+        final Participant converted = new Participant();
         converted.setChampionId(item.getChampionId());
         converted.setHighestTierInSeason(Tier.valueOf(item.getHighestAchievedSeasonTier()));
         converted.setStats(transform(item.getStats(), context));
@@ -788,8 +787,8 @@ public class MatchTransformer extends AbstractDataTransformer {
         return timeline;
     }
 
-    @Transform(from = Player.class, to = com.merakianalytics.orianna.types.dto.match.Player.class)
-    public com.merakianalytics.orianna.types.dto.match.Player transform(final Player item, final PipelineContext context) {
+    @Transform(from = Participant.class, to = com.merakianalytics.orianna.types.dto.match.Player.class)
+    public com.merakianalytics.orianna.types.dto.match.Player transform(final Participant item, final PipelineContext context) {
         final com.merakianalytics.orianna.types.dto.match.Player player = new com.merakianalytics.orianna.types.dto.match.Player();
         player.setAccountId(item.getAccountId());
         player.setCurrentAccountId(item.getCurrentAccountId());
@@ -893,10 +892,10 @@ public class MatchTransformer extends AbstractDataTransformer {
         return matches;
     }
 
-    @Transform(from = Player.class, to = Participant.class)
-    public Participant transformToParticipant(final Player item, final PipelineContext context) {
+    @Transform(from = Participant.class, to = com.merakianalytics.orianna.types.dto.match.Participant.class)
+    public com.merakianalytics.orianna.types.dto.match.Participant transformToParticipant(final Participant item, final PipelineContext context) {
         final Object previous = context.put("participantId", item.getParticipantId());
-        final Participant participant = new Participant();
+        final com.merakianalytics.orianna.types.dto.match.Participant participant = new com.merakianalytics.orianna.types.dto.match.Participant();
         participant.setChampionId(item.getChampionId());
         participant.setHighestAchievedSeasonTier(item.getHighestTierInSeason().toString());
         participant.setParticipantId(item.getParticipantId());
