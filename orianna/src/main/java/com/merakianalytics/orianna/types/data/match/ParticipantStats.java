@@ -4,20 +4,25 @@ import java.util.List;
 
 import org.joda.time.Duration;
 
+import com.merakianalytics.orianna.types.common.RunePath;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class ParticipantStats extends CoreData {
-    private static final long serialVersionUID = -1889815557872266659L;
+    private static final long serialVersionUID = 1832161795729094777L;
     private int altarsCaptured, altarsNeutralized, assists, championLevel, combatScore, deaths, doubleKills, goldEarned, goldSpent, inhibitorKills,
             killingSprees, kills, largestCriticalStrike, largestKillingSpree, largestMultiKill, neutralMinionsKilled, neutralMinionsKilledInEnemyJungle,
             neutralMinionsKilledInAllyJungle, nodesCaptured, nodeCaptureAssists, nodesNeutralized, nodeNeutralizeAssists, objectiveScore, pentaKills,
             quadraKills, greenWardsPurchased, teamObjectives, creepScore, score, scoreRank, unitsHealed, tripleKills, turretKills, hexaKills,
             pinkWardsPurchased, wardsKilled, wardsPlaced, damageToObjectives, damageToTurrets, damageMitigated, magicDamageTaken, magicDamageDealt,
             magicDamageDealtToChampions, physicalDamageDealt, physicalDamageDealtToChampions, physicalDamageTaken, damageDealt, damageDealtToChampions,
-            damageTaken, damageHealed, trueDamageDealt, trueDamageDealtToChampions, trueDamageTaken, visionScore;
+            damageTaken, damageHealed, trueDamageDealt, trueDamageDealtToChampions, trueDamageTaken, visionScore, playerScore0, playerScore1, playerScore2,
+            playerScore3, playerScore4, playerScore5, playerScore6, playerScore7, playerScore8, playerScore9;
+
     private boolean firstBloodAssistant, firstBloodKiller, firstInhibitorKillAssistant, firstInhibitorKiller, firstTowerKillAssistant, firstTowerKiller, winner;
     private List<Integer> items;
     private Duration longestTimeAlive, crowdControlDealt, crowdControlDealtToChampions;
+    private RunePath primaryRunePath, secondaryRunePath;
+    private List<Rune> runes;
 
     @Override
     public boolean equals(final Object obj) {
@@ -200,13 +205,56 @@ public class ParticipantStats extends CoreData {
         if(pinkWardsPurchased != other.pinkWardsPurchased) {
             return false;
         }
+        if(playerScore0 != other.playerScore0) {
+            return false;
+        }
+        if(playerScore1 != other.playerScore1) {
+            return false;
+        }
+        if(playerScore2 != other.playerScore2) {
+            return false;
+        }
+        if(playerScore3 != other.playerScore3) {
+            return false;
+        }
+        if(playerScore4 != other.playerScore4) {
+            return false;
+        }
+        if(playerScore5 != other.playerScore5) {
+            return false;
+        }
+        if(playerScore6 != other.playerScore6) {
+            return false;
+        }
+        if(playerScore7 != other.playerScore7) {
+            return false;
+        }
+        if(playerScore8 != other.playerScore8) {
+            return false;
+        }
+        if(playerScore9 != other.playerScore9) {
+            return false;
+        }
+        if(primaryRunePath != other.primaryRunePath) {
+            return false;
+        }
         if(quadraKills != other.quadraKills) {
+            return false;
+        }
+        if(runes == null) {
+            if(other.runes != null) {
+                return false;
+            }
+        } else if(!runes.equals(other.runes)) {
             return false;
         }
         if(score != other.score) {
             return false;
         }
         if(scoreRank != other.scoreRank) {
+            return false;
+        }
+        if(secondaryRunePath != other.secondaryRunePath) {
             return false;
         }
         if(teamObjectives != other.teamObjectives) {
@@ -561,10 +609,94 @@ public class ParticipantStats extends CoreData {
     }
 
     /**
+     * @return the playerScore0
+     */
+    public int getPlayerScore0() {
+        return playerScore0;
+    }
+
+    /**
+     * @return the playerScore1
+     */
+    public int getPlayerScore1() {
+        return playerScore1;
+    }
+
+    /**
+     * @return the playerScore2
+     */
+    public int getPlayerScore2() {
+        return playerScore2;
+    }
+
+    /**
+     * @return the playerScore3
+     */
+    public int getPlayerScore3() {
+        return playerScore3;
+    }
+
+    /**
+     * @return the playerScore4
+     */
+    public int getPlayerScore4() {
+        return playerScore4;
+    }
+
+    /**
+     * @return the playerScore5
+     */
+    public int getPlayerScore5() {
+        return playerScore5;
+    }
+
+    /**
+     * @return the playerScore6
+     */
+    public int getPlayerScore6() {
+        return playerScore6;
+    }
+
+    /**
+     * @return the playerScore7
+     */
+    public int getPlayerScore7() {
+        return playerScore7;
+    }
+
+    /**
+     * @return the playerScore8
+     */
+    public int getPlayerScore8() {
+        return playerScore8;
+    }
+
+    /**
+     * @return the playerScore9
+     */
+    public int getPlayerScore9() {
+        return playerScore9;
+    }
+
+    /**
+     * @return the primaryRunePath
+     */
+    public RunePath getPrimaryRunePath() {
+        return primaryRunePath;
+    }
+
+    /**
      * @return the quadraKills
      */
     public int getQuadraKills() {
         return quadraKills;
+    }
+
+    /**
+     * @return the runes
+     */
+    public List<Rune> getRunes() {
+        return runes;
     }
 
     /**
@@ -579,6 +711,13 @@ public class ParticipantStats extends CoreData {
      */
     public int getScoreRank() {
         return scoreRank;
+    }
+
+    /**
+     * @return the secondaryRunePath
+     */
+    public RunePath getSecondaryRunePath() {
+        return secondaryRunePath;
     }
 
     /**
@@ -706,9 +845,22 @@ public class ParticipantStats extends CoreData {
         result = prime * result + physicalDamageDealtToChampions;
         result = prime * result + physicalDamageTaken;
         result = prime * result + pinkWardsPurchased;
+        result = prime * result + playerScore0;
+        result = prime * result + playerScore1;
+        result = prime * result + playerScore2;
+        result = prime * result + playerScore3;
+        result = prime * result + playerScore4;
+        result = prime * result + playerScore5;
+        result = prime * result + playerScore6;
+        result = prime * result + playerScore7;
+        result = prime * result + playerScore8;
+        result = prime * result + playerScore9;
+        result = prime * result + (primaryRunePath == null ? 0 : primaryRunePath.hashCode());
         result = prime * result + quadraKills;
+        result = prime * result + (runes == null ? 0 : runes.hashCode());
         result = prime * result + score;
         result = prime * result + scoreRank;
+        result = prime * result + (secondaryRunePath == null ? 0 : secondaryRunePath.hashCode());
         result = prime * result + teamObjectives;
         result = prime * result + tripleKills;
         result = prime * result + trueDamageDealt;
@@ -1181,11 +1333,107 @@ public class ParticipantStats extends CoreData {
     }
 
     /**
+     * @param playerScore0
+     *        the playerScore0 to set
+     */
+    public void setPlayerScore0(final int playerScore0) {
+        this.playerScore0 = playerScore0;
+    }
+
+    /**
+     * @param playerScore1
+     *        the playerScore1 to set
+     */
+    public void setPlayerScore1(final int playerScore1) {
+        this.playerScore1 = playerScore1;
+    }
+
+    /**
+     * @param playerScore2
+     *        the playerScore2 to set
+     */
+    public void setPlayerScore2(final int playerScore2) {
+        this.playerScore2 = playerScore2;
+    }
+
+    /**
+     * @param playerScore3
+     *        the playerScore3 to set
+     */
+    public void setPlayerScore3(final int playerScore3) {
+        this.playerScore3 = playerScore3;
+    }
+
+    /**
+     * @param playerScore4
+     *        the playerScore4 to set
+     */
+    public void setPlayerScore4(final int playerScore4) {
+        this.playerScore4 = playerScore4;
+    }
+
+    /**
+     * @param playerScore5
+     *        the playerScore5 to set
+     */
+    public void setPlayerScore5(final int playerScore5) {
+        this.playerScore5 = playerScore5;
+    }
+
+    /**
+     * @param playerScore6
+     *        the playerScore6 to set
+     */
+    public void setPlayerScore6(final int playerScore6) {
+        this.playerScore6 = playerScore6;
+    }
+
+    /**
+     * @param playerScore7
+     *        the playerScore7 to set
+     */
+    public void setPlayerScore7(final int playerScore7) {
+        this.playerScore7 = playerScore7;
+    }
+
+    /**
+     * @param playerScore8
+     *        the playerScore8 to set
+     */
+    public void setPlayerScore8(final int playerScore8) {
+        this.playerScore8 = playerScore8;
+    }
+
+    /**
+     * @param playerScore9
+     *        the playerScore9 to set
+     */
+    public void setPlayerScore9(final int playerScore9) {
+        this.playerScore9 = playerScore9;
+    }
+
+    /**
+     * @param primaryRunePath
+     *        the primaryRunePath to set
+     */
+    public void setPrimaryRunePath(final RunePath primaryRunePath) {
+        this.primaryRunePath = primaryRunePath;
+    }
+
+    /**
      * @param quadraKills
      *        the quadraKills to set
      */
     public void setQuadraKills(final int quadraKills) {
         this.quadraKills = quadraKills;
+    }
+
+    /**
+     * @param runes
+     *        the runes to set
+     */
+    public void setRunes(final List<Rune> runes) {
+        this.runes = runes;
     }
 
     /**
@@ -1202,6 +1450,14 @@ public class ParticipantStats extends CoreData {
      */
     public void setScoreRank(final int scoreRank) {
         this.scoreRank = scoreRank;
+    }
+
+    /**
+     * @param secondaryRunePath
+     *        the secondaryRunePath to set
+     */
+    public void setSecondaryRunePath(final RunePath secondaryRunePath) {
+        this.secondaryRunePath = secondaryRunePath;
     }
 
     /**

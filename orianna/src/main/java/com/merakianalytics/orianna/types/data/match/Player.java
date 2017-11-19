@@ -1,19 +1,15 @@
 package com.merakianalytics.orianna.types.data.match;
 
-import java.util.Map;
-
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Team;
 import com.merakianalytics.orianna.types.common.Tier;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class Player extends CoreData {
-    private static final long serialVersionUID = -9178896852964524884L;
+    private static final long serialVersionUID = 1992039734399932614L;
     private long currentAccountId, summonerId, accountId;
     private Platform currentPlatform, platform;
     private Tier highestTierInSeason;
-    private Map<Integer, Integer> masteries;
-    private Map<Integer, Integer> runes;
     private ParticipantStats stats;
     private String summonerName, matchHistoryURI;
     private int summonerSpellDId, summonerSpellFId, championId, profileIconId, participantId;
@@ -47,13 +43,6 @@ public class Player extends CoreData {
         if(highestTierInSeason != other.highestTierInSeason) {
             return false;
         }
-        if(masteries == null) {
-            if(other.masteries != null) {
-                return false;
-            }
-        } else if(!masteries.equals(other.masteries)) {
-            return false;
-        }
         if(matchHistoryURI == null) {
             if(other.matchHistoryURI != null) {
                 return false;
@@ -68,13 +57,6 @@ public class Player extends CoreData {
             return false;
         }
         if(profileIconId != other.profileIconId) {
-            return false;
-        }
-        if(runes == null) {
-            if(other.runes != null) {
-                return false;
-            }
-        } else if(!runes.equals(other.runes)) {
             return false;
         }
         if(stats == null) {
@@ -149,13 +131,6 @@ public class Player extends CoreData {
     }
 
     /**
-     * @return the masteries
-     */
-    public Map<Integer, Integer> getMasteries() {
-        return masteries;
-    }
-
-    /**
      * @return the matchHistoryURI
      */
     public String getMatchHistoryURI() {
@@ -181,13 +156,6 @@ public class Player extends CoreData {
      */
     public int getProfileIconId() {
         return profileIconId;
-    }
-
-    /**
-     * @return the runes
-     */
-    public Map<Integer, Integer> getRunes() {
-        return runes;
     }
 
     /**
@@ -248,12 +216,10 @@ public class Player extends CoreData {
         result = prime * result + (int)(currentAccountId ^ currentAccountId >>> 32);
         result = prime * result + (currentPlatform == null ? 0 : currentPlatform.hashCode());
         result = prime * result + (highestTierInSeason == null ? 0 : highestTierInSeason.hashCode());
-        result = prime * result + (masteries == null ? 0 : masteries.hashCode());
         result = prime * result + (matchHistoryURI == null ? 0 : matchHistoryURI.hashCode());
         result = prime * result + participantId;
         result = prime * result + (platform == null ? 0 : platform.hashCode());
         result = prime * result + profileIconId;
-        result = prime * result + (runes == null ? 0 : runes.hashCode());
         result = prime * result + (stats == null ? 0 : stats.hashCode());
         result = prime * result + (int)(summonerId ^ summonerId >>> 32);
         result = prime * result + (summonerName == null ? 0 : summonerName.hashCode());
@@ -305,14 +271,6 @@ public class Player extends CoreData {
     }
 
     /**
-     * @param masteries
-     *        the masteries to set
-     */
-    public void setMasteries(final Map<Integer, Integer> masteries) {
-        this.masteries = masteries;
-    }
-
-    /**
      * @param matchHistoryURI
      *        the matchHistoryURI to set
      */
@@ -342,14 +300,6 @@ public class Player extends CoreData {
      */
     public void setProfileIconId(final int profileIconId) {
         this.profileIconId = profileIconId;
-    }
-
-    /**
-     * @param runes
-     *        the runes to set
-     */
-    public void setRunes(final Map<Integer, Integer> runes) {
-        this.runes = runes;
     }
 
     /**

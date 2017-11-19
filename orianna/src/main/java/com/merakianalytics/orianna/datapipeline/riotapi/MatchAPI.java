@@ -5,6 +5,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Weeks;
+
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.merakianalytics.datapipelines.PipelineContext;
@@ -24,6 +28,9 @@ import com.merakianalytics.orianna.types.dto.match.Matchlist;
 import com.merakianalytics.orianna.types.dto.match.TournamentMatches;
 
 public class MatchAPI extends RiotAPIService {
+    private static final int MAX_MATCH_INDEX_DIFFERENCE = 100;
+    private static final long ONE_WEEK_IN_MILLISECONDS = Weeks.ONE.toStandardDuration().getMillis();
+
     public MatchAPI(final Configuration config, final HTTPClient client, final Map<Platform, RateLimiter> applicationRateLimiters,
         final Map<Platform, Object> applicationRateLimiterLocks) {
         super(config, client, applicationRateLimiters, applicationRateLimiterLocks);
@@ -34,7 +41,7 @@ public class MatchAPI extends RiotAPIService {
     public CloseableIterator<Match> getManyMatch(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         final Iterable<Number> matchIds = (Iterable<Number>)query.get("matchIds");
-        final Number forAccountId = query.get("forAccountId") == null ? -1L : (Number)query.get("forAccountId");
+        final Number forAccountId = query.get("forAccountId") == null ? 0L : (Number)query.get("forAccountId");
         final String tournamentCode = (String)query.get("tournamentCode");
         Utilities.checkNotNull(platform, "platform", matchIds, "matchIds");
 
@@ -79,19 +86,56 @@ public class MatchAPI extends RiotAPIService {
         final Set<Integer> queues = query.get("queues") == null ? Collections.<Integer> emptySet() : (Set<Integer>)query.get("queues");
         final Set<Integer> seasons = query.get("seasons") == null ? Collections.<Integer> emptySet() : (Set<Integer>)query.get("seasons");
         final Set<Integer> champions = query.get("champions") == null ? Collections.<Integer> emptySet() : (Set<Integer>)query.get("champions");
-        final Number startTime = query.get("startTime") == null ? Long.MIN_VALUE : (Number)query.get("startTime");
-        final Number endTime = query.get("endTime") == null ? Long.MAX_VALUE : (Number)query.get("endTime");
-        final Number startIndex = query.get("startIndex") == null ? 0L : (Number)query.get("startIndex");
-        final Number endIndex = query.get("endIndex") == null ? Integer.MAX_VALUE : (Number)query.get("endIndex");
+        Number beginTime = (Number)query.get("beginTime");
+        Number endTime = (Number)query.get("endTime");
+        Number beginIndex = (Number)query.get("beginIndex");
+        Number endIndex = (Number)query.get("endIndex");
         final boolean recent = query.get("recent") == null ? false : (Boolean)query.get("recent");
         Utilities.checkNotNull(platform, "platform", accountIds, "accountIds");
 
+        final DateTime now = DateTime.now(DateTimeZone.UTC);
+        final DateTime historyStart = now.minusYears(3);
+
+        // Time Handling
+        if(beginTime != null && beginTime.longValue() < historyStart.getMillis()) {
+            beginTime = historyStart.getMillis();
+        }
+
+        if(endTime != null && endTime.longValue() > now.getMillis()) {
+            endTime = now.getMillis();
+        }
+
+        if(endTime != null && (beginTime == null || endTime.longValue() - beginTime.longValue() > ONE_WEEK_IN_MILLISECONDS)) {
+            beginTime = Math.max(endTime.longValue() - ONE_WEEK_IN_MILLISECONDS, 0);
+        }
+
+        if(beginTime != null && endTime == null) {
+            endTime = beginTime.longValue() + ONE_WEEK_IN_MILLISECONDS;
+        }
+
+        // Index Handling
+        if(beginIndex != null && (endIndex == null || beginIndex.intValue() + MAX_MATCH_INDEX_DIFFERENCE < endIndex.intValue())) {
+            endIndex = beginIndex.intValue() + 100;
+        }
+
+        if(endIndex != null && beginIndex == null) {
+            beginIndex = Math.max(endIndex.intValue() - MAX_MATCH_INDEX_DIFFERENCE, 0);
+        }
+
         final Multimap<String, String> parameters = HashMultimap.create();
         if(!recent) {
-            parameters.put("beginTime", startTime.toString());
-            parameters.put("endTime", endTime.toString());
-            parameters.put("beginIndex", startIndex.toString());
-            parameters.put("endIndex", endIndex.toString());
+            if(beginTime != null) {
+                parameters.put("beginTime", beginTime.toString());
+            }
+            if(endTime != null) {
+                parameters.put("endTime", endTime.toString());
+            }
+            if(beginIndex != null) {
+                parameters.put("beginIndex", beginIndex.toString());
+            }
+            if(endIndex != null) {
+                parameters.put("endIndex", endIndex.toString());
+            }
             for(final Integer queue : queues) {
                 parameters.put("queue", queue.toString());
             }
@@ -103,6 +147,8 @@ public class MatchAPI extends RiotAPIService {
             }
         }
 
+        final long bTime = beginTime == null ? 0L : beginTime.longValue();
+        final long eTime = endTime == null ? 0L : endTime.longValue();
         final Iterator<Number> iterator = accountIds.iterator();
         return CloseableIterators.from(new Iterator<Matchlist>() {
             @Override
@@ -137,8 +183,8 @@ public class MatchAPI extends RiotAPIService {
                     endpoint = "lol/match/v3/matchlists/by-account/" + accountId;
                     data = get(Matchlist.class, endpoint, platform, parameters, "lol/match/v3/matchlists/by-account/{accountId}");
                     data.setRecent(false);
-                    data.setStartTime(startTime.longValue());
-                    data.setEndTime(endTime.longValue());
+                    data.setStartTime(bTime);
+                    data.setEndTime(eTime);
                 }
 
                 data.setQueues(queues);
@@ -226,7 +272,7 @@ public class MatchAPI extends RiotAPIService {
     public Match getMatch(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         final Number matchId = (Number)query.get("matchId");
-        final Number forAccountId = query.get("forAccountId") == null ? -1L : (Number)query.get("forAccountId");
+        final Number forAccountId = query.get("forAccountId") == null ? 0L : (Number)query.get("forAccountId");
         final String tournamentCode = (String)query.get("tournamentCode");
         Utilities.checkNotNull(platform, "platform", matchId, "matchId");
 
@@ -253,12 +299,41 @@ public class MatchAPI extends RiotAPIService {
         final Set<Integer> queues = query.get("queues") == null ? Collections.<Integer> emptySet() : (Set<Integer>)query.get("queues");
         final Set<Integer> seasons = query.get("seasons") == null ? Collections.<Integer> emptySet() : (Set<Integer>)query.get("seasons");
         final Set<Integer> champions = query.get("champions") == null ? Collections.<Integer> emptySet() : (Set<Integer>)query.get("champions");
-        final Number startTime = query.get("startTime") == null ? Long.MIN_VALUE : (Number)query.get("startTime");
-        final Number endTime = query.get("endTime") == null ? Long.MAX_VALUE : (Number)query.get("endTime");
-        final Number startIndex = query.get("startIndex") == null ? 0L : (Number)query.get("startIndex");
-        final Number endIndex = query.get("endIndex") == null ? Integer.MAX_VALUE : (Number)query.get("endIndex");
+        Number beginTime = (Number)query.get("beginTime");
+        Number endTime = (Number)query.get("endTime");
+        Number beginIndex = (Number)query.get("beginIndex");
+        Number endIndex = (Number)query.get("endIndex");
         final boolean recent = query.get("recent") == null ? false : (Boolean)query.get("recent");
         Utilities.checkNotNull(platform, "platform", accountId, "accountId");
+
+        final DateTime now = DateTime.now(DateTimeZone.UTC);
+        final DateTime historyStart = now.minusYears(3);
+
+        // Time Handling
+        if(beginTime != null && beginTime.longValue() < historyStart.getMillis()) {
+            beginTime = historyStart.getMillis();
+        }
+
+        if(endTime != null && endTime.longValue() > now.getMillis()) {
+            endTime = now.getMillis();
+        }
+
+        if(endTime != null && (beginTime == null || endTime.longValue() - beginTime.longValue() > ONE_WEEK_IN_MILLISECONDS)) {
+            beginTime = Math.max(endTime.longValue() - ONE_WEEK_IN_MILLISECONDS, 0);
+        }
+
+        if(beginTime != null && endTime == null) {
+            endTime = beginTime.longValue() + ONE_WEEK_IN_MILLISECONDS;
+        }
+
+        // Index Handling
+        if(beginIndex != null && (endIndex == null || beginIndex.intValue() + MAX_MATCH_INDEX_DIFFERENCE < endIndex.intValue())) {
+            endIndex = beginIndex.intValue() + 100;
+        }
+
+        if(endIndex != null && beginIndex == null) {
+            beginIndex = Math.max(endIndex.intValue() - MAX_MATCH_INDEX_DIFFERENCE, 0);
+        }
 
         String endpoint;
         Matchlist data;
@@ -283,10 +358,18 @@ public class MatchAPI extends RiotAPIService {
             endpoint = "lol/match/v3/matchlists/by-account/" + accountId;
 
             final Multimap<String, String> parameters = HashMultimap.create();
-            parameters.put("beginTime", startTime.toString());
-            parameters.put("endTime", endTime.toString());
-            parameters.put("beginIndex", startIndex.toString());
-            parameters.put("endIndex", endIndex.toString());
+            if(beginTime != null) {
+                parameters.put("beginTime", beginTime.toString());
+            }
+            if(endTime != null) {
+                parameters.put("endTime", endTime.toString());
+            }
+            if(beginIndex != null) {
+                parameters.put("beginIndex", beginIndex.toString());
+            }
+            if(endIndex != null) {
+                parameters.put("endIndex", endIndex.toString());
+            }
             for(final Integer queue : queues) {
                 parameters.put("queue", queue.toString());
             }
@@ -299,8 +382,8 @@ public class MatchAPI extends RiotAPIService {
 
             data = get(Matchlist.class, endpoint, platform, parameters, "lol/match/v3/matchlists/by-account/{accountId}");
             data.setRecent(false);
-            data.setStartTime(startTime.longValue());
-            data.setEndTime(endTime.longValue());
+            data.setStartTime(beginTime == null ? 0L : beginTime.longValue());
+            data.setEndTime(endTime == null ? 0L : endTime.longValue());
         }
 
         data.setQueues(queues);
@@ -314,14 +397,14 @@ public class MatchAPI extends RiotAPIService {
     @Get(MatchTimeline.class)
     public MatchTimeline getMatchTimeline(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final Number id = (Number)query.get("id");
-        Utilities.checkNotNull(platform, "platform", id, "id");
+        final Number matchId = (Number)query.get("matchId");
+        Utilities.checkNotNull(platform, "platform", matchId, "matchId");
 
-        final String endpoint = "lol/match/v3/timelines/by-match/" + id;
+        final String endpoint = "lol/match/v3/timelines/by-match/" + matchId;
         final MatchTimeline data = get(MatchTimeline.class, endpoint, platform, "lol/match/v3/timelines/by-match/matchId");
 
         data.setPlatform(platform.getTag());
-        data.setMatchId(id.longValue());
+        data.setMatchId(matchId.longValue());
         return data;
     }
 

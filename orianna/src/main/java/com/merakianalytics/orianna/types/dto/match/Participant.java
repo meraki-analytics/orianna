@@ -1,15 +1,11 @@
 package com.merakianalytics.orianna.types.dto.match;
 
-import java.util.List;
-
 import com.merakianalytics.orianna.types.dto.DataObject;
 
 public class Participant extends DataObject {
-    private static final long serialVersionUID = -5954775193579988257L;
+    private static final long serialVersionUID = -2817707228676211450L;
     private String highestAchievedSeasonTier;
-    private List<Mastery> masteries;
     private int participantId, teamId, spell2Id, spell1Id, championId;
-    private List<Rune> runes;
     private ParticipantStats stats;
     private ParticipantTimeline timeline;
 
@@ -35,21 +31,7 @@ public class Participant extends DataObject {
         } else if(!highestAchievedSeasonTier.equals(other.highestAchievedSeasonTier)) {
             return false;
         }
-        if(masteries == null) {
-            if(other.masteries != null) {
-                return false;
-            }
-        } else if(!masteries.equals(other.masteries)) {
-            return false;
-        }
         if(participantId != other.participantId) {
-            return false;
-        }
-        if(runes == null) {
-            if(other.runes != null) {
-                return false;
-            }
-        } else if(!runes.equals(other.runes)) {
             return false;
         }
         if(spell1Id != other.spell1Id) {
@@ -93,24 +75,10 @@ public class Participant extends DataObject {
     }
 
     /**
-     * @return the masteries
-     */
-    public List<Mastery> getMasteries() {
-        return masteries;
-    }
-
-    /**
      * @return the participantId
      */
     public int getParticipantId() {
         return participantId;
-    }
-
-    /**
-     * @return the runes
-     */
-    public List<Rune> getRunes() {
-        return runes;
     }
 
     /**
@@ -154,9 +122,7 @@ public class Participant extends DataObject {
         int result = 1;
         result = prime * result + championId;
         result = prime * result + (highestAchievedSeasonTier == null ? 0 : highestAchievedSeasonTier.hashCode());
-        result = prime * result + (masteries == null ? 0 : masteries.hashCode());
         result = prime * result + participantId;
-        result = prime * result + (runes == null ? 0 : runes.hashCode());
         result = prime * result + spell1Id;
         result = prime * result + spell2Id;
         result = prime * result + (stats == null ? 0 : stats.hashCode());
@@ -182,27 +148,11 @@ public class Participant extends DataObject {
     }
 
     /**
-     * @param masteries
-     *        the masteries to set
-     */
-    public void setMasteries(final List<Mastery> masteries) {
-        this.masteries = masteries;
-    }
-
-    /**
      * @param participantId
      *        the participantId to set
      */
     public void setParticipantId(final int participantId) {
         this.participantId = participantId;
-    }
-
-    /**
-     * @param runes
-     *        the runes to set
-     */
-    public void setRunes(final List<Rune> runes) {
-        this.runes = runes;
     }
 
     /**

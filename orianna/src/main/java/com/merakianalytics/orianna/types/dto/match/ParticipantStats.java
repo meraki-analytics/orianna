@@ -3,22 +3,24 @@ package com.merakianalytics.orianna.types.dto.match;
 import com.merakianalytics.orianna.types.dto.DataObject;
 
 public class ParticipantStats extends DataObject {
-    private static final long serialVersionUID = 7776142818024268605L;
+    private static final long serialVersionUID = 4322056616562898366L;
+
     private int altarsCaptured, altarsNeutralized, assists, champLevel, combatPlayerScore, deaths, doubleKills, goldEarned, goldSpent, inhibitorKills, item0,
             item1, item2, item3, item4, item5, item6, killingSprees, kills, largestCriticalStrike, largestKillingSpree, largestMultiKill,
             longestTimeSpentLiving, neutralMinionsKilled, neutralMinionsKilledEnemyJungle, neutralMinionsKilledTeamJungle, nodeCapture, nodeCaptureAssist,
             nodeNeutralize, nodeNeutralizeAssist, objectivePlayerScore, participantId, pentaKills, quadraKills, sightWardsBoughtInGame, teamObjective,
             totalMinionsKilled, totalPlayerScore, totalScoreRank, totalTimeCrowdControlDealt, totalUnitsHealed, tripleKills, turretKills, unrealKills,
-            visionWardsBoughtInGame, wardsKilled, wardsPlaced;
+            visionWardsBoughtInGame, wardsKilled, wardsPlaced, playerScore0, playerScore1, playerScore2, playerScore3, playerScore4, playerScore5, playerScore6,
+            playerScore7, playerScore8, playerScore9, perkPrimaryStyle, perkSubStyle, perk0, perk0Var1, perk0Var2, perk0Var3, perk1, perk1Var1, perk1Var2,
+            perk1Var3, perk2, perk2Var1, perk2Var2, perk2Var3, perk3, perk3Var1, perk3Var2, perk3Var3, perk4, perk4Var1, perk4Var2, perk4Var3, perk5, perk5Var1,
+            perk5Var2, perk5Var3;
+
     private long damageDealtToObjectives, damageDealtToTurrets, damageSelfMitigated, magicalDamageTaken, magicDamageDealt, magicDamageDealtToChampions,
             physicalDamageDealt, physicalDamageDealtToChampions, physicalDamageTaken, timeCCingOthers, totalDamageDealt, totalDamageDealtToChampions,
             totalDamageTaken, totalHeal, trueDamageDealt, trueDamageDealtToChampions, trueDamageTaken, visionScore;
+
     private boolean firstBloodAssist, firstBloodKill, firstInhibitorAssist, firstInhibitorKill, firstTowerAssist, firstTowerKill, win;
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(final Object obj) {
         if(this == obj) {
@@ -166,6 +168,84 @@ public class ParticipantStats extends DataObject {
         if(pentaKills != other.pentaKills) {
             return false;
         }
+        if(perk0 != other.perk0) {
+            return false;
+        }
+        if(perk0Var1 != other.perk0Var1) {
+            return false;
+        }
+        if(perk0Var2 != other.perk0Var2) {
+            return false;
+        }
+        if(perk0Var3 != other.perk0Var3) {
+            return false;
+        }
+        if(perk1 != other.perk1) {
+            return false;
+        }
+        if(perk1Var1 != other.perk1Var1) {
+            return false;
+        }
+        if(perk1Var2 != other.perk1Var2) {
+            return false;
+        }
+        if(perk1Var3 != other.perk1Var3) {
+            return false;
+        }
+        if(perk2 != other.perk2) {
+            return false;
+        }
+        if(perk2Var1 != other.perk2Var1) {
+            return false;
+        }
+        if(perk2Var2 != other.perk2Var2) {
+            return false;
+        }
+        if(perk2Var3 != other.perk2Var3) {
+            return false;
+        }
+        if(perk3 != other.perk3) {
+            return false;
+        }
+        if(perk3Var1 != other.perk3Var1) {
+            return false;
+        }
+        if(perk3Var2 != other.perk3Var2) {
+            return false;
+        }
+        if(perk3Var3 != other.perk3Var3) {
+            return false;
+        }
+        if(perk4 != other.perk4) {
+            return false;
+        }
+        if(perk4Var1 != other.perk4Var1) {
+            return false;
+        }
+        if(perk4Var2 != other.perk4Var2) {
+            return false;
+        }
+        if(perk4Var3 != other.perk4Var3) {
+            return false;
+        }
+        if(perk5 != other.perk5) {
+            return false;
+        }
+        if(perk5Var1 != other.perk5Var1) {
+            return false;
+        }
+        if(perk5Var2 != other.perk5Var2) {
+            return false;
+        }
+        if(perk5Var3 != other.perk5Var3) {
+            return false;
+        }
+        if(perkPrimaryStyle != other.perkPrimaryStyle) {
+            return false;
+        }
+        if(perkSubStyle != other.perkSubStyle) {
+            return false;
+        }
         if(physicalDamageDealt != other.physicalDamageDealt) {
             return false;
         }
@@ -173,6 +253,36 @@ public class ParticipantStats extends DataObject {
             return false;
         }
         if(physicalDamageTaken != other.physicalDamageTaken) {
+            return false;
+        }
+        if(playerScore0 != other.playerScore0) {
+            return false;
+        }
+        if(playerScore1 != other.playerScore1) {
+            return false;
+        }
+        if(playerScore2 != other.playerScore2) {
+            return false;
+        }
+        if(playerScore3 != other.playerScore3) {
+            return false;
+        }
+        if(playerScore4 != other.playerScore4) {
+            return false;
+        }
+        if(playerScore5 != other.playerScore5) {
+            return false;
+        }
+        if(playerScore6 != other.playerScore6) {
+            return false;
+        }
+        if(playerScore7 != other.playerScore7) {
+            return false;
+        }
+        if(playerScore8 != other.playerScore8) {
+            return false;
+        }
+        if(playerScore9 != other.playerScore9) {
             return false;
         }
         if(quadraKills != other.quadraKills) {
@@ -524,6 +634,188 @@ public class ParticipantStats extends DataObject {
     }
 
     /**
+     * @return the perk0
+     */
+    public int getPerk0() {
+        return perk0;
+    }
+
+    /**
+     * @return the perk0Var1
+     */
+    public int getPerk0Var1() {
+        return perk0Var1;
+    }
+
+    /**
+     * @return the perk0Var2
+     */
+    public int getPerk0Var2() {
+        return perk0Var2;
+    }
+
+    /**
+     * @return the perk0Var3
+     */
+    public int getPerk0Var3() {
+        return perk0Var3;
+    }
+
+    /**
+     * @return the perk1
+     */
+    public int getPerk1() {
+        return perk1;
+    }
+
+    /**
+     * @return the perk1Var1
+     */
+    public int getPerk1Var1() {
+        return perk1Var1;
+    }
+
+    /**
+     * @return the perk1Var2
+     */
+    public int getPerk1Var2() {
+        return perk1Var2;
+    }
+
+    /**
+     * @return the perk1Var3
+     */
+    public int getPerk1Var3() {
+        return perk1Var3;
+    }
+
+    /**
+     * @return the perk2
+     */
+    public int getPerk2() {
+        return perk2;
+    }
+
+    /**
+     * @return the perk2Var1
+     */
+    public int getPerk2Var1() {
+        return perk2Var1;
+    }
+
+    /**
+     * @return the perk2Var2
+     */
+    public int getPerk2Var2() {
+        return perk2Var2;
+    }
+
+    /**
+     * @return the perk2Var3
+     */
+    public int getPerk2Var3() {
+        return perk2Var3;
+    }
+
+    /**
+     * @return the perk3
+     */
+    public int getPerk3() {
+        return perk3;
+    }
+
+    /**
+     * @return the perk3Var1
+     */
+    public int getPerk3Var1() {
+        return perk3Var1;
+    }
+
+    /**
+     * @return the perk3Var2
+     */
+    public int getPerk3Var2() {
+        return perk3Var2;
+    }
+
+    /**
+     * @return the perk3Var3
+     */
+    public int getPerk3Var3() {
+        return perk3Var3;
+    }
+
+    /**
+     * @return the perk4
+     */
+    public int getPerk4() {
+        return perk4;
+    }
+
+    /**
+     * @return the perk4Var1
+     */
+    public int getPerk4Var1() {
+        return perk4Var1;
+    }
+
+    /**
+     * @return the perk4Var2
+     */
+    public int getPerk4Var2() {
+        return perk4Var2;
+    }
+
+    /**
+     * @return the perk4Var3
+     */
+    public int getPerk4Var3() {
+        return perk4Var3;
+    }
+
+    /**
+     * @return the perk5
+     */
+    public int getPerk5() {
+        return perk5;
+    }
+
+    /**
+     * @return the perk5Var1
+     */
+    public int getPerk5Var1() {
+        return perk5Var1;
+    }
+
+    /**
+     * @return the perk5Var2
+     */
+    public int getPerk5Var2() {
+        return perk5Var2;
+    }
+
+    /**
+     * @return the perk5Var3
+     */
+    public int getPerk5Var3() {
+        return perk5Var3;
+    }
+
+    /**
+     * @return the perkPrimaryStyle
+     */
+    public int getPerkPrimaryStyle() {
+        return perkPrimaryStyle;
+    }
+
+    /**
+     * @return the perkSubStyle
+     */
+    public int getPerkSubStyle() {
+        return perkSubStyle;
+    }
+
+    /**
      * @return the physicalDamageDealt
      */
     public long getPhysicalDamageDealt() {
@@ -542,6 +834,76 @@ public class ParticipantStats extends DataObject {
      */
     public long getPhysicalDamageTaken() {
         return physicalDamageTaken;
+    }
+
+    /**
+     * @return the playerScore0
+     */
+    public int getPlayerScore0() {
+        return playerScore0;
+    }
+
+    /**
+     * @return the playerScore1
+     */
+    public int getPlayerScore1() {
+        return playerScore1;
+    }
+
+    /**
+     * @return the playerScore2
+     */
+    public int getPlayerScore2() {
+        return playerScore2;
+    }
+
+    /**
+     * @return the playerScore3
+     */
+    public int getPlayerScore3() {
+        return playerScore3;
+    }
+
+    /**
+     * @return the playerScore4
+     */
+    public int getPlayerScore4() {
+        return playerScore4;
+    }
+
+    /**
+     * @return the playerScore5
+     */
+    public int getPlayerScore5() {
+        return playerScore5;
+    }
+
+    /**
+     * @return the playerScore6
+     */
+    public int getPlayerScore6() {
+        return playerScore6;
+    }
+
+    /**
+     * @return the playerScore7
+     */
+    public int getPlayerScore7() {
+        return playerScore7;
+    }
+
+    /**
+     * @return the playerScore8
+     */
+    public int getPlayerScore8() {
+        return playerScore8;
+    }
+
+    /**
+     * @return the playerScore9
+     */
+    public int getPlayerScore9() {
+        return playerScore9;
     }
 
     /**
@@ -705,10 +1067,6 @@ public class ParticipantStats extends DataObject {
         return wardsPlaced;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -758,9 +1116,45 @@ public class ParticipantStats extends DataObject {
         result = prime * result + objectivePlayerScore;
         result = prime * result + participantId;
         result = prime * result + pentaKills;
+        result = prime * result + perk0;
+        result = prime * result + perk0Var1;
+        result = prime * result + perk0Var2;
+        result = prime * result + perk0Var3;
+        result = prime * result + perk1;
+        result = prime * result + perk1Var1;
+        result = prime * result + perk1Var2;
+        result = prime * result + perk1Var3;
+        result = prime * result + perk2;
+        result = prime * result + perk2Var1;
+        result = prime * result + perk2Var2;
+        result = prime * result + perk2Var3;
+        result = prime * result + perk3;
+        result = prime * result + perk3Var1;
+        result = prime * result + perk3Var2;
+        result = prime * result + perk3Var3;
+        result = prime * result + perk4;
+        result = prime * result + perk4Var1;
+        result = prime * result + perk4Var2;
+        result = prime * result + perk4Var3;
+        result = prime * result + perk5;
+        result = prime * result + perk5Var1;
+        result = prime * result + perk5Var2;
+        result = prime * result + perk5Var3;
+        result = prime * result + perkPrimaryStyle;
+        result = prime * result + perkSubStyle;
         result = prime * result + (int)(physicalDamageDealt ^ physicalDamageDealt >>> 32);
         result = prime * result + (int)(physicalDamageDealtToChampions ^ physicalDamageDealtToChampions >>> 32);
         result = prime * result + (int)(physicalDamageTaken ^ physicalDamageTaken >>> 32);
+        result = prime * result + playerScore0;
+        result = prime * result + playerScore1;
+        result = prime * result + playerScore2;
+        result = prime * result + playerScore3;
+        result = prime * result + playerScore4;
+        result = prime * result + playerScore5;
+        result = prime * result + playerScore6;
+        result = prime * result + playerScore7;
+        result = prime * result + playerScore8;
+        result = prime * result + playerScore9;
         result = prime * result + quadraKills;
         result = prime * result + sightWardsBoughtInGame;
         result = prime * result + teamObjective;
@@ -1198,6 +1592,214 @@ public class ParticipantStats extends DataObject {
     }
 
     /**
+     * @param perk0
+     *        the perk0 to set
+     */
+    public void setPerk0(final int perk0) {
+        this.perk0 = perk0;
+    }
+
+    /**
+     * @param perk0Var1
+     *        the perk0Var1 to set
+     */
+    public void setPerk0Var1(final int perk0Var1) {
+        this.perk0Var1 = perk0Var1;
+    }
+
+    /**
+     * @param perk0Var2
+     *        the perk0Var2 to set
+     */
+    public void setPerk0Var2(final int perk0Var2) {
+        this.perk0Var2 = perk0Var2;
+    }
+
+    /**
+     * @param perk0Var3
+     *        the perk0Var3 to set
+     */
+    public void setPerk0Var3(final int perk0Var3) {
+        this.perk0Var3 = perk0Var3;
+    }
+
+    /**
+     * @param perk1
+     *        the perk1 to set
+     */
+    public void setPerk1(final int perk1) {
+        this.perk1 = perk1;
+    }
+
+    /**
+     * @param perk1Var1
+     *        the perk1Var1 to set
+     */
+    public void setPerk1Var1(final int perk1Var1) {
+        this.perk1Var1 = perk1Var1;
+    }
+
+    /**
+     * @param perk1Var2
+     *        the perk1Var2 to set
+     */
+    public void setPerk1Var2(final int perk1Var2) {
+        this.perk1Var2 = perk1Var2;
+    }
+
+    /**
+     * @param perk1Var3
+     *        the perk1Var3 to set
+     */
+    public void setPerk1Var3(final int perk1Var3) {
+        this.perk1Var3 = perk1Var3;
+    }
+
+    /**
+     * @param perk2
+     *        the perk2 to set
+     */
+    public void setPerk2(final int perk2) {
+        this.perk2 = perk2;
+    }
+
+    /**
+     * @param perk2Var1
+     *        the perk2Var1 to set
+     */
+    public void setPerk2Var1(final int perk2Var1) {
+        this.perk2Var1 = perk2Var1;
+    }
+
+    /**
+     * @param perk2Var2
+     *        the perk2Var2 to set
+     */
+    public void setPerk2Var2(final int perk2Var2) {
+        this.perk2Var2 = perk2Var2;
+    }
+
+    /**
+     * @param perk2Var3
+     *        the perk2Var3 to set
+     */
+    public void setPerk2Var3(final int perk2Var3) {
+        this.perk2Var3 = perk2Var3;
+    }
+
+    /**
+     * @param perk3
+     *        the perk3 to set
+     */
+    public void setPerk3(final int perk3) {
+        this.perk3 = perk3;
+    }
+
+    /**
+     * @param perk3Var1
+     *        the perk3Var1 to set
+     */
+    public void setPerk3Var1(final int perk3Var1) {
+        this.perk3Var1 = perk3Var1;
+    }
+
+    /**
+     * @param perk3Var2
+     *        the perk3Var2 to set
+     */
+    public void setPerk3Var2(final int perk3Var2) {
+        this.perk3Var2 = perk3Var2;
+    }
+
+    /**
+     * @param perk3Var3
+     *        the perk3Var3 to set
+     */
+    public void setPerk3Var3(final int perk3Var3) {
+        this.perk3Var3 = perk3Var3;
+    }
+
+    /**
+     * @param perk4
+     *        the perk4 to set
+     */
+    public void setPerk4(final int perk4) {
+        this.perk4 = perk4;
+    }
+
+    /**
+     * @param perk4Var1
+     *        the perk4Var1 to set
+     */
+    public void setPerk4Var1(final int perk4Var1) {
+        this.perk4Var1 = perk4Var1;
+    }
+
+    /**
+     * @param perk4Var2
+     *        the perk4Var2 to set
+     */
+    public void setPerk4Var2(final int perk4Var2) {
+        this.perk4Var2 = perk4Var2;
+    }
+
+    /**
+     * @param perk4Var3
+     *        the perk4Var3 to set
+     */
+    public void setPerk4Var3(final int perk4Var3) {
+        this.perk4Var3 = perk4Var3;
+    }
+
+    /**
+     * @param perk5
+     *        the perk5 to set
+     */
+    public void setPerk5(final int perk5) {
+        this.perk5 = perk5;
+    }
+
+    /**
+     * @param perk5Var1
+     *        the perk5Var1 to set
+     */
+    public void setPerk5Var1(final int perk5Var1) {
+        this.perk5Var1 = perk5Var1;
+    }
+
+    /**
+     * @param perk5Var2
+     *        the perk5Var2 to set
+     */
+    public void setPerk5Var2(final int perk5Var2) {
+        this.perk5Var2 = perk5Var2;
+    }
+
+    /**
+     * @param perk5Var3
+     *        the perk5Var3 to set
+     */
+    public void setPerk5Var3(final int perk5Var3) {
+        this.perk5Var3 = perk5Var3;
+    }
+
+    /**
+     * @param perkPrimaryStyle
+     *        the perkPrimaryStyle to set
+     */
+    public void setPerkPrimaryStyle(final int perkPrimaryStyle) {
+        this.perkPrimaryStyle = perkPrimaryStyle;
+    }
+
+    /**
+     * @param perkSubStyle
+     *        the perkSubStyle to set
+     */
+    public void setPerkSubStyle(final int perkSubStyle) {
+        this.perkSubStyle = perkSubStyle;
+    }
+
+    /**
      * @param physicalDamageDealt
      *        the physicalDamageDealt to set
      */
@@ -1219,6 +1821,86 @@ public class ParticipantStats extends DataObject {
      */
     public void setPhysicalDamageTaken(final long physicalDamageTaken) {
         this.physicalDamageTaken = physicalDamageTaken;
+    }
+
+    /**
+     * @param playerScore0
+     *        the playerScore0 to set
+     */
+    public void setPlayerScore0(final int playerScore0) {
+        this.playerScore0 = playerScore0;
+    }
+
+    /**
+     * @param playerScore1
+     *        the playerScore1 to set
+     */
+    public void setPlayerScore1(final int playerScore1) {
+        this.playerScore1 = playerScore1;
+    }
+
+    /**
+     * @param playerScore2
+     *        the playerScore2 to set
+     */
+    public void setPlayerScore2(final int playerScore2) {
+        this.playerScore2 = playerScore2;
+    }
+
+    /**
+     * @param playerScore3
+     *        the playerScore3 to set
+     */
+    public void setPlayerScore3(final int playerScore3) {
+        this.playerScore3 = playerScore3;
+    }
+
+    /**
+     * @param playerScore4
+     *        the playerScore4 to set
+     */
+    public void setPlayerScore4(final int playerScore4) {
+        this.playerScore4 = playerScore4;
+    }
+
+    /**
+     * @param playerScore5
+     *        the playerScore5 to set
+     */
+    public void setPlayerScore5(final int playerScore5) {
+        this.playerScore5 = playerScore5;
+    }
+
+    /**
+     * @param playerScore6
+     *        the playerScore6 to set
+     */
+    public void setPlayerScore6(final int playerScore6) {
+        this.playerScore6 = playerScore6;
+    }
+
+    /**
+     * @param playerScore7
+     *        the playerScore7 to set
+     */
+    public void setPlayerScore7(final int playerScore7) {
+        this.playerScore7 = playerScore7;
+    }
+
+    /**
+     * @param playerScore8
+     *        the playerScore8 to set
+     */
+    public void setPlayerScore8(final int playerScore8) {
+        this.playerScore8 = playerScore8;
+    }
+
+    /**
+     * @param playerScore9
+     *        the playerScore9 to set
+     */
+    public void setPlayerScore9(final int playerScore9) {
+        this.playerScore9 = playerScore9;
     }
 
     /**
