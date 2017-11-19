@@ -1,6 +1,6 @@
 package com.merakianalytics.orianna.types.data.spectator;
 
-import com.merakianalytics.orianna.types.common.Team;
+import com.merakianalytics.orianna.types.common.Side;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class Participant extends CoreData {
@@ -8,7 +8,7 @@ public class Participant extends CoreData {
     private boolean bot;
     private int profileIconId, championId, summonerSpellDId, summonerSpellFId;
     private String summonerName;
-    private Team team;
+    private Side team;
 
     @Override
     public boolean equals(final Object obj) {
@@ -88,7 +88,7 @@ public class Participant extends CoreData {
     /**
      * @return the team
      */
-    public Team getTeam() {
+    public Side getTeam() {
         return team;
     }
 
@@ -165,7 +165,7 @@ public class Participant extends CoreData {
      * @param team
      *        the team to set
      */
-    public void setTeam(final Team team) {
+    public void setTeam(final Side team) {
         this.team = team;
     }
 }

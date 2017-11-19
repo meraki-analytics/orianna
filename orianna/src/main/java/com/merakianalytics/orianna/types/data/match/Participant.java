@@ -1,7 +1,7 @@
 package com.merakianalytics.orianna.types.data.match;
 
 import com.merakianalytics.orianna.types.common.Platform;
-import com.merakianalytics.orianna.types.common.Team;
+import com.merakianalytics.orianna.types.common.Side;
 import com.merakianalytics.orianna.types.common.Tier;
 import com.merakianalytics.orianna.types.data.CoreData;
 
@@ -13,7 +13,7 @@ public class Participant extends CoreData {
     private ParticipantStats stats;
     private String summonerName, matchHistoryURI;
     private int summonerSpellDId, summonerSpellFId, championId, profileIconId, participantId;
-    private Team team;
+    private Side team;
     private ParticipantTimeline timeline;
 
     @Override
@@ -196,7 +196,7 @@ public class Participant extends CoreData {
     /**
      * @return the team
      */
-    public Team getTeam() {
+    public Side getTeam() {
         return team;
     }
 
@@ -346,7 +346,7 @@ public class Participant extends CoreData {
      * @param team
      *        the team to set
      */
-    public void setTeam(final Team team) {
+    public void setTeam(final Side team) {
         this.team = team;
     }
 

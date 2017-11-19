@@ -38,10 +38,10 @@ import com.merakianalytics.orianna.types.data.match.Frame;
 import com.merakianalytics.orianna.types.data.match.Match;
 import com.merakianalytics.orianna.types.data.match.MatchList;
 import com.merakianalytics.orianna.types.data.match.MatchReference;
+import com.merakianalytics.orianna.types.data.match.Participant;
 import com.merakianalytics.orianna.types.data.match.ParticipantFrame;
 import com.merakianalytics.orianna.types.data.match.ParticipantStats;
 import com.merakianalytics.orianna.types.data.match.ParticipantTimeline;
-import com.merakianalytics.orianna.types.data.match.Participant;
 import com.merakianalytics.orianna.types.data.match.Position;
 import com.merakianalytics.orianna.types.data.match.Rune;
 import com.merakianalytics.orianna.types.data.match.StatTotals;
@@ -93,7 +93,7 @@ public class MatchTransformer extends AbstractDataTransformer {
         final Object previousDuration = context.put("duration", item.getGameDuration());
         final Match match = new Match();
         for(final TeamStats team : item.getTeams()) {
-            if(com.merakianalytics.orianna.types.common.Team.BLUE == com.merakianalytics.orianna.types.common.Team.withId(team.getTeamId())) {
+            if(com.merakianalytics.orianna.types.common.Side.BLUE == com.merakianalytics.orianna.types.common.Side.withId(team.getTeamId())) {
                 match.setBlueTeam(transform(team, context));
             } else {
                 match.setRedTeam(transform(team, context));
@@ -144,6 +144,28 @@ public class MatchTransformer extends AbstractDataTransformer {
         reference.setRole(Role.valueOf(item.getRole()));
         reference.setSeason(Season.withId(item.getSeason()));
         return reference;
+    }
+
+    @Transform(from = com.merakianalytics.orianna.types.dto.match.Participant.class, to = Participant.class)
+    public Participant transform(final com.merakianalytics.orianna.types.dto.match.Participant item, final PipelineContext context) {
+        final Participant converted = new Participant();
+        converted.setChampionId(item.getChampionId());
+        converted.setHighestTierInSeason(Tier.valueOf(item.getHighestAchievedSeasonTier()));
+        converted.setStats(transform(item.getStats(), context));
+        converted.setSummonerSpellDId(item.getSpell1Id());
+        converted.setSummonerSpellFId(item.getSpell2Id());
+        converted.setTeam(com.merakianalytics.orianna.types.common.Side.withId(item.getTeamId()));
+        converted.setTimeline(transform(item.getTimeline(), context));
+        final com.merakianalytics.orianna.types.dto.match.Player player = (com.merakianalytics.orianna.types.dto.match.Player)context.get("player");
+        converted.setAccountId(player.getAccountId());
+        converted.setCurrentAccountId(player.getCurrentAccountId());
+        converted.setCurrentPlatform(Platform.withTag(player.getCurrentPlatformId()));
+        converted.setMatchHistoryURI(player.getMatchHistoryUri());
+        converted.setPlatform(Platform.withTag(player.getPlatformId()));
+        converted.setProfileIconId(player.getProfileIcon());
+        converted.setSummonerId(player.getSummonerId());
+        converted.setSummonerName(player.getSummonerName());
+        return converted;
     }
 
     @Transform(from = com.merakianalytics.orianna.types.dto.match.ParticipantStats.class, to = ParticipantStats.class)
@@ -307,13 +329,14 @@ public class MatchTransformer extends AbstractDataTransformer {
         player.setProfileIconId(item.getProfileIcon());
         player.setSummonerId(item.getSummonerId());
         player.setSummonerName(item.getSummonerName());
-        final com.merakianalytics.orianna.types.dto.match.Participant participant = (com.merakianalytics.orianna.types.dto.match.Participant)context.get("participant");
+        final com.merakianalytics.orianna.types.dto.match.Participant participant =
+            (com.merakianalytics.orianna.types.dto.match.Participant)context.get("participant");
         player.setChampionId(participant.getChampionId());
         player.setHighestTierInSeason(Tier.valueOf(participant.getHighestAchievedSeasonTier()));
         player.setStats(transform(participant.getStats(), context));
         player.setSummonerSpellDId(participant.getSpell1Id());
         player.setSummonerSpellFId(participant.getSpell2Id());
-        player.setTeam(com.merakianalytics.orianna.types.common.Team.withId(participant.getTeamId()));
+        player.setTeam(com.merakianalytics.orianna.types.common.Side.withId(participant.getTeamId()));
         player.setTimeline(transform(participant.getTimeline(), context));
         return player;
     }
@@ -430,9 +453,9 @@ public class MatchTransformer extends AbstractDataTransformer {
         match.setQueueId(item.getQueue().getId());
         match.setSeasonId(item.getSeason().getId());
         final List<TeamStats> teams = new ArrayList<>(2);
-        final Object previousTeam = context.put("team", com.merakianalytics.orianna.types.common.Team.BLUE);
+        final Object previousTeam = context.put("team", com.merakianalytics.orianna.types.common.Side.BLUE);
         teams.add(transform(item.getBlueTeam(), context));
-        context.put("team", com.merakianalytics.orianna.types.common.Team.RED);
+        context.put("team", com.merakianalytics.orianna.types.common.Side.RED);
         teams.add(transform(item.getRedTeam(), context));
         context.put("team", previousTeam);
         match.setTeams(teams);
@@ -478,7 +501,7 @@ public class MatchTransformer extends AbstractDataTransformer {
             event.setSkill(Skill.withId(item.getSkillSlot()));
         }
         if(item.getTeamId() != 0) {
-            event.setTeam(com.merakianalytics.orianna.types.common.Team.withId(item.getTeamId()));
+            event.setTeam(com.merakianalytics.orianna.types.common.Side.withId(item.getTeamId()));
         }
         event.setTimestamp(Duration.millis(item.getTimestamp()));
         if(item.getTowerType() != null) {
@@ -613,26 +636,18 @@ public class MatchTransformer extends AbstractDataTransformer {
         return timeline;
     }
 
-    @Transform(from = com.merakianalytics.orianna.types.dto.match.Participant.class, to = Participant.class)
-    public Participant transform(final com.merakianalytics.orianna.types.dto.match.Participant item, final PipelineContext context) {
-        final Participant converted = new Participant();
-        converted.setChampionId(item.getChampionId());
-        converted.setHighestTierInSeason(Tier.valueOf(item.getHighestAchievedSeasonTier()));
-        converted.setStats(transform(item.getStats(), context));
-        converted.setSummonerSpellDId(item.getSpell1Id());
-        converted.setSummonerSpellFId(item.getSpell2Id());
-        converted.setTeam(com.merakianalytics.orianna.types.common.Team.withId(item.getTeamId()));
-        converted.setTimeline(transform(item.getTimeline(), context));
-        final com.merakianalytics.orianna.types.dto.match.Player player = (com.merakianalytics.orianna.types.dto.match.Player)context.get("player");
-        converted.setAccountId(player.getAccountId());
-        converted.setCurrentAccountId(player.getCurrentAccountId());
-        converted.setCurrentPlatform(Platform.withTag(player.getCurrentPlatformId()));
-        converted.setMatchHistoryURI(player.getMatchHistoryUri());
-        converted.setPlatform(Platform.withTag(player.getPlatformId()));
-        converted.setProfileIconId(player.getProfileIcon());
-        converted.setSummonerId(player.getSummonerId());
-        converted.setSummonerName(player.getSummonerName());
-        return converted;
+    @Transform(from = Participant.class, to = com.merakianalytics.orianna.types.dto.match.Player.class)
+    public com.merakianalytics.orianna.types.dto.match.Player transform(final Participant item, final PipelineContext context) {
+        final com.merakianalytics.orianna.types.dto.match.Player player = new com.merakianalytics.orianna.types.dto.match.Player();
+        player.setAccountId(item.getAccountId());
+        player.setCurrentAccountId(item.getCurrentAccountId());
+        player.setCurrentPlatformId(item.getCurrentPlatform().getTag());
+        player.setMatchHistoryUri(item.getMatchHistoryURI());
+        player.setPlatformId(item.getPlatform().getTag());
+        player.setProfileIcon(item.getProfileIconId());
+        player.setSummonerId(item.getSummonerId());
+        player.setSummonerName(item.getSummonerName());
+        return player;
     }
 
     @Transform(from = ParticipantFrame.class, to = MatchParticipantFrame.class)
@@ -787,20 +802,6 @@ public class MatchTransformer extends AbstractDataTransformer {
         return timeline;
     }
 
-    @Transform(from = Participant.class, to = com.merakianalytics.orianna.types.dto.match.Player.class)
-    public com.merakianalytics.orianna.types.dto.match.Player transform(final Participant item, final PipelineContext context) {
-        final com.merakianalytics.orianna.types.dto.match.Player player = new com.merakianalytics.orianna.types.dto.match.Player();
-        player.setAccountId(item.getAccountId());
-        player.setCurrentAccountId(item.getCurrentAccountId());
-        player.setCurrentPlatformId(item.getCurrentPlatform().getTag());
-        player.setMatchHistoryUri(item.getMatchHistoryURI());
-        player.setPlatformId(item.getPlatform().getTag());
-        player.setProfileIcon(item.getProfileIconId());
-        player.setSummonerId(item.getSummonerId());
-        player.setSummonerName(item.getSummonerName());
-        return player;
-    }
-
     @Transform(from = Position.class, to = MatchPosition.class)
     public MatchPosition transform(final Position item, final PipelineContext context) {
         final MatchPosition position = new MatchPosition();
@@ -812,10 +813,10 @@ public class MatchTransformer extends AbstractDataTransformer {
     @Transform(from = Team.class, to = TeamStats.class)
     public TeamStats transform(final Team item, final PipelineContext context) {
         final TeamStats team = new TeamStats();
-        final com.merakianalytics.orianna.types.common.Team side = (com.merakianalytics.orianna.types.common.Team)context.get("team");
+        final com.merakianalytics.orianna.types.common.Side side = (com.merakianalytics.orianna.types.common.Side)context.get("team");
         final List<TeamBans> bans = new ArrayList<>(item.getBans().size());
         final boolean isTenBanMode = item.getBans().size() == 5;
-        int turn = com.merakianalytics.orianna.types.common.Team.BLUE == side ? 1 : isTenBanMode ? 6 : 2;
+        int turn = com.merakianalytics.orianna.types.common.Side.BLUE == side ? 1 : isTenBanMode ? 6 : 2;
         final int increment = isTenBanMode ? 1 : 2;
         for(final Integer id : item.getBans()) {
             final TeamBans ban = new TeamBans();

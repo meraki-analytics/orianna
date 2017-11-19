@@ -14,7 +14,7 @@ import com.merakianalytics.orianna.types.common.GameType;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Queue;
 import com.merakianalytics.orianna.types.common.RunePath;
-import com.merakianalytics.orianna.types.common.Team;
+import com.merakianalytics.orianna.types.common.Side;
 import com.merakianalytics.orianna.types.data.spectator.CurrentGame;
 import com.merakianalytics.orianna.types.data.spectator.FeaturedGame;
 import com.merakianalytics.orianna.types.data.spectator.FeaturedGames;
@@ -59,7 +59,7 @@ public class SpectatorTransformer extends AbstractDataTransformer {
         player.setSummonerName(item.getSummonerName());
         player.setSummonerSpellDId((int)item.getSpell1Id());
         player.setSummonerSpellFId((int)item.getSpell2Id());
-        player.setTeam(Team.withId((int)item.getTeamId()));
+        player.setTeam(Side.withId((int)item.getTeamId()));
         return player;
     }
 
@@ -74,14 +74,14 @@ public class SpectatorTransformer extends AbstractDataTransformer {
                 final BannedChampion ban = new BannedChampion();
                 ban.setChampionId(championId);
                 ban.setPickTurn(turn++);
-                ban.setTeamId(Team.BLUE.getId());
+                ban.setTeamId(Side.BLUE.getId());
                 bans.add(ban);
             }
             for(final Integer championId : item.getRedTeamBans()) {
                 final BannedChampion ban = new BannedChampion();
                 ban.setChampionId(championId);
                 ban.setPickTurn(turn++);
-                ban.setTeamId(Team.RED.getId());
+                ban.setTeamId(Side.RED.getId());
                 bans.add(ban);
             }
         } else {
@@ -91,7 +91,7 @@ public class SpectatorTransformer extends AbstractDataTransformer {
                 ban.setChampionId(championId);
                 ban.setPickTurn(turn);
                 turn += 2;
-                ban.setTeamId(Team.BLUE.getId());
+                ban.setTeamId(Side.BLUE.getId());
                 bans.add(ban);
                 bans.add(null);
             }
@@ -101,7 +101,7 @@ public class SpectatorTransformer extends AbstractDataTransformer {
                 ban.setChampionId(championId);
                 ban.setPickTurn(turn);
                 turn += 2;
-                ban.setTeamId(Team.RED.getId());
+                ban.setTeamId(Side.RED.getId());
                 bans.set(turn - 1, ban);
             }
         }
@@ -132,7 +132,7 @@ public class SpectatorTransformer extends AbstractDataTransformer {
         final List<Integer> blueBans = new ArrayList<>(item.getBannedChampions().size() / 2);
         final List<Integer> redBans = new ArrayList<>(item.getBannedChampions().size() / 2);
         for(final BannedChampion ban : item.getBannedChampions()) {
-            if(Team.BLUE == Team.withId((int)ban.getTeamId())) {
+            if(Side.BLUE == Side.withId((int)ban.getTeamId())) {
                 blueBans.add((int)ban.getChampionId());
             } else {
                 redBans.add((int)ban.getChampionId());
@@ -174,7 +174,7 @@ public class SpectatorTransformer extends AbstractDataTransformer {
         player.setSummonerName(item.getSummonerName());
         player.setSummonerSpellDId((int)item.getSpell1Id());
         player.setSummonerSpellFId((int)item.getSpell2Id());
-        player.setTeam(Team.withId((int)item.getTeamId()));
+        player.setTeam(Side.withId((int)item.getTeamId()));
         return player;
     }
 
@@ -189,14 +189,14 @@ public class SpectatorTransformer extends AbstractDataTransformer {
                 final BannedChampion ban = new BannedChampion();
                 ban.setChampionId(championId);
                 ban.setPickTurn(turn++);
-                ban.setTeamId(Team.BLUE.getId());
+                ban.setTeamId(Side.BLUE.getId());
                 bans.add(ban);
             }
             for(final Integer championId : item.getRedTeamBans()) {
                 final BannedChampion ban = new BannedChampion();
                 ban.setChampionId(championId);
                 ban.setPickTurn(turn++);
-                ban.setTeamId(Team.RED.getId());
+                ban.setTeamId(Side.RED.getId());
                 bans.add(ban);
             }
         } else {
@@ -206,7 +206,7 @@ public class SpectatorTransformer extends AbstractDataTransformer {
                 ban.setChampionId(championId);
                 ban.setPickTurn(turn);
                 turn += 2;
-                ban.setTeamId(Team.BLUE.getId());
+                ban.setTeamId(Side.BLUE.getId());
                 bans.add(ban);
                 bans.add(null);
             }
@@ -216,7 +216,7 @@ public class SpectatorTransformer extends AbstractDataTransformer {
                 ban.setChampionId(championId);
                 ban.setPickTurn(turn);
                 turn += 2;
-                ban.setTeamId(Team.RED.getId());
+                ban.setTeamId(Side.RED.getId());
                 bans.set(turn - 1, ban);
             }
         }
@@ -246,7 +246,7 @@ public class SpectatorTransformer extends AbstractDataTransformer {
         final List<Integer> blueBans = new ArrayList<>(item.getBannedChampions().size() / 2);
         final List<Integer> redBans = new ArrayList<>(item.getBannedChampions().size() / 2);
         for(final BannedChampion ban : item.getBannedChampions()) {
-            if(Team.BLUE == Team.withId((int)ban.getTeamId())) {
+            if(Side.BLUE == Side.withId((int)ban.getTeamId())) {
                 blueBans.add((int)ban.getChampionId());
             } else {
                 redBans.add((int)ban.getChampionId());

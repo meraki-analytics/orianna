@@ -30,7 +30,7 @@ public class Event extends CoreData {
     private MonsterType monsterType;
     private Position position;
     private Skill skill;
-    private com.merakianalytics.orianna.types.common.Team team;
+    private com.merakianalytics.orianna.types.common.Side team;
     private Duration timestamp;
     private TurretType turretType;
     private EventType type;
@@ -244,7 +244,7 @@ public class Event extends CoreData {
     /**
      * @return the team
      */
-    public com.merakianalytics.orianna.types.common.Team getTeam() {
+    public com.merakianalytics.orianna.types.common.Side getTeam() {
         return team;
     }
 
@@ -444,7 +444,7 @@ public class Event extends CoreData {
      * @param team
      *        the team to set
      */
-    public void setTeam(final com.merakianalytics.orianna.types.common.Team team) {
+    public void setTeam(final com.merakianalytics.orianna.types.common.Side team) {
         this.team = team;
     }
 
