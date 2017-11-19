@@ -121,7 +121,7 @@ public class MatchTransformer extends AbstractDataTransformer {
             players.add(transform(participant, context));
         }
         context.put("player", previousPlayer);
-        match.setPlayers(players);
+        match.setParticipants(players);
 
         match.setQueue(Queue.withId(item.getQueueId()));
         match.setSeason(Season.withId(item.getSeasonId()));
@@ -411,11 +411,11 @@ public class MatchTransformer extends AbstractDataTransformer {
         match.setGameType(item.getType().toString());
         match.setGameVersion(item.getVersion());
         match.setMapId(item.getMap().getId());
-        final List<ParticipantIdentity> identities = new ArrayList<>(item.getPlayers().size());
-        final List<com.merakianalytics.orianna.types.dto.match.Participant> participants = new ArrayList<>(item.getPlayers().size());
+        final List<ParticipantIdentity> identities = new ArrayList<>(item.getParticipants().size());
+        final List<com.merakianalytics.orianna.types.dto.match.Participant> participants = new ArrayList<>(item.getParticipants().size());
         final int id = 1;
         final Object previousParticipantId = context.put("participantId", id);
-        for(final Participant player : item.getPlayers()) {
+        for(final Participant player : item.getParticipants()) {
             context.put("participantId", id);
             final ParticipantIdentity identity = new ParticipantIdentity();
             identity.setParticipantId(id);

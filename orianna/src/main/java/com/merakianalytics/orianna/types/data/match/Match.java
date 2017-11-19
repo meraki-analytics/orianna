@@ -21,8 +21,8 @@ public class Match extends CoreData {
     private long id, forAccountId;
     private Map map;
     private GameMode mode;
+    private List<Participant> participants;
     private Platform platform;
-    private List<Participant> players;
     private Queue queue;
     private Season season;
     private GameType type;
@@ -76,11 +76,11 @@ public class Match extends CoreData {
         if(platform != other.platform) {
             return false;
         }
-        if(players == null) {
-            if(other.players != null) {
+        if(participants == null) {
+            if(other.participants != null) {
                 return false;
             }
-        } else if(!players.equals(other.players)) {
+        } else if(!participants.equals(other.participants)) {
             return false;
         }
         if(queue != other.queue) {
@@ -166,17 +166,17 @@ public class Match extends CoreData {
     }
 
     /**
+     * @return the participants
+     */
+    public List<Participant> getParticipants() {
+        return participants;
+    }
+
+    /**
      * @return the platform
      */
     public Platform getPlatform() {
         return platform;
-    }
-
-    /**
-     * @return the players
-     */
-    public List<Participant> getPlayers() {
-        return players;
     }
 
     /**
@@ -233,7 +233,7 @@ public class Match extends CoreData {
         result = prime * result + (map == null ? 0 : map.hashCode());
         result = prime * result + (mode == null ? 0 : mode.hashCode());
         result = prime * result + (platform == null ? 0 : platform.hashCode());
-        result = prime * result + (players == null ? 0 : players.hashCode());
+        result = prime * result + (participants == null ? 0 : participants.hashCode());
         result = prime * result + (queue == null ? 0 : queue.hashCode());
         result = prime * result + (redTeam == null ? 0 : redTeam.hashCode());
         result = prime * result + (season == null ? 0 : season.hashCode());
@@ -300,19 +300,19 @@ public class Match extends CoreData {
     }
 
     /**
+     * @param participants
+     *        the participants to set
+     */
+    public void setParticipants(final List<Participant> participants) {
+        this.participants = participants;
+    }
+
+    /**
      * @param platform
      *        the platform to set
      */
     public void setPlatform(final Platform platform) {
         this.platform = platform;
-    }
-
-    /**
-     * @param players
-     *        the players to set
-     */
-    public void setPlayers(final List<Participant> players) {
-        this.players = players;
     }
 
     /**
