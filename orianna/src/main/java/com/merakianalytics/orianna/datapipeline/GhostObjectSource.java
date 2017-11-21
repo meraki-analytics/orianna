@@ -1,13 +1,17 @@
 package com.merakianalytics.orianna.datapipeline;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.merakianalytics.datapipelines.PipelineContext;
+import com.merakianalytics.datapipelines.iterators.CloseableIterator;
+import com.merakianalytics.datapipelines.iterators.CloseableIterators;
 import com.merakianalytics.datapipelines.sources.AbstractDataSource;
 import com.merakianalytics.datapipelines.sources.Get;
+import com.merakianalytics.datapipelines.sources.GetMany;
 import com.merakianalytics.orianna.datapipeline.common.Utilities;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
@@ -24,7 +28,7 @@ import com.merakianalytics.orianna.types.core.staticdata.SummonerSpell;
 import com.merakianalytics.orianna.types.core.staticdata.Versions;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
-public class UnloadedGhostObjectSource extends AbstractDataSource {
+public class GhostObjectSource extends AbstractDataSource {
     private static String getCurrentVersion(final Platform platform, final PipelineContext context) {
         final com.merakianalytics.orianna.types.dto.staticdata.Realm realm =
             context.getPipeline().get(com.merakianalytics.orianna.types.dto.staticdata.Realm.class, ImmutableMap.<String, Object> of("platform", platform));
@@ -99,6 +103,56 @@ public class UnloadedGhostObjectSource extends AbstractDataSource {
         data.setVersion(version);
         data.setLocale(locale);
         return new LanguageStrings(data);
+    }
+
+    @SuppressWarnings("unchecked")
+    @GetMany(Summoner.class)
+    public CloseableIterator<Summoner> getManySummoner(final Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
+        final Iterable<Long> ids = (Iterable<Long>)query.get("ids");
+        final Iterable<Long> accountIds = (Iterable<Long>)query.get("accountIds");
+        final Iterable<String> names = (Iterable<String>)query.get("names");
+        Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names", accountIds, "accountIds");
+
+        final Iterator<?> iterator;
+        if(ids != null) {
+            iterator = ids.iterator();
+        } else if(accountIds != null) {
+            iterator = accountIds.iterator();
+        } else if(names != null) {
+            iterator = names.iterator();
+        } else {
+            return null;
+        }
+
+        return CloseableIterators.from(new Iterator<Summoner>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Summoner next() {
+                final com.merakianalytics.orianna.types.data.summoner.Summoner data = new com.merakianalytics.orianna.types.data.summoner.Summoner();
+                data.setPlatform(platform);
+                if(ids != null) {
+                    data.setId((Long)iterator.next());
+                } else if(accountIds != null) {
+                    data.setAccountId((Long)iterator.next());
+                } else if(names != null) {
+                    data.setName((String)iterator.next());
+                } else {
+                    return null;
+                }
+                return new Summoner(data);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
     }
 
     @Get(Maps.class)

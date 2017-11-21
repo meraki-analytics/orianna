@@ -1,6 +1,7 @@
 package com.merakianalytics.orianna.types;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -122,6 +123,43 @@ public abstract class UniqueKeys {
         return Arrays.hashCode(new Object[] {
             LanguageStrings.class.getCanonicalName(), ((Platform)query.get("platform")).toString(), (String)query.get("version"), (String)query.get("locale")
         });
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Iterator<Integer> forManySummonerQuery(final Map<String, Object> query) {
+        final Iterable<Long> ids = (Iterable<Long>)query.get("ids");
+        final Iterable<Long> accountIds = (Iterable<Long>)query.get("accountIds");
+        final Iterable<String> names = (Iterable<String>)query.get("names");
+
+        final Iterator<?> iterator;
+        if(ids != null) {
+            iterator = ids.iterator();
+        } else if(accountIds != null) {
+            iterator = accountIds.iterator();
+        } else if(names != null) {
+            iterator = names.iterator();
+        } else {
+            return null;
+        }
+
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                return Arrays.hashCode(new Object[] {
+                    Summoner.class.getCanonicalName(), ((Platform)query.get("platform")).toString(), iterator.next()
+                });
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
     }
 
     public static int forMaps(final Maps maps) {

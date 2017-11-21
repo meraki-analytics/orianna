@@ -2,6 +2,8 @@ package com.merakianalytics.orianna.datapipeline;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.cache2k.Cache;
@@ -14,10 +16,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.merakianalytics.datapipelines.AbstractDataStore;
 import com.merakianalytics.datapipelines.PipelineContext;
+import com.merakianalytics.datapipelines.iterators.CloseableIterator;
+import com.merakianalytics.datapipelines.iterators.CloseableIterators;
 import com.merakianalytics.datapipelines.sinks.Put;
+import com.merakianalytics.datapipelines.sinks.PutMany;
 import com.merakianalytics.datapipelines.sources.Get;
+import com.merakianalytics.datapipelines.sources.GetMany;
 import com.merakianalytics.orianna.types.UniqueKeys;
 import com.merakianalytics.orianna.types.common.OriannaException;
 import com.merakianalytics.orianna.types.core.GhostObject.LoadHook;
@@ -163,6 +170,35 @@ public class InMemoryCache extends AbstractDataStore {
     public Summoner getSummoner(final Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forSummonerQuery(query);
         return (Summoner)cache.get(key);
+    }
+    
+    @GetMany(Summoner.class)
+    public CloseableIterator<Summoner> getManySummoner(final Map<String, Object> query, final PipelineContext context) {
+        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManySummonerQuery(query));
+        for(Integer key : keys) {
+            if(!cache.containsKey(key)) {
+                return null;
+            }
+        }
+        
+        final Iterator<Integer> iterator = keys.iterator();
+        return CloseableIterators.from(new Iterator<Summoner>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Summoner next() {
+                final int key = iterator.next();
+                return (Summoner)cache.get(key);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
     }
 
     @Get(SummonerSpell.class)
@@ -311,6 +347,13 @@ public class InMemoryCache extends AbstractDataStore {
 
         for(final int key : keys) {
             cache.put(key, summoner);
+        }
+    }
+    
+    @PutMany(Summoner.class)
+    public void putManySummoner(final Iterable<Summoner> summoners, final PipelineContext context) {
+        for(Summoner summoner : summoners) {
+            putSummoner(summoner, context);
         }
     }
 
