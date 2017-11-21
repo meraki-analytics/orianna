@@ -206,7 +206,7 @@ public abstract class Orianna {
         private final Platform defaultPlatform;
         private final DataPipeline pipeline;
 
-        public Settings(final Configuration config) {
+        private Settings(final Configuration config) {
             pipeline = PipelineConfiguration.toPipeline(config.getPipeline());
             defaultPlatform = config.getDefaultPlatform();
             defaultLocale = config.getDefaultLocale();
