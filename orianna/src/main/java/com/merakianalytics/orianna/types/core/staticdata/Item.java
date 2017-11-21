@@ -172,9 +172,8 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
     private final Supplier<Champion> requiredChampion = Suppliers.memoize(new Supplier<Champion>() {
         @Override
         public Champion get() {
-            // TODO: Champion by key
             load(ITEM_LOAD_GROUP);
-            return Champion.named(coreData.getRequiredChampionKey()).withPlatform(coreData.getPlatform()).withVersion(coreData.getVersion())
+            return Champion.withKey(coreData.getRequiredChampionKey()).withPlatform(coreData.getPlatform()).withVersion(coreData.getVersion())
                 .withLocale(coreData.getLocale()).get();
         }
     });
@@ -367,6 +366,10 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
                 if(coreData.getLocale() != null) {
                     builder.put("locale", coreData.getLocale());
                 }
+                if(coreData.getIncludedData() != null) {
+                    builder.put("includedData", coreData.getIncludedData());
+                }
+
                 coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Item.class, builder.build());
                 break;
             default:

@@ -1,5 +1,6 @@
 package com.merakianalytics.orianna.datapipeline.riotapi;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -8,7 +9,6 @@ import java.util.Set;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
 import com.merakianalytics.datapipelines.PipelineContext;
 import com.merakianalytics.datapipelines.iterators.CloseableIterator;
@@ -57,10 +57,11 @@ public class StaticDataAPI extends RiotAPIService {
         Utilities.checkNotNull(platform, "platform");
         final Number id = (Number)query.get("id");
         final String name = (String)query.get("name");
-        Utilities.checkAtLeastOneNotNull(id, "id", name, "name");
+        final String key = (String)query.get("key");
+        Utilities.checkAtLeastOneNotNull(id, "id", name, "name", key, "key");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.<String> of() : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
 
         Champion data = null;
         if(id != null) {
@@ -79,13 +80,18 @@ public class StaticDataAPI extends RiotAPIService {
             parameters.put("locale", locale);
             parameters.put("version", version);
             parameters.putAll("tags", includedData);
-            parameters.put("dataById", Boolean.TRUE.toString());
+            parameters.put("dataById", Boolean.FALSE.toString());
 
             final ChampionList list = get(ChampionList.class, endpoint, platform, parameters, "lol/static-data/v3/champions");
-            for(final Champion champion : list.getData().values()) {
-                if(name.equals(champion.getName())) {
-                    data = champion;
-                    break;
+
+            if(key != null) {
+                data = list.getData().get(key);
+            } else {
+                for(final Champion champion : list.getData().values()) {
+                    if(name.equals(champion.getName())) {
+                        data = champion;
+                        break;
+                    }
                 }
             }
         }
@@ -107,7 +113,7 @@ public class StaticDataAPI extends RiotAPIService {
         Utilities.checkNotNull(platform, "platform");
         final String version = (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.<String> of() : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
         final Boolean dataById = query.get("dataById") == null ? Boolean.FALSE : (Boolean)query.get("dataById");
 
         final String endpoint = "lol/static-data/v3/champions";
@@ -147,7 +153,7 @@ public class StaticDataAPI extends RiotAPIService {
         Utilities.checkAtLeastOneNotNull(id, "id", name, "name");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.<String> of() : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
 
         Item data = null;
         if(id != null) {
@@ -193,7 +199,7 @@ public class StaticDataAPI extends RiotAPIService {
         Utilities.checkNotNull(platform, "platform");
         final String version = (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.<String> of() : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
 
         final String endpoint = "lol/static-data/v3/items";
 
@@ -267,10 +273,11 @@ public class StaticDataAPI extends RiotAPIService {
         Utilities.checkNotNull(platform, "platform");
         final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
         final Iterable<String> names = (Iterable<String>)query.get("names");
-        Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names");
+        final Iterable<String> keys = (Iterable<String>)query.get("keys");
+        Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names", keys, "keys");
         final String version = (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.<String> of() : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
 
         final String endpoint = "lol/static-data/v3/champions";
 
@@ -280,7 +287,7 @@ public class StaticDataAPI extends RiotAPIService {
             parameters.put("version", version);
         }
         parameters.putAll("tags", includedData);
-        parameters.put("dataById", Boolean.TRUE.toString());
+        parameters.put("dataById", Boolean.toString(ids != null));
 
         final ChampionList data = get(ChampionList.class, endpoint, platform, parameters, "lol/static-data/v3/champions");
         if(data == null) {
@@ -290,19 +297,27 @@ public class StaticDataAPI extends RiotAPIService {
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
         data.setIncludedData(includedData);
-        final Map<String, Champion> byName = ids == null ? new HashMap<String, Champion>() : null;
+        final Map<String, Champion> byName = ids == null && keys == null ? new HashMap<String, Champion>() : null;
         for(final Champion champion : data.getData().values()) {
             champion.setPlatform(platform.getTag());
             champion.setVersion(data.getVersion());
             champion.setLocale(locale);
             champion.setIncludedData(includedData);
 
-            if(ids == null) {
+            if(ids == null && keys == null) {
                 byName.put(champion.getName(), champion);
             }
         }
 
-        final Iterator<?> iterator = ids == null ? names.iterator() : ids.iterator();
+        final Iterator<?> iterator;
+        if(ids == null && keys == null) {
+            iterator = names.iterator();
+        } else if(ids == null) {
+            iterator = keys.iterator();
+        } else {
+            iterator = ids.iterator();
+        }
+
         return CloseableIterators.from(new Iterator<Champion>() {
             @Override
             public boolean hasNext() {
@@ -311,12 +326,12 @@ public class StaticDataAPI extends RiotAPIService {
 
             @Override
             public Champion next() {
-                if(ids != null) {
-                    final Number id = (Number)iterator.next();
-                    return data.getData().get(id.toString());
-                } else {
+                if(ids == null && keys == null) {
                     final String name = (String)iterator.next();
                     return byName.get(name);
+                } else {
+                    final Object idOrKey = iterator.next();
+                    return data.getData().get(idOrKey.toString());
                 }
             }
 
@@ -334,7 +349,7 @@ public class StaticDataAPI extends RiotAPIService {
         final Iterable<String> versions = (Iterable<String>)query.get("versions");
         Utilities.checkNotNull(platform, "platform", versions, "versions");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.<String> of() : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
         final Boolean dataById = query.get("dataById") == null ? Boolean.FALSE : (Boolean)query.get("dataById");
 
         final Multimap<String, String> parameters = HashMultimap.create();
@@ -392,7 +407,7 @@ public class StaticDataAPI extends RiotAPIService {
         Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names");
         final String version = (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.<String> of() : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
 
         final String endpoint = "lol/static-data/v3/items";
 
@@ -455,7 +470,7 @@ public class StaticDataAPI extends RiotAPIService {
         final Iterable<String> versions = (Iterable<String>)query.get("versions");
         Utilities.checkNotNull(platform, "platform", versions, "versions");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.<String> of() : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
 
         final Multimap<String, String> parameters = HashMultimap.create();
         parameters.put("locale", locale);
@@ -633,7 +648,7 @@ public class StaticDataAPI extends RiotAPIService {
         Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names");
         final String version = (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.<String> of() : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
 
         final String endpoint = "lol/static-data/v3/masteries";
 
@@ -696,7 +711,7 @@ public class StaticDataAPI extends RiotAPIService {
         final Iterable<String> versions = (Iterable<String>)query.get("versions");
         Utilities.checkNotNull(platform, "platform", versions, "versions");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.<String> of() : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
 
         final Multimap<String, String> parameters = HashMultimap.create();
         parameters.put("locale", locale);
@@ -829,7 +844,7 @@ public class StaticDataAPI extends RiotAPIService {
         Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names");
         final String version = (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.<String> of() : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
 
         final String endpoint = "lol/static-data/v3/runes";
 
@@ -892,7 +907,7 @@ public class StaticDataAPI extends RiotAPIService {
         final Iterable<String> versions = (Iterable<String>)query.get("versions");
         Utilities.checkNotNull(platform, "platform", versions, "versions");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.<String> of() : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
 
         final Multimap<String, String> parameters = HashMultimap.create();
         parameters.put("locale", locale);
@@ -948,7 +963,7 @@ public class StaticDataAPI extends RiotAPIService {
         Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names");
         final String version = (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.<String> of() : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
 
         final String endpoint = "lol/static-data/v3/summoner-spells";
 
@@ -1011,7 +1026,7 @@ public class StaticDataAPI extends RiotAPIService {
         final Iterable<String> versions = (Iterable<String>)query.get("versions");
         Utilities.checkNotNull(platform, "platform", versions, "versions");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.<String> of() : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
         final Boolean dataById = query.get("dataById") == null ? Boolean.FALSE : (Boolean)query.get("dataById");
 
         final Multimap<String, String> parameters = HashMultimap.create();
@@ -1133,7 +1148,7 @@ public class StaticDataAPI extends RiotAPIService {
         Utilities.checkAtLeastOneNotNull(id, "id", name, "name");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.<String> of() : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
 
         Mastery data = null;
         if(id != null) {
@@ -1179,7 +1194,7 @@ public class StaticDataAPI extends RiotAPIService {
         Utilities.checkNotNull(platform, "platform");
         final String version = (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.<String> of() : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
 
         final String endpoint = "lol/static-data/v3/masteries";
 
@@ -1261,7 +1276,7 @@ public class StaticDataAPI extends RiotAPIService {
         Utilities.checkAtLeastOneNotNull(id, "id", name, "name");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.<String> of() : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
 
         Rune data = null;
         if(id != null) {
@@ -1307,7 +1322,7 @@ public class StaticDataAPI extends RiotAPIService {
         Utilities.checkNotNull(platform, "platform");
         final String version = (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.<String> of() : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
 
         final String endpoint = "lol/static-data/v3/runes";
 
@@ -1345,7 +1360,7 @@ public class StaticDataAPI extends RiotAPIService {
         Utilities.checkAtLeastOneNotNull(id, "id", name, "name");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.<String> of() : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
 
         SummonerSpell data = null;
         if(id != null) {
@@ -1391,7 +1406,7 @@ public class StaticDataAPI extends RiotAPIService {
         Utilities.checkNotNull(platform, "platform");
         final String version = (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.<String> of() : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
         final Boolean dataById = query.get("dataById") == null ? Boolean.FALSE : (Boolean)query.get("dataById");
 
         final String endpoint = "lol/static-data/v3/summoner-spells";

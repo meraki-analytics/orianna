@@ -17,7 +17,7 @@ public abstract class Utilities {
         }
 
         final StringBuilder sb = new StringBuilder();
-        for(int i = 1; i < objectNamePairs.length; i++) {
+        for(int i = 1; i < objectNamePairs.length; i += 2) {
             sb.append(", " + objectNamePairs[i]);
         }
         throw new IllegalArgumentException("All of the following query parameters were missing! At least one is required: " + sb.substring(2));

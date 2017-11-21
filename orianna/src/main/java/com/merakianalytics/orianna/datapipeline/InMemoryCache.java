@@ -257,7 +257,7 @@ public class InMemoryCache extends AbstractDataStore {
     public void putChampion(final Champion champion, final PipelineContext context) {
         final int[] keys = UniqueKeys.forChampion(champion);
 
-        if(keys.length < 2) {
+        if(keys.length < 3) {
             final LoadHook hook = new LoadHook() {
                 @Override
                 public void call() {

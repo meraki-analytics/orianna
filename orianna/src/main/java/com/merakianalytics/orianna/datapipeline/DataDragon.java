@@ -1,6 +1,7 @@
 package com.merakianalytics.orianna.datapipeline;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -328,10 +329,11 @@ public class DataDragon extends AbstractDataSource {
         Utilities.checkNotNull(platform, "platform");
         final Number id = (Number)query.get("id");
         final String name = (String)query.get("name");
-        Utilities.checkAtLeastOneNotNull(id, "id", name, "name");
+        final String key = (String)query.get("key");
+        Utilities.checkAtLeastOneNotNull(id, "id", name, "name", key, "key");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
 
         final String content = get("championFull", version, locale);
 
@@ -351,10 +353,12 @@ public class DataDragon extends AbstractDataSource {
                 }
 
                 for(final JsonNode champion : temp) {
+                    final JsonNode keyNode = champion.get("id");
                     final JsonNode idNode = champion.get("key");
                     final JsonNode nameNode = champion.get("name");
 
-                    if(id != null && idNode != null && id.intValue() == idNode.asInt() || name != null && nameNode != null && name.equals(nameNode.asText())) {
+                    if(id != null && idNode != null && id.intValue() == idNode.asInt() || key != null && keyNode != null && key.equals(keyNode.asText())
+                        || name != null && nameNode != null && name.equals(nameNode.asText())) {
                         INCLUDED_DATA_PROCESSOR.apply(champion);
                         CHAMPION_PROCESSOR.apply(champion);
                         return champion;
@@ -382,7 +386,7 @@ public class DataDragon extends AbstractDataSource {
         Utilities.checkNotNull(platform, "platform");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
         final Boolean dataById = query.get("dataById") == null ? Boolean.FALSE : (Boolean)query.get("dataById");
 
         final String content = get("championFull", version, locale);
@@ -443,7 +447,7 @@ public class DataDragon extends AbstractDataSource {
         Utilities.checkAtLeastOneNotNull(id, "id", name, "name");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
 
         final String content = get("item", version, locale);
 
@@ -497,7 +501,7 @@ public class DataDragon extends AbstractDataSource {
         Utilities.checkNotNull(platform, "platform");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
 
         final String content = get("item", version, locale);
 
@@ -585,10 +589,11 @@ public class DataDragon extends AbstractDataSource {
         Utilities.checkNotNull(platform, "platform");
         final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
         final Iterable<String> names = (Iterable<String>)query.get("names");
-        Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names");
+        final Iterable<String> keys = (Iterable<String>)query.get("keys");
+        Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names", keys, "keys");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
 
         final String content = get("championFull", version, locale);
 
@@ -614,8 +619,10 @@ public class DataDragon extends AbstractDataSource {
                     final String key = champion.get("key").asText();
                     final int id = champion.get("id").asInt();
 
-                    data.remove(key);
-                    data.set(Integer.toString(id), champion);
+                    if(keys == null && ids != null) {
+                        data.remove(key);
+                        data.set(Integer.toString(id), champion);
+                    }
                 }
                 return tree;
             }
@@ -627,19 +634,27 @@ public class DataDragon extends AbstractDataSource {
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
         data.setIncludedData(includedData);
-        final Map<String, Champion> byName = ids == null ? new HashMap<String, Champion>() : null;
+        final Map<String, Champion> byName = ids == null && keys == null ? new HashMap<String, Champion>() : null;
         for(final Champion champion : data.getData().values()) {
             champion.setPlatform(platform.getTag());
             champion.setVersion(data.getVersion());
             champion.setLocale(locale);
             champion.setIncludedData(includedData);
 
-            if(ids == null) {
+            if(ids == null && keys == null) {
                 byName.put(champion.getName(), champion);
             }
         }
 
-        final Iterator<?> iterator = ids == null ? names.iterator() : ids.iterator();
+        final Iterator<?> iterator;
+        if(ids == null && keys == null) {
+            iterator = names.iterator();
+        } else if(ids == null) {
+            iterator = keys.iterator();
+        } else {
+            iterator = ids.iterator();
+        }
+
         return CloseableIterators.from(new Iterator<Champion>() {
             @Override
             public boolean hasNext() {
@@ -648,12 +663,12 @@ public class DataDragon extends AbstractDataSource {
 
             @Override
             public Champion next() {
-                if(ids != null) {
-                    final Number id = (Number)iterator.next();
-                    return data.getData().get(id.toString());
-                } else {
+                if(ids == null && keys == null) {
                     final String name = (String)iterator.next();
                     return byName.get(name);
+                } else {
+                    final Object idOrKey = iterator.next();
+                    return data.getData().get(idOrKey.toString());
                 }
             }
 
@@ -671,7 +686,7 @@ public class DataDragon extends AbstractDataSource {
         final Iterable<String> versions = (Iterable<String>)query.get("versions");
         Utilities.checkNotNull(platform, "platform", versions, "versions");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
         final Boolean dataById = query.get("dataById") == null ? Boolean.FALSE : (Boolean)query.get("dataById");
 
         final Multimap<String, String> parameters = HashMultimap.create();
@@ -755,7 +770,7 @@ public class DataDragon extends AbstractDataSource {
         Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
 
         final String content = get("item", version, locale);
 
@@ -838,7 +853,7 @@ public class DataDragon extends AbstractDataSource {
         final Iterable<String> versions = (Iterable<String>)query.get("versions");
         Utilities.checkNotNull(platform, "platform", versions, "versions");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
 
         final Iterator<String> iterator = versions.iterator();
         return CloseableIterators.from(new Iterator<ItemList>() {
@@ -1027,7 +1042,7 @@ public class DataDragon extends AbstractDataSource {
         Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
 
         final String content = get("mastery", version, locale);
 
@@ -1104,7 +1119,7 @@ public class DataDragon extends AbstractDataSource {
         final Iterable<String> versions = (Iterable<String>)query.get("versions");
         Utilities.checkNotNull(platform, "platform", versions, "versions");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
 
         final Iterator<String> iterator = versions.iterator();
         return CloseableIterators.from(new Iterator<MasteryList>() {
@@ -1250,7 +1265,7 @@ public class DataDragon extends AbstractDataSource {
         Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
 
         final String content = get("rune", version, locale);
 
@@ -1333,7 +1348,7 @@ public class DataDragon extends AbstractDataSource {
         final Iterable<String> versions = (Iterable<String>)query.get("versions");
         Utilities.checkNotNull(platform, "platform", versions, "versions");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
 
         final Iterator<String> iterator = versions.iterator();
         return CloseableIterators.from(new Iterator<RuneList>() {
@@ -1409,7 +1424,7 @@ public class DataDragon extends AbstractDataSource {
         Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
         final Boolean dataById = query.get("dataById") == null ? Boolean.FALSE : (Boolean)query.get("dataById");
 
         final String content = get("summoner", version, locale);
@@ -1495,7 +1510,7 @@ public class DataDragon extends AbstractDataSource {
         final Iterable<String> versions = (Iterable<String>)query.get("versions");
         Utilities.checkNotNull(platform, "platform", versions, "versions");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
         final Boolean dataById = query.get("dataById") == null ? Boolean.FALSE : (Boolean)query.get("dataById");
 
         final Iterator<String> iterator = versions.iterator();
@@ -1633,7 +1648,7 @@ public class DataDragon extends AbstractDataSource {
         Utilities.checkAtLeastOneNotNull(id, "id", name, "name");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
 
         final String content = get("mastery", version, locale);
 
@@ -1683,7 +1698,7 @@ public class DataDragon extends AbstractDataSource {
         Utilities.checkNotNull(platform, "platform");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
 
         final String content = get("mastery", version, locale);
 
@@ -1773,7 +1788,7 @@ public class DataDragon extends AbstractDataSource {
         Utilities.checkAtLeastOneNotNull(id, "id", name, "name");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
 
         final String content = get("rune", version, locale);
 
@@ -1827,7 +1842,7 @@ public class DataDragon extends AbstractDataSource {
         Utilities.checkNotNull(platform, "platform");
         final String version = (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
 
         final String content = get("rune", version, locale);
 
@@ -1885,7 +1900,7 @@ public class DataDragon extends AbstractDataSource {
         Utilities.checkAtLeastOneNotNull(id, "id", name, "name");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
 
         final String content = get("summoner", version, locale);
 
@@ -1935,7 +1950,7 @@ public class DataDragon extends AbstractDataSource {
         Utilities.checkNotNull(platform, "platform");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
-        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
+        final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
         final Boolean dataById = query.get("dataById") == null ? Boolean.FALSE : (Boolean)query.get("dataById");
 
         final String content = get("summoner", version, locale);

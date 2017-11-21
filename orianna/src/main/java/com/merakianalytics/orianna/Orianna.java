@@ -57,6 +57,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Rune;
 import com.merakianalytics.orianna.types.core.staticdata.SummonerSpell;
 import com.merakianalytics.orianna.types.core.staticdata.Versions;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
+import com.merakianalytics.orianna.types.core.summoner.Summoners;
 
 public abstract class Orianna {
     public static class Configuration {
@@ -268,6 +269,10 @@ public abstract class Orianna {
         return Champion.withId(id);
     }
 
+    public static Champion.Builder getChampionWithKey(final String key) {
+        return Champion.withKey(key);
+    }
+
     private static Configuration getConfiguration(final CharSource configJSON) {
         final ObjectMapper mapper = new ObjectMapper().enable(Feature.ALLOW_COMMENTS);
         try {
@@ -394,12 +399,36 @@ public abstract class Orianna {
         return Summoner.named(name);
     }
 
+    public static Summoners.Builder getSummonersNamed(final Iterable<String> names) {
+        return Summoners.named(names);
+    }
+
+    public static Summoners.Builder getSummonersNamed(final String... names) {
+        return Summoners.named(names);
+    }
+
     public static SummonerSpell.Builder getSummonerSpellNamed(final String name) {
         return SummonerSpell.named(name);
     }
 
     public static SummonerSpell.Builder getSummonerSpellWithId(final int id) {
         return SummonerSpell.withId(id);
+    }
+
+    public static Summoners.Builder getSummonersWithAccountIds(final Iterable<Long> accountIds) {
+        return Summoners.withAccountIds(accountIds);
+    }
+
+    public static Summoners.Builder getSummonersWithAccountIds(final long... accountIds) {
+        return Summoners.withAccountIds(accountIds);
+    }
+
+    public static Summoners.Builder getSummonersWithIds(final Iterable<Long> ids) {
+        return Summoners.withIds(ids);
+    }
+
+    public static Summoners.Builder getSummonersWithIds(final long... ids) {
+        return Summoners.withIds(ids);
     }
 
     public static Summoner.Builder getSummonerWithAccountId(final long id) {

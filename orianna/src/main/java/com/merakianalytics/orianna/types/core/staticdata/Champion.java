@@ -24,20 +24,24 @@ public class Champion extends GhostObject<ChampionData> {
     public static class Builder {
         private Integer id;
         private Set<String> includedData;
-        private String name, version, locale;
+        private String name, key, version, locale;
         private Platform platform;
 
         private Builder(final int id) {
             this.id = id;
         }
 
-        private Builder(final String name) {
-            this.name = name;
+        private Builder(final String name, final boolean isName) {
+            if(isName) {
+                this.name = name;
+            } else {
+                key = name;
+            }
         }
 
         public Champion get() {
-            if(name == null && id == null) {
-                throw new IllegalStateException("Must set an ID or name for the Champion!");
+            if(name == null && id == null && key == null) {
+                throw new IllegalStateException("Must set an ID, name, or key for the Champion!");
             }
 
             if(version == null) {
@@ -61,6 +65,8 @@ public class Champion extends GhostObject<ChampionData> {
 
             if(id != null) {
                 builder.put("id", id);
+            } else if(key != null) {
+                builder.put("key", key);
             } else {
                 builder.put("name", name);
             }
@@ -135,11 +141,15 @@ public class Champion extends GhostObject<ChampionData> {
     public static final String STATUS_LOAD_GROUP = "status";
 
     public static Builder named(final String name) {
-        return new Builder(name);
+        return new Builder(name, true);
     }
 
     public static Builder withId(final int id) {
         return new Builder(id);
+    }
+
+    public static Builder withKey(final String key) {
+        return new Builder(key, false);
     }
 
     private final Supplier<List<String>> allyTips = Suppliers.memoize(new Supplier<List<String>>() {
@@ -278,7 +288,9 @@ public class Champion extends GhostObject<ChampionData> {
 
     @Searchable(String.class)
     public String getKey() {
-        load(CHAMPION_LOAD_GROUP);
+        if(coreData.getChampion().getKey() == null) {
+            load(CHAMPION_LOAD_GROUP);
+        }
         return coreData.getChampion().getKey();
     }
 
@@ -393,6 +405,9 @@ public class Champion extends GhostObject<ChampionData> {
                 if(coreData.getChampion().getName() != null) {
                     builder.put("name", coreData.getChampion().getName());
                 }
+                if(coreData.getChampion().getKey() != null) {
+                    builder.put("key", coreData.getChampion().getKey());
+                }
                 if(coreData.getChampion().getPlatform() != null) {
                     builder.put("platform", coreData.getChampion().getPlatform());
                 }
@@ -401,6 +416,9 @@ public class Champion extends GhostObject<ChampionData> {
                 }
                 if(coreData.getChampion().getLocale() != null) {
                     builder.put("locale", coreData.getChampion().getLocale());
+                }
+                if(coreData.getChampion().getIncludedData() != null) {
+                    builder.put("includedData", coreData.getChampion().getIncludedData());
                 }
 
                 coreData.setChampion(

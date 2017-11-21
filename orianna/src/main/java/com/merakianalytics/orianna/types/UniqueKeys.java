@@ -23,7 +23,7 @@ import com.merakianalytics.orianna.types.core.summoner.Summoner;
 public abstract class UniqueKeys {
     public static int[] forChampion(final Champion champion) {
         final ChampionData data = champion.getCoreData();
-        if(data.getChampion().getId() != 0 && data.getChampion().getName() != null) {
+        if(data.getChampion().getId() != 0 && data.getChampion().getName() != null && data.getChampion().getKey() != null) {
             return new int[] {
                 Arrays.hashCode(new Object[] {
                     Champion.class.getCanonicalName(), champion.getPlatform().toString(), champion.getVersion(), champion.getLocale(), champion.getId(),
@@ -31,6 +31,43 @@ public abstract class UniqueKeys {
                 }),
                 Arrays.hashCode(new Object[] {
                     Champion.class.getCanonicalName(), champion.getPlatform().toString(), champion.getVersion(), champion.getLocale(), champion.getName(),
+                    champion.getIncludedData()
+                }),
+                Arrays.hashCode(new Object[] {
+                    Champion.class.getCanonicalName(), champion.getPlatform().toString(), champion.getVersion(), champion.getLocale(), champion.getKey(),
+                    champion.getIncludedData()
+                })
+            };
+        } else if(data.getChampion().getId() != 0 && data.getChampion().getName() != null) {
+            return new int[] {
+                Arrays.hashCode(new Object[] {
+                    Champion.class.getCanonicalName(), champion.getPlatform().toString(), champion.getVersion(), champion.getLocale(), champion.getId(),
+                    champion.getIncludedData()
+                }),
+                Arrays.hashCode(new Object[] {
+                    Champion.class.getCanonicalName(), champion.getPlatform().toString(), champion.getVersion(), champion.getLocale(), champion.getName(),
+                    champion.getIncludedData()
+                })
+            };
+        } else if(data.getChampion().getId() != 0 && data.getChampion().getKey() != null) {
+            return new int[] {
+                Arrays.hashCode(new Object[] {
+                    Champion.class.getCanonicalName(), champion.getPlatform().toString(), champion.getVersion(), champion.getLocale(), champion.getId(),
+                    champion.getIncludedData()
+                }),
+                Arrays.hashCode(new Object[] {
+                    Champion.class.getCanonicalName(), champion.getPlatform().toString(), champion.getVersion(), champion.getLocale(), champion.getKey(),
+                    champion.getIncludedData()
+                })
+            };
+        } else if(data.getChampion().getName() != null && data.getChampion().getKey() != null) {
+            return new int[] {
+                Arrays.hashCode(new Object[] {
+                    Champion.class.getCanonicalName(), champion.getPlatform().toString(), champion.getVersion(), champion.getLocale(), champion.getName(),
+                    champion.getIncludedData()
+                }),
+                Arrays.hashCode(new Object[] {
+                    Champion.class.getCanonicalName(), champion.getPlatform().toString(), champion.getVersion(), champion.getLocale(), champion.getKey(),
                     champion.getIncludedData()
                 })
             };
@@ -48,8 +85,15 @@ public abstract class UniqueKeys {
                     champion.getIncludedData()
                 })
             };
+        } else if(data.getChampion().getKey() != null) {
+            return new int[] {
+                Arrays.hashCode(new Object[] {
+                    Champion.class.getCanonicalName(), champion.getPlatform().toString(), champion.getVersion(), champion.getLocale(), champion.getKey(),
+                    champion.getIncludedData()
+                })
+            };
         } else {
-            throw new IllegalArgumentException("Can't get key for Champion without ID or name!");
+            throw new IllegalArgumentException("Can't get key for Champion without ID, name, or key!");
         }
     }
 
@@ -57,9 +101,10 @@ public abstract class UniqueKeys {
     public static int forChampionQuery(final Map<String, Object> query) {
         final Integer id = (Integer)query.get("id");
         final String name = (String)query.get("name");
+        final String key = (String)query.get("key");
         return Arrays.hashCode(new Object[] {
             Champion.class.getCanonicalName(), ((Platform)query.get("platform")).toString(), (String)query.get("version"), (String)query.get("locale"),
-            id == null ? name : id.intValue(), (Set<String>)query.get("includedData")
+            id == null ? name == null ? key : name : id.intValue(), (Set<String>)query.get("includedData")
         });
     }
 
@@ -305,6 +350,15 @@ public abstract class UniqueKeys {
             return new int[] {
                 Arrays.hashCode(new Object[] {
                     Summoner.class.getCanonicalName(), summoner.getPlatform().toString(), summoner.getId()
+                }),
+                Arrays.hashCode(new Object[] {
+                    Summoner.class.getCanonicalName(), summoner.getPlatform().toString(), summoner.getName()
+                })
+            };
+        } else if(data.getAccountId() != 0L && data.getName() != null) {
+            return new int[] {
+                Arrays.hashCode(new Object[] {
+                    Summoner.class.getCanonicalName(), summoner.getPlatform().toString(), summoner.getAccountId()
                 }),
                 Arrays.hashCode(new Object[] {
                     Summoner.class.getCanonicalName(), summoner.getPlatform().toString(), summoner.getName()

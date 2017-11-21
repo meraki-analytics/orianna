@@ -333,6 +333,10 @@ public class SummonerSpell extends GhostObject<com.merakianalytics.orianna.types
                 if(coreData.getLocale() != null) {
                     builder.put("locale", coreData.getLocale());
                 }
+                if(coreData.getIncludedData() != null) {
+                    builder.put("includedData", coreData.getIncludedData());
+                }
+
                 coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.SummonerSpell.class, builder.build());
                 break;
             default:

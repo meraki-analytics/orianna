@@ -42,7 +42,8 @@ public class GhostObjectSource extends AbstractDataSource {
         Utilities.checkNotNull(platform, "platform");
         final Integer id = (Integer)query.get("id");
         final String name = (String)query.get("name");
-        Utilities.checkAtLeastOneNotNull(id, "id", name, "name");
+        final String key = (String)query.get("key");
+        Utilities.checkAtLeastOneNotNull(id, "id", name, "name", key, "key");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
@@ -51,6 +52,7 @@ public class GhostObjectSource extends AbstractDataSource {
         data.getChampion().setId(id == null ? 0 : id.intValue());
         data.getStatus().setId(id == null ? 0 : id.intValue());
         data.getChampion().setName(name);
+        data.getChampion().setKey(key);
         data.getChampion().setPlatform(platform);
         data.getStatus().setPlatform(platform);
         data.getChampion().setVersion(version);
