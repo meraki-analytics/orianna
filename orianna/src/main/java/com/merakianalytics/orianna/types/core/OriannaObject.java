@@ -27,6 +27,7 @@ import com.merakianalytics.orianna.types.data.CoreData;
 
 public abstract class OriannaObject<T extends CoreData> extends AbstractSearchableObject implements Serializable {
     public static abstract class ListProxy<T, C, L extends CoreData.ListProxy<C>> extends OriannaObject<L> implements List<T> {
+        // TODO: ListProxy should be a SearchableList
         public class ListProxyIterator implements ListIterator<T> {
             private final ListIterator<T> iterator = data.listIterator();
 
@@ -208,6 +209,7 @@ public abstract class OriannaObject<T extends CoreData> extends AbstractSearchab
     }
 
     public static abstract class MapProxy<K, V, CK, CV, P extends CoreData.MapProxy<CK, CV>> extends OriannaObject<P> implements Map<K, V> {
+        // TODO: SearchableMap should be written and MapProxy should be a SearchableMap
         private static final long serialVersionUID = 2266943596124327746L;
         private final Map<K, V> data;
 

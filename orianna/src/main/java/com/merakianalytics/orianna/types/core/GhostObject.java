@@ -17,6 +17,7 @@ import com.merakianalytics.orianna.types.data.CoreData;
 
 public abstract class GhostObject<T extends CoreData> extends OriannaObject<T> {
     public static abstract class ListProxy<T, C, L extends CoreData.ListProxy<C>> extends GhostObject<L> implements List<T> {
+        // TODO: ListProxy should be a SearchableList
         public class ListProxyIterator implements ListIterator<T> {
             private final ListIterator<T> iterator = data.listIterator();
 
@@ -223,6 +224,7 @@ public abstract class GhostObject<T extends CoreData> extends OriannaObject<T> {
     }
 
     public abstract static class MapProxy<K, V, CK, CV, P extends CoreData.MapProxy<CK, CV>> extends GhostObject<P> implements Map<K, V> {
+        // TODO: SearchableMap should be written and MapProxy should be a SearchableMap
         public static final String MAP_PROXY_LOAD_GROUP = "map-proxy";
         private static final long serialVersionUID = 3151240839151598711L;
         private Map<K, V> data;
