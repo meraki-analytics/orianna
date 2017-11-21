@@ -5,13 +5,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.cache2k.Cache;
 import org.cache2k.Cache2kBuilder;
 import org.cache2k.CacheEntry;
 import org.cache2k.expiry.ExpiryPolicy;
-import org.joda.time.Hours;
-import org.joda.time.Minutes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,12 +42,34 @@ import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
 public class InMemoryCache extends AbstractDataStore {
     public static class Configuration {
-        private Map<String, Integer> expirationPeriods = Collections.emptyMap();
+        private static final Map<String, ExpirationPeriod> DEFAULT_EXPIRATION_PERIODS = ImmutableMap.<String, ExpirationPeriod> builder()
+            .put(Champion.class.getCanonicalName(), period(6, TimeUnit.HOURS))
+            .put(Item.class.getCanonicalName(), period(6, TimeUnit.HOURS))
+            .put(LanguageStrings.class.getCanonicalName(), period(6, TimeUnit.HOURS))
+            .put(Languages.class.getCanonicalName(), period(6, TimeUnit.HOURS))
+            .put(Maps.class.getCanonicalName(), period(6, TimeUnit.HOURS))
+            .put(Mastery.class.getCanonicalName(), period(6, TimeUnit.HOURS))
+            .put(ProfileIcons.class.getCanonicalName(), period(6, TimeUnit.HOURS))
+            .put(Realm.class.getCanonicalName(), period(6, TimeUnit.HOURS))
+            .put(Rune.class.getCanonicalName(), period(6, TimeUnit.HOURS))
+            .put(SummonerSpell.class.getCanonicalName(), period(6, TimeUnit.HOURS))
+            .put(Versions.class.getCanonicalName(), period(6, TimeUnit.HOURS))
+            .put(Summoner.class.getCanonicalName(), period(30, TimeUnit.MINUTES))
+            .build();
+
+        private static ExpirationPeriod period(final long time, final TimeUnit unit) {
+            final ExpirationPeriod period = new ExpirationPeriod();
+            period.setPeriod(time);
+            period.setUnit(unit);
+            return period;
+        }
+
+        private Map<String, ExpirationPeriod> expirationPeriods = DEFAULT_EXPIRATION_PERIODS;
 
         /**
          * @return the expirationPeriods
          */
-        public Map<String, Integer> getExpirationPeriods() {
+        public Map<String, ExpirationPeriod> getExpirationPeriods() {
             return expirationPeriods;
         }
 
@@ -56,8 +77,43 @@ public class InMemoryCache extends AbstractDataStore {
          * @param expirationPeriods
          *        the expirationPeriods to set
          */
-        public void setExpirationPeriods(final Map<String, Integer> expirationPeriods) {
+        public void setExpirationPeriods(final Map<String, ExpirationPeriod> expirationPeriods) {
             this.expirationPeriods = expirationPeriods;
+        }
+    }
+
+    public static class ExpirationPeriod {
+        private long period;
+        private TimeUnit unit;
+
+        /**
+         * @return the period
+         */
+        public long getPeriod() {
+            return period;
+        }
+
+        /**
+         * @return the unit
+         */
+        public TimeUnit getUnit() {
+            return unit;
+        }
+
+        /**
+         * @param period
+         *        the period to set
+         */
+        public void setPeriod(final long period) {
+            this.period = period;
+        }
+
+        /**
+         * @param unit
+         *        the unit to set
+         */
+        public void setUnit(final TimeUnit unit) {
+            this.unit = unit;
         }
     }
 
@@ -67,21 +123,6 @@ public class InMemoryCache extends AbstractDataStore {
             return loadTime + expirationPeriods.get(value.getClass()).longValue();
         }
     }
-
-    private static final Map<Class<?>, Long> DEFAULT_EXPIRATION_PERIODS = ImmutableMap.<Class<?>, Long> builder()
-        .put(Champion.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
-        .put(Item.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
-        .put(LanguageStrings.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
-        .put(Languages.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
-        .put(Maps.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
-        .put(Mastery.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
-        .put(ProfileIcons.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
-        .put(Realm.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
-        .put(Rune.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
-        .put(SummonerSpell.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
-        .put(Versions.class, new Long(Hours.hours(6).toStandardDuration().getMillis()))
-        .put(Summoner.class, new Long(Minutes.minutes(30).toStandardDuration().getMillis()))
-        .build();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InMemoryCache.class);
     private final Cache<Integer, Object> cache;
@@ -93,13 +134,12 @@ public class InMemoryCache extends AbstractDataStore {
 
     public InMemoryCache(final Configuration config) {
         final Map<Class<?>, Long> periods = new HashMap<>();
-        periods.putAll(DEFAULT_EXPIRATION_PERIODS);
 
         for(final String className : config.getExpirationPeriods().keySet()) {
             try {
                 final Class<?> clazz = Class.forName(className);
-                // Configured expiration periods are set in minutes
-                periods.put(clazz, new Long(Minutes.minutes(config.getExpirationPeriods().get(className)).toStandardDuration().getMillis()));
+                final ExpirationPeriod period = config.getExpirationPeriods().get(className);
+                periods.put(clazz, period.getUnit().toMillis(period.getPeriod()));
             } catch(final ClassNotFoundException e) {
                 LOGGER.error("Couldn't find class by name " + className + "!", e);
                 throw new OriannaException("Couldn't find class by name " + className + "!", e);
@@ -136,6 +176,35 @@ public class InMemoryCache extends AbstractDataStore {
         return (LanguageStrings)cache.get(key);
     }
 
+    @GetMany(Summoner.class)
+    public CloseableIterator<Summoner> getManySummoner(final Map<String, Object> query, final PipelineContext context) {
+        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManySummonerQuery(query));
+        for(final Integer key : keys) {
+            if(!cache.containsKey(key)) {
+                return null;
+            }
+        }
+
+        final Iterator<Integer> iterator = keys.iterator();
+        return CloseableIterators.from(new Iterator<Summoner>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Summoner next() {
+                final int key = iterator.next();
+                return (Summoner)cache.get(key);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
     @Get(Maps.class)
     public Maps getMaps(final Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forMapsQuery(query);
@@ -170,35 +239,6 @@ public class InMemoryCache extends AbstractDataStore {
     public Summoner getSummoner(final Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forSummonerQuery(query);
         return (Summoner)cache.get(key);
-    }
-    
-    @GetMany(Summoner.class)
-    public CloseableIterator<Summoner> getManySummoner(final Map<String, Object> query, final PipelineContext context) {
-        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManySummonerQuery(query));
-        for(Integer key : keys) {
-            if(!cache.containsKey(key)) {
-                return null;
-            }
-        }
-        
-        final Iterator<Integer> iterator = keys.iterator();
-        return CloseableIterators.from(new Iterator<Summoner>() {
-            @Override
-            public boolean hasNext() {
-                return iterator.hasNext();
-            }
-
-            @Override
-            public Summoner next() {
-                final int key = iterator.next();
-                return (Summoner)cache.get(key);
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException();
-            }
-        });
     }
 
     @Get(SummonerSpell.class)
@@ -270,6 +310,13 @@ public class InMemoryCache extends AbstractDataStore {
     public void putLanguageStrings(final LanguageStrings languageStrings, final PipelineContext context) {
         final int key = UniqueKeys.forLanguageStrings(languageStrings);
         cache.put(key, languageStrings);
+    }
+
+    @PutMany(Summoner.class)
+    public void putManySummoner(final Iterable<Summoner> summoners, final PipelineContext context) {
+        for(final Summoner summoner : summoners) {
+            putSummoner(summoner, context);
+        }
     }
 
     @Put(Maps.class)
@@ -347,13 +394,6 @@ public class InMemoryCache extends AbstractDataStore {
 
         for(final int key : keys) {
             cache.put(key, summoner);
-        }
-    }
-    
-    @PutMany(Summoner.class)
-    public void putManySummoner(final Iterable<Summoner> summoners, final PipelineContext context) {
-        for(Summoner summoner : summoners) {
-            putSummoner(summoner, context);
         }
     }
 

@@ -49,8 +49,13 @@ public abstract class Summoners {
                 builder.put("names", names);
             }
 
-            CloseableIterator<Summoner> result = Orianna.getSettings().getPipeline().getMany(Summoner.class, builder.build(), streaming);
+            final CloseableIterator<Summoner> result = Orianna.getSettings().getPipeline().getMany(Summoner.class, builder.build(), streaming);
             return streaming ? CloseableIterators.toLazyList(result) : CloseableIterators.toList(result);
+        }
+
+        public Builder streaming() {
+            streaming = true;
+            return this;
         }
 
         public Builder withPlatform(final Platform platform) {
@@ -62,17 +67,12 @@ public abstract class Summoners {
             platform = region.getPlatform();
             return this;
         }
-        
-        public Builder streaming() {
-            streaming = true;
-            return this;
-        }
     }
-    
+
     public static Builder named(final Iterable<String> names) {
         return new Builder(names);
     }
-    
+
     public static Builder named(final String... names) {
         return new Builder(Arrays.asList(names));
     }
@@ -80,10 +80,10 @@ public abstract class Summoners {
     public static Builder withAccountIds(final Iterable<Long> accountIds) {
         return new Builder(accountIds, false);
     }
-    
-    public static Builder withAccountIds(long... accountIds) {
-        List<Long> list = new ArrayList<>(accountIds.length);
-        for(long id : accountIds) {
+
+    public static Builder withAccountIds(final long... accountIds) {
+        final List<Long> list = new ArrayList<>(accountIds.length);
+        for(final long id : accountIds) {
             list.add(id);
         }
         return new Builder(list, false);
@@ -92,10 +92,10 @@ public abstract class Summoners {
     public static Builder withIds(final Iterable<Long> ids) {
         return new Builder(ids, true);
     }
-    
+
     public static Builder withIds(final long... ids) {
-        List<Long> list = new ArrayList<>(ids.length);
-        for(long id : ids) {
+        final List<Long> list = new ArrayList<>(ids.length);
+        for(final long id : ids) {
             list.add(id);
         }
         return new Builder(list, true);

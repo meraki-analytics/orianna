@@ -135,32 +135,35 @@ public class PipelineConfiguration {
                     continue;
                 }
 
-                Class<?> configClazz;
-                try {
-                    configClazz = Class.forName(eConfig.getConfigClassName());
-                } catch(final ClassNotFoundException e) {
-                    LOGGER.error("Couldn't find class for name " + eConfig.getConfigClassName()
-                        + " to create pipeline element configuration! Skipping this pipeline element!", e);
-                    continue;
-                }
+                if(eConfig.getConfigClassName() != null) {
+                    Class<?> configClazz;
+                    try {
+                        configClazz = Class.forName(eConfig.getConfigClassName());
+                    } catch(final ClassNotFoundException e) {
+                        LOGGER.error("Couldn't find class for name " + eConfig.getConfigClassName()
+                            + " to create pipeline element configuration! Skipping this pipeline element!", e);
+                        continue;
+                    }
 
-                try {
-                    final Constructor<?> constructor = clazz.getConstructor(configClazz);
-                    final Object conf = mapper.treeToValue(eConfig.getConfig(), configClazz);
-                    final PipelineElement element = (PipelineElement)constructor.newInstance(conf);
-                    elements.add(element);
-                } catch(final NoSuchMethodException e) {
-                    LOGGER.error("Class for name " + eConfig.getClassName() + " has no constructor which takes " + eConfig.getConfigClassName()
-                        + "! Trying the default no-arg constructor instead!", e);
-                } catch(final SecurityException e) {
-                    LOGGER.error("Constructor which takes " + eConfig.getConfigClassName() + " wasn't accessible in class for name " + eConfig.getClassName()
-                        + "! Trying the default no-arg constructor instead!", e);
-                } catch(final JsonProcessingException e) {
-                    LOGGER.error("Failed to deserialize config of class " + eConfig.getConfigClassName() + " while building pipeline element of class "
-                        + eConfig.getClassName() + "! Trying the default no-arg constructor instead!", e);
-                } catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                    LOGGER.error("Couldn't instantiate pipeline element of class " + eConfig.getClassName() + " using config of class "
-                        + eConfig.getConfigClassName() + "! Trying the default no-arg constructor instead!", e);
+                    try {
+                        final Constructor<?> constructor = clazz.getConstructor(configClazz);
+                        final Object conf = mapper.treeToValue(eConfig.getConfig(), configClazz);
+                        final PipelineElement element = (PipelineElement)constructor.newInstance(conf);
+                        elements.add(element);
+                    } catch(final NoSuchMethodException e) {
+                        LOGGER.error("Class for name " + eConfig.getClassName() + " has no constructor which takes " + eConfig.getConfigClassName()
+                            + "! Trying the default no-arg constructor instead!", e);
+                    } catch(final SecurityException e) {
+                        LOGGER
+                            .error("Constructor which takes " + eConfig.getConfigClassName() + " wasn't accessible in class for name " + eConfig.getClassName()
+                                + "! Trying the default no-arg constructor instead!", e);
+                    } catch(final JsonProcessingException e) {
+                        LOGGER.error("Failed to deserialize config of class " + eConfig.getConfigClassName() + " while building pipeline element of class "
+                            + eConfig.getClassName() + "! Trying the default no-arg constructor instead!", e);
+                    } catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                        LOGGER.error("Couldn't instantiate pipeline element of class " + eConfig.getClassName() + " using config of class "
+                            + eConfig.getConfigClassName() + "! Trying the default no-arg constructor instead!", e);
+                    }
                 }
 
                 try {
@@ -173,7 +176,7 @@ public class PipelineConfiguration {
                     LOGGER.error(
                         "Default no-arg constructor wasn't accessible in class for name " + eConfig.getClassName() + "! Skipping this pipeline element!", e);
                 } catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                    LOGGER.error("Couldn't instantiate pipeline element of class " + eConfig.getClassName() + "! Skipping this transformer!", e);
+                    LOGGER.error("Couldn't instantiate pipeline element of class " + eConfig.getClassName() + "! Skipping this pipeline element!", e);
                 }
             }
         }

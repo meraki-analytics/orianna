@@ -3,27 +3,34 @@ package com.merakianalytics.orianna;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.io.CharSource;
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
 import com.merakianalytics.datapipelines.DataPipeline;
+import com.merakianalytics.datapipelines.PipelineElement;
 import com.merakianalytics.datapipelines.transformers.DataTransformer;
 import com.merakianalytics.orianna.datapipeline.DataDragon;
 import com.merakianalytics.orianna.datapipeline.GhostObjectSource;
 import com.merakianalytics.orianna.datapipeline.ImageDataSource;
 import com.merakianalytics.orianna.datapipeline.InMemoryCache;
+import com.merakianalytics.orianna.datapipeline.PipelineConfiguration;
+import com.merakianalytics.orianna.datapipeline.PipelineConfiguration.PipelineElementConfiguration;
+import com.merakianalytics.orianna.datapipeline.PipelineConfiguration.TransformerConfiguration;
 import com.merakianalytics.orianna.datapipeline.riotapi.RiotAPI;
 import com.merakianalytics.orianna.datapipeline.transformers.dtodata.ChampionMasteryTransformer;
 import com.merakianalytics.orianna.datapipeline.transformers.dtodata.ChampionTransformer;
@@ -58,26 +65,63 @@ public abstract class Orianna {
         private static final String DEFAULT_DEFAULT_LOCALE = null;
         private static final Platform DEFAULT_DEFAULT_PLATFORM = Platform.NORTH_AMERICA;
 
-        private static DataPipeline getDefaultPipeline() {
-            final Set<DataTransformer> transformers = ImmutableSet.<DataTransformer> builder().add(new ChampionMasteryTransformer())
-                .add(new ChampionTransformer()).add(new LeagueTransformer()).add(new MasteriesTransformer())
-                .add(new MatchTransformer()).add(new RunesTransformer()).add(new SpectatorTransformer())
-                .add(new StaticDataTransformer()).add(new StatusTransformer()).add(new SummonerTransformer())
-                .build();
+        private static PipelineElementConfiguration element(final Class<? extends PipelineElement> clazz) {
+            final PipelineElementConfiguration element = new PipelineElementConfiguration();
+            element.setClassName(clazz.getCanonicalName());
+            for(final Class<?> subClazz : clazz.getDeclaredClasses()) {
+                // We're assuming there's a public static inner class named Configuration if the element needs a configuration.
+                if(subClazz.getName().endsWith("Configuration")) {
+                    element.setConfigClassName(subClazz.getName());
 
-            return new DataPipeline(transformers,
-                new InMemoryCache(),
-                new GhostObjectSource(),
-                new DataDragon(),
-                new RiotAPI(),
-                new ImageDataSource());
+                    try {
+                        final Object defaultConfig = subClazz.newInstance();
+                        element.setConfig(new ObjectMapper().setSerializationInclusion(Include.NON_DEFAULT).valueToTree(defaultConfig));
+                    } catch(InstantiationException | IllegalAccessException e) {
+                        LOGGER.error("Failed to generate default configuration for " + clazz.getCanonicalName() + "!", e);
+                    }
+                }
+            }
+            return element;
+        }
+
+        private static PipelineConfiguration getDefaultPipeline() {
+            final PipelineConfiguration config = new PipelineConfiguration();
+
+            final Set<TransformerConfiguration> transformers = ImmutableSet.of(
+                transformer(ChampionMasteryTransformer.class),
+                transformer(ChampionTransformer.class),
+                transformer(LeagueTransformer.class),
+                transformer(MasteriesTransformer.class),
+                transformer(MatchTransformer.class),
+                transformer(RunesTransformer.class),
+                transformer(SpectatorTransformer.class),
+                transformer(StaticDataTransformer.class),
+                transformer(StatusTransformer.class),
+                transformer(SummonerTransformer.class));
+            config.setTransformers(transformers);
+
+            final List<PipelineElementConfiguration> elements = ImmutableList.of(
+                element(InMemoryCache.class),
+                element(GhostObjectSource.class),
+                element(DataDragon.class),
+                element(RiotAPI.class),
+                element(ImageDataSource.class));
+            config.setElements(elements);
+
+            return config;
+        }
+
+        private static TransformerConfiguration transformer(final Class<? extends DataTransformer> clazz) {
+            final TransformerConfiguration transformer = new TransformerConfiguration();
+            transformer.setClassName(clazz.getCanonicalName());
+            return transformer;
         }
 
         private long currentVersionExpiration = DEFAULT_CURRENT_VERSION_EXPIRATION;
         private TimeUnit currentVersionExpirationUnit = DEFAULT_CURRENT_VERSION_EXPIRATION_UNIT;
         private String defaultLocale = DEFAULT_DEFAULT_LOCALE;
         private Platform defaultPlatform = DEFAULT_DEFAULT_PLATFORM;
-        private DataPipeline pipeline = getDefaultPipeline();
+        private PipelineConfiguration pipeline = getDefaultPipeline();
 
         /**
          * @return the currentVersionExpiration
@@ -110,7 +154,7 @@ public abstract class Orianna {
         /**
          * @return the pipeline
          */
-        public DataPipeline getPipeline() {
+        public PipelineConfiguration getPipeline() {
             return pipeline;
         }
 
@@ -150,7 +194,7 @@ public abstract class Orianna {
          * @param pipeline
          *        the pipeline to set
          */
-        public void setPipeline(final DataPipeline pipeline) {
+        public void setPipeline(final PipelineConfiguration pipeline) {
             this.pipeline = pipeline;
         }
     }
@@ -162,7 +206,7 @@ public abstract class Orianna {
         private final DataPipeline pipeline;
 
         public Settings(final Configuration config) {
-            pipeline = config.getPipeline();
+            pipeline = PipelineConfiguration.toPipeline(config.getPipeline());
             defaultPlatform = config.getDefaultPlatform();
             defaultLocale = config.getDefaultLocale();
             currentVersion = Suppliers.memoizeWithExpiration(new Supplier<String>() {
@@ -205,7 +249,16 @@ public abstract class Orianna {
     }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Orianna.class);
-    private static Settings settings = new Settings(new Configuration());
+    private static Settings settings = defaultSettings();
+
+    private static Settings defaultSettings() {
+        try {
+            return new Settings(getConfiguration(
+                Resources.asCharSource(Resources.getResource("com/merakianalytics/orianna/default-orianna-config.json"), Charset.forName("UTF-8"))));
+        } catch(final OriannaException e) {
+            return new Settings(new Configuration());
+        }
+    }
 
     public static Champion.Builder getChampionNamed(final String name) {
         return Champion.named(name);
@@ -213,6 +266,16 @@ public abstract class Orianna {
 
     public static Champion.Builder getChampionWithId(final int id) {
         return Champion.withId(id);
+    }
+
+    private static Configuration getConfiguration(final CharSource configJSON) {
+        final ObjectMapper mapper = new ObjectMapper().enable(Feature.ALLOW_COMMENTS);
+        try {
+            return mapper.readValue(configJSON.read(), Configuration.class);
+        } catch(final IOException e) {
+            LOGGER.error("Failed to load configuration JSON!", e);
+            throw new OriannaException("Failed to load configuration JSON!", e);
+        }
     }
 
     public static Item.Builder getItemNamed(final String name) {
@@ -360,14 +423,7 @@ public abstract class Orianna {
     }
 
     public static void loadConfiguration(final CharSource configJSON) {
-        final ObjectMapper mapper = new ObjectMapper().enable(Feature.ALLOW_COMMENTS);
-        try {
-            final Configuration config = mapper.readValue(configJSON.read(), Configuration.class);
-            loadConfiguration(config);
-        } catch(final IOException e) {
-            LOGGER.error("Failed to load configuration JSON!", e);
-            throw new OriannaException("Failed to load configuration JSON!", e);
-        }
+        loadConfiguration(getConfiguration(configJSON));
     }
 
     public static void loadConfiguration(final Configuration config) {
