@@ -326,7 +326,7 @@ public class Champion extends GhostObject<ChampionData> {
     }
 
     public Platform getPlatform() {
-        return coreData.getChampion().getPlatform();
+        return Platform.valueOf(coreData.getChampion().getPlatform());
     }
 
     public SearchableList<RecommendedItems> getRecommendedItems() {
@@ -334,7 +334,7 @@ public class Champion extends GhostObject<ChampionData> {
     }
 
     public Region getRegion() {
-        return coreData.getChampion().getPlatform().getRegion();
+        return Platform.valueOf(coreData.getChampion().getPlatform()).getRegion();
     }
 
     public String getResource() {

@@ -2,6 +2,7 @@ package com.merakianalytics.orianna.types.core.staticdata;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -166,7 +167,11 @@ public class SummonerSpell extends GhostObject<com.merakianalytics.orianna.types
         @Override
         public Set<GameMode> get() {
             load(SUMMONER_SPELL_LOAD_GROUP);
-            return Collections.unmodifiableSet(coreData.getModes());
+            final Set<GameMode> modes = new HashSet<>();
+            for(final String mode : coreData.getModes()) {
+                modes.add(GameMode.valueOf(mode));
+            }
+            return Collections.unmodifiableSet(modes);
         }
     });
 
@@ -263,7 +268,7 @@ public class SummonerSpell extends GhostObject<com.merakianalytics.orianna.types
     }
 
     public Platform getPlatform() {
-        return coreData.getPlatform();
+        return Platform.valueOf(coreData.getPlatform());
     }
 
     public List<Integer> getRanges() {
@@ -271,7 +276,7 @@ public class SummonerSpell extends GhostObject<com.merakianalytics.orianna.types
     }
 
     public Region getRegion() {
-        return coreData.getPlatform().getRegion();
+        return Platform.valueOf(coreData.getPlatform()).getRegion();
     }
 
     public String getResource() {
@@ -325,7 +330,7 @@ public class SummonerSpell extends GhostObject<com.merakianalytics.orianna.types
                     builder.put("name", coreData.getName());
                 }
                 if(coreData.getPlatform() != null) {
-                    builder.put("platform", coreData.getPlatform());
+                    builder.put("platform", Platform.valueOf(coreData.getPlatform()));
                 }
                 if(coreData.getVersion() != null) {
                     builder.put("version", coreData.getVersion());

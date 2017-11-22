@@ -3,22 +3,18 @@ package com.merakianalytics.orianna.types.data.staticdata;
 import java.util.List;
 import java.util.Set;
 
-import com.merakianalytics.orianna.types.common.GameMode;
-import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class SummonerSpell extends CoreData {
-    private static final long serialVersionUID = 2110625692594925345L;
+    private static final long serialVersionUID = 1751783167017619377L;
     private List<Double> cooldowns;
     private List<Integer> costs, ranges;
     private List<List<Double>> effects;
     private int id, maxRank, summonerLevelRequirement;
     private Image image;
-    private Set<String> includedData;
+    private Set<String> includedData, modes;
     private List<String> levelUpKeywords, levelUpEffects;
-    private Set<GameMode> modes;
-    private Platform platform;
-    private String tooltip, description, key, resourceDescription, name, resource, sanitizedDescription, sanitizedTooltip, version, locale;
+    private String tooltip, description, key, resourceDescription, name, resource, sanitizedDescription, sanitizedTooltip, version, locale, platform;
     private List<SpellVariables> variables;
 
     @Override
@@ -123,7 +119,11 @@ public class SummonerSpell extends CoreData {
         } else if(!name.equals(other.name)) {
             return false;
         }
-        if(platform != other.platform) {
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         if(ranges == null) {
@@ -275,7 +275,7 @@ public class SummonerSpell extends CoreData {
     /**
      * @return the modes
      */
-    public Set<GameMode> getModes() {
+    public Set<String> getModes() {
         return modes;
     }
 
@@ -289,7 +289,7 @@ public class SummonerSpell extends CoreData {
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
     }
 
@@ -487,7 +487,7 @@ public class SummonerSpell extends CoreData {
      * @param modes
      *        the modes to set
      */
-    public void setModes(final Set<GameMode> modes) {
+    public void setModes(final Set<String> modes) {
         this.modes = modes;
     }
 
@@ -503,7 +503,7 @@ public class SummonerSpell extends CoreData {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 

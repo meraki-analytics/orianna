@@ -9,11 +9,6 @@ import org.joda.time.Duration;
 import com.merakianalytics.datapipelines.PipelineContext;
 import com.merakianalytics.datapipelines.transformers.AbstractDataTransformer;
 import com.merakianalytics.datapipelines.transformers.Transform;
-import com.merakianalytics.orianna.types.common.GameMode;
-import com.merakianalytics.orianna.types.common.GameType;
-import com.merakianalytics.orianna.types.common.Platform;
-import com.merakianalytics.orianna.types.common.Queue;
-import com.merakianalytics.orianna.types.common.RunePath;
 import com.merakianalytics.orianna.types.common.Side;
 import com.merakianalytics.orianna.types.data.spectator.CurrentGame;
 import com.merakianalytics.orianna.types.data.spectator.FeaturedGame;
@@ -36,7 +31,7 @@ public class SpectatorTransformer extends AbstractDataTransformer {
         for(final FeaturedGameInfo game : item.getGameList()) {
             games.add(transform(game, context));
         }
-        games.setPlatform(Platform.withTag(item.getPlatform()));
+        games.setPlatform(item.getPlatform());
         games.setRefreshInterval(Duration.millis(item.getClientRefreshInterval()));
         return games;
     }
@@ -59,7 +54,7 @@ public class SpectatorTransformer extends AbstractDataTransformer {
         player.setSummonerName(item.getSummonerName());
         player.setSummonerSpellDId((int)item.getSpell1Id());
         player.setSummonerSpellFId((int)item.getSpell2Id());
-        player.setTeam(Side.withId((int)item.getTeamId()));
+        player.setTeam((int)item.getTeamId());
         return player;
     }
 
@@ -109,10 +104,10 @@ public class SpectatorTransformer extends AbstractDataTransformer {
         game.setGameId(item.getId());
         game.setGameLength(item.getDuration().getMillis());
         game.setGameMode(item.getMode().toString());
-        game.setGameQueueConfigId(item.getQueue().getId());
+        game.setGameQueueConfigId(item.getQueue());
         game.setGameStartTime(item.getCreationTime().getMillis());
         game.setGameType(item.getType().toString());
-        game.setMapId(item.getMap().getId());
+        game.setMapId(item.getMap());
         final Observer observer = new Observer();
         observer.setEncryptionKey(item.getObserverEncryptionKey());
         game.setObservers(observer);
@@ -121,7 +116,7 @@ public class SpectatorTransformer extends AbstractDataTransformer {
             participants.add(transform(player, context));
         }
         game.setParticipants(participants);
-        game.setPlatformId(item.getPlatform().getTag());
+        game.setPlatformId(item.getPlatform());
         game.setSummonerId(item.getSummonerId());
         return game;
     }
@@ -132,7 +127,7 @@ public class SpectatorTransformer extends AbstractDataTransformer {
         final List<Integer> blueBans = new ArrayList<>(item.getBannedChampions().size() / 2);
         final List<Integer> redBans = new ArrayList<>(item.getBannedChampions().size() / 2);
         for(final BannedChampion ban : item.getBannedChampions()) {
-            if(Side.BLUE == Side.withId((int)ban.getTeamId())) {
+            if(Side.BLUE.getId() == ban.getTeamId()) {
                 blueBans.add((int)ban.getChampionId());
             } else {
                 redBans.add((int)ban.getChampionId());
@@ -143,18 +138,18 @@ public class SpectatorTransformer extends AbstractDataTransformer {
         game.setCreationTime(new DateTime(item.getGameStartTime()));
         game.setDuration(Duration.millis(item.getGameLength()));
         game.setId(item.getGameId());
-        game.setMap(com.merakianalytics.orianna.types.common.Map.withId((int)item.getMapId()));
-        game.setMode(GameMode.valueOf(item.getGameMode()));
+        game.setMap((int)item.getMapId());
+        game.setMode(item.getGameMode());
         game.setObserverEncryptionKey(item.getObservers().getEncryptionKey());
-        game.setPlatform(Platform.withTag(item.getPlatformId()));
+        game.setPlatform(item.getPlatformId());
         final List<Player> players = new ArrayList<>(item.getParticipants().size());
         for(final CurrentGameParticipant player : item.getParticipants()) {
             players.add(transform(player, context));
         }
         game.setPlayers(players);
-        game.setQueue(Queue.withId((int)item.getGameQueueConfigId()));
+        game.setQueue((int)item.getGameQueueConfigId());
         game.setSummonerId(item.getSummonerId());
-        game.setType(GameType.valueOf(item.getGameType()));
+        game.setType(item.getGameType());
         return game;
     }
 
@@ -174,7 +169,7 @@ public class SpectatorTransformer extends AbstractDataTransformer {
         player.setSummonerName(item.getSummonerName());
         player.setSummonerSpellDId((int)item.getSpell1Id());
         player.setSummonerSpellFId((int)item.getSpell2Id());
-        player.setTeam(Side.withId((int)item.getTeamId()));
+        player.setTeam((int)item.getTeamId());
         return player;
     }
 
@@ -224,10 +219,10 @@ public class SpectatorTransformer extends AbstractDataTransformer {
         game.setGameId(item.getId());
         game.setGameLength(item.getDuration().getMillis());
         game.setGameMode(item.getMode().toString());
-        game.setGameQueueConfigId(item.getQueue().getId());
+        game.setGameQueueConfigId(item.getQueue());
         game.setGameStartTime(item.getCreationTime().getMillis());
         game.setGameType(item.getType().toString());
-        game.setMapId(item.getMap().getId());
+        game.setMapId(item.getMap());
         final Observer observer = new Observer();
         observer.setEncryptionKey(item.getObserverEncryptionKey());
         game.setObservers(observer);
@@ -236,7 +231,7 @@ public class SpectatorTransformer extends AbstractDataTransformer {
             participants.add(transform(player, context));
         }
         game.setParticipants(participants);
-        game.setPlatformId(item.getPlatform().getTag());
+        game.setPlatformId(item.getPlatform());
         return game;
     }
 
@@ -246,7 +241,7 @@ public class SpectatorTransformer extends AbstractDataTransformer {
         final List<Integer> blueBans = new ArrayList<>(item.getBannedChampions().size() / 2);
         final List<Integer> redBans = new ArrayList<>(item.getBannedChampions().size() / 2);
         for(final BannedChampion ban : item.getBannedChampions()) {
-            if(Side.BLUE == Side.withId((int)ban.getTeamId())) {
+            if(Side.BLUE.getId() == ban.getTeamId()) {
                 blueBans.add((int)ban.getChampionId());
             } else {
                 redBans.add((int)ban.getChampionId());
@@ -257,17 +252,17 @@ public class SpectatorTransformer extends AbstractDataTransformer {
         game.setCreationTime(new DateTime(item.getGameStartTime()));
         game.setDuration(Duration.millis(item.getGameLength()));
         game.setId(item.getGameId());
-        game.setMap(com.merakianalytics.orianna.types.common.Map.withId((int)item.getMapId()));
-        game.setMode(GameMode.valueOf(item.getGameMode()));
+        game.setMap((int)item.getMapId());
+        game.setMode(item.getGameMode());
         game.setObserverEncryptionKey(item.getObservers().getEncryptionKey());
-        game.setPlatform(Platform.withTag(item.getPlatformId()));
+        game.setPlatform(item.getPlatformId());
         final List<Participant> players = new ArrayList<>(item.getParticipants().size());
         for(final com.merakianalytics.orianna.types.dto.spectator.Participant player : item.getParticipants()) {
             players.add(transform(player, context));
         }
         game.setPlayers(players);
-        game.setQueue(Queue.withId((int)item.getGameQueueConfigId()));
-        game.setType(GameType.valueOf(item.getGameType()));
+        game.setQueue((int)item.getGameQueueConfigId());
+        game.setType(item.getGameType());
         return game;
     }
 
@@ -279,7 +274,7 @@ public class SpectatorTransformer extends AbstractDataTransformer {
             list.add(transform(game, context));
         }
         games.setGameList(list);
-        games.setPlatform(item.getPlatform().getTag());
+        games.setPlatform(item.getPlatform());
         games.setClientRefreshInterval(item.getRefreshInterval().getMillis());
         return games;
     }
@@ -303,7 +298,7 @@ public class SpectatorTransformer extends AbstractDataTransformer {
         player.setSummonerName(item.getSummonerName());
         player.setSpell1Id(item.getSummonerSpellDId());
         player.setSpell2Id(item.getSummonerSpellFId());
-        player.setTeamId(item.getTeam().getId());
+        player.setTeamId(item.getTeam());
         return player;
     }
 
@@ -313,8 +308,8 @@ public class SpectatorTransformer extends AbstractDataTransformer {
         for(final Long id : item.getPerkIds()) {
             runes.add(id.intValue());
         }
-        runes.setPrimaryPath(RunePath.withId((int)item.getPerkStyle()));
-        runes.setSecondaryPath(RunePath.withId((int)item.getPerkStyle()));
+        runes.setPrimaryPath((int)item.getPerkStyle());
+        runes.setSecondaryPath((int)item.getPerkStyle());
         return runes;
     }
 
@@ -334,7 +329,7 @@ public class SpectatorTransformer extends AbstractDataTransformer {
         player.setSummonerName(item.getSummonerName());
         player.setSpell1Id(item.getSummonerSpellDId());
         player.setSpell2Id(item.getSummonerSpellFId());
-        player.setTeamId(item.getTeam().getId());
+        player.setTeamId(item.getTeam());
         return player;
     }
 
@@ -346,8 +341,8 @@ public class SpectatorTransformer extends AbstractDataTransformer {
             perkIds.add(id.longValue());
         }
         perks.setPerkIds(perkIds);
-        perks.setPerkStyle(item.getPrimaryPath().getId());
-        perks.setPerkSubStyle(item.getSecondaryPath().getId());
+        perks.setPerkStyle(item.getPrimaryPath());
+        perks.setPerkSubStyle(item.getSecondaryPath());
         return perks;
     }
 }

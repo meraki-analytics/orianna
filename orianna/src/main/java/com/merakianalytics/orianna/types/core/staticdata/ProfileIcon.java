@@ -35,11 +35,11 @@ public class ProfileIcon extends OriannaObject<com.merakianalytics.orianna.types
     }
 
     public Platform getPlatform() {
-        return coreData.getPlatform();
+        return Platform.valueOf(coreData.getPlatform());
     }
 
     public Region getRegion() {
-        return coreData.getPlatform().getRegion();
+        return Platform.valueOf(coreData.getPlatform()).getRegion();
     }
 
     public String getVersion() {

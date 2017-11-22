@@ -51,11 +51,11 @@ public class Versions extends GhostObject.ListProxy<String, String, com.merakian
     }
 
     public Platform getPlatform() {
-        return coreData.getPlatform();
+        return Platform.valueOf(coreData.getPlatform());
     }
 
     public Region getRegion() {
-        return coreData.getPlatform().getRegion();
+        return Platform.valueOf(coreData.getPlatform()).getRegion();
     }
 
     @Override
@@ -65,7 +65,7 @@ public class Versions extends GhostObject.ListProxy<String, String, com.merakian
             case LIST_PROXY_LOAD_GROUP:
                 builder = ImmutableMap.builder();
                 if(coreData.getPlatform() != null) {
-                    builder.put("platform", coreData.getPlatform());
+                    builder.put("platform", Platform.valueOf(coreData.getPlatform()));
                 }
                 coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Versions.class, builder.build());
                 loadListProxyData();

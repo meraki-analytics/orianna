@@ -4,18 +4,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class Item extends CoreData {
-    private static final long serialVersionUID = -1333137928493187932L;
+    private static final long serialVersionUID = -8963521454120805493L;
     private List<Integer> buildsInto, buildsFrom;
     private Map<String, String> effects;
     private Image image;
     private Set<String> includedData, keywords;
-    private Set<com.merakianalytics.orianna.types.common.Map> maps;
-    private String plaintext, description, requiredChampionKey, group, name, sanitizedDescription, version, locale;
-    private Platform platform;
+    private Set<Integer> maps;
+    private String plaintext, description, requiredChampionKey, group, name, sanitizedDescription, version, locale, platform;
     private boolean purchasable, hiddenFromAll, inStore, consumedWhenFull, consumed;
     private int sellPrice, basePrice, totalPrice, id, source, tier, maxStacks;
     private ItemStats stats;
@@ -138,7 +136,11 @@ public class Item extends CoreData {
         } else if(!plaintext.equals(other.plaintext)) {
             return false;
         }
-        if(platform != other.platform) {
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         if(purchasable != other.purchasable) {
@@ -274,7 +276,7 @@ public class Item extends CoreData {
     /**
      * @return the maps
      */
-    public Set<com.merakianalytics.orianna.types.common.Map> getMaps() {
+    public Set<Integer> getMaps() {
         return maps;
     }
 
@@ -302,7 +304,7 @@ public class Item extends CoreData {
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
     }
 
@@ -565,7 +567,7 @@ public class Item extends CoreData {
      * @param maps
      *        the maps to set
      */
-    public void setMaps(final Set<com.merakianalytics.orianna.types.common.Map> maps) {
+    public void setMaps(final Set<Integer> maps) {
         this.maps = maps;
     }
 
@@ -597,7 +599,7 @@ public class Item extends CoreData {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 

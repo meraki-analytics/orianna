@@ -1,15 +1,13 @@
 package com.merakianalytics.orianna.types.data.league;
 
-import com.merakianalytics.orianna.types.common.Division;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class LeagueEntry extends CoreData {
-    private static final long serialVersionUID = -1109141002405678973L;
-    private Division division;
+    private static final long serialVersionUID = -2882846256009911146L;
+    private String division, summonerName;
     private boolean onHotStreak, veteran, inactive, freshBlood;
     private Series promos;
     private long summonerId;
-    private String summonerName;
     private int wins, losses, leaguePoints;
 
     @Override
@@ -24,7 +22,11 @@ public class LeagueEntry extends CoreData {
             return false;
         }
         final LeagueEntry other = (LeagueEntry)obj;
-        if(division != other.division) {
+        if(division == null) {
+            if(other.division != null) {
+                return false;
+            }
+        } else if(!division.equals(other.division)) {
             return false;
         }
         if(freshBlood != other.freshBlood) {
@@ -71,7 +73,7 @@ public class LeagueEntry extends CoreData {
     /**
      * @return the division
      */
-    public Division getDivision() {
+    public String getDivision() {
         return division;
     }
 
@@ -167,7 +169,7 @@ public class LeagueEntry extends CoreData {
      * @param division
      *        the division to set
      */
-    public void setDivision(final Division division) {
+    public void setDivision(final String division) {
         this.division = division;
     }
 

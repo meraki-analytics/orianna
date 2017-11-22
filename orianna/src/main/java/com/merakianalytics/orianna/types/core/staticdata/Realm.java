@@ -99,11 +99,11 @@ public class Realm extends GhostObject<com.merakianalytics.orianna.types.data.st
     }
 
     public Platform getPlatform() {
-        return coreData.getPlatform();
+        return Platform.valueOf(coreData.getPlatform());
     }
 
     public Region getRegion() {
-        return coreData.getPlatform().getRegion();
+        return Platform.valueOf(coreData.getPlatform()).getRegion();
     }
 
     public String getStore() {
@@ -123,7 +123,7 @@ public class Realm extends GhostObject<com.merakianalytics.orianna.types.data.st
             case REALM_LOAD_GROUP:
                 builder = ImmutableMap.builder();
                 if(coreData.getPlatform() != null) {
-                    builder.put("platform", coreData.getPlatform());
+                    builder.put("platform", Platform.valueOf(coreData.getPlatform()));
                 }
                 coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Realm.class, builder.build());
                 break;

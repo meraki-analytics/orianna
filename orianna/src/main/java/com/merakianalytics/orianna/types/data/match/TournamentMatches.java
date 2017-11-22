@@ -1,12 +1,10 @@
 package com.merakianalytics.orianna.types.data.match;
 
-import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class TournamentMatches extends CoreData.ListProxy<Long> {
-    private static final long serialVersionUID = 6360698094933319563L;
-    private Platform platform;
-    private String tournamentCode;
+    private static final long serialVersionUID = -5740576983616480981L;
+    private String tournamentCode, platform;
 
     public TournamentMatches() {
         super();
@@ -28,7 +26,11 @@ public class TournamentMatches extends CoreData.ListProxy<Long> {
             return false;
         }
         final TournamentMatches other = (TournamentMatches)obj;
-        if(platform != other.platform) {
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         if(tournamentCode == null) {
@@ -44,7 +46,7 @@ public class TournamentMatches extends CoreData.ListProxy<Long> {
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
     }
 
@@ -68,7 +70,7 @@ public class TournamentMatches extends CoreData.ListProxy<Long> {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 

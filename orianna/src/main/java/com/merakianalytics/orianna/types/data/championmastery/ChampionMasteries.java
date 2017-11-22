@@ -1,11 +1,10 @@
 package com.merakianalytics.orianna.types.data.championmastery;
 
-import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class ChampionMasteries extends CoreData.ListProxy<ChampionMastery> {
-    private static final long serialVersionUID = -8451430384670102120L;
-    private Platform platform;
+    private static final long serialVersionUID = 7291148082120799937L;
+    private String platform;
     private long summonerId;
 
     public ChampionMasteries() {
@@ -28,7 +27,11 @@ public class ChampionMasteries extends CoreData.ListProxy<ChampionMastery> {
             return false;
         }
         final ChampionMasteries other = (ChampionMasteries)obj;
-        if(platform != other.platform) {
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         if(summonerId != other.summonerId) {
@@ -40,7 +43,7 @@ public class ChampionMasteries extends CoreData.ListProxy<ChampionMastery> {
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
     }
 
@@ -64,7 +67,7 @@ public class ChampionMasteries extends CoreData.ListProxy<ChampionMastery> {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 

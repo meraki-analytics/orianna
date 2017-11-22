@@ -4,19 +4,14 @@ import java.util.Set;
 
 import org.joda.time.DateTime;
 
-import com.merakianalytics.orianna.types.common.Platform;
-import com.merakianalytics.orianna.types.common.Queue;
-import com.merakianalytics.orianna.types.common.Season;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class MatchList extends CoreData.ListProxy<MatchReference> {
-    private static final long serialVersionUID = 1738736473942367646L;
+    private static final long serialVersionUID = 5543353502654527488L;
     private long accountId;
-    private Set<Integer> champions;
-    private Platform platform;
-    private Set<Queue> queues;
+    private Set<Integer> champions, queues, seasons;
+    private String platform;
     private boolean recent;
-    private Set<Season> seasons;
     private int startIndex, endIndex;
     private DateTime startTime, endTime;
 
@@ -60,7 +55,11 @@ public class MatchList extends CoreData.ListProxy<MatchReference> {
         } else if(!endTime.equals(other.endTime)) {
             return false;
         }
-        if(platform != other.platform) {
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         if(queues == null) {
@@ -124,21 +123,21 @@ public class MatchList extends CoreData.ListProxy<MatchReference> {
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
     }
 
     /**
      * @return the queues
      */
-    public Set<Queue> getQueues() {
+    public Set<Integer> getQueues() {
         return queues;
     }
 
     /**
      * @return the seasons
      */
-    public Set<Season> getSeasons() {
+    public Set<Integer> getSeasons() {
         return seasons;
     }
 
@@ -216,7 +215,7 @@ public class MatchList extends CoreData.ListProxy<MatchReference> {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 
@@ -224,7 +223,7 @@ public class MatchList extends CoreData.ListProxy<MatchReference> {
      * @param queues
      *        the queues to set
      */
-    public void setQueues(final Set<Queue> queues) {
+    public void setQueues(final Set<Integer> queues) {
         this.queues = queues;
     }
 
@@ -240,7 +239,7 @@ public class MatchList extends CoreData.ListProxy<MatchReference> {
      * @param seasons
      *        the seasons to set
      */
-    public void setSeasons(final Set<Season> seasons) {
+    public void setSeasons(final Set<Integer> seasons) {
         this.seasons = seasons;
     }
 

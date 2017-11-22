@@ -5,7 +5,6 @@ import org.joda.time.DateTime;
 import com.merakianalytics.datapipelines.PipelineContext;
 import com.merakianalytics.datapipelines.transformers.AbstractDataTransformer;
 import com.merakianalytics.datapipelines.transformers.Transform;
-import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.summoner.Summoner;
 
 public class SummonerTransformer extends AbstractDataTransformer {
@@ -16,7 +15,7 @@ public class SummonerTransformer extends AbstractDataTransformer {
         summoner.setId(item.getId());
         summoner.setLevel((int)item.getSummonerLevel());
         summoner.setName(item.getName());
-        summoner.setPlatform(Platform.withTag(item.getPlatform()));
+        summoner.setPlatform(item.getPlatform());
         summoner.setProfileIconId(item.getProfileIconId());
         summoner.setUpdated(new DateTime(item.getRevisionDate()));
         return summoner;
@@ -29,7 +28,7 @@ public class SummonerTransformer extends AbstractDataTransformer {
         summoner.setId(item.getId());
         summoner.setSummonerLevel(item.getLevel());
         summoner.setName(item.getName());
-        summoner.setPlatform(item.getPlatform().getTag());
+        summoner.setPlatform(item.getPlatform());
         summoner.setProfileIconId(item.getProfileIconId());
         summoner.setRevisionDate(item.getUpdated().getMillis());
         return summoner;

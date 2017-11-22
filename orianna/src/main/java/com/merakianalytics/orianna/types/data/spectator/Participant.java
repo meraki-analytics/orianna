@@ -1,14 +1,12 @@
 package com.merakianalytics.orianna.types.data.spectator;
 
-import com.merakianalytics.orianna.types.common.Side;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class Participant extends CoreData {
-    private static final long serialVersionUID = 923195762217384059L;
+    private static final long serialVersionUID = 3214684469172469569L;
     private boolean bot;
-    private int profileIconId, championId, summonerSpellDId, summonerSpellFId;
+    private int profileIconId, championId, summonerSpellDId, summonerSpellFId, team;
     private String summonerName;
-    private Side team;
 
     @Override
     public boolean equals(final Object obj) {
@@ -88,7 +86,7 @@ public class Participant extends CoreData {
     /**
      * @return the team
      */
-    public Side getTeam() {
+    public int getTeam() {
         return team;
     }
 
@@ -102,7 +100,7 @@ public class Participant extends CoreData {
         result = prime * result + (summonerName == null ? 0 : summonerName.hashCode());
         result = prime * result + summonerSpellDId;
         result = prime * result + summonerSpellFId;
-        result = prime * result + (team == null ? 0 : team.hashCode());
+        result = prime * result + team;
         return result;
     }
 
@@ -165,7 +163,7 @@ public class Participant extends CoreData {
      * @param team
      *        the team to set
      */
-    public void setTeam(final Side team) {
+    public void setTeam(final int team) {
         this.team = team;
     }
 }

@@ -1,12 +1,10 @@
 package com.merakianalytics.orianna.types.data.staticdata;
 
-import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class ProfileIcons extends CoreData.ListProxy<ProfileIcon> {
-    private static final long serialVersionUID = -6910271564691506222L;
-    private Platform platform;
-    private String version, locale, type;
+    private static final long serialVersionUID = 8345308369968782039L;
+    private String version, locale, type, platform;
 
     public ProfileIcons() {
         super();
@@ -35,7 +33,11 @@ public class ProfileIcons extends CoreData.ListProxy<ProfileIcon> {
         } else if(!locale.equals(other.locale)) {
             return false;
         }
-        if(platform != other.platform) {
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         if(type == null) {
@@ -65,7 +67,7 @@ public class ProfileIcons extends CoreData.ListProxy<ProfileIcon> {
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
     }
 
@@ -106,7 +108,7 @@ public class ProfileIcons extends CoreData.ListProxy<ProfileIcon> {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 

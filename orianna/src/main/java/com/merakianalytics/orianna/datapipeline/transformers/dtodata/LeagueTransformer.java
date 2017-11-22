@@ -6,10 +6,6 @@ import java.util.List;
 import com.merakianalytics.datapipelines.PipelineContext;
 import com.merakianalytics.datapipelines.transformers.AbstractDataTransformer;
 import com.merakianalytics.datapipelines.transformers.Transform;
-import com.merakianalytics.orianna.types.common.Division;
-import com.merakianalytics.orianna.types.common.Platform;
-import com.merakianalytics.orianna.types.common.Queue;
-import com.merakianalytics.orianna.types.common.Tier;
 import com.merakianalytics.orianna.types.data.league.League;
 import com.merakianalytics.orianna.types.data.league.LeagueEntry;
 import com.merakianalytics.orianna.types.data.league.LeaguePosition;
@@ -27,19 +23,19 @@ public class LeagueTransformer extends AbstractDataTransformer {
     public LeaguePosition transform(final com.merakianalytics.orianna.types.dto.league.LeaguePosition item, final PipelineContext context) {
         final LeaguePosition position = new LeaguePosition();
         position.setLeagueId(item.getLeagueId());
-        position.setDivision(Division.valueOf(item.getRank()));
+        position.setDivision(item.getRank());
         position.setFreshBlood(item.isFreshBlood());
         position.setInactive(item.isInactive());
         position.setLeaguePoints(item.getLeaguePoints());
         position.setLosses(item.getLosses());
         position.setName(item.getLeagueName());
         position.setOnHotStreak(item.isHotStreak());
-        position.setPlatform(Platform.withTag(item.getPlatform()));
+        position.setPlatform(item.getPlatform());
         position.setPromos(transform(item.getMiniSeries(), context));
-        position.setQueue(Queue.valueOf(item.getQueueType()));
+        position.setQueue(item.getQueueType());
         position.setSummonerId(Long.parseLong(item.getPlayerOrTeamId()));
         position.setSummonerName(item.getPlayerOrTeamName());
-        position.setTier(Tier.valueOf(item.getTier()));
+        position.setTier(item.getTier());
         position.setVeteran(item.isVeteran());
         position.setWins(item.getWins());
         return position;
@@ -55,7 +51,7 @@ public class LeagueTransformer extends AbstractDataTransformer {
         list.setEntries(entries);
         list.setLeagueId(item.getId());
         list.setName(item.getName());
-        list.setPlatform(item.getPlatform().getTag());
+        list.setPlatform(item.getPlatform());
         list.setQueue(item.getQueue().toString());
         list.setSummonerId(item.getSummonerId());
         list.setTier(item.getTier().toString());
@@ -82,7 +78,7 @@ public class LeagueTransformer extends AbstractDataTransformer {
     @Transform(from = LeagueItem.class, to = LeagueEntry.class)
     public LeagueEntry transform(final LeagueItem item, final PipelineContext context) {
         final LeagueEntry entry = new LeagueEntry();
-        entry.setDivision(Division.valueOf(item.getRank()));
+        entry.setDivision(item.getRank());
         entry.setFreshBlood(item.isFreshBlood());
         entry.setInactive(item.isInactive());
         entry.setLeaguePoints(item.getLeaguePoints());
@@ -104,10 +100,10 @@ public class LeagueTransformer extends AbstractDataTransformer {
         }
         league.setId(item.getLeagueId());
         league.setName(item.getName());
-        league.setPlatform(Platform.withTag(item.getPlatform()));
-        league.setQueue(Queue.valueOf(item.getQueue()));
+        league.setPlatform(item.getPlatform());
+        league.setQueue(item.getQueue());
         league.setSummonerId(item.getSummonerId());
-        league.setTier(Tier.valueOf(item.getTier()));
+        league.setTier(item.getTier());
         return league;
     }
 
@@ -122,7 +118,7 @@ public class LeagueTransformer extends AbstractDataTransformer {
         position.setLosses(item.getLosses());
         position.setLeagueName(item.getName());
         position.setHotStreak(item.isOnHotStreak());
-        position.setPlatform(item.getPlatform().getTag());
+        position.setPlatform(item.getPlatform());
         position.setMiniSeries(transform(item.getPromos(), context));
         position.setQueueType(item.getQueue().toString());
         position.setPlayerOrTeamId(Long.toString(item.getSummonerId()));
@@ -139,7 +135,7 @@ public class LeagueTransformer extends AbstractDataTransformer {
         for(final LeaguePosition position : item) {
             positions.add(transform(position, context));
         }
-        positions.setPlatform(item.getPlatform().getTag());
+        positions.setPlatform(item.getPlatform());
         positions.setSummonerId(item.getSummonerId());
         return positions;
     }
@@ -150,7 +146,7 @@ public class LeagueTransformer extends AbstractDataTransformer {
         for(final League league : item) {
             leagues.add(transform(league, context));
         }
-        leagues.setPlatform(item.getPlatform().getTag());
+        leagues.setPlatform(item.getPlatform());
         leagues.setSummonerId(item.getSummonerId());
         return leagues;
     }
@@ -181,7 +177,7 @@ public class LeagueTransformer extends AbstractDataTransformer {
         for(final LeagueList list : item) {
             leagues.add(transform(list, context));
         }
-        leagues.setPlatform(Platform.withTag(item.getPlatform()));
+        leagues.setPlatform(item.getPlatform());
         leagues.setSummonerId(item.getSummonerId());
         return leagues;
     }
@@ -192,7 +188,7 @@ public class LeagueTransformer extends AbstractDataTransformer {
         for(final com.merakianalytics.orianna.types.dto.league.LeaguePosition position : item) {
             positions.add(transform(position, context));
         }
-        positions.setPlatform(Platform.withTag(item.getPlatform()));
+        positions.setPlatform(item.getPlatform());
         positions.setSummonerId(item.getSummonerId());
         return positions;
     }

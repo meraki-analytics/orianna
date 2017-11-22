@@ -170,11 +170,11 @@ public class Rune extends GhostObject<com.merakianalytics.orianna.types.data.sta
     }
 
     public Platform getPlatform() {
-        return coreData.getPlatform();
+        return Platform.valueOf(coreData.getPlatform());
     }
 
     public Region getRegion() {
-        return coreData.getPlatform().getRegion();
+        return Platform.valueOf(coreData.getPlatform()).getRegion();
     }
 
     public String getSanitizedDescription() {
@@ -196,7 +196,8 @@ public class Rune extends GhostObject<com.merakianalytics.orianna.types.data.sta
     }
 
     public RuneType getType() {
-        return coreData.getType();
+        load(RUNE_LOAD_GROUP);
+        return RuneType.withColor(coreData.getType());
     }
 
     public String getVersion() {
@@ -216,7 +217,7 @@ public class Rune extends GhostObject<com.merakianalytics.orianna.types.data.sta
                     builder.put("name", coreData.getName());
                 }
                 if(coreData.getPlatform() != null) {
-                    builder.put("platform", coreData.getPlatform());
+                    builder.put("platform", Platform.valueOf(coreData.getPlatform()));
                 }
                 if(coreData.getVersion() != null) {
                     builder.put("version", coreData.getVersion());

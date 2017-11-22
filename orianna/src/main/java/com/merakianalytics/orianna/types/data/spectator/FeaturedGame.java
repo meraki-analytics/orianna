@@ -5,26 +5,17 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
-import com.merakianalytics.orianna.types.common.GameMode;
-import com.merakianalytics.orianna.types.common.GameType;
-import com.merakianalytics.orianna.types.common.Map;
-import com.merakianalytics.orianna.types.common.Platform;
-import com.merakianalytics.orianna.types.common.Queue;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class FeaturedGame extends CoreData {
-    private static final long serialVersionUID = 590268111588592011L;
+    private static final long serialVersionUID = -8433513503266730183L;
     private List<Integer> blueTeamBans, redTeamBans;
     private DateTime creationTime;
     private Duration duration;
     private long id;
-    private Map map;
-    private GameMode mode;
-    private String observerEncryptionKey;
-    private Platform platform;
+    private String observerEncryptionKey, mode, platform, type;
     private List<Participant> players;
-    private Queue queue;
-    private GameType type;
+    private int queue, map;
 
     @Override
     public boolean equals(final Object obj) {
@@ -65,7 +56,11 @@ public class FeaturedGame extends CoreData {
         if(map != other.map) {
             return false;
         }
-        if(mode != other.mode) {
+        if(mode == null) {
+            if(other.mode != null) {
+                return false;
+            }
+        } else if(!mode.equals(other.mode)) {
             return false;
         }
         if(observerEncryptionKey == null) {
@@ -75,7 +70,11 @@ public class FeaturedGame extends CoreData {
         } else if(!observerEncryptionKey.equals(other.observerEncryptionKey)) {
             return false;
         }
-        if(platform != other.platform) {
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         if(players == null) {
@@ -95,7 +94,11 @@ public class FeaturedGame extends CoreData {
         } else if(!redTeamBans.equals(other.redTeamBans)) {
             return false;
         }
-        if(type != other.type) {
+        if(type == null) {
+            if(other.type != null) {
+                return false;
+            }
+        } else if(!type.equals(other.type)) {
             return false;
         }
         return true;
@@ -132,14 +135,14 @@ public class FeaturedGame extends CoreData {
     /**
      * @return the map
      */
-    public Map getMap() {
+    public int getMap() {
         return map;
     }
 
     /**
      * @return the mode
      */
-    public GameMode getMode() {
+    public String getMode() {
         return mode;
     }
 
@@ -153,7 +156,7 @@ public class FeaturedGame extends CoreData {
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
     }
 
@@ -167,7 +170,7 @@ public class FeaturedGame extends CoreData {
     /**
      * @return the queue
      */
-    public Queue getQueue() {
+    public int getQueue() {
         return queue;
     }
 
@@ -181,7 +184,7 @@ public class FeaturedGame extends CoreData {
     /**
      * @return the type
      */
-    public GameType getType() {
+    public String getType() {
         return type;
     }
 
@@ -193,12 +196,12 @@ public class FeaturedGame extends CoreData {
         result = prime * result + (creationTime == null ? 0 : creationTime.hashCode());
         result = prime * result + (duration == null ? 0 : duration.hashCode());
         result = prime * result + (int)(id ^ id >>> 32);
-        result = prime * result + (map == null ? 0 : map.hashCode());
+        result = prime * result + map;
         result = prime * result + (mode == null ? 0 : mode.hashCode());
         result = prime * result + (observerEncryptionKey == null ? 0 : observerEncryptionKey.hashCode());
         result = prime * result + (platform == null ? 0 : platform.hashCode());
         result = prime * result + (players == null ? 0 : players.hashCode());
-        result = prime * result + (queue == null ? 0 : queue.hashCode());
+        result = prime * result + queue;
         result = prime * result + (redTeamBans == null ? 0 : redTeamBans.hashCode());
         result = prime * result + (type == null ? 0 : type.hashCode());
         return result;
@@ -240,7 +243,7 @@ public class FeaturedGame extends CoreData {
      * @param map
      *        the map to set
      */
-    public void setMap(final Map map) {
+    public void setMap(final int map) {
         this.map = map;
     }
 
@@ -248,7 +251,7 @@ public class FeaturedGame extends CoreData {
      * @param mode
      *        the mode to set
      */
-    public void setMode(final GameMode mode) {
+    public void setMode(final String mode) {
         this.mode = mode;
     }
 
@@ -264,7 +267,7 @@ public class FeaturedGame extends CoreData {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 
@@ -280,7 +283,7 @@ public class FeaturedGame extends CoreData {
      * @param queue
      *        the queue to set
      */
-    public void setQueue(final Queue queue) {
+    public void setQueue(final int queue) {
         this.queue = queue;
     }
 
@@ -296,7 +299,7 @@ public class FeaturedGame extends CoreData {
      * @param type
      *        the type to set
      */
-    public void setType(final GameType type) {
+    public void setType(final String type) {
         this.type = type;
     }
 }

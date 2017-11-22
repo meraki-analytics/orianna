@@ -29,7 +29,8 @@ public class Map extends OriannaObject<com.merakianalytics.orianna.types.data.st
             final List<Item> items = new ArrayList<>(coreData.getUnpurchasableItems().size());
             // TODO: use a getMany from Items instead of get from Item
             for(final Integer id : coreData.getUnpurchasableItems()) {
-                items.add(Item.withId(id).withPlatform(coreData.getPlatform()).withVersion(coreData.getVersion()).withLocale(coreData.getLocale()).get());
+                items.add(Item.withId(id).withPlatform(Platform.valueOf(coreData.getPlatform())).withVersion(coreData.getVersion())
+                    .withLocale(coreData.getLocale()).get());
             }
             return SearchableListWrapper.of(Collections.unmodifiableList(items));
         }
@@ -62,11 +63,11 @@ public class Map extends OriannaObject<com.merakianalytics.orianna.types.data.st
     }
 
     public Platform getPlatform() {
-        return coreData.getPlatform();
+        return Platform.valueOf(coreData.getPlatform());
     }
 
     public Region getRegion() {
-        return coreData.getPlatform().getRegion();
+        return Platform.valueOf(coreData.getPlatform()).getRegion();
     }
 
     public SearchableList<Item> getUnpurchaseableItems() {

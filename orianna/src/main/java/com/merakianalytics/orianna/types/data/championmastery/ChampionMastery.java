@@ -2,15 +2,14 @@ package com.merakianalytics.orianna.types.data.championmastery;
 
 import org.joda.time.DateTime;
 
-import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class ChampionMastery extends CoreData {
-    private static final long serialVersionUID = -6106614907596583032L;
+    private static final long serialVersionUID = 7560794990575728149L;
     private boolean chestGranted;
     private DateTime lastPlayed;
     private int level, points, tokens, championId, pointsUntilNextLevel, pointsSinceLastLevel;
-    private Platform platform;
+    private String platform;
     private long playerId;
 
     @Override
@@ -41,7 +40,11 @@ public class ChampionMastery extends CoreData {
         if(level != other.level) {
             return false;
         }
-        if(platform != other.platform) {
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         if(playerId != other.playerId) {
@@ -86,7 +89,7 @@ public class ChampionMastery extends CoreData {
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
     }
 
@@ -185,7 +188,7 @@ public class ChampionMastery extends CoreData {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
@@ -14,25 +13,6 @@ import org.joda.time.Minutes;
 import com.merakianalytics.datapipelines.PipelineContext;
 import com.merakianalytics.datapipelines.transformers.AbstractDataTransformer;
 import com.merakianalytics.datapipelines.transformers.Transform;
-import com.merakianalytics.orianna.types.common.AscensionType;
-import com.merakianalytics.orianna.types.common.BuildingType;
-import com.merakianalytics.orianna.types.common.EventType;
-import com.merakianalytics.orianna.types.common.GameMode;
-import com.merakianalytics.orianna.types.common.GameType;
-import com.merakianalytics.orianna.types.common.Lane;
-import com.merakianalytics.orianna.types.common.LaneType;
-import com.merakianalytics.orianna.types.common.LevelUpType;
-import com.merakianalytics.orianna.types.common.MonsterSubType;
-import com.merakianalytics.orianna.types.common.Platform;
-import com.merakianalytics.orianna.types.common.Point;
-import com.merakianalytics.orianna.types.common.Queue;
-import com.merakianalytics.orianna.types.common.Role;
-import com.merakianalytics.orianna.types.common.RunePath;
-import com.merakianalytics.orianna.types.common.Season;
-import com.merakianalytics.orianna.types.common.Skill;
-import com.merakianalytics.orianna.types.common.Tier;
-import com.merakianalytics.orianna.types.common.TurretType;
-import com.merakianalytics.orianna.types.common.WardType;
 import com.merakianalytics.orianna.types.data.match.Event;
 import com.merakianalytics.orianna.types.data.match.Frame;
 import com.merakianalytics.orianna.types.data.match.Match;
@@ -93,7 +73,7 @@ public class MatchTransformer extends AbstractDataTransformer {
         final Object previousDuration = context.put("duration", item.getGameDuration());
         final Match match = new Match();
         for(final TeamStats team : item.getTeams()) {
-            if(com.merakianalytics.orianna.types.common.Side.BLUE == com.merakianalytics.orianna.types.common.Side.withId(team.getTeamId())) {
+            if(com.merakianalytics.orianna.types.common.Side.BLUE.getId() == team.getTeamId()) {
                 match.setBlueTeam(transform(team, context));
             } else {
                 match.setRedTeam(transform(team, context));
@@ -103,9 +83,9 @@ public class MatchTransformer extends AbstractDataTransformer {
         match.setDuration(Duration.standardSeconds(item.getGameDuration()));
         match.setForAccountId(item.getForAccountId());
         match.setId(item.getGameId());
-        match.setMap(com.merakianalytics.orianna.types.common.Map.withId(item.getMapId()));
-        match.setMode(GameMode.valueOf(item.getGameMode()));
-        match.setPlatform(Platform.withTag(item.getPlatformId()));
+        match.setMap(item.getMapId());
+        match.setMode(item.getGameMode());
+        match.setPlatform(item.getPlatformId());
 
         final List<Participant> players = new ArrayList<>(item.getParticipantIdentities().size());
         final Map<Integer, com.merakianalytics.orianna.types.dto.match.Participant> byId = new HashMap<>();
@@ -123,10 +103,10 @@ public class MatchTransformer extends AbstractDataTransformer {
         context.put("player", previousPlayer);
         match.setParticipants(players);
 
-        match.setQueue(Queue.withId(item.getQueueId()));
-        match.setSeason(Season.withId(item.getSeasonId()));
+        match.setQueue(item.getQueueId());
+        match.setSeason(item.getSeasonId());
         match.setTournamentCode(item.getTournamentCode());
-        match.setType(GameType.valueOf(item.getGameType()));
+        match.setType(item.getGameType());
         match.setVersion(item.getGameVersion());
         context.put("duration", previousDuration);
         return match;
@@ -138,11 +118,11 @@ public class MatchTransformer extends AbstractDataTransformer {
         reference.setChampionId(item.getChampion());
         reference.setCreationTime(new DateTime(item.getTimestamp()));
         reference.setId(item.getGameId());
-        reference.setLane(Lane.valueOf(item.getLane()));
-        reference.setPlatform(Platform.withTag(item.getPlatformId()));
-        reference.setQueue(Queue.withId(item.getQueue()));
-        reference.setRole(Role.valueOf(item.getRole()));
-        reference.setSeason(Season.withId(item.getSeason()));
+        reference.setLane(item.getLane());
+        reference.setPlatform(item.getPlatformId());
+        reference.setQueue(item.getQueue());
+        reference.setRole(item.getRole());
+        reference.setSeason(item.getSeason());
         return reference;
     }
 
@@ -150,18 +130,18 @@ public class MatchTransformer extends AbstractDataTransformer {
     public Participant transform(final com.merakianalytics.orianna.types.dto.match.Participant item, final PipelineContext context) {
         final Participant converted = new Participant();
         converted.setChampionId(item.getChampionId());
-        converted.setHighestTierInSeason(Tier.valueOf(item.getHighestAchievedSeasonTier()));
+        converted.setHighestTierInSeason(item.getHighestAchievedSeasonTier());
         converted.setStats(transform(item.getStats(), context));
         converted.setSummonerSpellDId(item.getSpell1Id());
         converted.setSummonerSpellFId(item.getSpell2Id());
-        converted.setTeam(com.merakianalytics.orianna.types.common.Side.withId(item.getTeamId()));
+        converted.setTeam(item.getTeamId());
         converted.setTimeline(transform(item.getTimeline(), context));
         final com.merakianalytics.orianna.types.dto.match.Player player = (com.merakianalytics.orianna.types.dto.match.Player)context.get("player");
         converted.setAccountId(player.getAccountId());
         converted.setCurrentAccountId(player.getCurrentAccountId());
-        converted.setCurrentPlatform(Platform.withTag(player.getCurrentPlatformId()));
+        converted.setCurrentPlatform(player.getCurrentPlatformId());
         converted.setMatchHistoryURI(player.getMatchHistoryUri());
-        converted.setPlatform(Platform.withTag(player.getPlatformId()));
+        converted.setPlatform(player.getPlatformId());
         converted.setProfileIconId(player.getProfileIcon());
         converted.setSummonerId(player.getSummonerId());
         converted.setSummonerName(player.getSummonerName());
@@ -218,8 +198,8 @@ public class MatchTransformer extends AbstractDataTransformer {
         items.add(item.getItem5());
         items.add(item.getItem6());
         stats.setItems(items);
-        stats.setPrimaryRunePath(RunePath.withId(item.getPerkPrimaryStyle()));
-        stats.setSecondaryRunePath(RunePath.withId(item.getPerkSubStyle()));
+        stats.setPrimaryRunePath(item.getPerkPrimaryStyle());
+        stats.setSecondaryRunePath(item.getPerkSubStyle());
         final List<Rune> runes = new ArrayList<>(6);
         Rune rune = new Rune();
         rune.setId(item.getPerk0());
@@ -313,8 +293,8 @@ public class MatchTransformer extends AbstractDataTransformer {
         timeline.setExperience(getStatTotals(item.getXpPerMinDeltas(), durationInSeconds));
         timeline.setExperienceDifference(getStatTotals(item.getXpDiffPerMinDeltas(), durationInSeconds));
         timeline.setGold(getStatTotals(item.getGoldPerMinDeltas(), durationInSeconds));
-        timeline.setLane(Lane.valueOf(item.getLane()));
-        timeline.setRole(Role.valueOf(item.getRole()));
+        timeline.setLane(item.getLane());
+        timeline.setRole(item.getRole());
         return timeline;
     }
 
@@ -323,20 +303,20 @@ public class MatchTransformer extends AbstractDataTransformer {
         final Participant player = new Participant();
         player.setAccountId(item.getAccountId());
         player.setCurrentAccountId(item.getCurrentAccountId());
-        player.setCurrentPlatform(Platform.withTag(item.getCurrentPlatformId()));
+        player.setCurrentPlatform(item.getCurrentPlatformId());
         player.setMatchHistoryURI(item.getMatchHistoryUri());
-        player.setPlatform(Platform.withTag(item.getPlatformId()));
+        player.setPlatform(item.getPlatformId());
         player.setProfileIconId(item.getProfileIcon());
         player.setSummonerId(item.getSummonerId());
         player.setSummonerName(item.getSummonerName());
         final com.merakianalytics.orianna.types.dto.match.Participant participant =
             (com.merakianalytics.orianna.types.dto.match.Participant)context.get("participant");
         player.setChampionId(participant.getChampionId());
-        player.setHighestTierInSeason(Tier.valueOf(participant.getHighestAchievedSeasonTier()));
+        player.setHighestTierInSeason(participant.getHighestAchievedSeasonTier());
         player.setStats(transform(participant.getStats(), context));
         player.setSummonerSpellDId(participant.getSpell1Id());
         player.setSummonerSpellFId(participant.getSpell2Id());
-        player.setTeam(com.merakianalytics.orianna.types.common.Side.withId(participant.getTeamId()));
+        player.setTeam(participant.getTeamId());
         player.setTimeline(transform(participant.getTimeline(), context));
         return player;
     }
@@ -345,7 +325,7 @@ public class MatchTransformer extends AbstractDataTransformer {
     public TournamentMatches transform(final com.merakianalytics.orianna.types.dto.match.TournamentMatches item, final PipelineContext context) {
         final TournamentMatches matches = new TournamentMatches(item.size());
         matches.addAll(item);
-        matches.setPlatform(Platform.withTag(item.getPlatform()));
+        matches.setPlatform(item.getPlatform());
         matches.setTournamentCode(item.getTournamentCode());
         return matches;
     }
@@ -383,12 +363,8 @@ public class MatchTransformer extends AbstractDataTransformer {
         if(item.getPosition() != null) {
             event.setPosition(transform(item.getPosition(), context));
         }
-        if(item.getSkill() != null) {
-            event.setSkillSlot(item.getSkill().getSlot());
-        }
-        if(item.getTeam() != null) {
-            event.setTeamId(item.getTeam().getId());
-        }
+        event.setSkillSlot(item.getSkill());
+        event.setTeamId(item.getTeam());
         event.setTimestamp(item.getTimestamp().getMillis());
         if(item.getTurretType() != null) {
             event.setTowerType(item.getTurretType().toString());
@@ -433,7 +409,7 @@ public class MatchTransformer extends AbstractDataTransformer {
         match.setGameMode(item.getMode().toString());
         match.setGameType(item.getType().toString());
         match.setGameVersion(item.getVersion());
-        match.setMapId(item.getMap().getId());
+        match.setMapId(item.getMap());
         final List<ParticipantIdentity> identities = new ArrayList<>(item.getParticipants().size());
         final List<com.merakianalytics.orianna.types.dto.match.Participant> participants = new ArrayList<>(item.getParticipants().size());
         final int id = 1;
@@ -449,9 +425,9 @@ public class MatchTransformer extends AbstractDataTransformer {
         context.put("participantId", previousParticipantId);
         match.setParticipantIdentities(identities);
         match.setParticipants(participants);
-        match.setPlatformId(item.getPlatform().getTag());
-        match.setQueueId(item.getQueue().getId());
-        match.setSeasonId(item.getSeason().getId());
+        match.setPlatformId(item.getPlatform());
+        match.setQueueId(item.getQueue());
+        match.setSeasonId(item.getSeason());
         final List<TeamStats> teams = new ArrayList<>(2);
         final Object previousTeam = context.put("team", com.merakianalytics.orianna.types.common.Side.BLUE);
         teams.add(transform(item.getBlueTeam(), context));
@@ -469,50 +445,50 @@ public class MatchTransformer extends AbstractDataTransformer {
         final Event event = new Event();
         event.setAfterId(item.getAfterId());
         if(item.getAscendedType() != null) {
-            event.setAscensionType(AscensionType.valueOf(item.getAscendedType()));
+            event.setAscensionType(item.getAscendedType());
         }
         if(item.getAssistingParticipantIds() != null) {
             event.setAssistingParticipants(new ArrayList<>(item.getAssistingParticipantIds()));
         }
         event.setBeforeId(item.getBeforeId());
         if(item.getBuildingType() != null) {
-            event.setBuildingType(BuildingType.valueOf(item.getBuildingType()));
+            event.setBuildingType(item.getBuildingType());
         }
         if(item.getPointCaptured() != null) {
-            event.setCapturedPoint(Point.valueOf(item.getPointCaptured()));
+            event.setCapturedPoint(item.getPointCaptured());
         }
         event.setCreatorId(item.getCreatorId());
         event.setItemId(item.getItemId());
         event.setKillerId(item.getKillerId());
         if(item.getLaneType() != null) {
-            event.setLaneType(LaneType.valueOf(item.getLaneType()));
+            event.setLaneType(item.getLaneType());
         }
         if(item.getLevelUpType() != null) {
-            event.setLevelUpType(LevelUpType.valueOf(item.getLevelUpType()));
+            event.setLevelUpType(item.getLevelUpType());
         }
         if(item.getMonsterSubType() != null) {
-            event.setMonsterSubType(MonsterSubType.valueOf(item.getMonsterSubType()));
+            event.setMonsterSubType(item.getMonsterSubType());
         }
         event.setParticipantId(item.getParticipantId());
         if(item.getPosition() != null) {
             event.setPosition(transform(item.getPosition(), context));
         }
         if(item.getSkillSlot() != 0) {
-            event.setSkill(Skill.withId(item.getSkillSlot()));
+            event.setSkill(item.getSkillSlot());
         }
         if(item.getTeamId() != 0) {
-            event.setTeam(com.merakianalytics.orianna.types.common.Side.withId(item.getTeamId()));
+            event.setTeam(item.getTeamId());
         }
         event.setTimestamp(Duration.millis(item.getTimestamp()));
         if(item.getTowerType() != null) {
-            event.setTurretType(TurretType.valueOf(item.getTowerType()));
+            event.setTurretType(item.getTowerType());
         }
         if(item.getType() != null) {
-            event.setType(EventType.valueOf(item.getType()));
+            event.setType(item.getType());
         }
         event.setVictimId(item.getVictimId());
         if(item.getWardType() != null) {
-            event.setWardType(WardType.valueOf(item.getWardType()));
+            event.setWardType(item.getWardType());
         }
         return event;
     }
@@ -542,18 +518,10 @@ public class MatchTransformer extends AbstractDataTransformer {
         list.setChampions(new HashSet<>(item.getChampions()));
         list.setEndIndex(item.getEndIndex());
         list.setEndTime(new DateTime(item.getEndTime()));
-        list.setPlatform(Platform.withTag(item.getPlatform()));
-        final Set<Queue> queues = new HashSet<>();
-        for(final Integer queue : item.getQueues()) {
-            queues.add(Queue.withId(queue));
-        }
-        list.setQueues(queues);
+        list.setPlatform(item.getPlatform());
+        list.setQueues(new HashSet<>(item.getQueues()));
         list.setRecent(item.isRecent());
-        final Set<Season> seasons = new HashSet<>();
-        for(final Integer season : item.getSeasons()) {
-            seasons.add(Season.withId(season));
-        }
-        list.setSeasons(seasons);
+        list.setSeasons(new HashSet<>(item.getSeasons()));
         list.setStartIndex(item.getStartIndex());
         list.setStartTime(new DateTime(item.getStartTime()));
         return list;
@@ -570,18 +538,10 @@ public class MatchTransformer extends AbstractDataTransformer {
         list.setChampions(new HashSet<>(item.getChampions()));
         list.setEndIndex(item.getEndIndex());
         list.setEndTime(item.getEndTime().getMillis());
-        list.setPlatform(item.getPlatform().getTag());
-        final Set<Integer> queues = new HashSet<>();
-        for(final Queue queue : item.getQueues()) {
-            queues.add(queue.getId());
-        }
-        list.setQueues(queues);
+        list.setPlatform(item.getPlatform());
+        list.setQueues(new HashSet<>(item.getQueues()));
         list.setRecent(item.isRecent());
-        final Set<Integer> seasons = new HashSet<>();
-        for(final Season season : item.getSeasons()) {
-            seasons.add(season.getId());
-        }
-        list.setSeasons(seasons);
+        list.setSeasons(new HashSet<>(item.getSeasons()));
         list.setStartIndex(item.getStartIndex());
         list.setStartTime(item.getStartTime().getMillis());
         return list;
@@ -617,10 +577,10 @@ public class MatchTransformer extends AbstractDataTransformer {
         reference.setTimestamp(item.getCreationTime().getMillis());
         reference.setGameId(item.getId());
         reference.setLane(item.getLane().toString());
-        reference.setPlatformId(item.getPlatform().getTag());
-        reference.setQueue(item.getQueue().getId());
+        reference.setPlatformId(item.getPlatform());
+        reference.setQueue(item.getQueue());
         reference.setRole(item.getRole().toString());
-        reference.setSeason(item.getSeason().getId());
+        reference.setSeason(item.getSeason());
         return reference;
     }
 
@@ -632,7 +592,7 @@ public class MatchTransformer extends AbstractDataTransformer {
         }
         timeline.setId(item.getMatchId());
         timeline.setInterval(Duration.millis(item.getFrameInterval()));
-        timeline.setPlatform(Platform.withTag(item.getPlatform()));
+        timeline.setPlatform(item.getPlatform());
         return timeline;
     }
 
@@ -641,9 +601,9 @@ public class MatchTransformer extends AbstractDataTransformer {
         final com.merakianalytics.orianna.types.dto.match.Player player = new com.merakianalytics.orianna.types.dto.match.Player();
         player.setAccountId(item.getAccountId());
         player.setCurrentAccountId(item.getCurrentAccountId());
-        player.setCurrentPlatformId(item.getCurrentPlatform().getTag());
+        player.setCurrentPlatformId(item.getCurrentPlatform());
         player.setMatchHistoryUri(item.getMatchHistoryURI());
-        player.setPlatformId(item.getPlatform().getTag());
+        player.setPlatformId(item.getPlatform());
         player.setProfileIcon(item.getProfileIconId());
         player.setSummonerId(item.getSummonerId());
         player.setSummonerName(item.getSummonerName());
@@ -714,8 +674,8 @@ public class MatchTransformer extends AbstractDataTransformer {
         stats.setItem4(item.getItems().get(4));
         stats.setItem5(item.getItems().get(5));
         stats.setItem6(item.getItems().get(6));
-        stats.setPerkPrimaryStyle(item.getPrimaryRunePath().getId());
-        stats.setPerkSubStyle(item.getSecondaryRunePath().getId());
+        stats.setPerkPrimaryStyle(item.getPrimaryRunePath());
+        stats.setPerkSubStyle(item.getSecondaryRunePath());
         Rune rune = item.getRunes().get(0);
         stats.setPerk0(rune.getId());
         stats.setPerk0Var1(rune.getVariables().get(0));
@@ -879,7 +839,7 @@ public class MatchTransformer extends AbstractDataTransformer {
         timeline.setFrames(frames);
         timeline.setMatchId(item.getId());
         timeline.setFrameInterval(item.getInterval().getMillis());
-        timeline.setPlatform(item.getPlatform().getTag());
+        timeline.setPlatform(item.getPlatform());
         return timeline;
     }
 
@@ -888,7 +848,7 @@ public class MatchTransformer extends AbstractDataTransformer {
         final com.merakianalytics.orianna.types.dto.match.TournamentMatches matches =
             new com.merakianalytics.orianna.types.dto.match.TournamentMatches(item.size());
         matches.addAll(item);
-        matches.setPlatform(item.getPlatform().getTag());
+        matches.setPlatform(item.getPlatform());
         matches.setTournamentCode(item.getTournamentCode());
         return matches;
     }
@@ -903,7 +863,7 @@ public class MatchTransformer extends AbstractDataTransformer {
         participant.setSpell1Id(item.getSummonerSpellDId());
         participant.setSpell2Id(item.getSummonerSpellFId());
         participant.setStats(transform(item.getStats(), context));
-        participant.setTeamId(item.getTeam().getId());
+        participant.setTeamId(item.getTeam());
         participant.setTimeline(transform(item.getTimeline(), context));
         context.put("participantId", previous);
         return participant;

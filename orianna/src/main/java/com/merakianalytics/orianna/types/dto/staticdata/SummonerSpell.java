@@ -12,11 +12,11 @@ public class SummonerSpell extends DataObject {
     private String costBurn, cooldownBurn, tooltip, rangeBurn, description, key, resource, name, costType, sanitizedDescription, sanitizedTooltip, platform,
             version, locale;
     private List<List<Double>> effect;
+    private List<String> effectBurn;
     private int id, maxrank, summonerLevel;
     private Image image;
-    private Set<String> includedData;
+    private Set<String> includedData, modes;
     private LevelTip leveltip;
-    private List<String> modes, effectBurn;
     private List<SpellVars> vars;
 
     @Override
@@ -319,7 +319,7 @@ public class SummonerSpell extends DataObject {
     /**
      * @return the modes
      */
-    public List<String> getModes() {
+    public Set<String> getModes() {
         return modes;
     }
 
@@ -558,7 +558,7 @@ public class SummonerSpell extends DataObject {
      * @param modes
      *        the modes to set
      */
-    public void setModes(final List<String> modes) {
+    public void setModes(final Set<String> modes) {
         this.modes = modes;
     }
 

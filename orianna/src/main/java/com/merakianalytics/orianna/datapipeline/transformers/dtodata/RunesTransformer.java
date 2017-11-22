@@ -8,7 +8,6 @@ import java.util.Set;
 import com.merakianalytics.datapipelines.PipelineContext;
 import com.merakianalytics.datapipelines.transformers.AbstractDataTransformer;
 import com.merakianalytics.datapipelines.transformers.Transform;
-import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.runes.RunePage;
 import com.merakianalytics.orianna.types.data.runes.RunePages;
 import com.merakianalytics.orianna.types.dto.runes.RuneSlot;
@@ -37,7 +36,7 @@ public class RunesTransformer extends AbstractDataTransformer {
         for(final com.merakianalytics.orianna.types.dto.runes.RunePage page : item.getPages()) {
             pages.add(transform(page, context));
         }
-        pages.setPlatform(Platform.withTag(item.getPlatform()));
+        pages.setPlatform(item.getPlatform());
         pages.setSummonerId(item.getSummonerId());
         return pages;
     }
@@ -67,7 +66,7 @@ public class RunesTransformer extends AbstractDataTransformer {
             pgs.add(transform(page, context));
         }
         pages.setPages(pgs);
-        pages.setPlatform(item.getPlatform().getTag());
+        pages.setPlatform(item.getPlatform());
         pages.setSummonerId(item.getSummonerId());
         return pages;
     }

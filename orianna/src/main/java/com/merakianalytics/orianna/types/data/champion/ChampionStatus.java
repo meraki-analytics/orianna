@@ -1,13 +1,52 @@
 package com.merakianalytics.orianna.types.data.champion;
 
-import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class ChampionStatus extends CoreData {
-    private static final long serialVersionUID = 4229915263452433550L;
+    private static final long serialVersionUID = 2761744072076540550L;
     private boolean enabledInRanked, enabledInCustoms, enabledInCoopVsAI, enabled, freeToPlay;
     private int id;
-    private Platform platform;
+    private String platform;
+
+    @Override
+    public boolean equals(final Object obj) {
+        if(this == obj) {
+            return true;
+        }
+        if(obj == null) {
+            return false;
+        }
+        if(getClass() != obj.getClass()) {
+            return false;
+        }
+        final ChampionStatus other = (ChampionStatus)obj;
+        if(enabled != other.enabled) {
+            return false;
+        }
+        if(enabledInCoopVsAI != other.enabledInCoopVsAI) {
+            return false;
+        }
+        if(enabledInCustoms != other.enabledInCustoms) {
+            return false;
+        }
+        if(enabledInRanked != other.enabledInRanked) {
+            return false;
+        }
+        if(freeToPlay != other.freeToPlay) {
+            return false;
+        }
+        if(id != other.id) {
+            return false;
+        }
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
+            return false;
+        }
+        return true;
+    }
 
     /**
      * @return the id
@@ -19,8 +58,22 @@ public class ChampionStatus extends CoreData {
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (enabled ? 1231 : 1237);
+        result = prime * result + (enabledInCoopVsAI ? 1231 : 1237);
+        result = prime * result + (enabledInCustoms ? 1231 : 1237);
+        result = prime * result + (enabledInRanked ? 1231 : 1237);
+        result = prime * result + (freeToPlay ? 1231 : 1237);
+        result = prime * result + id;
+        result = prime * result + (platform == null ? 0 : platform.hashCode());
+        return result;
     }
 
     /**
@@ -110,7 +163,7 @@ public class ChampionStatus extends CoreData {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 }

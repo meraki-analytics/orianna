@@ -2,14 +2,12 @@ package com.merakianalytics.orianna.types.data.status;
 
 import java.util.List;
 
-import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class ShardStatus extends CoreData {
-    private static final long serialVersionUID = 8260429601022433660L;
+    private static final long serialVersionUID = -3562231855274100852L;
     private List<String> locales;
-    private String name, hostname;
-    private Platform platform;
+    private String name, hostname, platform;
     private List<Service> services;
 
     @Override
@@ -45,7 +43,11 @@ public class ShardStatus extends CoreData {
         } else if(!name.equals(other.name)) {
             return false;
         }
-        if(platform != other.platform) {
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         if(services == null) {
@@ -82,7 +84,7 @@ public class ShardStatus extends CoreData {
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
     }
 
@@ -133,7 +135,7 @@ public class ShardStatus extends CoreData {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 

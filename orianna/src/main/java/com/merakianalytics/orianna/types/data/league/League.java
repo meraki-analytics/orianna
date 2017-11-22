@@ -1,17 +1,11 @@
 package com.merakianalytics.orianna.types.data.league;
 
-import com.merakianalytics.orianna.types.common.Platform;
-import com.merakianalytics.orianna.types.common.Queue;
-import com.merakianalytics.orianna.types.common.Tier;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class League extends CoreData.ListProxy<LeagueEntry> {
-    private static final long serialVersionUID = 3245370669991790747L;
-    private String name, id;
-    private Platform platform;
-    private Queue queue;
+    private static final long serialVersionUID = -238522505205131178L;
+    private String name, id, platform, queue, tier;
     private long summonerId;
-    private Tier tier;
 
     public League() {
         super();
@@ -47,16 +41,28 @@ public class League extends CoreData.ListProxy<LeagueEntry> {
         } else if(!name.equals(other.name)) {
             return false;
         }
-        if(platform != other.platform) {
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
-        if(queue != other.queue) {
+        if(queue == null) {
+            if(other.queue != null) {
+                return false;
+            }
+        } else if(!queue.equals(other.queue)) {
             return false;
         }
         if(summonerId != other.summonerId) {
             return false;
         }
-        if(tier != other.tier) {
+        if(tier == null) {
+            if(other.tier != null) {
+                return false;
+            }
+        } else if(!tier.equals(other.tier)) {
             return false;
         }
         return true;
@@ -79,14 +85,14 @@ public class League extends CoreData.ListProxy<LeagueEntry> {
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
     }
 
     /**
      * @return the queue
      */
-    public Queue getQueue() {
+    public String getQueue() {
         return queue;
     }
 
@@ -100,7 +106,7 @@ public class League extends CoreData.ListProxy<LeagueEntry> {
     /**
      * @return the tier
      */
-    public Tier getTier() {
+    public String getTier() {
         return tier;
     }
 
@@ -137,7 +143,7 @@ public class League extends CoreData.ListProxy<LeagueEntry> {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 
@@ -145,7 +151,7 @@ public class League extends CoreData.ListProxy<LeagueEntry> {
      * @param queue
      *        the queue to set
      */
-    public void setQueue(final Queue queue) {
+    public void setQueue(final String queue) {
         this.queue = queue;
     }
 
@@ -161,7 +167,7 @@ public class League extends CoreData.ListProxy<LeagueEntry> {
      * @param tier
      *        the tier to set
      */
-    public void setTier(final Tier tier) {
+    public void setTier(final String tier) {
         this.tier = tier;
     }
 }

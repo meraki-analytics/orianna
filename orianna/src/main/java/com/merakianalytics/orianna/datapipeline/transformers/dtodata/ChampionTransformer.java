@@ -6,7 +6,6 @@ import java.util.List;
 import com.merakianalytics.datapipelines.PipelineContext;
 import com.merakianalytics.datapipelines.transformers.AbstractDataTransformer;
 import com.merakianalytics.datapipelines.transformers.Transform;
-import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.champion.ChampionStatus;
 import com.merakianalytics.orianna.types.data.champion.ChampionStatuses;
 import com.merakianalytics.orianna.types.dto.champion.Champion;
@@ -22,7 +21,7 @@ public class ChampionTransformer extends AbstractDataTransformer {
         status.setEnabledInRanked(item.isRankedPlayEnabled());
         status.setFreeToPlay(item.isFreeToPlay());
         status.setId((int)item.getId());
-        status.setPlatform(Platform.withTag(item.getPlatform()));
+        status.setPlatform(item.getPlatform());
         return status;
     }
 
@@ -33,7 +32,7 @@ public class ChampionTransformer extends AbstractDataTransformer {
             statuses.add(transform(champion, context));
         }
         statuses.setFreeToPlay(item.isFreeToPlay());
-        statuses.setPlatform(Platform.withTag(item.getPlatform()));
+        statuses.setPlatform(item.getPlatform());
         return statuses;
     }
 
@@ -46,7 +45,7 @@ public class ChampionTransformer extends AbstractDataTransformer {
         status.setRankedPlayEnabled(item.isEnabledInRanked());
         status.setFreeToPlay(item.isFreeToPlay());
         status.setId(item.getId());
-        status.setPlatform(item.getPlatform().getTag());
+        status.setPlatform(item.getPlatform());
         return status;
     }
 
@@ -59,7 +58,7 @@ public class ChampionTransformer extends AbstractDataTransformer {
         }
         statuses.setChampions(stats);
         statuses.setFreeToPlay(item.isFreeToPlay());
-        statuses.setPlatform(item.getPlatform().getTag());
+        statuses.setPlatform(item.getPlatform());
         return statuses;
     }
 }

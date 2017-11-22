@@ -5,28 +5,17 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
-import com.merakianalytics.orianna.types.common.GameMode;
-import com.merakianalytics.orianna.types.common.GameType;
-import com.merakianalytics.orianna.types.common.Map;
-import com.merakianalytics.orianna.types.common.Platform;
-import com.merakianalytics.orianna.types.common.Queue;
-import com.merakianalytics.orianna.types.common.Season;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class Match extends CoreData {
-    private static final long serialVersionUID = -3669362861954900455L;
+    private static final long serialVersionUID = -8702370294773949677L;
     private Team blueTeam, redTeam;
     private DateTime creationTime;
     private Duration duration;
     private long id, forAccountId;
-    private Map map;
-    private GameMode mode;
+    private int map, queue, season;
     private List<Participant> participants;
-    private Platform platform;
-    private Queue queue;
-    private Season season;
-    private GameType type;
-    private String version, tournamentCode;
+    private String version, tournamentCode, mode, platform, type;
 
     @Override
     public boolean equals(final Object obj) {
@@ -70,10 +59,11 @@ public class Match extends CoreData {
         if(map != other.map) {
             return false;
         }
-        if(mode != other.mode) {
-            return false;
-        }
-        if(platform != other.platform) {
+        if(mode == null) {
+            if(other.mode != null) {
+                return false;
+            }
+        } else if(!mode.equals(other.mode)) {
             return false;
         }
         if(participants == null) {
@@ -81,6 +71,13 @@ public class Match extends CoreData {
                 return false;
             }
         } else if(!participants.equals(other.participants)) {
+            return false;
+        }
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         if(queue != other.queue) {
@@ -103,7 +100,11 @@ public class Match extends CoreData {
         } else if(!tournamentCode.equals(other.tournamentCode)) {
             return false;
         }
-        if(type != other.type) {
+        if(type == null) {
+            if(other.type != null) {
+                return false;
+            }
+        } else if(!type.equals(other.type)) {
             return false;
         }
         if(version == null) {
@@ -154,14 +155,14 @@ public class Match extends CoreData {
     /**
      * @return the map
      */
-    public Map getMap() {
+    public int getMap() {
         return map;
     }
 
     /**
      * @return the mode
      */
-    public GameMode getMode() {
+    public String getMode() {
         return mode;
     }
 
@@ -175,14 +176,14 @@ public class Match extends CoreData {
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
     }
 
     /**
      * @return the queue
      */
-    public Queue getQueue() {
+    public int getQueue() {
         return queue;
     }
 
@@ -196,7 +197,7 @@ public class Match extends CoreData {
     /**
      * @return the season
      */
-    public Season getSeason() {
+    public int getSeason() {
         return season;
     }
 
@@ -210,7 +211,7 @@ public class Match extends CoreData {
     /**
      * @return the type
      */
-    public GameType getType() {
+    public String getType() {
         return type;
     }
 
@@ -230,13 +231,13 @@ public class Match extends CoreData {
         result = prime * result + (duration == null ? 0 : duration.hashCode());
         result = prime * result + (int)(forAccountId ^ forAccountId >>> 32);
         result = prime * result + (int)(id ^ id >>> 32);
-        result = prime * result + (map == null ? 0 : map.hashCode());
+        result = prime * result + map;
         result = prime * result + (mode == null ? 0 : mode.hashCode());
-        result = prime * result + (platform == null ? 0 : platform.hashCode());
         result = prime * result + (participants == null ? 0 : participants.hashCode());
-        result = prime * result + (queue == null ? 0 : queue.hashCode());
+        result = prime * result + (platform == null ? 0 : platform.hashCode());
+        result = prime * result + queue;
         result = prime * result + (redTeam == null ? 0 : redTeam.hashCode());
-        result = prime * result + (season == null ? 0 : season.hashCode());
+        result = prime * result + season;
         result = prime * result + (tournamentCode == null ? 0 : tournamentCode.hashCode());
         result = prime * result + (type == null ? 0 : type.hashCode());
         result = prime * result + (version == null ? 0 : version.hashCode());
@@ -287,7 +288,7 @@ public class Match extends CoreData {
      * @param map
      *        the map to set
      */
-    public void setMap(final Map map) {
+    public void setMap(final int map) {
         this.map = map;
     }
 
@@ -295,7 +296,7 @@ public class Match extends CoreData {
      * @param mode
      *        the mode to set
      */
-    public void setMode(final GameMode mode) {
+    public void setMode(final String mode) {
         this.mode = mode;
     }
 
@@ -311,7 +312,7 @@ public class Match extends CoreData {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 
@@ -319,7 +320,7 @@ public class Match extends CoreData {
      * @param queue
      *        the queue to set
      */
-    public void setQueue(final Queue queue) {
+    public void setQueue(final int queue) {
         this.queue = queue;
     }
 
@@ -335,7 +336,7 @@ public class Match extends CoreData {
      * @param season
      *        the season to set
      */
-    public void setSeason(final Season season) {
+    public void setSeason(final int season) {
         this.season = season;
     }
 
@@ -351,7 +352,7 @@ public class Match extends CoreData {
      * @param type
      *        the type to set
      */
-    public void setType(final GameType type) {
+    public void setType(final String type) {
         this.type = type;
     }
 

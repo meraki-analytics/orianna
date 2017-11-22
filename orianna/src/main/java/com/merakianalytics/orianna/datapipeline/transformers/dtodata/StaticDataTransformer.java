@@ -8,14 +8,9 @@ import java.util.Map;
 import java.util.Set;
 
 import com.google.common.base.Joiner;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.ImmutableBiMap;
 import com.merakianalytics.datapipelines.PipelineContext;
 import com.merakianalytics.datapipelines.transformers.AbstractDataTransformer;
 import com.merakianalytics.datapipelines.transformers.Transform;
-import com.merakianalytics.orianna.types.common.GameMode;
-import com.merakianalytics.orianna.types.common.Platform;
-import com.merakianalytics.orianna.types.common.RuneType;
 import com.merakianalytics.orianna.types.data.staticdata.Champion;
 import com.merakianalytics.orianna.types.data.staticdata.ChampionSpell;
 import com.merakianalytics.orianna.types.data.staticdata.ChampionStats;
@@ -71,13 +66,6 @@ import com.merakianalytics.orianna.types.dto.staticdata.SpellVars;
 import com.merakianalytics.orianna.types.dto.staticdata.SummonerSpellList;
 
 public class StaticDataTransformer extends AbstractDataTransformer {
-    private static final BiMap<String, com.merakianalytics.orianna.types.common.Map> RECOMMENDED_ITEMS_MAP_CONVERSIONS = ImmutableBiMap.of("SR",
-        com.merakianalytics.orianna.types.common.Map.SUMMONERS_RIFT, "TT", com.merakianalytics.orianna.types.common.Map.TWISTED_TREELINE, "HA",
-        com.merakianalytics.orianna.types.common.Map.HOWLING_ABYSS, "CS", com.merakianalytics.orianna.types.common.Map.THE_CRYSTAL_SCAR);
-
-    private static final BiMap<String, RuneType> RUNE_TYPE_CONVERSIONS = ImmutableBiMap.of("red", RuneType.MARK, "yellow", RuneType.SEAL, "blue",
-        RuneType.GLYPH, "black", RuneType.QUINTESSENCE);
-
     private static String getBurn(final List<? extends Number> data) {
         if(data == null || data.isEmpty()) {
             return "";
@@ -100,7 +88,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         }
         set.setRecMath(item.isRecMath());
         set.setType(item.getType());
-        set.setPlatform((Platform)context.get("platform"));
+        set.setPlatform((String)context.get("platform"));
         set.setVersion((String)context.get("version"));
         set.setLocale((String)context.get("locale"));
         return set;
@@ -127,7 +115,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         champion.setLore(item.getLore());
         champion.setName(item.getName());
         champion.setPassive(transform(item.getPassive(), context));
-        champion.setPlatform(item.getPlatform().getTag());
+        champion.setPlatform(item.getPlatform());
         final List<Recommended> items = new ArrayList<>(item.getRecommendedItems().size());
         for(final RecommendedItems rec : item.getRecommendedItems()) {
             items.add(transform(rec, context));
@@ -161,7 +149,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         champions.setFormat(item.getFormat());
         champions.setIncludedData(new HashSet<>(item.getIncludedData()));
         champions.setLocale(item.getLocale());
-        champions.setPlatform(Platform.withTag(item.getPlatform()));
+        champions.setPlatform(item.getPlatform());
         champions.setType(item.getType());
         champions.setVersion(item.getVersion());
         return champions;
@@ -181,7 +169,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         champions.setFormat(item.getFormat());
         champions.setIncludedData(new HashSet<>(item.getIncludedData()));
         champions.setLocale(item.getLocale());
-        champions.setPlatform(item.getPlatform().getTag());
+        champions.setPlatform(item.getPlatform());
         champions.setType(item.getType());
         champions.setVersion(item.getVersion());
         return champions;
@@ -266,7 +254,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         map.setImage(transform(item.getImage(), context));
         map.setLocale(item.getLocale());
         map.setMapName(item.getName());
-        map.setPlatform(item.getPlatform().getTag());
+        map.setPlatform(item.getPlatform());
         if(item.getUnpurchasableItems() != null) {
             final List<Long> items = new ArrayList<>(item.getUnpurchasableItems().size());
             for(final Integer it : item.getUnpurchasableItems()) {
@@ -280,7 +268,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
 
     @Transform(from = com.merakianalytics.orianna.types.dto.staticdata.Champion.class, to = Champion.class)
     public Champion transform(final com.merakianalytics.orianna.types.dto.staticdata.Champion item, final PipelineContext context) {
-        final Object previousPlatform = context.put("platform", Platform.withTag(item.getPlatform()));
+        final Object previousPlatform = context.put("platform", item.getPlatform());
         final Object previousVersion = context.put("version", item.getVersion());
         final Object previousLocale = context.put("locale", item.getLocale());
         final Object previousKey = context.put("key", item.getKey());
@@ -300,7 +288,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         champion.setName(item.getName());
         champion.setPassive(transform(item.getPassive(), context));
         champion.setPhysicalRating(item.getInfo().getAttack());
-        champion.setPlatform(Platform.withTag(item.getPlatform()));
+        champion.setPlatform(item.getPlatform());
         final List<RecommendedItems> items = new ArrayList<>(item.getRecommended().size());
         for(final Recommended rec : item.getRecommended()) {
             items.add(transform(rec, context));
@@ -418,17 +406,17 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         }
         converted.setKeywords(keywords);
         converted.setLocale(item.getLocale());
-        final Set<com.merakianalytics.orianna.types.common.Map> maps = new HashSet<>();
+        final Set<Integer> maps = new HashSet<>();
         for(final String id : item.getMaps().keySet()) {
             if(item.getMaps().get(id)) {
-                maps.add(com.merakianalytics.orianna.types.common.Map.withId(Integer.parseInt(id)));
+                maps.add(Integer.parseInt(id));
             }
         }
         converted.setMaps(maps);
         converted.setMaxStacks(item.getStacks());
         converted.setName(item.getName());
         converted.setPlaintext(item.getPlaintext());
-        converted.setPlatform(Platform.withTag(item.getPlatform()));
+        converted.setPlatform(item.getPlatform());
         converted.setPurchasable(item.getGold().isPurchasable());
         converted.setRequiredChampionKey(item.getRequiredChampion());
         converted.setSanitizedDescription(item.getSanitizedDescription());
@@ -455,7 +443,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
     public Languages transform(final com.merakianalytics.orianna.types.dto.staticdata.Languages item, final PipelineContext context) {
         final Languages languages = new Languages();
         languages.addAll(item);
-        languages.setPlatform(Platform.withTag(item.getPlatform()));
+        languages.setPlatform(item.getPlatform());
         return languages;
     }
 
@@ -464,7 +452,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         final LanguageStrings strings = new LanguageStrings();
         strings.putAll(item.getData());
         strings.setLocale(item.getLocale());
-        strings.setPlatform(Platform.withTag(item.getPlatform()));
+        strings.setPlatform(item.getPlatform());
         strings.setType(item.getType());
         strings.setVersion(item.getVersion());
         return strings;
@@ -480,14 +468,14 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         mastery.setIncludedData(new HashSet<>(item.getIncludedData()));
         mastery.setLocale(item.getLocale());
         mastery.setName(item.getName());
-        mastery.setPlatform(Platform.withTag(item.getPlatform()));
+        mastery.setPlatform(item.getPlatform());
         mastery.setPoints(item.getRanks());
         mastery.setPrerequisite(Integer.parseInt(item.getPrereq()));
         if(item.getSanitizedDescription() != null) {
             mastery.setSanitizedDescriptions(new ArrayList<>(item.getSanitizedDescription()));
         }
         if(item.getMasteryTree() != null) {
-            mastery.setTree(com.merakianalytics.orianna.types.common.MasteryTree.valueOf(item.getMasteryTree().toUpperCase()));
+            mastery.setTree(item.getMasteryTree().toUpperCase());
         }
         mastery.setVersion(item.getVersion());
         context.put("version", previous);
@@ -543,7 +531,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         realm.setLatestVersions(new HashMap<>(item.getN()));
         realm.setLegacyMode(item.getL());
         realm.setMaxProfileIconId(item.getProfileiconmax());
-        realm.setPlatform(Platform.withTag(item.getPlatform()));
+        realm.setPlatform(item.getPlatform());
         realm.setStore(item.getStore());
         realm.setVersion(item.getV());
         return realm;
@@ -559,12 +547,12 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         rune.setIncludedData(new HashSet<>(item.getIncludedData()));
         rune.setLocale(item.getLocale());
         rune.setName(item.getName());
-        rune.setPlatform(Platform.withTag(item.getPlatform()));
+        rune.setPlatform(item.getPlatform());
         rune.setSanitizedDescription(item.getSanitizedDescription());
         rune.setStats(transform(item.getStats(), context));
         rune.setTags(new ArrayList<>(item.getTags()));
         rune.setTier(Integer.parseInt(item.getRune().getTier()));
-        rune.setType(RUNE_TYPE_CONVERSIONS.get(item.getRune().getType()));
+        rune.setType(item.getRune().getType());
         rune.setVersion(item.getVersion());
         context.put("version", previous);
         return rune;
@@ -701,13 +689,9 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         }
         spell.setLocale(item.getLocale());
         spell.setMaxRank(item.getMaxrank());
-        final Set<GameMode> modes = new HashSet<>();
-        for(final String mode : item.getModes()) {
-            modes.add(GameMode.valueOf(mode));
-        }
-        spell.setModes(modes);
+        spell.setModes(new HashSet<>(item.getModes()));
         spell.setName(item.getName());
-        spell.setPlatform(Platform.withTag(item.getPlatform()));
+        spell.setPlatform(item.getPlatform());
         spell.setRanges(new ArrayList<>(item.getRange()));
         spell.setResource(item.getCostType());
         spell.setResourceDescription(item.getResource());
@@ -727,7 +711,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
     public Versions transform(final com.merakianalytics.orianna.types.dto.staticdata.Versions item, final PipelineContext context) {
         final Versions versions = new Versions(item.size());
         versions.addAll(item);
-        versions.setPlatform(Platform.withTag(item.getPlatform()));
+        versions.setPlatform(item.getPlatform());
         return versions;
     }
 
@@ -828,13 +812,13 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         converted.setLocale(item.getLocale());
         final Map<String, Boolean> maps = new HashMap<>();
         for(final com.merakianalytics.orianna.types.common.Map map : com.merakianalytics.orianna.types.common.Map.values()) {
-            maps.put(Integer.toString(map.getId()), item.getMaps().contains(map));
+            maps.put(Integer.toString(map.getId()), item.getMaps().contains(map.getId()));
         }
         converted.setMaps(maps);
         converted.setStacks(item.getMaxStacks());
         converted.setName(item.getName());
         converted.setPlaintext(item.getPlaintext());
-        converted.setPlatform(item.getPlatform().getTag());
+        converted.setPlatform(item.getPlatform());
         converted.setRequiredChampion(item.getRequiredChampionKey());
         converted.setSanitizedDescription(item.getSanitizedDescription());
         converted.setSpecialRecipe(item.getSource());
@@ -866,7 +850,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         items.setGroups(groups);
         items.setIncludedData(new HashSet<>(item.getIncludedData()));
         items.setLocale(item.getLocale());
-        items.setPlatform(Platform.withTag(item.getPlatform()));
+        items.setPlatform(item.getPlatform());
         final List<ItemTree> tree = new ArrayList<>(item.getTree().size());
         for(final com.merakianalytics.orianna.types.dto.staticdata.ItemTree t : item.getTree()) {
             tree.add(transform(t, context));
@@ -892,7 +876,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         items.setGroups(groups);
         items.setIncludedData(new HashSet<>(item.getIncludedData()));
         items.setLocale(item.getLocale());
-        items.setPlatform(item.getPlatform().getTag());
+        items.setPlatform(item.getPlatform());
         final List<com.merakianalytics.orianna.types.dto.staticdata.ItemTree> tree = new ArrayList<>(item.getTree().size());
         for(final ItemTree t : item.getTree()) {
             tree.add(transform(t, context));
@@ -969,7 +953,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
     public com.merakianalytics.orianna.types.dto.staticdata.Languages transform(final Languages item, final PipelineContext context) {
         final com.merakianalytics.orianna.types.dto.staticdata.Languages languages = new com.merakianalytics.orianna.types.dto.staticdata.Languages();
         languages.addAll(item);
-        languages.setPlatform(item.getPlatform().getTag());
+        languages.setPlatform(item.getPlatform());
         return languages;
     }
 
@@ -978,7 +962,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         final com.merakianalytics.orianna.types.dto.staticdata.LanguageStrings strings = new com.merakianalytics.orianna.types.dto.staticdata.LanguageStrings();
         strings.setData(new HashMap<>(item));
         strings.setLocale(item.getLocale());
-        strings.setPlatform(item.getPlatform().getTag());
+        strings.setPlatform(item.getPlatform());
         strings.setType(item.getType());
         strings.setVersion(item.getVersion());
         return strings;
@@ -991,7 +975,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
             maps.add(transform(map, context));
         }
         maps.setLocale(item.getLocale());
-        maps.setPlatform(Platform.withTag(item.getPlatform()));
+        maps.setPlatform(item.getPlatform());
         maps.setType(item.getType());
         maps.setVersion(item.getVersion());
         return maps;
@@ -1005,7 +989,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         map.setImage(transform(item.getImage(), context));
         map.setLocale(item.getLocale());
         map.setName(item.getMapName());
-        map.setPlatform(Platform.withTag(item.getPlatform()));
+        map.setPlatform(item.getPlatform());
         if(item.getUnpurchasableItemList() != null) {
             final List<Integer> items = new ArrayList<>(item.getUnpurchasableItemList().size());
             for(final Long it : item.getUnpurchasableItemList()) {
@@ -1027,7 +1011,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         }
         maps.setData(data);
         maps.setLocale(item.getLocale());
-        maps.setPlatform(item.getPlatform().getTag());
+        maps.setPlatform(item.getPlatform());
         maps.setType(item.getType());
         maps.setVersion(item.getVersion());
         return maps;
@@ -1038,7 +1022,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         final MasteryList masteries = new MasteryList();
         masteries.setIncludedData(new HashSet<>(item.getIncludedData()));
         masteries.setLocale(item.getLocale());
-        masteries.setPlatform(item.getPlatform().getTag());
+        masteries.setPlatform(item.getPlatform());
         masteries.setTree(transform(item.getTree(), context));
         masteries.setType(item.getType());
         masteries.setVersion(item.getVersion());
@@ -1054,7 +1038,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         mastery.setIncludedData(new HashSet<>(item.getIncludedData()));
         mastery.setLocale(item.getLocale());
         mastery.setName(item.getName());
-        mastery.setPlatform(item.getPlatform().getTag());
+        mastery.setPlatform(item.getPlatform());
         mastery.setRanks(item.getPoints());
         mastery.setPrereq(Integer.toString(item.getPrerequisite()));
         if(item.getSanitizedDescriptions() != null) {
@@ -1072,7 +1056,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         final Masteries masteries = new Masteries();
         masteries.setIncludedData(new HashSet<>(item.getIncludedData()));
         masteries.setLocale(item.getLocale());
-        masteries.setPlatform(Platform.withTag(item.getPlatform()));
+        masteries.setPlatform(item.getPlatform());
         masteries.setTree(transform(item.getTree(), context));
         masteries.setType(item.getType());
         masteries.setVersion(item.getVersion());
@@ -1145,7 +1129,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         icon.setId(icon.getId());
         icon.setImage(transform(item.getImage(), context));
         icon.setLocale(item.getLocale());
-        icon.setPlatform(item.getPlatform().getTag());
+        icon.setPlatform(item.getPlatform());
         icon.setVersion(item.getVersion());
         return icon;
     }
@@ -1157,7 +1141,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
             icons.add(transform(icon, context));
         }
         icons.setLocale(item.getLocale());
-        icons.setPlatform(Platform.withTag(item.getPlatform()));
+        icons.setPlatform(item.getPlatform());
         icons.setType(item.getType());
         icons.setVersion(item.getVersion());
         return icons;
@@ -1170,7 +1154,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         icon.setId(icon.getId());
         icon.setImage(transform(item.getImage(), context));
         icon.setLocale(item.getLocale());
-        icon.setPlatform(Platform.withTag(item.getPlatform()));
+        icon.setPlatform(item.getPlatform());
         icon.setVersion(item.getVersion());
         context.put("version", previous);
         return icon;
@@ -1185,7 +1169,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         }
         icons.setData(data);
         icons.setLocale(item.getLocale());
-        icons.setPlatform(item.getPlatform().getTag());
+        icons.setPlatform(item.getPlatform());
         icons.setType(item.getType());
         icons.setVersion(item.getVersion());
         return icons;
@@ -1201,7 +1185,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         realm.setN(new HashMap<>(item.getLatestVersions()));
         realm.setL(item.getLegacyMode());
         realm.setProfileiconmax(item.getMaxProfileIconId());
-        realm.setPlatform(item.getPlatform().getTag());
+        realm.setPlatform(item.getPlatform());
         realm.setStore(item.getStore());
         realm.setV(item.getVersion());
         return realm;
@@ -1213,8 +1197,8 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         for(final Block block : item.getBlocks()) {
             items.add(transform(block, context));
         }
-        items.setMap(RECOMMENDED_ITEMS_MAP_CONVERSIONS.get(item.getMap()));
-        items.setMode(GameMode.valueOf(item.getMode()));
+        items.setMap(item.getMap());
+        items.setMode(item.getMode());
         items.setPriority(item.isPriority());
         items.setTitle(item.getTitle());
         items.setType(item.getType());
@@ -1230,7 +1214,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         }
         items.setBlocks(blocks);
         items.setChampion((String)context.get("key"));
-        items.setMap(RECOMMENDED_ITEMS_MAP_CONVERSIONS.inverse().get(item.getMap()));
+        items.setMap(item.getMap());
         items.setMode(item.getMode().toString());
         items.setPriority(item.isPriority());
         items.setTitle(item.getTitle());
@@ -1247,14 +1231,14 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         rune.setIncludedData(new HashSet<>(item.getIncludedData()));
         rune.setLocale(item.getLocale());
         rune.setName(item.getName());
-        rune.setPlatform(item.getPlatform().getTag());
+        rune.setPlatform(item.getPlatform());
         rune.setSanitizedDescription(item.getSanitizedDescription());
         rune.setStats(transform(item.getStats(), context));
         rune.setTags(new ArrayList<>(item.getTags()));
         final MetaData metadata = new MetaData();
         metadata.setRune(true);
         metadata.setTier(Integer.toString(item.getTier()));
-        metadata.setType(RUNE_TYPE_CONVERSIONS.inverse().get(item.getType()));
+        metadata.setType(item.getType());
         rune.setRune(metadata);
         rune.setVersion(item.getVersion());
         return rune;
@@ -1268,7 +1252,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         }
         runes.setIncludedData(new HashSet<>(item.getIncludedData()));
         runes.setLocale(item.getLocale());
-        runes.setPlatform(Platform.withTag(item.getPlatform()));
+        runes.setPlatform(item.getPlatform());
         runes.setType(item.getType());
         runes.setVersion(item.getVersion());
         return runes;
@@ -1284,7 +1268,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         runes.setData(data);
         runes.setIncludedData(new HashSet<>(item.getIncludedData()));
         runes.setLocale(item.getLocale());
-        runes.setPlatform(item.getPlatform().getTag());
+        runes.setPlatform(item.getPlatform());
         runes.setType(item.getType());
         runes.setVersion(item.getVersion());
         return runes;
@@ -1420,13 +1404,9 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         spell.setLeveltip(tip);
         spell.setLocale(item.getLocale());
         spell.setMaxrank(item.getMaxRank());
-        final List<String> modes = new ArrayList<>(item.getModes().size());
-        for(final GameMode mode : item.getModes()) {
-            modes.add(mode.toString());
-        }
-        spell.setModes(modes);
+        spell.setModes(new HashSet<>(item.getModes()));
         spell.setName(item.getName());
-        spell.setPlatform(item.getPlatform().getTag());
+        spell.setPlatform(item.getPlatform());
         spell.setRange(new ArrayList<>(item.getRanges()));
         spell.setRangeBurn(getBurn(item.getRanges()));
         spell.setCostType(item.getResource());
@@ -1450,7 +1430,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         }
         spells.setIncludedData(new HashSet<>(item.getIncludedData()));
         spells.setLocale(item.getLocale());
-        spells.setPlatform(Platform.withTag(item.getPlatform()));
+        spells.setPlatform(item.getPlatform());
         spells.setType(item.getType());
         spells.setVersion(item.getVersion());
         return spells;
@@ -1466,7 +1446,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         spells.setData(data);
         spells.setIncludedData(new HashSet<>(item.getIncludedData()));
         spells.setLocale(item.getLocale());
-        spells.setPlatform(item.getPlatform().getTag());
+        spells.setPlatform(item.getPlatform());
         spells.setType(item.getType());
         spells.setVersion(item.getVersion());
         return spells;
@@ -1476,7 +1456,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
     public com.merakianalytics.orianna.types.dto.staticdata.Versions transform(final Versions item, final PipelineContext context) {
         final com.merakianalytics.orianna.types.dto.staticdata.Versions versions = new com.merakianalytics.orianna.types.dto.staticdata.Versions(item.size());
         versions.addAll(item);
-        versions.setPlatform(item.getPlatform().getTag());
+        versions.setPlatform(item.getPlatform());
         return versions;
     }
 }

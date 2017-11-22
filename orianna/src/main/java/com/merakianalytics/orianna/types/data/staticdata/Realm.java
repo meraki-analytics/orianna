@@ -2,15 +2,13 @@ package com.merakianalytics.orianna.types.data.staticdata;
 
 import java.util.Map;
 
-import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class Realm extends CoreData {
-    private static final long serialVersionUID = 1322693251232626677L;
+    private static final long serialVersionUID = 6579774823038008437L;
     private Map<String, String> latestVersions;
-    private String legacyMode, latestDataDragon, store, defaultLocale, version, CDN, CSSVersion;
+    private String legacyMode, latestDataDragon, store, defaultLocale, version, CDN, CSSVersion, platform;
     private int maxProfileIconId;
-    private Platform platform;
 
     @Override
     public boolean equals(final Object obj) {
@@ -69,7 +67,11 @@ public class Realm extends CoreData {
         if(maxProfileIconId != other.maxProfileIconId) {
             return false;
         }
-        if(platform != other.platform) {
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         if(store == null) {
@@ -141,7 +143,7 @@ public class Realm extends CoreData {
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
     }
 
@@ -236,7 +238,7 @@ public class Realm extends CoreData {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 

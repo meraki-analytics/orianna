@@ -2,14 +2,12 @@ package com.merakianalytics.orianna.types.data.summoner;
 
 import org.joda.time.DateTime;
 
-import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class Summoner extends CoreData {
-    private static final long serialVersionUID = 8245904598711697833L;
+    private static final long serialVersionUID = -5216558332373601872L;
     private long id, accountId;
-    private String name;
-    private Platform platform;
+    private String name, platform;
     private int profileIconId, level;
     private DateTime updated;
 
@@ -41,7 +39,11 @@ public class Summoner extends CoreData {
         } else if(!name.equals(other.name)) {
             return false;
         }
-        if(platform != other.platform) {
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         if(profileIconId != other.profileIconId) {
@@ -88,7 +90,7 @@ public class Summoner extends CoreData {
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
     }
 
@@ -156,7 +158,7 @@ public class Summoner extends CoreData {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 

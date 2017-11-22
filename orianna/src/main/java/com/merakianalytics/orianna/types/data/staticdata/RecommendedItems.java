@@ -1,15 +1,11 @@
 package com.merakianalytics.orianna.types.data.staticdata;
 
-import com.merakianalytics.orianna.types.common.GameMode;
-import com.merakianalytics.orianna.types.common.Map;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class RecommendedItems extends CoreData.ListProxy<ItemSet> {
-    private static final long serialVersionUID = 5561349679228162999L;
-    private Map map;
-    private GameMode mode;
+    private static final long serialVersionUID = 3130193939924356290L;
     private boolean priority;
-    private String title, type;
+    private String title, type, map, mode;
 
     public RecommendedItems() {
         super();
@@ -31,10 +27,18 @@ public class RecommendedItems extends CoreData.ListProxy<ItemSet> {
             return false;
         }
         final RecommendedItems other = (RecommendedItems)obj;
-        if(map != other.map) {
+        if(map == null) {
+            if(other.map != null) {
+                return false;
+            }
+        } else if(!map.equals(other.map)) {
             return false;
         }
-        if(mode != other.mode) {
+        if(mode == null) {
+            if(other.mode != null) {
+                return false;
+            }
+        } else if(!mode.equals(other.mode)) {
             return false;
         }
         if(priority != other.priority) {
@@ -60,14 +64,14 @@ public class RecommendedItems extends CoreData.ListProxy<ItemSet> {
     /**
      * @return the map
      */
-    public Map getMap() {
+    public String getMap() {
         return map;
     }
 
     /**
      * @return the mode
      */
-    public GameMode getMode() {
+    public String getMode() {
         return mode;
     }
 
@@ -108,7 +112,7 @@ public class RecommendedItems extends CoreData.ListProxy<ItemSet> {
      * @param map
      *        the map to set
      */
-    public void setMap(final Map map) {
+    public void setMap(final String map) {
         this.map = map;
     }
 
@@ -116,7 +120,7 @@ public class RecommendedItems extends CoreData.ListProxy<ItemSet> {
      * @param mode
      *        the mode to set
      */
-    public void setMode(final GameMode mode) {
+    public void setMode(final String mode) {
         this.mode = mode;
     }
 

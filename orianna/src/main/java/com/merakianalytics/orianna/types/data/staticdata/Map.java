@@ -2,15 +2,13 @@ package com.merakianalytics.orianna.types.data.staticdata;
 
 import java.util.List;
 
-import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class Map extends CoreData {
-    private static final long serialVersionUID = 5458294737474311782L;
+    private static final long serialVersionUID = 3856624746534677337L;
     private int id;
     private Image image;
-    private String name, locale, version;
-    private Platform platform;
+    private String name, locale, version, platform;
     private List<Integer> unpurchasableItems;
 
     @Override
@@ -49,7 +47,11 @@ public class Map extends CoreData {
         } else if(!name.equals(other.name)) {
             return false;
         }
-        if(platform != other.platform) {
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         if(unpurchasableItems == null) {
@@ -100,7 +102,7 @@ public class Map extends CoreData {
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
     }
 
@@ -168,7 +170,7 @@ public class Map extends CoreData {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 

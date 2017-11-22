@@ -3,19 +3,15 @@ package com.merakianalytics.orianna.types.data.staticdata;
 import java.util.List;
 import java.util.Set;
 
-import com.merakianalytics.orianna.types.common.MasteryTree;
-import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class Mastery extends CoreData {
-    private static final long serialVersionUID = 5777091654319772826L;
+    private static final long serialVersionUID = -1054860158143927766L;
     private List<String> descriptions, sanitizedDescriptions;
     private Image image;
     private Set<String> includedData;
-    private String name, version, locale;
-    private Platform platform;
+    private String name, version, locale, platform, tree;
     private int prerequisite, id, points;
-    private MasteryTree tree;
 
     @Override
     public boolean equals(final Object obj) {
@@ -67,7 +63,11 @@ public class Mastery extends CoreData {
         } else if(!name.equals(other.name)) {
             return false;
         }
-        if(platform != other.platform) {
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         if(points != other.points) {
@@ -83,7 +83,11 @@ public class Mastery extends CoreData {
         } else if(!sanitizedDescriptions.equals(other.sanitizedDescriptions)) {
             return false;
         }
-        if(tree != other.tree) {
+        if(tree == null) {
+            if(other.tree != null) {
+                return false;
+            }
+        } else if(!tree.equals(other.tree)) {
             return false;
         }
         if(version == null) {
@@ -141,7 +145,7 @@ public class Mastery extends CoreData {
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
     }
 
@@ -169,7 +173,7 @@ public class Mastery extends CoreData {
     /**
      * @return the tree
      */
-    public MasteryTree getTree() {
+    public String getTree() {
         return tree;
     }
 
@@ -251,7 +255,7 @@ public class Mastery extends CoreData {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 
@@ -283,7 +287,7 @@ public class Mastery extends CoreData {
      * @param tree
      *        the tree to set
      */
-    public void setTree(final MasteryTree tree) {
+    public void setTree(final String tree) {
         this.tree = tree;
     }
 

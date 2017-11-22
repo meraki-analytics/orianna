@@ -3,16 +3,14 @@ package com.merakianalytics.orianna.types.data.staticdata;
 import java.util.List;
 import java.util.Set;
 
-import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class Items extends CoreData.ListProxy<Item> {
-    private static final long serialVersionUID = 9060729133953836405L;
+    private static final long serialVersionUID = -1018271544203795043L;
     private List<ItemGroup> groups;
     private Set<String> includedData;
-    private Platform platform;
     private List<ItemTree> tree;
-    private String version, locale, type;
+    private String version, locale, type, platform;
 
     public Items() {
         super();
@@ -55,7 +53,11 @@ public class Items extends CoreData.ListProxy<Item> {
         } else if(!locale.equals(other.locale)) {
             return false;
         }
-        if(platform != other.platform) {
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         if(tree == null) {
@@ -106,7 +108,7 @@ public class Items extends CoreData.ListProxy<Item> {
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
     }
 
@@ -173,7 +175,7 @@ public class Items extends CoreData.ListProxy<Item> {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 

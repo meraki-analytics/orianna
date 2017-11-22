@@ -1,14 +1,12 @@
 package com.merakianalytics.orianna.types.data.staticdata;
 
-import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class ProfileIcon extends CoreData {
-    private static final long serialVersionUID = 8150492865075824838L;
+    private static final long serialVersionUID = 1191321014222615905L;
     private int id;
     private Image image;
-    private Platform platform;
-    private String version, locale;
+    private String version, locale, platform;
 
     @Override
     public boolean equals(final Object obj) {
@@ -39,7 +37,11 @@ public class ProfileIcon extends CoreData {
         } else if(!locale.equals(other.locale)) {
             return false;
         }
-        if(platform != other.platform) {
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         if(version == null) {
@@ -76,7 +78,7 @@ public class ProfileIcon extends CoreData {
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
     }
 
@@ -127,7 +129,7 @@ public class ProfileIcon extends CoreData {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 

@@ -2,23 +2,14 @@ package com.merakianalytics.orianna.types.data.match;
 
 import org.joda.time.DateTime;
 
-import com.merakianalytics.orianna.types.common.Lane;
-import com.merakianalytics.orianna.types.common.Platform;
-import com.merakianalytics.orianna.types.common.Queue;
-import com.merakianalytics.orianna.types.common.Role;
-import com.merakianalytics.orianna.types.common.Season;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class MatchReference extends CoreData {
-    private static final long serialVersionUID = 2383230574341149698L;
-    private int championId;
+    private static final long serialVersionUID = 4335607675750328222L;
+    private int championId, queue, season;
     private DateTime creationTime;
     private long id;
-    private Lane lane;
-    private Platform platform;
-    private Queue queue;
-    private Role role;
-    private Season season;
+    private String lane, platform, role;
 
     @Override
     public boolean equals(final Object obj) {
@@ -45,16 +36,28 @@ public class MatchReference extends CoreData {
         if(id != other.id) {
             return false;
         }
-        if(lane != other.lane) {
+        if(lane == null) {
+            if(other.lane != null) {
+                return false;
+            }
+        } else if(!lane.equals(other.lane)) {
             return false;
         }
-        if(platform != other.platform) {
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         if(queue != other.queue) {
             return false;
         }
-        if(role != other.role) {
+        if(role == null) {
+            if(other.role != null) {
+                return false;
+            }
+        } else if(!role.equals(other.role)) {
             return false;
         }
         if(season != other.season) {
@@ -87,35 +90,35 @@ public class MatchReference extends CoreData {
     /**
      * @return the lane
      */
-    public Lane getLane() {
+    public String getLane() {
         return lane;
     }
 
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
     }
 
     /**
      * @return the queue
      */
-    public Queue getQueue() {
+    public int getQueue() {
         return queue;
     }
 
     /**
      * @return the role
      */
-    public Role getRole() {
+    public String getRole() {
         return role;
     }
 
     /**
      * @return the season
      */
-    public Season getSeason() {
+    public int getSeason() {
         return season;
     }
 
@@ -128,9 +131,9 @@ public class MatchReference extends CoreData {
         result = prime * result + (int)(id ^ id >>> 32);
         result = prime * result + (lane == null ? 0 : lane.hashCode());
         result = prime * result + (platform == null ? 0 : platform.hashCode());
-        result = prime * result + (queue == null ? 0 : queue.hashCode());
+        result = prime * result + queue;
         result = prime * result + (role == null ? 0 : role.hashCode());
-        result = prime * result + (season == null ? 0 : season.hashCode());
+        result = prime * result + season;
         return result;
     }
 
@@ -162,7 +165,7 @@ public class MatchReference extends CoreData {
      * @param lane
      *        the lane to set
      */
-    public void setLane(final Lane lane) {
+    public void setLane(final String lane) {
         this.lane = lane;
     }
 
@@ -170,7 +173,7 @@ public class MatchReference extends CoreData {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 
@@ -178,7 +181,7 @@ public class MatchReference extends CoreData {
      * @param queue
      *        the queue to set
      */
-    public void setQueue(final Queue queue) {
+    public void setQueue(final int queue) {
         this.queue = queue;
     }
 
@@ -186,7 +189,7 @@ public class MatchReference extends CoreData {
      * @param role
      *        the role to set
      */
-    public void setRole(final Role role) {
+    public void setRole(final String role) {
         this.role = role;
     }
 
@@ -194,7 +197,7 @@ public class MatchReference extends CoreData {
      * @param season
      *        the season to set
      */
-    public void setSeason(final Season season) {
+    public void setSeason(final int season) {
         this.season = season;
     }
 }

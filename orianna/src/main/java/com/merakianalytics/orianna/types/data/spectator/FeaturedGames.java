@@ -2,12 +2,11 @@ package com.merakianalytics.orianna.types.data.spectator;
 
 import org.joda.time.Duration;
 
-import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class FeaturedGames extends CoreData.ListProxy<FeaturedGame> {
-    private static final long serialVersionUID = -2476610619196015341L;
-    private Platform platform;
+    private static final long serialVersionUID = 2972903457763427690L;
+    private String platform;
     private Duration refreshInterval;
 
     public FeaturedGames() {
@@ -30,7 +29,11 @@ public class FeaturedGames extends CoreData.ListProxy<FeaturedGame> {
             return false;
         }
         final FeaturedGames other = (FeaturedGames)obj;
-        if(platform != other.platform) {
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         if(refreshInterval == null) {
@@ -46,7 +49,7 @@ public class FeaturedGames extends CoreData.ListProxy<FeaturedGame> {
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
     }
 
@@ -70,7 +73,7 @@ public class FeaturedGames extends CoreData.ListProxy<FeaturedGame> {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 

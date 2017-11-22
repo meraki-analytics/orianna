@@ -1,11 +1,10 @@
 package com.merakianalytics.orianna.types.data.runes;
 
-import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class RunePages extends CoreData.ListProxy<RunePage> {
-    private static final long serialVersionUID = -6713276634196012516L;
-    private Platform platform;
+    private static final long serialVersionUID = -3188164538427939668L;
+    private String platform;
     private long summonerId;
 
     public RunePages() {
@@ -28,7 +27,11 @@ public class RunePages extends CoreData.ListProxy<RunePage> {
             return false;
         }
         final RunePages other = (RunePages)obj;
-        if(platform != other.platform) {
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         if(summonerId != other.summonerId) {
@@ -40,7 +43,7 @@ public class RunePages extends CoreData.ListProxy<RunePage> {
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
     }
 
@@ -64,7 +67,7 @@ public class RunePages extends CoreData.ListProxy<RunePage> {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 

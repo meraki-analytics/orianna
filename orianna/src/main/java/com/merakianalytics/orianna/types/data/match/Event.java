@@ -4,37 +4,15 @@ import java.util.List;
 
 import org.joda.time.Duration;
 
-import com.merakianalytics.orianna.types.common.AscensionType;
-import com.merakianalytics.orianna.types.common.BuildingType;
-import com.merakianalytics.orianna.types.common.EventType;
-import com.merakianalytics.orianna.types.common.LaneType;
-import com.merakianalytics.orianna.types.common.LevelUpType;
-import com.merakianalytics.orianna.types.common.MonsterSubType;
-import com.merakianalytics.orianna.types.common.MonsterType;
-import com.merakianalytics.orianna.types.common.Point;
-import com.merakianalytics.orianna.types.common.Skill;
-import com.merakianalytics.orianna.types.common.TurretType;
-import com.merakianalytics.orianna.types.common.WardType;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class Event extends CoreData {
-    private static final long serialVersionUID = -3729596181763268808L;
-    private AscensionType ascensionType;
+    private static final long serialVersionUID = -7302365844977796491L;
+    private String ascensionType, buildingType, capturedPoint, laneType, levelUpType, monsterSubType, monsterType, turretType, type, wardType;
     private List<Integer> assistingParticipants;
-    private BuildingType buildingType;
-    private Point capturedPoint;
-    private int killerId, victimId, afterId, itemId, participantId, creatorId, beforeId;
-    private LaneType laneType;
-    private LevelUpType levelUpType;
-    private MonsterSubType monsterSubType;
-    private MonsterType monsterType;
+    private int killerId, victimId, afterId, itemId, participantId, creatorId, beforeId, team, skill;
     private Position position;
-    private Skill skill;
-    private com.merakianalytics.orianna.types.common.Side team;
     private Duration timestamp;
-    private TurretType turretType;
-    private EventType type;
-    private WardType wardType;
 
     @Override
     public boolean equals(final Object obj) {
@@ -51,7 +29,11 @@ public class Event extends CoreData {
         if(afterId != other.afterId) {
             return false;
         }
-        if(ascensionType != other.ascensionType) {
+        if(ascensionType == null) {
+            if(other.ascensionType != null) {
+                return false;
+            }
+        } else if(!ascensionType.equals(other.ascensionType)) {
             return false;
         }
         if(assistingParticipants == null) {
@@ -64,10 +46,18 @@ public class Event extends CoreData {
         if(beforeId != other.beforeId) {
             return false;
         }
-        if(buildingType != other.buildingType) {
+        if(buildingType == null) {
+            if(other.buildingType != null) {
+                return false;
+            }
+        } else if(!buildingType.equals(other.buildingType)) {
             return false;
         }
-        if(capturedPoint != other.capturedPoint) {
+        if(capturedPoint == null) {
+            if(other.capturedPoint != null) {
+                return false;
+            }
+        } else if(!capturedPoint.equals(other.capturedPoint)) {
             return false;
         }
         if(creatorId != other.creatorId) {
@@ -79,16 +69,32 @@ public class Event extends CoreData {
         if(killerId != other.killerId) {
             return false;
         }
-        if(laneType != other.laneType) {
+        if(laneType == null) {
+            if(other.laneType != null) {
+                return false;
+            }
+        } else if(!laneType.equals(other.laneType)) {
             return false;
         }
-        if(levelUpType != other.levelUpType) {
+        if(levelUpType == null) {
+            if(other.levelUpType != null) {
+                return false;
+            }
+        } else if(!levelUpType.equals(other.levelUpType)) {
             return false;
         }
-        if(monsterSubType != other.monsterSubType) {
+        if(monsterSubType == null) {
+            if(other.monsterSubType != null) {
+                return false;
+            }
+        } else if(!monsterSubType.equals(other.monsterSubType)) {
             return false;
         }
-        if(monsterType != other.monsterType) {
+        if(monsterType == null) {
+            if(other.monsterType != null) {
+                return false;
+            }
+        } else if(!monsterType.equals(other.monsterType)) {
             return false;
         }
         if(participantId != other.participantId) {
@@ -114,16 +120,28 @@ public class Event extends CoreData {
         } else if(!timestamp.equals(other.timestamp)) {
             return false;
         }
-        if(turretType != other.turretType) {
+        if(turretType == null) {
+            if(other.turretType != null) {
+                return false;
+            }
+        } else if(!turretType.equals(other.turretType)) {
             return false;
         }
-        if(type != other.type) {
+        if(type == null) {
+            if(other.type != null) {
+                return false;
+            }
+        } else if(!type.equals(other.type)) {
             return false;
         }
         if(victimId != other.victimId) {
             return false;
         }
-        if(wardType != other.wardType) {
+        if(wardType == null) {
+            if(other.wardType != null) {
+                return false;
+            }
+        } else if(!wardType.equals(other.wardType)) {
             return false;
         }
         return true;
@@ -139,7 +157,7 @@ public class Event extends CoreData {
     /**
      * @return the ascensionType
      */
-    public AscensionType getAscensionType() {
+    public String getAscensionType() {
         return ascensionType;
     }
 
@@ -160,14 +178,14 @@ public class Event extends CoreData {
     /**
      * @return the buildingType
      */
-    public BuildingType getBuildingType() {
+    public String getBuildingType() {
         return buildingType;
     }
 
     /**
      * @return the capturedPoint
      */
-    public Point getCapturedPoint() {
+    public String getCapturedPoint() {
         return capturedPoint;
     }
 
@@ -195,28 +213,28 @@ public class Event extends CoreData {
     /**
      * @return the laneType
      */
-    public LaneType getLaneType() {
+    public String getLaneType() {
         return laneType;
     }
 
     /**
      * @return the levelUpType
      */
-    public LevelUpType getLevelUpType() {
+    public String getLevelUpType() {
         return levelUpType;
     }
 
     /**
      * @return the monsterSubType
      */
-    public MonsterSubType getMonsterSubType() {
+    public String getMonsterSubType() {
         return monsterSubType;
     }
 
     /**
      * @return the monsterType
      */
-    public MonsterType getMonsterType() {
+    public String getMonsterType() {
         return monsterType;
     }
 
@@ -237,14 +255,14 @@ public class Event extends CoreData {
     /**
      * @return the skill
      */
-    public Skill getSkill() {
+    public int getSkill() {
         return skill;
     }
 
     /**
      * @return the team
      */
-    public com.merakianalytics.orianna.types.common.Side getTeam() {
+    public int getTeam() {
         return team;
     }
 
@@ -258,14 +276,14 @@ public class Event extends CoreData {
     /**
      * @return the turretType
      */
-    public TurretType getTurretType() {
+    public String getTurretType() {
         return turretType;
     }
 
     /**
      * @return the type
      */
-    public EventType getType() {
+    public String getType() {
         return type;
     }
 
@@ -279,7 +297,7 @@ public class Event extends CoreData {
     /**
      * @return the wardType
      */
-    public WardType getWardType() {
+    public String getWardType() {
         return wardType;
     }
 
@@ -302,8 +320,8 @@ public class Event extends CoreData {
         result = prime * result + (monsterType == null ? 0 : monsterType.hashCode());
         result = prime * result + participantId;
         result = prime * result + (position == null ? 0 : position.hashCode());
-        result = prime * result + (skill == null ? 0 : skill.hashCode());
-        result = prime * result + (team == null ? 0 : team.hashCode());
+        result = prime * result + skill;
+        result = prime * result + team;
         result = prime * result + (timestamp == null ? 0 : timestamp.hashCode());
         result = prime * result + (turretType == null ? 0 : turretType.hashCode());
         result = prime * result + (type == null ? 0 : type.hashCode());
@@ -324,7 +342,7 @@ public class Event extends CoreData {
      * @param ascensionType
      *        the ascensionType to set
      */
-    public void setAscensionType(final AscensionType ascensionType) {
+    public void setAscensionType(final String ascensionType) {
         this.ascensionType = ascensionType;
     }
 
@@ -348,7 +366,7 @@ public class Event extends CoreData {
      * @param buildingType
      *        the buildingType to set
      */
-    public void setBuildingType(final BuildingType buildingType) {
+    public void setBuildingType(final String buildingType) {
         this.buildingType = buildingType;
     }
 
@@ -356,7 +374,7 @@ public class Event extends CoreData {
      * @param capturedPoint
      *        the capturedPoint to set
      */
-    public void setCapturedPoint(final Point capturedPoint) {
+    public void setCapturedPoint(final String capturedPoint) {
         this.capturedPoint = capturedPoint;
     }
 
@@ -388,7 +406,7 @@ public class Event extends CoreData {
      * @param laneType
      *        the laneType to set
      */
-    public void setLaneType(final LaneType laneType) {
+    public void setLaneType(final String laneType) {
         this.laneType = laneType;
     }
 
@@ -396,7 +414,7 @@ public class Event extends CoreData {
      * @param levelUpType
      *        the levelUpType to set
      */
-    public void setLevelUpType(final LevelUpType levelUpType) {
+    public void setLevelUpType(final String levelUpType) {
         this.levelUpType = levelUpType;
     }
 
@@ -404,7 +422,7 @@ public class Event extends CoreData {
      * @param monsterSubType
      *        the monsterSubType to set
      */
-    public void setMonsterSubType(final MonsterSubType monsterSubType) {
+    public void setMonsterSubType(final String monsterSubType) {
         this.monsterSubType = monsterSubType;
     }
 
@@ -412,7 +430,7 @@ public class Event extends CoreData {
      * @param monsterType
      *        the monsterType to set
      */
-    public void setMonsterType(final MonsterType monsterType) {
+    public void setMonsterType(final String monsterType) {
         this.monsterType = monsterType;
     }
 
@@ -436,7 +454,7 @@ public class Event extends CoreData {
      * @param skill
      *        the skill to set
      */
-    public void setSkill(final Skill skill) {
+    public void setSkill(final int skill) {
         this.skill = skill;
     }
 
@@ -444,7 +462,7 @@ public class Event extends CoreData {
      * @param team
      *        the team to set
      */
-    public void setTeam(final com.merakianalytics.orianna.types.common.Side team) {
+    public void setTeam(final int team) {
         this.team = team;
     }
 
@@ -460,7 +478,7 @@ public class Event extends CoreData {
      * @param turretType
      *        the turretType to set
      */
-    public void setTurretType(final TurretType turretType) {
+    public void setTurretType(final String turretType) {
         this.turretType = turretType;
     }
 
@@ -468,7 +486,7 @@ public class Event extends CoreData {
      * @param type
      *        the type to set
      */
-    public void setType(final EventType type) {
+    public void setType(final String type) {
         this.type = type;
     }
 
@@ -484,7 +502,7 @@ public class Event extends CoreData {
      * @param wardType
      *        the wardType to set
      */
-    public void setWardType(final WardType wardType) {
+    public void setWardType(final String wardType) {
         this.wardType = wardType;
     }
 }

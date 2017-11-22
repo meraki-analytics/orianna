@@ -1,11 +1,10 @@
 package com.merakianalytics.orianna.types.data.spectator;
 
-import com.merakianalytics.orianna.types.common.RunePath;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class Runes extends CoreData.ListProxy<Integer> {
-    private static final long serialVersionUID = 7169291121901035271L;
-    private RunePath primaryPath, secondaryPath;
+    private static final long serialVersionUID = -3762685297780616690L;
+    private int primaryPath, secondaryPath;
 
     public Runes() {
         super();
@@ -39,14 +38,14 @@ public class Runes extends CoreData.ListProxy<Integer> {
     /**
      * @return the primaryPath
      */
-    public RunePath getPrimaryPath() {
+    public int getPrimaryPath() {
         return primaryPath;
     }
 
     /**
      * @return the secondaryPath
      */
-    public RunePath getSecondaryPath() {
+    public int getSecondaryPath() {
         return secondaryPath;
     }
 
@@ -54,8 +53,8 @@ public class Runes extends CoreData.ListProxy<Integer> {
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + (primaryPath == null ? 0 : primaryPath.hashCode());
-        result = prime * result + (secondaryPath == null ? 0 : secondaryPath.hashCode());
+        result = prime * result + primaryPath;
+        result = prime * result + secondaryPath;
         return result;
     }
 
@@ -63,7 +62,7 @@ public class Runes extends CoreData.ListProxy<Integer> {
      * @param primaryPath
      *        the primaryPath to set
      */
-    public void setPrimaryPath(final RunePath primaryPath) {
+    public void setPrimaryPath(final int primaryPath) {
         this.primaryPath = primaryPath;
     }
 
@@ -71,7 +70,7 @@ public class Runes extends CoreData.ListProxy<Integer> {
      * @param secondaryPath
      *        the secondaryPath to set
      */
-    public void setSecondaryPath(final RunePath secondaryPath) {
+    public void setSecondaryPath(final int secondaryPath) {
         this.secondaryPath = secondaryPath;
     }
 }

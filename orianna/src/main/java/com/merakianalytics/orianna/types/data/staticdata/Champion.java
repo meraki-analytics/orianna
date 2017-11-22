@@ -3,18 +3,16 @@ package com.merakianalytics.orianna.types.data.staticdata;
 import java.util.List;
 import java.util.Set;
 
-import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class Champion extends CoreData {
-    private static final long serialVersionUID = 7558482925931641916L;
+    private static final long serialVersionUID = 6905745329767401177L;
     private int difficultyRating, physicalRating, defenseRating, magicRating, id;
     private List<String> enemyTips, tags, allyTips;
     private Image image;
     private Set<String> includedData;
-    private String name, title, resource, key, lore, blurb, locale, version;
+    private String name, title, resource, key, lore, blurb, locale, version, platform;
     private Passive passive;
-    private Platform platform;
     private List<RecommendedItems> recommendedItems;
     private List<Skin> skins;
     private List<ChampionSpell> spells;
@@ -117,7 +115,11 @@ public class Champion extends CoreData {
         if(physicalRating != other.physicalRating) {
             return false;
         }
-        if(platform != other.platform) {
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         if(recommendedItems == null) {
@@ -287,7 +289,7 @@ public class Champion extends CoreData {
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
     }
 
@@ -502,7 +504,7 @@ public class Champion extends CoreData {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 

@@ -4,11 +4,10 @@ import java.util.List;
 
 import org.joda.time.Duration;
 
-import com.merakianalytics.orianna.types.common.RunePath;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class ParticipantStats extends CoreData {
-    private static final long serialVersionUID = 1832161795729094777L;
+    private static final long serialVersionUID = 20839886308063483L;
     private int altarsCaptured, altarsNeutralized, assists, championLevel, combatScore, deaths, doubleKills, goldEarned, goldSpent, inhibitorKills,
             killingSprees, kills, largestCriticalStrike, largestKillingSpree, largestMultiKill, neutralMinionsKilled, neutralMinionsKilledInEnemyJungle,
             neutralMinionsKilledInAllyJungle, nodesCaptured, nodeCaptureAssists, nodesNeutralized, nodeNeutralizeAssists, objectiveScore, pentaKills,
@@ -16,12 +15,11 @@ public class ParticipantStats extends CoreData {
             pinkWardsPurchased, wardsKilled, wardsPlaced, damageToObjectives, damageToTurrets, damageMitigated, magicDamageTaken, magicDamageDealt,
             magicDamageDealtToChampions, physicalDamageDealt, physicalDamageDealtToChampions, physicalDamageTaken, damageDealt, damageDealtToChampions,
             damageTaken, damageHealed, trueDamageDealt, trueDamageDealtToChampions, trueDamageTaken, visionScore, playerScore0, playerScore1, playerScore2,
-            playerScore3, playerScore4, playerScore5, playerScore6, playerScore7, playerScore8, playerScore9;
+            playerScore3, playerScore4, playerScore5, playerScore6, playerScore7, playerScore8, playerScore9, primaryRunePath, secondaryRunePath;
 
     private boolean firstBloodAssistant, firstBloodKiller, firstInhibitorKillAssistant, firstInhibitorKiller, firstTowerKillAssistant, firstTowerKiller, winner;
     private List<Integer> items;
     private Duration longestTimeAlive, crowdControlDealt, crowdControlDealtToChampions;
-    private RunePath primaryRunePath, secondaryRunePath;
     private List<Rune> runes;
 
     @Override
@@ -681,7 +679,7 @@ public class ParticipantStats extends CoreData {
     /**
      * @return the primaryRunePath
      */
-    public RunePath getPrimaryRunePath() {
+    public int getPrimaryRunePath() {
         return primaryRunePath;
     }
 
@@ -716,7 +714,7 @@ public class ParticipantStats extends CoreData {
     /**
      * @return the secondaryRunePath
      */
-    public RunePath getSecondaryRunePath() {
+    public int getSecondaryRunePath() {
         return secondaryRunePath;
     }
 
@@ -855,12 +853,12 @@ public class ParticipantStats extends CoreData {
         result = prime * result + playerScore7;
         result = prime * result + playerScore8;
         result = prime * result + playerScore9;
-        result = prime * result + (primaryRunePath == null ? 0 : primaryRunePath.hashCode());
+        result = prime * result + primaryRunePath;
         result = prime * result + quadraKills;
         result = prime * result + (runes == null ? 0 : runes.hashCode());
         result = prime * result + score;
         result = prime * result + scoreRank;
-        result = prime * result + (secondaryRunePath == null ? 0 : secondaryRunePath.hashCode());
+        result = prime * result + secondaryRunePath;
         result = prime * result + teamObjectives;
         result = prime * result + tripleKills;
         result = prime * result + trueDamageDealt;
@@ -1416,7 +1414,7 @@ public class ParticipantStats extends CoreData {
      * @param primaryRunePath
      *        the primaryRunePath to set
      */
-    public void setPrimaryRunePath(final RunePath primaryRunePath) {
+    public void setPrimaryRunePath(final int primaryRunePath) {
         this.primaryRunePath = primaryRunePath;
     }
 
@@ -1456,7 +1454,7 @@ public class ParticipantStats extends CoreData {
      * @param secondaryRunePath
      *        the secondaryRunePath to set
      */
-    public void setSecondaryRunePath(final RunePath secondaryRunePath) {
+    public void setSecondaryRunePath(final int secondaryRunePath) {
         this.secondaryRunePath = secondaryRunePath;
     }
 

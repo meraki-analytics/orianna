@@ -1,19 +1,13 @@
 package com.merakianalytics.orianna.types.data.match;
 
-import com.merakianalytics.orianna.types.common.Platform;
-import com.merakianalytics.orianna.types.common.Side;
-import com.merakianalytics.orianna.types.common.Tier;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class Participant extends CoreData {
-    private static final long serialVersionUID = 1992039734399932614L;
+    private static final long serialVersionUID = -5799473707680536580L;
     private long currentAccountId, summonerId, accountId;
-    private Platform currentPlatform, platform;
-    private Tier highestTierInSeason;
+    private String currentPlatform, platform, highestTierInSeason, summonerName, matchHistoryURI;
     private ParticipantStats stats;
-    private String summonerName, matchHistoryURI;
-    private int summonerSpellDId, summonerSpellFId, championId, profileIconId, participantId;
-    private Side team;
+    private int summonerSpellDId, summonerSpellFId, championId, profileIconId, participantId, team;
     private ParticipantTimeline timeline;
 
     @Override
@@ -37,10 +31,18 @@ public class Participant extends CoreData {
         if(currentAccountId != other.currentAccountId) {
             return false;
         }
-        if(currentPlatform != other.currentPlatform) {
+        if(currentPlatform == null) {
+            if(other.currentPlatform != null) {
+                return false;
+            }
+        } else if(!currentPlatform.equals(other.currentPlatform)) {
             return false;
         }
-        if(highestTierInSeason != other.highestTierInSeason) {
+        if(highestTierInSeason == null) {
+            if(other.highestTierInSeason != null) {
+                return false;
+            }
+        } else if(!highestTierInSeason.equals(other.highestTierInSeason)) {
             return false;
         }
         if(matchHistoryURI == null) {
@@ -53,7 +55,11 @@ public class Participant extends CoreData {
         if(participantId != other.participantId) {
             return false;
         }
-        if(platform != other.platform) {
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         if(profileIconId != other.profileIconId) {
@@ -119,14 +125,14 @@ public class Participant extends CoreData {
     /**
      * @return the currentPlatform
      */
-    public Platform getCurrentPlatform() {
+    public String getCurrentPlatform() {
         return currentPlatform;
     }
 
     /**
      * @return the highestTierInSeason
      */
-    public Tier getHighestTierInSeason() {
+    public String getHighestTierInSeason() {
         return highestTierInSeason;
     }
 
@@ -147,7 +153,7 @@ public class Participant extends CoreData {
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
     }
 
@@ -196,7 +202,7 @@ public class Participant extends CoreData {
     /**
      * @return the team
      */
-    public Side getTeam() {
+    public int getTeam() {
         return team;
     }
 
@@ -225,7 +231,7 @@ public class Participant extends CoreData {
         result = prime * result + (summonerName == null ? 0 : summonerName.hashCode());
         result = prime * result + summonerSpellDId;
         result = prime * result + summonerSpellFId;
-        result = prime * result + (team == null ? 0 : team.hashCode());
+        result = prime * result + team;
         result = prime * result + (timeline == null ? 0 : timeline.hashCode());
         return result;
     }
@@ -258,7 +264,7 @@ public class Participant extends CoreData {
      * @param currentPlatform
      *        the currentPlatform to set
      */
-    public void setCurrentPlatform(final Platform currentPlatform) {
+    public void setCurrentPlatform(final String currentPlatform) {
         this.currentPlatform = currentPlatform;
     }
 
@@ -266,7 +272,7 @@ public class Participant extends CoreData {
      * @param highestTierInSeason
      *        the highestTierInSeason to set
      */
-    public void setHighestTierInSeason(final Tier highestTierInSeason) {
+    public void setHighestTierInSeason(final String highestTierInSeason) {
         this.highestTierInSeason = highestTierInSeason;
     }
 
@@ -290,7 +296,7 @@ public class Participant extends CoreData {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 
@@ -346,7 +352,7 @@ public class Participant extends CoreData {
      * @param team
      *        the team to set
      */
-    public void setTeam(final Side team) {
+    public void setTeam(final int team) {
         this.team = team;
     }
 

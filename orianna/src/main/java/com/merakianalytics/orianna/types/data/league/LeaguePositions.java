@@ -1,11 +1,10 @@
 package com.merakianalytics.orianna.types.data.league;
 
-import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class LeaguePositions extends CoreData.ListProxy<LeaguePosition> {
-    private static final long serialVersionUID = 1689808022708314061L;
-    private Platform platform;
+    private static final long serialVersionUID = -3004364671196314782L;
+    private String platform;
     private long summonerId;
 
     public LeaguePositions() {
@@ -28,7 +27,11 @@ public class LeaguePositions extends CoreData.ListProxy<LeaguePosition> {
             return false;
         }
         final LeaguePositions other = (LeaguePositions)obj;
-        if(platform != other.platform) {
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         if(summonerId != other.summonerId) {
@@ -40,7 +43,7 @@ public class LeaguePositions extends CoreData.ListProxy<LeaguePosition> {
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
     }
 
@@ -64,7 +67,7 @@ public class LeaguePositions extends CoreData.ListProxy<LeaguePosition> {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 

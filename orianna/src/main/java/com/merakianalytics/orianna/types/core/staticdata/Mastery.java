@@ -127,7 +127,7 @@ public class Mastery extends GhostObject<com.merakianalytics.orianna.types.data.
         @Override
         public Mastery get() {
             load(MASTERY_LOAD_GROUP);
-            return Mastery.withId(coreData.getPrerequisite()).withPlatform(coreData.getPlatform()).withVersion(coreData.getVersion())
+            return Mastery.withId(coreData.getPrerequisite()).withPlatform(Platform.valueOf(coreData.getPlatform())).withVersion(coreData.getVersion())
                 .withLocale(coreData.getLocale()).get();
         }
     });
@@ -177,7 +177,7 @@ public class Mastery extends GhostObject<com.merakianalytics.orianna.types.data.
     }
 
     public Platform getPlatform() {
-        return coreData.getPlatform();
+        return Platform.valueOf(coreData.getPlatform());
     }
 
     public int getPoints() {
@@ -190,7 +190,7 @@ public class Mastery extends GhostObject<com.merakianalytics.orianna.types.data.
     }
 
     public Region getRegion() {
-        return coreData.getPlatform().getRegion();
+        return Platform.valueOf(coreData.getPlatform()).getRegion();
     }
 
     public List<String> getSanitizedDescriptions() {
@@ -199,7 +199,7 @@ public class Mastery extends GhostObject<com.merakianalytics.orianna.types.data.
 
     public MasteryTree getTree() {
         load(MASTERY_LOAD_GROUP);
-        return coreData.getTree();
+        return MasteryTree.valueOf(coreData.getTree());
     }
 
     public String getVersion() {
@@ -219,7 +219,7 @@ public class Mastery extends GhostObject<com.merakianalytics.orianna.types.data.
                     builder.put("name", coreData.getName());
                 }
                 if(coreData.getPlatform() != null) {
-                    builder.put("platform", coreData.getPlatform());
+                    builder.put("platform", Platform.valueOf(coreData.getPlatform()));
                 }
                 if(coreData.getVersion() != null) {
                     builder.put("version", coreData.getVersion());

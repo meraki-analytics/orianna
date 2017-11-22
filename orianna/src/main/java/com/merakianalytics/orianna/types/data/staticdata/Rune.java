@@ -3,20 +3,16 @@ package com.merakianalytics.orianna.types.data.staticdata;
 import java.util.List;
 import java.util.Set;
 
-import com.merakianalytics.orianna.types.common.Platform;
-import com.merakianalytics.orianna.types.common.RuneType;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class Rune extends CoreData {
-    private static final long serialVersionUID = -749320596359882459L;
+    private static final long serialVersionUID = 2816226336658396155L;
     private int id, tier;
     private Image image;
     private Set<String> includedData;
-    private String name, sanitizedDescription, description, version, locale;
-    private Platform platform;
+    private String name, sanitizedDescription, description, version, locale, platform, type;
     private RuneStats stats;
     private List<String> tags;
-    private RuneType type;
 
     @Override
     public boolean equals(final Object obj) {
@@ -68,7 +64,11 @@ public class Rune extends CoreData {
         } else if(!name.equals(other.name)) {
             return false;
         }
-        if(platform != other.platform) {
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         if(sanitizedDescription == null) {
@@ -95,7 +95,11 @@ public class Rune extends CoreData {
         if(tier != other.tier) {
             return false;
         }
-        if(type != other.type) {
+        if(type == null) {
+            if(other.type != null) {
+                return false;
+            }
+        } else if(!type.equals(other.type)) {
             return false;
         }
         if(version == null) {
@@ -153,7 +157,7 @@ public class Rune extends CoreData {
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
     }
 
@@ -188,7 +192,7 @@ public class Rune extends CoreData {
     /**
      * @return the type
      */
-    public RuneType getType() {
+    public String getType() {
         return type;
     }
 
@@ -271,7 +275,7 @@ public class Rune extends CoreData {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 
@@ -311,7 +315,7 @@ public class Rune extends CoreData {
      * @param type
      *        the type to set
      */
-    public void setType(final RuneType type) {
+    public void setType(final String type) {
         this.type = type;
     }
 

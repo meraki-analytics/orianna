@@ -2,14 +2,12 @@ package com.merakianalytics.orianna.types.data.staticdata;
 
 import java.util.Set;
 
-import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class Champions extends CoreData.ListProxy<Champion> {
-    private static final long serialVersionUID = 1870920374374474516L;
+    private static final long serialVersionUID = -6239615062984268570L;
     private Set<String> includedData;
-    private Platform platform;
-    private String version, type, format, locale;
+    private String version, type, format, locale, platform;
 
     public Champions() {
         super();
@@ -52,7 +50,11 @@ public class Champions extends CoreData.ListProxy<Champion> {
         } else if(!locale.equals(other.locale)) {
             return false;
         }
-        if(platform != other.platform) {
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         if(type == null) {
@@ -96,7 +98,7 @@ public class Champions extends CoreData.ListProxy<Champion> {
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
     }
 
@@ -155,7 +157,7 @@ public class Champions extends CoreData.ListProxy<Champion> {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 

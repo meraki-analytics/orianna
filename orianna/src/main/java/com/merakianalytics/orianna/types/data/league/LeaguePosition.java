@@ -1,21 +1,13 @@
 package com.merakianalytics.orianna.types.data.league;
 
-import com.merakianalytics.orianna.types.common.Division;
-import com.merakianalytics.orianna.types.common.Platform;
-import com.merakianalytics.orianna.types.common.Queue;
-import com.merakianalytics.orianna.types.common.Tier;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class LeaguePosition extends CoreData {
-    private static final long serialVersionUID = 7398886260430348060L;
-    private Division division;
-    private String name, summonerName, leagueId;
+    private static final long serialVersionUID = 7745380809131095259L;
+    private String name, summonerName, leagueId, division, platform, queue, tier;
     private boolean onHotStreak, veteran, inactive, freshBlood;
-    private Platform platform;
     private Series promos;
-    private Queue queue;
     private long summonerId;
-    private Tier tier;
     private int wins, losses, leaguePoints;
 
     @Override
@@ -30,7 +22,11 @@ public class LeaguePosition extends CoreData {
             return false;
         }
         final LeaguePosition other = (LeaguePosition)obj;
-        if(division != other.division) {
+        if(division == null) {
+            if(other.division != null) {
+                return false;
+            }
+        } else if(!division.equals(other.division)) {
             return false;
         }
         if(freshBlood != other.freshBlood) {
@@ -62,7 +58,11 @@ public class LeaguePosition extends CoreData {
         if(onHotStreak != other.onHotStreak) {
             return false;
         }
-        if(platform != other.platform) {
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         if(promos == null) {
@@ -72,7 +72,11 @@ public class LeaguePosition extends CoreData {
         } else if(!promos.equals(other.promos)) {
             return false;
         }
-        if(queue != other.queue) {
+        if(queue == null) {
+            if(other.queue != null) {
+                return false;
+            }
+        } else if(!queue.equals(other.queue)) {
             return false;
         }
         if(summonerId != other.summonerId) {
@@ -85,7 +89,11 @@ public class LeaguePosition extends CoreData {
         } else if(!summonerName.equals(other.summonerName)) {
             return false;
         }
-        if(tier != other.tier) {
+        if(tier == null) {
+            if(other.tier != null) {
+                return false;
+            }
+        } else if(!tier.equals(other.tier)) {
             return false;
         }
         if(veteran != other.veteran) {
@@ -100,7 +108,7 @@ public class LeaguePosition extends CoreData {
     /**
      * @return the division
      */
-    public Division getDivision() {
+    public String getDivision() {
         return division;
     }
 
@@ -135,7 +143,7 @@ public class LeaguePosition extends CoreData {
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
     }
 
@@ -149,7 +157,7 @@ public class LeaguePosition extends CoreData {
     /**
      * @return the queue
      */
-    public Queue getQueue() {
+    public String getQueue() {
         return queue;
     }
 
@@ -170,7 +178,7 @@ public class LeaguePosition extends CoreData {
     /**
      * @return the tier
      */
-    public Tier getTier() {
+    public String getTier() {
         return tier;
     }
 
@@ -236,7 +244,7 @@ public class LeaguePosition extends CoreData {
      * @param division
      *        the division to set
      */
-    public void setDivision(final Division division) {
+    public void setDivision(final String division) {
         this.division = division;
     }
 
@@ -300,7 +308,7 @@ public class LeaguePosition extends CoreData {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 
@@ -316,7 +324,7 @@ public class LeaguePosition extends CoreData {
      * @param queue
      *        the queue to set
      */
-    public void setQueue(final Queue queue) {
+    public void setQueue(final String queue) {
         this.queue = queue;
     }
 
@@ -340,7 +348,7 @@ public class LeaguePosition extends CoreData {
      * @param tier
      *        the tier to set
      */
-    public void setTier(final Tier tier) {
+    public void setTier(final String tier) {
         this.tier = tier;
     }
 

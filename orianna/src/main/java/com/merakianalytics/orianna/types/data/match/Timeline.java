@@ -2,14 +2,13 @@ package com.merakianalytics.orianna.types.data.match;
 
 import org.joda.time.Duration;
 
-import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class Timeline extends CoreData.ListProxy<Frame> {
-    private static final long serialVersionUID = -954511202225911841L;
+    private static final long serialVersionUID = -6737503541733571588L;
     private long id;
     private Duration interval;
-    private Platform platform;
+    private String platform;
 
     public Timeline() {
         super();
@@ -41,7 +40,11 @@ public class Timeline extends CoreData.ListProxy<Frame> {
         } else if(!interval.equals(other.interval)) {
             return false;
         }
-        if(platform != other.platform) {
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         return true;
@@ -64,7 +67,7 @@ public class Timeline extends CoreData.ListProxy<Frame> {
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
     }
 
@@ -98,7 +101,7 @@ public class Timeline extends CoreData.ListProxy<Frame> {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 }

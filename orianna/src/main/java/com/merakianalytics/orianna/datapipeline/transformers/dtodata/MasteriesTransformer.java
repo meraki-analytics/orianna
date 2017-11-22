@@ -8,7 +8,6 @@ import java.util.Set;
 import com.merakianalytics.datapipelines.PipelineContext;
 import com.merakianalytics.datapipelines.transformers.AbstractDataTransformer;
 import com.merakianalytics.datapipelines.transformers.Transform;
-import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.masteries.MasteryPage;
 import com.merakianalytics.orianna.types.data.masteries.MasteryPages;
 import com.merakianalytics.orianna.types.dto.masteries.Mastery;
@@ -32,7 +31,7 @@ public class MasteriesTransformer extends AbstractDataTransformer {
         for(final com.merakianalytics.orianna.types.dto.masteries.MasteryPage page : item.getPages()) {
             pages.add(transform(page, context));
         }
-        pages.setPlatform(Platform.withTag(item.getPlatform()));
+        pages.setPlatform(item.getPlatform());
         pages.setSummonerId(item.getSummonerId());
         return pages;
     }
@@ -60,7 +59,7 @@ public class MasteriesTransformer extends AbstractDataTransformer {
         for(final MasteryPage page : item) {
             pgs.add(transform(page, context));
         }
-        pages.setPlatform(item.getPlatform().getTag());
+        pages.setPlatform(item.getPlatform());
         pages.setSummonerId(item.getSummonerId());
         return pages;
     }

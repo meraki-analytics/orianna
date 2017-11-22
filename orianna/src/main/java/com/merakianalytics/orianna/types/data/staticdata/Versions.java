@@ -1,11 +1,10 @@
 package com.merakianalytics.orianna.types.data.staticdata;
 
-import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class Versions extends CoreData.ListProxy<String> {
-    private static final long serialVersionUID = 3141786492164530971L;
-    private Platform platform;
+    private static final long serialVersionUID = 7796346778021458628L;
+    private String platform;
 
     public Versions() {
         super();
@@ -27,7 +26,11 @@ public class Versions extends CoreData.ListProxy<String> {
             return false;
         }
         final Versions other = (Versions)obj;
-        if(platform != other.platform) {
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         return true;
@@ -36,7 +39,7 @@ public class Versions extends CoreData.ListProxy<String> {
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
     }
 
@@ -52,7 +55,7 @@ public class Versions extends CoreData.ListProxy<String> {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 }

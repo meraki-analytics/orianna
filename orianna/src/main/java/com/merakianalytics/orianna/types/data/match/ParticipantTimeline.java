@@ -1,14 +1,11 @@
 package com.merakianalytics.orianna.types.data.match;
 
-import com.merakianalytics.orianna.types.common.Lane;
-import com.merakianalytics.orianna.types.common.Role;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class ParticipantTimeline extends CoreData {
-    private static final long serialVersionUID = 1910511205399872485L;
+    private static final long serialVersionUID = 7991068856747791693L;
     private StatTotals creepScoreDifference, gold, experienceDifference, creepScore, experience, damageTakenDifference, damageTaken;
-    private Lane lane;
-    private Role role;
+    private String lane, role;
 
     @Override
     public boolean equals(final Object obj) {
@@ -71,10 +68,18 @@ public class ParticipantTimeline extends CoreData {
         } else if(!gold.equals(other.gold)) {
             return false;
         }
-        if(lane != other.lane) {
+        if(lane == null) {
+            if(other.lane != null) {
+                return false;
+            }
+        } else if(!lane.equals(other.lane)) {
             return false;
         }
-        if(role != other.role) {
+        if(role == null) {
+            if(other.role != null) {
+                return false;
+            }
+        } else if(!role.equals(other.role)) {
             return false;
         }
         return true;
@@ -132,14 +137,14 @@ public class ParticipantTimeline extends CoreData {
     /**
      * @return the lane
      */
-    public Lane getLane() {
+    public String getLane() {
         return lane;
     }
 
     /**
      * @return the role
      */
-    public Role getRole() {
+    public String getRole() {
         return role;
     }
 
@@ -219,7 +224,7 @@ public class ParticipantTimeline extends CoreData {
      * @param lane
      *        the lane to set
      */
-    public void setLane(final Lane lane) {
+    public void setLane(final String lane) {
         this.lane = lane;
     }
 
@@ -227,7 +232,7 @@ public class ParticipantTimeline extends CoreData {
      * @param role
      *        the role to set
      */
-    public void setRole(final Role role) {
+    public void setRole(final String role) {
         this.role = role;
     }
 }

@@ -1,12 +1,10 @@
 package com.merakianalytics.orianna.types.data.staticdata;
 
-import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class LanguageStrings extends CoreData.MapProxy<String, String> {
-    private static final long serialVersionUID = 4351502363932482124L;
-    private Platform platform;
-    private String version, type, locale;
+    private static final long serialVersionUID = -707733689156471315L;
+    private String version, type, locale, platform;
 
     @Override
     public boolean equals(final Object obj) {
@@ -27,7 +25,11 @@ public class LanguageStrings extends CoreData.MapProxy<String, String> {
         } else if(!locale.equals(other.locale)) {
             return false;
         }
-        if(platform != other.platform) {
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         if(type == null) {
@@ -57,7 +59,7 @@ public class LanguageStrings extends CoreData.MapProxy<String, String> {
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
     }
 
@@ -98,7 +100,7 @@ public class LanguageStrings extends CoreData.MapProxy<String, String> {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 

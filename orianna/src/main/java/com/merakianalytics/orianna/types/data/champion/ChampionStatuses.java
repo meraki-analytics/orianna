@@ -1,12 +1,11 @@
 package com.merakianalytics.orianna.types.data.champion;
 
-import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class ChampionStatuses extends CoreData.ListProxy<ChampionStatus> {
-    private static final long serialVersionUID = 8545188470790391941L;
+    private static final long serialVersionUID = -691536865912805170L;
     private boolean freeToPlay;
-    private Platform platform;
+    private String platform;
 
     public ChampionStatuses() {
         super();
@@ -16,11 +15,45 @@ public class ChampionStatuses extends CoreData.ListProxy<ChampionStatus> {
         super(initialCapacity);
     }
 
+    @Override
+    public boolean equals(final Object obj) {
+        if(this == obj) {
+            return true;
+        }
+        if(!super.equals(obj)) {
+            return false;
+        }
+        if(getClass() != obj.getClass()) {
+            return false;
+        }
+        final ChampionStatuses other = (ChampionStatuses)obj;
+        if(freeToPlay != other.freeToPlay) {
+            return false;
+        }
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + (freeToPlay ? 1231 : 1237);
+        result = prime * result + (platform == null ? 0 : platform.hashCode());
+        return result;
     }
 
     /**
@@ -42,7 +75,7 @@ public class ChampionStatuses extends CoreData.ListProxy<ChampionStatus> {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 }

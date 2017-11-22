@@ -1,11 +1,10 @@
 package com.merakianalytics.orianna.types.data.championmastery;
 
-import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class ChampionMasteryScore extends CoreData {
-    private static final long serialVersionUID = -7297435720690483856L;
-    private Platform platform;
+    private static final long serialVersionUID = -3668246370989344023L;
+    private String platform;
     private int score;
     private long summonerId;
 
@@ -21,7 +20,11 @@ public class ChampionMasteryScore extends CoreData {
             return false;
         }
         final ChampionMasteryScore other = (ChampionMasteryScore)obj;
-        if(platform != other.platform) {
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         if(score != other.score) {
@@ -36,7 +39,7 @@ public class ChampionMasteryScore extends CoreData {
     /**
      * @return the platform
      */
-    public Platform getPlatform() {
+    public String getPlatform() {
         return platform;
     }
 
@@ -68,7 +71,7 @@ public class ChampionMasteryScore extends CoreData {
      * @param platform
      *        the platform to set
      */
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final String platform) {
         this.platform = platform;
     }
 

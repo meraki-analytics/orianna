@@ -2,6 +2,7 @@ package com.merakianalytics.orianna.types.core.staticdata;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -110,7 +111,8 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
             // TODO: use a getMany from Items instead of get from Item
             final List<Item> buildsFrom = new ArrayList<>(coreData.getBuildsFrom().size());
             for(final Integer id : coreData.getBuildsFrom()) {
-                buildsFrom.add(Item.withId(id).withPlatform(coreData.getPlatform()).withVersion(coreData.getVersion()).withLocale(coreData.getLocale()).get());
+                buildsFrom.add(Item.withId(id).withPlatform(Platform.valueOf(coreData.getPlatform())).withVersion(coreData.getVersion())
+                    .withLocale(coreData.getLocale()).get());
             }
             return SearchableListWrapper.of(Collections.unmodifiableList(buildsFrom));
         }
@@ -123,7 +125,8 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
             // TODO: use a getMany from Items instead of get from Item
             final List<Item> buildsInto = new ArrayList<>(coreData.getBuildsInto().size());
             for(final Integer id : coreData.getBuildsInto()) {
-                buildsInto.add(Item.withId(id).withPlatform(coreData.getPlatform()).withVersion(coreData.getVersion()).withLocale(coreData.getLocale()).get());
+                buildsInto.add(Item.withId(id).withPlatform(Platform.valueOf(coreData.getPlatform())).withVersion(coreData.getVersion())
+                    .withLocale(coreData.getLocale()).get());
             }
             return SearchableListWrapper.of(Collections.unmodifiableList(buildsInto));
         }
@@ -165,7 +168,11 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
             @Override
             public Set<com.merakianalytics.orianna.types.common.Map> get() {
                 load(ITEM_LOAD_GROUP);
-                return Collections.unmodifiableSet(coreData.getMaps());
+                final Set<com.merakianalytics.orianna.types.common.Map> maps = new HashSet<>();
+                for(final Integer id : coreData.getMaps()) {
+                    maps.add(com.merakianalytics.orianna.types.common.Map.withId(id));
+                }
+                return Collections.unmodifiableSet(maps);
             }
         });
 
@@ -173,7 +180,7 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
         @Override
         public Champion get() {
             load(ITEM_LOAD_GROUP);
-            return Champion.withKey(coreData.getRequiredChampionKey()).withPlatform(coreData.getPlatform()).withVersion(coreData.getVersion())
+            return Champion.withKey(coreData.getRequiredChampionKey()).withPlatform(Platform.valueOf(coreData.getPlatform())).withVersion(coreData.getVersion())
                 .withLocale(coreData.getLocale()).get();
         }
     });
@@ -272,11 +279,11 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
     }
 
     public Platform getPlatform() {
-        return coreData.getPlatform();
+        return Platform.valueOf(coreData.getPlatform());
     }
 
     public Region getRegion() {
-        return coreData.getPlatform().getRegion();
+        return Platform.valueOf(coreData.getPlatform()).getRegion();
     }
 
     public Champion getRequiredChampion() {
@@ -358,7 +365,7 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
                     builder.put("name", coreData.getName());
                 }
                 if(coreData.getPlatform() != null) {
-                    builder.put("platform", coreData.getPlatform());
+                    builder.put("platform", Platform.valueOf(coreData.getPlatform()));
                 }
                 if(coreData.getVersion() != null) {
                     builder.put("version", coreData.getVersion());

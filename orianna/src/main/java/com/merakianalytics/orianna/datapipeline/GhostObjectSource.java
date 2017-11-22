@@ -53,8 +53,8 @@ public class GhostObjectSource extends AbstractDataSource {
         data.getStatus().setId(id == null ? 0 : id.intValue());
         data.getChampion().setName(name);
         data.getChampion().setKey(key);
-        data.getChampion().setPlatform(platform);
-        data.getStatus().setPlatform(platform);
+        data.getChampion().setPlatform(platform.getTag());
+        data.getStatus().setPlatform(platform.getTag());
         data.getChampion().setVersion(version);
         data.getChampion().setLocale(locale);
         data.getChampion().setIncludedData(includedData);
@@ -76,7 +76,7 @@ public class GhostObjectSource extends AbstractDataSource {
         final com.merakianalytics.orianna.types.data.staticdata.Item data = new com.merakianalytics.orianna.types.data.staticdata.Item();
         data.setId(id == null ? 0 : id.intValue());
         data.setName(name);
-        data.setPlatform(platform);
+        data.setPlatform(platform.getTag());
         data.setVersion(version);
         data.setLocale(locale);
         data.setIncludedData(includedData);
@@ -89,7 +89,7 @@ public class GhostObjectSource extends AbstractDataSource {
         Utilities.checkNotNull(platform, "platform");
 
         final com.merakianalytics.orianna.types.data.staticdata.Languages data = new com.merakianalytics.orianna.types.data.staticdata.Languages();
-        data.setPlatform(platform);
+        data.setPlatform(platform.getTag());
         return new Languages(data);
     }
 
@@ -101,7 +101,7 @@ public class GhostObjectSource extends AbstractDataSource {
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
 
         final com.merakianalytics.orianna.types.data.staticdata.LanguageStrings data = new com.merakianalytics.orianna.types.data.staticdata.LanguageStrings();
-        data.setPlatform(platform);
+        data.setPlatform(platform.getTag());
         data.setVersion(version);
         data.setLocale(locale);
         return new LanguageStrings(data);
@@ -137,7 +137,7 @@ public class GhostObjectSource extends AbstractDataSource {
             @Override
             public Summoner next() {
                 final com.merakianalytics.orianna.types.data.summoner.Summoner data = new com.merakianalytics.orianna.types.data.summoner.Summoner();
-                data.setPlatform(platform);
+                data.setPlatform(platform.getTag());
                 if(ids != null) {
                     data.setId((Long)iterator.next());
                 } else if(accountIds != null) {
@@ -165,7 +165,7 @@ public class GhostObjectSource extends AbstractDataSource {
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
 
         final com.merakianalytics.orianna.types.data.staticdata.Maps data = new com.merakianalytics.orianna.types.data.staticdata.Maps();
-        data.setPlatform(platform);
+        data.setPlatform(platform.getTag());
         data.setVersion(version);
         data.setLocale(locale);
         return new Maps(data);
@@ -186,7 +186,7 @@ public class GhostObjectSource extends AbstractDataSource {
         final com.merakianalytics.orianna.types.data.staticdata.Mastery data = new com.merakianalytics.orianna.types.data.staticdata.Mastery();
         data.setId(id == null ? 0 : id.intValue());
         data.setName(name);
-        data.setPlatform(platform);
+        data.setPlatform(platform.getTag());
         data.setVersion(version);
         data.setLocale(locale);
         data.setIncludedData(includedData);
@@ -201,7 +201,7 @@ public class GhostObjectSource extends AbstractDataSource {
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
 
         final com.merakianalytics.orianna.types.data.staticdata.ProfileIcons data = new com.merakianalytics.orianna.types.data.staticdata.ProfileIcons();
-        data.setPlatform(platform);
+        data.setPlatform(platform.getTag());
         data.setVersion(version);
         data.setLocale(locale);
         return new ProfileIcons(data);
@@ -213,7 +213,7 @@ public class GhostObjectSource extends AbstractDataSource {
         Utilities.checkNotNull(platform, "platform");
 
         final com.merakianalytics.orianna.types.data.staticdata.Realm data = new com.merakianalytics.orianna.types.data.staticdata.Realm();
-        data.setPlatform(platform);
+        data.setPlatform(platform.getTag());
         return new Realm(data);
     }
 
@@ -232,7 +232,7 @@ public class GhostObjectSource extends AbstractDataSource {
         final com.merakianalytics.orianna.types.data.staticdata.Rune data = new com.merakianalytics.orianna.types.data.staticdata.Rune();
         data.setId(id == null ? 0 : id.intValue());
         data.setName(name);
-        data.setPlatform(platform);
+        data.setPlatform(platform.getTag());
         data.setVersion(version);
         data.setLocale(locale);
         data.setIncludedData(includedData);
@@ -249,7 +249,7 @@ public class GhostObjectSource extends AbstractDataSource {
         Utilities.checkAtLeastOneNotNull(id, "id", name, "name", accountId, "accountId");
 
         final com.merakianalytics.orianna.types.data.summoner.Summoner data = new com.merakianalytics.orianna.types.data.summoner.Summoner();
-        data.setPlatform(platform);
+        data.setPlatform(platform.getTag());
         data.setName(name);
         data.setId(id == null ? 0 : id.longValue());
         data.setAccountId(accountId == null ? 0 : accountId.longValue());
@@ -271,7 +271,7 @@ public class GhostObjectSource extends AbstractDataSource {
         final com.merakianalytics.orianna.types.data.staticdata.SummonerSpell data = new com.merakianalytics.orianna.types.data.staticdata.SummonerSpell();
         data.setId(id == null ? 0 : id.intValue());
         data.setName(name);
-        data.setPlatform(platform);
+        data.setPlatform(platform.getTag());
         data.setVersion(version);
         data.setLocale(locale);
         data.setIncludedData(includedData);
@@ -284,7 +284,7 @@ public class GhostObjectSource extends AbstractDataSource {
         Utilities.checkNotNull(platform, "platform");
 
         final com.merakianalytics.orianna.types.data.staticdata.Versions data = new com.merakianalytics.orianna.types.data.staticdata.Versions();
-        data.setPlatform(platform);
+        data.setPlatform(platform.getTag());
         return new Versions(data);
     }
 }
