@@ -268,7 +268,7 @@ public class SummonerSpell extends GhostObject<com.merakianalytics.orianna.types
     }
 
     public Platform getPlatform() {
-        return Platform.valueOf(coreData.getPlatform());
+        return Platform.withTag(coreData.getPlatform());
     }
 
     public List<Integer> getRanges() {
@@ -276,7 +276,7 @@ public class SummonerSpell extends GhostObject<com.merakianalytics.orianna.types
     }
 
     public Region getRegion() {
-        return Platform.valueOf(coreData.getPlatform()).getRegion();
+        return Platform.withTag(coreData.getPlatform()).getRegion();
     }
 
     public String getResource() {
@@ -330,7 +330,7 @@ public class SummonerSpell extends GhostObject<com.merakianalytics.orianna.types
                     builder.put("name", coreData.getName());
                 }
                 if(coreData.getPlatform() != null) {
-                    builder.put("platform", Platform.valueOf(coreData.getPlatform()));
+                    builder.put("platform", Platform.withTag(coreData.getPlatform()));
                 }
                 if(coreData.getVersion() != null) {
                     builder.put("version", coreData.getVersion());

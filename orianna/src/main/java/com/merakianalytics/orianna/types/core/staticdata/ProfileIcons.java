@@ -90,11 +90,11 @@ public class ProfileIcons extends GhostObject.ListProxy<ProfileIcon, com.merakia
     }
 
     public Platform getPlatform() {
-        return Platform.valueOf(coreData.getPlatform());
+        return Platform.withTag(coreData.getPlatform());
     }
 
     public Region getRegion() {
-        return Platform.valueOf(coreData.getPlatform()).getRegion();
+        return Platform.withTag(coreData.getPlatform()).getRegion();
     }
 
     public String getType() {
@@ -113,7 +113,7 @@ public class ProfileIcons extends GhostObject.ListProxy<ProfileIcon, com.merakia
             case LIST_PROXY_LOAD_GROUP:
                 builder = ImmutableMap.builder();
                 if(coreData.getPlatform() != null) {
-                    builder.put("platform", Platform.valueOf(coreData.getPlatform()));
+                    builder.put("platform", Platform.withTag(coreData.getPlatform()));
                 }
                 if(coreData.getVersion() != null) {
                     builder.put("version", coreData.getVersion());

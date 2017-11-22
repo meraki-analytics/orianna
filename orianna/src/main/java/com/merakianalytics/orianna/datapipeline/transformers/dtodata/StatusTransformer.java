@@ -142,7 +142,7 @@ public class StatusTransformer extends AbstractDataTransformer {
         status.setLocales(new ArrayList<>(item.getLocales()));
         status.setName(item.getName());
         status.setRegion_tag(item.getPlatform().toLowerCase());
-        status.setSlug(Platform.valueOf(item.getPlatform()).getRegion().getTag().toLowerCase());
+        status.setSlug(Platform.withTag(item.getPlatform()).getRegion().getTag().toLowerCase());
         final List<com.merakianalytics.orianna.types.dto.status.Service> services = new ArrayList<>(item.getServices().size());
         for(final Service service : item.getServices()) {
             services.add(transform(service, context));

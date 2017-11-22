@@ -26,7 +26,7 @@ public enum Region {
     }
 
     public Platform getPlatform() {
-        return Platform.valueOf(name());
+        return Platform.withTag(name());
     }
 
     public String getTag() {

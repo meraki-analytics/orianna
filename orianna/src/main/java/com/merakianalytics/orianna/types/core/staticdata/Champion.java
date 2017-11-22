@@ -326,7 +326,7 @@ public class Champion extends GhostObject<ChampionData> {
     }
 
     public Platform getPlatform() {
-        return Platform.valueOf(coreData.getChampion().getPlatform());
+        return Platform.withTag(coreData.getChampion().getPlatform());
     }
 
     public SearchableList<RecommendedItems> getRecommendedItems() {
@@ -334,7 +334,7 @@ public class Champion extends GhostObject<ChampionData> {
     }
 
     public Region getRegion() {
-        return Platform.valueOf(coreData.getChampion().getPlatform()).getRegion();
+        return Platform.withTag(coreData.getChampion().getPlatform()).getRegion();
     }
 
     public String getResource() {
@@ -409,7 +409,7 @@ public class Champion extends GhostObject<ChampionData> {
                     builder.put("key", coreData.getChampion().getKey());
                 }
                 if(coreData.getChampion().getPlatform() != null) {
-                    builder.put("platform", coreData.getChampion().getPlatform());
+                    builder.put("platform", Platform.withTag(coreData.getChampion().getPlatform()));
                 }
                 if(coreData.getChampion().getVersion() != null) {
                     builder.put("version", coreData.getChampion().getVersion());
@@ -433,7 +433,7 @@ public class Champion extends GhostObject<ChampionData> {
                     builder.put("name", coreData.getChampion().getName());
                 }
                 if(coreData.getChampion().getPlatform() != null) {
-                    builder.put("platform", coreData.getChampion().getPlatform());
+                    builder.put("platform", Platform.withTag(coreData.getChampion().getPlatform()));
                 }
 
                 coreData.setStatus(

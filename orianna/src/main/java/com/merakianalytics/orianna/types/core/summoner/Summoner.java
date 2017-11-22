@@ -109,7 +109,7 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
     }
 
     public Platform getPlatform() {
-        return Platform.valueOf(coreData.getPlatform());
+        return Platform.withTag(coreData.getPlatform());
     }
 
     public int getProfileIcon() {
@@ -139,7 +139,7 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
                     builder.put("name", coreData.getName());
                 }
                 if(coreData.getPlatform() != null) {
-                    builder.put("platform", Platform.valueOf(coreData.getPlatform()));
+                    builder.put("platform", Platform.withTag(coreData.getPlatform()));
                 }
                 coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.summoner.Summoner.class, builder.build());
                 break;
