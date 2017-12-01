@@ -1,5 +1,6 @@
 package com.merakianalytics.orianna.datapipeline.riotapi;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -58,6 +59,16 @@ public class ChampionAPI extends RiotAPIService {
         final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
         Utilities.checkNotNull(platform, "platform", ids, "ids");
 
+        final String endpoint = "lol/platform/v3/champions";
+        final ChampionList data = get(ChampionList.class, endpoint, platform, ImmutableMap.of("freeToPlay", Boolean.FALSE.toString()),
+            "lol/platform/v3/champions");
+
+        final Map<Long, Champion> byId = new HashMap<>();
+        for(final Champion champion : data.getChampions()) {
+            champion.setPlatform(platform.getTag());
+            byId.put(champion.getId(), champion);
+        }
+
         final Iterator<Number> iterator = ids.iterator();
         return CloseableIterators.from(new Iterator<Champion>() {
             @Override
@@ -68,12 +79,7 @@ public class ChampionAPI extends RiotAPIService {
             @Override
             public Champion next() {
                 final Number id = iterator.next();
-
-                final String endpoint = "lol/platform/v3/champions/" + id;
-                final Champion data = get(Champion.class, endpoint, platform, "lol/platform/v3/champions/id");
-
-                data.setPlatform(platform.getTag());
-                return data;
+                return byId.get(id.longValue());
             }
 
             @Override

@@ -37,6 +37,7 @@ import com.merakianalytics.orianna.datapipeline.transformers.dtodata.SpectatorTr
 import com.merakianalytics.orianna.datapipeline.transformers.dtodata.StaticDataTransformer;
 import com.merakianalytics.orianna.datapipeline.transformers.dtodata.StatusTransformer;
 import com.merakianalytics.orianna.datapipeline.transformers.dtodata.SummonerTransformer;
+import com.merakianalytics.orianna.datapipeline.transformers.dtodata.ThirdPartyCodeTransformer;
 import com.merakianalytics.orianna.types.common.OriannaException;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Region;
@@ -72,7 +73,8 @@ public abstract class Orianna {
                 TransformerConfiguration.defaultConfiguration(SpectatorTransformer.class),
                 TransformerConfiguration.defaultConfiguration(StaticDataTransformer.class),
                 TransformerConfiguration.defaultConfiguration(StatusTransformer.class),
-                TransformerConfiguration.defaultConfiguration(SummonerTransformer.class));
+                TransformerConfiguration.defaultConfiguration(SummonerTransformer.class),
+                TransformerConfiguration.defaultConfiguration(ThirdPartyCodeTransformer.class));
             config.setTransformers(transformers);
 
             final List<PipelineElementConfiguration> elements = ImmutableList.of(
