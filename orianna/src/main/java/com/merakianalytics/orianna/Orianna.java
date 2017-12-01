@@ -35,9 +35,7 @@ import com.merakianalytics.orianna.datapipeline.riotapi.RiotAPI;
 import com.merakianalytics.orianna.datapipeline.transformers.dtodata.ChampionMasteryTransformer;
 import com.merakianalytics.orianna.datapipeline.transformers.dtodata.ChampionTransformer;
 import com.merakianalytics.orianna.datapipeline.transformers.dtodata.LeagueTransformer;
-import com.merakianalytics.orianna.datapipeline.transformers.dtodata.MasteriesTransformer;
 import com.merakianalytics.orianna.datapipeline.transformers.dtodata.MatchTransformer;
-import com.merakianalytics.orianna.datapipeline.transformers.dtodata.RunesTransformer;
 import com.merakianalytics.orianna.datapipeline.transformers.dtodata.SpectatorTransformer;
 import com.merakianalytics.orianna.datapipeline.transformers.dtodata.StaticDataTransformer;
 import com.merakianalytics.orianna.datapipeline.transformers.dtodata.StatusTransformer;
@@ -92,9 +90,7 @@ public abstract class Orianna {
                 transformer(ChampionMasteryTransformer.class),
                 transformer(ChampionTransformer.class),
                 transformer(LeagueTransformer.class),
-                transformer(MasteriesTransformer.class),
                 transformer(MatchTransformer.class),
-                transformer(RunesTransformer.class),
                 transformer(SpectatorTransformer.class),
                 transformer(StaticDataTransformer.class),
                 transformer(StatusTransformer.class),

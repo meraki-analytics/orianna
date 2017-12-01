@@ -31,7 +31,7 @@ public class RiotAPI extends CompositeDataSource {
         private static final FailedRequestStrategy DEFAULT_RATE_LIMITER_TIMEOUT_STRATEGY = new FailedRequestStrategy.ThrowException();
         private static final HTTPClient.Configuration DEFAULT_REQUESTS = new HTTPClient.Configuration();
         private static final Set<Class<? extends RiotAPIService>> DEFAULT_SERVICES = ImmutableSet.of(ChampionAPI.class, ChampionMasteryAPI.class,
-            LeagueAPI.class, MasteriesAPI.class, MatchAPI.class, RunesAPI.class, SpectatorAPI.class, StaticDataAPI.class, StatusAPI.class, SummonerAPI.class);
+            LeagueAPI.class, MatchAPI.class, SpectatorAPI.class, StaticDataAPI.class, StatusAPI.class, SummonerAPI.class);
 
         private String APIKey = DEFAULT_API_KEY;
         private FailedRequestStrategy http404Strategy = DEFAULT_404_STRATEGY;

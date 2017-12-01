@@ -134,9 +134,7 @@
           "com.merakianalytics.orianna.datapipeline.riotapi.ChampionAPI",
           "com.merakianalytics.orianna.datapipeline.riotapi.ChampionMasteryAPI",
           "com.merakianalytics.orianna.datapipeline.riotapi.LeagueAPI",
-          "com.merakianalytics.orianna.datapipeline.riotapi.MasteriesAPI",
           "com.merakianalytics.orianna.datapipeline.riotapi.MatchAPI",
-          "com.merakianalytics.orianna.datapipeline.riotapi.RunesAPI",
           "com.merakianalytics.orianna.datapipeline.riotapi.SpectatorAPI",
           "com.merakianalytics.orianna.datapipeline.riotapi.StaticDataAPI",
           "com.merakianalytics.orianna.datapipeline.riotapi.StatusAPI",
@@ -154,11 +152,7 @@
     }, {
       "className": "com.merakianalytics.orianna.datapipeline.transformers.dtodata.LeagueTransformer"
     }, {
-      "className": "com.merakianalytics.orianna.datapipeline.transformers.dtodata.MasteriesTransformer"
-    }, {
       "className": "com.merakianalytics.orianna.datapipeline.transformers.dtodata.MatchTransformer"
-    }, {
-      "className": "com.merakianalytics.orianna.datapipeline.transformers.dtodata.RunesTransformer"
     }, {
       "className": "com.merakianalytics.orianna.datapipeline.transformers.dtodata.SpectatorTransformer"
     }, {
