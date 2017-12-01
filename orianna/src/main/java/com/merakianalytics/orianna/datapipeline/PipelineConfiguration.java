@@ -10,6 +10,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -20,6 +21,25 @@ import com.merakianalytics.datapipelines.transformers.DataTransformer;
 
 public class PipelineConfiguration {
     public static class PipelineElementConfiguration {
+        public static PipelineElementConfiguration defaultConfiguration(final Class<? extends PipelineElement> clazz) {
+            final PipelineElementConfiguration element = new PipelineElementConfiguration();
+            element.setClassName(clazz.getCanonicalName());
+            for(final Class<?> subClazz : clazz.getDeclaredClasses()) {
+                // We're assuming there's a public static inner class named Configuration if the element needs a configuration.
+                if(subClazz.getName().endsWith("Configuration")) {
+                    element.setConfigClassName(subClazz.getName());
+
+                    try {
+                        final Object defaultConfig = subClazz.newInstance();
+                        element.setConfig(new ObjectMapper().setSerializationInclusion(Include.NON_DEFAULT).valueToTree(defaultConfig));
+                    } catch(InstantiationException | IllegalAccessException e) {
+                        LOGGER.error("Failed to generate default configuration for " + clazz.getCanonicalName() + "!", e);
+                    }
+                }
+            }
+            return element;
+        }
+
         private String className;
         private JsonNode config;
         private String configClassName;
@@ -71,6 +91,12 @@ public class PipelineConfiguration {
     }
 
     public static class TransformerConfiguration {
+        public static TransformerConfiguration defaultConfiguration(final Class<? extends DataTransformer> clazz) {
+            final TransformerConfiguration transformer = new TransformerConfiguration();
+            transformer.setClassName(clazz.getCanonicalName());
+            return transformer;
+        }
+
         private String className;
 
         /**

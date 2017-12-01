@@ -10,7 +10,6 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Supplier;
@@ -22,8 +21,6 @@ import com.google.common.io.CharSource;
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
 import com.merakianalytics.datapipelines.DataPipeline;
-import com.merakianalytics.datapipelines.PipelineElement;
-import com.merakianalytics.datapipelines.transformers.DataTransformer;
 import com.merakianalytics.orianna.datapipeline.DataDragon;
 import com.merakianalytics.orianna.datapipeline.GhostObjectSource;
 import com.merakianalytics.orianna.datapipeline.ImageDataSource;
@@ -64,54 +61,29 @@ public abstract class Orianna {
         private static final String DEFAULT_DEFAULT_LOCALE = null;
         private static final Platform DEFAULT_DEFAULT_PLATFORM = Platform.NORTH_AMERICA;
 
-        private static PipelineElementConfiguration element(final Class<? extends PipelineElement> clazz) {
-            final PipelineElementConfiguration element = new PipelineElementConfiguration();
-            element.setClassName(clazz.getCanonicalName());
-            for(final Class<?> subClazz : clazz.getDeclaredClasses()) {
-                // We're assuming there's a public static inner class named Configuration if the element needs a configuration.
-                if(subClazz.getName().endsWith("Configuration")) {
-                    element.setConfigClassName(subClazz.getName());
-
-                    try {
-                        final Object defaultConfig = subClazz.newInstance();
-                        element.setConfig(new ObjectMapper().setSerializationInclusion(Include.NON_DEFAULT).valueToTree(defaultConfig));
-                    } catch(InstantiationException | IllegalAccessException e) {
-                        LOGGER.error("Failed to generate default configuration for " + clazz.getCanonicalName() + "!", e);
-                    }
-                }
-            }
-            return element;
-        }
-
         private static PipelineConfiguration getDefaultPipeline() {
             final PipelineConfiguration config = new PipelineConfiguration();
 
             final Set<TransformerConfiguration> transformers = ImmutableSet.of(
-                transformer(ChampionMasteryTransformer.class),
-                transformer(ChampionTransformer.class),
-                transformer(LeagueTransformer.class),
-                transformer(MatchTransformer.class),
-                transformer(SpectatorTransformer.class),
-                transformer(StaticDataTransformer.class),
-                transformer(StatusTransformer.class),
-                transformer(SummonerTransformer.class));
+                TransformerConfiguration.defaultConfiguration(ChampionMasteryTransformer.class),
+                TransformerConfiguration.defaultConfiguration(ChampionTransformer.class),
+                TransformerConfiguration.defaultConfiguration(LeagueTransformer.class),
+                TransformerConfiguration.defaultConfiguration(MatchTransformer.class),
+                TransformerConfiguration.defaultConfiguration(SpectatorTransformer.class),
+                TransformerConfiguration.defaultConfiguration(StaticDataTransformer.class),
+                TransformerConfiguration.defaultConfiguration(StatusTransformer.class),
+                TransformerConfiguration.defaultConfiguration(SummonerTransformer.class));
             config.setTransformers(transformers);
 
             final List<PipelineElementConfiguration> elements = ImmutableList.of(
-                element(InMemoryCache.class),
-                element(GhostObjectSource.class),
-                element(DataDragon.class),
-                element(RiotAPI.class),
-                element(ImageDataSource.class));
+                PipelineElementConfiguration.defaultConfiguration(InMemoryCache.class),
+                PipelineElementConfiguration.defaultConfiguration(GhostObjectSource.class),
+                PipelineElementConfiguration.defaultConfiguration(DataDragon.class),
+                PipelineElementConfiguration.defaultConfiguration(RiotAPI.class),
+                PipelineElementConfiguration.defaultConfiguration(ImageDataSource.class));
             config.setElements(elements);
 
             return config;
-        }
-
-        private static TransformerConfiguration transformer(final Class<? extends DataTransformer> clazz) {
-            final TransformerConfiguration transformer = new TransformerConfiguration();
-            transformer.setClassName(clazz.getCanonicalName());
-            return transformer;
         }
 
         private long currentVersionExpiration = DEFAULT_CURRENT_VERSION_EXPIRATION;
