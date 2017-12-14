@@ -10,12 +10,10 @@ import com.merakianalytics.orianna.types.data.league.League;
 import com.merakianalytics.orianna.types.data.league.LeagueEntry;
 import com.merakianalytics.orianna.types.data.league.LeaguePosition;
 import com.merakianalytics.orianna.types.data.league.LeaguePositions;
-import com.merakianalytics.orianna.types.data.league.Leagues;
 import com.merakianalytics.orianna.types.data.league.Series;
 import com.merakianalytics.orianna.types.dto.league.LeagueItem;
 import com.merakianalytics.orianna.types.dto.league.LeagueList;
 import com.merakianalytics.orianna.types.dto.league.MiniSeries;
-import com.merakianalytics.orianna.types.dto.league.SummonerLeagues;
 import com.merakianalytics.orianna.types.dto.league.SummonerPositions;
 
 public class LeagueTransformer extends AbstractDataTransformer {
@@ -140,17 +138,6 @@ public class LeagueTransformer extends AbstractDataTransformer {
         return positions;
     }
 
-    @Transform(from = Leagues.class, to = SummonerLeagues.class)
-    public SummonerLeagues transform(final Leagues item, final PipelineContext context) {
-        final SummonerLeagues leagues = new SummonerLeagues();
-        for(final League league : item) {
-            leagues.add(transform(league, context));
-        }
-        leagues.setPlatform(item.getPlatform());
-        leagues.setSummonerId(item.getSummonerId());
-        return leagues;
-    }
-
     @Transform(from = MiniSeries.class, to = Series.class)
     public Series transform(final MiniSeries item, final PipelineContext context) {
         final Series series = new Series();
@@ -169,17 +156,6 @@ public class LeagueTransformer extends AbstractDataTransformer {
         series.setTarget(item.getTarget());
         series.setWins(item.getWins());
         return series;
-    }
-
-    @Transform(from = SummonerLeagues.class, to = Leagues.class)
-    public Leagues transform(final SummonerLeagues item, final PipelineContext context) {
-        final Leagues leagues = new Leagues(item.size());
-        for(final LeagueList list : item) {
-            leagues.add(transform(list, context));
-        }
-        leagues.setPlatform(item.getPlatform());
-        leagues.setSummonerId(item.getSummonerId());
-        return leagues;
     }
 
     @Transform(from = SummonerPositions.class, to = LeaguePositions.class)

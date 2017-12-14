@@ -18,7 +18,6 @@ import com.merakianalytics.orianna.types.common.Queue;
 import com.merakianalytics.orianna.types.common.Tier;
 import com.merakianalytics.orianna.types.dto.league.LeagueList;
 import com.merakianalytics.orianna.types.dto.league.LeaguePosition;
-import com.merakianalytics.orianna.types.dto.league.SummonerLeagues;
 import com.merakianalytics.orianna.types.dto.league.SummonerPositions;
 
 public class LeagueAPI extends RiotAPIService {
@@ -117,43 +116,6 @@ public class LeagueAPI extends RiotAPIService {
     }
 
     @SuppressWarnings("unchecked")
-    @GetMany(SummonerLeagues.class)
-    public CloseableIterator<SummonerLeagues> getManySummonerLeagues(final Map<String, Object> query, final PipelineContext context) {
-        final Platform platform = (Platform)query.get("platform");
-        final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
-        Utilities.checkNotNull(platform, "platform", summonerIds, "summonerIds");
-
-        final Iterator<Number> iterator = summonerIds.iterator();
-        return CloseableIterators.from(new Iterator<SummonerLeagues>() {
-            @Override
-            public boolean hasNext() {
-                return iterator.hasNext();
-            }
-
-            @Override
-            public SummonerLeagues next() {
-                final Number summonerId = iterator.next();
-
-                final String endpoint = "lol/league/v3/leagues/by-summoner/" + summonerId;
-                final SummonerLeagues data = get(SummonerLeagues.class, endpoint, platform, "lol/league/v3/leagues/by-summoner/summonerId");
-
-                data.setSummonerId(summonerId.longValue());
-                data.setPlatform(platform.getTag());
-                for(final LeagueList list : data) {
-                    list.setSummonerId(summonerId.longValue());
-                    list.setPlatform(platform.getTag());
-                }
-                return data;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException();
-            }
-        });
-    }
-
-    @SuppressWarnings("unchecked")
     @GetMany(SummonerPositions.class)
     public CloseableIterator<SummonerPositions> getManySummonerPositions(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
@@ -187,24 +149,6 @@ public class LeagueAPI extends RiotAPIService {
                 throw new UnsupportedOperationException();
             }
         });
-    }
-
-    @Get(SummonerLeagues.class)
-    public SummonerLeagues getSummonerLeagues(final Map<String, Object> query, final PipelineContext context) {
-        final Platform platform = (Platform)query.get("platform");
-        final Number summonerId = (Number)query.get("summonerId");
-        Utilities.checkNotNull(platform, "platform", summonerId, "summonerId");
-
-        final String endpoint = "lol/league/v3/leagues/by-summoner/" + summonerId;
-        final SummonerLeagues data = get(SummonerLeagues.class, endpoint, platform, "lol/league/v3/leagues/by-summoner/summonerId");
-
-        data.setSummonerId(summonerId.longValue());
-        data.setPlatform(platform.getTag());
-        for(final LeagueList list : data) {
-            list.setSummonerId(summonerId.longValue());
-            list.setPlatform(platform.getTag());
-        }
-        return data;
     }
 
     @Get(SummonerPositions.class)
