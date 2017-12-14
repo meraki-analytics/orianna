@@ -37,16 +37,12 @@ public class LeagueAPI extends RiotAPIService {
         final Queue queue = (Queue)query.get("queue");
         final String leagueId = (String)query.get("leagueId");
 
-        if(leagueId == null && (tier == null || queue == null)) {
-            throw new IllegalArgumentException("Query was missing required parameters! Either leagueId or tier and queue  must be included!");
-        }
-
-        if(leagueId == null && !LEAGUE_LIST_ENDPOINTS.containsKey(tier)) {
-            return null;
-        }
-
-        if(leagueId == null && !Queue.RANKED.contains(queue)) {
-            return null;
+        if(leagueId == null) {
+            if(tier == null || queue == null) {
+                throw new IllegalArgumentException("Query was missing required parameters! Either leagueId or tier and queue  must be included!");
+            } else if(!LEAGUE_LIST_ENDPOINTS.containsKey(tier) || !Queue.RANKED.contains(queue)) {
+                return null;
+            }
         }
 
         LeagueList data;
@@ -71,12 +67,12 @@ public class LeagueAPI extends RiotAPIService {
         final Iterable<Queue> queues = (Iterable<Queue>)query.get("queues");
         final Iterable<String> leagueIds = (Iterable<String>)query.get("leagueIds");
 
-        if(leagueIds == null && (tier == null || queues == null)) {
-            throw new IllegalArgumentException("Query was missing required parameters! Either leagueIds or tier and queues must be included!");
-        }
-
-        if(leagueIds != null && !LEAGUE_LIST_ENDPOINTS.containsKey(tier)) {
-            return CloseableIterators.empty();
+        if(leagueIds == null) {
+            if(tier == null || queues == null) {
+                throw new IllegalArgumentException("Query was missing required parameters! Either leagueIds or tier and queues must be included!");
+            } else if(!LEAGUE_LIST_ENDPOINTS.containsKey(tier)) {
+                return CloseableIterators.empty();
+            }
         }
 
         final Iterator<?> iterator = leagueIds == null ? queues.iterator() : leagueIds.iterator();
