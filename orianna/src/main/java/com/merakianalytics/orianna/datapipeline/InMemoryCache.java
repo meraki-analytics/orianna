@@ -24,6 +24,7 @@ import com.merakianalytics.datapipelines.sinks.Put;
 import com.merakianalytics.datapipelines.sinks.PutMany;
 import com.merakianalytics.datapipelines.sources.Get;
 import com.merakianalytics.datapipelines.sources.GetMany;
+import com.merakianalytics.orianna.datapipeline.common.expiration.ExpirationPeriod;
 import com.merakianalytics.orianna.types.UniqueKeys;
 import com.merakianalytics.orianna.types.common.OriannaException;
 import com.merakianalytics.orianna.types.core.GhostObject.LoadHook;
@@ -43,26 +44,19 @@ import com.merakianalytics.orianna.types.core.summoner.Summoner;
 public class InMemoryCache extends AbstractDataStore {
     public static class Configuration {
         private static final Map<String, ExpirationPeriod> DEFAULT_EXPIRATION_PERIODS = ImmutableMap.<String, ExpirationPeriod> builder()
-            .put(Champion.class.getCanonicalName(), period(6, TimeUnit.HOURS))
-            .put(Item.class.getCanonicalName(), period(6, TimeUnit.HOURS))
-            .put(LanguageStrings.class.getCanonicalName(), period(6, TimeUnit.HOURS))
-            .put(Languages.class.getCanonicalName(), period(6, TimeUnit.HOURS))
-            .put(Maps.class.getCanonicalName(), period(6, TimeUnit.HOURS))
-            .put(Mastery.class.getCanonicalName(), period(6, TimeUnit.HOURS))
-            .put(ProfileIcons.class.getCanonicalName(), period(6, TimeUnit.HOURS))
-            .put(Realm.class.getCanonicalName(), period(6, TimeUnit.HOURS))
-            .put(Rune.class.getCanonicalName(), period(6, TimeUnit.HOURS))
-            .put(SummonerSpell.class.getCanonicalName(), period(6, TimeUnit.HOURS))
-            .put(Versions.class.getCanonicalName(), period(6, TimeUnit.HOURS))
-            .put(Summoner.class.getCanonicalName(), period(30, TimeUnit.MINUTES))
+            .put(Champion.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
+            .put(Item.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
+            .put(LanguageStrings.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
+            .put(Languages.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
+            .put(Maps.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
+            .put(Mastery.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
+            .put(ProfileIcons.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
+            .put(Realm.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
+            .put(Rune.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
+            .put(SummonerSpell.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
+            .put(Versions.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
+            .put(Summoner.class.getCanonicalName(), ExpirationPeriod.create(30, TimeUnit.MINUTES))
             .build();
-
-        private static ExpirationPeriod period(final long time, final TimeUnit unit) {
-            final ExpirationPeriod period = new ExpirationPeriod();
-            period.setPeriod(time);
-            period.setUnit(unit);
-            return period;
-        }
 
         private Map<String, ExpirationPeriod> expirationPeriods = DEFAULT_EXPIRATION_PERIODS;
 
@@ -79,41 +73,6 @@ public class InMemoryCache extends AbstractDataStore {
          */
         public void setExpirationPeriods(final Map<String, ExpirationPeriod> expirationPeriods) {
             this.expirationPeriods = expirationPeriods;
-        }
-    }
-
-    public static class ExpirationPeriod {
-        private long period;
-        private TimeUnit unit;
-
-        /**
-         * @return the period
-         */
-        public long getPeriod() {
-            return period;
-        }
-
-        /**
-         * @return the unit
-         */
-        public TimeUnit getUnit() {
-            return unit;
-        }
-
-        /**
-         * @param period
-         *        the period to set
-         */
-        public void setPeriod(final long period) {
-            this.period = period;
-        }
-
-        /**
-         * @param unit
-         *        the unit to set
-         */
-        public void setUnit(final TimeUnit unit) {
-            this.unit = unit;
         }
     }
 
