@@ -5,18 +5,14 @@ import java.util.List;
 import com.merakianalytics.orianna.types.dto.DataObject;
 
 public class Match extends DataObject {
-    private static final long serialVersionUID = 6336180262863006928L;
-    private long gameId, gameDuration, gameCreation, forAccountId;
+    private static final long serialVersionUID = -3231144253862616472L;
+    private long gameId, gameDuration, gameCreation;
     private String gameVersion, platformId, gameMode, gameType, tournamentCode;
     private List<ParticipantIdentity> participantIdentities;
     private List<Participant> participants;
     private int seasonId, queueId, mapId;
     private List<TeamStats> teams;
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(final Object obj) {
         if(this == obj) {
@@ -29,9 +25,6 @@ public class Match extends DataObject {
             return false;
         }
         final Match other = (Match)obj;
-        if(forAccountId != other.forAccountId) {
-            return false;
-        }
         if(gameCreation != other.gameCreation) {
             return false;
         }
@@ -107,13 +100,6 @@ public class Match extends DataObject {
             return false;
         }
         return true;
-    }
-
-    /**
-     * @return the forAccountId
-     */
-    public long getForAccountId() {
-        return forAccountId;
     }
 
     /**
@@ -214,15 +200,10 @@ public class Match extends DataObject {
         return tournamentCode;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (int)(forAccountId ^ forAccountId >>> 32);
         result = prime * result + (int)(gameCreation ^ gameCreation >>> 32);
         result = prime * result + (int)(gameDuration ^ gameDuration >>> 32);
         result = prime * result + (int)(gameId ^ gameId >>> 32);
@@ -238,14 +219,6 @@ public class Match extends DataObject {
         result = prime * result + (teams == null ? 0 : teams.hashCode());
         result = prime * result + (tournamentCode == null ? 0 : tournamentCode.hashCode());
         return result;
-    }
-
-    /**
-     * @param forAccountId
-     *        the forAccountId to set
-     */
-    public void setForAccountId(final long forAccountId) {
-        this.forAccountId = forAccountId;
     }
 
     /**

@@ -41,7 +41,6 @@ public class MatchAPI extends RiotAPIService {
     public CloseableIterator<Match> getManyMatch(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         final Iterable<Number> matchIds = (Iterable<Number>)query.get("matchIds");
-        final Number forAccountId = query.get("forAccountId") == null ? 0L : (Number)query.get("forAccountId");
         final String tournamentCode = (String)query.get("tournamentCode");
         Utilities.checkNotNull(platform, "platform", matchIds, "matchIds");
 
@@ -67,7 +66,6 @@ public class MatchAPI extends RiotAPIService {
                 }
 
                 data.setTournamentCode(tournamentCode);
-                data.setForAccountId(forAccountId.longValue());
                 return data;
             }
 
@@ -272,7 +270,6 @@ public class MatchAPI extends RiotAPIService {
     public Match getMatch(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         final Number matchId = (Number)query.get("matchId");
-        final Number forAccountId = query.get("forAccountId") == null ? 0L : (Number)query.get("forAccountId");
         final String tournamentCode = (String)query.get("tournamentCode");
         Utilities.checkNotNull(platform, "platform", matchId, "matchId");
 
@@ -287,7 +284,6 @@ public class MatchAPI extends RiotAPIService {
         }
 
         data.setTournamentCode(tournamentCode);
-        data.setForAccountId(forAccountId.longValue());
         return data;
     }
 

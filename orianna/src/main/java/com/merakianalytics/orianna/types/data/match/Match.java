@@ -8,11 +8,11 @@ import org.joda.time.Duration;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class Match extends CoreData {
-    private static final long serialVersionUID = -8702370294773949677L;
+    private static final long serialVersionUID = -38859824739926851L;
     private Team blueTeam, redTeam;
     private DateTime creationTime;
     private Duration duration;
-    private long id, forAccountId;
+    private long id;
     private int map, queue, season;
     private List<Participant> participants;
     private String version, tournamentCode, mode, platform, type;
@@ -48,9 +48,6 @@ public class Match extends CoreData {
                 return false;
             }
         } else if(!duration.equals(other.duration)) {
-            return false;
-        }
-        if(forAccountId != other.forAccountId) {
             return false;
         }
         if(id != other.id) {
@@ -139,13 +136,6 @@ public class Match extends CoreData {
     }
 
     /**
-     * @return the forAccountId
-     */
-    public long getForAccountId() {
-        return forAccountId;
-    }
-
-    /**
      * @return the id
      */
     public long getId() {
@@ -229,7 +219,6 @@ public class Match extends CoreData {
         result = prime * result + (blueTeam == null ? 0 : blueTeam.hashCode());
         result = prime * result + (creationTime == null ? 0 : creationTime.hashCode());
         result = prime * result + (duration == null ? 0 : duration.hashCode());
-        result = prime * result + (int)(forAccountId ^ forAccountId >>> 32);
         result = prime * result + (int)(id ^ id >>> 32);
         result = prime * result + map;
         result = prime * result + (mode == null ? 0 : mode.hashCode());
@@ -266,14 +255,6 @@ public class Match extends CoreData {
      */
     public void setDuration(final Duration duration) {
         this.duration = duration;
-    }
-
-    /**
-     * @param forAccountId
-     *        the forAccountId to set
-     */
-    public void setForAccountId(final long forAccountId) {
-        this.forAccountId = forAccountId;
     }
 
     /**

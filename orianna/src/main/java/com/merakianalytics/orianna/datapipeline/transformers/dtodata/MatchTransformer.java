@@ -81,7 +81,6 @@ public class MatchTransformer extends AbstractDataTransformer {
         }
         match.setCreationTime(new DateTime(item.getGameCreation()));
         match.setDuration(Duration.standardSeconds(item.getGameDuration()));
-        match.setForAccountId(item.getForAccountId());
         match.setId(item.getGameId());
         match.setMap(item.getMapId());
         match.setMode(item.getGameMode());
@@ -402,7 +401,6 @@ public class MatchTransformer extends AbstractDataTransformer {
     public com.merakianalytics.orianna.types.dto.match.Match transform(final Match item, final PipelineContext context) {
         final Object previousDuration = context.put("duration", item.getDuration());
         final com.merakianalytics.orianna.types.dto.match.Match match = new com.merakianalytics.orianna.types.dto.match.Match();
-        match.setForAccountId(item.getForAccountId());
         match.setGameCreation(item.getCreationTime().getMillis());
         match.setGameDuration(item.getDuration().getStandardSeconds());
         match.setGameId(item.getId());
