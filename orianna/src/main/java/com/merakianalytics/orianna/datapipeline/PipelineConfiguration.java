@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -118,7 +117,7 @@ public class PipelineConfiguration {
     private static final Logger LOGGER = LoggerFactory.getLogger(PipelineConfiguration.class);
 
     public static DataPipeline toPipeline(final PipelineConfiguration config) {
-        final ObjectMapper mapper = new ObjectMapper().enable(Feature.ALLOW_COMMENTS);
+        final ObjectMapper mapper = new ObjectMapper();
 
         final Set<DataTransformer> transformers = new HashSet<>();
         if(config.getTransformers() != null) {

@@ -134,6 +134,7 @@ public class StaticDataAPI extends RiotAPIService {
         data.setPlatform(platform.getTag());
         data.setLocale(locale);
         data.setIncludedData(includedData);
+        data.setDataById(dataById);
         for(final Champion champion : data.getData().values()) {
             champion.setPlatform(platform.getTag());
             champion.setVersion(data.getVersion());

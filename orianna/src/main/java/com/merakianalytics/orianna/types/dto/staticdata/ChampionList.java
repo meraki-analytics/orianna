@@ -6,16 +6,13 @@ import java.util.Set;
 import com.merakianalytics.orianna.types.dto.DataObject;
 
 public class ChampionList extends DataObject {
-    private static final long serialVersionUID = 6695323258590577053L;
+    private static final long serialVersionUID = -6473883697778009202L;
     private Map<String, Champion> data;
+    private boolean dataById;
     private Set<String> includedData;
     private Map<String, String> keys;
     private String version, type, format, locale, platform;
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(final Object obj) {
         if(this == obj) {
@@ -33,6 +30,9 @@ public class ChampionList extends DataObject {
                 return false;
             }
         } else if(!data.equals(other.data)) {
+            return false;
+        }
+        if(dataById != other.dataById) {
             return false;
         }
         if(format == null) {
@@ -143,15 +143,12 @@ public class ChampionList extends DataObject {
         return version;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + (data == null ? 0 : data.hashCode());
+        result = prime * result + (dataById ? 1231 : 1237);
         result = prime * result + (format == null ? 0 : format.hashCode());
         result = prime * result + (includedData == null ? 0 : includedData.hashCode());
         result = prime * result + (keys == null ? 0 : keys.hashCode());
@@ -163,11 +160,26 @@ public class ChampionList extends DataObject {
     }
 
     /**
+     * @return the dataById
+     */
+    public boolean isDataById() {
+        return dataById;
+    }
+
+    /**
      * @param data
      *        the data to set
      */
     public void setData(final Map<String, Champion> data) {
         this.data = data;
+    }
+
+    /**
+     * @param dataById
+     *        the dataById to set
+     */
+    public void setDataById(final boolean dataById) {
+        this.dataById = dataById;
     }
 
     /**
