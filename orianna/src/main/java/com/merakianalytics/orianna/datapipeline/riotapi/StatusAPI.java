@@ -40,6 +40,9 @@ public class StatusAPI extends RiotAPIService {
 
                 final String endpoint = "lol/status/v3/shard-data";
                 final ShardStatus data = get(ShardStatus.class, endpoint, platform, "lol/status/v3/shard-data");
+                if(data == null) {
+                    return null;
+                }
 
                 return data;
             }
@@ -58,6 +61,9 @@ public class StatusAPI extends RiotAPIService {
 
         final String endpoint = "lol/status/v3/shard-data";
         final ShardStatus data = get(ShardStatus.class, endpoint, platform, "lol/status/v3/shard-data");
+        if(data == null) {
+            return null;
+        }
 
         return data;
     }

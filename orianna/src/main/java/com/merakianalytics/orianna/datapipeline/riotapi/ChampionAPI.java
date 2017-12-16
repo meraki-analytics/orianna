@@ -32,6 +32,9 @@ public class ChampionAPI extends RiotAPIService {
 
         final String endpoint = "lol/platform/v3/champions/" + id;
         final Champion data = get(Champion.class, endpoint, platform, "lol/platform/v3/champions/id");
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         return data;
@@ -46,9 +49,15 @@ public class ChampionAPI extends RiotAPIService {
         final String endpoint = "lol/platform/v3/champions";
         final ChampionList data = get(ChampionList.class, endpoint, platform, ImmutableMap.of("freeToPlay", freeToPlay.toString()),
             "lol/platform/v3/champions");
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setFreeToPlay(freeToPlay);
+        for(final Champion champion : data.getChampions()) {
+            champion.setPlatform(data.getPlatform());
+        }
         return data;
     }
 
@@ -62,6 +71,9 @@ public class ChampionAPI extends RiotAPIService {
         final String endpoint = "lol/platform/v3/champions";
         final ChampionList data = get(ChampionList.class, endpoint, platform, ImmutableMap.of("freeToPlay", Boolean.FALSE.toString()),
             "lol/platform/v3/champions");
+        if(data == null) {
+            return null;
+        }
 
         final Map<Long, Champion> byId = new HashMap<>();
         for(final Champion champion : data.getChampions()) {
@@ -110,9 +122,15 @@ public class ChampionAPI extends RiotAPIService {
                 final String endpoint = "lol/platform/v3/champions";
                 final ChampionList data = get(ChampionList.class, endpoint, platform, ImmutableMap.of("freeToPlay", freeToPlay.toString()),
                     "lol/platform/v3/champions");
+                if(data == null) {
+                    return null;
+                }
 
                 data.setPlatform(platform.getTag());
                 data.setFreeToPlay(freeToPlay);
+                for(final Champion champion : data.getChampions()) {
+                    champion.setPlatform(data.getPlatform());
+                }
                 return data;
             }
 

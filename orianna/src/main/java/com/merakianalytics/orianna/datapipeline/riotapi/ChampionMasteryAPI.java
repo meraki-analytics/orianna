@@ -33,6 +33,9 @@ public class ChampionMasteryAPI extends RiotAPIService {
         final String endpoint = "lol/champion-mastery/v3/champion-masteries/by-summoner/" + summonerId + "/by-champion/" + championId;
         final ChampionMastery data = get(ChampionMastery.class, endpoint, platform,
             "lol/champion-mastery/v3/champion-masteries/by-summoner/summonerId/by-champion/championId");
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         return data;
@@ -47,6 +50,9 @@ public class ChampionMasteryAPI extends RiotAPIService {
         final String endpoint = "lol/champion-mastery/v3/champion-masteries/by-summoner/" + summonerId;
         final ChampionMasteries data = get(ChampionMasteries.class, endpoint, platform,
             "lol/champion-mastery/v3/champion-masteries/by-summoner/summonerId");
+        if(data == null) {
+            return null;
+        }
 
         data.setSummonerId(summonerId.longValue());
         data.setPlatform(platform.getTag());
@@ -64,6 +70,9 @@ public class ChampionMasteryAPI extends RiotAPIService {
 
         final String endpoint = "lol/champion-mastery/v3/scores/by-summoner/" + summonerId;
         final ChampionMasteryScore data = get(ChampionMasteryScore.class, endpoint, platform, "lol/champion-mastery/v3/scores/by-summoner/summonerId");
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setSummonerId(summonerId.longValue());
@@ -92,6 +101,9 @@ public class ChampionMasteryAPI extends RiotAPIService {
                 final String endpoint = "lol/champion-mastery/v3/champion-masteries/by-summoner/" + summonerId + "/by-champion/" + championId;
                 final ChampionMastery data = get(ChampionMastery.class, endpoint, platform,
                     "lol/champion-mastery/v3/champion-masteries/by-summoner/summonerId/by-champion/championId");
+                if(data == null) {
+                    return null;
+                }
 
                 data.setPlatform(platform.getTag());
                 return data;
@@ -125,6 +137,9 @@ public class ChampionMasteryAPI extends RiotAPIService {
                 final String endpoint = "lol/champion-mastery/v3/champion-masteries/by-summoner/" + summonerId;
                 final ChampionMasteries data = get(ChampionMasteries.class, endpoint, platform,
                     "lol/champion-mastery/v3/champion-masteries/by-summoner/summonerId");
+                if(data == null) {
+                    return null;
+                }
 
                 data.setSummonerId(summonerId.longValue());
                 data.setPlatform(platform.getTag());
@@ -161,6 +176,9 @@ public class ChampionMasteryAPI extends RiotAPIService {
 
                 final String endpoint = "lol/champion-mastery/v3/scores/by-summoner/" + summonerId;
                 final ChampionMasteryScore data = get(ChampionMasteryScore.class, endpoint, platform, "lol/champion-mastery/v3/scores/by-summoner/summonerId");
+                if(data == null) {
+                    return null;
+                }
 
                 data.setPlatform(platform.getTag());
                 data.setSummonerId(summonerId.longValue());

@@ -64,6 +64,9 @@ public class MatchAPI extends RiotAPIService {
                     endpoint = "lol/match/v3/matches/" + matchId + "/by-tournament-code/" + tournamentCode;
                     data = get(Match.class, endpoint, platform, "lol/match/v3/matches/matchId/by-tournament-code/tournamentCode");
                 }
+                if(data == null) {
+                    return null;
+                }
 
                 data.setTournamentCode(tournamentCode);
                 return data;
@@ -163,6 +166,10 @@ public class MatchAPI extends RiotAPIService {
                 if(recent) {
                     endpoint = "lol/match/v3/matchlists/by-account/" + accountId + "/recent";
                     data = get(Matchlist.class, endpoint, platform, "lol/match/v3/matchlists/by-account/accountId/recent");
+                    if(data == null) {
+                        return null;
+                    }
+
                     data.setRecent(true);
 
                     long minTime = Long.MAX_VALUE;
@@ -180,6 +187,10 @@ public class MatchAPI extends RiotAPIService {
                 } else {
                     endpoint = "lol/match/v3/matchlists/by-account/" + accountId;
                     data = get(Matchlist.class, endpoint, platform, parameters, "lol/match/v3/matchlists/by-account/{accountId}");
+                    if(data == null) {
+                        return null;
+                    }
+
                     data.setRecent(false);
                     data.setStartTime(bTime);
                     data.setEndTime(eTime);
@@ -220,6 +231,9 @@ public class MatchAPI extends RiotAPIService {
 
                 final String endpoint = "lol/match/v3/timelines/by-match/" + matchId;
                 final MatchTimeline data = get(MatchTimeline.class, endpoint, platform, "lol/match/v3/timelines/by-match/matchId");
+                if(data == null) {
+                    return null;
+                }
 
                 data.setPlatform(platform.getTag());
                 data.setMatchId(matchId.longValue());
@@ -253,6 +267,9 @@ public class MatchAPI extends RiotAPIService {
 
                 final String endpoint = "lol/match/v3/matches/by-tournament-code/" + tournamentCode + "/ids";
                 final TournamentMatches data = get(TournamentMatches.class, endpoint, platform, "lol/match/v3/matches/by-tournament-code/tournamentCode/ids");
+                if(data == null) {
+                    return null;
+                }
 
                 data.setPlatform(platform.getTag());
                 data.setTournamentCode(tournamentCode);
@@ -281,6 +298,9 @@ public class MatchAPI extends RiotAPIService {
         } else {
             endpoint = "lol/match/v3/matches/" + matchId + "/by-tournament-code/" + tournamentCode;
             data = get(Match.class, endpoint, platform, "lol/match/v3/matches/matchId/by-tournament-code/tournamentCode");
+        }
+        if(data == null) {
+            return null;
         }
 
         data.setTournamentCode(tournamentCode);
@@ -336,6 +356,10 @@ public class MatchAPI extends RiotAPIService {
         if(recent) {
             endpoint = "lol/match/v3/matchlists/by-account/" + accountId + "/recent";
             data = get(Matchlist.class, endpoint, platform, "lol/match/v3/matchlists/by-account/accountId/recent");
+            if(data == null) {
+                return null;
+            }
+
             data.setRecent(true);
 
             long minTime = Long.MAX_VALUE;
@@ -377,6 +401,10 @@ public class MatchAPI extends RiotAPIService {
             }
 
             data = get(Matchlist.class, endpoint, platform, parameters, "lol/match/v3/matchlists/by-account/{accountId}");
+            if(data == null) {
+                return null;
+            }
+
             data.setRecent(false);
             data.setStartTime(beginTime == null ? 0L : beginTime.longValue());
             data.setEndTime(endTime == null ? 0L : endTime.longValue());
@@ -398,6 +426,9 @@ public class MatchAPI extends RiotAPIService {
 
         final String endpoint = "lol/match/v3/timelines/by-match/" + matchId;
         final MatchTimeline data = get(MatchTimeline.class, endpoint, platform, "lol/match/v3/timelines/by-match/matchId");
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setMatchId(matchId.longValue());
@@ -412,6 +443,9 @@ public class MatchAPI extends RiotAPIService {
 
         final String endpoint = "lol/match/v3/matches/by-tournament-code/" + tournamentCode + "/ids";
         final TournamentMatches data = get(TournamentMatches.class, endpoint, platform, "lol/match/v3/matches/by-tournament-code/tournamentCode/ids");
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setTournamentCode(tournamentCode);

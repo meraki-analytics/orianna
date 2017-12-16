@@ -62,6 +62,9 @@ public class SummonerAPI extends RiotAPIService {
 
                 final String endpoint = baseEndpoint + identifier;
                 final Summoner data = get(Summoner.class, endpoint, platform, limiter);
+                if(data == null) {
+                    return null;
+                }
 
                 data.setPlatform(platform.getTag());
                 return data;
@@ -99,6 +102,9 @@ public class SummonerAPI extends RiotAPIService {
         }
 
         final Summoner data = get(Summoner.class, endpoint, platform, limiter);
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         return data;

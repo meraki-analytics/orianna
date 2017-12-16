@@ -30,6 +30,9 @@ public class SpectatorAPI extends RiotAPIService {
 
         final String endpoint = "lol/spectator/v3/active-games/by-summoner/" + summonerId;
         final CurrentGameInfo data = get(CurrentGameInfo.class, endpoint, platform, "lol/spectator/v3/active-games/by-summoner/summonerId");
+        if(data == null) {
+            return null;
+        }
 
         data.setSummonerId(summonerId.longValue());
         return data;
@@ -42,6 +45,9 @@ public class SpectatorAPI extends RiotAPIService {
 
         final String endpoint = "lol/spectator/v3/featured-games";
         final FeaturedGames data = get(FeaturedGames.class, endpoint, platform, "lol/spectator/v3/featured-games");
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         return data;
@@ -67,6 +73,9 @@ public class SpectatorAPI extends RiotAPIService {
 
                 final String endpoint = "lol/spectator/v3/active-games/by-summoner/" + summonerId;
                 final CurrentGameInfo data = get(CurrentGameInfo.class, endpoint, platform, "lol/spectator/v3/active-games/by-summoner/summonerId");
+                if(data == null) {
+                    return null;
+                }
 
                 data.setSummonerId(summonerId.longValue());
                 return data;
@@ -98,6 +107,9 @@ public class SpectatorAPI extends RiotAPIService {
 
                 final String endpoint = "lol/spectator/v3/featured-games";
                 final FeaturedGames data = get(FeaturedGames.class, endpoint, platform, "lol/spectator/v3/featured-games");
+                if(data == null) {
+                    return null;
+                }
 
                 data.setPlatform(platform.getTag());
                 return data;

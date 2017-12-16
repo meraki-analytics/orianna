@@ -53,6 +53,9 @@ public class LeagueAPI extends RiotAPIService {
             final String endpoint = "lol/league/v3/leagues/" + leagueId;
             data = get(LeagueList.class, endpoint, platform, "lol/league/v3/leagues/leagueId");
         }
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         return data;
@@ -99,6 +102,9 @@ public class LeagueAPI extends RiotAPIService {
                     final String endpoint = "lol/league/v3/leagues/" + leagueId;
                     data = get(LeagueList.class, endpoint, platform, "lol/league/v3/leagues/leagueId");
                 }
+                if(data == null) {
+                    return null;
+                }
 
                 data.setPlatform(platform.getTag());
                 return data;
@@ -131,6 +137,9 @@ public class LeagueAPI extends RiotAPIService {
 
                 final String endpoint = "lol/league/v3/positions/by-summoner/" + summonerId;
                 final SummonerPositions data = get(SummonerPositions.class, endpoint, platform, "lol/league/v3/positions/by-summoner/summonerId");
+                if(data == null) {
+                    return null;
+                }
 
                 data.setSummonerId(summonerId.longValue());
                 data.setPlatform(platform.getTag());
@@ -155,6 +164,9 @@ public class LeagueAPI extends RiotAPIService {
 
         final String endpoint = "lol/league/v3/positions/by-summoner/" + summonerId;
         final SummonerPositions data = get(SummonerPositions.class, endpoint, platform, "lol/league/v3/positions/by-summoner/summonerId");
+        if(data == null) {
+            return null;
+        }
 
         data.setSummonerId(summonerId.longValue());
         data.setPlatform(platform.getTag());

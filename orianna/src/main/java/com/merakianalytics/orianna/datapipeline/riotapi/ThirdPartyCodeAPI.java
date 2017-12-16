@@ -41,6 +41,9 @@ public class ThirdPartyCodeAPI extends RiotAPIService {
 
                 final String endpoint = "lol/platform/v3/third-party-code/by-summoner/" + summonerId;
                 final VerificationString data = get(VerificationString.class, endpoint, platform, "lol/platform/v3/third-party-code/by-summoner/summonerId");
+                if(data == null) {
+                    return null;
+                }
 
                 data.setPlatform(platform.getTag());
                 data.setSummonerId(summonerId.longValue());
@@ -62,6 +65,9 @@ public class ThirdPartyCodeAPI extends RiotAPIService {
 
         final String endpoint = "lol/platform/v3/third-party-code/by-summoner/" + summonerId;
         final VerificationString data = get(VerificationString.class, endpoint, platform, "lol/platform/v3/third-party-code/by-summoner/summonerId");
+        if(data == null) {
+            return null;
+        }
 
         data.setPlatform(platform.getTag());
         data.setSummonerId(summonerId.longValue());
