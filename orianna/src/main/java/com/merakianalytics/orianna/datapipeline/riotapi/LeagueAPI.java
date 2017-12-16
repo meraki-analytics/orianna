@@ -10,6 +10,7 @@ import com.merakianalytics.datapipelines.iterators.CloseableIterators;
 import com.merakianalytics.datapipelines.sources.Get;
 import com.merakianalytics.datapipelines.sources.GetMany;
 import com.merakianalytics.orianna.datapipeline.common.HTTPClient;
+import com.merakianalytics.orianna.datapipeline.common.QueryValidationException;
 import com.merakianalytics.orianna.datapipeline.common.Utilities;
 import com.merakianalytics.orianna.datapipeline.common.rates.RateLimiter;
 import com.merakianalytics.orianna.datapipeline.riotapi.RiotAPI.Configuration;
@@ -39,7 +40,7 @@ public class LeagueAPI extends RiotAPIService {
 
         if(leagueId == null) {
             if(tier == null || queue == null) {
-                throw new IllegalArgumentException("Query was missing required parameters! Either leagueId or tier and queue  must be included!");
+                throw new QueryValidationException("Query was missing required parameters! Either leagueId or tier and queue  must be included!");
             } else if(!LEAGUE_LIST_ENDPOINTS.containsKey(tier) || !Queue.RANKED.contains(queue)) {
                 return null;
             }
@@ -72,7 +73,7 @@ public class LeagueAPI extends RiotAPIService {
 
         if(leagueIds == null) {
             if(tier == null || queues == null) {
-                throw new IllegalArgumentException("Query was missing required parameters! Either leagueIds or tier and queues must be included!");
+                throw new QueryValidationException("Query was missing required parameters! Either leagueIds or tier and queues must be included!");
             } else if(!LEAGUE_LIST_ENDPOINTS.containsKey(tier)) {
                 return CloseableIterators.empty();
             }

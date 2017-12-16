@@ -20,7 +20,7 @@ public abstract class Utilities {
         for(int i = 1; i < objectNamePairs.length; i += 2) {
             sb.append(", " + objectNamePairs[i]);
         }
-        throw new IllegalArgumentException("All of the following query parameters were missing! At least one is required: " + sb.substring(2));
+        throw new QueryValidationException("All of the following query parameters were missing! At least one is required: " + sb.substring(2));
     }
 
     public static void checkNotNull(final Object... objectNamePairs) {
@@ -31,7 +31,11 @@ public abstract class Utilities {
         }
 
         for(int i = 0; i < objectNamePairs.length; i += 2) {
-            Preconditions.checkNotNull(objectNamePairs[i], "Required query parameter %s was missing!", objectNamePairs[i + 1]);
+            try {
+                Preconditions.checkNotNull(objectNamePairs[i], "Required query parameter %s was missing!", objectNamePairs[i + 1]);
+            } catch(final IllegalArgumentException e) {
+                throw new QueryValidationException(e.getMessage());
+            }
         }
     }
 }

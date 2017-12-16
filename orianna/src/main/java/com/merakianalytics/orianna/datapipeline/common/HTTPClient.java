@@ -195,9 +195,9 @@ public class HTTPClient {
         }
         return matcher.group(2);
     }
+    
     private final OkHttpClient client;
     private final long rateLimiterTimeout;
-
     private final TimeUnit rateLimiterTimeoutUnit;
 
     public HTTPClient() {
