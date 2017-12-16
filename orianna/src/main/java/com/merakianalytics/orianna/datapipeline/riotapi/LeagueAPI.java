@@ -52,7 +52,7 @@ public class LeagueAPI extends RiotAPIService {
                 for(final Queue q : Queue.RANKED) {
                     sb.append(", " + q);
                 }
-                throw new QueryValidationException("Query contained invalid parameters! tier must be one of [" + sb.substring(2) + "]!");
+                throw new QueryValidationException("Query contained invalid parameters! queue must be one of [" + sb.substring(2) + "]!");
             }
         }
 
