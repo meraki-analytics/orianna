@@ -25,6 +25,7 @@ public class SummonerAPI extends RiotAPIService {
     @GetMany(Summoner.class)
     public CloseableIterator<Summoner> getManySummoner(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
         final Iterable<Number> summonerIds = (Iterable<Number>)query.get("ids");
         final Iterable<Number> accountIds = (Iterable<Number>)query.get("accountIds");
         final Iterable<String> summonerNames = (Iterable<String>)query.get("names");
