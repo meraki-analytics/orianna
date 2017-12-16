@@ -238,7 +238,7 @@ public class MatchAPI extends RiotAPIService {
     public CloseableIterator<TournamentMatches> getManyTournamentMatches(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         final Iterable<String> tournamentCodes = (Iterable<String>)query.get("tournamentCodes");
-        Utilities.checkNotNull(platform, "platform", tournamentCodes, tournamentCodes);
+        Utilities.checkNotNull(platform, "platform", tournamentCodes, "tournamentCodes");
 
         final Iterator<String> iterator = tournamentCodes.iterator();
         return CloseableIterators.from(new Iterator<TournamentMatches>() {
