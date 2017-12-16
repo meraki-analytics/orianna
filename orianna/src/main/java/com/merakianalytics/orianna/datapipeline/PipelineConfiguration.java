@@ -147,7 +147,7 @@ public class PipelineConfiguration {
             }
         }
 
-        final List<PipelineElement> elements = new ArrayList<>(config.getElements().size());
+        final List<PipelineElement> elements = new ArrayList<>(config.getElements() != null ? config.getElements().size() : 0);
         if(config.getElements() != null) {
             for(final PipelineElementConfiguration eConfig : config.getElements()) {
                 Class<?> clazz;
@@ -177,6 +177,7 @@ public class PipelineConfiguration {
                         final Object conf = mapper.treeToValue(eConfig.getConfig(), configClazz);
                         final PipelineElement element = (PipelineElement)constructor.newInstance(conf);
                         elements.add(element);
+                        continue;
                     } catch(final NoSuchMethodException e) {
                         LOGGER.error("Class for name " + eConfig.getClassName() + " has no constructor which takes " + eConfig.getConfigClassName()
                             + "! Trying the default no-arg constructor instead!", e);
