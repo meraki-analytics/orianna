@@ -21,6 +21,8 @@ import com.merakianalytics.datapipelines.transformers.DataTransformer;
 public class PipelineConfiguration {
     public static class PipelineElementConfiguration {
         public static PipelineElementConfiguration defaultConfiguration(final Class<? extends PipelineElement> clazz) {
+            final ObjectMapper mapper = new ObjectMapper().setSerializationInclusion(Include.NON_DEFAULT);
+
             final PipelineElementConfiguration element = new PipelineElementConfiguration();
             element.setClassName(clazz.getCanonicalName());
             for(final Class<?> subClazz : clazz.getDeclaredClasses()) {
@@ -30,7 +32,7 @@ public class PipelineConfiguration {
 
                     try {
                         final Object defaultConfig = subClazz.newInstance();
-                        element.setConfig(new ObjectMapper().setSerializationInclusion(Include.NON_DEFAULT).valueToTree(defaultConfig));
+                        element.setConfig(mapper.valueToTree(defaultConfig));
                     } catch(InstantiationException | IllegalAccessException e) {
                         LOGGER.error("Failed to generate default configuration for " + clazz.getCanonicalName() + "!", e);
                     }
