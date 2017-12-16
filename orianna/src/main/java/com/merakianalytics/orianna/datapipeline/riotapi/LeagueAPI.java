@@ -40,9 +40,19 @@ public class LeagueAPI extends RiotAPIService {
 
         if(leagueId == null) {
             if(tier == null || queue == null) {
-                throw new QueryValidationException("Query was missing required parameters! Either leagueId or tier and queue  must be included!");
-            } else if(!LEAGUE_LIST_ENDPOINTS.containsKey(tier) || !Queue.RANKED.contains(queue)) {
-                return null;
+                throw new QueryValidationException("Query was missing required parameters! Either leagueId or tier and queue must be included!");
+            } else if(!LEAGUE_LIST_ENDPOINTS.containsKey(tier)) {
+                final StringBuilder sb = new StringBuilder();
+                for(final Tier t : LEAGUE_LIST_ENDPOINTS.keySet()) {
+                    sb.append(", " + t);
+                }
+                throw new QueryValidationException("Query contained invalid parameters! tier must be one of [" + sb.substring(2) + "]!");
+            } else if(!Queue.RANKED.contains(queue)) {
+                final StringBuilder sb = new StringBuilder();
+                for(final Queue q : Queue.RANKED) {
+                    sb.append(", " + q);
+                }
+                throw new QueryValidationException("Query contained invalid parameters! tier must be one of [" + sb.substring(2) + "]!");
             }
         }
 
@@ -75,7 +85,11 @@ public class LeagueAPI extends RiotAPIService {
             if(tier == null || queues == null) {
                 throw new QueryValidationException("Query was missing required parameters! Either leagueIds or tier and queues must be included!");
             } else if(!LEAGUE_LIST_ENDPOINTS.containsKey(tier)) {
-                return CloseableIterators.empty();
+                final StringBuilder sb = new StringBuilder();
+                for(final Tier t : LEAGUE_LIST_ENDPOINTS.keySet()) {
+                    sb.append(", " + t);
+                }
+                throw new QueryValidationException("Query contained invalid parameters! tier must be one of [" + sb.substring(2) + "]!");
             }
         }
 
