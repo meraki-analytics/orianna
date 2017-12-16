@@ -25,10 +25,10 @@ public class SummonerAPI extends RiotAPIService {
     @GetMany(Summoner.class)
     public CloseableIterator<Summoner> getManySummoner(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
+        final Iterable<Number> summonerIds = (Iterable<Number>)query.get("ids");
         final Iterable<Number> accountIds = (Iterable<Number>)query.get("accountIds");
-        final Iterable<String> summonerNames = (Iterable<String>)query.get("summonerNames");
-        Utilities.checkAtLeastOneNotNull(summonerIds, "summonerIds", accountIds, "accountIds", summonerNames, "summonerNames");
+        final Iterable<String> summonerNames = (Iterable<String>)query.get("names");
+        Utilities.checkAtLeastOneNotNull(summonerIds, "ids", accountIds, "accountIds", summonerNames, "names");
 
         final Iterator<?> iterator;
         final String baseEndpoint;
@@ -76,9 +76,11 @@ public class SummonerAPI extends RiotAPIService {
     @Get(Summoner.class)
     public Summoner getSummoner(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
         final Number summonerId = (Number)query.get("id");
         final Number accountId = (Number)query.get("accountId");
         final String summonerName = (String)query.get("name");
+        Utilities.checkAtLeastOneNotNull(summonerId, "id", accountId, "accountId", summonerName, "name");
 
         String endpoint;
         String limiter;
