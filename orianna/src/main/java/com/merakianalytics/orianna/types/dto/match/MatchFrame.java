@@ -8,7 +8,7 @@ import com.merakianalytics.orianna.types.dto.DataObject;
 public class MatchFrame extends DataObject {
     private static final long serialVersionUID = -4247119702676575684L;
     private List<MatchEvent> events;
-    private Map<Integer, MatchParticipantFrame> participantFrames;
+    private Map<String, MatchParticipantFrame> participantFrames;
     private long timestamp;
 
     /*
@@ -57,7 +57,7 @@ public class MatchFrame extends DataObject {
     /**
      * @return the participantFrames
      */
-    public Map<Integer, MatchParticipantFrame> getParticipantFrames() {
+    public Map<String, MatchParticipantFrame> getParticipantFrames() {
         return participantFrames;
     }
 
@@ -94,7 +94,7 @@ public class MatchFrame extends DataObject {
      * @param participantFrames
      *        the participantFrames to set
      */
-    public void setParticipantFrames(final Map<Integer, MatchParticipantFrame> participantFrames) {
+    public void setParticipantFrames(final Map<String, MatchParticipantFrame> participantFrames) {
         this.participantFrames = participantFrames;
     }
 

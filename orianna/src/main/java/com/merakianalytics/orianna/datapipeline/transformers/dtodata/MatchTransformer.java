@@ -386,11 +386,11 @@ public class MatchTransformer extends AbstractDataTransformer {
             events.add(transform(event, context));
         }
         frame.setEvents(events);
-        final Map<Integer, MatchParticipantFrame> participantFrames = new HashMap<>();
+        final Map<String, MatchParticipantFrame> participantFrames = new HashMap<>();
         final Object previous = context.get("participantId");
         for(final Integer participantId : item.getParticipantFrames().keySet()) {
             context.put("participantId", participantId);
-            participantFrames.put(participantId, transform(item.getParticipantFrames().get(participantId), context));
+            participantFrames.put(Integer.toString(participantId), transform(item.getParticipantFrames().get(participantId), context));
         }
         context.put("participantId", previous);
         frame.setParticipantFrames(participantFrames);
@@ -498,8 +498,8 @@ public class MatchTransformer extends AbstractDataTransformer {
             frame.add(transform(event, context));
         }
         final Map<Integer, ParticipantFrame> participantFrames = new HashMap<>();
-        for(final Integer participantId : item.getParticipantFrames().keySet()) {
-            participantFrames.put(participantId, transform(item.getParticipantFrames().get(participantId), context));
+        for(final String participantId : item.getParticipantFrames().keySet()) {
+            participantFrames.put(Integer.parseInt(participantId), transform(item.getParticipantFrames().get(participantId), context));
         }
         frame.setParticipantFrames(participantFrames);
         frame.setTimestamp(Duration.millis(item.getTimestamp()));
