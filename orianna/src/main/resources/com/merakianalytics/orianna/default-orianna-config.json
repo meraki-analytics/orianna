@@ -15,6 +15,10 @@
             "period": 6,
             "unit": "HOURS"
           },
+          "com.merakianalytics.orianna.types.core.staticdata.Items": {
+            "period": 6,
+            "unit": "HOURS"
+          },
           "com.merakianalytics.orianna.types.core.staticdata.LanguageStrings": {
             "period": 6,
             "unit": "HOURS"

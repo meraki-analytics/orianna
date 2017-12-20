@@ -393,7 +393,9 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         converted.setConsumed(item.isConsumed());
         converted.setConsumedWhenFull(item.isConsumeOnFull());
         converted.setDescription(item.getDescription());
-        converted.setEffects(new HashMap<>(item.getEffect()));
+        if(item.getEffect() != null) {
+            converted.setEffects(new HashMap<>(item.getEffect()));
+        }
         converted.setGroup(item.getGroup());
         converted.setHiddenFromAll(item.isHideFromAll());
         converted.setId(item.getId());
@@ -719,7 +721,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
     public ItemGroup transform(final Group item, final PipelineContext context) {
         final ItemGroup group = new ItemGroup();
         group.setKey(item.getKey());
-        group.setMax(Integer.parseInt(item.getMaxGroupOwnable()));
+        group.setMax(item.getMaxGroupOwnable() == null ? -1 : Integer.parseInt(item.getMaxGroupOwnable()));
         return group;
     }
 
@@ -801,7 +803,9 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         converted.setConsumed(item.isConsumed());
         converted.setConsumeOnFull(item.isConsumedWhenFull());
         converted.setDescription(item.getDescription());
-        converted.setEffect(new HashMap<>(item.getEffects()));
+        if(item.getEffects() != null) {
+            converted.setEffect(new HashMap<>(item.getEffects()));
+        }
         converted.setGroup(item.getGroup());
         converted.setHideFromAll(item.isHiddenFromAll());
         converted.setId(item.getId());
@@ -833,7 +837,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
     public Group transform(final ItemGroup item, final PipelineContext context) {
         final Group group = new Group();
         group.setKey(item.getKey());
-        group.setMaxGroupOwnable(Integer.toString(item.getMax()));
+        group.setMaxGroupOwnable(item.getMax() == -1 ? null : Integer.toString(item.getMax()));
         return group;
     }
 

@@ -43,6 +43,7 @@ import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
+import com.merakianalytics.orianna.types.core.staticdata.Items;
 import com.merakianalytics.orianna.types.core.staticdata.LanguageStrings;
 import com.merakianalytics.orianna.types.core.staticdata.Languages;
 import com.merakianalytics.orianna.types.core.staticdata.Maps;
@@ -255,6 +256,46 @@ public abstract class Orianna {
 
     public static Item.Builder getItemNamed(final String name) {
         return Item.named(name);
+    }
+
+    public static Items getItems() {
+        return Items.get();
+    }
+
+    public static Items.SubsetBuilder getItemsNamed(final Iterable<String> names) {
+        return Items.named(names);
+    }
+
+    public static Items.SubsetBuilder getItemsNamed(final String... names) {
+        return Items.named(names);
+    }
+
+    public static Items.SubsetBuilder getItemsWithIds(final int... ids) {
+        return Items.withIds(ids);
+    }
+
+    public static Items.SubsetBuilder getItemsWithIds(final Iterable<Integer> ids) {
+        return Items.withIds(ids);
+    }
+
+    public static Items.Builder getItemsWithIncludedData(final Set<String> includedData) {
+        return Items.withIncludedData(includedData);
+    }
+
+    public static Items.Builder getItemsWithLocale(final String locale) {
+        return Items.withLocale(locale);
+    }
+
+    public static Items.Builder getItemsWithPlatform(final Platform platform) {
+        return Items.withPlatform(platform);
+    }
+
+    public static Items.Builder getItemsWithRegion(final Region region) {
+        return Items.withRegion(region);
+    }
+
+    public static Items.Builder getItemsWithVersion(final String version) {
+        return Items.withVersion(version);
     }
 
     public static Item.Builder getItemWithId(final int id) {

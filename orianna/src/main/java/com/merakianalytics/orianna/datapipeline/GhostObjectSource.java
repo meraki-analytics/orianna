@@ -17,6 +17,7 @@ import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Champion.ChampionData;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
+import com.merakianalytics.orianna.types.core.staticdata.Items;
 import com.merakianalytics.orianna.types.core.staticdata.LanguageStrings;
 import com.merakianalytics.orianna.types.core.staticdata.Languages;
 import com.merakianalytics.orianna.types.core.staticdata.Maps;
@@ -83,6 +84,23 @@ public class GhostObjectSource extends AbstractDataSource {
         return new Item(data);
     }
 
+    @SuppressWarnings("unchecked")
+    @Get(Items.class)
+    public Items getItems(final Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
+        final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
+        final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
+        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
+
+        final com.merakianalytics.orianna.types.data.staticdata.Items data = new com.merakianalytics.orianna.types.data.staticdata.Items();
+        data.setPlatform(platform.getTag());
+        data.setVersion(version);
+        data.setLocale(locale);
+        data.setIncludedData(includedData);
+        return new Items(data);
+    }
+
     @Get(Languages.class)
     public Languages getLanguages(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
@@ -105,6 +123,57 @@ public class GhostObjectSource extends AbstractDataSource {
         data.setVersion(version);
         data.setLocale(locale);
         return new LanguageStrings(data);
+    }
+
+    @SuppressWarnings("unchecked")
+    @GetMany(Item.class)
+    public CloseableIterator<Item> getManyItem(final Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
+        final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
+        final Iterable<String> names = (Iterable<String>)query.get("names");
+        Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names");
+        final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
+        final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
+        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
+
+        final Iterator<?> iterator;
+        if(ids != null) {
+            iterator = ids.iterator();
+        } else if(names != null) {
+            iterator = names.iterator();
+        } else {
+            return null;
+        }
+
+        return CloseableIterators.from(new Iterator<Item>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Item next() {
+                final com.merakianalytics.orianna.types.data.staticdata.Item data = new com.merakianalytics.orianna.types.data.staticdata.Item();
+                data.setPlatform(platform.getTag());
+                data.setVersion(version);
+                data.setLocale(locale);
+                data.setIncludedData(includedData);
+                if(ids != null) {
+                    data.setId((Integer)iterator.next());
+                } else if(names != null) {
+                    data.setName((String)iterator.next());
+                } else {
+                    return null;
+                }
+                return new Item(data);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")
