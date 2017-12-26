@@ -10,6 +10,14 @@ public class Masteries extends CoreData.ListProxy<Mastery> {
     private MasteryTree tree;
     private String version, locale, type, platform;
 
+    public Masteries() {
+        super();
+    }
+
+    public Masteries(final int initialCapacity) {
+        super(initialCapacity);
+    }
+
     @Override
     public boolean equals(final Object obj) {
         if(this == obj) {

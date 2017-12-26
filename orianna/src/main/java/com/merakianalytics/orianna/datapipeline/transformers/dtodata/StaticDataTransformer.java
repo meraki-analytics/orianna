@@ -487,21 +487,27 @@ public class StaticDataTransformer extends AbstractDataTransformer {
     @Transform(from = com.merakianalytics.orianna.types.dto.staticdata.MasteryTree.class, to = MasteryTree.class)
     public MasteryTree transform(final com.merakianalytics.orianna.types.dto.staticdata.MasteryTree item, final PipelineContext context) {
         final MasteryTree tree = new MasteryTree();
-        List<MasteryTreeTier> tiers = new ArrayList<>(item.getCunning().size());
-        for(final MasteryTreeList list : item.getCunning()) {
-            tiers.add(transform(list, context));
+        if(item.getCunning() != null) {
+            final List<MasteryTreeTier> tiers = new ArrayList<>(item.getCunning().size());
+            for(final MasteryTreeList list : item.getCunning()) {
+                tiers.add(transform(list, context));
+            }
+            tree.setCunning(tiers);
         }
-        tree.setCunning(tiers);
-        tiers = new ArrayList<>(item.getFerocity().size());
-        for(final MasteryTreeList list : item.getFerocity()) {
-            tiers.add(transform(list, context));
+        if(item.getFerocity() != null) {
+            final List<MasteryTreeTier> tiers = new ArrayList<>(item.getFerocity().size());
+            for(final MasteryTreeList list : item.getFerocity()) {
+                tiers.add(transform(list, context));
+            }
+            tree.setFerocity(tiers);
         }
-        tree.setFerocity(tiers);
-        tiers = new ArrayList<>(item.getResolve().size());
-        for(final MasteryTreeList list : item.getResolve()) {
-            tiers.add(transform(list, context));
+        if(item.getResolve() != null) {
+            final List<MasteryTreeTier> tiers = new ArrayList<>(item.getResolve().size());
+            for(final MasteryTreeList list : item.getResolve()) {
+                tiers.add(transform(list, context));
+            }
+            tree.setResolve(tiers);
         }
-        tree.setResolve(tiers);
         return tree;
     }
 
@@ -510,6 +516,9 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         final MasteryTreeItem converted = new MasteryTreeItem();
         converted.setId(item.getMasteryId());
         converted.setPrerequisiteId(Integer.parseInt(item.getPrereq()));
+        converted.setPlatform((String)context.get("platform"));
+        converted.setVersion((String)context.get("version"));
+        converted.setLocale((String)context.get("locale"));
         return converted;
     }
 
@@ -1024,6 +1033,11 @@ public class StaticDataTransformer extends AbstractDataTransformer {
     @Transform(from = Masteries.class, to = MasteryList.class)
     public MasteryList transform(final Masteries item, final PipelineContext context) {
         final MasteryList masteries = new MasteryList();
+        final Map<String, com.merakianalytics.orianna.types.dto.staticdata.Mastery> data = new HashMap<>(item.size());
+        for(final Mastery mastery : item) {
+            data.put(Integer.toString(mastery.getId()), transform(mastery, context));
+        }
+        masteries.setData(data);
         masteries.setIncludedData(new HashSet<>(item.getIncludedData()));
         masteries.setLocale(item.getLocale());
         masteries.setPlatform(item.getPlatform());
@@ -1057,34 +1071,49 @@ public class StaticDataTransformer extends AbstractDataTransformer {
 
     @Transform(from = MasteryList.class, to = Masteries.class)
     public Masteries transform(final MasteryList item, final PipelineContext context) {
-        final Masteries masteries = new Masteries();
+        final Object previousPlatform = context.put("platform", item.getPlatform());
+        final Object previousVersion = context.put("version", item.getVersion());
+        final Object previousLocale = context.put("locale", item.getLocale());
+        final Masteries masteries = new Masteries(item.getData().size());
+        for(final com.merakianalytics.orianna.types.dto.staticdata.Mastery mastery : item.getData().values()) {
+            masteries.add(transform(mastery, context));
+        }
         masteries.setIncludedData(new HashSet<>(item.getIncludedData()));
         masteries.setLocale(item.getLocale());
         masteries.setPlatform(item.getPlatform());
         masteries.setTree(transform(item.getTree(), context));
         masteries.setType(item.getType());
         masteries.setVersion(item.getVersion());
+        context.put("platform", previousPlatform);
+        context.put("version", previousVersion);
+        context.put("locale", previousLocale);
         return masteries;
     }
 
     @Transform(from = MasteryTree.class, to = com.merakianalytics.orianna.types.dto.staticdata.MasteryTree.class)
     public com.merakianalytics.orianna.types.dto.staticdata.MasteryTree transform(final MasteryTree item, final PipelineContext context) {
         final com.merakianalytics.orianna.types.dto.staticdata.MasteryTree tree = new com.merakianalytics.orianna.types.dto.staticdata.MasteryTree();
-        List<MasteryTreeList> tiers = new ArrayList<>(item.getCunning().size());
-        for(final MasteryTreeTier list : item.getCunning()) {
-            tiers.add(transform(list, context));
+        if(item.getCunning() != null) {
+            final List<MasteryTreeList> tiers = new ArrayList<>(item.getCunning().size());
+            for(final MasteryTreeTier list : item.getCunning()) {
+                tiers.add(transform(list, context));
+            }
+            tree.setCunning(tiers);
         }
-        tree.setCunning(tiers);
-        tiers = new ArrayList<>(item.getFerocity().size());
-        for(final MasteryTreeTier list : item.getFerocity()) {
-            tiers.add(transform(list, context));
+        if(item.getFerocity() != null) {
+            final List<MasteryTreeList> tiers = new ArrayList<>(item.getFerocity().size());
+            for(final MasteryTreeTier list : item.getFerocity()) {
+                tiers.add(transform(list, context));
+            }
+            tree.setFerocity(tiers);
         }
-        tree.setFerocity(tiers);
-        tiers = new ArrayList<>(item.getResolve().size());
-        for(final MasteryTreeTier list : item.getResolve()) {
-            tiers.add(transform(list, context));
+        if(item.getResolve() != null) {
+            final List<MasteryTreeList> tiers = new ArrayList<>(item.getResolve().size());
+            for(final MasteryTreeTier list : item.getResolve()) {
+                tiers.add(transform(list, context));
+            }
+            tree.setResolve(tiers);
         }
-        tree.setResolve(tiers);
         return tree;
     }
 

@@ -12,6 +12,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Items;
 import com.merakianalytics.orianna.types.core.staticdata.LanguageStrings;
 import com.merakianalytics.orianna.types.core.staticdata.Languages;
 import com.merakianalytics.orianna.types.core.staticdata.Maps;
+import com.merakianalytics.orianna.types.core.staticdata.Masteries;
 import com.merakianalytics.orianna.types.core.staticdata.Mastery;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
 import com.merakianalytics.orianna.types.core.staticdata.Realm;
@@ -211,6 +212,41 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
+    public static Iterator<Integer> forManyMasteryQuery(final Map<String, Object> query) {
+        final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
+        final Iterable<String> names = (Iterable<String>)query.get("names");
+
+        final Iterator<?> iterator;
+        if(ids != null) {
+            iterator = ids.iterator();
+        } else if(names != null) {
+            iterator = names.iterator();
+        } else {
+            return null;
+        }
+
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                return Arrays.hashCode(new Object[] {
+                    Mastery.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
+                    iterator.next(), (Set<String>)query.get("includedData")
+                });
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+    @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManySummonerQuery(final Map<String, Object> query) {
         final Iterable<Long> ids = (Iterable<Long>)query.get("ids");
         final Iterable<Long> accountIds = (Iterable<Long>)query.get("accountIds");
@@ -257,6 +293,21 @@ public abstract class UniqueKeys {
     public static int forMapsQuery(final Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             Maps.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale")
+        });
+    }
+
+    public static int forMasteries(final Masteries masteries) {
+        final com.merakianalytics.orianna.types.data.staticdata.Masteries data = masteries.getCoreData();
+        return Arrays.hashCode(new Object[] {
+            Masteries.class.getCanonicalName(), data.getPlatform(), data.getVersion(), data.getLocale(), data.getIncludedData()
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    public static int forMasteriesQuery(final Map<String, Object> query) {
+        return Arrays.hashCode(new Object[] {
+            Masteries.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
+            (Set<String>)query.get("includedData")
         });
     }
 

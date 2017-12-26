@@ -35,6 +35,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Items;
 import com.merakianalytics.orianna.types.core.staticdata.LanguageStrings;
 import com.merakianalytics.orianna.types.core.staticdata.Languages;
 import com.merakianalytics.orianna.types.core.staticdata.Maps;
+import com.merakianalytics.orianna.types.core.staticdata.Masteries;
 import com.merakianalytics.orianna.types.core.staticdata.Mastery;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
 import com.merakianalytics.orianna.types.core.staticdata.Realm;
@@ -53,6 +54,7 @@ public class InMemoryCache extends AbstractDataStore {
             .put(Languages.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
             .put(Maps.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
             .put(Mastery.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
+            .put(Masteries.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
             .put(ProfileIcons.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
             .put(Realm.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
             .put(Rune.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
@@ -173,6 +175,35 @@ public class InMemoryCache extends AbstractDataStore {
         });
     }
 
+    @GetMany(Mastery.class)
+    public CloseableIterator<Mastery> getManyMastery(final Map<String, Object> query, final PipelineContext context) {
+        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyMasteryQuery(query));
+        for(final Integer key : keys) {
+            if(!cache.containsKey(key)) {
+                return null;
+            }
+        }
+
+        final Iterator<Integer> iterator = keys.iterator();
+        return CloseableIterators.from(new Iterator<Mastery>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Mastery next() {
+                final int key = iterator.next();
+                return (Mastery)cache.get(key);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
     @GetMany(Summoner.class)
     public CloseableIterator<Summoner> getManySummoner(final Map<String, Object> query, final PipelineContext context) {
         final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManySummonerQuery(query));
@@ -206,6 +237,12 @@ public class InMemoryCache extends AbstractDataStore {
     public Maps getMaps(final Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forMapsQuery(query);
         return (Maps)cache.get(key);
+    }
+
+    @Get(Masteries.class)
+    public Masteries getMasteries(final Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forMasteriesQuery(query);
+        return (Masteries)cache.get(key);
     }
 
     @Get(Mastery.class)
@@ -335,6 +372,13 @@ public class InMemoryCache extends AbstractDataStore {
         }
     }
 
+    @PutMany(Mastery.class)
+    public void putManyMastery(final Iterable<Mastery> masteries, final PipelineContext context) {
+        for(final Mastery mastery : masteries) {
+            putMastery(mastery, context);
+        }
+    }
+
     @PutMany(Summoner.class)
     public void putManySummoner(final Iterable<Summoner> summoners, final PipelineContext context) {
         for(final Summoner summoner : summoners) {
@@ -346,6 +390,25 @@ public class InMemoryCache extends AbstractDataStore {
     public void putMaps(final Maps maps, final PipelineContext context) {
         final int key = UniqueKeys.forMaps(maps);
         cache.put(key, maps);
+    }
+
+    @Put(Masteries.class)
+    public void putMasteries(final Masteries masteries, final PipelineContext context) {
+        final int key = UniqueKeys.forMasteries(masteries);
+        cache.put(key, masteries);
+
+        if(masteries.getCoreData().isEmpty()) {
+            final LoadHook hook = new LoadHook() {
+                @Override
+                public void call() {
+                    putMasteries(masteries, null);
+                }
+            };
+
+            masteries.registerGhostLoadHook(hook, ListProxy.LIST_PROXY_LOAD_GROUP);
+        } else {
+            putManyMastery(masteries, context);
+        }
     }
 
     @Put(Mastery.class)

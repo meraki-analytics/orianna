@@ -35,6 +35,10 @@
             "period": 6,
             "unit": "HOURS"
           },
+          "com.merakianalytics.orianna.types.core.staticdata.Masteries": {
+            "period": 6,
+            "unit": "HOURS"
+          },
           "com.merakianalytics.orianna.types.core.staticdata.ProfileIcons": {
             "period": 6,
             "unit": "HOURS"
