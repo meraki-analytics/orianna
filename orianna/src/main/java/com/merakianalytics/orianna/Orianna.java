@@ -47,10 +47,12 @@ import com.merakianalytics.orianna.types.core.staticdata.Items;
 import com.merakianalytics.orianna.types.core.staticdata.LanguageStrings;
 import com.merakianalytics.orianna.types.core.staticdata.Languages;
 import com.merakianalytics.orianna.types.core.staticdata.Maps;
+import com.merakianalytics.orianna.types.core.staticdata.Masteries;
 import com.merakianalytics.orianna.types.core.staticdata.Mastery;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
 import com.merakianalytics.orianna.types.core.staticdata.Realm;
 import com.merakianalytics.orianna.types.core.staticdata.Rune;
+import com.merakianalytics.orianna.types.core.staticdata.Runes;
 import com.merakianalytics.orianna.types.core.staticdata.SummonerSpell;
 import com.merakianalytics.orianna.types.core.staticdata.Versions;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
@@ -354,6 +356,46 @@ public abstract class Orianna {
         return Maps.withVersion(version);
     }
 
+    public static Masteries getMasteries() {
+        return Masteries.get();
+    }
+
+    public static Masteries.SubsetBuilder getMasteriesNamed(final Iterable<String> names) {
+        return Masteries.named(names);
+    }
+
+    public static Masteries.SubsetBuilder getMasteriesNamed(final String... names) {
+        return Masteries.named(names);
+    }
+
+    public static Masteries.SubsetBuilder getMasteriesWithIds(final int... ids) {
+        return Masteries.withIds(ids);
+    }
+
+    public static Masteries.SubsetBuilder getMasteriesWithIds(final Iterable<Integer> ids) {
+        return Masteries.withIds(ids);
+    }
+
+    public static Masteries.Builder getMasteriesWithIncludedData(final Set<String> includedData) {
+        return Masteries.withIncludedData(includedData);
+    }
+
+    public static Masteries.Builder getMasteriesWithLocale(final String locale) {
+        return Masteries.withLocale(locale);
+    }
+
+    public static Masteries.Builder getMasteriesWithPlatform(final Platform platform) {
+        return Masteries.withPlatform(platform);
+    }
+
+    public static Masteries.Builder getMasteriesWithRegion(final Region region) {
+        return Masteries.withRegion(region);
+    }
+
+    public static Masteries.Builder getMasteriesWithVersion(final String version) {
+        return Masteries.withVersion(version);
+    }
+
     public static Mastery.Builder getMasteryNamed(final String name) {
         return Mastery.named(name);
     }
@@ -396,6 +438,46 @@ public abstract class Orianna {
 
     public static Rune.Builder getRuneNamed(final String name) {
         return Rune.named(name);
+    }
+
+    public static Runes getRunes() {
+        return Runes.get();
+    }
+
+    public static Runes.SubsetBuilder getRunesNamed(final Iterable<String> names) {
+        return Runes.named(names);
+    }
+
+    public static Runes.SubsetBuilder getRunesNamed(final String... names) {
+        return Runes.named(names);
+    }
+
+    public static Runes.SubsetBuilder getRunesWithIds(final int... ids) {
+        return Runes.withIds(ids);
+    }
+
+    public static Runes.SubsetBuilder getRunesWithIds(final Iterable<Integer> ids) {
+        return Runes.withIds(ids);
+    }
+
+    public static Runes.Builder getRunesWithIncludedData(final Set<String> includedData) {
+        return Runes.withIncludedData(includedData);
+    }
+
+    public static Runes.Builder getRunesWithLocale(final String locale) {
+        return Runes.withLocale(locale);
+    }
+
+    public static Runes.Builder getRunesWithPlatform(final Platform platform) {
+        return Runes.withPlatform(platform);
+    }
+
+    public static Runes.Builder getRunesWithRegion(final Region region) {
+        return Runes.withRegion(region);
+    }
+
+    public static Runes.Builder getRunesWithVersion(final String version) {
+        return Runes.withVersion(version);
     }
 
     public static Rune.Builder getRuneWithId(final int id) {

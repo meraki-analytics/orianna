@@ -51,6 +51,10 @@
             "period": 6,
             "unit": "HOURS"
           },
+          "com.merakianalytics.orianna.types.core.staticdata.Runes": {
+            "period": 6,
+            "unit": "HOURS"
+          },
           "com.merakianalytics.orianna.types.core.staticdata.SummonerSpell": {
             "period": 6,
             "unit": "HOURS"

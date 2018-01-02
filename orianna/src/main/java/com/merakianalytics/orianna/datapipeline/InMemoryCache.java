@@ -40,6 +40,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Mastery;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
 import com.merakianalytics.orianna.types.core.staticdata.Realm;
 import com.merakianalytics.orianna.types.core.staticdata.Rune;
+import com.merakianalytics.orianna.types.core.staticdata.Runes;
 import com.merakianalytics.orianna.types.core.staticdata.SummonerSpell;
 import com.merakianalytics.orianna.types.core.staticdata.Versions;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
@@ -58,6 +59,7 @@ public class InMemoryCache extends AbstractDataStore {
             .put(ProfileIcons.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
             .put(Realm.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
             .put(Rune.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
+            .put(Runes.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
             .put(SummonerSpell.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
             .put(Versions.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
             .put(Summoner.class.getCanonicalName(), ExpirationPeriod.create(30, TimeUnit.MINUTES))
@@ -204,6 +206,35 @@ public class InMemoryCache extends AbstractDataStore {
         });
     }
 
+    @GetMany(Rune.class)
+    public CloseableIterator<Rune> getManyRune(final Map<String, Object> query, final PipelineContext context) {
+        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyRuneQuery(query));
+        for(final Integer key : keys) {
+            if(!cache.containsKey(key)) {
+                return null;
+            }
+        }
+
+        final Iterator<Integer> iterator = keys.iterator();
+        return CloseableIterators.from(new Iterator<Rune>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Rune next() {
+                final int key = iterator.next();
+                return (Rune)cache.get(key);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
     @GetMany(Summoner.class)
     public CloseableIterator<Summoner> getManySummoner(final Map<String, Object> query, final PipelineContext context) {
         final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManySummonerQuery(query));
@@ -267,6 +298,12 @@ public class InMemoryCache extends AbstractDataStore {
     public Rune getRune(final Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forRuneQuery(query);
         return (Rune)cache.get(key);
+    }
+
+    @Get(Runes.class)
+    public Runes getRunes(final Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forRunesQuery(query);
+        return (Runes)cache.get(key);
     }
 
     @Get(Summoner.class)
@@ -379,6 +416,13 @@ public class InMemoryCache extends AbstractDataStore {
         }
     }
 
+    @PutMany(Rune.class)
+    public void putManyRune(final Iterable<Rune> runes, final PipelineContext context) {
+        for(final Rune rune : runes) {
+            putRune(rune, context);
+        }
+    }
+
     @PutMany(Summoner.class)
     public void putManySummoner(final Iterable<Summoner> summoners, final PipelineContext context) {
         for(final Summoner summoner : summoners) {
@@ -460,6 +504,25 @@ public class InMemoryCache extends AbstractDataStore {
 
         for(final int key : keys) {
             cache.put(key, rune);
+        }
+    }
+
+    @Put(Runes.class)
+    public void putRunes(final Runes runes, final PipelineContext context) {
+        final int key = UniqueKeys.forRunes(runes);
+        cache.put(key, runes);
+
+        if(runes.getCoreData().isEmpty()) {
+            final LoadHook hook = new LoadHook() {
+                @Override
+                public void call() {
+                    putRunes(runes, null);
+                }
+            };
+
+            runes.registerGhostLoadHook(hook, ListProxy.LIST_PROXY_LOAD_GROUP);
+        } else {
+            putManyRune(runes, context);
         }
     }
 
