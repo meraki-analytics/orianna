@@ -54,6 +54,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Realm;
 import com.merakianalytics.orianna.types.core.staticdata.Rune;
 import com.merakianalytics.orianna.types.core.staticdata.Runes;
 import com.merakianalytics.orianna.types.core.staticdata.SummonerSpell;
+import com.merakianalytics.orianna.types.core.staticdata.SummonerSpells;
 import com.merakianalytics.orianna.types.core.staticdata.Versions;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 import com.merakianalytics.orianna.types.core.summoner.Summoners;
@@ -502,6 +503,46 @@ public abstract class Orianna {
 
     public static SummonerSpell.Builder getSummonerSpellNamed(final String name) {
         return SummonerSpell.named(name);
+    }
+
+    public static SummonerSpells getSummonerSpells() {
+        return SummonerSpells.get();
+    }
+
+    public static SummonerSpells.SubsetBuilder getSummonerSpellsNamed(final Iterable<String> names) {
+        return SummonerSpells.named(names);
+    }
+
+    public static SummonerSpells.SubsetBuilder getSummonerSpellsNamed(final String... names) {
+        return SummonerSpells.named(names);
+    }
+
+    public static SummonerSpells.SubsetBuilder getSummonerSpellsWithIds(final int... ids) {
+        return SummonerSpells.withIds(ids);
+    }
+
+    public static SummonerSpells.SubsetBuilder getSummonerSpellsWithIds(final Iterable<Integer> ids) {
+        return SummonerSpells.withIds(ids);
+    }
+
+    public static SummonerSpells.Builder getSummonerSpellsWithIncludedData(final Set<String> includedData) {
+        return SummonerSpells.withIncludedData(includedData);
+    }
+
+    public static SummonerSpells.Builder getSummonerSpellsWithLocale(final String locale) {
+        return SummonerSpells.withLocale(locale);
+    }
+
+    public static SummonerSpells.Builder getSummonerSpellsWithPlatform(final Platform platform) {
+        return SummonerSpells.withPlatform(platform);
+    }
+
+    public static SummonerSpells.Builder getSummonerSpellsWithRegion(final Region region) {
+        return SummonerSpells.withRegion(region);
+    }
+
+    public static SummonerSpells.Builder getSummonerSpellsWithVersion(final String version) {
+        return SummonerSpells.withVersion(version);
     }
 
     public static SummonerSpell.Builder getSummonerSpellWithId(final int id) {

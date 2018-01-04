@@ -19,6 +19,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Realm;
 import com.merakianalytics.orianna.types.core.staticdata.Rune;
 import com.merakianalytics.orianna.types.core.staticdata.Runes;
 import com.merakianalytics.orianna.types.core.staticdata.SummonerSpell;
+import com.merakianalytics.orianna.types.core.staticdata.SummonerSpells;
 import com.merakianalytics.orianna.types.core.staticdata.Versions;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
@@ -319,6 +320,42 @@ public abstract class UniqueKeys {
         };
     }
 
+    @SuppressWarnings("unchecked")
+    public static Iterator<Integer> forManySummonerSpellQuery(final Map<String, Object> query) {
+        final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
+        final Iterable<String> names = (Iterable<String>)query.get("names");
+
+        final Iterator<?> iterator;
+        if(ids != null) {
+            iterator = ids.iterator();
+        } else if(names != null) {
+            iterator = names.iterator();
+        } else {
+            return null;
+        }
+
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                return Arrays.hashCode(new Object[] {
+                    SummonerSpell.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"),
+                    (String)query.get("locale"),
+                    iterator.next(), (Set<String>)query.get("includedData")
+                });
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
     public static int forMaps(final Maps maps) {
         final com.merakianalytics.orianna.types.data.staticdata.Maps data = maps.getCoreData();
         return Arrays.hashCode(new Object[] {
@@ -572,6 +609,21 @@ public abstract class UniqueKeys {
         return Arrays.hashCode(new Object[] {
             SummonerSpell.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
             id == null ? name : id.intValue(), (Set<String>)query.get("includedData")
+        });
+    }
+
+    public static int forSummonerSpells(final SummonerSpells spells) {
+        final com.merakianalytics.orianna.types.data.staticdata.SummonerSpells data = spells.getCoreData();
+        return Arrays.hashCode(new Object[] {
+            SummonerSpells.class.getCanonicalName(), data.getPlatform(), data.getVersion(), data.getLocale(), data.getIncludedData()
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    public static int forSummonerSpellsQuery(final Map<String, Object> query) {
+        return Arrays.hashCode(new Object[] {
+            SummonerSpells.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
+            (Set<String>)query.get("includedData")
         });
     }
 

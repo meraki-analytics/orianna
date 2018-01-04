@@ -42,6 +42,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Realm;
 import com.merakianalytics.orianna.types.core.staticdata.Rune;
 import com.merakianalytics.orianna.types.core.staticdata.Runes;
 import com.merakianalytics.orianna.types.core.staticdata.SummonerSpell;
+import com.merakianalytics.orianna.types.core.staticdata.SummonerSpells;
 import com.merakianalytics.orianna.types.core.staticdata.Versions;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
@@ -61,6 +62,7 @@ public class InMemoryCache extends AbstractDataStore {
             .put(Rune.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
             .put(Runes.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
             .put(SummonerSpell.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
+            .put(SummonerSpells.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
             .put(Versions.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
             .put(Summoner.class.getCanonicalName(), ExpirationPeriod.create(30, TimeUnit.MINUTES))
             .build();
@@ -264,6 +266,35 @@ public class InMemoryCache extends AbstractDataStore {
         });
     }
 
+    @GetMany(SummonerSpell.class)
+    public CloseableIterator<SummonerSpell> getManySummonerSpell(final Map<String, Object> query, final PipelineContext context) {
+        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManySummonerSpellQuery(query));
+        for(final Integer key : keys) {
+            if(!cache.containsKey(key)) {
+                return null;
+            }
+        }
+
+        final Iterator<Integer> iterator = keys.iterator();
+        return CloseableIterators.from(new Iterator<SummonerSpell>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public SummonerSpell next() {
+                final int key = iterator.next();
+                return (SummonerSpell)cache.get(key);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
     @Get(Maps.class)
     public Maps getMaps(final Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forMapsQuery(query);
@@ -316,6 +347,12 @@ public class InMemoryCache extends AbstractDataStore {
     public SummonerSpell getSummonerSpell(final Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forSummonerSpellQuery(query);
         return (SummonerSpell)cache.get(key);
+    }
+
+    @Get(SummonerSpells.class)
+    public SummonerSpells getSummonerSpells(final Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forSummonerSpellsQuery(query);
+        return (SummonerSpells)cache.get(key);
     }
 
     @Get(Versions.class)
@@ -427,6 +464,13 @@ public class InMemoryCache extends AbstractDataStore {
     public void putManySummoner(final Iterable<Summoner> summoners, final PipelineContext context) {
         for(final Summoner summoner : summoners) {
             putSummoner(summoner, context);
+        }
+    }
+
+    @PutMany(SummonerSpell.class)
+    public void putManySummonerSpell(final Iterable<SummonerSpell> spells, final PipelineContext context) {
+        for(final SummonerSpell spell : spells) {
+            putSummonerSpell(spell, context);
         }
     }
 
@@ -563,6 +607,25 @@ public class InMemoryCache extends AbstractDataStore {
 
         for(final int key : keys) {
             cache.put(key, summonerSpell);
+        }
+    }
+
+    @Put(SummonerSpells.class)
+    public void putSummonerSpells(final SummonerSpells spells, final PipelineContext context) {
+        final int key = UniqueKeys.forSummonerSpells(spells);
+        cache.put(key, spells);
+
+        if(spells.getCoreData().isEmpty()) {
+            final LoadHook hook = new LoadHook() {
+                @Override
+                public void call() {
+                    putSummonerSpells(spells, null);
+                }
+            };
+
+            spells.registerGhostLoadHook(hook, ListProxy.LIST_PROXY_LOAD_GROUP);
+        } else {
+            putManySummonerSpell(spells, context);
         }
     }
 }
