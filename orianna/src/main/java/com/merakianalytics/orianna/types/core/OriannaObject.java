@@ -96,6 +96,11 @@ public abstract class OriannaObject<T extends CoreData> extends AbstractSearchab
             data = Collections.unmodifiableList(d);
         }
 
+        public ListProxy(final L coreData, final List<T> data) {
+            super(coreData);
+            this.data = Collections.unmodifiableList(new ArrayList<>(data));
+        }
+
         @Override
         public void add(final int index, final T item) {
             throw new UnsupportedOperationException();
@@ -231,6 +236,11 @@ public abstract class OriannaObject<T extends CoreData> extends AbstractSearchab
                 d.put(key, value);
             }
             data = Collections.unmodifiableMap(d);
+        }
+
+        public MapProxy(final P coreData, final Map<K, V> data) {
+            super(coreData);
+            this.data = Collections.unmodifiableMap(new HashMap<>(data));
         }
 
         @Override
