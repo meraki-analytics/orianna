@@ -640,6 +640,54 @@ public class StaticDataAPI extends RiotAPIService {
     }
 
     @SuppressWarnings("unchecked")
+    @GetMany(MapDetails.class)
+    public CloseableIterator<MapDetails> getManyMapDetails(final Map<String, Object> query, final PipelineContext context) {
+        // TODO: Add some caching for MapData internally so we don't have to waste calls to get one map a bunch of times.
+        final Platform platform = (Platform)query.get("platform");
+        final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
+        Utilities.checkNotNull(platform, "platform", ids, "ids");
+        final String version = (String)query.get("version");
+        final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
+
+        final String endpoint = "lol/static-data/v3/maps";
+
+        final Multimap<String, String> parameters = HashMultimap.create();
+        parameters.put("locale", locale);
+        if(version != null) {
+            parameters.put("version", version);
+        }
+
+        final MapData data = get(MapData.class, endpoint, platform, parameters, "lol/static-data/v3/maps");
+        if(data == null) {
+            return null;
+        }
+
+        final Iterator<Number> iterator = ids.iterator();
+        return CloseableIterators.from(new Iterator<MapDetails>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public MapDetails next() {
+                final MapDetails details = data.getData().get(Long.toString(iterator.next().longValue()));
+                if(details != null) {
+                    details.setPlatform(platform.getTag());
+                    details.setVersion(data.getVersion());
+                    details.setLocale(locale);
+                }
+                return details;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
     @GetMany(Mastery.class)
     public CloseableIterator<Mastery> getManyMastery(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
@@ -792,6 +840,53 @@ public class StaticDataAPI extends RiotAPIService {
                     icon.setLocale(locale);
                 }
                 return data;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    @GetMany(ProfileIconDetails.class)
+    public CloseableIterator<ProfileIconDetails> getManyProfileIconDetails(final Map<String, Object> query, final PipelineContext context) {
+        // TODO: Add some caching for ProfileIconData internally so we don't have to waste calls to get one profile icon a bunch of times.
+        final Platform platform = (Platform)query.get("platform");
+        final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
+        Utilities.checkNotNull(platform, "platform", ids, "ids");
+        final String version = (String)query.get("version");
+        final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
+
+        final Multimap<String, String> parameters = HashMultimap.create();
+        parameters.put("locale", locale);
+        if(version != null) {
+            parameters.put("version", version);
+        }
+
+        final String endpoint = "lol/static-data/v3/profile-icons";
+        final ProfileIconData data = get(ProfileIconData.class, endpoint, platform, parameters, "lol/static-data/v3/profile-icons");
+        if(data == null) {
+            return null;
+        }
+
+        final Iterator<Number> iterator = ids.iterator();
+        return CloseableIterators.from(new Iterator<ProfileIconDetails>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public ProfileIconDetails next() {
+                final ProfileIconDetails details = data.getData().get(Long.toString(iterator.next().longValue()));
+                if(details != null) {
+                    details.setPlatform(platform.getTag());
+                    details.setVersion(data.getVersion());
+                    details.setLocale(locale);
+                }
+                return details;
             }
 
             @Override
@@ -1139,6 +1234,37 @@ public class StaticDataAPI extends RiotAPIService {
         return data;
     }
 
+    @Get(MapDetails.class)
+    public MapDetails getMapDetails(final Map<String, Object> query, final PipelineContext context) {
+        // TODO: Add some caching for MapData internally so we don't have to waste calls to get one map a bunch of times.
+        final Platform platform = (Platform)query.get("platform");
+        final Number id = (Number)query.get("id");
+        Utilities.checkNotNull(platform, "platform", id, "id");
+        final String version = (String)query.get("version");
+        final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
+
+        final String endpoint = "lol/static-data/v3/maps";
+
+        final Multimap<String, String> parameters = HashMultimap.create();
+        parameters.put("locale", locale);
+        if(version != null) {
+            parameters.put("version", version);
+        }
+
+        final MapData data = get(MapData.class, endpoint, platform, parameters, "lol/static-data/v3/maps");
+        if(data == null) {
+            return null;
+        }
+
+        final MapDetails details = data.getData().get(Long.toString(id.longValue()));
+        if(details != null) {
+            details.setPlatform(platform.getTag());
+            details.setVersion(data.getVersion());
+            details.setLocale(locale);
+        }
+        return details;
+    }
+
     @SuppressWarnings("unchecked")
     @Get(Mastery.class)
     public Mastery getMastery(final Map<String, Object> query, final PipelineContext context) {
@@ -1250,6 +1376,36 @@ public class StaticDataAPI extends RiotAPIService {
             icon.setLocale(locale);
         }
         return data;
+    }
+
+    @Get(ProfileIconDetails.class)
+    public ProfileIconDetails getProfileIconDetails(final Map<String, Object> query, final PipelineContext context) {
+        // TODO: Add some caching for ProfileIconData internally so we don't have to waste calls to get one profile icon a bunch of times.
+        final Platform platform = (Platform)query.get("platform");
+        final Number id = (Number)query.get("id");
+        Utilities.checkNotNull(platform, "platform", id, "id");
+        final String version = (String)query.get("version");
+        final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
+
+        final Multimap<String, String> parameters = HashMultimap.create();
+        parameters.put("locale", locale);
+        if(version != null) {
+            parameters.put("version", version);
+        }
+
+        final String endpoint = "lol/static-data/v3/profile-icons";
+        final ProfileIconData data = get(ProfileIconData.class, endpoint, platform, parameters, "lol/static-data/v3/profile-icons");
+        if(data == null) {
+            return null;
+        }
+
+        final ProfileIconDetails details = data.getData().get(Long.toString(id.longValue()));
+        if(details != null) {
+            details.setPlatform(platform.getTag());
+            details.setVersion(data.getVersion());
+            details.setLocale(locale);
+        }
+        return details;
     }
 
     @Get(Realm.class)

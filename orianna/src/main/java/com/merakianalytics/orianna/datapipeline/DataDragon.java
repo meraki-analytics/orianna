@@ -1033,6 +1033,46 @@ public class DataDragon extends AbstractDataSource {
     }
 
     @SuppressWarnings("unchecked")
+    @GetMany(MapDetails.class)
+    public CloseableIterator<MapDetails> getManyMapDetails(final Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
+        Utilities.checkNotNull(platform, "platform", ids, "ids");
+        final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
+        final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
+
+        final String content = get("map", version, locale);
+        final MapData data = DataObject.fromJSON(MapData.class, content);
+        if(data == null) {
+            return null;
+        }
+
+        final Iterator<Number> iterator = ids.iterator();
+        return CloseableIterators.from(new Iterator<MapDetails>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public MapDetails next() {
+                final MapDetails details = data.getData().get(Long.toString(iterator.next().longValue()));
+                if(details != null) {
+                    details.setPlatform(platform.getTag());
+                    details.setVersion(data.getVersion());
+                    details.setLocale(locale);
+                }
+                return details;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
     @GetMany(Mastery.class)
     public CloseableIterator<Mastery> getManyMastery(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
@@ -1212,6 +1252,46 @@ public class DataDragon extends AbstractDataSource {
                     icon.setLocale(locale);
                 }
                 return data;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    @GetMany(ProfileIconDetails.class)
+    public CloseableIterator<ProfileIconDetails> getManyProfileIconDetails(final Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
+        Utilities.checkNotNull(platform, "platform", ids, "ids");
+        final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
+        final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
+
+        final String content = get("profileicon", version, locale);
+        final ProfileIconData data = DataObject.fromJSON(ProfileIconData.class, content);
+        if(data == null) {
+            return null;
+        }
+
+        final Iterator<Number> iterator = ids.iterator();
+        return CloseableIterators.from(new Iterator<ProfileIconDetails>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public ProfileIconDetails next() {
+                final ProfileIconDetails details = data.getData().get(Long.toString(iterator.next().longValue()));
+                if(details != null) {
+                    details.setPlatform(platform.getTag());
+                    details.setVersion(data.getVersion());
+                    details.setLocale(locale);
+                }
+                return details;
             }
 
             @Override
@@ -1638,6 +1718,29 @@ public class DataDragon extends AbstractDataSource {
         return data;
     }
 
+    @Get(MapDetails.class)
+    public MapDetails getMapDetails(final Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        final Number id = (Number)query.get("id");
+        Utilities.checkNotNull(platform, "platform", id, "id");
+        final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
+        final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
+
+        final String content = get("map", version, locale);
+        final MapData data = DataObject.fromJSON(MapData.class, content);
+        if(data == null) {
+            return null;
+        }
+
+        final MapDetails details = data.getData().get(Long.toString(id.longValue()));
+        if(details != null) {
+            details.setPlatform(platform.getTag());
+            details.setVersion(data.getVersion());
+            details.setLocale(locale);
+        }
+        return details;
+    }
+
     @SuppressWarnings("unchecked")
     @Get(Mastery.class)
     public Mastery getMastery(final Map<String, Object> query, final PipelineContext context) {
@@ -1761,6 +1864,29 @@ public class DataDragon extends AbstractDataSource {
             icon.setLocale(locale);
         }
         return data;
+    }
+
+    @Get(ProfileIconDetails.class)
+    public ProfileIconDetails getProfileIconDetails(final Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        final Number id = (Number)query.get("id");
+        Utilities.checkNotNull(platform, "platform", id, "id");
+        final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
+        final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
+
+        final String content = get("profileicon", version, locale);
+        final ProfileIconData data = DataObject.fromJSON(ProfileIconData.class, content);
+        if(data == null) {
+            return null;
+        }
+
+        final ProfileIconDetails details = data.getData().get(Long.toString(id.longValue()));
+        if(details != null) {
+            details.setPlatform(platform.getTag());
+            details.setVersion(data.getVersion());
+            details.setLocale(locale);
+        }
+        return details;
     }
 
     @Get(Realm.class)
