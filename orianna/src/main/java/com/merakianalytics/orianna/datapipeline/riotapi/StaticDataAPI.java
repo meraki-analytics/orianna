@@ -644,8 +644,10 @@ public class StaticDataAPI extends RiotAPIService {
     public CloseableIterator<MapDetails> getManyMapDetails(final Map<String, Object> query, final PipelineContext context) {
         // TODO: Add some caching for MapData internally so we don't have to waste calls to get one map a bunch of times.
         final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
         final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
-        Utilities.checkNotNull(platform, "platform", ids, "ids");
+        final Iterable<String> names = (Iterable<String>)query.get("names");
+        Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names");
         final String version = (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
 
@@ -662,7 +664,18 @@ public class StaticDataAPI extends RiotAPIService {
             return null;
         }
 
-        final Iterator<Number> iterator = ids.iterator();
+        final Map<String, MapDetails> byName = ids == null ? new HashMap<String, MapDetails>() : null;
+        for(final MapDetails details : data.getData().values()) {
+            details.setPlatform(platform.getTag());
+            details.setVersion(data.getVersion());
+            details.setLocale(locale);
+
+            if(ids == null) {
+                byName.put(details.getMapName(), details);
+            }
+        }
+
+        final Iterator<?> iterator = ids == null ? names.iterator() : ids.iterator();
         return CloseableIterators.from(new Iterator<MapDetails>() {
             @Override
             public boolean hasNext() {
@@ -671,13 +684,13 @@ public class StaticDataAPI extends RiotAPIService {
 
             @Override
             public MapDetails next() {
-                final MapDetails details = data.getData().get(Long.toString(iterator.next().longValue()));
-                if(details != null) {
-                    details.setPlatform(platform.getTag());
-                    details.setVersion(data.getVersion());
-                    details.setLocale(locale);
+                if(ids != null) {
+                    final Number id = (Number)iterator.next();
+                    return data.getData().get(id.toString());
+                } else {
+                    final String name = (String)iterator.next();
+                    return byName.get(name);
                 }
-                return details;
             }
 
             @Override
@@ -1238,8 +1251,10 @@ public class StaticDataAPI extends RiotAPIService {
     public MapDetails getMapDetails(final Map<String, Object> query, final PipelineContext context) {
         // TODO: Add some caching for MapData internally so we don't have to waste calls to get one map a bunch of times.
         final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
         final Number id = (Number)query.get("id");
-        Utilities.checkNotNull(platform, "platform", id, "id");
+        final String name = (String)query.get("name");
+        Utilities.checkAtLeastOneNotNull(id, "id", name, "name");
         final String version = (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
 
@@ -1256,7 +1271,18 @@ public class StaticDataAPI extends RiotAPIService {
             return null;
         }
 
-        final MapDetails details = data.getData().get(Long.toString(id.longValue()));
+        MapDetails details = null;
+        if(id != null) {
+            data.getData().get(Long.toString(id.longValue()));
+        } else {
+            for(final MapDetails d : data.getData().values()) {
+                if(name.equals(d.getMapName())) {
+                    details = d;
+                    break;
+                }
+            }
+        }
+
         if(details != null) {
             details.setPlatform(platform.getTag());
             details.setVersion(data.getVersion());

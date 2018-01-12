@@ -2,7 +2,6 @@ package com.merakianalytics.orianna.types;
 
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 
 import com.merakianalytics.orianna.types.common.Platform;
@@ -11,6 +10,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Item;
 import com.merakianalytics.orianna.types.core.staticdata.Items;
 import com.merakianalytics.orianna.types.core.staticdata.LanguageStrings;
 import com.merakianalytics.orianna.types.core.staticdata.Languages;
+import com.merakianalytics.orianna.types.core.staticdata.Map;
 import com.merakianalytics.orianna.types.core.staticdata.Maps;
 import com.merakianalytics.orianna.types.core.staticdata.Masteries;
 import com.merakianalytics.orianna.types.core.staticdata.Mastery;
@@ -91,7 +91,7 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
-    public static int forChampionQuery(final Map<String, Object> query) {
+    public static int forChampionQuery(final java.util.Map<String, Object> query) {
         final Integer id = (Integer)query.get("id");
         final String name = (String)query.get("name");
         final String key = (String)query.get("key");
@@ -130,7 +130,7 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
-    public static int forItemQuery(final Map<String, Object> query) {
+    public static int forItemQuery(final java.util.Map<String, Object> query) {
         final Integer id = (Integer)query.get("id");
         final String name = (String)query.get("name");
         return Arrays.hashCode(new Object[] {
@@ -147,7 +147,7 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
-    public static int forItemsQuery(final Map<String, Object> query) {
+    public static int forItemsQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             Items.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
             (Set<String>)query.get("includedData")
@@ -161,7 +161,7 @@ public abstract class UniqueKeys {
         });
     }
 
-    public static int forLanguagesQuery(final Map<String, Object> query) {
+    public static int forLanguagesQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             Languages.class.getCanonicalName(), ((Platform)query.get("platform")).getTag()
         });
@@ -174,14 +174,14 @@ public abstract class UniqueKeys {
         });
     }
 
-    public static int forLanguageStringsQuery(final Map<String, Object> query) {
+    public static int forLanguageStringsQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             LanguageStrings.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale")
         });
     }
 
     @SuppressWarnings("unchecked")
-    public static Iterator<Integer> forManyItemQuery(final Map<String, Object> query) {
+    public static Iterator<Integer> forManyItemQuery(final java.util.Map<String, Object> query) {
         final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
         final Iterable<String> names = (Iterable<String>)query.get("names");
 
@@ -216,7 +216,42 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
-    public static Iterator<Integer> forManyMasteryQuery(final Map<String, Object> query) {
+    public static Iterator<Integer> forManyMapQuery(final java.util.Map<String, Object> query) {
+        final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
+        final Iterable<String> names = (Iterable<String>)query.get("names");
+
+        final Iterator<?> iterator;
+        if(ids != null) {
+            iterator = ids.iterator();
+        } else if(names != null) {
+            iterator = names.iterator();
+        } else {
+            return null;
+        }
+
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                return Arrays.hashCode(new Object[] {
+                    Map.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
+                    iterator.next()
+                });
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Iterator<Integer> forManyMasteryQuery(final java.util.Map<String, Object> query) {
         final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
         final Iterable<String> names = (Iterable<String>)query.get("names");
 
@@ -251,7 +286,7 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
-    public static Iterator<Integer> forManyProfileIconQuery(final Map<String, Object> query) {
+    public static Iterator<Integer> forManyProfileIconQuery(final java.util.Map<String, Object> query) {
         final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
 
         final Iterator<Integer> iterator = ids.iterator();
@@ -277,7 +312,7 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
-    public static Iterator<Integer> forManyRuneQuery(final Map<String, Object> query) {
+    public static Iterator<Integer> forManyRuneQuery(final java.util.Map<String, Object> query) {
         final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
         final Iterable<String> names = (Iterable<String>)query.get("names");
 
@@ -312,7 +347,7 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
-    public static Iterator<Integer> forManySummonerQuery(final Map<String, Object> query) {
+    public static Iterator<Integer> forManySummonerQuery(final java.util.Map<String, Object> query) {
         final Iterable<Long> ids = (Iterable<Long>)query.get("ids");
         final Iterable<Long> accountIds = (Iterable<Long>)query.get("accountIds");
         final Iterable<String> names = (Iterable<String>)query.get("names");
@@ -349,7 +384,7 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
-    public static Iterator<Integer> forManySummonerSpellQuery(final Map<String, Object> query) {
+    public static Iterator<Integer> forManySummonerSpellQuery(final java.util.Map<String, Object> query) {
         final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
         final Iterable<String> names = (Iterable<String>)query.get("names");
 
@@ -384,6 +419,43 @@ public abstract class UniqueKeys {
         };
     }
 
+    public static int[] forMap(final Map map) {
+        final com.merakianalytics.orianna.types.data.staticdata.Map data = map.getCoreData();
+        if(data.getId() != 0 && data.getName() != null) {
+            return new int[] {
+                Arrays.hashCode(new Object[] {
+                    Map.class.getCanonicalName(), data.getPlatform(), data.getVersion(), data.getLocale(), data.getId()
+                }),
+                Arrays.hashCode(new Object[] {
+                    Map.class.getCanonicalName(), data.getPlatform(), data.getVersion(), data.getLocale(), data.getName()
+                })
+            };
+        } else if(data.getId() != 0) {
+            return new int[] {
+                Arrays.hashCode(new Object[] {
+                    Map.class.getCanonicalName(), data.getPlatform(), data.getVersion(), data.getLocale(), data.getId()
+                })
+            };
+        } else if(data.getName() != null) {
+            return new int[] {
+                Arrays.hashCode(new Object[] {
+                    Map.class.getCanonicalName(), data.getPlatform(), data.getVersion(), data.getLocale(), data.getName()
+                })
+            };
+        } else {
+            throw new IllegalArgumentException("Can't get key for Map without ID or name!");
+        }
+    }
+
+    public static int forMapQuery(final java.util.Map<String, Object> query) {
+        final Integer id = (Integer)query.get("id");
+        final String name = (String)query.get("name");
+        return Arrays.hashCode(new Object[] {
+            Map.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
+            id == null ? name : id.intValue()
+        });
+    }
+
     public static int forMaps(final Maps maps) {
         final com.merakianalytics.orianna.types.data.staticdata.Maps data = maps.getCoreData();
         return Arrays.hashCode(new Object[] {
@@ -391,7 +463,7 @@ public abstract class UniqueKeys {
         });
     }
 
-    public static int forMapsQuery(final Map<String, Object> query) {
+    public static int forMapsQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             Maps.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale")
         });
@@ -405,7 +477,7 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
-    public static int forMasteriesQuery(final Map<String, Object> query) {
+    public static int forMasteriesQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             Masteries.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
             (Set<String>)query.get("includedData")
@@ -441,7 +513,7 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
-    public static int forMasteryQuery(final Map<String, Object> query) {
+    public static int forMasteryQuery(final java.util.Map<String, Object> query) {
         final Integer id = (Integer)query.get("id");
         final String name = (String)query.get("name");
         return Arrays.hashCode(new Object[] {
@@ -457,7 +529,7 @@ public abstract class UniqueKeys {
         });
     }
 
-    public static int forProfileIconQuery(final Map<String, Object> query) {
+    public static int forProfileIconQuery(final java.util.Map<String, Object> query) {
         final Integer id = (Integer)query.get("id");
         return Arrays.hashCode(new Object[] {
             ProfileIcon.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
@@ -472,7 +544,7 @@ public abstract class UniqueKeys {
         });
     }
 
-    public static int forProfileIconsQuery(final Map<String, Object> query) {
+    public static int forProfileIconsQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             ProfileIcons.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale")
         });
@@ -485,7 +557,7 @@ public abstract class UniqueKeys {
         });
     }
 
-    public static int forRealmQuery(final Map<String, Object> query) {
+    public static int forRealmQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             Realm.class.getCanonicalName(), ((Platform)query.get("platform")).getTag()
         });
@@ -520,7 +592,7 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
-    public static int forRuneQuery(final Map<String, Object> query) {
+    public static int forRuneQuery(final java.util.Map<String, Object> query) {
         final Integer id = (Integer)query.get("id");
         final String name = (String)query.get("name");
         return Arrays.hashCode(new Object[] {
@@ -537,7 +609,7 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
-    public static int forRunesQuery(final Map<String, Object> query) {
+    public static int forRunesQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             Runes.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
             (Set<String>)query.get("includedData")
@@ -608,7 +680,7 @@ public abstract class UniqueKeys {
         }
     }
 
-    public static int forSummonerQuery(final Map<String, Object> query) {
+    public static int forSummonerQuery(final java.util.Map<String, Object> query) {
         final Long id = (Long)query.get("id");
         final Long accountId = (Long)query.get("accountId");
         final String name = (String)query.get("name");
@@ -646,7 +718,7 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
-    public static int forSummonerSpellQuery(final Map<String, Object> query) {
+    public static int forSummonerSpellQuery(final java.util.Map<String, Object> query) {
         final Integer id = (Integer)query.get("id");
         final String name = (String)query.get("name");
         return Arrays.hashCode(new Object[] {
@@ -663,7 +735,7 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
-    public static int forSummonerSpellsQuery(final Map<String, Object> query) {
+    public static int forSummonerSpellsQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             SummonerSpells.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
             (Set<String>)query.get("includedData")
@@ -677,7 +749,7 @@ public abstract class UniqueKeys {
         });
     }
 
-    public static int forVersionsQuery(final Map<String, Object> query) {
+    public static int forVersionsQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             Versions.class.getCanonicalName(), ((Platform)query.get("platform")).getTag()
         });

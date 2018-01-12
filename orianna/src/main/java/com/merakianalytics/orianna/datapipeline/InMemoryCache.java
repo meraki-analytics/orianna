@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.cache2k.Cache;
@@ -34,6 +33,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Item;
 import com.merakianalytics.orianna.types.core.staticdata.Items;
 import com.merakianalytics.orianna.types.core.staticdata.LanguageStrings;
 import com.merakianalytics.orianna.types.core.staticdata.Languages;
+import com.merakianalytics.orianna.types.core.staticdata.Map;
 import com.merakianalytics.orianna.types.core.staticdata.Maps;
 import com.merakianalytics.orianna.types.core.staticdata.Masteries;
 import com.merakianalytics.orianna.types.core.staticdata.Mastery;
@@ -49,12 +49,13 @@ import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
 public class InMemoryCache extends AbstractDataStore {
     public static class Configuration {
-        private static final Map<String, ExpirationPeriod> DEFAULT_EXPIRATION_PERIODS = ImmutableMap.<String, ExpirationPeriod> builder()
+        private static final java.util.Map<String, ExpirationPeriod> DEFAULT_EXPIRATION_PERIODS = ImmutableMap.<String, ExpirationPeriod> builder()
             .put(Champion.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
             .put(Item.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
             .put(Items.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
             .put(LanguageStrings.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
             .put(Languages.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
+            .put(Map.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
             .put(Maps.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
             .put(Mastery.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
             .put(Masteries.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
@@ -69,12 +70,12 @@ public class InMemoryCache extends AbstractDataStore {
             .put(Summoner.class.getCanonicalName(), ExpirationPeriod.create(30, TimeUnit.MINUTES))
             .build();
 
-        private Map<String, ExpirationPeriod> expirationPeriods = DEFAULT_EXPIRATION_PERIODS;
+        private java.util.Map<String, ExpirationPeriod> expirationPeriods = DEFAULT_EXPIRATION_PERIODS;
 
         /**
          * @return the expirationPeriods
          */
-        public Map<String, ExpirationPeriod> getExpirationPeriods() {
+        public java.util.Map<String, ExpirationPeriod> getExpirationPeriods() {
             return expirationPeriods;
         }
 
@@ -82,7 +83,7 @@ public class InMemoryCache extends AbstractDataStore {
          * @param expirationPeriods
          *        the expirationPeriods to set
          */
-        public void setExpirationPeriods(final Map<String, ExpirationPeriod> expirationPeriods) {
+        public void setExpirationPeriods(final java.util.Map<String, ExpirationPeriod> expirationPeriods) {
             this.expirationPeriods = expirationPeriods;
         }
     }
@@ -96,14 +97,14 @@ public class InMemoryCache extends AbstractDataStore {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InMemoryCache.class);
     private final Cache<Integer, Object> cache;
-    private final Map<Class<?>, Long> expirationPeriods;
+    private final java.util.Map<Class<?>, Long> expirationPeriods;
 
     public InMemoryCache() {
         this(new Configuration());
     }
 
     public InMemoryCache(final Configuration config) {
-        final Map<Class<?>, Long> periods = new HashMap<>();
+        final java.util.Map<Class<?>, Long> periods = new HashMap<>();
 
         for(final String className : config.getExpirationPeriods().keySet()) {
             try {
@@ -123,37 +124,37 @@ public class InMemoryCache extends AbstractDataStore {
     }
 
     @Get(Champion.class)
-    public Champion getChampion(final Map<String, Object> query, final PipelineContext context) {
+    public Champion getChampion(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forChampionQuery(query);
         return (Champion)cache.get(key);
     }
 
     @Get(Item.class)
-    public Item getItem(final Map<String, Object> query, final PipelineContext context) {
+    public Item getItem(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forItemQuery(query);
         return (Item)cache.get(key);
     }
 
     @Get(Items.class)
-    public Items getItems(final Map<String, Object> query, final PipelineContext context) {
+    public Items getItems(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forItemsQuery(query);
         return (Items)cache.get(key);
     }
 
     @Get(Languages.class)
-    public Languages getLanguages(final Map<String, Object> query, final PipelineContext context) {
+    public Languages getLanguages(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forLanguagesQuery(query);
         return (Languages)cache.get(key);
     }
 
     @Get(LanguageStrings.class)
-    public LanguageStrings getLanguageStrings(final Map<String, Object> query, final PipelineContext context) {
+    public LanguageStrings getLanguageStrings(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forLanguageStringsQuery(query);
         return (LanguageStrings)cache.get(key);
     }
 
     @GetMany(Item.class)
-    public CloseableIterator<Item> getManyItem(final Map<String, Object> query, final PipelineContext context) {
+    public CloseableIterator<Item> getManyItem(final java.util.Map<String, Object> query, final PipelineContext context) {
         final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyItemQuery(query));
         for(final Integer key : keys) {
             if(!cache.containsKey(key)) {
@@ -181,8 +182,37 @@ public class InMemoryCache extends AbstractDataStore {
         });
     }
 
+    @GetMany(Map.class)
+    public CloseableIterator<Map> getManyMap(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyMapQuery(query));
+        for(final Integer key : keys) {
+            if(!cache.containsKey(key)) {
+                return null;
+            }
+        }
+
+        final Iterator<Integer> iterator = keys.iterator();
+        return CloseableIterators.from(new Iterator<Map>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Map next() {
+                final int key = iterator.next();
+                return (Map)cache.get(key);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
     @GetMany(Mastery.class)
-    public CloseableIterator<Mastery> getManyMastery(final Map<String, Object> query, final PipelineContext context) {
+    public CloseableIterator<Mastery> getManyMastery(final java.util.Map<String, Object> query, final PipelineContext context) {
         final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyMasteryQuery(query));
         for(final Integer key : keys) {
             if(!cache.containsKey(key)) {
@@ -211,7 +241,7 @@ public class InMemoryCache extends AbstractDataStore {
     }
 
     @GetMany(ProfileIcon.class)
-    public CloseableIterator<ProfileIcon> getManyProfileIcon(final Map<String, Object> query, final PipelineContext context) {
+    public CloseableIterator<ProfileIcon> getManyProfileIcon(final java.util.Map<String, Object> query, final PipelineContext context) {
         final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyProfileIconQuery(query));
         for(final Integer key : keys) {
             if(!cache.containsKey(key)) {
@@ -240,7 +270,7 @@ public class InMemoryCache extends AbstractDataStore {
     }
 
     @GetMany(Rune.class)
-    public CloseableIterator<Rune> getManyRune(final Map<String, Object> query, final PipelineContext context) {
+    public CloseableIterator<Rune> getManyRune(final java.util.Map<String, Object> query, final PipelineContext context) {
         final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyRuneQuery(query));
         for(final Integer key : keys) {
             if(!cache.containsKey(key)) {
@@ -269,7 +299,7 @@ public class InMemoryCache extends AbstractDataStore {
     }
 
     @GetMany(Summoner.class)
-    public CloseableIterator<Summoner> getManySummoner(final Map<String, Object> query, final PipelineContext context) {
+    public CloseableIterator<Summoner> getManySummoner(final java.util.Map<String, Object> query, final PipelineContext context) {
         final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManySummonerQuery(query));
         for(final Integer key : keys) {
             if(!cache.containsKey(key)) {
@@ -298,7 +328,7 @@ public class InMemoryCache extends AbstractDataStore {
     }
 
     @GetMany(SummonerSpell.class)
-    public CloseableIterator<SummonerSpell> getManySummonerSpell(final Map<String, Object> query, final PipelineContext context) {
+    public CloseableIterator<SummonerSpell> getManySummonerSpell(final java.util.Map<String, Object> query, final PipelineContext context) {
         final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManySummonerSpellQuery(query));
         for(final Integer key : keys) {
             if(!cache.containsKey(key)) {
@@ -326,74 +356,80 @@ public class InMemoryCache extends AbstractDataStore {
         });
     }
 
+    @Get(Map.class)
+    public Map getMap(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forMapQuery(query);
+        return (Map)cache.get(key);
+    }
+
     @Get(Maps.class)
-    public Maps getMaps(final Map<String, Object> query, final PipelineContext context) {
+    public Maps getMaps(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forMapsQuery(query);
         return (Maps)cache.get(key);
     }
 
     @Get(Masteries.class)
-    public Masteries getMasteries(final Map<String, Object> query, final PipelineContext context) {
+    public Masteries getMasteries(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forMasteriesQuery(query);
         return (Masteries)cache.get(key);
     }
 
     @Get(Mastery.class)
-    public Mastery getMastery(final Map<String, Object> query, final PipelineContext context) {
+    public Mastery getMastery(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forMasteryQuery(query);
         return (Mastery)cache.get(key);
     }
 
     @Get(ProfileIcon.class)
-    public ProfileIcon getProfileIcon(final Map<String, Object> query, final PipelineContext context) {
+    public ProfileIcon getProfileIcon(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forProfileIconQuery(query);
         return (ProfileIcon)cache.get(key);
     }
 
     @Get(ProfileIcons.class)
-    public ProfileIcons getProfileIcons(final Map<String, Object> query, final PipelineContext context) {
+    public ProfileIcons getProfileIcons(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forProfileIconsQuery(query);
         return (ProfileIcons)cache.get(key);
     }
 
     @Get(Realm.class)
-    public Realm getRealm(final Map<String, Object> query, final PipelineContext context) {
+    public Realm getRealm(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forRealmQuery(query);
         return (Realm)cache.get(key);
     }
 
     @Get(Rune.class)
-    public Rune getRune(final Map<String, Object> query, final PipelineContext context) {
+    public Rune getRune(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forRuneQuery(query);
         return (Rune)cache.get(key);
     }
 
     @Get(Runes.class)
-    public Runes getRunes(final Map<String, Object> query, final PipelineContext context) {
+    public Runes getRunes(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forRunesQuery(query);
         return (Runes)cache.get(key);
     }
 
     @Get(Summoner.class)
-    public Summoner getSummoner(final Map<String, Object> query, final PipelineContext context) {
+    public Summoner getSummoner(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forSummonerQuery(query);
         return (Summoner)cache.get(key);
     }
 
     @Get(SummonerSpell.class)
-    public SummonerSpell getSummonerSpell(final Map<String, Object> query, final PipelineContext context) {
+    public SummonerSpell getSummonerSpell(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forSummonerSpellQuery(query);
         return (SummonerSpell)cache.get(key);
     }
 
     @Get(SummonerSpells.class)
-    public SummonerSpells getSummonerSpells(final Map<String, Object> query, final PipelineContext context) {
+    public SummonerSpells getSummonerSpells(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forSummonerSpellsQuery(query);
         return (SummonerSpells)cache.get(key);
     }
 
     @Get(Versions.class)
-    public Versions getVersions(final Map<String, Object> query, final PipelineContext context) {
+    public Versions getVersions(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forVersionsQuery(query);
         return (Versions)cache.get(key);
     }
@@ -483,6 +519,13 @@ public class InMemoryCache extends AbstractDataStore {
         }
     }
 
+    @PutMany(Map.class)
+    public void putManyMap(final Iterable<Map> maps, final PipelineContext context) {
+        for(final Map map : maps) {
+            putMap(map, context);
+        }
+    }
+
     @PutMany(Mastery.class)
     public void putManyMastery(final Iterable<Mastery> masteries, final PipelineContext context) {
         for(final Mastery mastery : masteries) {
@@ -518,10 +561,43 @@ public class InMemoryCache extends AbstractDataStore {
         }
     }
 
+    @Put(Map.class)
+    public void putMap(final Map map, final PipelineContext context) {
+        final int[] keys = UniqueKeys.forMap(map);
+
+        if(keys.length < 2) {
+            final LoadHook hook = new LoadHook() {
+                @Override
+                public void call() {
+                    putMap(map, null);
+                }
+            };
+
+            map.registerGhostLoadHook(hook, Map.MAP_LOAD_GROUP);
+        }
+
+        for(final int key : keys) {
+            cache.put(key, map);
+        }
+    }
+
     @Put(Maps.class)
     public void putMaps(final Maps maps, final PipelineContext context) {
         final int key = UniqueKeys.forMaps(maps);
         cache.put(key, maps);
+
+        if(maps.getCoreData().isEmpty()) {
+            final LoadHook hook = new LoadHook() {
+                @Override
+                public void call() {
+                    putMaps(maps, null);
+                }
+            };
+
+            maps.registerGhostLoadHook(hook, ListProxy.LIST_PROXY_LOAD_GROUP);
+        } else {
+            putManyMap(maps, context);
+        }
     }
 
     @Put(Masteries.class)
@@ -544,22 +620,22 @@ public class InMemoryCache extends AbstractDataStore {
     }
 
     @Put(Mastery.class)
-    public void putMastery(final Mastery item, final PipelineContext context) {
-        final int[] keys = UniqueKeys.forMastery(item);
+    public void putMastery(final Mastery mastery, final PipelineContext context) {
+        final int[] keys = UniqueKeys.forMastery(mastery);
 
         if(keys.length < 2) {
             final LoadHook hook = new LoadHook() {
                 @Override
                 public void call() {
-                    putMastery(item, null);
+                    putMastery(mastery, null);
                 }
             };
 
-            item.registerGhostLoadHook(hook, Mastery.MASTERY_LOAD_GROUP);
+            mastery.registerGhostLoadHook(hook, Mastery.MASTERY_LOAD_GROUP);
         }
 
         for(final int key : keys) {
-            cache.put(key, item);
+            cache.put(key, mastery);
         }
     }
 

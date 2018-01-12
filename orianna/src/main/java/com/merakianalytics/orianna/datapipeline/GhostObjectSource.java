@@ -1,7 +1,6 @@
 package com.merakianalytics.orianna.datapipeline;
 
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableMap;
@@ -20,6 +19,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Item;
 import com.merakianalytics.orianna.types.core.staticdata.Items;
 import com.merakianalytics.orianna.types.core.staticdata.LanguageStrings;
 import com.merakianalytics.orianna.types.core.staticdata.Languages;
+import com.merakianalytics.orianna.types.core.staticdata.Map;
 import com.merakianalytics.orianna.types.core.staticdata.Maps;
 import com.merakianalytics.orianna.types.core.staticdata.Masteries;
 import com.merakianalytics.orianna.types.core.staticdata.Mastery;
@@ -42,7 +42,7 @@ public class GhostObjectSource extends AbstractDataSource {
 
     @SuppressWarnings("unchecked")
     @Get(Champion.class)
-    public Champion getChampion(final Map<String, Object> query, final PipelineContext context) {
+    public Champion getChampion(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
         final Integer id = (Integer)query.get("id");
@@ -68,7 +68,7 @@ public class GhostObjectSource extends AbstractDataSource {
 
     @SuppressWarnings("unchecked")
     @Get(Item.class)
-    public Item getItem(final Map<String, Object> query, final PipelineContext context) {
+    public Item getItem(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
         final Integer id = (Integer)query.get("id");
@@ -90,7 +90,7 @@ public class GhostObjectSource extends AbstractDataSource {
 
     @SuppressWarnings("unchecked")
     @Get(Items.class)
-    public Items getItems(final Map<String, Object> query, final PipelineContext context) {
+    public Items getItems(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
@@ -106,7 +106,7 @@ public class GhostObjectSource extends AbstractDataSource {
     }
 
     @Get(Languages.class)
-    public Languages getLanguages(final Map<String, Object> query, final PipelineContext context) {
+    public Languages getLanguages(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
 
@@ -116,7 +116,7 @@ public class GhostObjectSource extends AbstractDataSource {
     }
 
     @Get(LanguageStrings.class)
-    public LanguageStrings getLanguageStrings(final Map<String, Object> query, final PipelineContext context) {
+    public LanguageStrings getLanguageStrings(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
@@ -131,7 +131,7 @@ public class GhostObjectSource extends AbstractDataSource {
 
     @SuppressWarnings("unchecked")
     @GetMany(Item.class)
-    public CloseableIterator<Item> getManyItem(final Map<String, Object> query, final PipelineContext context) {
+    public CloseableIterator<Item> getManyItem(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
         final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
@@ -181,8 +181,57 @@ public class GhostObjectSource extends AbstractDataSource {
     }
 
     @SuppressWarnings("unchecked")
+    @GetMany(Map.class)
+    public CloseableIterator<Map> getManyMap(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
+        final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
+        final Iterable<String> names = (Iterable<String>)query.get("names");
+        Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names");
+        final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
+        final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
+
+        final Iterator<?> iterator;
+        if(ids != null) {
+            iterator = ids.iterator();
+        } else if(names != null) {
+            iterator = names.iterator();
+        } else {
+            return null;
+        }
+
+        return CloseableIterators.from(new Iterator<Map>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Map next() {
+                final com.merakianalytics.orianna.types.data.staticdata.Map data = new com.merakianalytics.orianna.types.data.staticdata.Map();
+                data.setPlatform(platform.getTag());
+                data.setVersion(version);
+                data.setLocale(locale);
+                if(ids != null) {
+                    data.setId((Integer)iterator.next());
+                } else if(names != null) {
+                    data.setName((String)iterator.next());
+                } else {
+                    return null;
+                }
+                return new Map(data);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
     @GetMany(Mastery.class)
-    public CloseableIterator<Mastery> getManyMastery(final Map<String, Object> query, final PipelineContext context) {
+    public CloseableIterator<Mastery> getManyMastery(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
         final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
@@ -233,7 +282,7 @@ public class GhostObjectSource extends AbstractDataSource {
 
     @SuppressWarnings("unchecked")
     @GetMany(ProfileIcon.class)
-    public CloseableIterator<ProfileIcon> getManyProfileIcon(final Map<String, Object> query, final PipelineContext context) {
+    public CloseableIterator<ProfileIcon> getManyProfileIcon(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
         Utilities.checkNotNull(platform, "platform", ids, "ids");
@@ -266,7 +315,7 @@ public class GhostObjectSource extends AbstractDataSource {
 
     @SuppressWarnings("unchecked")
     @GetMany(Rune.class)
-    public CloseableIterator<Rune> getManyRune(final Map<String, Object> query, final PipelineContext context) {
+    public CloseableIterator<Rune> getManyRune(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
         final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
@@ -317,7 +366,7 @@ public class GhostObjectSource extends AbstractDataSource {
 
     @SuppressWarnings("unchecked")
     @GetMany(Summoner.class)
-    public CloseableIterator<Summoner> getManySummoner(final Map<String, Object> query, final PipelineContext context) {
+    public CloseableIterator<Summoner> getManySummoner(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
         final Iterable<Long> ids = (Iterable<Long>)query.get("ids");
@@ -367,7 +416,7 @@ public class GhostObjectSource extends AbstractDataSource {
 
     @SuppressWarnings("unchecked")
     @GetMany(SummonerSpell.class)
-    public CloseableIterator<SummonerSpell> getManySummonerSpell(final Map<String, Object> query, final PipelineContext context) {
+    public CloseableIterator<SummonerSpell> getManySummonerSpell(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
         final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
@@ -417,8 +466,27 @@ public class GhostObjectSource extends AbstractDataSource {
         });
     }
 
+    @Get(Map.class)
+    public Map getMap(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
+        final Integer id = (Integer)query.get("id");
+        final String name = (String)query.get("name");
+        Utilities.checkAtLeastOneNotNull(id, "id", name, "name");
+        final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
+        final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
+
+        final com.merakianalytics.orianna.types.data.staticdata.Map data = new com.merakianalytics.orianna.types.data.staticdata.Map();
+        data.setId(id == null ? 0 : id.intValue());
+        data.setName(name);
+        data.setPlatform(platform.getTag());
+        data.setVersion(version);
+        data.setLocale(locale);
+        return new Map(data);
+    }
+
     @Get(Maps.class)
-    public Maps getMaps(final Map<String, Object> query, final PipelineContext context) {
+    public Maps getMaps(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
@@ -433,7 +501,7 @@ public class GhostObjectSource extends AbstractDataSource {
 
     @SuppressWarnings("unchecked")
     @Get(Masteries.class)
-    public Masteries getMasteries(final Map<String, Object> query, final PipelineContext context) {
+    public Masteries getMasteries(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
@@ -450,7 +518,7 @@ public class GhostObjectSource extends AbstractDataSource {
 
     @SuppressWarnings("unchecked")
     @Get(Mastery.class)
-    public Mastery getMastery(final Map<String, Object> query, final PipelineContext context) {
+    public Mastery getMastery(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
         final Integer id = (Integer)query.get("id");
@@ -471,7 +539,7 @@ public class GhostObjectSource extends AbstractDataSource {
     }
 
     @Get(ProfileIcon.class)
-    public ProfileIcon getProfileIcon(final Map<String, Object> query, final PipelineContext context) {
+    public ProfileIcon getProfileIcon(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         final Integer id = (Integer)query.get("id");
         Utilities.checkNotNull(platform, "platform", id, "id");
@@ -487,7 +555,7 @@ public class GhostObjectSource extends AbstractDataSource {
     }
 
     @Get(ProfileIcons.class)
-    public ProfileIcons getProfileIcons(final Map<String, Object> query, final PipelineContext context) {
+    public ProfileIcons getProfileIcons(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
@@ -501,7 +569,7 @@ public class GhostObjectSource extends AbstractDataSource {
     }
 
     @Get(Realm.class)
-    public Realm getRealm(final Map<String, Object> query, final PipelineContext context) {
+    public Realm getRealm(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
 
@@ -512,7 +580,7 @@ public class GhostObjectSource extends AbstractDataSource {
 
     @SuppressWarnings("unchecked")
     @Get(Rune.class)
-    public Rune getRune(final Map<String, Object> query, final PipelineContext context) {
+    public Rune getRune(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
         final Integer id = (Integer)query.get("id");
@@ -534,7 +602,7 @@ public class GhostObjectSource extends AbstractDataSource {
 
     @SuppressWarnings("unchecked")
     @Get(Runes.class)
-    public Runes getRunes(final Map<String, Object> query, final PipelineContext context) {
+    public Runes getRunes(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
@@ -550,7 +618,7 @@ public class GhostObjectSource extends AbstractDataSource {
     }
 
     @Get(Summoner.class)
-    public Summoner getSummoner(final Map<String, Object> query, final PipelineContext context) {
+    public Summoner getSummoner(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
         final Long id = (Long)query.get("id");
@@ -568,7 +636,7 @@ public class GhostObjectSource extends AbstractDataSource {
 
     @SuppressWarnings("unchecked")
     @Get(SummonerSpell.class)
-    public SummonerSpell getSummonerSpell(final Map<String, Object> query, final PipelineContext context) {
+    public SummonerSpell getSummonerSpell(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
         final Integer id = (Integer)query.get("id");
@@ -590,7 +658,7 @@ public class GhostObjectSource extends AbstractDataSource {
 
     @SuppressWarnings("unchecked")
     @Get(SummonerSpells.class)
-    public SummonerSpells getSummonerSpells(final Map<String, Object> query, final PipelineContext context) {
+    public SummonerSpells getSummonerSpells(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
@@ -606,7 +674,7 @@ public class GhostObjectSource extends AbstractDataSource {
     }
 
     @Get(Versions.class)
-    public Versions getVersions(final Map<String, Object> query, final PipelineContext context) {
+    public Versions getVersions(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
 

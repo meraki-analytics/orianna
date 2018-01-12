@@ -46,6 +46,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Item;
 import com.merakianalytics.orianna.types.core.staticdata.Items;
 import com.merakianalytics.orianna.types.core.staticdata.LanguageStrings;
 import com.merakianalytics.orianna.types.core.staticdata.Languages;
+import com.merakianalytics.orianna.types.core.staticdata.Map;
 import com.merakianalytics.orianna.types.core.staticdata.Maps;
 import com.merakianalytics.orianna.types.core.staticdata.Masteries;
 import com.merakianalytics.orianna.types.core.staticdata.Mastery;
@@ -338,8 +339,28 @@ public abstract class Orianna {
         return Languages.withRegion(region);
     }
 
+    public static Map.Builder getMapNamed(final String name) {
+        return Map.named(name);
+    }
+
     public static Maps getMaps() {
         return Maps.get();
+    }
+
+    public static Maps.SubsetBuilder getMapsNamed(final Iterable<String> names) {
+        return Maps.named(names);
+    }
+
+    public static Maps.SubsetBuilder getMapsNamed(final String... names) {
+        return Maps.named(names);
+    }
+
+    public static Maps.SubsetBuilder getMapsWithIds(final int... ids) {
+        return Maps.withIds(ids);
+    }
+
+    public static Maps.SubsetBuilder getMapsWithIds(final Iterable<Integer> ids) {
+        return Maps.withIds(ids);
     }
 
     public static Maps.Builder getMapsWithLocale(final String locale) {
@@ -356,6 +377,10 @@ public abstract class Orianna {
 
     public static Maps.Builder getMapsWithVersion(final String version) {
         return Maps.withVersion(version);
+    }
+
+    public static Map.Builder getMapWithId(final int id) {
+        return Map.withId(id);
     }
 
     public static Masteries getMasteries() {
