@@ -49,6 +49,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Languages;
 import com.merakianalytics.orianna.types.core.staticdata.Maps;
 import com.merakianalytics.orianna.types.core.staticdata.Masteries;
 import com.merakianalytics.orianna.types.core.staticdata.Mastery;
+import com.merakianalytics.orianna.types.core.staticdata.ProfileIcon;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
 import com.merakianalytics.orianna.types.core.staticdata.Realm;
 import com.merakianalytics.orianna.types.core.staticdata.Rune;
@@ -409,6 +410,14 @@ public abstract class Orianna {
         return ProfileIcons.get();
     }
 
+    public static ProfileIcons.SubsetBuilder getProfileIconsWithIds(final int... ids) {
+        return ProfileIcons.withIds(ids);
+    }
+
+    public static ProfileIcons.SubsetBuilder getProfileIconsWithIds(final Iterable<Integer> ids) {
+        return ProfileIcons.withIds(ids);
+    }
+
     public static ProfileIcons.Builder getProfileIconsWithLocale(final String locale) {
         return ProfileIcons.withLocale(locale);
     }
@@ -423,6 +432,10 @@ public abstract class Orianna {
 
     public static ProfileIcons.Builder getProfileIconsWithVersion(final String version) {
         return ProfileIcons.withVersion(version);
+    }
+
+    public static ProfileIcon.Builder getProfileIconWithId(final int id) {
+        return ProfileIcon.withId(id);
     }
 
     public static Realm getRealm() {

@@ -37,6 +37,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Languages;
 import com.merakianalytics.orianna.types.core.staticdata.Maps;
 import com.merakianalytics.orianna.types.core.staticdata.Masteries;
 import com.merakianalytics.orianna.types.core.staticdata.Mastery;
+import com.merakianalytics.orianna.types.core.staticdata.ProfileIcon;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
 import com.merakianalytics.orianna.types.core.staticdata.Realm;
 import com.merakianalytics.orianna.types.core.staticdata.Rune;
@@ -57,6 +58,7 @@ public class InMemoryCache extends AbstractDataStore {
             .put(Maps.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
             .put(Mastery.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
             .put(Masteries.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
+            .put(ProfileIcon.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
             .put(ProfileIcons.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
             .put(Realm.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
             .put(Rune.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
@@ -208,6 +210,35 @@ public class InMemoryCache extends AbstractDataStore {
         });
     }
 
+    @GetMany(ProfileIcon.class)
+    public CloseableIterator<ProfileIcon> getManyProfileIcon(final Map<String, Object> query, final PipelineContext context) {
+        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyProfileIconQuery(query));
+        for(final Integer key : keys) {
+            if(!cache.containsKey(key)) {
+                return null;
+            }
+        }
+
+        final Iterator<Integer> iterator = keys.iterator();
+        return CloseableIterators.from(new Iterator<ProfileIcon>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public ProfileIcon next() {
+                final int key = iterator.next();
+                return (ProfileIcon)cache.get(key);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
     @GetMany(Rune.class)
     public CloseableIterator<Rune> getManyRune(final Map<String, Object> query, final PipelineContext context) {
         final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyRuneQuery(query));
@@ -311,6 +342,12 @@ public class InMemoryCache extends AbstractDataStore {
     public Mastery getMastery(final Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forMasteryQuery(query);
         return (Mastery)cache.get(key);
+    }
+
+    @Get(ProfileIcon.class)
+    public ProfileIcon getProfileIcon(final Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forProfileIconQuery(query);
+        return (ProfileIcon)cache.get(key);
     }
 
     @Get(ProfileIcons.class)
@@ -453,6 +490,13 @@ public class InMemoryCache extends AbstractDataStore {
         }
     }
 
+    @PutMany(ProfileIcon.class)
+    public void putManyProfileIcon(final Iterable<ProfileIcon> icons, final PipelineContext context) {
+        for(final ProfileIcon icon : icons) {
+            putProfileIcon(icon, context);
+        }
+    }
+
     @PutMany(Rune.class)
     public void putManyRune(final Iterable<Rune> runes, final PipelineContext context) {
         for(final Rune rune : runes) {
@@ -519,10 +563,29 @@ public class InMemoryCache extends AbstractDataStore {
         }
     }
 
+    @Put(ProfileIcon.class)
+    public void putProfileIcon(final ProfileIcon profileIcon, final PipelineContext context) {
+        final int key = UniqueKeys.forProfileIcon(profileIcon);
+        cache.put(key, profileIcon);
+    }
+
     @Put(ProfileIcons.class)
-    public void putProfileIcons(final ProfileIcons profileIcons, final PipelineContext context) {
-        final int key = UniqueKeys.forProfileIcons(profileIcons);
-        cache.put(key, profileIcons);
+    public void putProfileIcons(final ProfileIcons icons, final PipelineContext context) {
+        final int key = UniqueKeys.forProfileIcons(icons);
+        cache.put(key, icons);
+
+        if(icons.getCoreData().isEmpty()) {
+            final LoadHook hook = new LoadHook() {
+                @Override
+                public void call() {
+                    putProfileIcons(icons, null);
+                }
+            };
+
+            icons.registerGhostLoadHook(hook, ListProxy.LIST_PROXY_LOAD_GROUP);
+        } else {
+            putManyProfileIcon(icons, context);
+        }
     }
 
     @Put(Realm.class)

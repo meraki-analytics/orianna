@@ -2,23 +2,80 @@ package com.merakianalytics.orianna.types.core.staticdata;
 
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
+import com.google.common.collect.ImmutableMap;
+import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Region;
-import com.merakianalytics.orianna.types.core.OriannaObject;
+import com.merakianalytics.orianna.types.core.GhostObject;
 import com.merakianalytics.orianna.types.core.searchable.Searchable;
 
-public class ProfileIcon extends OriannaObject<com.merakianalytics.orianna.types.data.staticdata.ProfileIcon> {
-    private static final long serialVersionUID = 4915081654310775218L;
+public class ProfileIcon extends GhostObject<com.merakianalytics.orianna.types.data.staticdata.ProfileIcon> {
+    public static class Builder {
+        private final int id;
+        private Platform platform;
+        private String version, locale;
+
+        private Builder(final int id) {
+            this.id = id;
+        }
+
+        public ProfileIcon get() {
+            if(version == null) {
+                version = Orianna.getSettings().getCurrentVersion();
+            }
+
+            if(platform == null) {
+                platform = Orianna.getSettings().getDefaultPlatform();
+            }
+
+            if(locale == null) {
+                locale = platform.getDefaultLocale();
+            }
+
+            final ImmutableMap.Builder<String, Object> builder =
+                ImmutableMap.<String, Object> builder().put("id", id).put("platform", platform).put("version", version)
+                    .put("locale", locale);
+
+            return Orianna.getSettings().getPipeline().get(ProfileIcon.class, builder.build());
+        }
+
+        public Builder withLocale(final String locale) {
+            this.locale = locale;
+            return this;
+        }
+
+        public Builder withPlatform(final Platform platform) {
+            this.platform = platform;
+            return this;
+        }
+
+        public Builder withRegion(final Region region) {
+            platform = region.getPlatform();
+            return this;
+        }
+
+        public Builder withVersion(final String version) {
+            this.version = version;
+            return this;
+        }
+    }
+    public static final String PROFILE_ICON_LOAD_GROUP = "profile-icon";
+    private static final long serialVersionUID = -3350437868875062008L;
+
+    public static Builder withId(final int id) {
+        return new Builder(id);
+    }
 
     private final Supplier<Image> image = Suppliers.memoize(new Supplier<Image>() {
         @Override
         public Image get() {
+            load(PROFILE_ICON_LOAD_GROUP);
             return new Image(coreData.getImage());
         }
     });
 
     public ProfileIcon(final com.merakianalytics.orianna.types.data.staticdata.ProfileIcon coreData) {
-        super(coreData);
+        super(coreData, 1);
     }
 
     @Searchable(int.class)
@@ -44,5 +101,31 @@ public class ProfileIcon extends OriannaObject<com.merakianalytics.orianna.types
 
     public String getVersion() {
         return coreData.getVersion();
+    }
+
+    @Override
+    protected void loadCoreData(final String group) {
+        ImmutableMap.Builder<String, Object> builder;
+        switch(group) {
+            case PROFILE_ICON_LOAD_GROUP:
+                builder = ImmutableMap.builder();
+                if(coreData.getId() != 0) {
+                    builder.put("id", coreData.getId());
+                }
+                if(coreData.getPlatform() != null) {
+                    builder.put("platform", Platform.withTag(coreData.getPlatform()));
+                }
+                if(coreData.getVersion() != null) {
+                    builder.put("version", coreData.getVersion());
+                }
+                if(coreData.getLocale() != null) {
+                    builder.put("locale", coreData.getLocale());
+                }
+
+                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.ProfileIcon.class, builder.build());
+                break;
+            default:
+                break;
+        }
     }
 }

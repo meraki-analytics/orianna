@@ -23,6 +23,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Languages;
 import com.merakianalytics.orianna.types.core.staticdata.Maps;
 import com.merakianalytics.orianna.types.core.staticdata.Masteries;
 import com.merakianalytics.orianna.types.core.staticdata.Mastery;
+import com.merakianalytics.orianna.types.core.staticdata.ProfileIcon;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
 import com.merakianalytics.orianna.types.core.staticdata.Realm;
 import com.merakianalytics.orianna.types.core.staticdata.Rune;
@@ -221,6 +222,39 @@ public class GhostObjectSource extends AbstractDataSource {
                     return null;
                 }
                 return new Mastery(data);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    @GetMany(ProfileIcon.class)
+    public CloseableIterator<ProfileIcon> getManyProfileIcon(final Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
+        Utilities.checkNotNull(platform, "platform", ids, "ids");
+        final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
+        final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
+
+        final Iterator<Integer> iterator = ids.iterator();
+        return CloseableIterators.from(new Iterator<ProfileIcon>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public ProfileIcon next() {
+                final com.merakianalytics.orianna.types.data.staticdata.ProfileIcon data = new com.merakianalytics.orianna.types.data.staticdata.ProfileIcon();
+                data.setPlatform(platform.getTag());
+                data.setVersion(version);
+                data.setLocale(locale);
+                data.setId(iterator.next());
+                return new ProfileIcon(data);
             }
 
             @Override
@@ -434,6 +468,22 @@ public class GhostObjectSource extends AbstractDataSource {
         data.setLocale(locale);
         data.setIncludedData(includedData);
         return new Mastery(data);
+    }
+
+    @Get(ProfileIcon.class)
+    public ProfileIcon getProfileIcon(final Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        final Integer id = (Integer)query.get("id");
+        Utilities.checkNotNull(platform, "platform", id, "id");
+        final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
+        final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
+
+        final com.merakianalytics.orianna.types.data.staticdata.ProfileIcon data = new com.merakianalytics.orianna.types.data.staticdata.ProfileIcon();
+        data.setPlatform(platform.getTag());
+        data.setVersion(version);
+        data.setLocale(locale);
+        data.setId(id);
+        return new ProfileIcon(data);
     }
 
     @Get(ProfileIcons.class)

@@ -2,12 +2,15 @@ package com.merakianalytics.orianna.types.core.summoner;
 
 import org.joda.time.DateTime;
 
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
 import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.GhostObject;
 import com.merakianalytics.orianna.types.core.searchable.Searchable;
+import com.merakianalytics.orianna.types.core.staticdata.ProfileIcon;
 
 public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data.summoner.Summoner> {
     public static class Builder {
@@ -75,6 +78,14 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
         return new Builder(id, true);
     }
 
+    private final Supplier<ProfileIcon> profileIcon = Suppliers.memoize(new Supplier<ProfileIcon>() {
+        @Override
+        public ProfileIcon get() {
+            load(SUMMONER_LOAD_GROUP);
+            return ProfileIcon.withId(coreData.getProfileIconId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
+        }
+    });
+
     public Summoner(final com.merakianalytics.orianna.types.data.summoner.Summoner coreData) {
         super(coreData, 1);
     }
@@ -112,10 +123,8 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
         return Platform.withTag(coreData.getPlatform());
     }
 
-    public int getProfileIcon() {
-        load(SUMMONER_LOAD_GROUP);
-        // TODO: Make this profileIcon instead
-        return coreData.getProfileIconId();
+    public ProfileIcon getProfileIcon() {
+        return profileIcon.get();
     }
 
     public DateTime getUpdate() {

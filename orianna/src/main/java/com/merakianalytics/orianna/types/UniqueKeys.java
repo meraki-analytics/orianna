@@ -14,6 +14,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Languages;
 import com.merakianalytics.orianna.types.core.staticdata.Maps;
 import com.merakianalytics.orianna.types.core.staticdata.Masteries;
 import com.merakianalytics.orianna.types.core.staticdata.Mastery;
+import com.merakianalytics.orianna.types.core.staticdata.ProfileIcon;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
 import com.merakianalytics.orianna.types.core.staticdata.Realm;
 import com.merakianalytics.orianna.types.core.staticdata.Rune;
@@ -24,6 +25,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Versions;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
 public abstract class UniqueKeys {
+    // TODO: Replace specific Number types with Number interface where possible
     public static int[] forChampion(final Champion champion) {
         final com.merakianalytics.orianna.types.data.staticdata.Champion data = champion.getCoreData().getChampion();
         if(data.getId() != 0 && data.getName() != null && data.getKey() != null) {
@@ -249,6 +251,32 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
+    public static Iterator<Integer> forManyProfileIconQuery(final Map<String, Object> query) {
+        final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
+
+        final Iterator<Integer> iterator = ids.iterator();
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                return Arrays.hashCode(new Object[] {
+                    ProfileIcon.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
+                    iterator.next()
+                });
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+    @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyRuneQuery(final Map<String, Object> query) {
         final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
         final Iterable<String> names = (Iterable<String>)query.get("names");
@@ -419,6 +447,21 @@ public abstract class UniqueKeys {
         return Arrays.hashCode(new Object[] {
             Mastery.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
             id == null ? name : id.intValue(), (Set<String>)query.get("includedData")
+        });
+    }
+
+    public static int forProfileIcon(final ProfileIcon icon) {
+        final com.merakianalytics.orianna.types.data.staticdata.ProfileIcon data = icon.getCoreData();
+        return Arrays.hashCode(new Object[] {
+            ProfileIcon.class.getCanonicalName(), data.getPlatform(), data.getVersion(), data.getLocale(), data.getId()
+        });
+    }
+
+    public static int forProfileIconQuery(final Map<String, Object> query) {
+        final Integer id = (Integer)query.get("id");
+        return Arrays.hashCode(new Object[] {
+            ProfileIcon.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
+            id.intValue()
         });
     }
 

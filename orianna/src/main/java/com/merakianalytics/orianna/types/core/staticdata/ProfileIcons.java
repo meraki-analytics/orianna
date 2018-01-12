@@ -1,11 +1,18 @@
 package com.merakianalytics.orianna.types.core.staticdata;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
+import com.merakianalytics.datapipelines.iterators.CloseableIterator;
+import com.merakianalytics.datapipelines.iterators.CloseableIterators;
 import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.GhostObject;
+import com.merakianalytics.orianna.types.core.searchable.SearchableList;
+import com.merakianalytics.orianna.types.core.searchable.SearchableListWrapper;
 
 public class ProfileIcons extends GhostObject.ListProxy<ProfileIcon, com.merakianalytics.orianna.types.data.staticdata.ProfileIcon, com.merakianalytics.orianna.types.data.staticdata.ProfileIcons> {
     public static class Builder {
@@ -54,10 +61,79 @@ public class ProfileIcons extends GhostObject.ListProxy<ProfileIcon, com.merakia
         }
     }
 
+    public static class SubsetBuilder {
+        private final Iterable<Integer> ids;
+        private Platform platform;
+        private boolean streaming = false;
+        private String version, locale;
+
+        private SubsetBuilder(final Iterable<Integer> ids) {
+            this.ids = ids;
+        }
+
+        public SearchableList<ProfileIcon> get() {
+            if(version == null) {
+                version = Orianna.getSettings().getCurrentVersion();
+            }
+
+            if(platform == null) {
+                platform = Orianna.getSettings().getDefaultPlatform();
+            }
+
+            if(locale == null) {
+                locale = platform.getDefaultLocale();
+            }
+
+            final ImmutableMap.Builder<String, Object> builder =
+                ImmutableMap.<String, Object> builder().put("ids", ids).put("platform", platform).put("version", version)
+                    .put("locale", locale);
+
+            final CloseableIterator<ProfileIcon> result = Orianna.getSettings().getPipeline().getMany(ProfileIcon.class, builder.build(), streaming);
+            return streaming ? SearchableListWrapper.of(CloseableIterators.toLazyList(result)) : SearchableListWrapper.of(CloseableIterators.toList(result));
+        }
+
+        public SubsetBuilder streaming() {
+            streaming = true;
+            return this;
+        }
+
+        public SubsetBuilder withLocale(final String locale) {
+            this.locale = locale;
+            return this;
+        }
+
+        public SubsetBuilder withPlatform(final Platform platform) {
+            this.platform = platform;
+            return this;
+        }
+
+        public SubsetBuilder withRegion(final Region region) {
+            platform = region.getPlatform();
+            return this;
+        }
+
+        public SubsetBuilder withVersion(final String version) {
+            this.version = version;
+            return this;
+        }
+    }
+
     private static final long serialVersionUID = -8957363143121010944L;
 
     public static ProfileIcons get() {
         return new Builder().get();
+    }
+
+    public static SubsetBuilder withIds(final int... ids) {
+        final List<Integer> list = new ArrayList<>(ids.length);
+        for(final int id : ids) {
+            list.add(id);
+        }
+        return new SubsetBuilder(list);
+    }
+
+    public static SubsetBuilder withIds(final Iterable<Integer> ids) {
+        return new SubsetBuilder(ids);
     }
 
     public static Builder withLocale(final String locale) {
@@ -79,8 +155,10 @@ public class ProfileIcons extends GhostObject.ListProxy<ProfileIcon, com.merakia
     public ProfileIcons(final com.merakianalytics.orianna.types.data.staticdata.ProfileIcons coreData) {
         super(coreData, 1, new Function<com.merakianalytics.orianna.types.data.staticdata.ProfileIcon, ProfileIcon>() {
             @Override
-            public ProfileIcon apply(final com.merakianalytics.orianna.types.data.staticdata.ProfileIcon icon) {
-                return new ProfileIcon(icon);
+            public ProfileIcon apply(final com.merakianalytics.orianna.types.data.staticdata.ProfileIcon data) {
+                final ProfileIcon icon = new ProfileIcon(data);
+                icon.markAsGhostLoaded(ProfileIcon.PROFILE_ICON_LOAD_GROUP);
+                return icon;
             }
         });
     }
