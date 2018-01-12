@@ -29,6 +29,7 @@ import com.merakianalytics.orianna.types.common.OriannaException;
 import com.merakianalytics.orianna.types.core.GhostObject.ListProxy;
 import com.merakianalytics.orianna.types.core.GhostObject.LoadHook;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
+import com.merakianalytics.orianna.types.core.staticdata.Champions;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
 import com.merakianalytics.orianna.types.core.staticdata.Items;
 import com.merakianalytics.orianna.types.core.staticdata.LanguageStrings;
@@ -51,6 +52,7 @@ public class InMemoryCache extends AbstractDataStore {
     public static class Configuration {
         private static final java.util.Map<String, ExpirationPeriod> DEFAULT_EXPIRATION_PERIODS = ImmutableMap.<String, ExpirationPeriod> builder()
             .put(Champion.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
+            .put(Champions.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
             .put(Item.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
             .put(Items.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
             .put(LanguageStrings.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
@@ -129,6 +131,12 @@ public class InMemoryCache extends AbstractDataStore {
         return (Champion)cache.get(key);
     }
 
+    @Get(Champions.class)
+    public Champions getChampions(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forChampionsQuery(query);
+        return (Champions)cache.get(key);
+    }
+
     @Get(Item.class)
     public Item getItem(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forItemQuery(query);
@@ -151,6 +159,35 @@ public class InMemoryCache extends AbstractDataStore {
     public LanguageStrings getLanguageStrings(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forLanguageStringsQuery(query);
         return (LanguageStrings)cache.get(key);
+    }
+
+    @GetMany(Champion.class)
+    public CloseableIterator<Champion> getManyChampion(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyChampionQuery(query));
+        for(final Integer key : keys) {
+            if(!cache.containsKey(key)) {
+                return null;
+            }
+        }
+
+        final Iterator<Integer> iterator = keys.iterator();
+        return CloseableIterators.from(new Iterator<Champion>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Champion next() {
+                final int key = iterator.next();
+                return (Champion)cache.get(key);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
     }
 
     @GetMany(Item.class)
@@ -455,6 +492,25 @@ public class InMemoryCache extends AbstractDataStore {
         }
     }
 
+    @Put(Champions.class)
+    public void putChampions(final Champions champions, final PipelineContext context) {
+        final int key = UniqueKeys.forChampions(champions);
+        cache.put(key, champions);
+
+        if(champions.getCoreData().isEmpty()) {
+            final LoadHook hook = new LoadHook() {
+                @Override
+                public void call() {
+                    putChampions(champions, null);
+                }
+            };
+
+            champions.registerGhostLoadHook(hook, ListProxy.LIST_PROXY_LOAD_GROUP);
+        } else {
+            putManyChampion(champions, context);
+        }
+    }
+
     @Put(Item.class)
     public void putItem(final Item item, final PipelineContext context) {
         final int[] keys = UniqueKeys.forItem(item);
@@ -510,6 +566,13 @@ public class InMemoryCache extends AbstractDataStore {
     public void putLanguageStrings(final LanguageStrings languageStrings, final PipelineContext context) {
         final int key = UniqueKeys.forLanguageStrings(languageStrings);
         cache.put(key, languageStrings);
+    }
+
+    @PutMany(Champion.class)
+    public void putManyChampion(final Iterable<Champion> champions, final PipelineContext context) {
+        for(final Champion champion : champions) {
+            putChampion(champion, context);
+        }
     }
 
     @PutMany(Item.class)

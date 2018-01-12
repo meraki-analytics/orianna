@@ -2,10 +2,15 @@ package com.merakianalytics.orianna.types.core.staticdata;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import com.google.common.base.Function;
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.merakianalytics.datapipelines.iterators.CloseableIterator;
 import com.merakianalytics.datapipelines.iterators.CloseableIterators;
 import com.merakianalytics.orianna.Orianna;
@@ -14,15 +19,17 @@ import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.GhostObject;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
 import com.merakianalytics.orianna.types.core.searchable.SearchableListWrapper;
+import com.merakianalytics.orianna.types.core.staticdata.Champion.ChampionData;
 
-public class Maps extends GhostObject.ListProxy<Map, com.merakianalytics.orianna.types.data.staticdata.Map, com.merakianalytics.orianna.types.data.staticdata.Maps> {
+public class Champions extends GhostObject.ListProxy<Champion, com.merakianalytics.orianna.types.data.staticdata.Champion, com.merakianalytics.orianna.types.data.staticdata.Champions> {
     public static class Builder {
+        private Set<String> includedData;
         private Platform platform;
         private String version, locale;
 
         private Builder() {}
 
-        public Maps get() {
+        public Champions get() {
             if(version == null) {
                 version = Orianna.getSettings().getCurrentVersion();
             }
@@ -35,10 +42,19 @@ public class Maps extends GhostObject.ListProxy<Map, com.merakianalytics.orianna
                 locale = platform.getDefaultLocale();
             }
 
-            final ImmutableMap.Builder<String, Object> builder = ImmutableMap.<String, Object> builder().put("platform", platform).put("version", version)
-                .put("locale", locale);
+            if(includedData == null) {
+                includedData = ImmutableSet.of("all");
+            }
 
-            return Orianna.getSettings().getPipeline().get(Maps.class, builder.build());
+            final ImmutableMap.Builder<String, Object> builder = ImmutableMap.<String, Object> builder().put("platform", platform).put("version", version)
+                .put("locale", locale).put("includedData", includedData);
+
+            return Orianna.getSettings().getPipeline().get(Champions.class, builder.build());
+        }
+
+        public Builder withIncludedData(final Set<String> includedData) {
+            this.includedData = includedData;
+            return this;
         }
 
         public Builder withLocale(final String locale) {
@@ -64,21 +80,25 @@ public class Maps extends GhostObject.ListProxy<Map, com.merakianalytics.orianna
 
     public static class SubsetBuilder {
         private Iterable<Integer> ids;
-        private Iterable<String> names;
+        private Set<String> includedData;
+        private Iterable<String> names, keys;
         private Platform platform;
         private boolean streaming = false;
         private String version, locale;
 
-        @SuppressWarnings("unchecked")
-        private SubsetBuilder(final Iterable<?> ids, final boolean areIds) {
-            if(areIds) {
-                this.ids = (Iterable<Integer>)ids;
+        private SubsetBuilder(final Iterable<Integer> ids) {
+            this.ids = ids;
+        }
+
+        private SubsetBuilder(final Iterable<String> keys, final boolean areNames) {
+            if(areNames) {
+                names = keys;
             } else {
-                names = (Iterable<String>)ids;
+                this.keys = keys;
             }
         }
 
-        public SearchableList<Map> get() {
+        public SearchableList<Champion> get() {
             if(version == null) {
                 version = Orianna.getSettings().getCurrentVersion();
             }
@@ -91,21 +111,32 @@ public class Maps extends GhostObject.ListProxy<Map, com.merakianalytics.orianna
                 locale = platform.getDefaultLocale();
             }
 
-            final ImmutableMap.Builder<String, Object> builder =
-                ImmutableMap.<String, Object> builder().put("platform", platform).put("version", version).put("locale", locale);
+            if(includedData == null) {
+                includedData = ImmutableSet.of("all");
+            }
+
+            final ImmutableMap.Builder<String, Object> builder = ImmutableMap.<String, Object> builder().put("platform", platform).put("version", version)
+                .put("locale", locale).put("includedData", includedData);
 
             if(ids != null) {
                 builder.put("ids", ids);
-            } else {
+            } else if(names != null) {
                 builder.put("names", names);
+            } else {
+                builder.put("keys", keys);
             }
 
-            final CloseableIterator<Map> result = Orianna.getSettings().getPipeline().getMany(Map.class, builder.build(), streaming);
+            final CloseableIterator<Champion> result = Orianna.getSettings().getPipeline().getMany(Champion.class, builder.build(), streaming);
             return streaming ? SearchableListWrapper.of(CloseableIterators.toLazyList(result)) : SearchableListWrapper.of(CloseableIterators.toList(result));
         }
 
         public SubsetBuilder streaming() {
             streaming = true;
+            return this;
+        }
+
+        public SubsetBuilder withIncludedData(final Set<String> includedData) {
+            this.includedData = includedData;
             return this;
         }
 
@@ -130,18 +161,18 @@ public class Maps extends GhostObject.ListProxy<Map, com.merakianalytics.orianna
         }
     }
 
-    private static final long serialVersionUID = -7076727260509732625L;
+    private static final long serialVersionUID = -5852031149115607129L;
 
-    public static Maps get() {
+    public static Champions get() {
         return new Builder().get();
     }
 
     public static SubsetBuilder named(final Iterable<String> names) {
-        return new SubsetBuilder(names, false);
+        return new SubsetBuilder(names, true);
     }
 
     public static SubsetBuilder named(final String... names) {
-        return new SubsetBuilder(Arrays.asList(names), false);
+        return new SubsetBuilder(Arrays.asList(names), true);
     }
 
     public static SubsetBuilder withIds(final int... ids) {
@@ -149,11 +180,23 @@ public class Maps extends GhostObject.ListProxy<Map, com.merakianalytics.orianna
         for(final int id : ids) {
             list.add(id);
         }
-        return new SubsetBuilder(list, true);
+        return new SubsetBuilder(list);
     }
 
     public static SubsetBuilder withIds(final Iterable<Integer> ids) {
-        return new SubsetBuilder(ids, true);
+        return new SubsetBuilder(ids);
+    }
+
+    public static Builder withIncludedData(final Set<String> includedData) {
+        return new Builder().withIncludedData(includedData);
+    }
+
+    public static SubsetBuilder withKeys(final Iterable<String> keys) {
+        return new SubsetBuilder(keys, false);
+    }
+
+    public static SubsetBuilder withKeys(final String... keys) {
+        return new SubsetBuilder(Arrays.asList(keys), false);
     }
 
     public static Builder withLocale(final String locale) {
@@ -172,15 +215,34 @@ public class Maps extends GhostObject.ListProxy<Map, com.merakianalytics.orianna
         return new Builder().withVersion(version);
     }
 
-    public Maps(final com.merakianalytics.orianna.types.data.staticdata.Maps coreData) {
-        super(coreData, 1, new Function<com.merakianalytics.orianna.types.data.staticdata.Map, Map>() {
+    private final Supplier<Set<String>> includedData = Suppliers.memoize(new Supplier<Set<String>>() {
+        @Override
+        public Set<String> get() {
+            return Collections.unmodifiableSet(coreData.getIncludedData());
+        }
+    });
+
+    // TODO: Load all statuses when this loads instead of always doing them one-by-one
+    public Champions(final com.merakianalytics.orianna.types.data.staticdata.Champions coreData) {
+        super(coreData, 1, new Function<com.merakianalytics.orianna.types.data.staticdata.Champion, Champion>() {
             @Override
-            public Map apply(final com.merakianalytics.orianna.types.data.staticdata.Map data) {
-                final Map map = new Map(data);
-                map.markAsGhostLoaded(Map.MAP_LOAD_GROUP);
-                return map;
+            public Champion apply(final com.merakianalytics.orianna.types.data.staticdata.Champion input) {
+                final ChampionData data = new ChampionData();
+                data.setChampion(input);
+                final Champion champion = new Champion(data);
+                champion.markAsGhostLoaded(Champion.CHAMPION_LOAD_GROUP);
+                return champion;
             }
         });
+    }
+
+    public String getFormat() {
+        load(LIST_PROXY_LOAD_GROUP);
+        return coreData.getFormat();
+    }
+
+    public Set<String> getIncludedData() {
+        return includedData.get();
     }
 
     public String getLocale() {
@@ -219,7 +281,10 @@ public class Maps extends GhostObject.ListProxy<Map, com.merakianalytics.orianna
                 if(coreData.getLocale() != null) {
                     builder.put("locale", coreData.getLocale());
                 }
-                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Maps.class, builder.build());
+                if(coreData.getIncludedData() != null) {
+                    builder.put("includedData", coreData.getIncludedData());
+                }
+                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Champions.class, builder.build());
                 loadListProxyData();
                 break;
             default:

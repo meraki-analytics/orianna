@@ -42,6 +42,7 @@ import com.merakianalytics.orianna.types.common.OriannaException;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
+import com.merakianalytics.orianna.types.core.staticdata.Champions;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
 import com.merakianalytics.orianna.types.core.staticdata.Items;
 import com.merakianalytics.orianna.types.core.staticdata.LanguageStrings;
@@ -239,6 +240,54 @@ public abstract class Orianna {
 
     public static Champion.Builder getChampionNamed(final String name) {
         return Champion.named(name);
+    }
+
+    public static Champions getChampions() {
+        return Champions.get();
+    }
+
+    public static Champions.SubsetBuilder getChampionsNamed(final Iterable<String> names) {
+        return Champions.named(names);
+    }
+
+    public static Champions.SubsetBuilder getChampionsNamed(final String... names) {
+        return Champions.named(names);
+    }
+
+    public static Champions.SubsetBuilder getChampionsWithIds(final int... ids) {
+        return Champions.withIds(ids);
+    }
+
+    public static Champions.SubsetBuilder getChampionsWithIds(final Iterable<Integer> ids) {
+        return Champions.withIds(ids);
+    }
+
+    public static Champions.Builder getChampionsWithIncludedData(final Set<String> includedData) {
+        return Champions.withIncludedData(includedData);
+    }
+
+    public static Champions.SubsetBuilder getChampionsWithKeys(final Iterable<String> keys) {
+        return Champions.withKeys(keys);
+    }
+
+    public static Champions.SubsetBuilder getChampionsWithKeys(final String... keys) {
+        return Champions.withKeys(keys);
+    }
+
+    public static Champions.Builder getChampionsWithLocale(final String locale) {
+        return Champions.withLocale(locale);
+    }
+
+    public static Champions.Builder getChampionsWithPlatform(final Platform platform) {
+        return Champions.withPlatform(platform);
+    }
+
+    public static Champions.Builder getChampionsWithRegion(final Region region) {
+        return Champions.withRegion(region);
+    }
+
+    public static Champions.Builder getChampionsWithVersion(final String version) {
+        return Champions.withVersion(version);
     }
 
     public static Champion.Builder getChampionWithId(final int id) {

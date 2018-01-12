@@ -200,10 +200,16 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         spell.setEffectBurn(effectBurn);
         spell.setImage(transform(item.getImage(), context));
         spell.setKey(item.getKey());
-        final LevelTip tip = new LevelTip();
-        tip.setLabel(new ArrayList<>(item.getLevelUpKeywords()));
-        tip.setEffect(new ArrayList<>(item.getLevelUpEffects()));
-        spell.setLeveltip(tip);
+        if(item.getLevelUpKeywords() != null || item.getLevelUpEffects() != null) {
+            final LevelTip tip = new LevelTip();
+            if(item.getLevelUpKeywords() != null) {
+                tip.setLabel(new ArrayList<>(item.getLevelUpKeywords()));
+            }
+            if(item.getLevelUpEffects() != null) {
+                tip.setEffect(new ArrayList<>(item.getLevelUpEffects()));
+            }
+            spell.setLeveltip(tip);
+        }
         spell.setMaxrank(item.getMaxRank());
         spell.setName(item.getName());
         spell.setRange(new ArrayList<>(item.getRanges()));
@@ -336,8 +342,15 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         spell.setEffects(effects);
         spell.setImage(transform(item.getImage(), context));
         spell.setKey(item.getKey());
-        spell.setLevelUpKeywords(new ArrayList<>(item.getLeveltip().getLabel()));
-        spell.setLevelUpEffects(new ArrayList<>(item.getLeveltip().getEffect()));
+        if(item.getLeveltip() != null) {
+            if(item.getLeveltip().getLabel() != null) {
+                spell.setLevelUpKeywords(new ArrayList<>(item.getLeveltip().getLabel()));
+            }
+
+            if(item.getLeveltip().getEffect() != null) {
+                spell.setLevelUpEffects(new ArrayList<>(item.getLeveltip().getEffect()));
+            }
+        }
         spell.setMaxRank(item.getMaxrank());
         spell.setName(item.getName());
         spell.setRanges(new ArrayList<>(item.getRange()));

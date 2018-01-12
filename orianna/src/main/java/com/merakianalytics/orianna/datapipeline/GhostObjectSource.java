@@ -15,6 +15,7 @@ import com.merakianalytics.orianna.datapipeline.common.Utilities;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Champion.ChampionData;
+import com.merakianalytics.orianna.types.core.staticdata.Champions;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
 import com.merakianalytics.orianna.types.core.staticdata.Items;
 import com.merakianalytics.orianna.types.core.staticdata.LanguageStrings;
@@ -34,6 +35,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Versions;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
 public class GhostObjectSource extends AbstractDataSource {
+    // TODO: Replace specific Number types with Number interface where possible
     private static String getCurrentVersion(final Platform platform, final PipelineContext context) {
         final com.merakianalytics.orianna.types.dto.staticdata.Realm realm =
             context.getPipeline().get(com.merakianalytics.orianna.types.dto.staticdata.Realm.class, ImmutableMap.<String, Object> of("platform", platform));
@@ -64,6 +66,23 @@ public class GhostObjectSource extends AbstractDataSource {
         data.getChampion().setLocale(locale);
         data.getChampion().setIncludedData(includedData);
         return new Champion(data);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Get(Champions.class)
+    public Champions getChampions(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
+        final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
+        final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
+        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
+
+        final com.merakianalytics.orianna.types.data.staticdata.Champions data = new com.merakianalytics.orianna.types.data.staticdata.Champions();
+        data.setPlatform(platform.getTag());
+        data.setVersion(version);
+        data.setLocale(locale);
+        data.setIncludedData(includedData);
+        return new Champions(data);
     }
 
     @SuppressWarnings("unchecked")
@@ -127,6 +146,63 @@ public class GhostObjectSource extends AbstractDataSource {
         data.setVersion(version);
         data.setLocale(locale);
         return new LanguageStrings(data);
+    }
+
+    @SuppressWarnings("unchecked")
+    @GetMany(Champion.class)
+    public CloseableIterator<Champion> getManyChampion(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
+        final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
+        final Iterable<String> names = (Iterable<String>)query.get("names");
+        final Iterable<String> keys = (Iterable<String>)query.get("keys");
+        Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names", keys, "keys");
+        final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
+        final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
+        final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
+
+        final Iterator<?> iterator;
+        if(ids != null) {
+            iterator = ids.iterator();
+        } else if(names != null) {
+            iterator = names.iterator();
+        } else if(keys != null) {
+            iterator = keys.iterator();
+        } else {
+            return null;
+        }
+
+        return CloseableIterators.from(new Iterator<Champion>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Champion next() {
+                final ChampionData data = new ChampionData();
+                if(ids != null) {
+                    final int id = (Integer)iterator.next();
+                    data.getChampion().setId(id);
+                    data.getStatus().setId(id);
+                } else if(names != null) {
+                    data.getChampion().setName((String)iterator.next());
+                } else if(keys != null) {
+                    data.getChampion().setKey((String)iterator.next());
+                }
+                data.getChampion().setPlatform(platform.getTag());
+                data.getStatus().setPlatform(platform.getTag());
+                data.getChampion().setVersion(version);
+                data.getChampion().setLocale(locale);
+                data.getChampion().setIncludedData(includedData);
+                return new Champion(data);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")

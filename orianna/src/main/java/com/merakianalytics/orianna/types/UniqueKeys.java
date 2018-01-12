@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
+import com.merakianalytics.orianna.types.core.staticdata.Champions;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
 import com.merakianalytics.orianna.types.core.staticdata.Items;
 import com.merakianalytics.orianna.types.core.staticdata.LanguageStrings;
@@ -101,6 +102,21 @@ public abstract class UniqueKeys {
         });
     }
 
+    public static int forChampions(final Champions champions) {
+        final com.merakianalytics.orianna.types.data.staticdata.Champions data = champions.getCoreData();
+        return Arrays.hashCode(new Object[] {
+            Champions.class.getCanonicalName(), data.getPlatform(), data.getVersion(), data.getLocale(), data.getIncludedData()
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    public static int forChampionsQuery(final java.util.Map<String, Object> query) {
+        return Arrays.hashCode(new Object[] {
+            Champions.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
+            (Set<String>)query.get("includedData")
+        });
+    }
+
     public static int[] forItem(final Item item) {
         final com.merakianalytics.orianna.types.data.staticdata.Item data = item.getCoreData();
         if(data.getId() != 0 && data.getName() != null) {
@@ -178,6 +194,44 @@ public abstract class UniqueKeys {
         return Arrays.hashCode(new Object[] {
             LanguageStrings.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale")
         });
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Iterator<Integer> forManyChampionQuery(final java.util.Map<String, Object> query) {
+        final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
+        final Iterable<String> names = (Iterable<String>)query.get("names");
+        final Iterable<String> keys = (Iterable<String>)query.get("keys");
+
+        final Iterator<?> iterator;
+        if(ids != null) {
+            iterator = ids.iterator();
+        } else if(names != null) {
+            iterator = names.iterator();
+        } else if(keys != null) {
+            iterator = keys.iterator();
+        } else {
+            return null;
+        }
+
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                return Arrays.hashCode(new Object[] {
+                    Champion.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
+                    iterator.next(), (Set<String>)query.get("includedData")
+                });
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
     }
 
     @SuppressWarnings("unchecked")
