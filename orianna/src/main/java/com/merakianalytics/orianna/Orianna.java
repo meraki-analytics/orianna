@@ -41,11 +41,15 @@ import com.merakianalytics.orianna.datapipeline.transformers.dtodata.SummonerTra
 import com.merakianalytics.orianna.datapipeline.transformers.dtodata.ThirdPartyCodeTransformer;
 import com.merakianalytics.orianna.types.common.OriannaException;
 import com.merakianalytics.orianna.types.common.Platform;
+import com.merakianalytics.orianna.types.common.Queue;
 import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScores;
+import com.merakianalytics.orianna.types.core.league.League;
+import com.merakianalytics.orianna.types.core.league.LeaguePositions;
+import com.merakianalytics.orianna.types.core.searchable.SearchableList;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Champions;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
@@ -238,6 +242,10 @@ public abstract class Orianna {
         }
     }
 
+    public static League getChallengerLeagueInQueue(final Queue queue) {
+        return League.challenger().inQueue(queue).get();
+    }
+
     public static ChampionMasteries.Builder getChampionMasteriesForSummoner(final Summoner summoner) {
         return ChampionMasteries.forSummoner(summoner);
     }
@@ -246,16 +254,16 @@ public abstract class Orianna {
         return ChampionMastery.forSummoner(summoner);
     }
 
-    public static ChampionMasteryScore.Builder getChampionMasteryScoreForSummoner(final Summoner summoner) {
-        return ChampionMasteryScore.forSummoner(summoner);
+    public static ChampionMasteryScore getChampionMasteryScoreForSummoner(final Summoner summoner) {
+        return ChampionMasteryScore.forSummoner(summoner).get();
     }
 
-    public static ChampionMasteryScores.Builder getChampionMasteryScoresForSummoners(final Iterable<Summoner> summoners) {
-        return ChampionMasteryScores.forSummoners(summoners);
+    public static SearchableList<ChampionMasteryScore> getChampionMasteryScoresForSummoners(final Iterable<Summoner> summoners) {
+        return ChampionMasteryScores.forSummoners(summoners).get();
     }
 
-    public static ChampionMasteryScores.Builder getChampionMasteryScoresForSummoners(final Summoner... summoners) {
-        return ChampionMasteryScores.forSummoners(summoners);
+    public static SearchableList<ChampionMasteryScore> getChampionMasteryScoresForSummoners(final Summoner... summoners) {
+        return ChampionMasteryScores.forSummoners(summoners).get();
     }
 
     public static Champion.Builder getChampionNamed(final String name) {
@@ -408,6 +416,14 @@ public abstract class Orianna {
         return Languages.withRegion(region);
     }
 
+    public static LeaguePositions getLeaguePositionsForSummoner(final Summoner summoner) {
+        return LeaguePositions.forSummoner(summoner).get();
+    }
+
+    public static League.Builder getLeagueWithId(final String id) {
+        return League.withId(id);
+    }
+
     public static Map.Builder getMapNamed(final String name) {
         return Map.named(name);
     }
@@ -492,6 +508,10 @@ public abstract class Orianna {
         return Masteries.withVersion(version);
     }
 
+    public static League getMasterLeagueInQueue(final Queue queue) {
+        return League.master().inQueue(queue).get();
+    }
+
     public static Mastery.Builder getMasteryNamed(final String name) {
         return Mastery.named(name);
     }
@@ -536,12 +556,12 @@ public abstract class Orianna {
         return Realm.get();
     }
 
-    public static Realm.Builder getRealmWithPlatform(final Platform platform) {
-        return Realm.withPlatform(platform);
+    public static Realm getRealmWithPlatform(final Platform platform) {
+        return Realm.withPlatform(platform).get();
     }
 
-    public static Realm.Builder getRealmWithRegion(final Region region) {
-        return Realm.withRegion(region);
+    public static Realm getRealmWithRegion(final Region region) {
+        return Realm.withRegion(region).get();
     }
 
     public static Rune.Builder getRuneNamed(final String name) {

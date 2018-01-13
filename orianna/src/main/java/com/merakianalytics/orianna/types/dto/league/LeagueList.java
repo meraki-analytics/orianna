@@ -7,7 +7,6 @@ import com.merakianalytics.orianna.types.dto.DataObject;
 public class LeagueList extends DataObject {
     private static final long serialVersionUID = 4191507968433712121L;
     private List<LeagueItem> entries;
-    private long summonerId;
     private String tier, queue, name, platform, leagueId;
 
     @Override
@@ -57,9 +56,6 @@ public class LeagueList extends DataObject {
         } else if(!queue.equals(other.queue)) {
             return false;
         }
-        if(summonerId != other.summonerId) {
-            return false;
-        }
         if(tier == null) {
             if(other.tier != null) {
                 return false;
@@ -106,13 +102,6 @@ public class LeagueList extends DataObject {
     }
 
     /**
-     * @return the summonerId
-     */
-    public long getSummonerId() {
-        return summonerId;
-    }
-
-    /**
      * @return the tier
      */
     public String getTier() {
@@ -128,7 +117,6 @@ public class LeagueList extends DataObject {
         result = prime * result + (name == null ? 0 : name.hashCode());
         result = prime * result + (platform == null ? 0 : platform.hashCode());
         result = prime * result + (queue == null ? 0 : queue.hashCode());
-        result = prime * result + (int)(summonerId ^ summonerId >>> 32);
         result = prime * result + (tier == null ? 0 : tier.hashCode());
         return result;
     }
@@ -171,14 +159,6 @@ public class LeagueList extends DataObject {
      */
     public void setQueue(final String queue) {
         this.queue = queue;
-    }
-
-    /**
-     * @param summonerId
-     *        the summonerId to set
-     */
-    public void setSummonerId(final long summonerId) {
-        this.summonerId = summonerId;
     }
 
     /**

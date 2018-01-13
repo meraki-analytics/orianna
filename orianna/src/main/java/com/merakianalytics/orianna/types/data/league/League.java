@@ -5,7 +5,6 @@ import com.merakianalytics.orianna.types.data.CoreData;
 public class League extends CoreData.ListProxy<LeagueEntry> {
     private static final long serialVersionUID = -238522505205131178L;
     private String name, id, platform, queue, tier;
-    private long summonerId;
 
     public League() {
         super();
@@ -55,9 +54,6 @@ public class League extends CoreData.ListProxy<LeagueEntry> {
         } else if(!queue.equals(other.queue)) {
             return false;
         }
-        if(summonerId != other.summonerId) {
-            return false;
-        }
         if(tier == null) {
             if(other.tier != null) {
                 return false;
@@ -97,13 +93,6 @@ public class League extends CoreData.ListProxy<LeagueEntry> {
     }
 
     /**
-     * @return the summonerId
-     */
-    public long getSummonerId() {
-        return summonerId;
-    }
-
-    /**
      * @return the tier
      */
     public String getTier() {
@@ -118,7 +107,6 @@ public class League extends CoreData.ListProxy<LeagueEntry> {
         result = prime * result + (name == null ? 0 : name.hashCode());
         result = prime * result + (platform == null ? 0 : platform.hashCode());
         result = prime * result + (queue == null ? 0 : queue.hashCode());
-        result = prime * result + (int)(summonerId ^ summonerId >>> 32);
         result = prime * result + (tier == null ? 0 : tier.hashCode());
         return result;
     }
@@ -153,14 +141,6 @@ public class League extends CoreData.ListProxy<LeagueEntry> {
      */
     public void setQueue(final String queue) {
         this.queue = queue;
-    }
-
-    /**
-     * @param summonerId
-     *        the summonerId to set
-     */
-    public void setSummonerId(final long summonerId) {
-        this.summonerId = summonerId;
     }
 
     /**

@@ -25,7 +25,7 @@ public class ChampionMasteries extends GhostObject.ListProxy<ChampionMastery, co
             private final Iterable<Champion> champions;
             private final boolean streaming = false;
 
-            public SubBuilder(final Iterable<Champion> champions) {
+            private SubBuilder(final Iterable<Champion> champions) {
                 this.champions = champions;
             }
 

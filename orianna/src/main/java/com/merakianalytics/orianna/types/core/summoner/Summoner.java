@@ -12,6 +12,7 @@ import com.merakianalytics.orianna.types.core.GhostObject;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
+import com.merakianalytics.orianna.types.core.league.LeaguePositions;
 import com.merakianalytics.orianna.types.core.searchable.Searchable;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
@@ -129,6 +130,10 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
             load(SUMMONER_LOAD_GROUP);
         }
         return coreData.getId();
+    }
+
+    public LeaguePositions getLeaguePositions() {
+        return LeaguePositions.forSummoner(this).get();
     }
 
     public int getLevel() {

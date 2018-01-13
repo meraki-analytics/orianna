@@ -4,10 +4,15 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
 
+import com.google.common.collect.ImmutableSet;
 import com.merakianalytics.orianna.types.common.Platform;
+import com.merakianalytics.orianna.types.common.Queue;
+import com.merakianalytics.orianna.types.common.Tier;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
+import com.merakianalytics.orianna.types.core.league.League;
+import com.merakianalytics.orianna.types.core.league.LeaguePositions;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Champions;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
@@ -29,6 +34,8 @@ import com.merakianalytics.orianna.types.core.staticdata.Versions;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
 public abstract class UniqueKeys {
+    private static final Set<Tier> UNIQUE_TIERS = ImmutableSet.of(Tier.CHALLENGER, Tier.MASTER);
+
     // TODO: Replace specific Number types with Number interface where possible
     public static int[] forChampion(final Champion champion) {
         final com.merakianalytics.orianna.types.data.staticdata.Champion data = champion.getCoreData().getChampion();
@@ -237,6 +244,63 @@ public abstract class UniqueKeys {
         return Arrays.hashCode(new Object[] {
             LanguageStrings.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale")
         });
+    }
+
+    public static int[] forLeague(final League league) {
+        final com.merakianalytics.orianna.types.data.league.League data = league.getCoreData();
+        if(data.getTier() != null && data.getQueue() != null && UNIQUE_TIERS.contains(league.getTier()) && Queue.RANKED.contains(league.getQueue())) {
+            if(data.getId() != null) {
+                return new int[] {
+                    Arrays.hashCode(new Object[] {
+                        League.class.getCanonicalName(), data.getPlatform(), data.getId()
+                    }),
+                    Arrays.hashCode(new Object[] {
+                        League.class.getCanonicalName(), data.getPlatform(), data.getQueue(), data.getTier()
+                    })
+                };
+            } else {
+                return new int[] {
+                    Arrays.hashCode(new Object[] {
+                        League.class.getCanonicalName(), data.getPlatform(), data.getQueue(), data.getTier()
+                    })
+                };
+            }
+        } else if(data.getId() != null) {
+            return new int[] {
+                Arrays.hashCode(new Object[] {
+                    League.class.getCanonicalName(), data.getPlatform(), data.getId()
+                })
+            };
+        } else {
+            throw new IllegalArgumentException("Can't get key for League without ID or queue and tier!");
+        }
+    }
+
+    public static int forLeaguePositions(final LeaguePositions positions) {
+        final com.merakianalytics.orianna.types.data.league.LeaguePositions data = positions.getCoreData();
+        return Arrays.hashCode(new Object[] {
+            LeaguePositions.class.getCanonicalName(), data.getPlatform(), data.getSummonerId()
+        });
+    }
+
+    public static int forLeaguePositionsQuery(final java.util.Map<String, Object> query) {
+        return Arrays.hashCode(new Object[] {
+            LeaguePositions.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), ((Number)query.get("summonerId")).longValue()
+        });
+    }
+
+    public static int forLeagueQuery(final java.util.Map<String, Object> query) {
+        final String id = (String)query.get("leagueId");
+        if(id != null) {
+            return Arrays.hashCode(new Object[] {
+                League.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), id
+            });
+        } else {
+            return Arrays.hashCode(new Object[] {
+                League.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), ((Queue)query.get("queue")).name(),
+                ((Tier)query.get("tier")).name()
+            });
+        }
     }
 
     @SuppressWarnings("unchecked")

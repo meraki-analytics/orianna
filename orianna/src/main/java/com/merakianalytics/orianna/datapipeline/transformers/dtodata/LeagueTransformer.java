@@ -29,7 +29,9 @@ public class LeagueTransformer extends AbstractDataTransformer {
         position.setName(item.getLeagueName());
         position.setOnHotStreak(item.isHotStreak());
         position.setPlatform(item.getPlatform());
-        position.setPromos(transform(item.getMiniSeries(), context));
+        if(item.getMiniSeries() != null) {
+            position.setPromos(transform(item.getMiniSeries(), context));
+        }
         position.setQueue(item.getQueueType());
         position.setSummonerId(Long.parseLong(item.getPlayerOrTeamId()));
         position.setSummonerName(item.getPlayerOrTeamName());
@@ -51,7 +53,6 @@ public class LeagueTransformer extends AbstractDataTransformer {
         list.setName(item.getName());
         list.setPlatform(item.getPlatform());
         list.setQueue(item.getQueue().toString());
-        list.setSummonerId(item.getSummonerId());
         list.setTier(item.getTier().toString());
         return list;
     }
@@ -65,7 +66,9 @@ public class LeagueTransformer extends AbstractDataTransformer {
         entry.setLeaguePoints(item.getLeaguePoints());
         entry.setLosses(item.getLosses());
         entry.setHotStreak(item.isOnHotStreak());
-        entry.setMiniSeries(transform(item.getPromos(), context));
+        if(item.getPromos() != null) {
+            entry.setMiniSeries(transform(item.getPromos(), context));
+        }
         entry.setPlayerOrTeamId(Long.toString(item.getSummonerId()));
         entry.setPlayerOrTeamName(item.getSummonerName());
         entry.setVeteran(item.isVeteran());
@@ -76,13 +79,16 @@ public class LeagueTransformer extends AbstractDataTransformer {
     @Transform(from = LeagueItem.class, to = LeagueEntry.class)
     public LeagueEntry transform(final LeagueItem item, final PipelineContext context) {
         final LeagueEntry entry = new LeagueEntry();
+        entry.setPlatform((String)context.get("platform"));
         entry.setDivision(item.getRank());
         entry.setFreshBlood(item.isFreshBlood());
         entry.setInactive(item.isInactive());
         entry.setLeaguePoints(item.getLeaguePoints());
         entry.setLosses(item.getLosses());
         entry.setOnHotStreak(item.isHotStreak());
-        entry.setPromos(transform(item.getMiniSeries(), context));
+        if(item.getMiniSeries() != null) {
+            entry.setPromos(transform(item.getMiniSeries(), context));
+        }
         entry.setSummonerId(Long.parseLong(item.getPlayerOrTeamId()));
         entry.setSummonerName(item.getPlayerOrTeamName());
         entry.setVeteran(item.isVeteran());
@@ -92,6 +98,7 @@ public class LeagueTransformer extends AbstractDataTransformer {
 
     @Transform(from = LeagueList.class, to = League.class)
     public League transform(final LeagueList item, final PipelineContext context) {
+        final Object previous = context.put("platform", item.getPlatform());
         final League league = new League(item.getEntries().size());
         for(final LeagueItem entry : item.getEntries()) {
             league.add(transform(entry, context));
@@ -100,8 +107,8 @@ public class LeagueTransformer extends AbstractDataTransformer {
         league.setName(item.getName());
         league.setPlatform(item.getPlatform());
         league.setQueue(item.getQueue());
-        league.setSummonerId(item.getSummonerId());
         league.setTier(item.getTier());
+        context.put("platform", previous);
         return league;
     }
 
@@ -117,7 +124,9 @@ public class LeagueTransformer extends AbstractDataTransformer {
         position.setLeagueName(item.getName());
         position.setHotStreak(item.isOnHotStreak());
         position.setPlatform(item.getPlatform());
-        position.setMiniSeries(transform(item.getPromos(), context));
+        if(item.getPromos() != null) {
+            position.setMiniSeries(transform(item.getPromos(), context));
+        }
         position.setQueueType(item.getQueue().toString());
         position.setPlayerOrTeamId(Long.toString(item.getSummonerId()));
         position.setPlayerOrTeamName(item.getSummonerName());

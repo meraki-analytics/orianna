@@ -3,8 +3,8 @@ package com.merakianalytics.orianna.types.data.league;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class LeagueEntry extends CoreData {
-    private static final long serialVersionUID = -2882846256009911146L;
-    private String division, summonerName;
+    private static final long serialVersionUID = 4267068460856854524L;
+    private String division, summonerName, platform;
     private boolean onHotStreak, veteran, inactive, freshBlood;
     private Series promos;
     private long summonerId;
@@ -42,6 +42,13 @@ public class LeagueEntry extends CoreData {
             return false;
         }
         if(onHotStreak != other.onHotStreak) {
+            return false;
+        }
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         if(promos == null) {
@@ -92,6 +99,13 @@ public class LeagueEntry extends CoreData {
     }
 
     /**
+     * @return the platform
+     */
+    public String getPlatform() {
+        return platform;
+    }
+
+    /**
      * @return the promos
      */
     public Series getPromos() {
@@ -129,6 +143,7 @@ public class LeagueEntry extends CoreData {
         result = prime * result + leaguePoints;
         result = prime * result + losses;
         result = prime * result + (onHotStreak ? 1231 : 1237);
+        result = prime * result + (platform == null ? 0 : platform.hashCode());
         result = prime * result + (promos == null ? 0 : promos.hashCode());
         result = prime * result + (int)(summonerId ^ summonerId >>> 32);
         result = prime * result + (summonerName == null ? 0 : summonerName.hashCode());
@@ -211,6 +226,14 @@ public class LeagueEntry extends CoreData {
      */
     public void setOnHotStreak(final boolean onHotStreak) {
         this.onHotStreak = onHotStreak;
+    }
+
+    /**
+     * @param platform
+     *        the platform to set
+     */
+    public void setPlatform(final String platform) {
+        this.platform = platform;
     }
 
     /**

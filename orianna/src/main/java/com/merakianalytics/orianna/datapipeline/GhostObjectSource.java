@@ -11,11 +11,16 @@ import com.merakianalytics.datapipelines.iterators.CloseableIterators;
 import com.merakianalytics.datapipelines.sources.AbstractDataSource;
 import com.merakianalytics.datapipelines.sources.Get;
 import com.merakianalytics.datapipelines.sources.GetMany;
+import com.merakianalytics.orianna.datapipeline.common.QueryValidationException;
 import com.merakianalytics.orianna.datapipeline.common.Utilities;
 import com.merakianalytics.orianna.types.common.Platform;
+import com.merakianalytics.orianna.types.common.Queue;
+import com.merakianalytics.orianna.types.common.Tier;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
+import com.merakianalytics.orianna.types.core.league.League;
+import com.merakianalytics.orianna.types.core.league.LeaguePositions;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Champion.ChampionData;
 import com.merakianalytics.orianna.types.core.staticdata.Champions;
@@ -38,6 +43,8 @@ import com.merakianalytics.orianna.types.core.staticdata.Versions;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
 public class GhostObjectSource extends AbstractDataSource {
+    private static final Set<Tier> UNIQUE_TIERS = ImmutableSet.of(Tier.CHALLENGER, Tier.MASTER);
+
     // TODO: Replace specific Number types with Number interface where possible
     private static String getCurrentVersion(final Platform platform, final PipelineContext context) {
         final com.merakianalytics.orianna.types.dto.staticdata.Realm realm =
@@ -190,6 +197,56 @@ public class GhostObjectSource extends AbstractDataSource {
         data.setVersion(version);
         data.setLocale(locale);
         return new LanguageStrings(data);
+    }
+
+    @Get(League.class)
+    public League getLeague(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
+        final Tier tier = (Tier)query.get("tier");
+        final Queue queue = (Queue)query.get("queue");
+        final String leagueId = (String)query.get("leagueId");
+
+        if(leagueId == null) {
+            if(tier == null || queue == null) {
+                throw new QueryValidationException("Query was missing required parameters! Either leagueId or tier and queue must be included!");
+            } else if(!UNIQUE_TIERS.contains(tier)) {
+                final StringBuilder sb = new StringBuilder();
+                for(final Tier t : UNIQUE_TIERS) {
+                    sb.append(", " + t);
+                }
+                throw new QueryValidationException("Query contained invalid parameters! tier must be one of [" + sb.substring(2) + "]!");
+            } else if(!Queue.RANKED.contains(queue)) {
+                final StringBuilder sb = new StringBuilder();
+                for(final Queue q : Queue.RANKED) {
+                    sb.append(", " + q);
+                }
+                throw new QueryValidationException("Query contained invalid parameters! queue must be one of [" + sb.substring(2) + "]!");
+            }
+        }
+
+        final com.merakianalytics.orianna.types.data.league.League league = new com.merakianalytics.orianna.types.data.league.League();
+        league.setPlatform(platform.getTag());
+        if(leagueId != null) {
+            league.setId(leagueId);
+        } else {
+            league.setTier(tier.name());
+            league.setQueue(queue.name());
+        }
+        return new League(league);
+    }
+
+    @Get(LeaguePositions.class)
+    public LeaguePositions getLeaguePositions(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        final Number summonerId = (Number)query.get("summonerId");
+        Utilities.checkNotNull(platform, "platform", summonerId, "summonerId");
+
+        final com.merakianalytics.orianna.types.data.league.LeaguePositions data =
+            new com.merakianalytics.orianna.types.data.league.LeaguePositions();
+        data.setPlatform(platform.getTag());
+        data.setSummonerId(summonerId.longValue());
+        return new LeaguePositions(data);
     }
 
     @SuppressWarnings("unchecked")

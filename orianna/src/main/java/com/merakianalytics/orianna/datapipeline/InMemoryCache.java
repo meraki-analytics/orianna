@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.cache2k.Cache;
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.merakianalytics.datapipelines.AbstractDataStore;
 import com.merakianalytics.datapipelines.PipelineContext;
@@ -26,11 +28,15 @@ import com.merakianalytics.datapipelines.sources.GetMany;
 import com.merakianalytics.orianna.datapipeline.common.expiration.ExpirationPeriod;
 import com.merakianalytics.orianna.types.UniqueKeys;
 import com.merakianalytics.orianna.types.common.OriannaException;
+import com.merakianalytics.orianna.types.common.Queue;
+import com.merakianalytics.orianna.types.common.Tier;
 import com.merakianalytics.orianna.types.core.GhostObject.ListProxy;
 import com.merakianalytics.orianna.types.core.GhostObject.LoadHook;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
+import com.merakianalytics.orianna.types.core.league.League;
+import com.merakianalytics.orianna.types.core.league.LeaguePositions;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Champions;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
@@ -63,6 +69,8 @@ public class InMemoryCache extends AbstractDataStore {
             .put(Items.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(LanguageStrings.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(Languages.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
+            .put(League.class.getCanonicalName(), ExpirationPeriod.create(30, TimeUnit.MINUTES))
+            .put(LeaguePositions.class.getCanonicalName(), ExpirationPeriod.create(30, TimeUnit.MINUTES))
             .put(Map.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(Maps.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(Mastery.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
@@ -104,6 +112,8 @@ public class InMemoryCache extends AbstractDataStore {
     }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InMemoryCache.class);
+
+    private static final Set<Tier> UNIQUE_TIERS = ImmutableSet.of(Tier.CHALLENGER, Tier.MASTER);
     private final Cache<Integer, Object> cache;
     private final java.util.Map<Class<?>, Long> expirationPeriods;
 
@@ -183,6 +193,18 @@ public class InMemoryCache extends AbstractDataStore {
     public LanguageStrings getLanguageStrings(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forLanguageStringsQuery(query);
         return (LanguageStrings)cache.get(key);
+    }
+
+    @Get(League.class)
+    public League getLeague(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forLeagueQuery(query);
+        return (League)cache.get(key);
+    }
+
+    @Get(LeaguePositions.class)
+    public LeaguePositions getLeaguePositions(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forLeaguePositionsQuery(query);
+        return (LeaguePositions)cache.get(key);
     }
 
     @GetMany(Champion.class)
@@ -679,6 +701,33 @@ public class InMemoryCache extends AbstractDataStore {
     public void putLanguageStrings(final LanguageStrings languageStrings, final PipelineContext context) {
         final int key = UniqueKeys.forLanguageStrings(languageStrings);
         cache.put(key, languageStrings);
+    }
+
+    @Put(League.class)
+    public void putLeague(final League league, final PipelineContext context) {
+        final int[] keys = UniqueKeys.forLeague(league);
+
+        if(keys.length < 2 && league.getCoreData().getTier() == null || league.getCoreData().getQueue() != null
+            || Queue.RANKED.contains(league.getQueue()) && UNIQUE_TIERS.contains(league.getTier())) {
+            final LoadHook hook = new LoadHook() {
+                @Override
+                public void call() {
+                    putLeague(league, null);
+                }
+            };
+
+            league.registerGhostLoadHook(hook, ListProxy.LIST_PROXY_LOAD_GROUP);
+        }
+
+        for(final int key : keys) {
+            cache.put(key, league);
+        }
+    }
+
+    @Put(LeaguePositions.class)
+    public void putLeaguePositions(final LeaguePositions positions, final PipelineContext context) {
+        final int key = UniqueKeys.forLeaguePositions(positions);
+        cache.put(key, positions);
     }
 
     @PutMany(Champion.class)
