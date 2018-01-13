@@ -28,6 +28,9 @@ import com.merakianalytics.orianna.types.UniqueKeys;
 import com.merakianalytics.orianna.types.common.OriannaException;
 import com.merakianalytics.orianna.types.core.GhostObject.ListProxy;
 import com.merakianalytics.orianna.types.core.GhostObject.LoadHook;
+import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries;
+import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
+import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Champions;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
@@ -51,6 +54,9 @@ import com.merakianalytics.orianna.types.core.summoner.Summoner;
 public class InMemoryCache extends AbstractDataStore {
     public static class Configuration {
         private static final java.util.Map<String, ExpirationPeriod> DEFAULT_EXPIRATION_PERIODS = ImmutableMap.<String, ExpirationPeriod> builder()
+            .put(ChampionMastery.class.getCanonicalName(), ExpirationPeriod.create(30, TimeUnit.MINUTES))
+            .put(ChampionMasteries.class.getCanonicalName(), ExpirationPeriod.create(30, TimeUnit.MINUTES))
+            .put(ChampionMasteryScore.class.getCanonicalName(), ExpirationPeriod.create(30, TimeUnit.MINUTES))
             .put(Champion.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
             .put(Champions.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
             .put(Item.class.getCanonicalName(), ExpirationPeriod.create(6, TimeUnit.HOURS))
@@ -131,6 +137,24 @@ public class InMemoryCache extends AbstractDataStore {
         return (Champion)cache.get(key);
     }
 
+    @Get(ChampionMasteries.class)
+    public ChampionMasteries getChampionMasteries(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forChampionMasteriesQuery(query);
+        return (ChampionMasteries)cache.get(key);
+    }
+
+    @Get(ChampionMastery.class)
+    public ChampionMastery getChampionMastery(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forChampionMasteryQuery(query);
+        return (ChampionMastery)cache.get(key);
+    }
+
+    @Get(ChampionMasteryScore.class)
+    public ChampionMasteryScore getChampionMasteryScore(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forChampionMasteryScoreQuery(query);
+        return (ChampionMasteryScore)cache.get(key);
+    }
+
     @Get(Champions.class)
     public Champions getChampions(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forChampionsQuery(query);
@@ -181,6 +205,64 @@ public class InMemoryCache extends AbstractDataStore {
             public Champion next() {
                 final int key = iterator.next();
                 return (Champion)cache.get(key);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @GetMany(ChampionMastery.class)
+    public CloseableIterator<ChampionMastery> getManyChampionMastery(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyChampionMasteryQuery(query));
+        for(final Integer key : keys) {
+            if(!cache.containsKey(key)) {
+                return null;
+            }
+        }
+
+        final Iterator<Integer> iterator = keys.iterator();
+        return CloseableIterators.from(new Iterator<ChampionMastery>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public ChampionMastery next() {
+                final int key = iterator.next();
+                return (ChampionMastery)cache.get(key);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @GetMany(ChampionMasteryScore.class)
+    public CloseableIterator<ChampionMasteryScore> getManyChampionMasteryScore(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyChampionMasteryScoreQuery(query));
+        for(final Integer key : keys) {
+            if(!cache.containsKey(key)) {
+                return null;
+            }
+        }
+
+        final Iterator<Integer> iterator = keys.iterator();
+        return CloseableIterators.from(new Iterator<ChampionMasteryScore>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public ChampionMasteryScore next() {
+                final int key = iterator.next();
+                return (ChampionMasteryScore)cache.get(key);
             }
 
             @Override
@@ -492,6 +574,37 @@ public class InMemoryCache extends AbstractDataStore {
         }
     }
 
+    @Put(ChampionMasteries.class)
+    public void putChampionMasteries(final ChampionMasteries masteries, final PipelineContext context) {
+        final int key = UniqueKeys.forChampionMasteries(masteries);
+        cache.put(key, masteries);
+
+        if(masteries.getCoreData().isEmpty()) {
+            final LoadHook hook = new LoadHook() {
+                @Override
+                public void call() {
+                    putChampionMasteries(masteries, null);
+                }
+            };
+
+            masteries.registerGhostLoadHook(hook, ListProxy.LIST_PROXY_LOAD_GROUP);
+        } else {
+            putManyChampionMastery(masteries, context);
+        }
+    }
+
+    @Put(ChampionMastery.class)
+    public void putChampionMastery(final ChampionMastery mastery, final PipelineContext context) {
+        final int key = UniqueKeys.forChampionMastery(mastery);
+        cache.put(key, mastery);
+    }
+
+    @Put(ChampionMasteryScore.class)
+    public void putChampionMasteryScore(final ChampionMasteryScore score, final PipelineContext context) {
+        final int key = UniqueKeys.forChampionMasteryScore(score);
+        cache.put(key, score);
+    }
+
     @Put(Champions.class)
     public void putChampions(final Champions champions, final PipelineContext context) {
         final int key = UniqueKeys.forChampions(champions);
@@ -572,6 +685,20 @@ public class InMemoryCache extends AbstractDataStore {
     public void putManyChampion(final Iterable<Champion> champions, final PipelineContext context) {
         for(final Champion champion : champions) {
             putChampion(champion, context);
+        }
+    }
+
+    @PutMany(ChampionMastery.class)
+    public void putManyChampionMastery(final Iterable<ChampionMastery> masteries, final PipelineContext context) {
+        for(final ChampionMastery mastery : masteries) {
+            putChampionMastery(mastery, context);
+        }
+    }
+
+    @PutMany(ChampionMasteryScore.class)
+    public void putManyChampionMasteryScore(final Iterable<ChampionMasteryScore> scores, final PipelineContext context) {
+        for(final ChampionMasteryScore score : scores) {
+            putChampionMasteryScore(score, context);
         }
     }
 

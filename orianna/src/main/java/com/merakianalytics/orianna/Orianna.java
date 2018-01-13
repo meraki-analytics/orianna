@@ -41,6 +41,10 @@ import com.merakianalytics.orianna.datapipeline.transformers.dtodata.ThirdPartyC
 import com.merakianalytics.orianna.types.common.OriannaException;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Region;
+import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries;
+import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
+import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
+import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScores;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Champions;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
@@ -236,6 +240,26 @@ public abstract class Orianna {
         } catch(final OriannaException e) {
             return new Settings(new Configuration());
         }
+    }
+
+    public static ChampionMasteries.Builder getChampionMasteriesForSummoner(final Summoner summoner) {
+        return ChampionMasteries.forSummoner(summoner);
+    }
+
+    public static ChampionMastery.Builder getChampionMasteryForSummoner(final Summoner summoner) {
+        return ChampionMastery.forSummoner(summoner);
+    }
+
+    public static ChampionMasteryScore.Builder getChampionMasteryScoreForSummoner(final Summoner summoner) {
+        return ChampionMasteryScore.forSummoner(summoner);
+    }
+
+    public static ChampionMasteryScores.Builder getChampionMasteryScoresForSummoners(final Iterable<Summoner> summoners) {
+        return ChampionMasteryScores.forSummoners(summoners);
+    }
+
+    public static ChampionMasteryScores.Builder getChampionMasteryScoresForSummoners(final Summoner... summoners) {
+        return ChampionMasteryScores.forSummoners(summoners);
     }
 
     public static Champion.Builder getChampionNamed(final String name) {

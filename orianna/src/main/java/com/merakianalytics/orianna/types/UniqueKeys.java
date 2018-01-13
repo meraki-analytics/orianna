@@ -5,6 +5,9 @@ import java.util.Iterator;
 import java.util.Set;
 
 import com.merakianalytics.orianna.types.common.Platform;
+import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries;
+import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
+import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Champions;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
@@ -89,6 +92,46 @@ public abstract class UniqueKeys {
         } else {
             throw new IllegalArgumentException("Can't get key for Champion without ID, name, or key!");
         }
+    }
+
+    public static int forChampionMasteries(final ChampionMasteries masteries) {
+        final com.merakianalytics.orianna.types.data.championmastery.ChampionMasteries data = masteries.getCoreData();
+        return Arrays.hashCode(new Object[] {
+            ChampionMasteries.class.getCanonicalName(), data.getPlatform(), data.getSummonerId()
+        });
+    }
+
+    public static int forChampionMasteriesQuery(final java.util.Map<String, Object> query) {
+        return Arrays.hashCode(new Object[] {
+            ChampionMasteries.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), ((Number)query.get("summonerId")).longValue()
+        });
+    }
+
+    public static int forChampionMastery(final ChampionMastery mastery) {
+        final com.merakianalytics.orianna.types.data.championmastery.ChampionMastery data = mastery.getCoreData();
+        return Arrays.hashCode(new Object[] {
+            ChampionMastery.class.getCanonicalName(), data.getPlatform(), data.getSummonerId(), data.getChampionId()
+        });
+    }
+
+    public static int forChampionMasteryQuery(final java.util.Map<String, Object> query) {
+        return Arrays.hashCode(new Object[] {
+            ChampionMastery.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), ((Number)query.get("summonerId")).longValue(),
+            ((Number)query.get("championId")).intValue()
+        });
+    }
+
+    public static int forChampionMasteryScore(final ChampionMasteryScore score) {
+        final com.merakianalytics.orianna.types.data.championmastery.ChampionMasteryScore data = score.getCoreData();
+        return Arrays.hashCode(new Object[] {
+            ChampionMasteryScore.class.getCanonicalName(), data.getPlatform(), data.getSummonerId()
+        });
+    }
+
+    public static int forChampionMasteryScoreQuery(final java.util.Map<String, Object> query) {
+        return Arrays.hashCode(new Object[] {
+            ChampionMasteryScore.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), ((Number)query.get("summonerId")).longValue()
+        });
     }
 
     @SuppressWarnings("unchecked")
@@ -194,6 +237,56 @@ public abstract class UniqueKeys {
         return Arrays.hashCode(new Object[] {
             LanguageStrings.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale")
         });
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Iterator<Integer> forManyChampionMasteryQuery(final java.util.Map<String, Object> query) {
+        final Iterable<Integer> championIds = (Iterable<Integer>)query.get("championIds");
+
+        final Iterator<Integer> iterator = championIds.iterator();
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                return Arrays.hashCode(new Object[] {
+                    ChampionMastery.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (Long)query.get("summonerId"), iterator.next()
+                });
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Iterator<Integer> forManyChampionMasteryScoreQuery(final java.util.Map<String, Object> query) {
+        final Iterable<Long> summonerIds = (Iterable<Long>)query.get("summonerIds");
+
+        final Iterator<Long> iterator = summonerIds.iterator();
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                return Arrays.hashCode(new Object[] {
+                    ChampionMasteryScore.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next()
+                });
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
     }
 
     @SuppressWarnings("unchecked")

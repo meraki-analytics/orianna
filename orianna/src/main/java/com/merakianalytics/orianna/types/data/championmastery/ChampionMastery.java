@@ -10,7 +10,7 @@ public class ChampionMastery extends CoreData {
     private DateTime lastPlayed;
     private int level, points, tokens, championId, pointsUntilNextLevel, pointsSinceLastLevel;
     private String platform;
-    private long playerId;
+    private long summonerId;
 
     @Override
     public boolean equals(final Object obj) {
@@ -47,7 +47,7 @@ public class ChampionMastery extends CoreData {
         } else if(!platform.equals(other.platform)) {
             return false;
         }
-        if(playerId != other.playerId) {
+        if(summonerId != other.summonerId) {
             return false;
         }
         if(points != other.points) {
@@ -94,13 +94,6 @@ public class ChampionMastery extends CoreData {
     }
 
     /**
-     * @return the playerId
-     */
-    public long getPlayerId() {
-        return playerId;
-    }
-
-    /**
      * @return the points
      */
     public int getPoints() {
@@ -122,6 +115,13 @@ public class ChampionMastery extends CoreData {
     }
 
     /**
+     * @return the summonerId
+     */
+    public long getSummonerId() {
+        return summonerId;
+    }
+
+    /**
      * @return the tokens
      */
     public int getTokens() {
@@ -137,7 +137,7 @@ public class ChampionMastery extends CoreData {
         result = prime * result + (lastPlayed == null ? 0 : lastPlayed.hashCode());
         result = prime * result + level;
         result = prime * result + (platform == null ? 0 : platform.hashCode());
-        result = prime * result + (int)(playerId ^ playerId >>> 32);
+        result = prime * result + (int)(summonerId ^ summonerId >>> 32);
         result = prime * result + points;
         result = prime * result + pointsSinceLastLevel;
         result = prime * result + pointsUntilNextLevel;
@@ -193,14 +193,6 @@ public class ChampionMastery extends CoreData {
     }
 
     /**
-     * @param playerId
-     *        the playerId to set
-     */
-    public void setPlayerId(final long playerId) {
-        this.playerId = playerId;
-    }
-
-    /**
      * @param points
      *        the points to set
      */
@@ -222,6 +214,14 @@ public class ChampionMastery extends CoreData {
      */
     public void setPointsUntilNextLevel(final int pointsUntilNextLevel) {
         this.pointsUntilNextLevel = pointsUntilNextLevel;
+    }
+
+    /**
+     * @param summonerId
+     *        the summonerId to set
+     */
+    public void setSummonerId(final long summonerId) {
+        this.summonerId = summonerId;
     }
 
     /**

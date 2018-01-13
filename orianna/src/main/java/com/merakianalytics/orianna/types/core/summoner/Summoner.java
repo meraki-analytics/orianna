@@ -9,7 +9,12 @@ import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.GhostObject;
+import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries;
+import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
+import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
 import com.merakianalytics.orianna.types.core.searchable.Searchable;
+import com.merakianalytics.orianna.types.core.searchable.SearchableList;
+import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcon;
 
 public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data.summoner.Summoner> {
@@ -96,6 +101,26 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
             load(SUMMONER_LOAD_GROUP);
         }
         return coreData.getAccountId();
+    }
+
+    public ChampionMasteries getChampionMasteries() {
+        return ChampionMasteries.forSummoner(this).get();
+    }
+
+    public SearchableList<ChampionMastery> getChampionMasteries(final Champion... champions) {
+        return ChampionMasteries.forSummoner(this).withChampions(champions).get();
+    }
+
+    public SearchableList<ChampionMastery> getChampionMasteries(final Iterable<Champion> champions) {
+        return ChampionMasteries.forSummoner(this).withChampions(champions).get();
+    }
+
+    public ChampionMastery getChampionMastery(final Champion champion) {
+        return ChampionMastery.forSummoner(this).withChampion(champion).get();
+    }
+
+    public ChampionMasteryScore getChampionMasteryScore() {
+        return ChampionMasteryScore.forSummoner(this).get();
     }
 
     @Searchable(long.class)

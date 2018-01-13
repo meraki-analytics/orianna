@@ -7,6 +7,18 @@
       "className": "com.merakianalytics.orianna.datapipeline.InMemoryCache",
       "config": {
         "expirationPeriods": {
+          "com.merakianalytics.orianna.types.core.championmastery.ChampionMastery": {
+            "period": 30,
+            "unit": "MINUTES"
+          },
+          "com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries": {
+            "period": 30,
+            "unit": "MINUTES"
+          },
+          "com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore": {
+            "period": 30,
+            "unit": "MINUTES"
+          },
           "com.merakianalytics.orianna.types.core.staticdata.Champion": {
             "period": 6,
             "unit": "HOURS"

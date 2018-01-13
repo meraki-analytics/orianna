@@ -13,6 +13,9 @@ import com.merakianalytics.datapipelines.sources.Get;
 import com.merakianalytics.datapipelines.sources.GetMany;
 import com.merakianalytics.orianna.datapipeline.common.Utilities;
 import com.merakianalytics.orianna.types.common.Platform;
+import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries;
+import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
+import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Champion.ChampionData;
 import com.merakianalytics.orianna.types.core.staticdata.Champions;
@@ -66,6 +69,47 @@ public class GhostObjectSource extends AbstractDataSource {
         data.getChampion().setLocale(locale);
         data.getChampion().setIncludedData(includedData);
         return new Champion(data);
+    }
+
+    @Get(ChampionMasteries.class)
+    public ChampionMasteries getChampionMasteries(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        final Number summonerId = (Number)query.get("summonerId");
+        Utilities.checkNotNull(platform, "platform", summonerId, "summonerId");
+
+        final com.merakianalytics.orianna.types.data.championmastery.ChampionMasteries data =
+            new com.merakianalytics.orianna.types.data.championmastery.ChampionMasteries();
+        data.setPlatform(platform.getTag());
+        data.setSummonerId(summonerId.longValue());
+        return new ChampionMasteries(data);
+    }
+
+    @Get(ChampionMastery.class)
+    public ChampionMastery getChampionMastery(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        final Number summonerId = (Number)query.get("summonerId");
+        final Number championId = (Number)query.get("championId");
+        Utilities.checkNotNull(platform, "platform", summonerId, "summonerId", championId, "championId");
+
+        final com.merakianalytics.orianna.types.data.championmastery.ChampionMastery data =
+            new com.merakianalytics.orianna.types.data.championmastery.ChampionMastery();
+        data.setPlatform(platform.getTag());
+        data.setSummonerId(summonerId.longValue());
+        data.setChampionId(championId.intValue());
+        return new ChampionMastery(data);
+    }
+
+    @Get(ChampionMasteryScore.class)
+    public ChampionMasteryScore getChampionMasteryScore(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        final Number summonerId = (Number)query.get("summonerId");
+        Utilities.checkNotNull(platform, "platform", summonerId, "summonerId");
+
+        final com.merakianalytics.orianna.types.data.championmastery.ChampionMasteryScore data =
+            new com.merakianalytics.orianna.types.data.championmastery.ChampionMasteryScore();
+        data.setPlatform(platform.getTag());
+        data.setSummonerId(summonerId.longValue());
+        return new ChampionMasteryScore(data);
     }
 
     @SuppressWarnings("unchecked")
@@ -196,6 +240,68 @@ public class GhostObjectSource extends AbstractDataSource {
                 data.getChampion().setLocale(locale);
                 data.getChampion().setIncludedData(includedData);
                 return new Champion(data);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    @GetMany(ChampionMastery.class)
+    public CloseableIterator<ChampionMastery> getManyChampionMastery(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        final Number summonerId = (Number)query.get("summonerId");
+        final Iterable<Number> championIds = (Iterable<Number>)query.get("championIds");
+        Utilities.checkNotNull(platform, "platform", summonerId, "summonerId", championIds, "championIds");
+
+        final Iterator<Number> iterator = championIds.iterator();
+        return CloseableIterators.from(new Iterator<ChampionMastery>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public ChampionMastery next() {
+                final com.merakianalytics.orianna.types.data.championmastery.ChampionMastery data =
+                    new com.merakianalytics.orianna.types.data.championmastery.ChampionMastery();
+                data.setPlatform(platform.getTag());
+                data.setSummonerId(summonerId.longValue());
+                data.setChampionId(iterator.next().intValue());
+                return new ChampionMastery(data);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    @GetMany(ChampionMasteryScore.class)
+    public CloseableIterator<ChampionMasteryScore> getManyChampionMasteryScore(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
+        Utilities.checkNotNull(platform, "platform", summonerIds, "summonerIds");
+
+        final Iterator<Number> iterator = summonerIds.iterator();
+        return CloseableIterators.from(new Iterator<ChampionMasteryScore>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public ChampionMasteryScore next() {
+                final com.merakianalytics.orianna.types.data.championmastery.ChampionMasteryScore data =
+                    new com.merakianalytics.orianna.types.data.championmastery.ChampionMasteryScore();
+                data.setPlatform(platform.getTag());
+                data.setSummonerId(iterator.next().longValue());
+                return new ChampionMasteryScore(data);
             }
 
             @Override

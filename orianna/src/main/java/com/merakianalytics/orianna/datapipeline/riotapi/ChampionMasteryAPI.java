@@ -87,6 +87,19 @@ public class ChampionMasteryAPI extends RiotAPIService {
         final Iterable<Number> championIds = (Iterable<Number>)query.get("championIds");
         Utilities.checkNotNull(platform, "platform", summonerId, "summonerId", championIds, "championIds");
 
+        final String endpoint = "lol/champion-mastery/v3/champion-masteries/by-summoner/" + summonerId;
+        final ChampionMasteries data = get(ChampionMasteries.class, endpoint, platform,
+            "lol/champion-mastery/v3/champion-masteries/by-summoner/summonerId");
+        if(data == null) {
+            return null;
+        }
+
+        data.setSummonerId(summonerId.longValue());
+        data.setPlatform(platform.getTag());
+        for(final ChampionMastery mastery : data) {
+            mastery.setPlatform(platform.getTag());
+        }
+
         final Iterator<Number> iterator = championIds.iterator();
         return CloseableIterators.from(new Iterator<ChampionMastery>() {
             @Override
@@ -97,16 +110,12 @@ public class ChampionMasteryAPI extends RiotAPIService {
             @Override
             public ChampionMastery next() {
                 final Number championId = iterator.next();
-
-                final String endpoint = "lol/champion-mastery/v3/champion-masteries/by-summoner/" + summonerId + "/by-champion/" + championId;
-                final ChampionMastery data = get(ChampionMastery.class, endpoint, platform,
-                    "lol/champion-mastery/v3/champion-masteries/by-summoner/summonerId/by-champion/championId");
-                if(data == null) {
-                    return null;
+                for(final ChampionMastery mastery : data) {
+                    if(mastery.getChampionId() == championId.longValue()) {
+                        return mastery;
+                    }
                 }
-
-                data.setPlatform(platform.getTag());
-                return data;
+                return null;
             }
 
             @Override
