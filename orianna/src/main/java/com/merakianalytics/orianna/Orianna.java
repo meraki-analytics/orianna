@@ -28,6 +28,7 @@ import com.merakianalytics.orianna.datapipeline.InMemoryCache;
 import com.merakianalytics.orianna.datapipeline.PipelineConfiguration;
 import com.merakianalytics.orianna.datapipeline.PipelineConfiguration.PipelineElementConfiguration;
 import com.merakianalytics.orianna.datapipeline.PipelineConfiguration.TransformerConfiguration;
+import com.merakianalytics.orianna.datapipeline.common.expiration.ExpirationPeriod;
 import com.merakianalytics.orianna.datapipeline.riotapi.RiotAPI;
 import com.merakianalytics.orianna.datapipeline.transformers.dtodata.ChampionMasteryTransformer;
 import com.merakianalytics.orianna.datapipeline.transformers.dtodata.ChampionTransformer;
@@ -68,8 +69,7 @@ import com.merakianalytics.orianna.types.core.summoner.Summoners;
 
 public abstract class Orianna {
     public static class Configuration {
-        private static final long DEFAULT_CURRENT_VERSION_EXPIRATION = 6;
-        private static final TimeUnit DEFAULT_CURRENT_VERSION_EXPIRATION_UNIT = TimeUnit.HOURS;
+        private static final ExpirationPeriod DEFAULT_CURRENT_VERSION_EXPIRATION = ExpirationPeriod.create(6L, TimeUnit.HOURS);
         private static final String DEFAULT_DEFAULT_LOCALE = null;
         private static final Platform DEFAULT_DEFAULT_PLATFORM = Platform.NORTH_AMERICA;
 
@@ -99,8 +99,7 @@ public abstract class Orianna {
             return config;
         }
 
-        private long currentVersionExpiration = DEFAULT_CURRENT_VERSION_EXPIRATION;
-        private TimeUnit currentVersionExpirationUnit = DEFAULT_CURRENT_VERSION_EXPIRATION_UNIT;
+        private ExpirationPeriod currentVersionExpiration = DEFAULT_CURRENT_VERSION_EXPIRATION;
         private String defaultLocale = DEFAULT_DEFAULT_LOCALE;
         private Platform defaultPlatform = DEFAULT_DEFAULT_PLATFORM;
         private PipelineConfiguration pipeline = getDefaultPipeline();
@@ -108,15 +107,8 @@ public abstract class Orianna {
         /**
          * @return the currentVersionExpiration
          */
-        public long getCurrentVersionExpiration() {
+        public ExpirationPeriod getCurrentVersionExpiration() {
             return currentVersionExpiration;
-        }
-
-        /**
-         * @return the currentVersionExpirationUnit
-         */
-        public TimeUnit getCurrentVersionExpirationUnit() {
-            return currentVersionExpirationUnit;
         }
 
         /**
@@ -144,16 +136,8 @@ public abstract class Orianna {
          * @param currentVersionExpiration
          *        the currentVersionExpiration to set
          */
-        public void setCurrentVersionExpiration(final long currentVersionExpiration) {
+        public void setCurrentVersionExpiration(final ExpirationPeriod currentVersionExpiration) {
             this.currentVersionExpiration = currentVersionExpiration;
-        }
-
-        /**
-         * @param currentVersionExpirationUnit
-         *        the currentVersionExpirationUnit to set
-         */
-        public void setCurrentVersionExpirationUnit(final TimeUnit currentVersionExpirationUnit) {
-            this.currentVersionExpirationUnit = currentVersionExpirationUnit;
         }
 
         /**
@@ -198,7 +182,7 @@ public abstract class Orianna {
                         .get(com.merakianalytics.orianna.types.dto.staticdata.Realm.class, ImmutableMap.<String, Object> of("platform", defaultPlatform))
                         .getV();
                 }
-            }, config.getCurrentVersionExpiration(), config.getCurrentVersionExpirationUnit());
+            }, config.getCurrentVersionExpiration().getPeriod(), config.getCurrentVersionExpiration().getUnit());
         }
 
         /**
@@ -230,14 +214,26 @@ public abstract class Orianna {
         }
     }
 
+    private static final String CONFIGURATION_PATH_ENVIRONMENT_VARIABLE = "ORIANNA_CONFIGURATION_PATH";
     private static final Logger LOGGER = LoggerFactory.getLogger(Orianna.class);
     private static Settings settings = defaultSettings();
 
     private static Settings defaultSettings() {
+        final String configPath = System.getenv(CONFIGURATION_PATH_ENVIRONMENT_VARIABLE);
+        if(configPath != null && !configPath.isEmpty()) {
+            try {
+                return new Settings(getConfiguration(Files.asCharSource(new File(configPath), Charset.forName("UTF-8"))));
+            } catch(final OriannaException e) {
+                LOGGER.error("Failed to load environment-configured configuration from " + configPath + "! Using default configuration from resources instead.",
+                    e);
+            }
+        }
+
         try {
             return new Settings(getConfiguration(
                 Resources.asCharSource(Resources.getResource("com/merakianalytics/orianna/default-orianna-config.json"), Charset.forName("UTF-8"))));
         } catch(final OriannaException e) {
+            LOGGER.error("Failed to load default configuration from resources! Using default constuctor instead.");
             return new Settings(new Configuration());
         }
     }

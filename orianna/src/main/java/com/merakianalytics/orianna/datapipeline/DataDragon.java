@@ -32,6 +32,7 @@ import com.merakianalytics.datapipelines.sources.GetMany;
 import com.merakianalytics.orianna.datapipeline.common.HTTPClient;
 import com.merakianalytics.orianna.datapipeline.common.TimeoutException;
 import com.merakianalytics.orianna.datapipeline.common.Utilities;
+import com.merakianalytics.orianna.datapipeline.common.expiration.ExpirationPeriod;
 import com.merakianalytics.orianna.types.common.OriannaException;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.dto.DataObject;
@@ -56,25 +57,16 @@ import com.merakianalytics.orianna.types.dto.staticdata.Versions;
 
 public class DataDragon extends AbstractDataSource {
     public static class Configuration {
-        private static final long DEFAULT_CACHE_DURATION = 6;
-        private static final TimeUnit DEFAULT_CACHE_DURATION_UNIT = TimeUnit.HOURS;
+        private static final ExpirationPeriod DEFAULT_CACHE_DURATION = ExpirationPeriod.create(6L, TimeUnit.HOURS);
         private static final HTTPClient.Configuration DEFAULT_REQUESTS = new HTTPClient.Configuration();
-        private long cacheDuration = DEFAULT_CACHE_DURATION;
-        private TimeUnit cacheDurationUnit = DEFAULT_CACHE_DURATION_UNIT;
+        private ExpirationPeriod cacheDuration = DEFAULT_CACHE_DURATION;
         private HTTPClient.Configuration requests = DEFAULT_REQUESTS;
 
         /**
          * @return the cacheDuration
          */
-        public long getCacheDuration() {
+        public ExpirationPeriod getCacheDuration() {
             return cacheDuration;
-        }
-
-        /**
-         * @return the cacheDurationUnit
-         */
-        public TimeUnit getCacheDurationUnit() {
-            return cacheDurationUnit;
         }
 
         /**
@@ -88,16 +80,8 @@ public class DataDragon extends AbstractDataSource {
          * @param cacheDuration
          *        the cacheDuration to set
          */
-        public void setCacheDuration(final long cacheDuration) {
+        public void setCacheDuration(final ExpirationPeriod cacheDuration) {
             this.cacheDuration = cacheDuration;
-        }
-
-        /**
-         * @param cacheDurationUnit
-         *        the cacheDurationUnit to set
-         */
-        public void setCacheDurationUnit(final TimeUnit cacheDurationUnit) {
-            this.cacheDurationUnit = cacheDurationUnit;
         }
 
         /**
@@ -256,8 +240,7 @@ public class DataDragon extends AbstractDataSource {
     }
 
     private final ConcurrentHashMap<RequestMetadata, Supplier<String>> cache = new ConcurrentHashMap<>();
-    private final long cacheDuration;
-    private final TimeUnit cacheDurationUnit;
+    private final ExpirationPeriod cacheDuration;
     private final ConcurrentHashMap<RequestMetadata, Object> cacheLocks = new ConcurrentHashMap<>();
     private final HTTPClient client;
 
@@ -268,7 +251,6 @@ public class DataDragon extends AbstractDataSource {
     public DataDragon(final Configuration config) {
         client = new HTTPClient(config.getRequests());
         cacheDuration = config.getCacheDuration();
-        cacheDurationUnit = config.getCacheDurationUnit();
     }
 
     private String get(final String file, final String version, final String locale) {
@@ -313,7 +295,7 @@ public class DataDragon extends AbstractDataSource {
                                     + "! Report this to the orianna team.", e);
                             }
                         }
-                    }, cacheDuration, cacheDurationUnit);
+                    }, cacheDuration.getPeriod(), cacheDuration.getUnit());
                     cache.put(metadata, supplier);
                 }
             }

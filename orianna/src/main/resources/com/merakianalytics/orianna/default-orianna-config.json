@@ -1,6 +1,8 @@
 {
-  "currentVersionExpiration": 6,
-  "currentVersionExpirationUnit": "HOURS",
+  "currentVersionExpiration": {
+    "period": 6,
+    "unit": "HOURS"
+  },
   "defaultPlatform": "NORTH_AMERICA",
   "pipeline": {
     "elements": [{
@@ -103,8 +105,10 @@
     }, {
       "className": "com.merakianalytics.orianna.datapipeline.DataDragon",
       "config": {
-        "cacheDuration": 6,
-        "cacheDurationUnit": "HOURS",
+        "cacheDuration": {
+          "period": 6,
+          "unit": "HOURS"
+        },
         "requests": {
           "connectTimeout": 3,
           "connectTimeoutUnit": "SECONDS",
@@ -178,7 +182,8 @@
           "com.merakianalytics.orianna.datapipeline.riotapi.SpectatorAPI",
           "com.merakianalytics.orianna.datapipeline.riotapi.StaticDataAPI",
           "com.merakianalytics.orianna.datapipeline.riotapi.StatusAPI",
-          "com.merakianalytics.orianna.datapipeline.riotapi.SummonerAPI"
+          "com.merakianalytics.orianna.datapipeline.riotapi.SummonerAPI",
+          "com.merakianalytics.orianna.datapipeline.riotapi.ThirdPartyCodeAPI"
         ]
       },
       "configClassName": "com.merakianalytics.orianna.datapipeline.riotapi.RiotAPI$Configuration"
@@ -201,6 +206,8 @@
       "className": "com.merakianalytics.orianna.datapipeline.transformers.dtodata.StatusTransformer"
     }, {
       "className": "com.merakianalytics.orianna.datapipeline.transformers.dtodata.SummonerTransformer"
+    }, {
+      "className": "com.merakianalytics.orianna.datapipeline.transformers.dtodata.ThirdPartyCodeTransformer"
     }]
   }
 }
