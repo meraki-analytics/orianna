@@ -255,6 +255,35 @@ public class InMemoryCache extends AbstractDataStore {
         });
     }
 
+    @GetMany(ChampionMasteries.class)
+    public CloseableIterator<ChampionMasteries> getManyChampionMasteries(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyChampionMasteriesQuery(query));
+        for(final Integer key : keys) {
+            if(!cache.containsKey(key)) {
+                return null;
+            }
+        }
+
+        final Iterator<Integer> iterator = keys.iterator();
+        return CloseableIterators.from(new Iterator<ChampionMasteries>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public ChampionMasteries next() {
+                final int key = iterator.next();
+                return (ChampionMasteries)cache.get(key);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
     @GetMany(ChampionMastery.class)
     public CloseableIterator<ChampionMastery> getManyChampionMastery(final java.util.Map<String, Object> query, final PipelineContext context) {
         final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyChampionMasteryQuery(query));
@@ -313,6 +342,64 @@ public class InMemoryCache extends AbstractDataStore {
         });
     }
 
+    @GetMany(CurrentGame.class)
+    public CloseableIterator<CurrentGame> getManyCurrentGame(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyCurrentGameQuery(query));
+        for(final Integer key : keys) {
+            if(!cache.containsKey(key)) {
+                return null;
+            }
+        }
+
+        final Iterator<Integer> iterator = keys.iterator();
+        return CloseableIterators.from(new Iterator<CurrentGame>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public CurrentGame next() {
+                final int key = iterator.next();
+                return (CurrentGame)cache.get(key);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @GetMany(FeaturedGames.class)
+    public CloseableIterator<FeaturedGames> getManyFeaturedGames(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyFeaturedGamesQuery(query));
+        for(final Integer key : keys) {
+            if(!cache.containsKey(key)) {
+                return null;
+            }
+        }
+
+        final Iterator<Integer> iterator = keys.iterator();
+        return CloseableIterators.from(new Iterator<FeaturedGames>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public FeaturedGames next() {
+                final int key = iterator.next();
+                return (FeaturedGames)cache.get(key);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
     @GetMany(Item.class)
     public CloseableIterator<Item> getManyItem(final java.util.Map<String, Object> query, final PipelineContext context) {
         final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyItemQuery(query));
@@ -333,6 +420,64 @@ public class InMemoryCache extends AbstractDataStore {
             public Item next() {
                 final int key = iterator.next();
                 return (Item)cache.get(key);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @GetMany(League.class)
+    public CloseableIterator<League> getManyLeague(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyLeagueQuery(query));
+        for(final Integer key : keys) {
+            if(!cache.containsKey(key)) {
+                return null;
+            }
+        }
+
+        final Iterator<Integer> iterator = keys.iterator();
+        return CloseableIterators.from(new Iterator<League>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public League next() {
+                final int key = iterator.next();
+                return (League)cache.get(key);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @GetMany(LeaguePositions.class)
+    public CloseableIterator<LeaguePositions> getManyLeaguePositions(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyLeaguePositionsQuery(query));
+        for(final Integer key : keys) {
+            if(!cache.containsKey(key)) {
+                return null;
+            }
+        }
+
+        final Iterator<Integer> iterator = keys.iterator();
+        return CloseableIterators.from(new Iterator<LeaguePositions>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public LeaguePositions next() {
+                final int key = iterator.next();
+                return (LeaguePositions)cache.get(key);
             }
 
             @Override
@@ -458,6 +603,35 @@ public class InMemoryCache extends AbstractDataStore {
         });
     }
 
+    @GetMany(ShardStatus.class)
+    public CloseableIterator<ShardStatus> getManyShardStatus(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyShardStatusQuery(query));
+        for(final Integer key : keys) {
+            if(!cache.containsKey(key)) {
+                return null;
+            }
+        }
+
+        final Iterator<Integer> iterator = keys.iterator();
+        return CloseableIterators.from(new Iterator<ShardStatus>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public ShardStatus next() {
+                final int key = iterator.next();
+                return (ShardStatus)cache.get(key);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
     @GetMany(Summoner.class)
     public CloseableIterator<Summoner> getManySummoner(final java.util.Map<String, Object> query, final PipelineContext context) {
         final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManySummonerQuery(query));
@@ -507,6 +681,35 @@ public class InMemoryCache extends AbstractDataStore {
             public SummonerSpell next() {
                 final int key = iterator.next();
                 return (SummonerSpell)cache.get(key);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @GetMany(VerificationString.class)
+    public CloseableIterator<VerificationString> getManyVerificationString(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyVerificationStringQuery(query));
+        for(final Integer key : keys) {
+            if(!cache.containsKey(key)) {
+                return null;
+            }
+        }
+
+        final Iterator<Integer> iterator = keys.iterator();
+        return CloseableIterators.from(new Iterator<VerificationString>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public VerificationString next() {
+                final int key = iterator.next();
+                return (VerificationString)cache.get(key);
             }
 
             @Override
@@ -774,6 +977,13 @@ public class InMemoryCache extends AbstractDataStore {
         }
     }
 
+    @PutMany(ChampionMasteries.class)
+    public void putManyChampionMasteries(final Iterable<ChampionMasteries> masteries, final PipelineContext context) {
+        for(final ChampionMasteries mastery : masteries) {
+            putChampionMasteries(mastery, context);
+        }
+    }
+
     @PutMany(ChampionMastery.class)
     public void putManyChampionMastery(final Iterable<ChampionMastery> masteries, final PipelineContext context) {
         for(final ChampionMastery mastery : masteries) {
@@ -788,10 +998,38 @@ public class InMemoryCache extends AbstractDataStore {
         }
     }
 
+    @PutMany(CurrentGame.class)
+    public void putManyCurrentGame(final Iterable<CurrentGame> games, final PipelineContext context) {
+        for(final CurrentGame game : games) {
+            putCurrentGame(game, context);
+        }
+    }
+
+    @PutMany(FeaturedGames.class)
+    public void putManyFeaturedGames(final Iterable<FeaturedGames> games, final PipelineContext context) {
+        for(final FeaturedGames game : games) {
+            putFeaturedGames(game, context);
+        }
+    }
+
     @PutMany(Item.class)
     public void putManyItem(final Iterable<Item> items, final PipelineContext context) {
         for(final Item item : items) {
             putItem(item, context);
+        }
+    }
+
+    @PutMany(League.class)
+    public void putManyLeague(final Iterable<League> leagues, final PipelineContext context) {
+        for(final League league : leagues) {
+            putLeague(league, context);
+        }
+    }
+
+    @PutMany(LeaguePositions.class)
+    public void putManyLeaguePositions(final Iterable<LeaguePositions> positions, final PipelineContext context) {
+        for(final LeaguePositions position : positions) {
+            putLeaguePositions(position, context);
         }
     }
 
@@ -823,6 +1061,13 @@ public class InMemoryCache extends AbstractDataStore {
         }
     }
 
+    @PutMany(ShardStatus.class)
+    public void putManyShardStatus(final Iterable<ShardStatus> statuses, final PipelineContext context) {
+        for(final ShardStatus status : statuses) {
+            putShardStatus(status, context);
+        }
+    }
+
     @PutMany(Summoner.class)
     public void putManySummoner(final Iterable<Summoner> summoners, final PipelineContext context) {
         for(final Summoner summoner : summoners) {
@@ -834,6 +1079,13 @@ public class InMemoryCache extends AbstractDataStore {
     public void putManySummonerSpell(final Iterable<SummonerSpell> spells, final PipelineContext context) {
         for(final SummonerSpell spell : spells) {
             putSummonerSpell(spell, context);
+        }
+    }
+
+    @PutMany(VerificationString.class)
+    public void putManyVerificationString(final Iterable<VerificationString> strings, final PipelineContext context) {
+        for(final VerificationString string : strings) {
+            putVerificationString(string, context);
         }
     }
 

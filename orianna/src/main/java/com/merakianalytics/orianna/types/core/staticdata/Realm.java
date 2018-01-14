@@ -44,12 +44,12 @@ public class Realm extends GhostObject<com.merakianalytics.orianna.types.data.st
         return new Builder().get();
     }
 
-    public static Realm withPlatform(final Platform platform) {
-        return new Builder().withPlatform(platform).get();
+    public static Builder withPlatform(final Platform platform) {
+        return new Builder().withPlatform(platform);
     }
 
-    public static Realm withRegion(final Region region) {
-        return new Builder().withRegion(region).get();
+    public static Builder withRegion(final Region region) {
+        return new Builder().withRegion(region);
     }
 
     private final Supplier<Map<String, String>> latestVersions = Suppliers.memoize(new Supplier<Map<String, String>>() {

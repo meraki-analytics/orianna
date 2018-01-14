@@ -2,6 +2,8 @@ package com.merakianalytics.orianna.types.core.championmastery;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import com.google.common.base.Function;
@@ -24,7 +26,7 @@ public class ChampionMasteries extends GhostObject.ListProxy<ChampionMastery, co
     public static class Builder {
         public class SubBuilder {
             private final Iterable<Champion> champions;
-            private final boolean streaming = false;
+            private boolean streaming = false;
 
             private SubBuilder(final Iterable<Champion> champions) {
                 this.champions = champions;
@@ -43,6 +45,11 @@ public class ChampionMasteries extends GhostObject.ListProxy<ChampionMastery, co
                     Orianna.getSettings().getPipeline().getMany(ChampionMastery.class, builder.build(), streaming);
                 return streaming ? SearchableListWrapper.of(CloseableIterators.toLazyList(result))
                     : SearchableListWrapper.of(CloseableIterators.toList(result));
+            }
+
+            public SubBuilder streaming() {
+                streaming = true;
+                return this;
             }
         }
 
@@ -68,10 +75,60 @@ public class ChampionMasteries extends GhostObject.ListProxy<ChampionMastery, co
         }
     }
 
+    public static class ManyBuilder {
+        private boolean streaming = false;
+        private final Iterable<Summoner> summoners;
+
+        private ManyBuilder(final Iterable<Summoner> summoners) {
+            this.summoners = summoners;
+        }
+
+        public SearchableList<ChampionMasteries> get() {
+            final List<Long> ids = new ArrayList<>();
+            final Iterator<Summoner> iterator = summoners.iterator();
+            Summoner summoner = iterator.next();
+
+            if(summoner == null) {
+                return SearchableListWrapper.of(Collections.<ChampionMasteries> emptyList());
+            }
+
+            final Platform platform = summoner.getPlatform();
+            ids.add(summoner.getId());
+            while(iterator.hasNext()) {
+                summoner = iterator.next();
+
+                if(platform != summoner.getPlatform()) {
+                    throw new IllegalArgumentException("All summoners must be from the same platform/region!");
+                }
+                ids.add(summoner.getId());
+            }
+
+            final ImmutableMap.Builder<String, Object> builder =
+                ImmutableMap.<String, Object> builder().put("platform", platform).put("summonerIds", ids);
+
+            final CloseableIterator<ChampionMasteries> result =
+                Orianna.getSettings().getPipeline().getMany(ChampionMasteries.class, builder.build(), streaming);
+            return streaming ? SearchableListWrapper.of(CloseableIterators.toLazyList(result)) : SearchableListWrapper.of(CloseableIterators.toList(result));
+        }
+
+        public ManyBuilder streaming() {
+            streaming = true;
+            return this;
+        }
+    }
+
     private static final long serialVersionUID = -3488497876893210608L;
 
     public static Builder forSummoner(final Summoner summoner) {
         return new Builder(summoner);
+    }
+
+    public static ManyBuilder forSummoners(final Iterable<Summoner> summoners) {
+        return new ManyBuilder(summoners);
+    }
+
+    public static ManyBuilder forSummoners(final Summoner... summoners) {
+        return new ManyBuilder(Arrays.asList(summoners));
     }
 
     private final Supplier<Summoner> summoner = Suppliers.memoize(new Supplier<Summoner>() {

@@ -14,32 +14,44 @@ import com.merakianalytics.orianna.types.core.GhostObject;
 
 public class ShardStatus extends GhostObject<com.merakianalytics.orianna.types.data.status.ShardStatus> {
     public static class Builder {
-        private final Platform platform;
+        private Platform platform;
 
-        private Builder(final Platform platform) {
-            this.platform = platform;
-        }
-
-        private Builder(final Region region) {
-            platform = region.getPlatform();
-        }
+        private Builder() {}
 
         public ShardStatus get() {
+            if(platform == null) {
+                platform = Orianna.getSettings().getDefaultPlatform();
+            }
+
             final ImmutableMap.Builder<String, Object> builder = ImmutableMap.<String, Object> builder().put("platform", platform);
 
             return Orianna.getSettings().getPipeline().get(ShardStatus.class, builder.build());
+        }
+
+        public Builder withPlatform(final Platform platform) {
+            this.platform = platform;
+            return this;
+        }
+
+        public Builder withRegion(final Region region) {
+            platform = region.getPlatform();
+            return this;
         }
     }
 
     private static final long serialVersionUID = -7141887712080838849L;
     public static final String SHARD_STATUS_LOAD_GROUP = "shard-status";
 
-    public static ShardStatus forPlatform(final Platform platform) {
-        return new Builder(platform).get();
+    public static Builder forPlatform(final Platform platform) {
+        return new Builder().withPlatform(platform);
     }
 
-    public static ShardStatus forRegion(final Region region) {
-        return new Builder(region).get();
+    public static Builder forRegion(final Region region) {
+        return new Builder().withRegion(region);
+    }
+
+    public static ShardStatus get() {
+        return new Builder().get();
     }
 
     private final Supplier<List<String>> locales = Suppliers.memoize(new Supplier<List<String>>() {
@@ -88,9 +100,19 @@ public class ShardStatus extends GhostObject<com.merakianalytics.orianna.types.d
         return Platform.withTag(coreData.getPlatform()).getRegion();
     }
 
+    public String getRegionTag() {
+        load(SHARD_STATUS_LOAD_GROUP);
+        return coreData.getRegionTag();
+    }
+
     public List<Service> getServices() {
         load(SHARD_STATUS_LOAD_GROUP);
         return services.get();
+    }
+
+    public String getSlug() {
+        load(SHARD_STATUS_LOAD_GROUP);
+        return coreData.getSlug();
     }
 
     @Override

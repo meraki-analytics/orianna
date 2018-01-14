@@ -49,7 +49,9 @@ import com.merakianalytics.orianna.types.core.championmastery.ChampionMasterySco
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScores;
 import com.merakianalytics.orianna.types.core.league.League;
 import com.merakianalytics.orianna.types.core.league.LeaguePositions;
+import com.merakianalytics.orianna.types.core.league.Leagues;
 import com.merakianalytics.orianna.types.core.spectator.CurrentGame;
+import com.merakianalytics.orianna.types.core.spectator.CurrentGames;
 import com.merakianalytics.orianna.types.core.spectator.FeaturedGames;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Champions;
@@ -63,16 +65,17 @@ import com.merakianalytics.orianna.types.core.staticdata.Masteries;
 import com.merakianalytics.orianna.types.core.staticdata.Mastery;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcon;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
-import com.merakianalytics.orianna.types.core.staticdata.Realm;
 import com.merakianalytics.orianna.types.core.staticdata.Rune;
 import com.merakianalytics.orianna.types.core.staticdata.Runes;
 import com.merakianalytics.orianna.types.core.staticdata.SummonerSpell;
 import com.merakianalytics.orianna.types.core.staticdata.SummonerSpells;
 import com.merakianalytics.orianna.types.core.staticdata.Versions;
 import com.merakianalytics.orianna.types.core.status.ShardStatus;
+import com.merakianalytics.orianna.types.core.status.ShardStatuses;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 import com.merakianalytics.orianna.types.core.summoner.Summoners;
 import com.merakianalytics.orianna.types.core.thirdpartycode.VerificationString;
+import com.merakianalytics.orianna.types.core.thirdpartycode.VerificationStrings;
 
 public abstract class Orianna {
     public static class Configuration {
@@ -225,6 +228,114 @@ public abstract class Orianna {
     private static final Logger LOGGER = LoggerFactory.getLogger(Orianna.class);
     private static Settings settings = defaultSettings();
 
+    public static League.SelectBuilder.SubBuilder challengerLeagueInQueue(final Queue queue) {
+        return League.challengerInQueue(queue);
+    }
+
+    public static Leagues.SelectBuilder.SubBuilder challengerLeaguesInQueues(final Iterable<Queue> queues) {
+        return Leagues.challengerInQueues(queues);
+    }
+
+    public static Leagues.SelectBuilder.SubBuilder challengerLeaguesInQueues(final Queue... queues) {
+        return Leagues.challengerInQueues(queues);
+    }
+
+    public static ChampionMasteries.Builder championMasteriesForSummoner(final Summoner summoner) {
+        return ChampionMasteries.forSummoner(summoner);
+    }
+
+    public static ChampionMasteries.ManyBuilder championMasteriesForSummoners(final Iterable<Summoner> summoners) {
+        return ChampionMasteries.forSummoners(summoners);
+    }
+
+    public static ChampionMasteries.ManyBuilder championMasteriesForSummoners(final Summoner... summoners) {
+        return ChampionMasteries.forSummoners(summoners);
+    }
+
+    public static ChampionMastery.Builder championMasteryForSummoner(final Summoner summoner) {
+        return ChampionMastery.forSummoner(summoner);
+    }
+
+    public static ChampionMasteryScore.Builder championMasteryScoreForSummoner(final Summoner summoner) {
+        return ChampionMasteryScore.forSummoner(summoner);
+    }
+
+    public static ChampionMasteryScores.Builder championMasteryScoresForSummoners(final Iterable<Summoner> summoners) {
+        return ChampionMasteryScores.forSummoners(summoners);
+    }
+
+    public static ChampionMasteryScores.Builder championMasteryScoresForSummoners(final Summoner... summoners) {
+        return ChampionMasteryScores.forSummoners(summoners);
+    }
+
+    public static Champion.Builder championNamed(final String name) {
+        return Champion.named(name);
+    }
+
+    public static Champions.SubsetBuilder championsNamed(final Iterable<String> names) {
+        return Champions.named(names);
+    }
+
+    public static Champions.SubsetBuilder championsNamed(final String... names) {
+        return Champions.named(names);
+    }
+
+    public static Champions.SubsetBuilder championsWithIds(final int... ids) {
+        return Champions.withIds(ids);
+    }
+
+    public static Champions.SubsetBuilder championsWithIds(final Iterable<Integer> ids) {
+        return Champions.withIds(ids);
+    }
+
+    public static Champions.Builder championsWithIncludedData(final Set<String> includedData) {
+        return Champions.withIncludedData(includedData);
+    }
+
+    public static Champions.SubsetBuilder championsWithKeys(final Iterable<String> keys) {
+        return Champions.withKeys(keys);
+    }
+
+    public static Champions.SubsetBuilder championsWithKeys(final String... keys) {
+        return Champions.withKeys(keys);
+    }
+
+    public static Champions.Builder championsWithLocale(final String locale) {
+        return Champions.withLocale(locale);
+    }
+
+    public static Champions.Builder championsWithPlatform(final Platform platform) {
+        return Champions.withPlatform(platform);
+    }
+
+    public static Champions.Builder championsWithRegion(final Region region) {
+        return Champions.withRegion(region);
+    }
+
+    public static Champions.Builder championsWithVersion(final String version) {
+        return Champions.withVersion(version);
+    }
+
+    public static Champion.Builder championWithId(final int id) {
+        return Champion.withId(id);
+    }
+
+    public static Champion.Builder championWithKey(final String key) {
+        return Champion.withKey(key);
+    }
+
+    public static CurrentGame.Builder currentGameForSummoner(final Summoner summoner) {
+        return CurrentGame.forSummoner(summoner);
+    }
+
+    public static CurrentGames.Builder currentGamesForSummoners(final Iterable<Summoner> summoners) {
+        return CurrentGames.forSummoners(summoners);
+    }
+
+    public static CurrentGames.Builder currentGamesForSummoners(final Summoner... summoners) {
+        return CurrentGames.forSummoners(summoners);
+    }
+
     private static Settings defaultSettings() {
         final String configPath = System.getenv(CONFIGURATION_PATH_ENVIRONMENT_VARIABLE);
         if(configPath != null && !configPath.isEmpty()) {
@@ -245,88 +356,32 @@ public abstract class Orianna {
         }
     }
 
-    public static League getChallengerLeagueInQueue(final Queue queue) {
-        return League.challengerInQueue(queue);
+    public static FeaturedGames.Builder featuredGamesForPlatform(final Platform platform) {
+        return FeaturedGames.forPlatform(platform);
     }
 
-    public static ChampionMasteries.Builder getChampionMasteriesForSummoner(final Summoner summoner) {
-        return ChampionMasteries.forSummoner(summoner);
+    public static FeaturedGames.ManyBuilder featuredGamesForPlatforms(final Iterable<Platform> platforms) {
+        return FeaturedGames.forPlatforms(platforms);
     }
 
-    public static ChampionMastery.Builder getChampionMasteryForSummoner(final Summoner summoner) {
-        return ChampionMastery.forSummoner(summoner);
+    public static FeaturedGames.ManyBuilder featuredGamesForPlatforms(final Platform... platforms) {
+        return FeaturedGames.forPlatforms(platforms);
     }
 
-    public static ChampionMasteryScore getChampionMasteryScoreForSummoner(final Summoner summoner) {
-        return ChampionMasteryScore.forSummoner(summoner);
+    public static FeaturedGames.Builder featuredGamesForRegion(final Region region) {
+        return FeaturedGames.forRegion(region);
     }
 
-    public static ChampionMasteryScores.Builder getChampionMasteryScoresForSummoners(final Iterable<Summoner> summoners) {
-        return ChampionMasteryScores.forSummoners(summoners);
+    public static FeaturedGames.ManyBuilder featuredGamesForRegions(final Iterable<Region> regions) {
+        return FeaturedGames.forRegions(regions);
     }
 
-    public static ChampionMasteryScores.Builder getChampionMasteryScoresForSummoners(final Summoner... summoners) {
-        return ChampionMasteryScores.forSummoners(summoners);
-    }
-
-    public static Champion.Builder getChampionNamed(final String name) {
-        return Champion.named(name);
+    public static FeaturedGames.ManyBuilder featuredGamesForRegions(final Region... regions) {
+        return FeaturedGames.forRegions(regions);
     }
 
     public static Champions getChampions() {
         return Champions.get();
-    }
-
-    public static Champions.SubsetBuilder getChampionsNamed(final Iterable<String> names) {
-        return Champions.named(names);
-    }
-
-    public static Champions.SubsetBuilder getChampionsNamed(final String... names) {
-        return Champions.named(names);
-    }
-
-    public static Champions.SubsetBuilder getChampionsWithIds(final int... ids) {
-        return Champions.withIds(ids);
-    }
-
-    public static Champions.SubsetBuilder getChampionsWithIds(final Iterable<Integer> ids) {
-        return Champions.withIds(ids);
-    }
-
-    public static Champions.Builder getChampionsWithIncludedData(final Set<String> includedData) {
-        return Champions.withIncludedData(includedData);
-    }
-
-    public static Champions.SubsetBuilder getChampionsWithKeys(final Iterable<String> keys) {
-        return Champions.withKeys(keys);
-    }
-
-    public static Champions.SubsetBuilder getChampionsWithKeys(final String... keys) {
-        return Champions.withKeys(keys);
-    }
-
-    public static Champions.Builder getChampionsWithLocale(final String locale) {
-        return Champions.withLocale(locale);
-    }
-
-    public static Champions.Builder getChampionsWithPlatform(final Platform platform) {
-        return Champions.withPlatform(platform);
-    }
-
-    public static Champions.Builder getChampionsWithRegion(final Region region) {
-        return Champions.withRegion(region);
-    }
-
-    public static Champions.Builder getChampionsWithVersion(final String version) {
-        return Champions.withVersion(version);
-    }
-
-    public static Champion.Builder getChampionWithId(final int id) {
-        return Champion.withId(id);
-    }
-
-    public static Champion.Builder getChampionWithKey(final String key) {
-        return Champion.withKey(key);
     }
 
     private static Configuration getConfiguration(final CharSource configJSON) {
@@ -339,64 +394,12 @@ public abstract class Orianna {
         }
     }
 
-    public static CurrentGame getCurrentGameForSummoner(final Summoner summoner) {
-        return CurrentGame.forSummoner(summoner);
-    }
-
-    public static FeaturedGames getFeaturedGamesForPlatform(final Platform platform) {
-        return FeaturedGames.forPlatform(platform);
-    }
-
-    public static FeaturedGames getFeaturedGamesForRegion(final Region region) {
-        return FeaturedGames.forRegion(region);
-    }
-
-    public static Item.Builder getItemNamed(final String name) {
-        return Item.named(name);
+    public static FeaturedGames getFeaturedGames() {
+        return FeaturedGames.get();
     }
 
     public static Items getItems() {
         return Items.get();
-    }
-
-    public static Items.SubsetBuilder getItemsNamed(final Iterable<String> names) {
-        return Items.named(names);
-    }
-
-    public static Items.SubsetBuilder getItemsNamed(final String... names) {
-        return Items.named(names);
-    }
-
-    public static Items.SubsetBuilder getItemsWithIds(final int... ids) {
-        return Items.withIds(ids);
-    }
-
-    public static Items.SubsetBuilder getItemsWithIds(final Iterable<Integer> ids) {
-        return Items.withIds(ids);
-    }
-
-    public static Items.Builder getItemsWithIncludedData(final Set<String> includedData) {
-        return Items.withIncludedData(includedData);
-    }
-
-    public static Items.Builder getItemsWithLocale(final String locale) {
-        return Items.withLocale(locale);
-    }
-
-    public static Items.Builder getItemsWithPlatform(final Platform platform) {
-        return Items.withPlatform(platform);
-    }
-
-    public static Items.Builder getItemsWithRegion(final Region region) {
-        return Items.withRegion(region);
-    }
-
-    public static Items.Builder getItemsWithVersion(final String version) {
-        return Items.withVersion(version);
-    }
-
-    public static Item.Builder getItemWithId(final int id) {
-        return Item.withId(id);
     }
 
     public static Languages getLanguages() {
@@ -407,336 +410,128 @@ public abstract class Orianna {
         return LanguageStrings.get();
     }
 
-    public static LanguageStrings.Builder getLanguageStringsWithLocale(final String locale) {
-        return LanguageStrings.withLocale(locale);
-    }
-
-    public static LanguageStrings.Builder getLanguageStringsWithPlatform(final Platform platform) {
-        return LanguageStrings.withPlatform(platform);
-    }
-
-    public static LanguageStrings.Builder getLanguageStringsWithRegion(final Region region) {
-        return LanguageStrings.withRegion(region);
-    }
-
-    public static LanguageStrings.Builder getLanguageStringsWithVersion(final String version) {
-        return LanguageStrings.withVersion(version);
-    }
-
-    public static Languages.Builder getLanguagesWithPlatform(final Platform platform) {
-        return Languages.withPlatform(platform);
-    }
-
-    public static Languages.Builder getLanguagesWithRegion(final Region region) {
-        return Languages.withRegion(region);
-    }
-
-    public static LeaguePositions getLeaguePositionsForSummoner(final Summoner summoner) {
-        return LeaguePositions.forSummoner(summoner).get();
-    }
-
-    public static League.Builder getLeagueWithId(final String id) {
-        return League.withId(id);
-    }
-
-    public static Map.Builder getMapNamed(final String name) {
-        return Map.named(name);
-    }
-
     public static Maps getMaps() {
         return Maps.get();
-    }
-
-    public static Maps.SubsetBuilder getMapsNamed(final Iterable<String> names) {
-        return Maps.named(names);
-    }
-
-    public static Maps.SubsetBuilder getMapsNamed(final String... names) {
-        return Maps.named(names);
-    }
-
-    public static Maps.SubsetBuilder getMapsWithIds(final int... ids) {
-        return Maps.withIds(ids);
-    }
-
-    public static Maps.SubsetBuilder getMapsWithIds(final Iterable<Integer> ids) {
-        return Maps.withIds(ids);
-    }
-
-    public static Maps.Builder getMapsWithLocale(final String locale) {
-        return Maps.withLocale(locale);
-    }
-
-    public static Maps.Builder getMapsWithPlatform(final Platform platform) {
-        return Maps.withPlatform(platform);
-    }
-
-    public static Maps.Builder getMapsWithRegion(final Region region) {
-        return Maps.withRegion(region);
-    }
-
-    public static Maps.Builder getMapsWithVersion(final String version) {
-        return Maps.withVersion(version);
-    }
-
-    public static Map.Builder getMapWithId(final int id) {
-        return Map.withId(id);
     }
 
     public static Masteries getMasteries() {
         return Masteries.get();
     }
 
-    public static Masteries.SubsetBuilder getMasteriesNamed(final Iterable<String> names) {
-        return Masteries.named(names);
-    }
-
-    public static Masteries.SubsetBuilder getMasteriesNamed(final String... names) {
-        return Masteries.named(names);
-    }
-
-    public static Masteries.SubsetBuilder getMasteriesWithIds(final int... ids) {
-        return Masteries.withIds(ids);
-    }
-
-    public static Masteries.SubsetBuilder getMasteriesWithIds(final Iterable<Integer> ids) {
-        return Masteries.withIds(ids);
-    }
-
-    public static Masteries.Builder getMasteriesWithIncludedData(final Set<String> includedData) {
-        return Masteries.withIncludedData(includedData);
-    }
-
-    public static Masteries.Builder getMasteriesWithLocale(final String locale) {
-        return Masteries.withLocale(locale);
-    }
-
-    public static Masteries.Builder getMasteriesWithPlatform(final Platform platform) {
-        return Masteries.withPlatform(platform);
-    }
-
-    public static Masteries.Builder getMasteriesWithRegion(final Region region) {
-        return Masteries.withRegion(region);
-    }
-
-    public static Masteries.Builder getMasteriesWithVersion(final String version) {
-        return Masteries.withVersion(version);
-    }
-
-    public static League getMasterLeagueInQueue(final Queue queue) {
-        return League.masterInQueue(queue);
-    }
-
-    public static Mastery.Builder getMasteryNamed(final String name) {
-        return Mastery.named(name);
-    }
-
-    public static Mastery.Builder getMasteryWithId(final int id) {
-        return Mastery.withId(id);
-    }
-
     public static ProfileIcons getProfileIcons() {
         return ProfileIcons.get();
-    }
-
-    public static ProfileIcons.SubsetBuilder getProfileIconsWithIds(final int... ids) {
-        return ProfileIcons.withIds(ids);
-    }
-
-    public static ProfileIcons.SubsetBuilder getProfileIconsWithIds(final Iterable<Integer> ids) {
-        return ProfileIcons.withIds(ids);
-    }
-
-    public static ProfileIcons.Builder getProfileIconsWithLocale(final String locale) {
-        return ProfileIcons.withLocale(locale);
-    }
-
-    public static ProfileIcons.Builder getProfileIconsWithPlatform(final Platform platform) {
-        return ProfileIcons.withPlatform(platform);
-    }
-
-    public static ProfileIcons.Builder getProfileIconsWithRegion(final Region region) {
-        return ProfileIcons.withRegion(region);
-    }
-
-    public static ProfileIcons.Builder getProfileIconsWithVersion(final String version) {
-        return ProfileIcons.withVersion(version);
-    }
-
-    public static ProfileIcon.Builder getProfileIconWithId(final int id) {
-        return ProfileIcon.withId(id);
-    }
-
-    public static Realm getRealm() {
-        return Realm.get();
-    }
-
-    public static Realm getRealmWithPlatform(final Platform platform) {
-        return Realm.withPlatform(platform);
-    }
-
-    public static Realm getRealmWithRegion(final Region region) {
-        return Realm.withRegion(region);
-    }
-
-    public static Rune.Builder getRuneNamed(final String name) {
-        return Rune.named(name);
     }
 
     public static Runes getRunes() {
         return Runes.get();
     }
 
-    public static Runes.SubsetBuilder getRunesNamed(final Iterable<String> names) {
-        return Runes.named(names);
-    }
-
-    public static Runes.SubsetBuilder getRunesNamed(final String... names) {
-        return Runes.named(names);
-    }
-
-    public static Runes.SubsetBuilder getRunesWithIds(final int... ids) {
-        return Runes.withIds(ids);
-    }
-
-    public static Runes.SubsetBuilder getRunesWithIds(final Iterable<Integer> ids) {
-        return Runes.withIds(ids);
-    }
-
-    public static Runes.Builder getRunesWithIncludedData(final Set<String> includedData) {
-        return Runes.withIncludedData(includedData);
-    }
-
-    public static Runes.Builder getRunesWithLocale(final String locale) {
-        return Runes.withLocale(locale);
-    }
-
-    public static Runes.Builder getRunesWithPlatform(final Platform platform) {
-        return Runes.withPlatform(platform);
-    }
-
-    public static Runes.Builder getRunesWithRegion(final Region region) {
-        return Runes.withRegion(region);
-    }
-
-    public static Runes.Builder getRunesWithVersion(final String version) {
-        return Runes.withVersion(version);
-    }
-
-    public static Rune.Builder getRuneWithId(final int id) {
-        return Rune.withId(id);
-    }
-
     public static Settings getSettings() {
         return settings;
     }
 
-    public static ShardStatus getShardStatusForPlatform(final Platform platform) {
-        return ShardStatus.forPlatform(platform);
-    }
-
-    public static ShardStatus getShardStatusForRegion(final Region region) {
-        return ShardStatus.forRegion(region);
-    }
-
-    public static Summoner.Builder getSummonerNamed(final String name) {
-        return Summoner.named(name);
-    }
-
-    public static Summoners.Builder getSummonersNamed(final Iterable<String> names) {
-        return Summoners.named(names);
-    }
-
-    public static Summoners.Builder getSummonersNamed(final String... names) {
-        return Summoners.named(names);
-    }
-
-    public static SummonerSpell.Builder getSummonerSpellNamed(final String name) {
-        return SummonerSpell.named(name);
+    public static ShardStatus getShardStatus() {
+        return ShardStatus.get();
     }
 
     public static SummonerSpells getSummonerSpells() {
         return SummonerSpells.get();
     }
 
-    public static SummonerSpells.SubsetBuilder getSummonerSpellsNamed(final Iterable<String> names) {
-        return SummonerSpells.named(names);
-    }
-
-    public static SummonerSpells.SubsetBuilder getSummonerSpellsNamed(final String... names) {
-        return SummonerSpells.named(names);
-    }
-
-    public static SummonerSpells.SubsetBuilder getSummonerSpellsWithIds(final int... ids) {
-        return SummonerSpells.withIds(ids);
-    }
-
-    public static SummonerSpells.SubsetBuilder getSummonerSpellsWithIds(final Iterable<Integer> ids) {
-        return SummonerSpells.withIds(ids);
-    }
-
-    public static SummonerSpells.Builder getSummonerSpellsWithIncludedData(final Set<String> includedData) {
-        return SummonerSpells.withIncludedData(includedData);
-    }
-
-    public static SummonerSpells.Builder getSummonerSpellsWithLocale(final String locale) {
-        return SummonerSpells.withLocale(locale);
-    }
-
-    public static SummonerSpells.Builder getSummonerSpellsWithPlatform(final Platform platform) {
-        return SummonerSpells.withPlatform(platform);
-    }
-
-    public static SummonerSpells.Builder getSummonerSpellsWithRegion(final Region region) {
-        return SummonerSpells.withRegion(region);
-    }
-
-    public static SummonerSpells.Builder getSummonerSpellsWithVersion(final String version) {
-        return SummonerSpells.withVersion(version);
-    }
-
-    public static SummonerSpell.Builder getSummonerSpellWithId(final int id) {
-        return SummonerSpell.withId(id);
-    }
-
-    public static Summoners.Builder getSummonersWithAccountIds(final Iterable<Long> accountIds) {
-        return Summoners.withAccountIds(accountIds);
-    }
-
-    public static Summoners.Builder getSummonersWithAccountIds(final long... accountIds) {
-        return Summoners.withAccountIds(accountIds);
-    }
-
-    public static Summoners.Builder getSummonersWithIds(final Iterable<Long> ids) {
-        return Summoners.withIds(ids);
-    }
-
-    public static Summoners.Builder getSummonersWithIds(final long... ids) {
-        return Summoners.withIds(ids);
-    }
-
-    public static Summoner.Builder getSummonerWithAccountId(final long id) {
-        return Summoner.withAccountId(id);
-    }
-
-    public static Summoner.Builder getSummonerWithId(final long id) {
-        return Summoner.withId(id);
-    }
-
-    public static VerificationString getVerificationStringForSummoner(final Summoner summoner) {
-        return VerificationString.forSummoner(summoner);
-    }
-
     public static Versions getVersions() {
         return Versions.get();
     }
 
-    public static Versions.Builder getVersionsWithPlatform(final Platform platform) {
-        return Versions.withPlatform(platform);
+    public static Item.Builder itemNamed(final String name) {
+        return Item.named(name);
     }
 
-    public static Versions.Builder getVersionsWithRegion(final Region region) {
-        return Versions.withRegion(region);
+    public static Items.SubsetBuilder itemsNamed(final Iterable<String> names) {
+        return Items.named(names);
+    }
+
+    public static Items.SubsetBuilder itemsNamed(final String... names) {
+        return Items.named(names);
+    }
+
+    public static Items.SubsetBuilder itemsWithIds(final int... ids) {
+        return Items.withIds(ids);
+    }
+
+    public static Items.SubsetBuilder itemsWithIds(final Iterable<Integer> ids) {
+        return Items.withIds(ids);
+    }
+
+    public static Items.Builder itemsWithIncludedData(final Set<String> includedData) {
+        return Items.withIncludedData(includedData);
+    }
+
+    public static Items.Builder itemsWithLocale(final String locale) {
+        return Items.withLocale(locale);
+    }
+
+    public static Items.Builder itemsWithPlatform(final Platform platform) {
+        return Items.withPlatform(platform);
+    }
+
+    public static Items.Builder itemsWithRegion(final Region region) {
+        return Items.withRegion(region);
+    }
+
+    public static Items.Builder itemsWithVersion(final String version) {
+        return Items.withVersion(version);
+    }
+
+    public static Item.Builder itemWithId(final int id) {
+        return Item.withId(id);
+    }
+
+    public static LanguageStrings.Builder languageStringsWithLocale(final String locale) {
+        return LanguageStrings.withLocale(locale);
+    }
+
+    public static LanguageStrings.Builder languageStringsWithPlatform(final Platform platform) {
+        return LanguageStrings.withPlatform(platform);
+    }
+
+    public static LanguageStrings.Builder languageStringsWithRegion(final Region region) {
+        return LanguageStrings.withRegion(region);
+    }
+
+    public static LanguageStrings.Builder languageStringsWithVersion(final String version) {
+        return LanguageStrings.withVersion(version);
+    }
+
+    public static Languages.Builder languagesWithPlatform(final Platform platform) {
+        return Languages.withPlatform(platform);
+    }
+
+    public static Languages.Builder languagesWithRegion(final Region region) {
+        return Languages.withRegion(region);
+    }
+
+    public static LeaguePositions.Builder leaguePositionsForSummoner(final Summoner summoner) {
+        return LeaguePositions.forSummoner(summoner);
+    }
+
+    public static LeaguePositions.ManyBuilder leaguePositionsForSummoners(final Iterable<Summoner> summoners) {
+        return LeaguePositions.forSummoners(summoners);
+    }
+
+    public static LeaguePositions.ManyBuilder leaguePositionsForSummoners(final Summoner... summoners) {
+        return LeaguePositions.forSummoners(summoners);
+    }
+
+    public static Leagues.Builder leaguesWithIds(final Iterable<String> ids) {
+        return Leagues.withIds(ids);
+    }
+
+    public static Leagues.Builder leaguesWithIds(final String... ids) {
+        return Leagues.withIds(ids);
+    }
+
+    public static League.Builder leagueWithId(final String id) {
+        return League.withId(id);
     }
 
     public static void loadConfiguration(final CharSource configJSON) {
@@ -753,5 +548,273 @@ public abstract class Orianna {
 
     public static void loadConfiguration(final String configJSONResourcePath) {
         loadConfiguration(Resources.asCharSource(Resources.getResource(configJSONResourcePath), Charset.forName("UTF-8")));
+    }
+
+    public static Map.Builder mapNamed(final String name) {
+        return Map.named(name);
+    }
+
+    public static Maps.Builder mapsWithLocale(final String locale) {
+        return Maps.withLocale(locale);
+    }
+
+    public static Maps.Builder mapsWithPlatform(final Platform platform) {
+        return Maps.withPlatform(platform);
+    }
+
+    public static Maps.Builder mapsWithRegion(final Region region) {
+        return Maps.withRegion(region);
+    }
+
+    public static Maps.Builder mapsWithVersion(final String version) {
+        return Maps.withVersion(version);
+    }
+
+    public static Map.Builder mapWithId(final int id) {
+        return Map.withId(id);
+    }
+
+    public static Masteries.SubsetBuilder masteriesNamed(final Iterable<String> names) {
+        return Masteries.named(names);
+    }
+
+    public static Masteries.SubsetBuilder masteriesNamed(final String... names) {
+        return Masteries.named(names);
+    }
+
+    public static Masteries.SubsetBuilder masteriesWithIds(final int... ids) {
+        return Masteries.withIds(ids);
+    }
+
+    public static Masteries.SubsetBuilder masteriesWithIds(final Iterable<Integer> ids) {
+        return Masteries.withIds(ids);
+    }
+
+    public static Masteries.Builder masteriesWithIncludedData(final Set<String> includedData) {
+        return Masteries.withIncludedData(includedData);
+    }
+
+    public static Masteries.Builder masteriesWithLocale(final String locale) {
+        return Masteries.withLocale(locale);
+    }
+
+    public static Masteries.Builder masteriesWithPlatform(final Platform platform) {
+        return Masteries.withPlatform(platform);
+    }
+
+    public static Masteries.Builder masteriesWithRegion(final Region region) {
+        return Masteries.withRegion(region);
+    }
+
+    public static Masteries.Builder masteriesWithVersion(final String version) {
+        return Masteries.withVersion(version);
+    }
+
+    public static League.SelectBuilder.SubBuilder masterLeagueInQueue(final Queue queue) {
+        return League.masterInQueue(queue);
+    }
+
+    public static Leagues.SelectBuilder.SubBuilder masterLeaguesInQueues(final Iterable<Queue> queues) {
+        return Leagues.masterInQueues(queues);
+    }
+
+    public static Leagues.SelectBuilder.SubBuilder masterLeaguesInQueues(final Queue... queues) {
+        return Leagues.masterInQueues(queues);
+    }
+
+    public static Mastery.Builder masteryNamed(final String name) {
+        return Mastery.named(name);
+    }
+
+    public static Mastery.Builder masteryWithId(final int id) {
+        return Mastery.withId(id);
+    }
+
+    public static ProfileIcons.Builder profileIconsWithLocale(final String locale) {
+        return ProfileIcons.withLocale(locale);
+    }
+
+    public static ProfileIcons.Builder profileIconsWithPlatform(final Platform platform) {
+        return ProfileIcons.withPlatform(platform);
+    }
+
+    public static ProfileIcons.Builder profileIconsWithRegion(final Region region) {
+        return ProfileIcons.withRegion(region);
+    }
+
+    public static ProfileIcons.Builder profileIconsWithVersion(final String version) {
+        return ProfileIcons.withVersion(version);
+    }
+
+    public static ProfileIcon.Builder profileIconWithId(final int id) {
+        return ProfileIcon.withId(id);
+    }
+
+    public static Rune.Builder runeNamed(final String name) {
+        return Rune.named(name);
+    }
+
+    public static Runes.SubsetBuilder runesNamed(final Iterable<String> names) {
+        return Runes.named(names);
+    }
+
+    public static Runes.SubsetBuilder runesNamed(final String... names) {
+        return Runes.named(names);
+    }
+
+    public static Runes.SubsetBuilder runesWithIds(final int... ids) {
+        return Runes.withIds(ids);
+    }
+
+    public static Runes.SubsetBuilder runesWithIds(final Iterable<Integer> ids) {
+        return Runes.withIds(ids);
+    }
+
+    public static Runes.Builder runesWithIncludedData(final Set<String> includedData) {
+        return Runes.withIncludedData(includedData);
+    }
+
+    public static Runes.Builder runesWithLocale(final String locale) {
+        return Runes.withLocale(locale);
+    }
+
+    public static Runes.Builder runesWithPlatform(final Platform platform) {
+        return Runes.withPlatform(platform);
+    }
+
+    public static Runes.Builder runesWithRegion(final Region region) {
+        return Runes.withRegion(region);
+    }
+
+    public static Runes.Builder runesWithVersion(final String version) {
+        return Runes.withVersion(version);
+    }
+
+    public static Rune.Builder runeWithId(final int id) {
+        return Rune.withId(id);
+    }
+
+    public static ShardStatuses.Builder shardStatusesForPlatforms(final Iterable<Platform> platforms) {
+        return ShardStatuses.forPlatforms(platforms);
+    }
+
+    public static ShardStatuses.Builder shardStatusesForPlatforms(final Platform... platforms) {
+        return ShardStatuses.forPlatforms(platforms);
+    }
+
+    public static ShardStatuses.Builder shardStatusesForRegions(final Iterable<Region> regions) {
+        return ShardStatuses.forRegions(regions);
+    }
+
+    public static ShardStatuses.Builder shardStatusesForRegions(final Region... regions) {
+        return ShardStatuses.forRegions(regions);
+    }
+
+    public static ShardStatus.Builder shardStatusForPlatform(final Platform platform) {
+        return ShardStatus.forPlatform(platform);
+    }
+
+    public static ShardStatus.Builder shardStatusForRegion(final Region region) {
+        return ShardStatus.forRegion(region);
+    }
+
+    public static Summoner.Builder summonerNamed(final String name) {
+        return Summoner.named(name);
+    }
+
+    public static Summoners.Builder summonersNamed(final Iterable<String> names) {
+        return Summoners.named(names);
+    }
+
+    public static Summoners.Builder summonersNamed(final String... names) {
+        return Summoners.named(names);
+    }
+
+    public static SummonerSpell.Builder summonerSpellNamed(final String name) {
+        return SummonerSpell.named(name);
+    }
+
+    public static SummonerSpells.SubsetBuilder summonerSpellsNamed(final Iterable<String> names) {
+        return SummonerSpells.named(names);
+    }
+
+    public static SummonerSpells.SubsetBuilder summonerSpellsNamed(final String... names) {
+        return SummonerSpells.named(names);
+    }
+
+    public static SummonerSpells.SubsetBuilder summonerSpellsWithIds(final int... ids) {
+        return SummonerSpells.withIds(ids);
+    }
+
+    public static SummonerSpells.SubsetBuilder summonerSpellsWithIds(final Iterable<Integer> ids) {
+        return SummonerSpells.withIds(ids);
+    }
+
+    public static SummonerSpells.Builder summonerSpellsWithIncludedData(final Set<String> includedData) {
+        return SummonerSpells.withIncludedData(includedData);
+    }
+
+    public static SummonerSpells.Builder summonerSpellsWithLocale(final String locale) {
+        return SummonerSpells.withLocale(locale);
+    }
+
+    public static SummonerSpells.Builder summonerSpellsWithPlatform(final Platform platform) {
+        return SummonerSpells.withPlatform(platform);
+    }
+
+    public static SummonerSpells.Builder summonerSpellsWithRegion(final Region region) {
+        return SummonerSpells.withRegion(region);
+    }
+
+    public static SummonerSpells.Builder summonerSpellsWithVersion(final String version) {
+        return SummonerSpells.withVersion(version);
+    }
+
+    public static SummonerSpell.Builder summonerSpellWithId(final int id) {
+        return SummonerSpell.withId(id);
+    }
+
+    public static Summoners.Builder summonersWithAccountIds(final Iterable<Long> accountIds) {
+        return Summoners.withAccountIds(accountIds);
+    }
+
+    public static Summoners.Builder summonersWithAccountIds(final long... accountIds) {
+        return Summoners.withAccountIds(accountIds);
+    }
+
+    public static Summoners.Builder summonersWithIds(final Iterable<Long> ids) {
+        return Summoners.withIds(ids);
+    }
+
+    public static Summoners.Builder summonersWithIds(final long... ids) {
+        return Summoners.withIds(ids);
+    }
+
+    public static Summoner.Builder summonerWithAccountId(final long accountId) {
+        return Summoner.withAccountId(accountId);
+    }
+
+    public static Summoner.Builder summonerWithId(final long id) {
+        return Summoner.withId(id);
+    }
+
+    public static VerificationString.Builder verificationStringForSummoner(final Summoner summoner) {
+        return VerificationString.forSummoner(summoner);
+    }
+
+    public static VerificationStrings.Builder verificationStringsForSummoners(final Iterable<Summoner> summoners) {
+        return VerificationStrings.forSummoners(summoners);
+    }
+
+    public static VerificationStrings.Builder verificationStringsForSummoners(final Summoner... summoners) {
+        return VerificationStrings.forSummoners(summoners);
+    }
+
+    public static Versions.Builder versionsWithPlatform(final Platform platform) {
+        return Versions.withPlatform(platform);
+    }
+
+    public static Versions.Builder versionsWithRegion(final Region region) {
+        return Versions.withRegion(region);
     }
 }

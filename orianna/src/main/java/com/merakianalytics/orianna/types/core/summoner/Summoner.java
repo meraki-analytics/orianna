@@ -123,11 +123,11 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
     }
 
     public ChampionMasteryScore getChampionMasteryScore() {
-        return ChampionMasteryScore.forSummoner(this);
+        return ChampionMasteryScore.forSummoner(this).get();
     }
 
     public CurrentGame getCurrentGame() {
-        return CurrentGame.forSummoner(this);
+        return CurrentGame.forSummoner(this).get();
     }
 
     @Searchable(long.class)
@@ -169,7 +169,11 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
     }
 
     public VerificationString getVerificationString() {
-        return VerificationString.forSummoner(this);
+        return VerificationString.forSummoner(this).get();
+    }
+
+    public boolean isInGame() {
+        return CurrentGame.forSummoner(this).get().exists();
     }
 
     @Override

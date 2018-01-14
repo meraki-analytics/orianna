@@ -1,6 +1,9 @@
 package com.merakianalytics.orianna.types.common;
 
 import com.merakianalytics.orianna.types.core.spectator.FeaturedGames;
+import com.merakianalytics.orianna.types.core.staticdata.Languages;
+import com.merakianalytics.orianna.types.core.staticdata.Realm;
+import com.merakianalytics.orianna.types.core.staticdata.Versions;
 import com.merakianalytics.orianna.types.core.status.ShardStatus;
 
 public enum Region {
@@ -29,18 +32,30 @@ public enum Region {
     }
 
     public FeaturedGames getFeaturedGames() {
-        return FeaturedGames.forRegion(this);
+        return FeaturedGames.forRegion(this).get();
+    }
+
+    public Languages getLanguages() {
+        return Languages.withRegion(this).get();
     }
 
     public Platform getPlatform() {
         return Platform.withTag(name());
     }
 
+    public Realm getRealm() {
+        return Realm.withRegion(this).get();
+    }
+
     public ShardStatus getStatus() {
-        return ShardStatus.forRegion(this);
+        return ShardStatus.forRegion(this).get();
     }
 
     public String getTag() {
         return tag;
+    }
+
+    public Versions getVersions() {
+        return Versions.withRegion(this).get();
     }
 }

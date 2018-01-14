@@ -285,13 +285,13 @@ public abstract class UniqueKeys {
                         League.class.getCanonicalName(), data.getPlatform(), data.getId()
                     }),
                     Arrays.hashCode(new Object[] {
-                        League.class.getCanonicalName(), data.getPlatform(), data.getQueue(), data.getTier()
+                        League.class.getCanonicalName(), data.getPlatform(), data.getTier(), data.getQueue()
                     })
                 };
             } else {
                 return new int[] {
                     Arrays.hashCode(new Object[] {
-                        League.class.getCanonicalName(), data.getPlatform(), data.getQueue(), data.getTier()
+                        League.class.getCanonicalName(), data.getPlatform(), data.getTier(), data.getQueue()
                     })
                 };
             }
@@ -327,10 +327,35 @@ public abstract class UniqueKeys {
             });
         } else {
             return Arrays.hashCode(new Object[] {
-                League.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), ((Queue)query.get("queue")).name(),
-                ((Tier)query.get("tier")).name()
+                League.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), ((Tier)query.get("tier")).name(),
+                ((Queue)query.get("queue")).name()
             });
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Iterator<Integer> forManyChampionMasteriesQuery(final java.util.Map<String, Object> query) {
+        final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
+
+        final Iterator<Number> iterator = summonerIds.iterator();
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                return Arrays.hashCode(new Object[] {
+                    ChampionMasteries.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next().longValue()
+                });
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
     }
 
     @SuppressWarnings("unchecked")
@@ -347,7 +372,8 @@ public abstract class UniqueKeys {
             @Override
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
-                    ChampionMastery.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (Long)query.get("summonerId"), iterator.next()
+                    ChampionMastery.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (Long)query.get("summonerId"),
+                    iterator.next().intValue()
                 });
             }
 
@@ -372,7 +398,7 @@ public abstract class UniqueKeys {
             @Override
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
-                    ChampionMasteryScore.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next()
+                    ChampionMasteryScore.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next().longValue()
                 });
             }
 
@@ -422,6 +448,56 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
+    public static Iterator<Integer> forManyCurrentGameQuery(final java.util.Map<String, Object> query) {
+        final Iterable<Long> summonerIds = (Iterable<Long>)query.get("summonerIds");
+
+        final Iterator<Long> iterator = summonerIds.iterator();
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                return Arrays.hashCode(new Object[] {
+                    CurrentGame.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next().longValue()
+                });
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Iterator<Integer> forManyFeaturedGamesQuery(final java.util.Map<String, Object> query) {
+        final Iterable<Platform> platforms = (Iterable<Platform>)query.get("platforms");
+
+        final Iterator<Platform> iterator = platforms.iterator();
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                return Arrays.hashCode(new Object[] {
+                    FeaturedGames.class.getCanonicalName(), iterator.next().getTag()
+                });
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+    @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyItemQuery(final java.util.Map<String, Object> query) {
         final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
         final Iterable<String> names = (Iterable<String>)query.get("names");
@@ -447,6 +523,64 @@ public abstract class UniqueKeys {
                     Item.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
                     iterator.next(), (Set<String>)query.get("includedData")
                 });
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Iterator<Integer> forManyLeaguePositionsQuery(final java.util.Map<String, Object> query) {
+        final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
+
+        final Iterator<Number> iterator = summonerIds.iterator();
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                return Arrays.hashCode(new Object[] {
+                    LeaguePositions.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next().longValue()
+                });
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Iterator<Integer> forManyLeagueQuery(final java.util.Map<String, Object> query) {
+        final Iterable<String> leagueIds = (Iterable<String>)query.get("leagueIds");
+        final Iterable<Queue> queues = (Iterable<Queue>)query.get("queues");
+
+        final Iterator<?> iterator = leagueIds != null ? leagueIds.iterator() : queues.iterator();
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                if(leagueIds != null) {
+                    return Arrays.hashCode(new Object[] {
+                        League.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next()
+                    });
+                } else {
+                    return Arrays.hashCode(new Object[] {
+                        League.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), ((Tier)query.get("tier")).name(),
+                        ((Queue)iterator.next()).name()
+                    });
+                }
             }
 
             @Override
@@ -588,6 +722,31 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
+    public static Iterator<Integer> forManyShardStatusQuery(final java.util.Map<String, Object> query) {
+        final Iterable<Platform> platforms = (Iterable<Platform>)query.get("platforms");
+
+        final Iterator<Platform> iterator = platforms.iterator();
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                return Arrays.hashCode(new Object[] {
+                    ShardStatus.class.getCanonicalName(), iterator.next().getTag()
+                });
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+    @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManySummonerQuery(final java.util.Map<String, Object> query) {
         final Iterable<Long> ids = (Iterable<Long>)query.get("ids");
         final Iterable<Long> accountIds = (Iterable<Long>)query.get("accountIds");
@@ -650,6 +809,31 @@ public abstract class UniqueKeys {
                     SummonerSpell.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"),
                     (String)query.get("locale"),
                     iterator.next(), (Set<String>)query.get("includedData")
+                });
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Iterator<Integer> forManyVerificationStringQuery(final java.util.Map<String, Object> query) {
+        final Iterable<Long> summonerIds = (Iterable<Long>)query.get("summonerIds");
+
+        final Iterator<Long> iterator = summonerIds.iterator();
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                return Arrays.hashCode(new Object[] {
+                    VerificationString.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next().longValue()
                 });
             }
 

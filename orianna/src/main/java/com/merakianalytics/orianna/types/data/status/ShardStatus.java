@@ -7,7 +7,7 @@ import com.merakianalytics.orianna.types.data.CoreData;
 public class ShardStatus extends CoreData {
     private static final long serialVersionUID = -3562231855274100852L;
     private List<String> locales;
-    private String name, hostname, platform;
+    private String name, hostname, regionTag, slug, platform;
     private List<Service> services;
 
     @Override
@@ -50,11 +50,25 @@ public class ShardStatus extends CoreData {
         } else if(!platform.equals(other.platform)) {
             return false;
         }
+        if(regionTag == null) {
+            if(other.regionTag != null) {
+                return false;
+            }
+        } else if(!regionTag.equals(other.regionTag)) {
+            return false;
+        }
         if(services == null) {
             if(other.services != null) {
                 return false;
             }
         } else if(!services.equals(other.services)) {
+            return false;
+        }
+        if(slug == null) {
+            if(other.slug != null) {
+                return false;
+            }
+        } else if(!slug.equals(other.slug)) {
             return false;
         }
         return true;
@@ -89,10 +103,24 @@ public class ShardStatus extends CoreData {
     }
 
     /**
+     * @return the regionTag
+     */
+    public String getRegionTag() {
+        return regionTag;
+    }
+
+    /**
      * @return the services
      */
     public List<Service> getServices() {
         return services;
+    }
+
+    /**
+     * @return the slug
+     */
+    public String getSlug() {
+        return slug;
     }
 
     @Override
@@ -103,7 +131,9 @@ public class ShardStatus extends CoreData {
         result = prime * result + (locales == null ? 0 : locales.hashCode());
         result = prime * result + (name == null ? 0 : name.hashCode());
         result = prime * result + (platform == null ? 0 : platform.hashCode());
+        result = prime * result + (regionTag == null ? 0 : regionTag.hashCode());
         result = prime * result + (services == null ? 0 : services.hashCode());
+        result = prime * result + (slug == null ? 0 : slug.hashCode());
         return result;
     }
 
@@ -140,10 +170,26 @@ public class ShardStatus extends CoreData {
     }
 
     /**
+     * @param regionTag
+     *        the regionTag to set
+     */
+    public void setRegionTag(final String regionTag) {
+        this.regionTag = regionTag;
+    }
+
+    /**
      * @param services
      *        the services to set
      */
     public void setServices(final List<Service> services) {
         this.services = services;
+    }
+
+    /**
+     * @param slug
+     *        the slug to set
+     */
+    public void setSlug(final String slug) {
+        this.slug = slug;
     }
 }

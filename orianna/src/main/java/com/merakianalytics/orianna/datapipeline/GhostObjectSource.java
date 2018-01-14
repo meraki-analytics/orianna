@@ -334,6 +334,36 @@ public class GhostObjectSource extends AbstractDataSource {
     }
 
     @SuppressWarnings("unchecked")
+    @GetMany(ChampionMasteries.class)
+    public CloseableIterator<ChampionMasteries> getManyChampionMasteries(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
+        Utilities.checkNotNull(platform, "platform", summonerIds, "summonerIds");
+
+        final Iterator<Number> iterator = summonerIds.iterator();
+        return CloseableIterators.from(new Iterator<ChampionMasteries>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public ChampionMasteries next() {
+                final com.merakianalytics.orianna.types.data.championmastery.ChampionMasteries data =
+                    new com.merakianalytics.orianna.types.data.championmastery.ChampionMasteries();
+                data.setPlatform(platform.getTag());
+                data.setSummonerId(iterator.next().longValue());
+                return new ChampionMasteries(data);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
     @GetMany(ChampionMastery.class)
     public CloseableIterator<ChampionMastery> getManyChampionMastery(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
@@ -396,6 +426,63 @@ public class GhostObjectSource extends AbstractDataSource {
     }
 
     @SuppressWarnings("unchecked")
+    @GetMany(CurrentGame.class)
+    public CloseableIterator<CurrentGame> getManyCurrentGame(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
+        Utilities.checkNotNull(platform, "platform", summonerIds, "summonerIds");
+
+        final Iterator<Number> iterator = summonerIds.iterator();
+        return CloseableIterators.from(new Iterator<CurrentGame>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public CurrentGame next() {
+                final com.merakianalytics.orianna.types.data.spectator.CurrentGame data = new com.merakianalytics.orianna.types.data.spectator.CurrentGame();
+                data.setPlatform(platform.getTag());
+                data.setSummonerId(iterator.next().longValue());
+                return new CurrentGame(data);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    @GetMany(FeaturedGames.class)
+    public CloseableIterator<FeaturedGames> getManyFeaturedGames(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Iterable<Platform> platforms = (Iterable<Platform>)query.get("platforms");
+        Utilities.checkNotNull(platforms, "platforms");
+
+        final Iterator<Platform> iterator = platforms.iterator();
+        return CloseableIterators.from(new Iterator<FeaturedGames>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public FeaturedGames next() {
+                final com.merakianalytics.orianna.types.data.spectator.FeaturedGames data =
+                    new com.merakianalytics.orianna.types.data.spectator.FeaturedGames();
+                data.setPlatform(iterator.next().getTag());
+                return new FeaturedGames(data);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
     @GetMany(Item.class)
     public CloseableIterator<Item> getManyItem(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
@@ -437,6 +524,85 @@ public class GhostObjectSource extends AbstractDataSource {
                     return null;
                 }
                 return new Item(data);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    @GetMany(League.class)
+    public CloseableIterator<League> getManyLeague(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
+        final Iterable<String> ids = (Iterable<String>)query.get("leagueIds");
+        final Tier tier = (Tier)query.get("tier");
+        final Iterable<Queue> queues = (Iterable<Queue>)query.get("queues");
+
+        if(ids == null) {
+            if(tier == null || queues == null) {
+                throw new QueryValidationException("Query was missing required parameters! Either leagueIds or tier and queues must be included!");
+            } else if(!UNIQUE_TIERS.contains(tier)) {
+                final StringBuilder sb = new StringBuilder();
+                for(final Tier t : UNIQUE_TIERS) {
+                    sb.append(", " + t);
+                }
+                throw new QueryValidationException("Query contained invalid parameters! tier must be one of [" + sb.substring(2) + "]!");
+            }
+        }
+
+        final Iterator<?> iterator = ids != null ? ids.iterator() : queues.iterator();
+        return CloseableIterators.from(new Iterator<League>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public League next() {
+                final com.merakianalytics.orianna.types.data.league.League data =
+                    new com.merakianalytics.orianna.types.data.league.League();
+                data.setPlatform(platform.getTag());
+                if(ids != null) {
+                    data.setId((String)iterator.next());
+                } else {
+                    data.setTier(tier.name());
+                    data.setQueue(((Queue)iterator.next()).name());
+                }
+                return new League(data);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    @GetMany(LeaguePositions.class)
+    public CloseableIterator<LeaguePositions> getManyLeaguePositions(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
+        Utilities.checkNotNull(platform, "platform", summonerIds, "summonerIds");
+
+        final Iterator<Number> iterator = summonerIds.iterator();
+        return CloseableIterators.from(new Iterator<LeaguePositions>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public LeaguePositions next() {
+                final com.merakianalytics.orianna.types.data.league.LeaguePositions data =
+                    new com.merakianalytics.orianna.types.data.league.LeaguePositions();
+                data.setPlatform(platform.getTag());
+                data.setSummonerId(iterator.next().longValue());
+                return new LeaguePositions(data);
             }
 
             @Override
@@ -631,6 +797,34 @@ public class GhostObjectSource extends AbstractDataSource {
     }
 
     @SuppressWarnings("unchecked")
+    @GetMany(ShardStatus.class)
+    public CloseableIterator<ShardStatus> getManyShardStatus(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Iterable<Platform> platforms = (Iterable<Platform>)query.get("platforms");
+        Utilities.checkNotNull(platforms, "platforms");
+
+        final Iterator<Platform> iterator = platforms.iterator();
+        return CloseableIterators.from(new Iterator<ShardStatus>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public ShardStatus next() {
+                final com.merakianalytics.orianna.types.data.status.ShardStatus data =
+                    new com.merakianalytics.orianna.types.data.status.ShardStatus();
+                data.setPlatform(iterator.next().getTag());
+                return new ShardStatus(data);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
     @GetMany(Summoner.class)
     public CloseableIterator<Summoner> getManySummoner(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
@@ -723,6 +917,36 @@ public class GhostObjectSource extends AbstractDataSource {
                     return null;
                 }
                 return new SummonerSpell(data);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    @GetMany(VerificationString.class)
+    public CloseableIterator<VerificationString> getManyVerificationString(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
+        Utilities.checkNotNull(platform, "platform", summonerIds, "summonerIds");
+
+        final Iterator<Number> iterator = summonerIds.iterator();
+        return CloseableIterators.from(new Iterator<VerificationString>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public VerificationString next() {
+                final com.merakianalytics.orianna.types.data.thirdpartycode.VerificationString data =
+                    new com.merakianalytics.orianna.types.data.thirdpartycode.VerificationString();
+                data.setPlatform(platform.getTag());
+                data.setSummonerId(iterator.next().longValue());
+                return new VerificationString(data);
             }
 
             @Override

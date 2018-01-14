@@ -12,7 +12,6 @@ import org.joda.time.format.ISODateTimeFormat;
 import com.merakianalytics.datapipelines.PipelineContext;
 import com.merakianalytics.datapipelines.transformers.AbstractDataTransformer;
 import com.merakianalytics.datapipelines.transformers.Transform;
-import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.data.status.Incident;
 import com.merakianalytics.orianna.types.data.status.Message;
 import com.merakianalytics.orianna.types.data.status.Service;
@@ -72,7 +71,9 @@ public class StatusTransformer extends AbstractDataTransformer {
         status.setHostname(item.getHostname());
         status.setLocales(new ArrayList<>(item.getLocales()));
         status.setName(item.getName());
-        status.setPlatform(item.getRegion_tag().toUpperCase());
+        status.setRegionTag(item.getRegion_tag());
+        status.setSlug(item.getSlug());
+        status.setPlatform(item.getPlatform());
         final List<Service> services = new ArrayList<>(item.getServices().size());
         for(final com.merakianalytics.orianna.types.dto.status.Service service : item.getServices()) {
             services.add(transform(service, context));
@@ -141,8 +142,9 @@ public class StatusTransformer extends AbstractDataTransformer {
         status.setHostname(item.getHostname());
         status.setLocales(new ArrayList<>(item.getLocales()));
         status.setName(item.getName());
-        status.setRegion_tag(item.getPlatform().toLowerCase());
-        status.setSlug(Platform.withTag(item.getPlatform()).getRegion().getTag().toLowerCase());
+        status.setPlatform(item.getPlatform());
+        status.setRegion_tag(item.getRegionTag());
+        status.setSlug(item.getSlug());
         final List<com.merakianalytics.orianna.types.dto.status.Service> services = new ArrayList<>(item.getServices().size());
         for(final Service service : item.getServices()) {
             services.add(transform(service, context));

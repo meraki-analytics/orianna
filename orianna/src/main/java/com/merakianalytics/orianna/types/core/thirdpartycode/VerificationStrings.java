@@ -1,4 +1,4 @@
-package com.merakianalytics.orianna.types.core.championmastery;
+package com.merakianalytics.orianna.types.core.thirdpartycode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,7 +15,7 @@ import com.merakianalytics.orianna.types.core.searchable.SearchableList;
 import com.merakianalytics.orianna.types.core.searchable.SearchableListWrapper;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
-public abstract class ChampionMasteryScores {
+public abstract class VerificationStrings {
     public static class Builder {
         private boolean streaming = false;
         private final Iterable<Summoner> summoners;
@@ -24,13 +24,13 @@ public abstract class ChampionMasteryScores {
             this.summoners = summoners;
         }
 
-        public SearchableList<ChampionMasteryScore> get() {
+        public SearchableList<VerificationString> get() {
             final List<Long> ids = new ArrayList<>();
             final Iterator<Summoner> iterator = summoners.iterator();
             Summoner summoner = iterator.next();
 
             if(summoner == null) {
-                return SearchableListWrapper.of(Collections.<ChampionMasteryScore> emptyList());
+                return SearchableListWrapper.of(Collections.<VerificationString> emptyList());
             }
 
             final Platform platform = summoner.getPlatform();
@@ -47,8 +47,8 @@ public abstract class ChampionMasteryScores {
             final ImmutableMap.Builder<String, Object> builder =
                 ImmutableMap.<String, Object> builder().put("platform", platform).put("summonerIds", ids);
 
-            final CloseableIterator<ChampionMasteryScore> result =
-                Orianna.getSettings().getPipeline().getMany(ChampionMasteryScore.class, builder.build(), streaming);
+            final CloseableIterator<VerificationString> result =
+                Orianna.getSettings().getPipeline().getMany(VerificationString.class, builder.build(), streaming);
             return streaming ? SearchableListWrapper.of(CloseableIterators.toLazyList(result)) : SearchableListWrapper.of(CloseableIterators.toList(result));
         }
 

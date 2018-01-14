@@ -44,14 +44,17 @@ public class CurrentGame extends GhostObject<com.merakianalytics.orianna.types.d
     public static final String CURRENT_GAME_LOAD_GROUP = "current-game";
     private static final long serialVersionUID = 2151849959267002960L;
 
-    public static CurrentGame forSummoner(final Summoner summoner) {
-        return new Builder(summoner).get();
+    public static CurrentGame.Builder forSummoner(final Summoner summoner) {
+        return new Builder(summoner);
     }
 
     private final Supplier<SearchableList<Champion>> blueTeamBans = Suppliers.memoize(new Supplier<SearchableList<Champion>>() {
         @Override
         public SearchableList<Champion> get() {
             load(CURRENT_GAME_LOAD_GROUP);
+            if(coreData == null) {
+                return null;
+            }
             return UnmodifiableSearchableList.of(Champions.withIds(coreData.getBlueTeamBans()).withPlatform(Platform.withTag(coreData.getPlatform())).get());
         }
     });
@@ -60,6 +63,9 @@ public class CurrentGame extends GhostObject<com.merakianalytics.orianna.types.d
         @Override
         public SearchableList<Player> get() {
             load(CURRENT_GAME_LOAD_GROUP);
+            if(coreData == null) {
+                return null;
+            }
             final List<Player> players = new ArrayList<>(coreData.getPlayers().size());
             for(final com.merakianalytics.orianna.types.data.spectator.Player player : coreData.getPlayers()) {
                 players.add(new Player(player));
@@ -72,6 +78,9 @@ public class CurrentGame extends GhostObject<com.merakianalytics.orianna.types.d
         @Override
         public SearchableList<Champion> get() {
             load(CURRENT_GAME_LOAD_GROUP);
+            if(coreData == null) {
+                return null;
+            }
             return UnmodifiableSearchableList.of(Champions.withIds(coreData.getRedTeamBans()).withPlatform(Platform.withTag(coreData.getPlatform())).get());
         }
     });
@@ -87,6 +96,10 @@ public class CurrentGame extends GhostObject<com.merakianalytics.orianna.types.d
         super(coreData, 1);
     }
 
+    public boolean exists() {
+        return coreData != null;
+    }
+
     @Searchable({Champion.class, String.class, int.class})
     public SearchableList<Champion> getBlueTeamBans() {
         return blueTeamBans.get();
@@ -94,31 +107,49 @@ public class CurrentGame extends GhostObject<com.merakianalytics.orianna.types.d
 
     public DateTime getCreationTime() {
         load(CURRENT_GAME_LOAD_GROUP);
+        if(coreData == null) {
+            return null;
+        }
         return coreData.getCreationTime();
     }
 
     public Duration getDuration() {
         load(CURRENT_GAME_LOAD_GROUP);
+        if(coreData == null) {
+            return null;
+        }
         return coreData.getDuration();
     }
 
     public long getId() {
         load(CURRENT_GAME_LOAD_GROUP);
+        if(coreData == null) {
+            return 0L;
+        }
         return coreData.getId();
     }
 
     public Map getMap() {
         load(CURRENT_GAME_LOAD_GROUP);
+        if(coreData == null) {
+            return null;
+        }
         return Map.withId(coreData.getMap());
     }
 
     public GameMode getMode() {
         load(CURRENT_GAME_LOAD_GROUP);
+        if(coreData == null) {
+            return null;
+        }
         return GameMode.valueOf(coreData.getMode());
     }
 
     public String getObserverEncryptionKey() {
         load(CURRENT_GAME_LOAD_GROUP);
+        if(coreData == null) {
+            return null;
+        }
         return coreData.getObserverEncryptionKey();
     }
 
@@ -133,6 +164,9 @@ public class CurrentGame extends GhostObject<com.merakianalytics.orianna.types.d
 
     public Queue getQueue() {
         load(CURRENT_GAME_LOAD_GROUP);
+        if(coreData == null) {
+            return null;
+        }
         return Queue.withId(coreData.getQueue());
     }
 
@@ -152,6 +186,9 @@ public class CurrentGame extends GhostObject<com.merakianalytics.orianna.types.d
 
     public GameType getType() {
         load(CURRENT_GAME_LOAD_GROUP);
+        if(coreData == null) {
+            return null;
+        }
         return GameType.valueOf(coreData.getType());
     }
 

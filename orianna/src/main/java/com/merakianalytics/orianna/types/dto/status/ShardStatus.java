@@ -7,13 +7,9 @@ import com.merakianalytics.orianna.types.dto.DataObject;
 public class ShardStatus extends DataObject {
     private static final long serialVersionUID = -5691519391151145076L;
     private List<String> locales;
-    private String name, region_tag, hostname, slug;
+    private String name, region_tag, hostname, slug, platform;
     private List<Service> services;
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(final Object obj) {
         if(this == obj) {
@@ -45,6 +41,13 @@ public class ShardStatus extends DataObject {
                 return false;
             }
         } else if(!name.equals(other.name)) {
+            return false;
+        }
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         if(region_tag == null) {
@@ -93,6 +96,13 @@ public class ShardStatus extends DataObject {
     }
 
     /**
+     * @return the platform
+     */
+    public String getPlatform() {
+        return platform;
+    }
+
+    /**
      * @return the region_tag
      */
     public String getRegion_tag() {
@@ -113,10 +123,6 @@ public class ShardStatus extends DataObject {
         return slug;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -124,6 +130,7 @@ public class ShardStatus extends DataObject {
         result = prime * result + (hostname == null ? 0 : hostname.hashCode());
         result = prime * result + (locales == null ? 0 : locales.hashCode());
         result = prime * result + (name == null ? 0 : name.hashCode());
+        result = prime * result + (platform == null ? 0 : platform.hashCode());
         result = prime * result + (region_tag == null ? 0 : region_tag.hashCode());
         result = prime * result + (services == null ? 0 : services.hashCode());
         result = prime * result + (slug == null ? 0 : slug.hashCode());
@@ -152,6 +159,14 @@ public class ShardStatus extends DataObject {
      */
     public void setName(final String name) {
         this.name = name;
+    }
+
+    /**
+     * @param platform
+     *        the platform to set
+     */
+    public void setPlatform(final String platform) {
+        this.platform = platform;
     }
 
     /**

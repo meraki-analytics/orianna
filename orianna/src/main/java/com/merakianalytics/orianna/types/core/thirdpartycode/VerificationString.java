@@ -28,8 +28,8 @@ public class VerificationString extends GhostObject<com.merakianalytics.orianna.
     private static final long serialVersionUID = -7674629544327997718L;
     public static final String VERIFICATION_STRING_LOAD_GROUP = "verification-string";
 
-    public static VerificationString forSummoner(final Summoner summoner) {
-        return new Builder(summoner).get();
+    public static Builder forSummoner(final Summoner summoner) {
+        return new Builder(summoner);
     }
 
     private final Supplier<Summoner> summoner = Suppliers.memoize(new Supplier<Summoner>() {

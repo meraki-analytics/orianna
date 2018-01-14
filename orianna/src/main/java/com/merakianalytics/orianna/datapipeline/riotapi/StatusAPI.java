@@ -44,6 +44,7 @@ public class StatusAPI extends RiotAPIService {
                     return null;
                 }
 
+                data.setPlatform(platform.getTag());
                 return data;
             }
 
@@ -65,6 +66,7 @@ public class StatusAPI extends RiotAPIService {
             return null;
         }
 
+        data.setPlatform(platform.getTag());
         return data;
     }
 }
