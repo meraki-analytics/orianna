@@ -9,6 +9,7 @@ import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.GhostObject;
+import com.merakianalytics.orianna.types.core.searchable.Searchable;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
@@ -66,6 +67,7 @@ public class ChampionMastery extends GhostObject<com.merakianalytics.orianna.typ
         super(coreData, 1);
     }
 
+    @Searchable({Champion.class, String.class, int.class})
     public Champion getChampion() {
         return champion.get();
     }
@@ -103,6 +105,7 @@ public class ChampionMastery extends GhostObject<com.merakianalytics.orianna.typ
         return Platform.withTag(coreData.getPlatform()).getRegion();
     }
 
+    @Searchable({Summoner.class, String.class, long.class})
     public Summoner getSummoner() {
         return summoner.get();
     }

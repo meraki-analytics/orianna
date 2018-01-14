@@ -89,6 +89,10 @@
             "period": 6,
             "unit": "HOURS"
           },
+          "com.merakianalytics.orianna.types.core.status.ShardStatus": {
+            "period": 15,
+            "unit": "MINUTES"
+          },
           "com.merakianalytics.orianna.types.core.staticdata.SummonerSpell": {
             "period": 6,
             "unit": "HOURS"

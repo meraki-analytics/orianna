@@ -49,7 +49,6 @@ import com.merakianalytics.orianna.types.core.championmastery.ChampionMasterySco
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScores;
 import com.merakianalytics.orianna.types.core.league.League;
 import com.merakianalytics.orianna.types.core.league.LeaguePositions;
-import com.merakianalytics.orianna.types.core.searchable.SearchableList;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Champions;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
@@ -68,6 +67,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Runes;
 import com.merakianalytics.orianna.types.core.staticdata.SummonerSpell;
 import com.merakianalytics.orianna.types.core.staticdata.SummonerSpells;
 import com.merakianalytics.orianna.types.core.staticdata.Versions;
+import com.merakianalytics.orianna.types.core.status.ShardStatus;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 import com.merakianalytics.orianna.types.core.summoner.Summoners;
 
@@ -243,7 +243,7 @@ public abstract class Orianna {
     }
 
     public static League getChallengerLeagueInQueue(final Queue queue) {
-        return League.challenger().inQueue(queue).get();
+        return League.challengerInQueue(queue);
     }
 
     public static ChampionMasteries.Builder getChampionMasteriesForSummoner(final Summoner summoner) {
@@ -255,15 +255,15 @@ public abstract class Orianna {
     }
 
     public static ChampionMasteryScore getChampionMasteryScoreForSummoner(final Summoner summoner) {
-        return ChampionMasteryScore.forSummoner(summoner).get();
+        return ChampionMasteryScore.forSummoner(summoner);
     }
 
-    public static SearchableList<ChampionMasteryScore> getChampionMasteryScoresForSummoners(final Iterable<Summoner> summoners) {
-        return ChampionMasteryScores.forSummoners(summoners).get();
+    public static ChampionMasteryScores.Builder getChampionMasteryScoresForSummoners(final Iterable<Summoner> summoners) {
+        return ChampionMasteryScores.forSummoners(summoners);
     }
 
-    public static SearchableList<ChampionMasteryScore> getChampionMasteryScoresForSummoners(final Summoner... summoners) {
-        return ChampionMasteryScores.forSummoners(summoners).get();
+    public static ChampionMasteryScores.Builder getChampionMasteryScoresForSummoners(final Summoner... summoners) {
+        return ChampionMasteryScores.forSummoners(summoners);
     }
 
     public static Champion.Builder getChampionNamed(final String name) {
@@ -509,7 +509,7 @@ public abstract class Orianna {
     }
 
     public static League getMasterLeagueInQueue(final Queue queue) {
-        return League.master().inQueue(queue).get();
+        return League.masterInQueue(queue);
     }
 
     public static Mastery.Builder getMasteryNamed(final String name) {
@@ -557,11 +557,11 @@ public abstract class Orianna {
     }
 
     public static Realm getRealmWithPlatform(final Platform platform) {
-        return Realm.withPlatform(platform).get();
+        return Realm.withPlatform(platform);
     }
 
     public static Realm getRealmWithRegion(final Region region) {
-        return Realm.withRegion(region).get();
+        return Realm.withRegion(region);
     }
 
     public static Rune.Builder getRuneNamed(final String name) {
@@ -614,6 +614,14 @@ public abstract class Orianna {
 
     public static Settings getSettings() {
         return settings;
+    }
+
+    public static ShardStatus getShardStatusForPlatform(final Platform platform) {
+        return ShardStatus.forPlatform(platform);
+    }
+
+    public static ShardStatus getShardStatusForRegion(final Region region) {
+        return ShardStatus.forRegion(region);
     }
 
     public static Summoner.Builder getSummonerNamed(final String name) {

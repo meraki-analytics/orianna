@@ -8,6 +8,7 @@ import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.GhostObject;
+import com.merakianalytics.orianna.types.core.searchable.Searchable;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
 public class LeaguePositions extends GhostObject.ListProxy<LeaguePosition, com.merakianalytics.orianna.types.data.league.LeaguePosition, com.merakianalytics.orianna.types.data.league.LeaguePositions> {
@@ -56,6 +57,7 @@ public class LeaguePositions extends GhostObject.ListProxy<LeaguePosition, com.m
         return Platform.withTag(coreData.getPlatform()).getRegion();
     }
 
+    @Searchable({Summoner.class, String.class, long.class})
     public Summoner getSummoner() {
         return summoner.get();
     }

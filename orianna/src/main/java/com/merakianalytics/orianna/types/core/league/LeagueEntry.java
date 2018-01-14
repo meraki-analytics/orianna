@@ -5,6 +5,7 @@ import com.google.common.base.Suppliers;
 import com.merakianalytics.orianna.types.common.Division;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.core.OriannaObject;
+import com.merakianalytics.orianna.types.core.searchable.Searchable;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
 public class LeagueEntry extends OriannaObject<com.merakianalytics.orianna.types.data.league.LeagueEntry> {
@@ -48,6 +49,7 @@ public class LeagueEntry extends OriannaObject<com.merakianalytics.orianna.types
         return promos.get();
     }
 
+    @Searchable({Summoner.class, String.class, long.class})
     public Summoner getSummoner() {
         return summoner.get();
     }

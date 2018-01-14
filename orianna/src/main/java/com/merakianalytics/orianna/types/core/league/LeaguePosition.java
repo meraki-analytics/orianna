@@ -8,6 +8,7 @@ import com.merakianalytics.orianna.types.common.Queue;
 import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.common.Tier;
 import com.merakianalytics.orianna.types.core.OriannaObject;
+import com.merakianalytics.orianna.types.core.searchable.Searchable;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
 public class LeaguePosition extends OriannaObject<com.merakianalytics.orianna.types.data.league.LeaguePosition> {
@@ -43,6 +44,7 @@ public class LeaguePosition extends OriannaObject<com.merakianalytics.orianna.ty
         return League.withId(coreData.getLeagueId()).get();
     }
 
+    @Searchable({String.class})
     public String getLeagueId() {
         return coreData.getLeagueId();
     }
@@ -55,6 +57,7 @@ public class LeaguePosition extends OriannaObject<com.merakianalytics.orianna.ty
         return coreData.getLosses();
     }
 
+    @Searchable({String.class})
     public String getName() {
         return coreData.getName();
     }
@@ -75,6 +78,7 @@ public class LeaguePosition extends OriannaObject<com.merakianalytics.orianna.ty
         return Platform.withTag(coreData.getPlatform()).getRegion();
     }
 
+    @Searchable({Summoner.class, String.class, long.class})
     public Summoner getSummoner() {
         return summoner.get();
     }

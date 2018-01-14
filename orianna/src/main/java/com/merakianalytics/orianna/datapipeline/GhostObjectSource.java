@@ -40,6 +40,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Runes;
 import com.merakianalytics.orianna.types.core.staticdata.SummonerSpell;
 import com.merakianalytics.orianna.types.core.staticdata.SummonerSpells;
 import com.merakianalytics.orianna.types.core.staticdata.Versions;
+import com.merakianalytics.orianna.types.core.status.ShardStatus;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
 public class GhostObjectSource extends AbstractDataSource {
@@ -854,6 +855,16 @@ public class GhostObjectSource extends AbstractDataSource {
         data.setLocale(locale);
         data.setIncludedData(includedData);
         return new Runes(data);
+    }
+
+    @Get(ShardStatus.class)
+    public ShardStatus getShardStatus(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
+
+        final com.merakianalytics.orianna.types.data.status.ShardStatus data = new com.merakianalytics.orianna.types.data.status.ShardStatus();
+        data.setPlatform(platform.getTag());
+        return new ShardStatus(data);
     }
 
     @Get(Summoner.class)

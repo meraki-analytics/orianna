@@ -8,6 +8,7 @@ import com.merakianalytics.orianna.types.common.Queue;
 import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.common.Tier;
 import com.merakianalytics.orianna.types.core.GhostObject;
+import com.merakianalytics.orianna.types.core.searchable.Searchable;
 
 public class League extends GhostObject.ListProxy<LeagueEntry, com.merakianalytics.orianna.types.data.league.LeagueEntry, com.merakianalytics.orianna.types.data.league.League> {
     public static class Builder {
@@ -90,12 +91,12 @@ public class League extends GhostObject.ListProxy<LeagueEntry, com.merakianalyti
 
     private static final long serialVersionUID = -4287829961173669465L;
 
-    public static SelectBuilder challenger() {
-        return new SelectBuilder(Tier.CHALLENGER);
+    public static League challengerInQueue(final Queue queue) {
+        return new SelectBuilder(Tier.CHALLENGER).inQueue(queue).get();
     }
 
-    public static SelectBuilder master() {
-        return new SelectBuilder(Tier.MASTER);
+    public static League masterInQueue(final Queue queue) {
+        return new SelectBuilder(Tier.MASTER).inQueue(queue).get();
     }
 
     public static Builder withId(final String id) {
@@ -111,6 +112,7 @@ public class League extends GhostObject.ListProxy<LeagueEntry, com.merakianalyti
         });
     }
 
+    @Searchable({String.class})
     public String getId() {
         if(coreData.getId() == null) {
             load(LIST_PROXY_LOAD_GROUP);
@@ -118,6 +120,7 @@ public class League extends GhostObject.ListProxy<LeagueEntry, com.merakianalyti
         return coreData.getId();
     }
 
+    @Searchable({String.class})
     public String getName() {
         load(LIST_PROXY_LOAD_GROUP);
         return coreData.getName();

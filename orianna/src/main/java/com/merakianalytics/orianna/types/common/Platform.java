@@ -2,6 +2,7 @@ package com.merakianalytics.orianna.types.common;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
+import com.merakianalytics.orianna.types.core.status.ShardStatus;
 
 public enum Platform {
         BRAZIL("BR1", "pt_BR"),
@@ -45,6 +46,10 @@ public enum Platform {
 
     public Region getRegion() {
         return Region.valueOf(name());
+    }
+
+    public ShardStatus getStatus() {
+        return ShardStatus.forPlatform(this);
     }
 
     public String getTag() {

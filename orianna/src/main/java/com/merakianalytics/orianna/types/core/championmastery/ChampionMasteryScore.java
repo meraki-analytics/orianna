@@ -29,8 +29,8 @@ public class ChampionMasteryScore extends GhostObject<com.merakianalytics.oriann
     public static final String CHAMPION_MASTERY_SCORE_LOAD_GROUP = "champion-mastery-score";
     private static final long serialVersionUID = 5794183951997021894L;
 
-    public static Builder forSummoner(final Summoner summoner) {
-        return new Builder(summoner);
+    public static ChampionMasteryScore forSummoner(final Summoner summoner) {
+        return new Builder(summoner).get();
     }
 
     private final Supplier<Summoner> summoner = Suppliers.memoize(new Supplier<Summoner>() {
@@ -57,7 +57,7 @@ public class ChampionMasteryScore extends GhostObject<com.merakianalytics.oriann
         return coreData.getScore();
     }
 
-    @Searchable({Summoner.class, String.class, int.class})
+    @Searchable({Summoner.class, String.class, long.class})
     public Summoner getSummoner() {
         return summoner.get();
     }

@@ -14,6 +14,7 @@ import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.GhostObject;
+import com.merakianalytics.orianna.types.core.searchable.Searchable;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
 import com.merakianalytics.orianna.types.core.searchable.SearchableListWrapper;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
@@ -99,6 +100,7 @@ public class ChampionMasteries extends GhostObject.ListProxy<ChampionMastery, co
         return Platform.withTag(coreData.getPlatform()).getRegion();
     }
 
+    @Searchable({Summoner.class, String.class, long.class})
     public Summoner getSummoner() {
         return summoner.get();
     }

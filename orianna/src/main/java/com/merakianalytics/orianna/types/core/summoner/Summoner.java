@@ -121,7 +121,7 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
     }
 
     public ChampionMasteryScore getChampionMasteryScore() {
-        return ChampionMasteryScore.forSummoner(this).get();
+        return ChampionMasteryScore.forSummoner(this);
     }
 
     @Searchable(long.class)

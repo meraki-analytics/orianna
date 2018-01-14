@@ -31,6 +31,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Runes;
 import com.merakianalytics.orianna.types.core.staticdata.SummonerSpell;
 import com.merakianalytics.orianna.types.core.staticdata.SummonerSpells;
 import com.merakianalytics.orianna.types.core.staticdata.Versions;
+import com.merakianalytics.orianna.types.core.status.ShardStatus;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
 public abstract class UniqueKeys {
@@ -824,6 +825,19 @@ public abstract class UniqueKeys {
         return Arrays.hashCode(new Object[] {
             Runes.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
             (Set<String>)query.get("includedData")
+        });
+    }
+
+    public static int forShardStatus(final ShardStatus status) {
+        final com.merakianalytics.orianna.types.data.status.ShardStatus data = status.getCoreData();
+        return Arrays.hashCode(new Object[] {
+            ShardStatus.class.getCanonicalName(), data.getPlatform()
+        });
+    }
+
+    public static int forShardStatusQuery(final java.util.Map<String, Object> query) {
+        return Arrays.hashCode(new Object[] {
+            ShardStatus.class.getCanonicalName(), ((Platform)query.get("platform")).getTag()
         });
     }
 

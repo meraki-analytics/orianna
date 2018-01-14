@@ -55,6 +55,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Runes;
 import com.merakianalytics.orianna.types.core.staticdata.SummonerSpell;
 import com.merakianalytics.orianna.types.core.staticdata.SummonerSpells;
 import com.merakianalytics.orianna.types.core.staticdata.Versions;
+import com.merakianalytics.orianna.types.core.status.ShardStatus;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
 public class InMemoryCache extends AbstractDataStore {
@@ -80,6 +81,7 @@ public class InMemoryCache extends AbstractDataStore {
             .put(Realm.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(Rune.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(Runes.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
+            .put(ShardStatus.class.getCanonicalName(), ExpirationPeriod.create(15L, TimeUnit.MINUTES))
             .put(SummonerSpell.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(SummonerSpells.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(Versions.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
@@ -112,7 +114,6 @@ public class InMemoryCache extends AbstractDataStore {
     }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InMemoryCache.class);
-
     private static final Set<Tier> UNIQUE_TIERS = ImmutableSet.of(Tier.CHALLENGER, Tier.MASTER);
     private final Cache<Integer, Object> cache;
     private final java.util.Map<Class<?>, Long> expirationPeriods;
@@ -551,6 +552,12 @@ public class InMemoryCache extends AbstractDataStore {
         return (Runes)cache.get(key);
     }
 
+    @Get(ShardStatus.class)
+    public ShardStatus getShardStatus(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forShardStatusQuery(query);
+        return (ShardStatus)cache.get(key);
+    }
+
     @Get(Summoner.class)
     public Summoner getSummoner(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forSummonerQuery(query);
@@ -946,6 +953,12 @@ public class InMemoryCache extends AbstractDataStore {
         } else {
             putManyRune(runes, context);
         }
+    }
+
+    @Put(ShardStatus.class)
+    public void putShardStatus(final ShardStatus status, final PipelineContext context) {
+        final int key = UniqueKeys.forShardStatus(status);
+        cache.put(key, status);
     }
 
     @Put(Summoner.class)

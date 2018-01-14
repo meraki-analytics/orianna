@@ -1,5 +1,7 @@
 package com.merakianalytics.orianna.types.common;
 
+import com.merakianalytics.orianna.types.core.status.ShardStatus;
+
 public enum Region {
         BRAZIL("BR", "pt_BR"),
         EUROPE_NORTH_EAST("EUNE", "en_GB"),
@@ -27,6 +29,10 @@ public enum Region {
 
     public Platform getPlatform() {
         return Platform.withTag(name());
+    }
+
+    public ShardStatus getStatus() {
+        return ShardStatus.forRegion(this);
     }
 
     public String getTag() {
