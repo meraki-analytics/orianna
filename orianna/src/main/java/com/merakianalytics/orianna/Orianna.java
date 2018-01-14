@@ -49,6 +49,8 @@ import com.merakianalytics.orianna.types.core.championmastery.ChampionMasterySco
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScores;
 import com.merakianalytics.orianna.types.core.league.League;
 import com.merakianalytics.orianna.types.core.league.LeaguePositions;
+import com.merakianalytics.orianna.types.core.spectator.CurrentGame;
+import com.merakianalytics.orianna.types.core.spectator.FeaturedGames;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Champions;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
@@ -334,6 +336,18 @@ public abstract class Orianna {
             LOGGER.error("Failed to load configuration JSON!", e);
             throw new OriannaException("Failed to load configuration JSON!", e);
         }
+    }
+
+    public static CurrentGame getCurrentGameForSummoner(final Summoner summoner) {
+        return CurrentGame.forSummoner(summoner);
+    }
+
+    public static FeaturedGames getFeaturedGamesForPlatform(final Platform platform) {
+        return FeaturedGames.forPlatform(platform);
+    }
+
+    public static FeaturedGames getFeaturedGamesForRegion(final Region region) {
+        return FeaturedGames.forRegion(region);
     }
 
     public static Item.Builder getItemNamed(final String name) {

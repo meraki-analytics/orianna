@@ -15,6 +15,7 @@ import com.merakianalytics.orianna.types.core.championmastery.ChampionMasterySco
 import com.merakianalytics.orianna.types.core.league.LeaguePositions;
 import com.merakianalytics.orianna.types.core.searchable.Searchable;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
+import com.merakianalytics.orianna.types.core.spectator.CurrentGame;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcon;
 
@@ -122,6 +123,10 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
 
     public ChampionMasteryScore getChampionMasteryScore() {
         return ChampionMasteryScore.forSummoner(this);
+    }
+
+    public CurrentGame getCurrentGame() {
+        return CurrentGame.forSummoner(this);
     }
 
     @Searchable(long.class)

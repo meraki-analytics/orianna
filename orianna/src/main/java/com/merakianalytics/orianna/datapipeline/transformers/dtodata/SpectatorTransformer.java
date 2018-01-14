@@ -123,6 +123,7 @@ public class SpectatorTransformer extends AbstractDataTransformer {
 
     @Transform(from = CurrentGameInfo.class, to = CurrentGame.class)
     public CurrentGame transform(final CurrentGameInfo item, final PipelineContext context) {
+        final Object previous = context.put("platform", item.getPlatformId());
         final CurrentGame game = new CurrentGame();
         final List<Integer> blueBans = new ArrayList<>(item.getBannedChampions().size() / 2);
         final List<Integer> redBans = new ArrayList<>(item.getBannedChampions().size() / 2);
@@ -150,12 +151,14 @@ public class SpectatorTransformer extends AbstractDataTransformer {
         game.setQueue((int)item.getGameQueueConfigId());
         game.setSummonerId(item.getSummonerId());
         game.setType(item.getGameType());
+        context.put("platform", previous);
         return game;
     }
 
     @Transform(from = CurrentGameParticipant.class, to = Player.class)
     public Player transform(final CurrentGameParticipant item, final PipelineContext context) {
         final Player player = new Player();
+        player.setPlatform((String)context.get("platform"));
         player.setBot(item.isBot());
         player.setChampionId((int)item.getChampionId());
         player.setProfileIconId((int)item.getProfileIconId());
@@ -237,6 +240,7 @@ public class SpectatorTransformer extends AbstractDataTransformer {
 
     @Transform(from = FeaturedGameInfo.class, to = FeaturedGame.class)
     public FeaturedGame transform(final FeaturedGameInfo item, final PipelineContext context) {
+        final Object previous = context.put("platform", item.getPlatformId());
         final FeaturedGame game = new FeaturedGame();
         final List<Integer> blueBans = new ArrayList<>(item.getBannedChampions().size() / 2);
         final List<Integer> redBans = new ArrayList<>(item.getBannedChampions().size() / 2);
@@ -263,6 +267,7 @@ public class SpectatorTransformer extends AbstractDataTransformer {
         game.setPlayers(players);
         game.setQueue((int)item.getGameQueueConfigId());
         game.setType(item.getGameType());
+        context.put("platform", previous);
         return game;
     }
 

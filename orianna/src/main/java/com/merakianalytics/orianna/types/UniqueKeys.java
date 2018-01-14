@@ -13,6 +13,8 @@ import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
 import com.merakianalytics.orianna.types.core.league.League;
 import com.merakianalytics.orianna.types.core.league.LeaguePositions;
+import com.merakianalytics.orianna.types.core.spectator.CurrentGame;
+import com.merakianalytics.orianna.types.core.spectator.FeaturedGames;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Champions;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
@@ -165,6 +167,32 @@ public abstract class UniqueKeys {
         return Arrays.hashCode(new Object[] {
             Champions.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
             (Set<String>)query.get("includedData")
+        });
+    }
+
+    public static int forCurrentGame(final CurrentGame game) {
+        final com.merakianalytics.orianna.types.data.spectator.CurrentGame data = game.getCoreData();
+        return Arrays.hashCode(new Object[] {
+            CurrentGame.class.getCanonicalName(), data.getPlatform(), data.getSummonerId()
+        });
+    }
+
+    public static int forCurrentGameQuery(final java.util.Map<String, Object> query) {
+        return Arrays.hashCode(new Object[] {
+            CurrentGame.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), ((Number)query.get("summonerId")).longValue()
+        });
+    }
+
+    public static int forFeaturedGames(final FeaturedGames games) {
+        final com.merakianalytics.orianna.types.data.spectator.FeaturedGames data = games.getCoreData();
+        return Arrays.hashCode(new Object[] {
+            FeaturedGames.class.getCanonicalName(), data.getPlatform()
+        });
+    }
+
+    public static int forFeaturedGamesQuery(final java.util.Map<String, Object> query) {
+        return Arrays.hashCode(new Object[] {
+            FeaturedGames.class.getCanonicalName(), ((Platform)query.get("platform")).getTag()
         });
     }
 

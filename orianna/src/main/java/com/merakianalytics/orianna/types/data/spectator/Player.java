@@ -11,7 +11,7 @@ public class Player extends CoreData {
     private int profileIconId, championId, summonerSpellDId, summonerSpellFId, team;
     private Runes runes;
     private long summonerId;
-    private String summonerName;
+    private String summonerName, platform;
 
     @Override
     public boolean equals(final Object obj) {
@@ -36,6 +36,13 @@ public class Player extends CoreData {
                 return false;
             }
         } else if(!customizationObjects.equals(other.customizationObjects)) {
+            return false;
+        }
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         if(profileIconId != other.profileIconId) {
@@ -82,6 +89,13 @@ public class Player extends CoreData {
      */
     public List<GameCustomizationObject> getCustomizationObjects() {
         return customizationObjects;
+    }
+
+    /**
+     * @return the platform
+     */
+    public String getPlatform() {
+        return platform;
     }
 
     /**
@@ -140,6 +154,7 @@ public class Player extends CoreData {
         result = prime * result + (bot ? 1231 : 1237);
         result = prime * result + championId;
         result = prime * result + (customizationObjects == null ? 0 : customizationObjects.hashCode());
+        result = prime * result + (platform == null ? 0 : platform.hashCode());
         result = prime * result + profileIconId;
         result = prime * result + (runes == null ? 0 : runes.hashCode());
         result = prime * result + (int)(summonerId ^ summonerId >>> 32);
@@ -179,6 +194,14 @@ public class Player extends CoreData {
      */
     public void setCustomizationObjects(final List<GameCustomizationObject> customizationObjects) {
         this.customizationObjects = customizationObjects;
+    }
+
+    /**
+     * @param platform
+     *        the platform to set
+     */
+    public void setPlatform(final String platform) {
+        this.platform = platform;
     }
 
     /**

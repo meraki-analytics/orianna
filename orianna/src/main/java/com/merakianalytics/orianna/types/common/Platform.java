@@ -2,6 +2,7 @@ package com.merakianalytics.orianna.types.common;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
+import com.merakianalytics.orianna.types.core.spectator.FeaturedGames;
 import com.merakianalytics.orianna.types.core.status.ShardStatus;
 
 public enum Platform {
@@ -42,6 +43,10 @@ public enum Platform {
 
     public String getDefaultLocale() {
         return defaultLocale;
+    }
+
+    public FeaturedGames getFeaturedGames() {
+        return FeaturedGames.forPlatform(this);
     }
 
     public Region getRegion() {

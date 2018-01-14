@@ -6,7 +6,7 @@ public class Participant extends CoreData {
     private static final long serialVersionUID = 3214684469172469569L;
     private boolean bot;
     private int profileIconId, championId, summonerSpellDId, summonerSpellFId, team;
-    private String summonerName;
+    private String summonerName, platform;
 
     @Override
     public boolean equals(final Object obj) {
@@ -24,6 +24,13 @@ public class Participant extends CoreData {
             return false;
         }
         if(championId != other.championId) {
+            return false;
+        }
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
             return false;
         }
         if(profileIconId != other.profileIconId) {
@@ -53,6 +60,13 @@ public class Participant extends CoreData {
      */
     public int getChampionId() {
         return championId;
+    }
+
+    /**
+     * @return the platform
+     */
+    public String getPlatform() {
+        return platform;
     }
 
     /**
@@ -96,6 +110,7 @@ public class Participant extends CoreData {
         int result = 1;
         result = prime * result + (bot ? 1231 : 1237);
         result = prime * result + championId;
+        result = prime * result + (platform == null ? 0 : platform.hashCode());
         result = prime * result + profileIconId;
         result = prime * result + (summonerName == null ? 0 : summonerName.hashCode());
         result = prime * result + summonerSpellDId;
@@ -125,6 +140,14 @@ public class Participant extends CoreData {
      */
     public void setChampionId(final int championId) {
         this.championId = championId;
+    }
+
+    /**
+     * @param platform
+     *        the platform to set
+     */
+    public void setPlatform(final String platform) {
+        this.platform = platform;
     }
 
     /**

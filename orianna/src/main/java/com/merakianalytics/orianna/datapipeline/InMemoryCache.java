@@ -37,6 +37,8 @@ import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
 import com.merakianalytics.orianna.types.core.league.League;
 import com.merakianalytics.orianna.types.core.league.LeaguePositions;
+import com.merakianalytics.orianna.types.core.spectator.CurrentGame;
+import com.merakianalytics.orianna.types.core.spectator.FeaturedGames;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Champions;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
@@ -66,12 +68,14 @@ public class InMemoryCache extends AbstractDataStore {
             .put(ChampionMasteryScore.class.getCanonicalName(), ExpirationPeriod.create(30L, TimeUnit.MINUTES))
             .put(Champion.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(Champions.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
+            .put(CurrentGame.class.getCanonicalName(), ExpirationPeriod.create(5L, TimeUnit.MINUTES))
+            .put(FeaturedGames.class.getCanonicalName(), ExpirationPeriod.create(5L, TimeUnit.MINUTES))
             .put(Item.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(Items.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(LanguageStrings.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(Languages.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(League.class.getCanonicalName(), ExpirationPeriod.create(30, TimeUnit.MINUTES))
-            .put(LeaguePositions.class.getCanonicalName(), ExpirationPeriod.create(30, TimeUnit.MINUTES))
+            .put(LeaguePositions.class.getCanonicalName(), ExpirationPeriod.create(30L, TimeUnit.MINUTES))
             .put(Map.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(Maps.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(Mastery.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
@@ -84,8 +88,8 @@ public class InMemoryCache extends AbstractDataStore {
             .put(ShardStatus.class.getCanonicalName(), ExpirationPeriod.create(15L, TimeUnit.MINUTES))
             .put(SummonerSpell.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(SummonerSpells.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
-            .put(Versions.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(Summoner.class.getCanonicalName(), ExpirationPeriod.create(30L, TimeUnit.MINUTES))
+            .put(Versions.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .build();
 
         private java.util.Map<String, ExpirationPeriod> expirationPeriods = DEFAULT_EXPIRATION_PERIODS;
@@ -170,6 +174,18 @@ public class InMemoryCache extends AbstractDataStore {
     public Champions getChampions(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forChampionsQuery(query);
         return (Champions)cache.get(key);
+    }
+
+    @Get(CurrentGame.class)
+    public CurrentGame getCurrentGame(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forCurrentGameQuery(query);
+        return (CurrentGame)cache.get(key);
+    }
+
+    @Get(FeaturedGames.class)
+    public FeaturedGames getFeaturedGames(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forFeaturedGamesQuery(query);
+        return (FeaturedGames)cache.get(key);
     }
 
     @Get(Item.class)
@@ -653,6 +669,18 @@ public class InMemoryCache extends AbstractDataStore {
         }
     }
 
+    @Put(CurrentGame.class)
+    public void putCurrentGame(final CurrentGame game, final PipelineContext context) {
+        final int key = UniqueKeys.forCurrentGame(game);
+        cache.put(key, game);
+    }
+
+    @Put(FeaturedGames.class)
+    public void putFeaturedGames(final FeaturedGames games, final PipelineContext context) {
+        final int key = UniqueKeys.forFeaturedGames(games);
+        cache.put(key, games);
+    }
+
     @Put(Item.class)
     public void putItem(final Item item, final PipelineContext context) {
         final int[] keys = UniqueKeys.forItem(item);
@@ -696,12 +724,6 @@ public class InMemoryCache extends AbstractDataStore {
     public void putLanguages(final Languages languages, final PipelineContext context) {
         final int key = UniqueKeys.forLanguages(languages);
         cache.put(key, languages);
-    }
-
-    @Put(Versions.class)
-    public void putLanguages(final Versions versions, final PipelineContext context) {
-        final int key = UniqueKeys.forVersions(versions);
-        cache.put(key, versions);
     }
 
     @Put(LanguageStrings.class)
@@ -1018,5 +1040,11 @@ public class InMemoryCache extends AbstractDataStore {
         } else {
             putManySummonerSpell(spells, context);
         }
+    }
+
+    @Put(Versions.class)
+    public void putVersions(final Versions versions, final PipelineContext context) {
+        final int key = UniqueKeys.forVersions(versions);
+        cache.put(key, versions);
     }
 }

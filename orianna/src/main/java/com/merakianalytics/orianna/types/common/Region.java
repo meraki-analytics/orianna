@@ -1,5 +1,6 @@
 package com.merakianalytics.orianna.types.common;
 
+import com.merakianalytics.orianna.types.core.spectator.FeaturedGames;
 import com.merakianalytics.orianna.types.core.status.ShardStatus;
 
 public enum Region {
@@ -25,6 +26,10 @@ public enum Region {
 
     public String getDefaultLocale() {
         return defaultLocale;
+    }
+
+    public FeaturedGames getFeaturedGames() {
+        return FeaturedGames.forRegion(this);
     }
 
     public Platform getPlatform() {

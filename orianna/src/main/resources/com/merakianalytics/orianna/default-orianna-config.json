@@ -29,6 +29,14 @@
             "period": 6,
             "unit": "HOURS"
           },
+          "com.merakianalytics.orianna.types.core.spectator.CurrentGame": {
+            "period": 5,
+            "unit": "MINUTES"
+          },
+          "com.merakianalytics.orianna.types.core.spectator.FeaturedGames": {
+            "period": 5,
+            "unit": "MINUTES"
+          },
           "com.merakianalytics.orianna.types.core.staticdata.Item": {
             "period": 6,
             "unit": "HOURS"

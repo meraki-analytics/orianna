@@ -21,6 +21,8 @@ import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
 import com.merakianalytics.orianna.types.core.league.League;
 import com.merakianalytics.orianna.types.core.league.LeaguePositions;
+import com.merakianalytics.orianna.types.core.spectator.CurrentGame;
+import com.merakianalytics.orianna.types.core.spectator.FeaturedGames;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Champion.ChampionData;
 import com.merakianalytics.orianna.types.core.staticdata.Champions;
@@ -135,6 +137,29 @@ public class GhostObjectSource extends AbstractDataSource {
         data.setLocale(locale);
         data.setIncludedData(includedData);
         return new Champions(data);
+    }
+
+    @Get(CurrentGame.class)
+    public CurrentGame getCurrentGame(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        final Number summonerId = (Number)query.get("summonerId");
+        Utilities.checkNotNull(platform, "platform", summonerId, "summonerId");
+
+        final com.merakianalytics.orianna.types.data.spectator.CurrentGame data =
+            new com.merakianalytics.orianna.types.data.spectator.CurrentGame();
+        data.setPlatform(platform.getTag());
+        data.setSummonerId(summonerId.longValue());
+        return new CurrentGame(data);
+    }
+
+    @Get(FeaturedGames.class)
+    public FeaturedGames getFeaturedGames(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
+
+        final com.merakianalytics.orianna.types.data.spectator.FeaturedGames data = new com.merakianalytics.orianna.types.data.spectator.FeaturedGames();
+        data.setPlatform(platform.getTag());
+        return new FeaturedGames(data);
     }
 
     @SuppressWarnings("unchecked")
