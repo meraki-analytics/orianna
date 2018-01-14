@@ -72,6 +72,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Versions;
 import com.merakianalytics.orianna.types.core.status.ShardStatus;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 import com.merakianalytics.orianna.types.core.summoner.Summoners;
+import com.merakianalytics.orianna.types.core.thirdpartycode.VerificationString;
 
 public abstract class Orianna {
     public static class Configuration {
@@ -720,6 +721,10 @@ public abstract class Orianna {
 
     public static Summoner.Builder getSummonerWithId(final long id) {
         return Summoner.withId(id);
+    }
+
+    public static VerificationString getVerificationStringForSummoner(final Summoner summoner) {
+        return VerificationString.forSummoner(summoner);
     }
 
     public static Versions getVersions() {

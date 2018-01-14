@@ -59,6 +59,7 @@ import com.merakianalytics.orianna.types.core.staticdata.SummonerSpells;
 import com.merakianalytics.orianna.types.core.staticdata.Versions;
 import com.merakianalytics.orianna.types.core.status.ShardStatus;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
+import com.merakianalytics.orianna.types.core.thirdpartycode.VerificationString;
 
 public class InMemoryCache extends AbstractDataStore {
     public static class Configuration {
@@ -89,6 +90,7 @@ public class InMemoryCache extends AbstractDataStore {
             .put(SummonerSpell.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(SummonerSpells.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(Summoner.class.getCanonicalName(), ExpirationPeriod.create(30L, TimeUnit.MINUTES))
+            .put(VerificationString.class.getCanonicalName(), ExpirationPeriod.create(3L, TimeUnit.MINUTES))
             .put(Versions.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .build();
 
@@ -592,6 +594,12 @@ public class InMemoryCache extends AbstractDataStore {
         return (SummonerSpells)cache.get(key);
     }
 
+    @Get(VerificationString.class)
+    public VerificationString getVerificationString(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forVerificationStringQuery(query);
+        return (VerificationString)cache.get(key);
+    }
+
     @Get(Versions.class)
     public Versions getVersions(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forVersionsQuery(query);
@@ -1040,6 +1048,12 @@ public class InMemoryCache extends AbstractDataStore {
         } else {
             putManySummonerSpell(spells, context);
         }
+    }
+
+    @Put(VerificationString.class)
+    public void putVerificationString(final VerificationString string, final PipelineContext context) {
+        final int key = UniqueKeys.forVerificationString(string);
+        cache.put(key, string);
     }
 
     @Put(Versions.class)

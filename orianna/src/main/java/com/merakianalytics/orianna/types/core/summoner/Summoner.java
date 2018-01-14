@@ -18,6 +18,7 @@ import com.merakianalytics.orianna.types.core.searchable.SearchableList;
 import com.merakianalytics.orianna.types.core.spectator.CurrentGame;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcon;
+import com.merakianalytics.orianna.types.core.thirdpartycode.VerificationString;
 
 public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data.summoner.Summoner> {
     public static class Builder {
@@ -165,6 +166,10 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
     public DateTime getUpdate() {
         load(SUMMONER_LOAD_GROUP);
         return coreData.getUpdated();
+    }
+
+    public VerificationString getVerificationString() {
+        return VerificationString.forSummoner(this);
     }
 
     @Override

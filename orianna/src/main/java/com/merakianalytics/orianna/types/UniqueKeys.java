@@ -35,6 +35,7 @@ import com.merakianalytics.orianna.types.core.staticdata.SummonerSpells;
 import com.merakianalytics.orianna.types.core.staticdata.Versions;
 import com.merakianalytics.orianna.types.core.status.ShardStatus;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
+import com.merakianalytics.orianna.types.core.thirdpartycode.VerificationString;
 
 public abstract class UniqueKeys {
     private static final Set<Tier> UNIQUE_TIERS = ImmutableSet.of(Tier.CHALLENGER, Tier.MASTER);
@@ -992,6 +993,19 @@ public abstract class UniqueKeys {
         return Arrays.hashCode(new Object[] {
             SummonerSpells.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
             (Set<String>)query.get("includedData")
+        });
+    }
+
+    public static int forVerificationString(final VerificationString string) {
+        final com.merakianalytics.orianna.types.data.thirdpartycode.VerificationString data = string.getCoreData();
+        return Arrays.hashCode(new Object[] {
+            VerificationString.class.getCanonicalName(), data.getPlatform(), data.getSummonerId()
+        });
+    }
+
+    public static int forVerificationStringQuery(final java.util.Map<String, Object> query) {
+        return Arrays.hashCode(new Object[] {
+            VerificationString.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), ((Number)query.get("summonerId")).longValue()
         });
     }
 

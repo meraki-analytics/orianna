@@ -44,6 +44,7 @@ import com.merakianalytics.orianna.types.core.staticdata.SummonerSpells;
 import com.merakianalytics.orianna.types.core.staticdata.Versions;
 import com.merakianalytics.orianna.types.core.status.ShardStatus;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
+import com.merakianalytics.orianna.types.core.thirdpartycode.VerificationString;
 
 public class GhostObjectSource extends AbstractDataSource {
     private static final Set<Tier> UNIQUE_TIERS = ImmutableSet.of(Tier.CHALLENGER, Tier.MASTER);
@@ -946,6 +947,19 @@ public class GhostObjectSource extends AbstractDataSource {
         data.setLocale(locale);
         data.setIncludedData(includedData);
         return new SummonerSpells(data);
+    }
+
+    @Get(VerificationString.class)
+    public VerificationString getVerificationString(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        final Number summonerId = (Number)query.get("summonerId");
+        Utilities.checkNotNull(platform, "platform", summonerId, "summonerId");
+
+        final com.merakianalytics.orianna.types.data.thirdpartycode.VerificationString data =
+            new com.merakianalytics.orianna.types.data.thirdpartycode.VerificationString();
+        data.setPlatform(platform.getTag());
+        data.setSummonerId(summonerId.longValue());
+        return new VerificationString(data);
     }
 
     @Get(Versions.class)
