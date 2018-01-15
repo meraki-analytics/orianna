@@ -19,8 +19,7 @@ import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.GhostObject;
 import com.merakianalytics.orianna.types.core.searchable.Searchable;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
-import com.merakianalytics.orianna.types.core.searchable.SearchableListWrapper;
-import com.merakianalytics.orianna.types.core.searchable.UnmodifiableSearchableList;
+import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Champions;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
@@ -55,7 +54,7 @@ public class CurrentGame extends GhostObject<com.merakianalytics.orianna.types.d
             if(coreData == null) {
                 return null;
             }
-            return UnmodifiableSearchableList.of(Champions.withIds(coreData.getBlueTeamBans()).withPlatform(Platform.withTag(coreData.getPlatform())).get());
+            return SearchableLists.unmodifiableFrom(Champions.withIds(coreData.getBlueTeamBans()).withPlatform(Platform.withTag(coreData.getPlatform())).get());
         }
     });
 
@@ -70,7 +69,7 @@ public class CurrentGame extends GhostObject<com.merakianalytics.orianna.types.d
             for(final com.merakianalytics.orianna.types.data.spectator.Player player : coreData.getPlayers()) {
                 players.add(new Player(player));
             }
-            return UnmodifiableSearchableList.of(SearchableListWrapper.of(players));
+            return SearchableLists.unmodifiableFrom(players);
         }
     });
 
@@ -81,7 +80,7 @@ public class CurrentGame extends GhostObject<com.merakianalytics.orianna.types.d
             if(coreData == null) {
                 return null;
             }
-            return UnmodifiableSearchableList.of(Champions.withIds(coreData.getRedTeamBans()).withPlatform(Platform.withTag(coreData.getPlatform())).get());
+            return SearchableLists.unmodifiableFrom(Champions.withIds(coreData.getRedTeamBans()).withPlatform(Platform.withTag(coreData.getPlatform())).get());
         }
     });
 

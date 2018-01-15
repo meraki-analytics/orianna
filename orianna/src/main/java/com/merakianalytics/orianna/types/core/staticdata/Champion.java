@@ -15,7 +15,7 @@ import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.GhostObject;
 import com.merakianalytics.orianna.types.core.searchable.Searchable;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
-import com.merakianalytics.orianna.types.core.searchable.SearchableListWrapper;
+import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 import com.merakianalytics.orianna.types.core.staticdata.Champion.ChampionData;
 import com.merakianalytics.orianna.types.data.CoreData;
 import com.merakianalytics.orianna.types.data.champion.ChampionStatus;
@@ -199,7 +199,7 @@ public class Champion extends GhostObject<ChampionData> {
             for(final com.merakianalytics.orianna.types.data.staticdata.RecommendedItems items : coreData.getChampion().getRecommendedItems()) {
                 recommendedItems.add(new RecommendedItems(items));
             }
-            return SearchableListWrapper.of(Collections.unmodifiableList(recommendedItems));
+            return SearchableLists.unmodifiableFrom(recommendedItems);
         }
     });
 
@@ -211,7 +211,7 @@ public class Champion extends GhostObject<ChampionData> {
             for(final com.merakianalytics.orianna.types.data.staticdata.Skin skin : coreData.getChampion().getSkins()) {
                 skins.add(new Skin(skin));
             }
-            return SearchableListWrapper.of(Collections.unmodifiableList(skins));
+            return SearchableLists.unmodifiableFrom(skins);
         }
     });
 
@@ -223,7 +223,7 @@ public class Champion extends GhostObject<ChampionData> {
             for(final com.merakianalytics.orianna.types.data.staticdata.ChampionSpell spell : coreData.getChampion().getSpells()) {
                 spells.add(new ChampionSpell(spell));
             }
-            return SearchableListWrapper.of(Collections.unmodifiableList(spells));
+            return SearchableLists.unmodifiableFrom(spells);
         }
     });
 

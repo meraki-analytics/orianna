@@ -12,7 +12,7 @@ import com.merakianalytics.datapipelines.iterators.CloseableIterators;
 import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
-import com.merakianalytics.orianna.types.core.searchable.SearchableListWrapper;
+import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
 public abstract class VerificationStrings {
@@ -30,7 +30,7 @@ public abstract class VerificationStrings {
             Summoner summoner = iterator.next();
 
             if(summoner == null) {
-                return SearchableListWrapper.of(Collections.<VerificationString> emptyList());
+                return SearchableLists.from(Collections.<VerificationString> emptyList());
             }
 
             final Platform platform = summoner.getPlatform();
@@ -49,7 +49,7 @@ public abstract class VerificationStrings {
 
             final CloseableIterator<VerificationString> result =
                 Orianna.getSettings().getPipeline().getMany(VerificationString.class, builder.build(), streaming);
-            return streaming ? SearchableListWrapper.of(CloseableIterators.toLazyList(result)) : SearchableListWrapper.of(CloseableIterators.toList(result));
+            return streaming ? SearchableLists.from(CloseableIterators.toLazyList(result)) : SearchableLists.from(CloseableIterators.toList(result));
         }
 
         public Builder streaming() {

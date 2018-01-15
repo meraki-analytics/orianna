@@ -18,7 +18,7 @@ import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.GhostObject;
 import com.merakianalytics.orianna.types.core.searchable.Searchable;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
-import com.merakianalytics.orianna.types.core.searchable.SearchableListWrapper;
+import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
@@ -43,8 +43,7 @@ public class ChampionMasteries extends GhostObject.ListProxy<ChampionMastery, co
 
                 final CloseableIterator<ChampionMastery> result =
                     Orianna.getSettings().getPipeline().getMany(ChampionMastery.class, builder.build(), streaming);
-                return streaming ? SearchableListWrapper.of(CloseableIterators.toLazyList(result))
-                    : SearchableListWrapper.of(CloseableIterators.toList(result));
+                return streaming ? SearchableLists.from(CloseableIterators.toLazyList(result)) : SearchableLists.from(CloseableIterators.toList(result));
             }
 
             public SubBuilder streaming() {
@@ -89,7 +88,7 @@ public class ChampionMasteries extends GhostObject.ListProxy<ChampionMastery, co
             Summoner summoner = iterator.next();
 
             if(summoner == null) {
-                return SearchableListWrapper.of(Collections.<ChampionMasteries> emptyList());
+                return SearchableLists.from(Collections.<ChampionMasteries> emptyList());
             }
 
             final Platform platform = summoner.getPlatform();
@@ -108,7 +107,7 @@ public class ChampionMasteries extends GhostObject.ListProxy<ChampionMastery, co
 
             final CloseableIterator<ChampionMasteries> result =
                 Orianna.getSettings().getPipeline().getMany(ChampionMasteries.class, builder.build(), streaming);
-            return streaming ? SearchableListWrapper.of(CloseableIterators.toLazyList(result)) : SearchableListWrapper.of(CloseableIterators.toList(result));
+            return streaming ? SearchableLists.from(CloseableIterators.toLazyList(result)) : SearchableLists.from(CloseableIterators.toList(result));
         }
 
         public ManyBuilder streaming() {

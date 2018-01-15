@@ -11,7 +11,7 @@ import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
-import com.merakianalytics.orianna.types.core.searchable.SearchableListWrapper;
+import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 
 public abstract class ShardStatuses {
     public static class Builder {
@@ -26,7 +26,7 @@ public abstract class ShardStatuses {
             final ImmutableMap.Builder<String, Object> builder = ImmutableMap.<String, Object> builder().put("platforms", platforms);
 
             final CloseableIterator<ShardStatus> result = Orianna.getSettings().getPipeline().getMany(ShardStatus.class, builder.build(), streaming);
-            return streaming ? SearchableListWrapper.of(CloseableIterators.toLazyList(result)) : SearchableListWrapper.of(CloseableIterators.toList(result));
+            return streaming ? SearchableLists.from(CloseableIterators.toLazyList(result)) : SearchableLists.from(CloseableIterators.toList(result));
         }
 
         public Builder streaming() {

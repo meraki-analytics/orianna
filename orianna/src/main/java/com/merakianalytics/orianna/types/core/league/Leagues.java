@@ -11,7 +11,7 @@ import com.merakianalytics.orianna.types.common.Queue;
 import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.common.Tier;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
-import com.merakianalytics.orianna.types.core.searchable.SearchableListWrapper;
+import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 
 public abstract class Leagues {
     public static class Builder {
@@ -31,7 +31,7 @@ public abstract class Leagues {
             final ImmutableMap.Builder<String, Object> builder = ImmutableMap.<String, Object> builder().put("platform", platform).put("leagueIds", ids);
 
             final CloseableIterator<League> result = Orianna.getSettings().getPipeline().getMany(League.class, builder.build(), streaming);
-            return streaming ? SearchableListWrapper.of(CloseableIterators.toLazyList(result)) : SearchableListWrapper.of(CloseableIterators.toList(result));
+            return streaming ? SearchableLists.from(CloseableIterators.toLazyList(result)) : SearchableLists.from(CloseableIterators.toList(result));
         }
 
         public Builder streaming() {
@@ -69,8 +69,7 @@ public abstract class Leagues {
                     ImmutableMap.<String, Object> builder().put("platform", platform).put("tier", tier).put("queues", queues);
 
                 final CloseableIterator<League> result = Orianna.getSettings().getPipeline().getMany(League.class, builder.build(), streaming);
-                return streaming ? SearchableListWrapper.of(CloseableIterators.toLazyList(result))
-                    : SearchableListWrapper.of(CloseableIterators.toList(result));
+                return streaming ? SearchableLists.from(CloseableIterators.toLazyList(result)) : SearchableLists.from(CloseableIterators.toList(result));
             }
 
             public SubBuilder streaming() {

@@ -9,7 +9,7 @@ import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.GhostObject;
 import com.merakianalytics.orianna.types.core.searchable.Searchable;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
-import com.merakianalytics.orianna.types.core.searchable.UnmodifiableSearchableList;
+import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 
 public class Map extends GhostObject<com.merakianalytics.orianna.types.data.staticdata.Map> {
     public static class Builder {
@@ -98,7 +98,7 @@ public class Map extends GhostObject<com.merakianalytics.orianna.types.data.stat
         @Override
         public SearchableList<Item> get() {
             load(MAP_LOAD_GROUP);
-            return UnmodifiableSearchableList.of(Items.withIds(coreData.getUnpurchasableItems()).withPlatform(Platform.withTag(coreData.getPlatform()))
+            return SearchableLists.unmodifiableFrom(Items.withIds(coreData.getUnpurchasableItems()).withPlatform(Platform.withTag(coreData.getPlatform()))
                 .withVersion(coreData.getVersion()).withLocale(coreData.getLocale()).get());
         }
     });

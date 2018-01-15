@@ -18,7 +18,7 @@ import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.GhostObject;
 import com.merakianalytics.orianna.types.core.searchable.Searchable;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
-import com.merakianalytics.orianna.types.core.searchable.SearchableListWrapper;
+import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
 public class LeaguePositions extends GhostObject.ListProxy<LeaguePosition, com.merakianalytics.orianna.types.data.league.LeaguePosition, com.merakianalytics.orianna.types.data.league.LeaguePositions> {
@@ -51,7 +51,7 @@ public class LeaguePositions extends GhostObject.ListProxy<LeaguePosition, com.m
             Summoner summoner = iterator.next();
 
             if(summoner == null) {
-                return SearchableListWrapper.of(Collections.<LeaguePositions> emptyList());
+                return SearchableLists.from(Collections.<LeaguePositions> emptyList());
             }
 
             final Platform platform = summoner.getPlatform();
@@ -70,7 +70,7 @@ public class LeaguePositions extends GhostObject.ListProxy<LeaguePosition, com.m
 
             final CloseableIterator<LeaguePositions> result =
                 Orianna.getSettings().getPipeline().getMany(LeaguePositions.class, builder.build(), streaming);
-            return streaming ? SearchableListWrapper.of(CloseableIterators.toLazyList(result)) : SearchableListWrapper.of(CloseableIterators.toList(result));
+            return streaming ? SearchableLists.from(CloseableIterators.toLazyList(result)) : SearchableLists.from(CloseableIterators.toList(result));
         }
 
         public ManyBuilder streaming() {

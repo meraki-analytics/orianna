@@ -13,7 +13,7 @@ import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.GhostObject;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
-import com.merakianalytics.orianna.types.core.searchable.SearchableListWrapper;
+import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 
 public class Maps extends GhostObject.ListProxy<Map, com.merakianalytics.orianna.types.data.staticdata.Map, com.merakianalytics.orianna.types.data.staticdata.Maps> {
     public static class Builder {
@@ -101,7 +101,7 @@ public class Maps extends GhostObject.ListProxy<Map, com.merakianalytics.orianna
             }
 
             final CloseableIterator<Map> result = Orianna.getSettings().getPipeline().getMany(Map.class, builder.build(), streaming);
-            return streaming ? SearchableListWrapper.of(CloseableIterators.toLazyList(result)) : SearchableListWrapper.of(CloseableIterators.toList(result));
+            return streaming ? SearchableLists.from(CloseableIterators.toLazyList(result)) : SearchableLists.from(CloseableIterators.toList(result));
         }
 
         public SubsetBuilder streaming() {

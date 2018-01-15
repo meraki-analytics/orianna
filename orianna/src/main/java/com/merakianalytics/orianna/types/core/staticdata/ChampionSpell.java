@@ -9,7 +9,7 @@ import com.google.common.base.Suppliers;
 import com.merakianalytics.orianna.types.core.OriannaObject;
 import com.merakianalytics.orianna.types.core.searchable.Searchable;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
-import com.merakianalytics.orianna.types.core.searchable.SearchableListWrapper;
+import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 
 public class ChampionSpell extends OriannaObject<com.merakianalytics.orianna.types.data.staticdata.ChampionSpell> {
     private static final long serialVersionUID = 766914644995245142L;
@@ -21,7 +21,7 @@ public class ChampionSpell extends OriannaObject<com.merakianalytics.orianna.typ
             for(final com.merakianalytics.orianna.types.data.staticdata.Image image : coreData.getAlternativeImages()) {
                 alternativeImages.add(new Image(image));
             }
-            return SearchableListWrapper.of(Collections.unmodifiableList(alternativeImages));
+            return SearchableLists.unmodifiableFrom(alternativeImages);
         }
     });
 
@@ -85,7 +85,7 @@ public class ChampionSpell extends OriannaObject<com.merakianalytics.orianna.typ
             for(final com.merakianalytics.orianna.types.data.staticdata.SpellVariables vars : coreData.getVariables()) {
                 variables.add(new SpellVariables(vars));
             }
-            return SearchableListWrapper.of(Collections.unmodifiableList(variables));
+            return SearchableLists.unmodifiableFrom(variables);
         }
     });
 

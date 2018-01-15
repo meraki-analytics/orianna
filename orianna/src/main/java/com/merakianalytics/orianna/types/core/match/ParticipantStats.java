@@ -12,8 +12,7 @@ import com.merakianalytics.orianna.types.common.RunePath;
 import com.merakianalytics.orianna.types.core.OriannaObject;
 import com.merakianalytics.orianna.types.core.searchable.Searchable;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
-import com.merakianalytics.orianna.types.core.searchable.SearchableListWrapper;
-import com.merakianalytics.orianna.types.core.searchable.UnmodifiableSearchableList;
+import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
 import com.merakianalytics.orianna.types.core.staticdata.Items;
 
@@ -23,8 +22,8 @@ public class ParticipantStats extends OriannaObject<com.merakianalytics.orianna.
     private final Supplier<SearchableList<Item>> items = Suppliers.memoize(new Supplier<SearchableList<Item>>() {
         @Override
         public SearchableList<Item> get() {
-            return UnmodifiableSearchableList
-                .of(Items.withIds(coreData.getItems()).withPlatform(Platform.withTag(coreData.getPlatform())).withVersion(coreData.getVersion()).get());
+            return SearchableLists.unmodifiableFrom(
+                Items.withIds(coreData.getItems()).withPlatform(Platform.withTag(coreData.getPlatform())).withVersion(coreData.getVersion()).get());
         }
     });
 
@@ -35,7 +34,7 @@ public class ParticipantStats extends OriannaObject<com.merakianalytics.orianna.
             for(final com.merakianalytics.orianna.types.data.match.RuneStats stats : coreData.getRuneStats()) {
                 runeStats.add(new RuneStats(stats));
             }
-            return UnmodifiableSearchableList.of(SearchableListWrapper.of(runeStats));
+            return SearchableLists.unmodifiableFrom(runeStats);
         }
     });
 

@@ -10,8 +10,7 @@ import com.merakianalytics.orianna.types.common.Side;
 import com.merakianalytics.orianna.types.core.OriannaObject;
 import com.merakianalytics.orianna.types.core.searchable.Searchable;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
-import com.merakianalytics.orianna.types.core.searchable.SearchableListWrapper;
-import com.merakianalytics.orianna.types.core.searchable.UnmodifiableSearchableList;
+import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Champions;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
@@ -23,8 +22,8 @@ public class Team extends OriannaObject<com.merakianalytics.orianna.types.data.m
     private final Supplier<SearchableList<Champion>> bans = Suppliers.memoize(new Supplier<SearchableList<Champion>>() {
         @Override
         public SearchableList<Champion> get() {
-            return UnmodifiableSearchableList
-                .of(Champions.withIds(coreData.getBans()).withPlatform(Platform.withTag(coreData.getPlatform())).withVersion(coreData.getVersion()).get());
+            return SearchableLists.unmodifiableFrom(
+                Champions.withIds(coreData.getBans()).withPlatform(Platform.withTag(coreData.getPlatform())).withVersion(coreData.getVersion()).get());
         }
     });
 
@@ -40,7 +39,7 @@ public class Team extends OriannaObject<com.merakianalytics.orianna.types.data.m
                 }
             }
             match = null;
-            return UnmodifiableSearchableList.of(SearchableListWrapper.of(participants));
+            return SearchableLists.unmodifiableFrom(participants);
         }
     });
 

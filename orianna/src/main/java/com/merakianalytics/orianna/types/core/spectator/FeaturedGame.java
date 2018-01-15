@@ -17,8 +17,7 @@ import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.OriannaObject;
 import com.merakianalytics.orianna.types.core.searchable.Searchable;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
-import com.merakianalytics.orianna.types.core.searchable.SearchableListWrapper;
-import com.merakianalytics.orianna.types.core.searchable.UnmodifiableSearchableList;
+import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Champions;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
@@ -29,7 +28,7 @@ public class FeaturedGame extends OriannaObject<com.merakianalytics.orianna.type
     private final Supplier<SearchableList<Champion>> blueTeamBans = Suppliers.memoize(new Supplier<SearchableList<Champion>>() {
         @Override
         public SearchableList<Champion> get() {
-            return UnmodifiableSearchableList.of(Champions.withIds(coreData.getBlueTeamBans()).withPlatform(Platform.withTag(coreData.getPlatform())).get());
+            return SearchableLists.unmodifiableFrom(Champions.withIds(coreData.getBlueTeamBans()).withPlatform(Platform.withTag(coreData.getPlatform())).get());
         }
     });
 
@@ -40,14 +39,14 @@ public class FeaturedGame extends OriannaObject<com.merakianalytics.orianna.type
             for(final com.merakianalytics.orianna.types.data.spectator.Participant player : coreData.getPlayers()) {
                 players.add(new Participant(player));
             }
-            return UnmodifiableSearchableList.of(SearchableListWrapper.of(players));
+            return SearchableLists.unmodifiableFrom(players);
         }
     });
 
     private final Supplier<SearchableList<Champion>> redTeamBans = Suppliers.memoize(new Supplier<SearchableList<Champion>>() {
         @Override
         public SearchableList<Champion> get() {
-            return UnmodifiableSearchableList.of(Champions.withIds(coreData.getRedTeamBans()).withPlatform(Platform.withTag(coreData.getPlatform())).get());
+            return SearchableLists.unmodifiableFrom(Champions.withIds(coreData.getRedTeamBans()).withPlatform(Platform.withTag(coreData.getPlatform())).get());
         }
     });
 

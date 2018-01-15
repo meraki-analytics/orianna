@@ -18,7 +18,7 @@ import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.GhostObject;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
-import com.merakianalytics.orianna.types.core.searchable.SearchableListWrapper;
+import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 
 public class SummonerSpells extends GhostObject.ListProxy<SummonerSpell, com.merakianalytics.orianna.types.data.staticdata.SummonerSpell, com.merakianalytics.orianna.types.data.staticdata.SummonerSpells> {
     public static class Builder {
@@ -121,7 +121,7 @@ public class SummonerSpells extends GhostObject.ListProxy<SummonerSpell, com.mer
             }
 
             final CloseableIterator<SummonerSpell> result = Orianna.getSettings().getPipeline().getMany(SummonerSpell.class, builder.build(), streaming);
-            return streaming ? SearchableListWrapper.of(CloseableIterators.toLazyList(result)) : SearchableListWrapper.of(CloseableIterators.toList(result));
+            return streaming ? SearchableLists.from(CloseableIterators.toLazyList(result)) : SearchableLists.from(CloseableIterators.toList(result));
         }
 
         public SubsetBuilder streaming() {

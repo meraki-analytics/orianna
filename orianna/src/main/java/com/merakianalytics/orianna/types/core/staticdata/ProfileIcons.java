@@ -12,7 +12,7 @@ import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.GhostObject;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
-import com.merakianalytics.orianna.types.core.searchable.SearchableListWrapper;
+import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 
 public class ProfileIcons extends GhostObject.ListProxy<ProfileIcon, com.merakianalytics.orianna.types.data.staticdata.ProfileIcon, com.merakianalytics.orianna.types.data.staticdata.ProfileIcons> {
     public static class Builder {
@@ -89,7 +89,7 @@ public class ProfileIcons extends GhostObject.ListProxy<ProfileIcon, com.merakia
                     .put("locale", locale);
 
             final CloseableIterator<ProfileIcon> result = Orianna.getSettings().getPipeline().getMany(ProfileIcon.class, builder.build(), streaming);
-            return streaming ? SearchableListWrapper.of(CloseableIterators.toLazyList(result)) : SearchableListWrapper.of(CloseableIterators.toList(result));
+            return streaming ? SearchableLists.from(CloseableIterators.toLazyList(result)) : SearchableLists.from(CloseableIterators.toList(result));
         }
 
         public SubsetBuilder streaming() {

@@ -19,8 +19,8 @@ import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.common.Season;
 import com.merakianalytics.orianna.types.core.GhostObject;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
-import com.merakianalytics.orianna.types.core.searchable.SearchableListWrapper;
-import com.merakianalytics.orianna.types.core.searchable.UnmodifiableSearchableList;
+import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
+import com.merakianalytics.orianna.types.data.match.MatchReference;
 
 public class Match extends GhostObject<com.merakianalytics.orianna.types.data.match.Match> {
     public static class Builder {
@@ -64,6 +64,16 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
     public static final String MATCH_LOAD_GROUP = "match";
     private static final long serialVersionUID = -9106364274355437548L;
 
+    private static com.merakianalytics.orianna.types.data.match.Match toMatchData(final MatchReference reference) {
+        final com.merakianalytics.orianna.types.data.match.Match coreData = new com.merakianalytics.orianna.types.data.match.Match();
+        coreData.setQueue(reference.getQueue());
+        coreData.setSeason(reference.getSeason());
+        coreData.setCreationTime(reference.getCreationTime());
+        coreData.setId(reference.getId());
+        coreData.setPlatform(reference.getPlatform());
+        return coreData;
+    }
+
     public static Builder withId(final long id) {
         return new Builder(id);
     }
@@ -84,7 +94,7 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
             for(final com.merakianalytics.orianna.types.data.match.Participant participant : coreData.getParticipants()) {
                 participants.add(new Participant(participant, Match.this));
             }
-            return UnmodifiableSearchableList.of(SearchableListWrapper.of(participants));
+            return SearchableLists.unmodifiableFrom(participants);
         }
     });
 
@@ -100,12 +110,18 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
         super(coreData, 1);
     }
 
+    public Match(final MatchReference reference) {
+        super(toMatchData(reference), 1);
+    }
+
     public Team getBlueTeam() {
         return blueTeam.get();
     }
 
     public DateTime getCreationTime() {
-        load(MATCH_LOAD_GROUP);
+        if(coreData.getCreationTime() == null) {
+            load(MATCH_LOAD_GROUP);
+        }
         return coreData.getCreationTime();
     }
 
@@ -137,7 +153,9 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
     }
 
     public Queue getQueue() {
-        load(MATCH_LOAD_GROUP);
+        if(coreData.getQueue() == 0) {
+            load(MATCH_LOAD_GROUP);
+        }
         return Queue.withId(coreData.getQueue());
     }
 
@@ -150,7 +168,9 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
     }
 
     public Season getSeason() {
-        load(MATCH_LOAD_GROUP);
+        if(coreData.getSeason() == 0) {
+            load(MATCH_LOAD_GROUP);
+        }
         return Season.withId(coreData.getSeason());
     }
 

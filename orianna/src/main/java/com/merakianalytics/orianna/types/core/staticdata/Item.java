@@ -16,7 +16,7 @@ import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.GhostObject;
 import com.merakianalytics.orianna.types.core.searchable.Searchable;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
-import com.merakianalytics.orianna.types.core.searchable.UnmodifiableSearchableList;
+import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 
 public class Item extends GhostObject<com.merakianalytics.orianna.types.data.staticdata.Item> {
     public static class Builder {
@@ -107,7 +107,7 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
         @Override
         public SearchableList<Item> get() {
             load(ITEM_LOAD_GROUP);
-            return UnmodifiableSearchableList.of(Items.withIds(coreData.getBuildsFrom()).withPlatform(Platform.withTag(coreData.getPlatform()))
+            return SearchableLists.unmodifiableFrom(Items.withIds(coreData.getBuildsFrom()).withPlatform(Platform.withTag(coreData.getPlatform()))
                 .withVersion(coreData.getVersion()).withLocale(coreData.getLocale()).get());
         }
     });
@@ -116,7 +116,7 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
         @Override
         public SearchableList<Item> get() {
             load(ITEM_LOAD_GROUP);
-            return UnmodifiableSearchableList.of(Items.withIds(coreData.getBuildsInto()).withPlatform(Platform.withTag(coreData.getPlatform()))
+            return SearchableLists.unmodifiableFrom(Items.withIds(coreData.getBuildsInto()).withPlatform(Platform.withTag(coreData.getPlatform()))
                 .withVersion(coreData.getVersion()).withLocale(coreData.getLocale()).get());
         }
     });

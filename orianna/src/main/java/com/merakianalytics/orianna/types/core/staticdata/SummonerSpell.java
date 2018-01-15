@@ -17,7 +17,7 @@ import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.GhostObject;
 import com.merakianalytics.orianna.types.core.searchable.Searchable;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
-import com.merakianalytics.orianna.types.core.searchable.SearchableListWrapper;
+import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 
 public class SummonerSpell extends GhostObject<com.merakianalytics.orianna.types.data.staticdata.SummonerSpell> {
     public static class Builder {
@@ -191,7 +191,7 @@ public class SummonerSpell extends GhostObject<com.merakianalytics.orianna.types
             for(final com.merakianalytics.orianna.types.data.staticdata.SpellVariables vars : coreData.getVariables()) {
                 variables.add(new SpellVariables(vars));
             }
-            return SearchableListWrapper.of(Collections.unmodifiableList(variables));
+            return SearchableLists.unmodifiableFrom(variables);
         }
     });
 

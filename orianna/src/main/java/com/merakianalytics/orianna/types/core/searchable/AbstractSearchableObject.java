@@ -6,15 +6,11 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
-public class AbstractSearchableObject implements SearchableObject {
+public abstract class AbstractSearchableObject implements SearchableObject {
     private static Map<Class<?>, Object> locks = new ConcurrentHashMap<>();
-    private static final Logger LOGGER = LoggerFactory.getLogger(SearchableObject.class);
     private static Map<Class<?>, Multimap<Class<?>, Method>> searchable = new ConcurrentHashMap<>();
 
     @Override
@@ -33,14 +29,18 @@ public class AbstractSearchableObject implements SearchableObject {
             try {
                 result = method.invoke(this);
             } catch(final InvocationTargetException e) {
-                LOGGER.error("Failed to invoke search method " + method.getName() + "!", e);
-                throw new RuntimeException(e.getCause());
+                if(e.getCause() instanceof RuntimeException) {
+                    throw (RuntimeException)e.getCause();
+                } else {
+                    throw new RuntimeException(e.getCause());
+                }
             } catch(IllegalAccessException | IllegalArgumentException e) {
-                LOGGER.error("Failed to invoke search method " + method.getName() + "!", e);
                 throw new RuntimeException(e);
             }
 
-            if(item.equals(result)) {
+            if(item == result) {
+                return true;
+            } else if(item != null && result != null && item.equals(result)) {
                 return true;
             } else if(result instanceof SearchableObject) {
                 final SearchableObject obj = (SearchableObject)result;
