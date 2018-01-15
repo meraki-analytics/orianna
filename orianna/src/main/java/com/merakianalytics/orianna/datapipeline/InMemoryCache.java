@@ -37,6 +37,7 @@ import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
 import com.merakianalytics.orianna.types.core.league.League;
 import com.merakianalytics.orianna.types.core.league.LeaguePositions;
+import com.merakianalytics.orianna.types.core.match.Match;
 import com.merakianalytics.orianna.types.core.spectator.CurrentGame;
 import com.merakianalytics.orianna.types.core.spectator.FeaturedGames;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
@@ -81,6 +82,7 @@ public class InMemoryCache extends AbstractDataStore {
             .put(Maps.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(Mastery.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(Masteries.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
+            .put(Match.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(ProfileIcon.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(ProfileIcons.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(Realm.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
@@ -743,6 +745,12 @@ public class InMemoryCache extends AbstractDataStore {
         return (Mastery)cache.get(key);
     }
 
+    @Get(Match.class)
+    public Match getMatch(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forMatchQuery(query);
+        return (Match)cache.get(key);
+    }
+
     @Get(ProfileIcon.class)
     public ProfileIcon getProfileIcon(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forProfileIconQuery(query);
@@ -1165,6 +1173,12 @@ public class InMemoryCache extends AbstractDataStore {
         for(final int key : keys) {
             cache.put(key, mastery);
         }
+    }
+
+    @Put(Match.class)
+    public void putMatch(final Match match, final PipelineContext context) {
+        final int key = UniqueKeys.forMatch(match);
+        cache.put(key, match);
     }
 
     @Put(ProfileIcon.class)

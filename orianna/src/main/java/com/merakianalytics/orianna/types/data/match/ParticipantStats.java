@@ -20,7 +20,8 @@ public class ParticipantStats extends CoreData {
     private boolean firstBloodAssistant, firstBloodKiller, firstInhibitorKillAssistant, firstInhibitorKiller, firstTowerKillAssistant, firstTowerKiller, winner;
     private List<Integer> items;
     private Duration longestTimeAlive, crowdControlDealt, crowdControlDealtToChampions;
-    private List<Rune> runes;
+    private String platform, version;
+    private List<RuneStats> runeStats;
 
     @Override
     public boolean equals(final Object obj) {
@@ -203,6 +204,13 @@ public class ParticipantStats extends CoreData {
         if(pinkWardsPurchased != other.pinkWardsPurchased) {
             return false;
         }
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
+            return false;
+        }
         if(playerScore0 != other.playerScore0) {
             return false;
         }
@@ -239,11 +247,11 @@ public class ParticipantStats extends CoreData {
         if(quadraKills != other.quadraKills) {
             return false;
         }
-        if(runes == null) {
-            if(other.runes != null) {
+        if(runeStats == null) {
+            if(other.runeStats != null) {
                 return false;
             }
-        } else if(!runes.equals(other.runes)) {
+        } else if(!runeStats.equals(other.runeStats)) {
             return false;
         }
         if(score != other.score) {
@@ -274,6 +282,13 @@ public class ParticipantStats extends CoreData {
             return false;
         }
         if(unitsHealed != other.unitsHealed) {
+            return false;
+        }
+        if(version == null) {
+            if(other.version != null) {
+                return false;
+            }
+        } else if(!version.equals(other.version)) {
             return false;
         }
         if(visionScore != other.visionScore) {
@@ -607,6 +622,13 @@ public class ParticipantStats extends CoreData {
     }
 
     /**
+     * @return the platform
+     */
+    public String getPlatform() {
+        return platform;
+    }
+
+    /**
      * @return the playerScore0
      */
     public int getPlayerScore0() {
@@ -691,10 +713,10 @@ public class ParticipantStats extends CoreData {
     }
 
     /**
-     * @return the runes
+     * @return the runeStats
      */
-    public List<Rune> getRunes() {
-        return runes;
+    public List<RuneStats> getRuneStats() {
+        return runeStats;
     }
 
     /**
@@ -765,6 +787,13 @@ public class ParticipantStats extends CoreData {
      */
     public int getUnitsHealed() {
         return unitsHealed;
+    }
+
+    /**
+     * @return the version
+     */
+    public String getVersion() {
+        return version;
     }
 
     /**
@@ -843,6 +872,7 @@ public class ParticipantStats extends CoreData {
         result = prime * result + physicalDamageDealtToChampions;
         result = prime * result + physicalDamageTaken;
         result = prime * result + pinkWardsPurchased;
+        result = prime * result + (platform == null ? 0 : platform.hashCode());
         result = prime * result + playerScore0;
         result = prime * result + playerScore1;
         result = prime * result + playerScore2;
@@ -855,7 +885,7 @@ public class ParticipantStats extends CoreData {
         result = prime * result + playerScore9;
         result = prime * result + primaryRunePath;
         result = prime * result + quadraKills;
-        result = prime * result + (runes == null ? 0 : runes.hashCode());
+        result = prime * result + (runeStats == null ? 0 : runeStats.hashCode());
         result = prime * result + score;
         result = prime * result + scoreRank;
         result = prime * result + secondaryRunePath;
@@ -866,6 +896,7 @@ public class ParticipantStats extends CoreData {
         result = prime * result + trueDamageTaken;
         result = prime * result + turretKills;
         result = prime * result + unitsHealed;
+        result = prime * result + (version == null ? 0 : version.hashCode());
         result = prime * result + visionScore;
         result = prime * result + wardsKilled;
         result = prime * result + wardsPlaced;
@@ -1331,6 +1362,14 @@ public class ParticipantStats extends CoreData {
     }
 
     /**
+     * @param platform
+     *        the platform to set
+     */
+    public void setPlatform(final String platform) {
+        this.platform = platform;
+    }
+
+    /**
      * @param playerScore0
      *        the playerScore0 to set
      */
@@ -1427,11 +1466,11 @@ public class ParticipantStats extends CoreData {
     }
 
     /**
-     * @param runes
-     *        the runes to set
+     * @param runeStats
+     *        the runeStats to set
      */
-    public void setRunes(final List<Rune> runes) {
-        this.runes = runes;
+    public void setRuneStats(final List<RuneStats> runeStats) {
+        this.runeStats = runeStats;
     }
 
     /**
@@ -1512,6 +1551,14 @@ public class ParticipantStats extends CoreData {
      */
     public void setUnitsHealed(final int unitsHealed) {
         this.unitsHealed = unitsHealed;
+    }
+
+    /**
+     * @param version
+     *        the version to set
+     */
+    public void setVersion(final String version) {
+        this.version = version;
     }
 
     /**

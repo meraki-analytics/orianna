@@ -267,6 +267,10 @@ public abstract class DataObject implements Serializable {
     }
 
     public static <T extends DataObject> T fromBytes(final Class<T> type, final Function<JsonNode, JsonNode> preprocessor, final byte[] msgpack) {
+        if(msgpack == null) {
+            return null;
+        }
+
         try {
             if(preprocessor != null) {
                 final JsonNode tree = preprocessor.apply(MSGPACK_MAPPER.readTree(msgpack));
@@ -284,6 +288,10 @@ public abstract class DataObject implements Serializable {
     }
 
     public static <T extends DataObject> T fromJSON(final Class<T> type, final Function<JsonNode, JsonNode> preprocessor, final String json) {
+        if(json == null) {
+            return null;
+        }
+
         try {
             if(preprocessor != null) {
                 final JsonNode tree = preprocessor.apply(JSON_MAPPER.readTree(json));

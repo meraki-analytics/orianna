@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.merakianalytics.orianna.types.data.CoreData;
 
-public class Rune extends CoreData {
+public class RuneStats extends CoreData {
     private static final long serialVersionUID = -461218494339044648L;
     private int id;
     private List<Integer> variables;
@@ -20,7 +20,7 @@ public class Rune extends CoreData {
         if(getClass() != obj.getClass()) {
             return false;
         }
-        final Rune other = (Rune)obj;
+        final RuneStats other = (RuneStats)obj;
         if(id != other.id) {
             return false;
         }

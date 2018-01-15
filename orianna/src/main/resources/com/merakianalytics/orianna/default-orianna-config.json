@@ -77,6 +77,10 @@
             "period": 6,
             "unit": "HOURS"
           },
+          "com.merakianalytics.orianna.types.core.match.Match": {
+            "period": 6,
+            "unit": "HOURS"
+          },
           "com.merakianalytics.orianna.types.core.staticdata.ProfileIcon": {
             "period": 6,
             "unit": "HOURS"

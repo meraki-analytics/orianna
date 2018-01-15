@@ -5,7 +5,7 @@ import com.merakianalytics.orianna.types.data.CoreData;
 public class Participant extends CoreData {
     private static final long serialVersionUID = -5799473707680536580L;
     private long currentAccountId, summonerId, accountId;
-    private String currentPlatform, platform, highestTierInSeason, summonerName, matchHistoryURI;
+    private String currentPlatform, platform, highestTierInSeason, summonerName, matchHistoryURI, version, lane, role;
     private ParticipantStats stats;
     private int summonerSpellDId, summonerSpellFId, championId, profileIconId, participantId, team;
     private ParticipantTimeline timeline;
@@ -45,6 +45,13 @@ public class Participant extends CoreData {
         } else if(!highestTierInSeason.equals(other.highestTierInSeason)) {
             return false;
         }
+        if(lane == null) {
+            if(other.lane != null) {
+                return false;
+            }
+        } else if(!lane.equals(other.lane)) {
+            return false;
+        }
         if(matchHistoryURI == null) {
             if(other.matchHistoryURI != null) {
                 return false;
@@ -63,6 +70,13 @@ public class Participant extends CoreData {
             return false;
         }
         if(profileIconId != other.profileIconId) {
+            return false;
+        }
+        if(role == null) {
+            if(other.role != null) {
+                return false;
+            }
+        } else if(!role.equals(other.role)) {
             return false;
         }
         if(stats == null) {
@@ -96,6 +110,13 @@ public class Participant extends CoreData {
                 return false;
             }
         } else if(!timeline.equals(other.timeline)) {
+            return false;
+        }
+        if(version == null) {
+            if(other.version != null) {
+                return false;
+            }
+        } else if(!version.equals(other.version)) {
             return false;
         }
         return true;
@@ -137,6 +158,13 @@ public class Participant extends CoreData {
     }
 
     /**
+     * @return the lane
+     */
+    public String getLane() {
+        return lane;
+    }
+
+    /**
      * @return the matchHistoryURI
      */
     public String getMatchHistoryURI() {
@@ -162,6 +190,13 @@ public class Participant extends CoreData {
      */
     public int getProfileIconId() {
         return profileIconId;
+    }
+
+    /**
+     * @return the role
+     */
+    public String getRole() {
+        return role;
     }
 
     /**
@@ -213,6 +248,13 @@ public class Participant extends CoreData {
         return timeline;
     }
 
+    /**
+     * @return the version
+     */
+    public String getVersion() {
+        return version;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -222,10 +264,12 @@ public class Participant extends CoreData {
         result = prime * result + (int)(currentAccountId ^ currentAccountId >>> 32);
         result = prime * result + (currentPlatform == null ? 0 : currentPlatform.hashCode());
         result = prime * result + (highestTierInSeason == null ? 0 : highestTierInSeason.hashCode());
+        result = prime * result + (lane == null ? 0 : lane.hashCode());
         result = prime * result + (matchHistoryURI == null ? 0 : matchHistoryURI.hashCode());
         result = prime * result + participantId;
         result = prime * result + (platform == null ? 0 : platform.hashCode());
         result = prime * result + profileIconId;
+        result = prime * result + (role == null ? 0 : role.hashCode());
         result = prime * result + (stats == null ? 0 : stats.hashCode());
         result = prime * result + (int)(summonerId ^ summonerId >>> 32);
         result = prime * result + (summonerName == null ? 0 : summonerName.hashCode());
@@ -233,6 +277,7 @@ public class Participant extends CoreData {
         result = prime * result + summonerSpellFId;
         result = prime * result + team;
         result = prime * result + (timeline == null ? 0 : timeline.hashCode());
+        result = prime * result + (version == null ? 0 : version.hashCode());
         return result;
     }
 
@@ -277,6 +322,14 @@ public class Participant extends CoreData {
     }
 
     /**
+     * @param lane
+     *        the lane to set
+     */
+    public void setLane(final String lane) {
+        this.lane = lane;
+    }
+
+    /**
      * @param matchHistoryURI
      *        the matchHistoryURI to set
      */
@@ -306,6 +359,14 @@ public class Participant extends CoreData {
      */
     public void setProfileIconId(final int profileIconId) {
         this.profileIconId = profileIconId;
+    }
+
+    /**
+     * @param role
+     *        the role to set
+     */
+    public void setRole(final String role) {
+        this.role = role;
     }
 
     /**
@@ -362,5 +423,13 @@ public class Participant extends CoreData {
      */
     public void setTimeline(final ParticipantTimeline timeline) {
         this.timeline = timeline;
+    }
+
+    /**
+     * @param version
+     *        the version to set
+     */
+    public void setVersion(final String version) {
+        this.version = version;
     }
 }

@@ -263,6 +263,10 @@ public abstract class CoreData implements Serializable {
     private static final long serialVersionUID = 4701497355193788806L;
 
     public static <T extends CoreData> T fromBytes(final Class<T> type, final byte[] msgpack) {
+        if(msgpack == null) {
+            return null;
+        }
+
         try {
             return MSGPACK_MAPPER.readValue(msgpack, type);
         } catch(final IOException e) {
@@ -272,6 +276,10 @@ public abstract class CoreData implements Serializable {
     }
 
     public static <T extends CoreData> T fromJSON(final Class<T> type, final String json) {
+        if(json == null) {
+            return null;
+        }
+
         try {
             return JSON_MAPPER.readValue(json, type);
         } catch(final IOException e) {

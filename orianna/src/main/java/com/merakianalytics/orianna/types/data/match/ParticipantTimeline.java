@@ -5,7 +5,6 @@ import com.merakianalytics.orianna.types.data.CoreData;
 public class ParticipantTimeline extends CoreData {
     private static final long serialVersionUID = 7991068856747791693L;
     private StatTotals creepScoreDifference, gold, experienceDifference, creepScore, experience, damageTakenDifference, damageTaken;
-    private String lane, role;
 
     @Override
     public boolean equals(final Object obj) {
@@ -68,20 +67,6 @@ public class ParticipantTimeline extends CoreData {
         } else if(!gold.equals(other.gold)) {
             return false;
         }
-        if(lane == null) {
-            if(other.lane != null) {
-                return false;
-            }
-        } else if(!lane.equals(other.lane)) {
-            return false;
-        }
-        if(role == null) {
-            if(other.role != null) {
-                return false;
-            }
-        } else if(!role.equals(other.role)) {
-            return false;
-        }
         return true;
     }
 
@@ -134,20 +119,6 @@ public class ParticipantTimeline extends CoreData {
         return gold;
     }
 
-    /**
-     * @return the lane
-     */
-    public String getLane() {
-        return lane;
-    }
-
-    /**
-     * @return the role
-     */
-    public String getRole() {
-        return role;
-    }
-
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -159,8 +130,6 @@ public class ParticipantTimeline extends CoreData {
         result = prime * result + (experience == null ? 0 : experience.hashCode());
         result = prime * result + (experienceDifference == null ? 0 : experienceDifference.hashCode());
         result = prime * result + (gold == null ? 0 : gold.hashCode());
-        result = prime * result + (lane == null ? 0 : lane.hashCode());
-        result = prime * result + (role == null ? 0 : role.hashCode());
         return result;
     }
 
@@ -218,21 +187,5 @@ public class ParticipantTimeline extends CoreData {
      */
     public void setGold(final StatTotals gold) {
         this.gold = gold;
-    }
-
-    /**
-     * @param lane
-     *        the lane to set
-     */
-    public void setLane(final String lane) {
-        this.lane = lane;
-    }
-
-    /**
-     * @param role
-     *        the role to set
-     */
-    public void setRole(final String role) {
-        this.role = role;
     }
 }

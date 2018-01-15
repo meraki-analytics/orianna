@@ -50,6 +50,7 @@ import com.merakianalytics.orianna.types.core.championmastery.ChampionMasterySco
 import com.merakianalytics.orianna.types.core.league.League;
 import com.merakianalytics.orianna.types.core.league.LeaguePositions;
 import com.merakianalytics.orianna.types.core.league.Leagues;
+import com.merakianalytics.orianna.types.core.match.Match;
 import com.merakianalytics.orianna.types.core.spectator.CurrentGame;
 import com.merakianalytics.orianna.types.core.spectator.CurrentGames;
 import com.merakianalytics.orianna.types.core.spectator.FeaturedGames;
@@ -206,7 +207,8 @@ public abstract class Orianna {
          * @return the defaultLocale
          */
         public String getDefaultLocale() {
-            return defaultLocale == null ? defaultPlatform.getDefaultLocale() : defaultLocale;
+            // TODO: Use this instead of Platform.getDefaultLocale for defaults if it's set
+            return defaultLocale;
         }
 
         /**
@@ -628,6 +630,10 @@ public abstract class Orianna {
 
     public static Mastery.Builder masteryWithId(final int id) {
         return Mastery.withId(id);
+    }
+
+    public static Match.Builder matchWithId(final long id) {
+        return Match.withId(id);
     }
 
     public static ProfileIcons.Builder profileIconsWithLocale(final String locale) {

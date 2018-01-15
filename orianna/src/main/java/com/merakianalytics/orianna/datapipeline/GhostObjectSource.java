@@ -21,6 +21,7 @@ import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
 import com.merakianalytics.orianna.types.core.league.League;
 import com.merakianalytics.orianna.types.core.league.LeaguePositions;
+import com.merakianalytics.orianna.types.core.match.Match;
 import com.merakianalytics.orianna.types.core.spectator.CurrentGame;
 import com.merakianalytics.orianna.types.core.spectator.FeaturedGames;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
@@ -1026,6 +1027,21 @@ public class GhostObjectSource extends AbstractDataSource {
         data.setLocale(locale);
         data.setIncludedData(includedData);
         return new Mastery(data);
+    }
+
+    @Get(Match.class)
+    public Match getMatch(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        final Number matchId = (Number)query.get("matchId");
+        Utilities.checkNotNull(platform, "platform", matchId, "matchId");
+        final String tournamentCode = (String)query.get("tournamentCode");
+
+        final com.merakianalytics.orianna.types.data.match.Match data =
+            new com.merakianalytics.orianna.types.data.match.Match();
+        data.setPlatform(platform.getTag());
+        data.setId(matchId.longValue());
+        data.setTournamentCode(tournamentCode);
+        return new Match(data);
     }
 
     @Get(ProfileIcon.class)

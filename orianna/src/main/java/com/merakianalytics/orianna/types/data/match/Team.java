@@ -7,8 +7,9 @@ import com.merakianalytics.orianna.types.data.CoreData;
 public class Team extends CoreData {
     private static final long serialVersionUID = 4843385559866396877L;
     private List<Integer> bans;
-    private int baronKills, riftHeraldKills, vilemawKills, inhibitorKills, towerKills, dominionScore, dragonKills;
+    private int baronKills, riftHeraldKills, vilemawKills, inhibitorKills, towerKills, dominionScore, dragonKills, teamId;
     private boolean firstDragonKiller, firstInhibitorKiller, firstRiftHeraldKiller, firstBaronKiller, firstBloodKiller, firstTowerKiller, winner;
+    private String platform, version;
 
     @Override
     public boolean equals(final Object obj) {
@@ -59,10 +60,27 @@ public class Team extends CoreData {
         if(inhibitorKills != other.inhibitorKills) {
             return false;
         }
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
+            return false;
+        }
         if(riftHeraldKills != other.riftHeraldKills) {
             return false;
         }
+        if(teamId != other.teamId) {
+            return false;
+        }
         if(towerKills != other.towerKills) {
+            return false;
+        }
+        if(version == null) {
+            if(other.version != null) {
+                return false;
+            }
+        } else if(!version.equals(other.version)) {
             return false;
         }
         if(vilemawKills != other.vilemawKills) {
@@ -110,6 +128,13 @@ public class Team extends CoreData {
     }
 
     /**
+     * @return the platform
+     */
+    public String getPlatform() {
+        return platform;
+    }
+
+    /**
      * @return the riftHeraldKills
      */
     public int getRiftHeraldKills() {
@@ -117,10 +142,24 @@ public class Team extends CoreData {
     }
 
     /**
+     * @return the teamId
+     */
+    public int getTeamId() {
+        return teamId;
+    }
+
+    /**
      * @return the towerKills
      */
     public int getTowerKills() {
         return towerKills;
+    }
+
+    /**
+     * @return the version
+     */
+    public String getVersion() {
+        return version;
     }
 
     /**
@@ -145,8 +184,11 @@ public class Team extends CoreData {
         result = prime * result + (firstRiftHeraldKiller ? 1231 : 1237);
         result = prime * result + (firstTowerKiller ? 1231 : 1237);
         result = prime * result + inhibitorKills;
+        result = prime * result + (platform == null ? 0 : platform.hashCode());
         result = prime * result + riftHeraldKills;
+        result = prime * result + teamId;
         result = prime * result + towerKills;
+        result = prime * result + (version == null ? 0 : version.hashCode());
         result = prime * result + vilemawKills;
         result = prime * result + (winner ? 1231 : 1237);
         return result;
@@ -290,6 +332,14 @@ public class Team extends CoreData {
     }
 
     /**
+     * @param platform
+     *        the platform to set
+     */
+    public void setPlatform(final String platform) {
+        this.platform = platform;
+    }
+
+    /**
      * @param riftHeraldKills
      *        the riftHeraldKills to set
      */
@@ -298,11 +348,27 @@ public class Team extends CoreData {
     }
 
     /**
+     * @param teamId
+     *        the teamId to set
+     */
+    public void setTeamId(final int teamId) {
+        this.teamId = teamId;
+    }
+
+    /**
      * @param towerKills
      *        the towerKills to set
      */
     public void setTowerKills(final int towerKills) {
         this.towerKills = towerKills;
+    }
+
+    /**
+     * @param version
+     *        the version to set
+     */
+    public void setVersion(final String version) {
+        this.version = version;
     }
 
     /**

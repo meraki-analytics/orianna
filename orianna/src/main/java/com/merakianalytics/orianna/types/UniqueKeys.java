@@ -13,6 +13,7 @@ import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
 import com.merakianalytics.orianna.types.core.league.League;
 import com.merakianalytics.orianna.types.core.league.LeaguePositions;
+import com.merakianalytics.orianna.types.core.match.Match;
 import com.merakianalytics.orianna.types.core.spectator.CurrentGame;
 import com.merakianalytics.orianna.types.core.spectator.FeaturedGames;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
@@ -944,6 +945,19 @@ public abstract class UniqueKeys {
         return Arrays.hashCode(new Object[] {
             Mastery.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
             id == null ? name : id.intValue(), (Set<String>)query.get("includedData")
+        });
+    }
+
+    public static int forMatch(final Match match) {
+        final com.merakianalytics.orianna.types.data.match.Match data = match.getCoreData();
+        return Arrays.hashCode(new Object[] {
+            Match.class.getCanonicalName(), data.getPlatform(), data.getId()
+        });
+    }
+
+    public static int forMatchQuery(final java.util.Map<String, Object> query) {
+        return Arrays.hashCode(new Object[] {
+            Match.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), ((Number)query.get("matchId")).longValue()
         });
     }
 
