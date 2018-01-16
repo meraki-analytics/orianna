@@ -201,6 +201,9 @@ public class MatchAPI extends RiotAPIService {
                 data.setChampions(champions);
                 data.setPlatform(platform.getTag());
                 data.setAccountId(accountId.longValue());
+                for(final MatchReference reference : data.getMatches()) {
+                    reference.setAccountId(accountId.longValue());
+                }
                 return data;
             }
 
@@ -415,6 +418,9 @@ public class MatchAPI extends RiotAPIService {
         data.setChampions(champions);
         data.setPlatform(platform.getTag());
         data.setAccountId(accountId.longValue());
+        for(final MatchReference reference : data.getMatches()) {
+            reference.setAccountId(accountId.longValue());
+        }
         return data;
     }
 

@@ -1,7 +1,9 @@
 package com.merakianalytics.orianna.types.core.match;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
@@ -9,17 +11,31 @@ import org.joda.time.Duration;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
+import com.merakianalytics.datapipelines.iterators.CloseableIterator;
+import com.merakianalytics.datapipelines.iterators.LazyList;
 import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.common.GameMode;
 import com.merakianalytics.orianna.types.common.GameType;
+import com.merakianalytics.orianna.types.common.Lane;
 import com.merakianalytics.orianna.types.common.Map;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Queue;
 import com.merakianalytics.orianna.types.common.Region;
+import com.merakianalytics.orianna.types.common.Role;
 import com.merakianalytics.orianna.types.common.Season;
+import com.merakianalytics.orianna.types.common.Side;
+import com.merakianalytics.orianna.types.common.Tier;
 import com.merakianalytics.orianna.types.core.GhostObject;
+import com.merakianalytics.orianna.types.core.searchable.Searchable;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
 import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
+import com.merakianalytics.orianna.types.core.staticdata.Champion;
+import com.merakianalytics.orianna.types.core.staticdata.Champions;
+import com.merakianalytics.orianna.types.core.staticdata.Item;
+import com.merakianalytics.orianna.types.core.staticdata.ProfileIcon;
+import com.merakianalytics.orianna.types.core.staticdata.SummonerSpell;
+import com.merakianalytics.orianna.types.core.staticdata.Versions;
+import com.merakianalytics.orianna.types.core.summoner.Summoner;
 import com.merakianalytics.orianna.types.data.match.MatchReference;
 
 public class Match extends GhostObject<com.merakianalytics.orianna.types.data.match.Match> {
@@ -61,8 +77,317 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
         }
     }
 
+    private class Participant extends com.merakianalytics.orianna.types.core.match.Participant {
+        private static final long serialVersionUID = -4802669460954679635L;
+
+        private final Supplier<Champion> champion = Suppliers.memoize(new Supplier<Champion>() {
+            @Override
+            public Champion get() {
+                Champion.Builder builder = Champion.withId(coreData.getChampionId()).withPlatform(Platform.withTag(coreData.getPlatform()));
+                if(coreData.getVersion() != null) {
+                    final String version = Versions.withPlatform(Platform.withTag(coreData.getPlatform())).get().truncate(coreData.getVersion());
+                    builder = builder.withVersion(version);
+                }
+                return builder.get();
+            }
+        });
+
+        private final Supplier<Summoner> preTransferSummoner = Suppliers.memoize(new Supplier<Summoner>() {
+            @Override
+            public Summoner get() {
+                load(MATCH_LOAD_GROUP);
+                return Summoner.withAccountId(coreData.getAccountId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
+            }
+        });
+
+        private final Supplier<ProfileIcon> profileIcon = Suppliers.memoize(new Supplier<ProfileIcon>() {
+            @Override
+            public ProfileIcon get() {
+                load(MATCH_LOAD_GROUP);
+                final String version = Versions.withPlatform(Platform.withTag(coreData.getPlatform())).get().truncate(coreData.getVersion());
+                return ProfileIcon.withId(coreData.getProfileIconId()).withPlatform(Platform.withTag(coreData.getPlatform())).withVersion(version)
+                    .get();
+            }
+        });
+
+        private final Supplier<ParticipantStats> stats = Suppliers.memoize(new Supplier<ParticipantStats>() {
+            @Override
+            public ParticipantStats get() {
+                load(MATCH_LOAD_GROUP);
+                return new ParticipantStats(coreData.getStats());
+            }
+        });
+
+        private final Supplier<Summoner> summoner = Suppliers.memoize(new Supplier<Summoner>() {
+            @Override
+            public Summoner get() {
+                final Summoner summoner =
+                    Summoner.withAccountId(coreData.getCurrentAccountId()).withPlatform(Platform.withTag(coreData.getCurrentPlatform())).get();
+                if(summoner.getCoreData().getName() == null && coreData.getSummonerName() != null) {
+                    summoner.getCoreData().setName(coreData.getSummonerName());
+                }
+                if(summoner.getCoreData().getId() == 0L && coreData.getSummonerId() != 0L) {
+                    summoner.getCoreData().setId(coreData.getSummonerId());
+                }
+                return summoner;
+            }
+        });
+
+        private final Supplier<SummonerSpell> summonerSpellD = Suppliers.memoize(new Supplier<SummonerSpell>() {
+            @Override
+            public SummonerSpell get() {
+                load(MATCH_LOAD_GROUP);
+                final String version = Versions.withPlatform(Platform.withTag(coreData.getPlatform())).get().truncate(coreData.getVersion());
+                return SummonerSpell.withId(coreData.getSummonerSpellDId()).withPlatform(Platform.withTag(coreData.getPlatform())).withVersion(version).get();
+            }
+        });
+
+        private final Supplier<SummonerSpell> summonerSpellF = Suppliers.memoize(new Supplier<SummonerSpell>() {
+            @Override
+            public SummonerSpell get() {
+                load(MATCH_LOAD_GROUP);
+                final String version = Versions.withPlatform(Platform.withTag(coreData.getPlatform())).get().truncate(coreData.getVersion());
+                return SummonerSpell.withId(coreData.getSummonerSpellDId()).withPlatform(Platform.withTag(coreData.getPlatform())).withVersion(version).get();
+            }
+        });
+
+        private final Supplier<com.merakianalytics.orianna.types.core.match.Team> team =
+            Suppliers.memoize(new Supplier<com.merakianalytics.orianna.types.core.match.Team>() {
+                @Override
+                public com.merakianalytics.orianna.types.core.match.Team get() {
+                    load(MATCH_LOAD_GROUP);
+                    return coreData.getTeam() == Side.BLUE.getId() ? getBlueTeam() : getRedTeam();
+                }
+            });
+
+        private final Supplier<ParticipantTimeline> timeline = Suppliers.memoize(new Supplier<ParticipantTimeline>() {
+            @Override
+            public ParticipantTimeline get() {
+                load(MATCH_LOAD_GROUP);
+                return new ParticipantTimeline(coreData.getTimeline());
+            }
+        });
+
+        private Participant(final com.merakianalytics.orianna.types.data.match.Participant coreData) {
+            super(coreData);
+        }
+
+        @Override
+        @Searchable({Champion.class, String.class, int.class})
+        public Champion getChampion() {
+            return champion.get();
+        }
+
+        @Override
+        public Tier getHighestTierInSeason() {
+            load(MATCH_LOAD_GROUP);
+            return Tier.valueOf(coreData.getHighestTierInSeason());
+        }
+
+        @Override
+        public Lane getLane() {
+            if(coreData.getLane() == null) {
+                load(MATCH_LOAD_GROUP);
+            }
+            return Lane.valueOf(coreData.getLane());
+        }
+
+        @Override
+        @Searchable({Summoner.class, String.class, long.class})
+        public Summoner getPreTransferSummoner() {
+            return preTransferSummoner.get();
+        }
+
+        @Override
+        public ProfileIcon getProfileIcon() {
+            return profileIcon.get();
+        }
+
+        @Override
+        public Role getRole() {
+            if(coreData.getRole() == null) {
+                load(MATCH_LOAD_GROUP);
+            }
+            return Role.valueOf(coreData.getRole());
+        }
+
+        @Override
+        @Searchable({Item.class, String.class, int.class})
+        public ParticipantStats getStats() {
+            return stats.get();
+        }
+
+        @Override
+        @Searchable({Summoner.class, String.class, long.class})
+        public Summoner getSummoner() {
+            return summoner.get();
+        }
+
+        @Override
+        public SummonerSpell getSummonerSpellD() {
+            return summonerSpellD.get();
+        }
+
+        @Override
+        public SummonerSpell getSummonerSpellF() {
+            return summonerSpellF.get();
+        }
+
+        @Override
+        public com.merakianalytics.orianna.types.core.match.Team getTeam() {
+            return team.get();
+        }
+
+        @Override
+        public ParticipantTimeline getTimeline() {
+            return timeline.get();
+        }
+    }
+
+    private class Team extends com.merakianalytics.orianna.types.core.match.Team {
+        private static final long serialVersionUID = -5787154563875265507L;
+
+        private final Supplier<SearchableList<Champion>> bans = Suppliers.memoize(new Supplier<SearchableList<Champion>>() {
+            @Override
+            public SearchableList<Champion> get() {
+                final String version = Versions.withPlatform(Platform.withTag(coreData.getPlatform())).get().truncate(coreData.getVersion());
+                return SearchableLists.unmodifiableFrom(
+                    Champions.withIds(coreData.getBans()).withPlatform(Platform.withTag(coreData.getPlatform())).withVersion(version).get());
+            }
+        });
+
+        private final Supplier<SearchableList<com.merakianalytics.orianna.types.core.match.Participant>> participants =
+            Suppliers.memoize(new Supplier<SearchableList<com.merakianalytics.orianna.types.core.match.Participant>>() {
+                @Override
+                public SearchableList<com.merakianalytics.orianna.types.core.match.Participant> get() {
+                    final List<com.merakianalytics.orianna.types.core.match.Participant> participants =
+                        new ArrayList<>(Match.this.getParticipants().size() / 2);
+                    for(final com.merakianalytics.orianna.types.core.match.Participant participant : Match.this.getParticipants()) {
+                        if(participant.getCoreData().getTeam() == coreData.getTeamId()) {
+                            participants.add(participant);
+                        }
+                    }
+                    return SearchableLists.unmodifiableFrom(participants);
+                }
+            });
+
+        private Team(final com.merakianalytics.orianna.types.data.match.Team coreData) {
+            super(coreData);
+        }
+
+        @Override
+        @Searchable({Champion.class, String.class, int.class})
+        public SearchableList<Champion> getBans() {
+            return bans.get();
+        }
+
+        @Override
+        public int getBaronKills() {
+            return coreData.getBaronKills();
+        }
+
+        @Override
+        public int getDominionScore() {
+            return coreData.getDominionScore();
+        }
+
+        @Override
+        public int getDragonKills() {
+            return coreData.getDragonKills();
+        }
+
+        @Override
+        public int getInhibitorKills() {
+            return coreData.getInhibitorKills();
+        }
+
+        @Override
+        @Searchable({Summoner.class, Champion.class, Item.class, String.class, long.class, int.class})
+        public SearchableList<com.merakianalytics.orianna.types.core.match.Participant> getParticipants() {
+            return participants.get();
+        }
+
+        @Override
+        public int getRiftHeraldKills() {
+            return coreData.getRiftHeraldKills();
+        }
+
+        @Override
+        public Side getSide() {
+            return Side.withId(coreData.getTeamId());
+        }
+
+        @Override
+        public int getTowerKills() {
+            return coreData.getTowerKills();
+        }
+
+        @Override
+        public int getVilemawKills() {
+            return coreData.getVilemawKills();
+        }
+
+        @Override
+        public boolean isFirstBaronKiller() {
+            return coreData.isFirstBaronKiller();
+        }
+
+        @Override
+        public boolean isFirstBloodKiller() {
+            return coreData.isFirstBloodKiller();
+        }
+
+        @Override
+        public boolean isFirstDragonKiller() {
+            return coreData.isFirstDragonKiller();
+        }
+
+        @Override
+        public boolean isFirstInhibitorKiller() {
+            return coreData.isFirstInhibitorKiller();
+        }
+
+        @Override
+        public boolean isFirstRiftHeraldKiller() {
+            return coreData.isFirstRiftHeraldKiller();
+        }
+
+        @Override
+        public boolean isFirstTowerKiller() {
+            return coreData.isFirstTowerKiller();
+        }
+
+        @Override
+        public boolean isWinner() {
+            return coreData.isWinner();
+        }
+    }
+
     public static final String MATCH_LOAD_GROUP = "match";
     private static final long serialVersionUID = -9106364274355437548L;
+
+    private static void replaceData(final com.merakianalytics.orianna.types.data.match.Participant from,
+        final com.merakianalytics.orianna.types.data.match.Participant to) {
+        to.setAccountId(from.getAccountId());
+        to.setChampionId(from.getChampionId());
+        to.setCurrentAccountId(from.getCurrentAccountId());
+        to.setCurrentPlatform(from.getCurrentPlatform());
+        to.setHighestTierInSeason(from.getHighestTierInSeason());
+        to.setLane(from.getLane());
+        to.setMatchHistoryURI(from.getMatchHistoryURI());
+        to.setParticipantId(from.getParticipantId());
+        to.setPlatform(from.getPlatform());
+        to.setProfileIconId(from.getProfileIconId());
+        to.setRole(from.getRole());
+        to.setStats(from.getStats());
+        to.setSummonerId(from.getSummonerId());
+        to.setSummonerName(from.getSummonerName());
+        to.setSummonerSpellDId(from.getSummonerSpellDId());
+        to.setSummonerSpellFId(from.getSummonerSpellFId());
+        to.setTeam(from.getTeam());
+        to.setTimeline(from.getTimeline());
+        to.setVersion(from.getVersion());
+    }
 
     private static com.merakianalytics.orianna.types.data.match.Match toMatchData(final MatchReference reference) {
         final com.merakianalytics.orianna.types.data.match.Match coreData = new com.merakianalytics.orianna.types.data.match.Match();
@@ -71,6 +396,17 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
         coreData.setCreationTime(reference.getCreationTime());
         coreData.setId(reference.getId());
         coreData.setPlatform(reference.getPlatform());
+
+        final com.merakianalytics.orianna.types.data.match.Participant participant = new com.merakianalytics.orianna.types.data.match.Participant();
+        participant.setCurrentAccountId(reference.getAccountId());
+        participant.setChampionId(reference.getChampionId());
+        participant.setLane(reference.getLane());
+        participant.setRole(reference.getRole());
+
+        final List<com.merakianalytics.orianna.types.data.match.Participant> participants = new ArrayList<>(1);
+        participants.add(participant);
+        coreData.setParticipants(participants);
+
         return coreData;
     }
 
@@ -78,43 +414,84 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
         return new Builder(id);
     }
 
-    private final Supplier<Team> blueTeam = Suppliers.memoize(new Supplier<Team>() {
-        @Override
-        public Team get() {
-            load(MATCH_LOAD_GROUP);
-            return new Team(coreData.getBlueTeam(), Match.this);
-        }
-    });
-
-    private final Supplier<SearchableList<Participant>> participants = Suppliers.memoize(new Supplier<SearchableList<Participant>>() {
-        @Override
-        public SearchableList<Participant> get() {
-            load(MATCH_LOAD_GROUP);
-            final List<Participant> participants = new ArrayList<>(coreData.getParticipants().size());
-            for(final com.merakianalytics.orianna.types.data.match.Participant participant : coreData.getParticipants()) {
-                participants.add(new Participant(participant, Match.this));
+    private final Supplier<com.merakianalytics.orianna.types.core.match.Team> blueTeam =
+        Suppliers.memoize(new Supplier<com.merakianalytics.orianna.types.core.match.Team>() {
+            @Override
+            public com.merakianalytics.orianna.types.core.match.Team get() {
+                load(MATCH_LOAD_GROUP);
+                return new Team(coreData.getBlueTeam());
             }
-            return SearchableLists.unmodifiableFrom(participants);
-        }
-    });
+        });
 
-    private final Supplier<Team> redTeam = Suppliers.memoize(new Supplier<Team>() {
-        @Override
-        public Team get() {
-            load(MATCH_LOAD_GROUP);
-            return new Team(coreData.getRedTeam(), Match.this);
-        }
-    });
+    private final boolean fromReference;
+
+    private final Supplier<SearchableList<com.merakianalytics.orianna.types.core.match.Participant>> participants =
+        Suppliers.memoize(new Supplier<SearchableList<com.merakianalytics.orianna.types.core.match.Participant>>() {
+            @Override
+            public SearchableList<com.merakianalytics.orianna.types.core.match.Participant> get() {
+                if(!fromReference) {
+                    load(MATCH_LOAD_GROUP);
+                    final List<com.merakianalytics.orianna.types.core.match.Participant> participants = new ArrayList<>(coreData.getParticipants().size());
+                    for(final com.merakianalytics.orianna.types.data.match.Participant participant : coreData.getParticipants()) {
+                        participants.add(new Participant(participant));
+                    }
+                    return SearchableLists.unmodifiableFrom(participants);
+                } else {
+                    final CloseableIterator<com.merakianalytics.orianna.types.core.match.Participant> iterator =
+                        new CloseableIterator<com.merakianalytics.orianna.types.core.match.Participant>() {
+                            private ListIterator<com.merakianalytics.orianna.types.data.match.Participant> iterator = coreData.getParticipants().listIterator();
+
+                            @Override
+                            public void close() {}
+
+                            @Override
+                            public boolean hasNext() {
+                                if(iterator.hasNext()) {
+                                    return true;
+                                }
+                                load(MATCH_LOAD_GROUP);
+                                iterator = coreData.getParticipants().listIterator(iterator.nextIndex());
+                                return iterator.hasNext();
+                            }
+
+                            @Override
+                            public Participant next() {
+                                if(!hasNext()) {
+                                    return null;
+                                }
+                                return new Participant(iterator.next());
+                            }
+
+                            @Override
+                            public void remove() {
+                                throw new UnsupportedOperationException();
+                            }
+                        };
+                    return SearchableLists.unmodifiableFrom(new LazyList<>(iterator));
+                }
+            }
+        });
+
+    private final Supplier<com.merakianalytics.orianna.types.core.match.Team> redTeam =
+        Suppliers.memoize(new Supplier<com.merakianalytics.orianna.types.core.match.Team>() {
+            @Override
+            public com.merakianalytics.orianna.types.core.match.Team get() {
+                load(MATCH_LOAD_GROUP);
+                return new Team(coreData.getRedTeam());
+            }
+        });
 
     public Match(final com.merakianalytics.orianna.types.data.match.Match coreData) {
         super(coreData, 1);
+        fromReference = false;
     }
 
     public Match(final MatchReference reference) {
         super(toMatchData(reference), 1);
+        fromReference = true;
     }
 
-    public Team getBlueTeam() {
+    public com.merakianalytics.orianna.types.core.match.Team getBlueTeam() {
         return blueTeam.get();
     }
 
@@ -144,7 +521,7 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
         return GameMode.valueOf(coreData.getMode());
     }
 
-    public SearchableList<Participant> getParticipants() {
+    public SearchableList<com.merakianalytics.orianna.types.core.match.Participant> getParticipants() {
         return participants.get();
     }
 
@@ -159,7 +536,7 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
         return Queue.withId(coreData.getQueue());
     }
 
-    public Team getRedTeam() {
+    public com.merakianalytics.orianna.types.core.match.Team getRedTeam() {
         return redTeam.get();
     }
 
@@ -203,7 +580,25 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
                 if(coreData.getTournamentCode() != null) {
                     builder.put("tournamentCode", coreData.getTournamentCode());
                 }
-                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.match.Match.class, builder.build());
+
+                if(!fromReference) {
+                    coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.match.Match.class, builder.build());
+                } else {
+                    final com.merakianalytics.orianna.types.data.match.Match data =
+                        Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.match.Match.class, builder.build());
+                    final com.merakianalytics.orianna.types.data.match.Participant fromReference = coreData.getParticipants().get(0);
+                    final Iterator<com.merakianalytics.orianna.types.data.match.Participant> iterator = data.getParticipants().iterator();
+                    while(iterator.hasNext()) {
+                        final com.merakianalytics.orianna.types.data.match.Participant participant = iterator.next();
+                        if(participant.getCurrentAccountId() == fromReference.getCurrentAccountId()) {
+                            replaceData(participant, fromReference);
+                            iterator.remove();
+                            break;
+                        }
+                    }
+                    data.getParticipants().add(0, fromReference);
+                    coreData = data;
+                }
                 break;
             default:
                 break;

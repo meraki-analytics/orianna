@@ -74,4 +74,32 @@ public class Versions extends GhostObject.ListProxy<String, String, com.merakian
                 break;
         }
     }
+
+    public String truncate(final String targetVersion) {
+        String[] parts = targetVersion.split("\\.");
+        final int targetMajor = Integer.parseInt(parts[0]);
+        final int targetMinor = Integer.parseInt(parts[1]);
+        final int targetPatch = Integer.parseInt(parts[2]);
+
+        for(int i = 0; i < size(); i++) {
+            parts = this.get(i).split("\\.");
+            final int major = Integer.parseInt(parts[0]);
+            if(major > targetMajor) {
+                continue;
+            }
+
+            final int minor = Integer.parseInt(parts[1]);
+            if(minor > targetMinor) {
+                continue;
+            }
+
+            final int patch = Integer.parseInt(parts[2]);
+            if(patch > targetPatch) {
+                continue;
+            }
+
+            return this.get(i); // Since the versions are ordered, this is the first version <= the target.
+        }
+        return null;
+    }
 }

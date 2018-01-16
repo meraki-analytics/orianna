@@ -5,13 +5,9 @@ import com.merakianalytics.orianna.types.dto.DataObject;
 public class MatchReference extends DataObject {
     private static final long serialVersionUID = 1703644943475245715L;
     private int champion, season, queue;
-    private long gameId, timestamp;
+    private long gameId, timestamp, accountId;
     private String lane, platformId, role;
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(final Object obj) {
         if(this == obj) {
@@ -24,6 +20,9 @@ public class MatchReference extends DataObject {
             return false;
         }
         final MatchReference other = (MatchReference)obj;
+        if(accountId != other.accountId) {
+            return false;
+        }
         if(champion != other.champion) {
             return false;
         }
@@ -61,6 +60,13 @@ public class MatchReference extends DataObject {
             return false;
         }
         return true;
+    }
+
+    /**
+     * @return the accountId
+     */
+    public long getAccountId() {
+        return accountId;
     }
 
     /**
@@ -119,14 +125,11 @@ public class MatchReference extends DataObject {
         return timestamp;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + (int)(accountId ^ accountId >>> 32);
         result = prime * result + champion;
         result = prime * result + (int)(gameId ^ gameId >>> 32);
         result = prime * result + (lane == null ? 0 : lane.hashCode());
@@ -136,6 +139,14 @@ public class MatchReference extends DataObject {
         result = prime * result + season;
         result = prime * result + (int)(timestamp ^ timestamp >>> 32);
         return result;
+    }
+
+    /**
+     * @param accountId
+     *        the accountId to set
+     */
+    public void setAccountId(final long accountId) {
+        this.accountId = accountId;
     }
 
     /**

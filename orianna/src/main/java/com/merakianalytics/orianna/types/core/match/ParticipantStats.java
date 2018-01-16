@@ -15,6 +15,7 @@ import com.merakianalytics.orianna.types.core.searchable.SearchableList;
 import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
 import com.merakianalytics.orianna.types.core.staticdata.Items;
+import com.merakianalytics.orianna.types.core.staticdata.Versions;
 
 public class ParticipantStats extends OriannaObject<com.merakianalytics.orianna.types.data.match.ParticipantStats> {
     private static final long serialVersionUID = -989098350329762392L;
@@ -22,8 +23,9 @@ public class ParticipantStats extends OriannaObject<com.merakianalytics.orianna.
     private final Supplier<SearchableList<Item>> items = Suppliers.memoize(new Supplier<SearchableList<Item>>() {
         @Override
         public SearchableList<Item> get() {
+            final String version = Versions.withPlatform(Platform.withTag(coreData.getPlatform())).get().truncate(coreData.getVersion());
             return SearchableLists.unmodifiableFrom(
-                Items.withIds(coreData.getItems()).withPlatform(Platform.withTag(coreData.getPlatform())).withVersion(coreData.getVersion()).get());
+                Items.withIds(coreData.getItems()).withPlatform(Platform.withTag(coreData.getPlatform())).withVersion(version).get());
         }
     });
 

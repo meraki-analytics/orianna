@@ -68,17 +68,11 @@ public class MatchTransformer extends AbstractDataTransformer {
         return totals;
     }
 
-    private static String getValidVersion(final String fullVersion) {
-        // TODO: Maybe we should have this compare against the Versions list for validity? For now let's just do this even though it's not perfect.
-        final String[] parts = fullVersion.split("\\.");
-        return parts[0] + "." + parts[1] + "." + parts[2].charAt(0);
-    }
-
     @Transform(from = com.merakianalytics.orianna.types.dto.match.Match.class, to = Match.class)
     public Match transform(final com.merakianalytics.orianna.types.dto.match.Match item, final PipelineContext context) {
         final Object previousDuration = context.put("duration", item.getGameDuration());
         final Object previousPlatform = context.put("platform", item.getPlatformId());
-        final Object previousVersion = context.put("version", getValidVersion(item.getGameVersion()));
+        final Object previousVersion = context.put("version", item.getGameVersion());
         final Match match = new Match();
         for(final TeamStats team : item.getTeams()) {
             if(com.merakianalytics.orianna.types.common.Side.BLUE.getId() == team.getTeamId()) {
@@ -124,6 +118,7 @@ public class MatchTransformer extends AbstractDataTransformer {
     @Transform(from = com.merakianalytics.orianna.types.dto.match.MatchReference.class, to = MatchReference.class)
     public MatchReference transform(final com.merakianalytics.orianna.types.dto.match.MatchReference item, final PipelineContext context) {
         final MatchReference reference = new MatchReference();
+        reference.setAccountId(item.getAccountId());
         reference.setChampionId(item.getChampion());
         reference.setCreationTime(new DateTime(item.getTimestamp()));
         reference.setId(item.getGameId());
@@ -583,6 +578,7 @@ public class MatchTransformer extends AbstractDataTransformer {
     @Transform(from = MatchReference.class, to = com.merakianalytics.orianna.types.dto.match.MatchReference.class)
     public com.merakianalytics.orianna.types.dto.match.MatchReference transform(final MatchReference item, final PipelineContext context) {
         final com.merakianalytics.orianna.types.dto.match.MatchReference reference = new com.merakianalytics.orianna.types.dto.match.MatchReference();
+        reference.setAccountId(item.getAccountId());
         reference.setChampion(item.getChampionId());
         reference.setTimestamp(item.getCreationTime().getMillis());
         reference.setGameId(item.getId());

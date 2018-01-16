@@ -1,120 +1,53 @@
 package com.merakianalytics.orianna.types.core.match;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
-import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Side;
 import com.merakianalytics.orianna.types.core.OriannaObject;
 import com.merakianalytics.orianna.types.core.searchable.Searchable;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
-import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
-import com.merakianalytics.orianna.types.core.staticdata.Champions;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
-public class Team extends OriannaObject<com.merakianalytics.orianna.types.data.match.Team> {
-    private static final long serialVersionUID = -5787154563875265507L;
+public abstract class Team extends OriannaObject<com.merakianalytics.orianna.types.data.match.Team> {
+    private static final long serialVersionUID = -5161738749707752541L;
 
-    private final Supplier<SearchableList<Champion>> bans = Suppliers.memoize(new Supplier<SearchableList<Champion>>() {
-        @Override
-        public SearchableList<Champion> get() {
-            return SearchableLists.unmodifiableFrom(
-                Champions.withIds(coreData.getBans()).withPlatform(Platform.withTag(coreData.getPlatform())).withVersion(coreData.getVersion()).get());
-        }
-    });
-
-    private Match match;
-
-    private final Supplier<SearchableList<Participant>> participants = Suppliers.memoize(new Supplier<SearchableList<Participant>>() {
-        @Override
-        public SearchableList<Participant> get() {
-            final List<Participant> participants = new ArrayList<>(match.getParticipants().size() / 2);
-            for(final Participant participant : match.getParticipants()) {
-                if(participant.getCoreData().getTeam() == coreData.getTeamId()) {
-                    participants.add(participant);
-                }
-            }
-            match = null;
-            return SearchableLists.unmodifiableFrom(participants);
-        }
-    });
-
-    public Team(final com.merakianalytics.orianna.types.data.match.Team coreData, final Match match) {
+    public Team(final com.merakianalytics.orianna.types.data.match.Team coreData) {
         super(coreData);
-        this.match = match;
     }
 
     @Searchable({Champion.class, String.class, int.class})
-    public SearchableList<Champion> getBans() {
-        return bans.get();
-    }
+    public abstract SearchableList<Champion> getBans();
 
-    public int getBaronKills() {
-        return coreData.getBaronKills();
-    }
+    public abstract int getBaronKills();
 
-    public int getDominionScore() {
-        return coreData.getDominionScore();
-    }
+    public abstract int getDominionScore();
 
-    public int getDragonKills() {
-        return coreData.getDragonKills();
-    }
+    public abstract int getDragonKills();
 
-    public int getInhibitorKills() {
-        return coreData.getInhibitorKills();
-    }
+    public abstract int getInhibitorKills();
 
     @Searchable({Summoner.class, Champion.class, Item.class, String.class, long.class, int.class})
-    public SearchableList<Participant> getParticipants() {
-        return participants.get();
-    }
+    public abstract SearchableList<Participant> getParticipants();
 
-    public int getRiftHeraldKills() {
-        return coreData.getRiftHeraldKills();
-    }
+    public abstract int getRiftHeraldKills();
 
-    public Side getSide() {
-        return Side.withId(coreData.getTeamId());
-    }
+    public abstract Side getSide();
 
-    public int getTowerKills() {
-        return coreData.getTowerKills();
-    }
+    public abstract int getTowerKills();
 
-    public int getVilemawKills() {
-        return coreData.getVilemawKills();
-    }
+    public abstract int getVilemawKills();
 
-    public boolean isFirstBaronKiller() {
-        return coreData.isFirstBaronKiller();
-    }
+    public abstract boolean isFirstBaronKiller();
 
-    public boolean isFirstBloodKiller() {
-        return coreData.isFirstBloodKiller();
-    }
+    public abstract boolean isFirstBloodKiller();
 
-    public boolean isFirstDragonKiller() {
-        return coreData.isFirstDragonKiller();
-    }
+    public abstract boolean isFirstDragonKiller();
 
-    public boolean isFirstInhibitorKiller() {
-        return coreData.isFirstInhibitorKiller();
-    }
+    public abstract boolean isFirstInhibitorKiller();
 
-    public boolean isFirstRiftHeraldKiller() {
-        return coreData.isFirstRiftHeraldKiller();
-    }
+    public abstract boolean isFirstRiftHeraldKiller();
 
-    public boolean isFirstTowerKiller() {
-        return coreData.isFirstTowerKiller();
-    }
+    public abstract boolean isFirstTowerKiller();
 
-    public boolean isWinner() {
-        return coreData.isWinner();
-    }
+    public abstract boolean isWinner();
 }

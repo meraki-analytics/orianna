@@ -8,62 +8,14 @@ public class MatchReference extends CoreData {
     private static final long serialVersionUID = 4335607675750328222L;
     private int championId, queue, season;
     private DateTime creationTime;
-    private long id;
+    private long id, accountId;
     private String lane, platform, role;
 
-    @Override
-    public boolean equals(final Object obj) {
-        if(this == obj) {
-            return true;
-        }
-        if(obj == null) {
-            return false;
-        }
-        if(getClass() != obj.getClass()) {
-            return false;
-        }
-        final MatchReference other = (MatchReference)obj;
-        if(championId != other.championId) {
-            return false;
-        }
-        if(creationTime == null) {
-            if(other.creationTime != null) {
-                return false;
-            }
-        } else if(!creationTime.equals(other.creationTime)) {
-            return false;
-        }
-        if(id != other.id) {
-            return false;
-        }
-        if(lane == null) {
-            if(other.lane != null) {
-                return false;
-            }
-        } else if(!lane.equals(other.lane)) {
-            return false;
-        }
-        if(platform == null) {
-            if(other.platform != null) {
-                return false;
-            }
-        } else if(!platform.equals(other.platform)) {
-            return false;
-        }
-        if(queue != other.queue) {
-            return false;
-        }
-        if(role == null) {
-            if(other.role != null) {
-                return false;
-            }
-        } else if(!role.equals(other.role)) {
-            return false;
-        }
-        if(season != other.season) {
-            return false;
-        }
-        return true;
+    /**
+     * @return the accountId
+     */
+    public long getAccountId() {
+        return accountId;
     }
 
     /**
@@ -122,19 +74,12 @@ public class MatchReference extends CoreData {
         return season;
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + championId;
-        result = prime * result + (creationTime == null ? 0 : creationTime.hashCode());
-        result = prime * result + (int)(id ^ id >>> 32);
-        result = prime * result + (lane == null ? 0 : lane.hashCode());
-        result = prime * result + (platform == null ? 0 : platform.hashCode());
-        result = prime * result + queue;
-        result = prime * result + (role == null ? 0 : role.hashCode());
-        result = prime * result + season;
-        return result;
+    /**
+     * @param accountId
+     *        the accountId to set
+     */
+    public void setAccountId(final long accountId) {
+        this.accountId = accountId;
     }
 
     /**
