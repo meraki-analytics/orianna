@@ -209,14 +209,7 @@ public class SummonerSpells extends GhostObject.ListProxy<SummonerSpell, com.mer
     });
 
     public SummonerSpells(final com.merakianalytics.orianna.types.data.staticdata.SummonerSpells coreData) {
-        super(coreData, 1, new Function<com.merakianalytics.orianna.types.data.staticdata.SummonerSpell, SummonerSpell>() {
-            @Override
-            public SummonerSpell apply(final com.merakianalytics.orianna.types.data.staticdata.SummonerSpell data) {
-                final SummonerSpell spell = new SummonerSpell(data);
-                spell.markAsGhostLoaded(SummonerSpell.SUMMONER_SPELL_LOAD_GROUP);
-                return spell;
-            }
-        });
+        super(coreData, 1);
     }
 
     public Set<String> getIncludedData() {
@@ -263,7 +256,14 @@ public class SummonerSpells extends GhostObject.ListProxy<SummonerSpell, com.mer
                     builder.put("includedData", coreData.getIncludedData());
                 }
                 coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.SummonerSpells.class, builder.build());
-                loadListProxyData();
+                loadListProxyData(new Function<com.merakianalytics.orianna.types.data.staticdata.SummonerSpell, SummonerSpell>() {
+                    @Override
+                    public SummonerSpell apply(final com.merakianalytics.orianna.types.data.staticdata.SummonerSpell data) {
+                        final SummonerSpell spell = new SummonerSpell(data);
+                        spell.markAsGhostLoaded(SummonerSpell.SUMMONER_SPELL_LOAD_GROUP);
+                        return spell;
+                    }
+                });
                 break;
             default:
                 break;

@@ -22,6 +22,7 @@ import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Queue;
 import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.common.Role;
+import com.merakianalytics.orianna.types.common.RunePath;
 import com.merakianalytics.orianna.types.common.Season;
 import com.merakianalytics.orianna.types.common.Side;
 import com.merakianalytics.orianna.types.common.Tier;
@@ -32,6 +33,7 @@ import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Champions;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
+import com.merakianalytics.orianna.types.core.staticdata.Items;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcon;
 import com.merakianalytics.orianna.types.core.staticdata.SummonerSpell;
 import com.merakianalytics.orianna.types.core.staticdata.Versions;
@@ -92,6 +94,16 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
             }
         });
 
+        private final Supplier<SearchableList<Item>> items = Suppliers.memoize(new Supplier<SearchableList<Item>>() {
+            @Override
+            public SearchableList<Item> get() {
+                load(MATCH_LOAD_GROUP);
+                final String version = Versions.withPlatform(Platform.withTag(coreData.getPlatform())).get().truncate(coreData.getVersion());
+                return SearchableLists.unmodifiableFrom(
+                    Items.withIds(coreData.getItems()).withPlatform(Platform.withTag(coreData.getPlatform())).withVersion(version).get());
+            }
+        });
+
         private final Supplier<Summoner> preTransferSummoner = Suppliers.memoize(new Supplier<Summoner>() {
             @Override
             public Summoner get() {
@@ -107,6 +119,18 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
                 final String version = Versions.withPlatform(Platform.withTag(coreData.getPlatform())).get().truncate(coreData.getVersion());
                 return ProfileIcon.withId(coreData.getProfileIconId()).withPlatform(Platform.withTag(coreData.getPlatform())).withVersion(version)
                     .get();
+            }
+        });
+
+        private final Supplier<SearchableList<RuneStats>> runeStats = Suppliers.memoize(new Supplier<SearchableList<RuneStats>>() {
+            @Override
+            public SearchableList<RuneStats> get() {
+                load(MATCH_LOAD_GROUP);
+                final List<RuneStats> runeStats = new ArrayList<>(coreData.getRuneStats().size());
+                for(final com.merakianalytics.orianna.types.data.match.RuneStats stats : coreData.getRuneStats()) {
+                    runeStats.add(new RuneStats(stats));
+                }
+                return SearchableLists.unmodifiableFrom(runeStats);
             }
         });
 
@@ -185,6 +209,12 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
         }
 
         @Override
+        @Searchable({Item.class, String.class, int.class})
+        public SearchableList<Item> getItems() {
+            return items.get();
+        }
+
+        @Override
         public Lane getLane() {
             if(coreData.getLane() == null) {
                 load(MATCH_LOAD_GROUP);
@@ -196,6 +226,12 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
         @Searchable({Summoner.class, String.class, long.class})
         public Summoner getPreTransferSummoner() {
             return preTransferSummoner.get();
+        }
+
+        @Override
+        public RunePath getPrimaryRunePath() {
+            load(MATCH_LOAD_GROUP);
+            return RunePath.withId(coreData.getPrimaryRunePath());
         }
 
         @Override
@@ -212,7 +248,18 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
         }
 
         @Override
-        @Searchable({Item.class, String.class, int.class})
+        @Searchable({int.class})
+        public SearchableList<RuneStats> getRuneStats() {
+            return runeStats.get();
+        }
+
+        @Override
+        public RunePath getSecondaryRunePath() {
+            load(MATCH_LOAD_GROUP);
+            return RunePath.withId(coreData.getSecondaryRunePath());
+        }
+
+        @Override
         public ParticipantStats getStats() {
             return stats.get();
         }
@@ -481,6 +528,13 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
             }
         });
 
+    private final Supplier<Timeline> timeline = Suppliers.memoize(new Supplier<Timeline>() {
+        @Override
+        public Timeline get() {
+            return Timeline.withId(coreData.getId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
+        }
+    });
+
     public Match(final com.merakianalytics.orianna.types.data.match.Match coreData) {
         super(coreData, 1);
         fromReference = false;
@@ -549,6 +603,10 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
             load(MATCH_LOAD_GROUP);
         }
         return Season.withId(coreData.getSeason());
+    }
+
+    public Timeline getTimeline() {
+        return timeline.get();
     }
 
     public String getTournamentCode() {

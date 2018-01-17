@@ -153,14 +153,7 @@ public class ProfileIcons extends GhostObject.ListProxy<ProfileIcon, com.merakia
     }
 
     public ProfileIcons(final com.merakianalytics.orianna.types.data.staticdata.ProfileIcons coreData) {
-        super(coreData, 1, new Function<com.merakianalytics.orianna.types.data.staticdata.ProfileIcon, ProfileIcon>() {
-            @Override
-            public ProfileIcon apply(final com.merakianalytics.orianna.types.data.staticdata.ProfileIcon data) {
-                final ProfileIcon icon = new ProfileIcon(data);
-                icon.markAsGhostLoaded(ProfileIcon.PROFILE_ICON_LOAD_GROUP);
-                return icon;
-            }
-        });
+        super(coreData, 1);
     }
 
     public String getLocale() {
@@ -200,7 +193,14 @@ public class ProfileIcons extends GhostObject.ListProxy<ProfileIcon, com.merakia
                     builder.put("locale", coreData.getLocale());
                 }
                 coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.ProfileIcons.class, builder.build());
-                loadListProxyData();
+                loadListProxyData(new Function<com.merakianalytics.orianna.types.data.staticdata.ProfileIcon, ProfileIcon>() {
+                    @Override
+                    public ProfileIcon apply(final com.merakianalytics.orianna.types.data.staticdata.ProfileIcon data) {
+                        final ProfileIcon icon = new ProfileIcon(data);
+                        icon.markAsGhostLoaded(ProfileIcon.PROFILE_ICON_LOAD_GROUP);
+                        return icon;
+                    }
+                });
                 break;
             default:
                 break;

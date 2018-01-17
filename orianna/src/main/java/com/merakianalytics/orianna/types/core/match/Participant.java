@@ -2,9 +2,11 @@ package com.merakianalytics.orianna.types.core.match;
 
 import com.merakianalytics.orianna.types.common.Lane;
 import com.merakianalytics.orianna.types.common.Role;
+import com.merakianalytics.orianna.types.common.RunePath;
 import com.merakianalytics.orianna.types.common.Tier;
 import com.merakianalytics.orianna.types.core.OriannaObject;
 import com.merakianalytics.orianna.types.core.searchable.Searchable;
+import com.merakianalytics.orianna.types.core.searchable.SearchableList;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcon;
@@ -23,16 +25,25 @@ public abstract class Participant extends OriannaObject<com.merakianalytics.oria
 
     public abstract Tier getHighestTierInSeason();
 
+    @Searchable({Item.class, String.class, int.class})
+    public abstract SearchableList<Item> getItems();
+
     public abstract Lane getLane();
 
     @Searchable({Summoner.class, String.class, long.class})
     public abstract Summoner getPreTransferSummoner();
 
+    public abstract RunePath getPrimaryRunePath();
+
     public abstract ProfileIcon getProfileIcon();
 
     public abstract Role getRole();
 
-    @Searchable({Item.class, String.class, int.class})
+    @Searchable({int.class})
+    public abstract SearchableList<RuneStats> getRuneStats();
+
+    public abstract RunePath getSecondaryRunePath();
+
     public abstract ParticipantStats getStats();
 
     @Searchable({Summoner.class, String.class, long.class})

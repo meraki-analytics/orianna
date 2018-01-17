@@ -22,6 +22,8 @@ import com.merakianalytics.orianna.types.core.championmastery.ChampionMasterySco
 import com.merakianalytics.orianna.types.core.league.League;
 import com.merakianalytics.orianna.types.core.league.LeaguePositions;
 import com.merakianalytics.orianna.types.core.match.Match;
+import com.merakianalytics.orianna.types.core.match.Timeline;
+import com.merakianalytics.orianna.types.core.match.TournamentMatches;
 import com.merakianalytics.orianna.types.core.spectator.CurrentGame;
 import com.merakianalytics.orianna.types.core.spectator.FeaturedGames;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
@@ -714,6 +716,35 @@ public class GhostObjectSource extends AbstractDataSource {
     }
 
     @SuppressWarnings("unchecked")
+    @GetMany(Match.class)
+    public CloseableIterator<Match> getManyMatch(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        final Iterable<Number> matchIds = (Iterable<Number>)query.get("matchIds");
+        Utilities.checkNotNull(platform, "platform", matchIds, "matchIds");
+
+        final Iterator<Number> iterator = matchIds.iterator();
+        return CloseableIterators.from(new Iterator<Match>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Match next() {
+                final com.merakianalytics.orianna.types.data.match.Match data = new com.merakianalytics.orianna.types.data.match.Match();
+                data.setPlatform(platform.getTag());
+                data.setId(iterator.next().longValue());
+                return new Match(data);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
     @GetMany(ProfileIcon.class)
     public CloseableIterator<ProfileIcon> getManyProfileIcon(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
@@ -918,6 +949,65 @@ public class GhostObjectSource extends AbstractDataSource {
                     return null;
                 }
                 return new SummonerSpell(data);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    @GetMany(Timeline.class)
+    public CloseableIterator<Timeline> getManyTimeline(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        final Iterable<Number> matchIds = (Iterable<Number>)query.get("matchIds");
+        Utilities.checkNotNull(platform, "platform", matchIds, "matchIds");
+
+        final Iterator<Number> iterator = matchIds.iterator();
+        return CloseableIterators.from(new Iterator<Timeline>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Timeline next() {
+                final com.merakianalytics.orianna.types.data.match.Timeline data = new com.merakianalytics.orianna.types.data.match.Timeline();
+                data.setPlatform(platform.getTag());
+                data.setId(iterator.next().longValue());
+                return new Timeline(data);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    @GetMany(TournamentMatches.class)
+    public CloseableIterator<TournamentMatches> getManyTournamentMatches(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        final Iterable<String> tournamentCodes = (Iterable<String>)query.get("tournamentCodes");
+        Utilities.checkNotNull(platform, "platform", tournamentCodes, "tournamentCodes");
+
+        final Iterator<String> iterator = tournamentCodes.iterator();
+        return CloseableIterators.from(new Iterator<TournamentMatches>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public TournamentMatches next() {
+                final com.merakianalytics.orianna.types.data.match.TournamentMatches data =
+                    new com.merakianalytics.orianna.types.data.match.TournamentMatches();
+                data.setPlatform(platform.getTag());
+                data.setTournamentCode(iterator.next());
+                return new TournamentMatches(data);
             }
 
             @Override
@@ -1187,6 +1277,32 @@ public class GhostObjectSource extends AbstractDataSource {
         data.setLocale(locale);
         data.setIncludedData(includedData);
         return new SummonerSpells(data);
+    }
+
+    @Get(Timeline.class)
+    public Timeline getTimeline(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        final Number matchId = (Number)query.get("matchId");
+        Utilities.checkNotNull(platform, "platform", matchId, "matchId");
+
+        final com.merakianalytics.orianna.types.data.match.Timeline data =
+            new com.merakianalytics.orianna.types.data.match.Timeline();
+        data.setPlatform(platform.getTag());
+        data.setId(matchId.longValue());
+        return new Timeline(data);
+    }
+
+    @Get(TournamentMatches.class)
+    public TournamentMatches getTournamentMatches(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        final String tournamentCode = (String)query.get("tournamentCode");
+        Utilities.checkNotNull(platform, "platform", tournamentCode, "tournamentCode");
+
+        final com.merakianalytics.orianna.types.data.match.TournamentMatches data =
+            new com.merakianalytics.orianna.types.data.match.TournamentMatches();
+        data.setPlatform(platform.getTag());
+        data.setTournamentCode(tournamentCode);
+        return new TournamentMatches(data);
     }
 
     @Get(VerificationString.class)

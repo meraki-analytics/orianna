@@ -51,6 +51,10 @@ import com.merakianalytics.orianna.types.core.league.League;
 import com.merakianalytics.orianna.types.core.league.LeaguePositions;
 import com.merakianalytics.orianna.types.core.league.Leagues;
 import com.merakianalytics.orianna.types.core.match.Match;
+import com.merakianalytics.orianna.types.core.match.Matches;
+import com.merakianalytics.orianna.types.core.match.Timeline;
+import com.merakianalytics.orianna.types.core.match.Timelines;
+import com.merakianalytics.orianna.types.core.match.TournamentMatches;
 import com.merakianalytics.orianna.types.core.spectator.CurrentGame;
 import com.merakianalytics.orianna.types.core.spectator.CurrentGames;
 import com.merakianalytics.orianna.types.core.spectator.FeaturedGames;
@@ -632,6 +636,14 @@ public abstract class Orianna {
         return Mastery.withId(id);
     }
 
+    public static Matches.Builder matchesWithIds(final Iterable<Long> ids) {
+        return Matches.withIds(ids);
+    }
+
+    public static Matches.Builder matchesWithIds(final long... ids) {
+        return Matches.withIds(ids);
+    }
+
     public static Match.Builder matchWithId(final long id) {
         return Match.withId(id);
     }
@@ -802,6 +814,30 @@ public abstract class Orianna {
 
     public static Summoner.Builder summonerWithId(final long id) {
         return Summoner.withId(id);
+    }
+
+    public static Timelines.Builder timelinesWithIds(final Iterable<Long> ids) {
+        return Timelines.withIds(ids);
+    }
+
+    public static Timelines.Builder timelinesWithIds(final long... ids) {
+        return Timelines.withIds(ids);
+    }
+
+    public static Timeline.Builder timelineWithId(final long id) {
+        return Timeline.withId(id);
+    }
+
+    public static TournamentMatches.Builder tournamentMatchesForTournamentCode(final String tournamentCode) {
+        return TournamentMatches.forTournamentCode(tournamentCode);
+    }
+
+    public static TournamentMatches.ManyBuilder tournamentMatchesForTournamentCodes(final Iterable<String> tournamentCodes) {
+        return TournamentMatches.forTournamentCodes(tournamentCodes);
+    }
+
+    public static TournamentMatches.ManyBuilder tournamentMatchesForTournamentCodes(final String... tournamentCodes) {
+        return TournamentMatches.forTournamentCodes(tournamentCodes);
     }
 
     public static VerificationString.Builder verificationStringForSummoner(final Summoner summoner) {

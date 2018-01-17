@@ -138,14 +138,7 @@ public class ChampionMasteries extends GhostObject.ListProxy<ChampionMastery, co
     });
 
     public ChampionMasteries(final com.merakianalytics.orianna.types.data.championmastery.ChampionMasteries coreData) {
-        super(coreData, 1, new Function<com.merakianalytics.orianna.types.data.championmastery.ChampionMastery, ChampionMastery>() {
-            @Override
-            public ChampionMastery apply(final com.merakianalytics.orianna.types.data.championmastery.ChampionMastery data) {
-                final ChampionMastery mastery = new ChampionMastery(data);
-                mastery.markAsGhostLoaded(ChampionMastery.CHAMPION_MASTERY_LOAD_GROUP);
-                return mastery;
-            }
-        });
+        super(coreData, 1);
     }
 
     public Platform getPlatform() {
@@ -175,7 +168,14 @@ public class ChampionMasteries extends GhostObject.ListProxy<ChampionMastery, co
                 }
                 coreData =
                     Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.championmastery.ChampionMasteries.class, builder.build());
-                loadListProxyData();
+                loadListProxyData(new Function<com.merakianalytics.orianna.types.data.championmastery.ChampionMastery, ChampionMastery>() {
+                    @Override
+                    public ChampionMastery apply(final com.merakianalytics.orianna.types.data.championmastery.ChampionMastery data) {
+                        final ChampionMastery mastery = new ChampionMastery(data);
+                        mastery.markAsGhostLoaded(ChampionMastery.CHAMPION_MASTERY_LOAD_GROUP);
+                        return mastery;
+                    }
+                });
                 break;
             default:
                 break;

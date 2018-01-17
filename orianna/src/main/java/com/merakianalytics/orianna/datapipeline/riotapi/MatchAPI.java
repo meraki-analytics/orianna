@@ -116,7 +116,7 @@ public class MatchAPI extends RiotAPIService {
 
         // Index Handling
         if(beginIndex != null && (endIndex == null || beginIndex.intValue() + MAX_MATCH_INDEX_DIFFERENCE < endIndex.intValue())) {
-            endIndex = beginIndex.intValue() + 100;
+            endIndex = beginIndex.intValue() + MAX_MATCH_INDEX_DIFFERENCE;
         }
 
         if(endIndex != null && beginIndex == null) {
@@ -347,7 +347,7 @@ public class MatchAPI extends RiotAPIService {
 
         // Index Handling
         if(beginIndex != null && (endIndex == null || beginIndex.intValue() + MAX_MATCH_INDEX_DIFFERENCE < endIndex.intValue())) {
-            endIndex = beginIndex.intValue() + 100;
+            endIndex = beginIndex.intValue() + MAX_MATCH_INDEX_DIFFERENCE;
         }
 
         if(endIndex != null && beginIndex == null) {

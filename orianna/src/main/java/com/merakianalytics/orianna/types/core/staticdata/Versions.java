@@ -1,5 +1,6 @@
 package com.merakianalytics.orianna.types.core.staticdata;
 
+import com.google.common.base.Functions;
 import com.google.common.collect.ImmutableMap;
 import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.common.Platform;
@@ -68,7 +69,7 @@ public class Versions extends GhostObject.ListProxy<String, String, com.merakian
                     builder.put("platform", Platform.withTag(coreData.getPlatform()));
                 }
                 coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Versions.class, builder.build());
-                loadListProxyData();
+                loadListProxyData(Functions.<String> identity());
                 break;
             default:
                 break;

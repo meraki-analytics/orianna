@@ -134,6 +134,7 @@ public class MatchTransformer extends AbstractDataTransformer {
     public Participant transform(final com.merakianalytics.orianna.types.dto.match.Participant item, final PipelineContext context) {
         final Participant converted = new Participant();
         converted.setVersion((String)context.get("version"));
+        converted.setParticipantId(item.getParticipantId());
         converted.setChampionId(item.getChampionId());
         converted.setHighestTierInSeason(item.getHighestAchievedSeasonTier());
         converted.setStats(transform(item.getStats(), context));
@@ -143,6 +144,61 @@ public class MatchTransformer extends AbstractDataTransformer {
         converted.setTimeline(transform(item.getTimeline(), context));
         converted.setLane(item.getTimeline().getLane());
         converted.setRole(item.getTimeline().getRole());
+        converted.setPrimaryRunePath(item.getStats().getPerkPrimaryStyle());
+        converted.setSecondaryRunePath(item.getStats().getPerkSubStyle());
+        final List<Integer> items = new ArrayList<>(7);
+        items.add(item.getStats().getItem0());
+        items.add(item.getStats().getItem1());
+        items.add(item.getStats().getItem2());
+        items.add(item.getStats().getItem3());
+        items.add(item.getStats().getItem4());
+        items.add(item.getStats().getItem5());
+        items.add(item.getStats().getItem6());
+        converted.setItems(items);
+        final List<RuneStats> runes = new ArrayList<>(6);
+        RuneStats rune = new RuneStats();
+        rune.setId(item.getStats().getPerk0());
+        rune.setVariables(new ArrayList<Integer>(3));
+        rune.getVariables().add(item.getStats().getPerk0Var1());
+        rune.getVariables().add(item.getStats().getPerk0Var2());
+        rune.getVariables().add(item.getStats().getPerk0Var3());
+        runes.add(rune);
+        rune = new RuneStats();
+        rune.setId(item.getStats().getPerk1());
+        rune.setVariables(new ArrayList<Integer>(3));
+        rune.getVariables().add(item.getStats().getPerk1Var1());
+        rune.getVariables().add(item.getStats().getPerk1Var2());
+        rune.getVariables().add(item.getStats().getPerk1Var3());
+        runes.add(rune);
+        rune = new RuneStats();
+        rune.setId(item.getStats().getPerk2());
+        rune.setVariables(new ArrayList<Integer>(3));
+        rune.getVariables().add(item.getStats().getPerk2Var1());
+        rune.getVariables().add(item.getStats().getPerk2Var2());
+        rune.getVariables().add(item.getStats().getPerk2Var3());
+        runes.add(rune);
+        rune = new RuneStats();
+        rune.setId(item.getStats().getPerk3());
+        rune.setVariables(new ArrayList<Integer>(3));
+        rune.getVariables().add(item.getStats().getPerk3Var1());
+        rune.getVariables().add(item.getStats().getPerk3Var2());
+        rune.getVariables().add(item.getStats().getPerk3Var3());
+        runes.add(rune);
+        rune = new RuneStats();
+        rune.setId(item.getStats().getPerk4());
+        rune.setVariables(new ArrayList<Integer>(3));
+        rune.getVariables().add(item.getStats().getPerk4Var1());
+        rune.getVariables().add(item.getStats().getPerk4Var2());
+        rune.getVariables().add(item.getStats().getPerk4Var3());
+        runes.add(rune);
+        rune = new RuneStats();
+        rune.setId(item.getStats().getPerk5());
+        rune.setVariables(new ArrayList<Integer>(3));
+        rune.getVariables().add(item.getStats().getPerk5Var1());
+        rune.getVariables().add(item.getStats().getPerk5Var2());
+        rune.getVariables().add(item.getStats().getPerk5Var3());
+        runes.add(rune);
+        converted.setRuneStats(runes);
         final com.merakianalytics.orianna.types.dto.match.Player player = (com.merakianalytics.orianna.types.dto.match.Player)context.get("player");
         converted.setAccountId(player.getAccountId());
         converted.setCurrentAccountId(player.getCurrentAccountId());
@@ -158,8 +214,6 @@ public class MatchTransformer extends AbstractDataTransformer {
     @Transform(from = com.merakianalytics.orianna.types.dto.match.ParticipantStats.class, to = ParticipantStats.class)
     public ParticipantStats transform(final com.merakianalytics.orianna.types.dto.match.ParticipantStats item, final PipelineContext context) {
         final ParticipantStats stats = new ParticipantStats();
-        stats.setPlatform((String)context.get("platform"));
-        stats.setVersion((String)context.get("version"));
         stats.setAltarsCaptured(item.getAltarsCaptured());
         stats.setAltarsNeutralized(item.getAltarsNeutralized());
         stats.setAssists(item.getAssists());
@@ -198,61 +252,6 @@ public class MatchTransformer extends AbstractDataTransformer {
         stats.setPlayerScore7(item.getPlayerScore7());
         stats.setPlayerScore8(item.getPlayerScore8());
         stats.setPlayerScore9(item.getPlayerScore9());
-        final List<Integer> items = new ArrayList<>(7);
-        items.add(item.getItem0());
-        items.add(item.getItem1());
-        items.add(item.getItem2());
-        items.add(item.getItem3());
-        items.add(item.getItem4());
-        items.add(item.getItem5());
-        items.add(item.getItem6());
-        stats.setItems(items);
-        stats.setPrimaryRunePath(item.getPerkPrimaryStyle());
-        stats.setSecondaryRunePath(item.getPerkSubStyle());
-        final List<RuneStats> runes = new ArrayList<>(6);
-        RuneStats rune = new RuneStats();
-        rune.setId(item.getPerk0());
-        rune.setVariables(new ArrayList<Integer>(3));
-        rune.getVariables().add(item.getPerk0Var1());
-        rune.getVariables().add(item.getPerk0Var2());
-        rune.getVariables().add(item.getPerk0Var3());
-        runes.add(rune);
-        rune = new RuneStats();
-        rune.setId(item.getPerk1());
-        rune.setVariables(new ArrayList<Integer>(3));
-        rune.getVariables().add(item.getPerk1Var1());
-        rune.getVariables().add(item.getPerk1Var2());
-        rune.getVariables().add(item.getPerk1Var3());
-        runes.add(rune);
-        rune = new RuneStats();
-        rune.setId(item.getPerk2());
-        rune.setVariables(new ArrayList<Integer>(3));
-        rune.getVariables().add(item.getPerk2Var1());
-        rune.getVariables().add(item.getPerk2Var2());
-        rune.getVariables().add(item.getPerk2Var3());
-        runes.add(rune);
-        rune = new RuneStats();
-        rune.setId(item.getPerk3());
-        rune.setVariables(new ArrayList<Integer>(3));
-        rune.getVariables().add(item.getPerk3Var1());
-        rune.getVariables().add(item.getPerk3Var2());
-        rune.getVariables().add(item.getPerk3Var3());
-        runes.add(rune);
-        rune = new RuneStats();
-        rune.setId(item.getPerk4());
-        rune.setVariables(new ArrayList<Integer>(3));
-        rune.getVariables().add(item.getPerk4Var1());
-        rune.getVariables().add(item.getPerk4Var2());
-        rune.getVariables().add(item.getPerk4Var3());
-        runes.add(rune);
-        rune = new RuneStats();
-        rune.setId(item.getPerk5());
-        rune.setVariables(new ArrayList<Integer>(3));
-        rune.getVariables().add(item.getPerk5Var1());
-        rune.getVariables().add(item.getPerk5Var2());
-        rune.getVariables().add(item.getPerk5Var3());
-        runes.add(rune);
-        stats.setRuneStats(runes);
         stats.setKillingSprees(item.getKillingSprees());
         stats.setKills(item.getKills());
         stats.setLargestCriticalStrike(item.getLargestCriticalStrike());
@@ -308,6 +307,7 @@ public class MatchTransformer extends AbstractDataTransformer {
     @Transform(from = com.merakianalytics.orianna.types.dto.match.Player.class, to = Participant.class)
     public Participant transform(final com.merakianalytics.orianna.types.dto.match.Player item, final PipelineContext context) {
         final Participant player = new Participant();
+        player.setVersion((String)context.get("version"));
         player.setAccountId(item.getAccountId());
         player.setCurrentAccountId(item.getCurrentAccountId());
         player.setCurrentPlatform(item.getCurrentPlatformId());
@@ -318,6 +318,7 @@ public class MatchTransformer extends AbstractDataTransformer {
         player.setSummonerName(item.getSummonerName());
         final com.merakianalytics.orianna.types.dto.match.Participant participant =
             (com.merakianalytics.orianna.types.dto.match.Participant)context.get("participant");
+        player.setParticipantId(participant.getParticipantId());
         player.setChampionId(participant.getChampionId());
         player.setHighestTierInSeason(participant.getHighestAchievedSeasonTier());
         player.setStats(transform(participant.getStats(), context));
@@ -327,6 +328,61 @@ public class MatchTransformer extends AbstractDataTransformer {
         player.setLane(participant.getTimeline().getLane());
         player.setRole(participant.getTimeline().getRole());
         player.setTimeline(transform(participant.getTimeline(), context));
+        player.setPrimaryRunePath(participant.getStats().getPerkPrimaryStyle());
+        player.setSecondaryRunePath(participant.getStats().getPerkSubStyle());
+        final List<Integer> items = new ArrayList<>(7);
+        items.add(participant.getStats().getItem0());
+        items.add(participant.getStats().getItem1());
+        items.add(participant.getStats().getItem2());
+        items.add(participant.getStats().getItem3());
+        items.add(participant.getStats().getItem4());
+        items.add(participant.getStats().getItem5());
+        items.add(participant.getStats().getItem6());
+        player.setItems(items);
+        final List<RuneStats> runes = new ArrayList<>(6);
+        RuneStats rune = new RuneStats();
+        rune.setId(participant.getStats().getPerk0());
+        rune.setVariables(new ArrayList<Integer>(3));
+        rune.getVariables().add(participant.getStats().getPerk0Var1());
+        rune.getVariables().add(participant.getStats().getPerk0Var2());
+        rune.getVariables().add(participant.getStats().getPerk0Var3());
+        runes.add(rune);
+        rune = new RuneStats();
+        rune.setId(participant.getStats().getPerk1());
+        rune.setVariables(new ArrayList<Integer>(3));
+        rune.getVariables().add(participant.getStats().getPerk1Var1());
+        rune.getVariables().add(participant.getStats().getPerk1Var2());
+        rune.getVariables().add(participant.getStats().getPerk1Var3());
+        runes.add(rune);
+        rune = new RuneStats();
+        rune.setId(participant.getStats().getPerk2());
+        rune.setVariables(new ArrayList<Integer>(3));
+        rune.getVariables().add(participant.getStats().getPerk2Var1());
+        rune.getVariables().add(participant.getStats().getPerk2Var2());
+        rune.getVariables().add(participant.getStats().getPerk2Var3());
+        runes.add(rune);
+        rune = new RuneStats();
+        rune.setId(participant.getStats().getPerk3());
+        rune.setVariables(new ArrayList<Integer>(3));
+        rune.getVariables().add(participant.getStats().getPerk3Var1());
+        rune.getVariables().add(participant.getStats().getPerk3Var2());
+        rune.getVariables().add(participant.getStats().getPerk3Var3());
+        runes.add(rune);
+        rune = new RuneStats();
+        rune.setId(participant.getStats().getPerk4());
+        rune.setVariables(new ArrayList<Integer>(3));
+        rune.getVariables().add(participant.getStats().getPerk4Var1());
+        rune.getVariables().add(participant.getStats().getPerk4Var2());
+        rune.getVariables().add(participant.getStats().getPerk4Var3());
+        runes.add(rune);
+        rune = new RuneStats();
+        rune.setId(participant.getStats().getPerk5());
+        rune.setVariables(new ArrayList<Integer>(3));
+        rune.getVariables().add(participant.getStats().getPerk5Var1());
+        rune.getVariables().add(participant.getStats().getPerk5Var2());
+        rune.getVariables().add(participant.getStats().getPerk5Var3());
+        runes.add(rune);
+        player.setRuneStats(runes);
         return player;
     }
 
@@ -562,7 +618,9 @@ public class MatchTransformer extends AbstractDataTransformer {
         frame.setGoldEarned(item.getTotalGold());
         frame.setLevel(item.getLevel());
         frame.setNeutralMinionsKilled(item.getJungleMinionsKilled());
-        frame.setPosition(transform(item.getPosition(), context));
+        if(item.getPosition() != null) {
+            frame.setPosition(transform(item.getPosition(), context));
+        }
         frame.setTeamScore(item.getTeamScore());
         return frame;
     }
@@ -627,11 +685,14 @@ public class MatchTransformer extends AbstractDataTransformer {
         frame.setTotalGold(item.getGoldEarned());
         frame.setLevel(item.getLevel());
         frame.setJungleMinionsKilled(item.getNeutralMinionsKilled());
-        frame.setPosition(transform(item.getPosition(), context));
+        if(item.getPosition() != null) {
+            frame.setPosition(transform(item.getPosition(), context));
+        }
         frame.setTeamScore(item.getTeamScore());
         return frame;
     }
 
+    @SuppressWarnings("unchecked")
     @Transform(from = ParticipantStats.class, to = com.merakianalytics.orianna.types.dto.match.ParticipantStats.class)
     public com.merakianalytics.orianna.types.dto.match.ParticipantStats transform(final ParticipantStats item, final PipelineContext context) {
         final com.merakianalytics.orianna.types.dto.match.ParticipantStats stats = new com.merakianalytics.orianna.types.dto.match.ParticipantStats();
@@ -673,41 +734,43 @@ public class MatchTransformer extends AbstractDataTransformer {
         stats.setPlayerScore7(item.getPlayerScore7());
         stats.setPlayerScore8(item.getPlayerScore8());
         stats.setPlayerScore9(item.getPlayerScore9());
-        stats.setItem0(item.getItems().get(0));
-        stats.setItem1(item.getItems().get(1));
-        stats.setItem2(item.getItems().get(2));
-        stats.setItem3(item.getItems().get(3));
-        stats.setItem4(item.getItems().get(4));
-        stats.setItem5(item.getItems().get(5));
-        stats.setItem6(item.getItems().get(6));
-        stats.setPerkPrimaryStyle(item.getPrimaryRunePath());
-        stats.setPerkSubStyle(item.getSecondaryRunePath());
-        RuneStats rune = item.getRuneStats().get(0);
+        final List<Integer> items = (List<Integer>)context.get("items");
+        stats.setItem0(items.get(0));
+        stats.setItem1(items.get(1));
+        stats.setItem2(items.get(2));
+        stats.setItem3(items.get(3));
+        stats.setItem4(items.get(4));
+        stats.setItem5(items.get(5));
+        stats.setItem6(items.get(6));
+        stats.setPerkPrimaryStyle((Integer)context.get("primaryRunePath"));
+        stats.setPerkSubStyle((Integer)context.get("secondaryRunePath"));
+        final List<RuneStats> runeStats = (List<RuneStats>)context.get("runeStats");
+        RuneStats rune = runeStats.get(0);
         stats.setPerk0(rune.getId());
         stats.setPerk0Var1(rune.getVariables().get(0));
         stats.setPerk0Var2(rune.getVariables().get(1));
         stats.setPerk0Var3(rune.getVariables().get(2));
-        rune = item.getRuneStats().get(1);
+        rune = runeStats.get(1);
         stats.setPerk1(rune.getId());
         stats.setPerk1Var1(rune.getVariables().get(0));
         stats.setPerk1Var2(rune.getVariables().get(1));
         stats.setPerk1Var3(rune.getVariables().get(2));
-        rune = item.getRuneStats().get(2);
+        rune = runeStats.get(2);
         stats.setPerk2(rune.getId());
         stats.setPerk2Var1(rune.getVariables().get(0));
         stats.setPerk2Var2(rune.getVariables().get(1));
         stats.setPerk2Var3(rune.getVariables().get(2));
-        rune = item.getRuneStats().get(3);
+        rune = runeStats.get(3);
         stats.setPerk3(rune.getId());
         stats.setPerk3Var1(rune.getVariables().get(0));
         stats.setPerk3Var2(rune.getVariables().get(1));
         stats.setPerk3Var3(rune.getVariables().get(2));
-        rune = item.getRuneStats().get(4);
+        rune = runeStats.get(4);
         stats.setPerk4(rune.getId());
         stats.setPerk4Var1(rune.getVariables().get(0));
         stats.setPerk4Var2(rune.getVariables().get(1));
         stats.setPerk4Var3(rune.getVariables().get(2));
-        rune = item.getRuneStats().get(5);
+        rune = runeStats.get(5);
         stats.setPerk5(rune.getId());
         stats.setPerk5Var1(rune.getVariables().get(0));
         stats.setPerk5Var2(rune.getVariables().get(1));
@@ -866,6 +929,10 @@ public class MatchTransformer extends AbstractDataTransformer {
         final Object previousParticipant = context.put("participantId", item.getParticipantId());
         final Object previousLane = context.put("lane", item.getLane());
         final Object previousRole = context.put("role", item.getRole());
+        final Object previousItems = context.put("items", item.getItems());
+        final Object previousRuneStats = context.put("runeStats", item.getRuneStats());
+        final Object previousPrimaryRunePath = context.put("primaryRunePath", item.getPrimaryRunePath());
+        final Object previousSecondaryRunePath = context.put("secondaryRunePath", item.getSecondaryRunePath());
         final com.merakianalytics.orianna.types.dto.match.Participant participant = new com.merakianalytics.orianna.types.dto.match.Participant();
         participant.setChampionId(item.getChampionId());
         participant.setHighestAchievedSeasonTier(item.getHighestTierInSeason().toString());
@@ -878,6 +945,10 @@ public class MatchTransformer extends AbstractDataTransformer {
         context.put("participantId", previousParticipant);
         context.put("lane", previousLane);
         context.put("role", previousRole);
+        context.put("items", previousItems);
+        context.put("runeStats", previousRuneStats);
+        context.put("primaryRunePath", previousPrimaryRunePath);
+        context.put("secondaryRunePath", previousSecondaryRunePath);
         return participant;
     }
 }

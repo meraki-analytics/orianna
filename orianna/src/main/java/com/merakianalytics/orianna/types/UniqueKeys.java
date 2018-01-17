@@ -14,6 +14,8 @@ import com.merakianalytics.orianna.types.core.championmastery.ChampionMasterySco
 import com.merakianalytics.orianna.types.core.league.League;
 import com.merakianalytics.orianna.types.core.league.LeaguePositions;
 import com.merakianalytics.orianna.types.core.match.Match;
+import com.merakianalytics.orianna.types.core.match.Timeline;
+import com.merakianalytics.orianna.types.core.match.TournamentMatches;
 import com.merakianalytics.orianna.types.core.spectator.CurrentGame;
 import com.merakianalytics.orianna.types.core.spectator.FeaturedGames;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
@@ -662,6 +664,31 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
+    public static Iterator<Integer> forManyMatchQuery(final java.util.Map<String, Object> query) {
+        final Iterable<Number> matchIds = (Iterable<Number>)query.get("matchIds");
+
+        final Iterator<Number> iterator = matchIds.iterator();
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                return Arrays.hashCode(new Object[] {
+                    Match.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next().longValue()
+                });
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+    @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyProfileIconQuery(final java.util.Map<String, Object> query) {
         final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
 
@@ -810,6 +837,56 @@ public abstract class UniqueKeys {
                     SummonerSpell.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"),
                     (String)query.get("locale"),
                     iterator.next(), (Set<String>)query.get("includedData")
+                });
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Iterator<Integer> forManyTimelineQuery(final java.util.Map<String, Object> query) {
+        final Iterable<Number> matchIds = (Iterable<Number>)query.get("matchIds");
+
+        final Iterator<Number> iterator = matchIds.iterator();
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                return Arrays.hashCode(new Object[] {
+                    Timeline.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next().longValue()
+                });
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Iterator<Integer> forManyTournamentMatchesQuery(final java.util.Map<String, Object> query) {
+        final Iterable<String> tournamentCodes = (Iterable<String>)query.get("tournamentCodes");
+
+        final Iterator<String> iterator = tournamentCodes.iterator();
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                return Arrays.hashCode(new Object[] {
+                    TournamentMatches.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next()
                 });
             }
 
@@ -1191,6 +1268,32 @@ public abstract class UniqueKeys {
         return Arrays.hashCode(new Object[] {
             SummonerSpells.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
             (Set<String>)query.get("includedData")
+        });
+    }
+
+    public static int forTimeline(final Timeline timeline) {
+        final com.merakianalytics.orianna.types.data.match.Timeline data = timeline.getCoreData();
+        return Arrays.hashCode(new Object[] {
+            Timeline.class.getCanonicalName(), data.getPlatform(), data.getId()
+        });
+    }
+
+    public static int forTimelineQuery(final java.util.Map<String, Object> query) {
+        return Arrays.hashCode(new Object[] {
+            Timeline.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), ((Number)query.get("matchId")).longValue()
+        });
+    }
+
+    public static int forTournamentMatches(final TournamentMatches matches) {
+        final com.merakianalytics.orianna.types.data.match.TournamentMatches data = matches.getCoreData();
+        return Arrays.hashCode(new Object[] {
+            TournamentMatches.class.getCanonicalName(), data.getPlatform(), data.getTournamentCode()
+        });
+    }
+
+    public static int forTournamentMatchesQuery(final java.util.Map<String, Object> query) {
+        return Arrays.hashCode(new Object[] {
+            TournamentMatches.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("tournamentCode")
         });
     }
 

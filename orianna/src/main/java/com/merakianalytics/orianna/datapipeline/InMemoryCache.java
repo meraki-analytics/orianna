@@ -38,6 +38,8 @@ import com.merakianalytics.orianna.types.core.championmastery.ChampionMasterySco
 import com.merakianalytics.orianna.types.core.league.League;
 import com.merakianalytics.orianna.types.core.league.LeaguePositions;
 import com.merakianalytics.orianna.types.core.match.Match;
+import com.merakianalytics.orianna.types.core.match.Timeline;
+import com.merakianalytics.orianna.types.core.match.TournamentMatches;
 import com.merakianalytics.orianna.types.core.spectator.CurrentGame;
 import com.merakianalytics.orianna.types.core.spectator.FeaturedGames;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
@@ -92,6 +94,8 @@ public class InMemoryCache extends AbstractDataStore {
             .put(SummonerSpell.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(SummonerSpells.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(Summoner.class.getCanonicalName(), ExpirationPeriod.create(30L, TimeUnit.MINUTES))
+            .put(Timeline.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
+            .put(TournamentMatches.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(VerificationString.class.getCanonicalName(), ExpirationPeriod.create(3L, TimeUnit.MINUTES))
             .put(Versions.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .build();
@@ -547,6 +551,35 @@ public class InMemoryCache extends AbstractDataStore {
         });
     }
 
+    @GetMany(Match.class)
+    public CloseableIterator<Match> getManyMatch(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyMatchQuery(query));
+        for(final Integer key : keys) {
+            if(!cache.containsKey(key)) {
+                return null;
+            }
+        }
+
+        final Iterator<Integer> iterator = keys.iterator();
+        return CloseableIterators.from(new Iterator<Match>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Match next() {
+                final int key = iterator.next();
+                return (Match)cache.get(key);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
     @GetMany(ProfileIcon.class)
     public CloseableIterator<ProfileIcon> getManyProfileIcon(final java.util.Map<String, Object> query, final PipelineContext context) {
         final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyProfileIconQuery(query));
@@ -692,6 +725,64 @@ public class InMemoryCache extends AbstractDataStore {
         });
     }
 
+    @GetMany(Timeline.class)
+    public CloseableIterator<Timeline> getManyTimeline(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyTimelineQuery(query));
+        for(final Integer key : keys) {
+            if(!cache.containsKey(key)) {
+                return null;
+            }
+        }
+
+        final Iterator<Integer> iterator = keys.iterator();
+        return CloseableIterators.from(new Iterator<Timeline>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Timeline next() {
+                final int key = iterator.next();
+                return (Timeline)cache.get(key);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @GetMany(TournamentMatches.class)
+    public CloseableIterator<TournamentMatches> getManyTournamentMatches(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyTournamentMatchesQuery(query));
+        for(final Integer key : keys) {
+            if(!cache.containsKey(key)) {
+                return null;
+            }
+        }
+
+        final Iterator<Integer> iterator = keys.iterator();
+        return CloseableIterators.from(new Iterator<TournamentMatches>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public TournamentMatches next() {
+                final int key = iterator.next();
+                return (TournamentMatches)cache.get(key);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
     @GetMany(VerificationString.class)
     public CloseableIterator<VerificationString> getManyVerificationString(final java.util.Map<String, Object> query, final PipelineContext context) {
         final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyVerificationStringQuery(query));
@@ -803,6 +894,18 @@ public class InMemoryCache extends AbstractDataStore {
     public SummonerSpells getSummonerSpells(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forSummonerSpellsQuery(query);
         return (SummonerSpells)cache.get(key);
+    }
+
+    @Get(Timeline.class)
+    public Timeline getTimeline(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forTimelineQuery(query);
+        return (Timeline)cache.get(key);
+    }
+
+    @Get(TournamentMatches.class)
+    public TournamentMatches getTournamentMatches(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forTournamentMatchesQuery(query);
+        return (TournamentMatches)cache.get(key);
     }
 
     @Get(VerificationString.class)
@@ -1055,6 +1158,13 @@ public class InMemoryCache extends AbstractDataStore {
         }
     }
 
+    @PutMany(Match.class)
+    public void putManyMatch(final Iterable<Match> matches, final PipelineContext context) {
+        for(final Match match : matches) {
+            putMatch(match, context);
+        }
+    }
+
     @PutMany(ProfileIcon.class)
     public void putManyProfileIcon(final Iterable<ProfileIcon> icons, final PipelineContext context) {
         for(final ProfileIcon icon : icons) {
@@ -1087,6 +1197,20 @@ public class InMemoryCache extends AbstractDataStore {
     public void putManySummonerSpell(final Iterable<SummonerSpell> spells, final PipelineContext context) {
         for(final SummonerSpell spell : spells) {
             putSummonerSpell(spell, context);
+        }
+    }
+
+    @PutMany(Timeline.class)
+    public void putManyTimeline(final Iterable<Timeline> timelines, final PipelineContext context) {
+        for(final Timeline timeline : timelines) {
+            putTimeline(timeline, context);
+        }
+    }
+
+    @PutMany(TournamentMatches.class)
+    public void putManyTournamentMatches(final Iterable<TournamentMatches> matches, final PipelineContext context) {
+        for(final TournamentMatches match : matches) {
+            putTournamentMatches(match, context);
         }
     }
 
@@ -1314,6 +1438,18 @@ public class InMemoryCache extends AbstractDataStore {
         } else {
             putManySummonerSpell(spells, context);
         }
+    }
+
+    @Put(Timeline.class)
+    public void putTimeline(final Timeline timeline, final PipelineContext context) {
+        final int key = UniqueKeys.forTimeline(timeline);
+        cache.put(key, timeline);
+    }
+
+    @Put(TournamentMatches.class)
+    public void putTournamentMatches(final TournamentMatches matches, final PipelineContext context) {
+        final int key = UniqueKeys.forTournamentMatches(matches);
+        cache.put(key, matches);
     }
 
     @Put(VerificationString.class)

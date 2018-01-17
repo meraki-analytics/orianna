@@ -104,12 +104,7 @@ public class FeaturedGames extends GhostObject.ListProxy<FeaturedGame, com.merak
     }
 
     public FeaturedGames(final com.merakianalytics.orianna.types.data.spectator.FeaturedGames coreData) {
-        super(coreData, 1, new Function<com.merakianalytics.orianna.types.data.spectator.FeaturedGame, FeaturedGame>() {
-            @Override
-            public FeaturedGame apply(final com.merakianalytics.orianna.types.data.spectator.FeaturedGame data) {
-                return new FeaturedGame(data);
-            }
-        });
+        super(coreData, 1);
     }
 
     public Platform getPlatform() {
@@ -135,7 +130,12 @@ public class FeaturedGames extends GhostObject.ListProxy<FeaturedGame, com.merak
                     builder.put("platform", Platform.withTag(coreData.getPlatform()));
                 }
                 coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.spectator.FeaturedGames.class, builder.build());
-                loadListProxyData();
+                loadListProxyData(new Function<com.merakianalytics.orianna.types.data.spectator.FeaturedGame, FeaturedGame>() {
+                    @Override
+                    public FeaturedGame apply(final com.merakianalytics.orianna.types.data.spectator.FeaturedGame data) {
+                        return new FeaturedGame(data);
+                    }
+                });
                 break;
             default:
                 break;

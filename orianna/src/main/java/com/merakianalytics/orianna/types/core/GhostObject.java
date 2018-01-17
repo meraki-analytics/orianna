@@ -70,15 +70,9 @@ public abstract class GhostObject<T extends CoreData> extends OriannaObject<T> {
         public static final String LIST_PROXY_LOAD_GROUP = "list-proxy";
         private static final long serialVersionUID = 781726166394753316L;
         private List<T> data;
-        private Function<C, T> transform;
 
         public ListProxy(final L coreData, final int loadGroups) {
             super(coreData, loadGroups);
-        }
-
-        public ListProxy(final L coreData, final int loadGroups, final Function<C, T> transform) {
-            super(coreData, loadGroups);
-            this.transform = transform;
         }
 
         @Override
@@ -155,7 +149,7 @@ public abstract class GhostObject<T extends CoreData> extends OriannaObject<T> {
         }
 
         @SuppressWarnings("unchecked")
-        protected void loadListProxyData() {
+        protected void loadListProxyData(Function<C, T> transform) {
             if(transform == null) {
                 data = (List<T>)Collections.unmodifiableList(coreData);
             } else {

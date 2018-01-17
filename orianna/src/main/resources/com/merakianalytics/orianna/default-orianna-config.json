@@ -117,6 +117,14 @@
             "period": 30,
             "unit": "MINUTES"
           },
+          "com.merakianalytics.orianna.types.core.match.Timeline": {
+            "period": 6,
+            "unit": "HOURS"
+          },
+          "com.merakianalytics.orianna.types.core.match.TournamentMatches": {
+            "period": 6,
+            "unit": "HOURS"
+          },
           "com.merakianalytics.orianna.types.core.thirdpartycode.VerificationString": {
             "period": 3,
             "unit": "MINUTES"

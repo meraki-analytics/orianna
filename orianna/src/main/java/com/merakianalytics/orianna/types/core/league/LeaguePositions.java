@@ -101,12 +101,7 @@ public class LeaguePositions extends GhostObject.ListProxy<LeaguePosition, com.m
     });
 
     public LeaguePositions(final com.merakianalytics.orianna.types.data.league.LeaguePositions coreData) {
-        super(coreData, 1, new Function<com.merakianalytics.orianna.types.data.league.LeaguePosition, LeaguePosition>() {
-            @Override
-            public LeaguePosition apply(final com.merakianalytics.orianna.types.data.league.LeaguePosition data) {
-                return new LeaguePosition(data);
-            }
-        });
+        super(coreData, 1);
     }
 
     public Platform getPlatform() {
@@ -135,7 +130,12 @@ public class LeaguePositions extends GhostObject.ListProxy<LeaguePosition, com.m
                     builder.put("summonerId", coreData.getSummonerId());
                 }
                 coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.league.LeaguePositions.class, builder.build());
-                loadListProxyData();
+                loadListProxyData(new Function<com.merakianalytics.orianna.types.data.league.LeaguePosition, LeaguePosition>() {
+                    @Override
+                    public LeaguePosition apply(final com.merakianalytics.orianna.types.data.league.LeaguePosition data) {
+                        return new LeaguePosition(data);
+                    }
+                });
                 break;
             default:
                 break;

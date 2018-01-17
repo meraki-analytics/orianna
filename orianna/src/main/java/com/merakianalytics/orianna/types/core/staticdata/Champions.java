@@ -222,18 +222,8 @@ public class Champions extends GhostObject.ListProxy<Champion, com.merakianalyti
         }
     });
 
-    // TODO: Load all statuses when this loads instead of always doing them one-by-one
     public Champions(final com.merakianalytics.orianna.types.data.staticdata.Champions coreData) {
-        super(coreData, 1, new Function<com.merakianalytics.orianna.types.data.staticdata.Champion, Champion>() {
-            @Override
-            public Champion apply(final com.merakianalytics.orianna.types.data.staticdata.Champion input) {
-                final ChampionData data = new ChampionData();
-                data.setChampion(input);
-                final Champion champion = new Champion(data);
-                champion.markAsGhostLoaded(Champion.CHAMPION_LOAD_GROUP);
-                return champion;
-            }
-        });
+        super(coreData, 1);
     }
 
     public String getFormat() {
@@ -285,7 +275,18 @@ public class Champions extends GhostObject.ListProxy<Champion, com.merakianalyti
                     builder.put("includedData", coreData.getIncludedData());
                 }
                 coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Champions.class, builder.build());
-                loadListProxyData();
+
+                // TODO: Load all statuses when this loads instead of always doing them one-by-one
+                loadListProxyData(new Function<com.merakianalytics.orianna.types.data.staticdata.Champion, Champion>() {
+                    @Override
+                    public Champion apply(final com.merakianalytics.orianna.types.data.staticdata.Champion input) {
+                        final ChampionData data = new ChampionData();
+                        data.setChampion(input);
+                        final Champion champion = new Champion(data);
+                        champion.markAsGhostLoaded(Champion.CHAMPION_LOAD_GROUP);
+                        return champion;
+                    }
+                });
                 break;
             default:
                 break;

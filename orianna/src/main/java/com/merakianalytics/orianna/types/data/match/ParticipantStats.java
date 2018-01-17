@@ -1,7 +1,5 @@
 package com.merakianalytics.orianna.types.data.match;
 
-import java.util.List;
-
 import org.joda.time.Duration;
 
 import com.merakianalytics.orianna.types.data.CoreData;
@@ -15,13 +13,10 @@ public class ParticipantStats extends CoreData {
             pinkWardsPurchased, wardsKilled, wardsPlaced, damageToObjectives, damageToTurrets, damageMitigated, magicDamageTaken, magicDamageDealt,
             magicDamageDealtToChampions, physicalDamageDealt, physicalDamageDealtToChampions, physicalDamageTaken, damageDealt, damageDealtToChampions,
             damageTaken, damageHealed, trueDamageDealt, trueDamageDealtToChampions, trueDamageTaken, visionScore, playerScore0, playerScore1, playerScore2,
-            playerScore3, playerScore4, playerScore5, playerScore6, playerScore7, playerScore8, playerScore9, primaryRunePath, secondaryRunePath;
+            playerScore3, playerScore4, playerScore5, playerScore6, playerScore7, playerScore8, playerScore9;
 
     private boolean firstBloodAssistant, firstBloodKiller, firstInhibitorKillAssistant, firstInhibitorKiller, firstTowerKillAssistant, firstTowerKiller, winner;
-    private List<Integer> items;
     private Duration longestTimeAlive, crowdControlDealt, crowdControlDealtToChampions;
-    private String platform, version;
-    private List<RuneStats> runeStats;
 
     @Override
     public boolean equals(final Object obj) {
@@ -127,13 +122,6 @@ public class ParticipantStats extends CoreData {
         if(inhibitorKills != other.inhibitorKills) {
             return false;
         }
-        if(items == null) {
-            if(other.items != null) {
-                return false;
-            }
-        } else if(!items.equals(other.items)) {
-            return false;
-        }
         if(killingSprees != other.killingSprees) {
             return false;
         }
@@ -204,13 +192,6 @@ public class ParticipantStats extends CoreData {
         if(pinkWardsPurchased != other.pinkWardsPurchased) {
             return false;
         }
-        if(platform == null) {
-            if(other.platform != null) {
-                return false;
-            }
-        } else if(!platform.equals(other.platform)) {
-            return false;
-        }
         if(playerScore0 != other.playerScore0) {
             return false;
         }
@@ -241,26 +222,13 @@ public class ParticipantStats extends CoreData {
         if(playerScore9 != other.playerScore9) {
             return false;
         }
-        if(primaryRunePath != other.primaryRunePath) {
-            return false;
-        }
         if(quadraKills != other.quadraKills) {
-            return false;
-        }
-        if(runeStats == null) {
-            if(other.runeStats != null) {
-                return false;
-            }
-        } else if(!runeStats.equals(other.runeStats)) {
             return false;
         }
         if(score != other.score) {
             return false;
         }
         if(scoreRank != other.scoreRank) {
-            return false;
-        }
-        if(secondaryRunePath != other.secondaryRunePath) {
             return false;
         }
         if(teamObjectives != other.teamObjectives) {
@@ -282,13 +250,6 @@ public class ParticipantStats extends CoreData {
             return false;
         }
         if(unitsHealed != other.unitsHealed) {
-            return false;
-        }
-        if(version == null) {
-            if(other.version != null) {
-                return false;
-            }
-        } else if(!version.equals(other.version)) {
             return false;
         }
         if(visionScore != other.visionScore) {
@@ -461,13 +422,6 @@ public class ParticipantStats extends CoreData {
     }
 
     /**
-     * @return the items
-     */
-    public List<Integer> getItems() {
-        return items;
-    }
-
-    /**
      * @return the killingSprees
      */
     public int getKillingSprees() {
@@ -622,13 +576,6 @@ public class ParticipantStats extends CoreData {
     }
 
     /**
-     * @return the platform
-     */
-    public String getPlatform() {
-        return platform;
-    }
-
-    /**
      * @return the playerScore0
      */
     public int getPlayerScore0() {
@@ -699,24 +646,10 @@ public class ParticipantStats extends CoreData {
     }
 
     /**
-     * @return the primaryRunePath
-     */
-    public int getPrimaryRunePath() {
-        return primaryRunePath;
-    }
-
-    /**
      * @return the quadraKills
      */
     public int getQuadraKills() {
         return quadraKills;
-    }
-
-    /**
-     * @return the runeStats
-     */
-    public List<RuneStats> getRuneStats() {
-        return runeStats;
     }
 
     /**
@@ -731,13 +664,6 @@ public class ParticipantStats extends CoreData {
      */
     public int getScoreRank() {
         return scoreRank;
-    }
-
-    /**
-     * @return the secondaryRunePath
-     */
-    public int getSecondaryRunePath() {
-        return secondaryRunePath;
     }
 
     /**
@@ -787,13 +713,6 @@ public class ParticipantStats extends CoreData {
      */
     public int getUnitsHealed() {
         return unitsHealed;
-    }
-
-    /**
-     * @return the version
-     */
-    public String getVersion() {
-        return version;
     }
 
     /**
@@ -849,7 +768,6 @@ public class ParticipantStats extends CoreData {
         result = prime * result + greenWardsPurchased;
         result = prime * result + hexaKills;
         result = prime * result + inhibitorKills;
-        result = prime * result + (items == null ? 0 : items.hashCode());
         result = prime * result + killingSprees;
         result = prime * result + kills;
         result = prime * result + largestCriticalStrike;
@@ -872,7 +790,6 @@ public class ParticipantStats extends CoreData {
         result = prime * result + physicalDamageDealtToChampions;
         result = prime * result + physicalDamageTaken;
         result = prime * result + pinkWardsPurchased;
-        result = prime * result + (platform == null ? 0 : platform.hashCode());
         result = prime * result + playerScore0;
         result = prime * result + playerScore1;
         result = prime * result + playerScore2;
@@ -883,12 +800,9 @@ public class ParticipantStats extends CoreData {
         result = prime * result + playerScore7;
         result = prime * result + playerScore8;
         result = prime * result + playerScore9;
-        result = prime * result + primaryRunePath;
         result = prime * result + quadraKills;
-        result = prime * result + (runeStats == null ? 0 : runeStats.hashCode());
         result = prime * result + score;
         result = prime * result + scoreRank;
-        result = prime * result + secondaryRunePath;
         result = prime * result + teamObjectives;
         result = prime * result + tripleKills;
         result = prime * result + trueDamageDealt;
@@ -896,7 +810,6 @@ public class ParticipantStats extends CoreData {
         result = prime * result + trueDamageTaken;
         result = prime * result + turretKills;
         result = prime * result + unitsHealed;
-        result = prime * result + (version == null ? 0 : version.hashCode());
         result = prime * result + visionScore;
         result = prime * result + wardsKilled;
         result = prime * result + wardsPlaced;
@@ -1178,14 +1091,6 @@ public class ParticipantStats extends CoreData {
     }
 
     /**
-     * @param items
-     *        the items to set
-     */
-    public void setItems(final List<Integer> items) {
-        this.items = items;
-    }
-
-    /**
      * @param killingSprees
      *        the killingSprees to set
      */
@@ -1362,14 +1267,6 @@ public class ParticipantStats extends CoreData {
     }
 
     /**
-     * @param platform
-     *        the platform to set
-     */
-    public void setPlatform(final String platform) {
-        this.platform = platform;
-    }
-
-    /**
      * @param playerScore0
      *        the playerScore0 to set
      */
@@ -1450,27 +1347,11 @@ public class ParticipantStats extends CoreData {
     }
 
     /**
-     * @param primaryRunePath
-     *        the primaryRunePath to set
-     */
-    public void setPrimaryRunePath(final int primaryRunePath) {
-        this.primaryRunePath = primaryRunePath;
-    }
-
-    /**
      * @param quadraKills
      *        the quadraKills to set
      */
     public void setQuadraKills(final int quadraKills) {
         this.quadraKills = quadraKills;
-    }
-
-    /**
-     * @param runeStats
-     *        the runeStats to set
-     */
-    public void setRuneStats(final List<RuneStats> runeStats) {
-        this.runeStats = runeStats;
     }
 
     /**
@@ -1487,14 +1368,6 @@ public class ParticipantStats extends CoreData {
      */
     public void setScoreRank(final int scoreRank) {
         this.scoreRank = scoreRank;
-    }
-
-    /**
-     * @param secondaryRunePath
-     *        the secondaryRunePath to set
-     */
-    public void setSecondaryRunePath(final int secondaryRunePath) {
-        this.secondaryRunePath = secondaryRunePath;
     }
 
     /**
@@ -1551,14 +1424,6 @@ public class ParticipantStats extends CoreData {
      */
     public void setUnitsHealed(final int unitsHealed) {
         this.unitsHealed = unitsHealed;
-    }
-
-    /**
-     * @param version
-     *        the version to set
-     */
-    public void setVersion(final String version) {
-        this.version = version;
     }
 
     /**

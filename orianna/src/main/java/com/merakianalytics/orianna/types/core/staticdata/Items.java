@@ -233,14 +233,7 @@ public class Items extends GhostObject.ListProxy<Item, com.merakianalytics.orian
     });
 
     public Items(final com.merakianalytics.orianna.types.data.staticdata.Items coreData) {
-        super(coreData, 1, new Function<com.merakianalytics.orianna.types.data.staticdata.Item, Item>() {
-            @Override
-            public Item apply(final com.merakianalytics.orianna.types.data.staticdata.Item data) {
-                final Item item = new Item(data);
-                item.markAsGhostLoaded(Item.ITEM_LOAD_GROUP);
-                return item;
-            }
-        });
+        super(coreData, 1);
     }
 
     public List<ItemGroup> getGroups() {
@@ -295,7 +288,14 @@ public class Items extends GhostObject.ListProxy<Item, com.merakianalytics.orian
                     builder.put("includedData", coreData.getIncludedData());
                 }
                 coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Items.class, builder.build());
-                loadListProxyData();
+                loadListProxyData(new Function<com.merakianalytics.orianna.types.data.staticdata.Item, Item>() {
+                    @Override
+                    public Item apply(final com.merakianalytics.orianna.types.data.staticdata.Item data) {
+                        final Item item = new Item(data);
+                        item.markAsGhostLoaded(Item.ITEM_LOAD_GROUP);
+                        return item;
+                    }
+                });
                 break;
             default:
                 break;

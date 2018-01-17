@@ -104,12 +104,7 @@ public class League extends GhostObject.ListProxy<LeagueEntry, com.merakianalyti
     }
 
     public League(final com.merakianalytics.orianna.types.data.league.League coreData) {
-        super(coreData, 1, new Function<com.merakianalytics.orianna.types.data.league.LeagueEntry, LeagueEntry>() {
-            @Override
-            public LeagueEntry apply(final com.merakianalytics.orianna.types.data.league.LeagueEntry data) {
-                return new LeagueEntry(data);
-            }
-        });
+        super(coreData, 1);
     }
 
     @Searchable({String.class})
@@ -167,7 +162,12 @@ public class League extends GhostObject.ListProxy<LeagueEntry, com.merakianalyti
                     builder.put("queue", Queue.valueOf(coreData.getQueue()));
                 }
                 coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.league.League.class, builder.build());
-                loadListProxyData();
+                loadListProxyData(new Function<com.merakianalytics.orianna.types.data.league.LeagueEntry, LeagueEntry>() {
+                    @Override
+                    public LeagueEntry apply(final com.merakianalytics.orianna.types.data.league.LeagueEntry data) {
+                        return new LeagueEntry(data);
+                    }
+                });
                 break;
             default:
                 break;

@@ -210,14 +210,7 @@ public class Runes extends GhostObject.ListProxy<Rune, com.merakianalytics.orian
     });
 
     public Runes(final com.merakianalytics.orianna.types.data.staticdata.Runes coreData) {
-        super(coreData, 1, new Function<com.merakianalytics.orianna.types.data.staticdata.Rune, Rune>() {
-            @Override
-            public Rune apply(final com.merakianalytics.orianna.types.data.staticdata.Rune data) {
-                final Rune rune = new Rune(data);
-                rune.markAsGhostLoaded(Rune.RUNE_LOAD_GROUP);
-                return rune;
-            }
-        });
+        super(coreData, 1);
     }
 
     public Set<String> getIncludedData() {
@@ -264,7 +257,14 @@ public class Runes extends GhostObject.ListProxy<Rune, com.merakianalytics.orian
                     builder.put("includedData", coreData.getIncludedData());
                 }
                 coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Runes.class, builder.build());
-                loadListProxyData();
+                loadListProxyData(new Function<com.merakianalytics.orianna.types.data.staticdata.Rune, Rune>() {
+                    @Override
+                    public Rune apply(final com.merakianalytics.orianna.types.data.staticdata.Rune data) {
+                        final Rune rune = new Rune(data);
+                        rune.markAsGhostLoaded(Rune.RUNE_LOAD_GROUP);
+                        return rune;
+                    }
+                });
                 break;
             default:
                 break;

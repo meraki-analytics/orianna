@@ -1,13 +1,17 @@
 package com.merakianalytics.orianna.types.data.match;
 
+import java.util.List;
+
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class Participant extends CoreData {
     private static final long serialVersionUID = -5799473707680536580L;
     private long currentAccountId, summonerId, accountId;
     private String currentPlatform, platform, highestTierInSeason, summonerName, matchHistoryURI, version, lane, role;
+    private List<Integer> items;
+    private List<RuneStats> runeStats;
     private ParticipantStats stats;
-    private int summonerSpellDId, summonerSpellFId, championId, profileIconId, participantId, team;
+    private int summonerSpellDId, summonerSpellFId, championId, profileIconId, participantId, team, primaryRunePath, secondaryRunePath;
     private ParticipantTimeline timeline;
 
     @Override
@@ -45,6 +49,13 @@ public class Participant extends CoreData {
         } else if(!highestTierInSeason.equals(other.highestTierInSeason)) {
             return false;
         }
+        if(items == null) {
+            if(other.items != null) {
+                return false;
+            }
+        } else if(!items.equals(other.items)) {
+            return false;
+        }
         if(lane == null) {
             if(other.lane != null) {
                 return false;
@@ -69,6 +80,9 @@ public class Participant extends CoreData {
         } else if(!platform.equals(other.platform)) {
             return false;
         }
+        if(primaryRunePath != other.primaryRunePath) {
+            return false;
+        }
         if(profileIconId != other.profileIconId) {
             return false;
         }
@@ -77,6 +91,16 @@ public class Participant extends CoreData {
                 return false;
             }
         } else if(!role.equals(other.role)) {
+            return false;
+        }
+        if(runeStats == null) {
+            if(other.runeStats != null) {
+                return false;
+            }
+        } else if(!runeStats.equals(other.runeStats)) {
+            return false;
+        }
+        if(secondaryRunePath != other.secondaryRunePath) {
             return false;
         }
         if(stats == null) {
@@ -158,6 +182,13 @@ public class Participant extends CoreData {
     }
 
     /**
+     * @return the items
+     */
+    public List<Integer> getItems() {
+        return items;
+    }
+
+    /**
      * @return the lane
      */
     public String getLane() {
@@ -186,6 +217,13 @@ public class Participant extends CoreData {
     }
 
     /**
+     * @return the primaryRunePath
+     */
+    public int getPrimaryRunePath() {
+        return primaryRunePath;
+    }
+
+    /**
      * @return the profileIconId
      */
     public int getProfileIconId() {
@@ -197,6 +235,20 @@ public class Participant extends CoreData {
      */
     public String getRole() {
         return role;
+    }
+
+    /**
+     * @return the runeStats
+     */
+    public List<RuneStats> getRuneStats() {
+        return runeStats;
+    }
+
+    /**
+     * @return the secondaryRunePath
+     */
+    public int getSecondaryRunePath() {
+        return secondaryRunePath;
     }
 
     /**
@@ -264,12 +316,16 @@ public class Participant extends CoreData {
         result = prime * result + (int)(currentAccountId ^ currentAccountId >>> 32);
         result = prime * result + (currentPlatform == null ? 0 : currentPlatform.hashCode());
         result = prime * result + (highestTierInSeason == null ? 0 : highestTierInSeason.hashCode());
+        result = prime * result + (items == null ? 0 : items.hashCode());
         result = prime * result + (lane == null ? 0 : lane.hashCode());
         result = prime * result + (matchHistoryURI == null ? 0 : matchHistoryURI.hashCode());
         result = prime * result + participantId;
         result = prime * result + (platform == null ? 0 : platform.hashCode());
+        result = prime * result + primaryRunePath;
         result = prime * result + profileIconId;
         result = prime * result + (role == null ? 0 : role.hashCode());
+        result = prime * result + (runeStats == null ? 0 : runeStats.hashCode());
+        result = prime * result + secondaryRunePath;
         result = prime * result + (stats == null ? 0 : stats.hashCode());
         result = prime * result + (int)(summonerId ^ summonerId >>> 32);
         result = prime * result + (summonerName == null ? 0 : summonerName.hashCode());
@@ -322,6 +378,14 @@ public class Participant extends CoreData {
     }
 
     /**
+     * @param items
+     *        the items to set
+     */
+    public void setItems(final List<Integer> items) {
+        this.items = items;
+    }
+
+    /**
      * @param lane
      *        the lane to set
      */
@@ -354,6 +418,14 @@ public class Participant extends CoreData {
     }
 
     /**
+     * @param primaryRunePath
+     *        the primaryRunePath to set
+     */
+    public void setPrimaryRunePath(final int primaryRunePath) {
+        this.primaryRunePath = primaryRunePath;
+    }
+
+    /**
      * @param profileIconId
      *        the profileIconId to set
      */
@@ -367,6 +439,22 @@ public class Participant extends CoreData {
      */
     public void setRole(final String role) {
         this.role = role;
+    }
+
+    /**
+     * @param runeStats
+     *        the runeStats to set
+     */
+    public void setRuneStats(final List<RuneStats> runeStats) {
+        this.runeStats = runeStats;
+    }
+
+    /**
+     * @param secondaryRunePath
+     *        the secondaryRunePath to set
+     */
+    public void setSecondaryRunePath(final int secondaryRunePath) {
+        this.secondaryRunePath = secondaryRunePath;
     }
 
     /**

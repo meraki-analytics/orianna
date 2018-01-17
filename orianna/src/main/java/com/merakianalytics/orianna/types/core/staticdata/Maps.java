@@ -173,14 +173,7 @@ public class Maps extends GhostObject.ListProxy<Map, com.merakianalytics.orianna
     }
 
     public Maps(final com.merakianalytics.orianna.types.data.staticdata.Maps coreData) {
-        super(coreData, 1, new Function<com.merakianalytics.orianna.types.data.staticdata.Map, Map>() {
-            @Override
-            public Map apply(final com.merakianalytics.orianna.types.data.staticdata.Map data) {
-                final Map map = new Map(data);
-                map.markAsGhostLoaded(Map.MAP_LOAD_GROUP);
-                return map;
-            }
-        });
+        super(coreData, 1);
     }
 
     public String getLocale() {
@@ -220,7 +213,14 @@ public class Maps extends GhostObject.ListProxy<Map, com.merakianalytics.orianna
                     builder.put("locale", coreData.getLocale());
                 }
                 coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Maps.class, builder.build());
-                loadListProxyData();
+                loadListProxyData(new Function<com.merakianalytics.orianna.types.data.staticdata.Map, Map>() {
+                    @Override
+                    public Map apply(final com.merakianalytics.orianna.types.data.staticdata.Map data) {
+                        final Map map = new Map(data);
+                        map.markAsGhostLoaded(Map.MAP_LOAD_GROUP);
+                        return map;
+                    }
+                });
                 break;
             default:
                 break;

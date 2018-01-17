@@ -1,44 +1,11 @@
 package com.merakianalytics.orianna.types.core.match;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.joda.time.Duration;
 
-import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
-import com.merakianalytics.orianna.types.common.Platform;
-import com.merakianalytics.orianna.types.common.RunePath;
 import com.merakianalytics.orianna.types.core.OriannaObject;
-import com.merakianalytics.orianna.types.core.searchable.Searchable;
-import com.merakianalytics.orianna.types.core.searchable.SearchableList;
-import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
-import com.merakianalytics.orianna.types.core.staticdata.Item;
-import com.merakianalytics.orianna.types.core.staticdata.Items;
-import com.merakianalytics.orianna.types.core.staticdata.Versions;
 
 public class ParticipantStats extends OriannaObject<com.merakianalytics.orianna.types.data.match.ParticipantStats> {
     private static final long serialVersionUID = -989098350329762392L;
-
-    private final Supplier<SearchableList<Item>> items = Suppliers.memoize(new Supplier<SearchableList<Item>>() {
-        @Override
-        public SearchableList<Item> get() {
-            final String version = Versions.withPlatform(Platform.withTag(coreData.getPlatform())).get().truncate(coreData.getVersion());
-            return SearchableLists.unmodifiableFrom(
-                Items.withIds(coreData.getItems()).withPlatform(Platform.withTag(coreData.getPlatform())).withVersion(version).get());
-        }
-    });
-
-    private final Supplier<SearchableList<RuneStats>> runeStats = Suppliers.memoize(new Supplier<SearchableList<RuneStats>>() {
-        @Override
-        public SearchableList<RuneStats> get() {
-            final List<RuneStats> runeStats = new ArrayList<>(coreData.getRuneStats().size());
-            for(final com.merakianalytics.orianna.types.data.match.RuneStats stats : coreData.getRuneStats()) {
-                runeStats.add(new RuneStats(stats));
-            }
-            return SearchableLists.unmodifiableFrom(runeStats);
-        }
-    });
 
     public ParticipantStats(final com.merakianalytics.orianna.types.data.match.ParticipantStats coreData) {
         super(coreData);
@@ -130,11 +97,6 @@ public class ParticipantStats extends OriannaObject<com.merakianalytics.orianna.
 
     public int getInhibitorKills() {
         return coreData.getInhibitorKills();
-    }
-
-    @Searchable({Item.class, String.class, int.class})
-    public SearchableList<Item> getItems() {
-        return items.get();
     }
 
     public int getKillingSprees() {
@@ -265,17 +227,8 @@ public class ParticipantStats extends OriannaObject<com.merakianalytics.orianna.
         return coreData.getPlayerScore9();
     }
 
-    public RunePath getPrimaryRunePath() {
-        return RunePath.withId(coreData.getPrimaryRunePath());
-    }
-
     public int getQuadraKills() {
         return coreData.getQuadraKills();
-    }
-
-    @Searchable({int.class})
-    public SearchableList<RuneStats> getRuneStats() {
-        return runeStats.get();
     }
 
     public int getScore() {
@@ -284,10 +237,6 @@ public class ParticipantStats extends OriannaObject<com.merakianalytics.orianna.
 
     public int getScoreRank() {
         return coreData.getScoreRank();
-    }
-
-    public RunePath getSecondaryRunePath() {
-        return RunePath.withId(coreData.getSecondaryRunePath());
     }
 
     public int getTeamObjectives() {
