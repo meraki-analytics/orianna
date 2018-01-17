@@ -11,6 +11,7 @@ import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import com.merakianalytics.datapipelines.iterators.CloseableIterator;
 import com.merakianalytics.datapipelines.iterators.CloseableIterators;
 import com.merakianalytics.orianna.Orianna;
@@ -52,8 +53,13 @@ public class Champions extends GhostObject.ListProxy<Champion, com.merakianalyti
             return Orianna.getSettings().getPipeline().get(Champions.class, builder.build());
         }
 
-        public Builder withIncludedData(final Set<String> includedData) {
-            this.includedData = includedData;
+        public Builder withIncludedData(final Iterable<String> includedData) {
+            this.includedData = Sets.newHashSet(includedData);
+            return this;
+        }
+
+        public Builder withIncludedData(final String... includedData) {
+            this.includedData = Sets.newHashSet(includedData);
             return this;
         }
 
@@ -135,8 +141,13 @@ public class Champions extends GhostObject.ListProxy<Champion, com.merakianalyti
             return this;
         }
 
-        public SubsetBuilder withIncludedData(final Set<String> includedData) {
-            this.includedData = includedData;
+        public SubsetBuilder withIncludedData(final Iterable<String> includedData) {
+            this.includedData = Sets.newHashSet(includedData);
+            return this;
+        }
+
+        public SubsetBuilder withIncludedData(final String... includedData) {
+            this.includedData = Sets.newHashSet(includedData);
             return this;
         }
 

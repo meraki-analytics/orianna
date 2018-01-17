@@ -11,6 +11,13 @@ import com.merakianalytics.orianna.types.core.OriannaObject;
 public class Image extends OriannaObject<com.merakianalytics.orianna.types.data.staticdata.Image> {
     private static final long serialVersionUID = -6752564052626945287L;
 
+    private final Supplier<BufferedImage> image = Suppliers.memoize(new Supplier<BufferedImage>() {
+        @Override
+        public BufferedImage get() {
+            return Orianna.getSettings().getPipeline().get(BufferedImage.class, ImmutableMap.<String, Object> of("url", getURL()));
+        }
+    });
+
     private final Supplier<Sprite> sprite = Suppliers.memoize(new Supplier<Sprite>() {
         @Override
         public Sprite get() {
@@ -23,8 +30,7 @@ public class Image extends OriannaObject<com.merakianalytics.orianna.types.data.
     }
 
     public BufferedImage get() {
-        final BufferedImage image = Orianna.getSettings().getPipeline().get(BufferedImage.class, ImmutableMap.<String, Object> of("url", getURL()));
-        return image;
+        return image.get();
     }
 
     public String getFull() {

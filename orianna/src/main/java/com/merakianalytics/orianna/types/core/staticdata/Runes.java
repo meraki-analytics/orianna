@@ -11,6 +11,7 @@ import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import com.merakianalytics.datapipelines.iterators.CloseableIterator;
 import com.merakianalytics.datapipelines.iterators.CloseableIterators;
 import com.merakianalytics.orianna.Orianna;
@@ -51,8 +52,13 @@ public class Runes extends GhostObject.ListProxy<Rune, com.merakianalytics.orian
             return Orianna.getSettings().getPipeline().get(Runes.class, builder.build());
         }
 
-        public Builder withIncludedData(final Set<String> includedData) {
-            this.includedData = includedData;
+        public Builder withIncludedData(final Iterable<String> includedData) {
+            this.includedData = Sets.newHashSet(includedData);
+            return this;
+        }
+
+        public Builder withIncludedData(final String... includedData) {
+            this.includedData = Sets.newHashSet(includedData);
             return this;
         }
 
@@ -130,8 +136,13 @@ public class Runes extends GhostObject.ListProxy<Rune, com.merakianalytics.orian
             return this;
         }
 
-        public SubsetBuilder withIncludedData(final Set<String> includedData) {
-            this.includedData = includedData;
+        public SubsetBuilder withIncludedData(final Iterable<String> includedData) {
+            this.includedData = Sets.newHashSet(includedData);
+            return this;
+        }
+
+        public SubsetBuilder withIncludedData(final String... includedData) {
+            this.includedData = Sets.newHashSet(includedData);
             return this;
         }
 
