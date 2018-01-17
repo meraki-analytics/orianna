@@ -13,6 +13,7 @@ import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
 import com.merakianalytics.orianna.types.core.league.LeaguePositions;
+import com.merakianalytics.orianna.types.core.match.MatchHistory;
 import com.merakianalytics.orianna.types.core.searchable.Searchable;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
 import com.merakianalytics.orianna.types.core.spectator.CurrentGame;
@@ -199,5 +200,9 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
             default:
                 break;
         }
+    }
+
+    public MatchHistory.Builder matchHistory() {
+        return MatchHistory.forSummoner(this);
     }
 }

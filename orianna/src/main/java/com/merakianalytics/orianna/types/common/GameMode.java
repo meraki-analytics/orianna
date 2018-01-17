@@ -9,11 +9,14 @@ public enum GameMode {
         DARKSTAR,
         DOOMBOTSTEEMO,
         FIRSTBLOOD,
-        INTRO,
         KINGPORO,
         ODIN,
         ONEFORALL,
+        OVERCHARGE,
+        PROJECT,
         SIEGE,
+        SNOWURF,
+        STARTGUARDIAN,
         TUTORIAL,
         URF;
 }

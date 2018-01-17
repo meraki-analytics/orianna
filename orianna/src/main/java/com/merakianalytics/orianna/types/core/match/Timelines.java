@@ -12,7 +12,7 @@ import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
 import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 
-public class Timelines {
+public abstract class Timelines {
     public static class Builder {
         private final Iterable<Long> ids;
         private Platform platform;

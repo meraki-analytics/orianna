@@ -294,13 +294,27 @@ public class MatchTransformer extends AbstractDataTransformer {
     public ParticipantTimeline transform(final com.merakianalytics.orianna.types.dto.match.ParticipantTimeline item, final PipelineContext context) {
         final ParticipantTimeline timeline = new ParticipantTimeline();
         final long durationInSeconds = (Long)context.get("duration");
-        timeline.setCreepScore(getStatTotals(item.getCreepsPerMinDeltas(), durationInSeconds));
-        timeline.setCreepScoreDifference(getStatTotals(item.getCsDiffPerMinDeltas(), durationInSeconds));
-        timeline.setDamageTaken(getStatTotals(item.getDamageTakenPerMinDeltas(), durationInSeconds));
-        timeline.setDamageTakenDifference(getStatTotals(item.getDamageTakenDiffPerMinDeltas(), durationInSeconds));
-        timeline.setExperience(getStatTotals(item.getXpPerMinDeltas(), durationInSeconds));
-        timeline.setExperienceDifference(getStatTotals(item.getXpDiffPerMinDeltas(), durationInSeconds));
-        timeline.setGold(getStatTotals(item.getGoldPerMinDeltas(), durationInSeconds));
+        if(item.getCreepsPerMinDeltas() != null) {
+            timeline.setCreepScore(getStatTotals(item.getCreepsPerMinDeltas(), durationInSeconds));
+        }
+        if(item.getCsDiffPerMinDeltas() != null) {
+            timeline.setCreepScoreDifference(getStatTotals(item.getCsDiffPerMinDeltas(), durationInSeconds));
+        }
+        if(item.getDamageTakenPerMinDeltas() != null) {
+            timeline.setDamageTaken(getStatTotals(item.getDamageTakenPerMinDeltas(), durationInSeconds));
+        }
+        if(item.getDamageTakenDiffPerMinDeltas() != null) {
+            timeline.setDamageTakenDifference(getStatTotals(item.getDamageTakenDiffPerMinDeltas(), durationInSeconds));
+        }
+        if(item.getXpPerMinDeltas() != null) {
+            timeline.setExperience(getStatTotals(item.getXpPerMinDeltas(), durationInSeconds));
+        }
+        if(item.getXpDiffPerMinDeltas() != null) {
+            timeline.setExperienceDifference(getStatTotals(item.getXpDiffPerMinDeltas(), durationInSeconds));
+        }
+        if(item.getGoldPerMinDeltas() != null) {
+            timeline.setGold(getStatTotals(item.getGoldPerMinDeltas(), durationInSeconds));
+        }
         return timeline;
     }
 
@@ -818,16 +832,30 @@ public class MatchTransformer extends AbstractDataTransformer {
     public com.merakianalytics.orianna.types.dto.match.ParticipantTimeline transform(final ParticipantTimeline item, final PipelineContext context) {
         final com.merakianalytics.orianna.types.dto.match.ParticipantTimeline timeline = new com.merakianalytics.orianna.types.dto.match.ParticipantTimeline();
         final Duration duration = (Duration)context.get("duration");
-        timeline.setCreepsPerMinDeltas(getPerMinDeltas(item.getCreepScore(), duration));
-        timeline.setCsDiffPerMinDeltas(getPerMinDeltas(item.getCreepScoreDifference(), duration));
-        timeline.setDamageTakenDiffPerMinDeltas(getPerMinDeltas(item.getDamageTakenDifference(), duration));
-        timeline.setDamageTakenPerMinDeltas(getPerMinDeltas(item.getDamageTaken(), duration));
-        timeline.setGoldPerMinDeltas(getPerMinDeltas(item.getGold(), duration));
+        if(item.getCreepScore() != null) {
+            timeline.setCreepsPerMinDeltas(getPerMinDeltas(item.getCreepScore(), duration));
+        }
+        if(item.getCreepScoreDifference() != null) {
+            timeline.setCsDiffPerMinDeltas(getPerMinDeltas(item.getCreepScoreDifference(), duration));
+        }
+        if(item.getDamageTakenDifference() != null) {
+            timeline.setDamageTakenDiffPerMinDeltas(getPerMinDeltas(item.getDamageTakenDifference(), duration));
+        }
+        if(item.getDamageTaken() != null) {
+            timeline.setDamageTakenPerMinDeltas(getPerMinDeltas(item.getDamageTaken(), duration));
+        }
+        if(item.getGold() != null) {
+            timeline.setGoldPerMinDeltas(getPerMinDeltas(item.getGold(), duration));
+        }
         timeline.setLane((String)context.get("lane"));
         timeline.setParticipantId((Integer)context.get("participantId"));
         timeline.setRole((String)context.get("role"));
-        timeline.setXpDiffPerMinDeltas(getPerMinDeltas(item.getExperienceDifference(), duration));
-        timeline.setXpPerMinDeltas(getPerMinDeltas(item.getExperience(), duration));
+        if(item.getExperienceDifference() != null) {
+            timeline.setXpDiffPerMinDeltas(getPerMinDeltas(item.getExperienceDifference(), duration));
+        }
+        if(item.getExperience() != null) {
+            timeline.setXpPerMinDeltas(getPerMinDeltas(item.getExperience(), duration));
+        }
         return timeline;
     }
 

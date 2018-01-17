@@ -51,6 +51,8 @@ import com.merakianalytics.orianna.types.core.league.League;
 import com.merakianalytics.orianna.types.core.league.LeaguePositions;
 import com.merakianalytics.orianna.types.core.league.Leagues;
 import com.merakianalytics.orianna.types.core.match.Match;
+import com.merakianalytics.orianna.types.core.match.MatchHistories;
+import com.merakianalytics.orianna.types.core.match.MatchHistory;
 import com.merakianalytics.orianna.types.core.match.Matches;
 import com.merakianalytics.orianna.types.core.match.Timeline;
 import com.merakianalytics.orianna.types.core.match.Timelines;
@@ -642,6 +644,18 @@ public abstract class Orianna {
 
     public static Matches.Builder matchesWithIds(final long... ids) {
         return Matches.withIds(ids);
+    }
+
+    public static MatchHistories.Builder matchHistoriesForSummoners(final Iterable<Summoner> summoners) {
+        return MatchHistories.forSummoners(summoners);
+    }
+
+    public static MatchHistories.Builder matchHistoriesForSummoners(final Summoner... summoners) {
+        return MatchHistories.forSummoners(summoners);
+    }
+
+    public static MatchHistory.Builder matchHistoryForSummoner(final Summoner summoner) {
+        return MatchHistory.forSummoner(summoner);
     }
 
     public static Match.Builder matchWithId(final long id) {

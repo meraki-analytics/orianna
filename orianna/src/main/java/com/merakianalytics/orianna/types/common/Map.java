@@ -7,13 +7,15 @@ public enum Map {
         BUTCHERS_BRIDGE(14),
         COSMIC_RUINS(16),
         HOWLING_ABYSS(12),
+        SUBSTRUCTURE_43(19),
         SUMMONERS_RIFT(11),
         SUMMONERS_RIFT_AUTUMN(2),
         SUMMONERS_RIFT_SUMMER(1),
         THE_CRYSTAL_SCAR(8),
         THE_PROVING_GROUNDS(3),
         TWISTED_TREELINE(10),
-        TWISTED_TREELINE_LEGACY(4);
+        TWISTED_TREELINE_LEGACY(4),
+        VALORAN_CITY_PARK(18);
 
     private static final java.util.Map<Integer, Map> BY_ID = getById();
 
