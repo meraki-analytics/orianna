@@ -10,15 +10,15 @@
       "config": {
         "expirationPeriods": {
           "com.merakianalytics.orianna.types.core.championmastery.ChampionMastery": {
-            "period": 30,
+            "period": 15,
             "unit": "MINUTES"
           },
           "com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries": {
-            "period": 30,
+            "period": 15,
             "unit": "MINUTES"
           },
           "com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore": {
-            "period": 30,
+            "period": 15,
             "unit": "MINUTES"
           },
           "com.merakianalytics.orianna.types.core.staticdata.Champion": {
@@ -54,11 +54,11 @@
             "unit": "HOURS"
           },
           "com.merakianalytics.orianna.types.core.league.League": {
-            "period": 30,
+            "period": 15,
             "unit": "MINUTES"
           },
           "com.merakianalytics.orianna.types.core.league.LeaguePositions": {
-            "period": 30,
+            "period": 15,
             "unit": "MINUTES"
           },
           "com.merakianalytics.orianna.types.core.staticdata.Map": {
@@ -114,8 +114,8 @@
             "unit": "HOURS"
           },
           "com.merakianalytics.orianna.types.core.summoner.Summoner": {
-            "period": 30,
-            "unit": "MINUTES"
+            "period": 1,
+            "unit": "HOURS"
           },
           "com.merakianalytics.orianna.types.core.match.Timeline": {
             "period": 6,

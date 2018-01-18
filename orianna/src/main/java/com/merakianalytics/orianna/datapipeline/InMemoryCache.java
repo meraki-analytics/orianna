@@ -2,6 +2,7 @@ package com.merakianalytics.orianna.datapipeline;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -11,12 +12,14 @@ import org.cache2k.Cache;
 import org.cache2k.Cache2kBuilder;
 import org.cache2k.CacheEntry;
 import org.cache2k.expiry.ExpiryPolicy;
+import org.cache2k.expiry.ExpiryTimeValues;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.merakianalytics.datapipelines.AbstractDataStore;
 import com.merakianalytics.datapipelines.PipelineContext;
 import com.merakianalytics.datapipelines.iterators.CloseableIterator;
@@ -66,37 +69,39 @@ import com.merakianalytics.orianna.types.core.thirdpartycode.VerificationString;
 
 public class InMemoryCache extends AbstractDataStore {
     public static class Configuration {
+        private static final long DEFAULT_EXPIRATION_PERIOD_MAX = 6L;
+        private static final TimeUnit DEFAULT_EXPIRATION_PERIOD_UNIT_MAX = TimeUnit.HOURS;
         private static final java.util.Map<String, ExpirationPeriod> DEFAULT_EXPIRATION_PERIODS = ImmutableMap.<String, ExpirationPeriod> builder()
-            .put(ChampionMastery.class.getCanonicalName(), ExpirationPeriod.create(30L, TimeUnit.MINUTES))
-            .put(ChampionMasteries.class.getCanonicalName(), ExpirationPeriod.create(30L, TimeUnit.MINUTES))
-            .put(ChampionMasteryScore.class.getCanonicalName(), ExpirationPeriod.create(30L, TimeUnit.MINUTES))
-            .put(Champion.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
-            .put(Champions.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
+            .put(ChampionMastery.class.getCanonicalName(), ExpirationPeriod.create(15L, TimeUnit.MINUTES))
+            .put(ChampionMasteries.class.getCanonicalName(), ExpirationPeriod.create(15L, TimeUnit.MINUTES))
+            .put(ChampionMasteryScore.class.getCanonicalName(), ExpirationPeriod.create(15L, TimeUnit.MINUTES))
+            .put(Champion.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
+            .put(Champions.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
             .put(CurrentGame.class.getCanonicalName(), ExpirationPeriod.create(5L, TimeUnit.MINUTES))
             .put(FeaturedGames.class.getCanonicalName(), ExpirationPeriod.create(5L, TimeUnit.MINUTES))
-            .put(Item.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
-            .put(Items.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
-            .put(LanguageStrings.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
-            .put(Languages.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
-            .put(League.class.getCanonicalName(), ExpirationPeriod.create(30, TimeUnit.MINUTES))
-            .put(LeaguePositions.class.getCanonicalName(), ExpirationPeriod.create(30L, TimeUnit.MINUTES))
-            .put(Map.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
-            .put(Maps.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
-            .put(Mastery.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
-            .put(Masteries.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
-            .put(Match.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
+            .put(Item.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
+            .put(Items.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
+            .put(LanguageStrings.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
+            .put(Languages.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
+            .put(League.class.getCanonicalName(), ExpirationPeriod.create(15L, TimeUnit.MINUTES))
+            .put(LeaguePositions.class.getCanonicalName(), ExpirationPeriod.create(15L, TimeUnit.MINUTES))
+            .put(Map.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
+            .put(Maps.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
+            .put(Mastery.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
+            .put(Masteries.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
+            .put(Match.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
             // TODO: MatchHistory
-            .put(ProfileIcon.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
-            .put(ProfileIcons.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
+            .put(ProfileIcon.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
+            .put(ProfileIcons.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
             .put(Realm.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
-            .put(Rune.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
-            .put(Runes.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
+            .put(Rune.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
+            .put(Runes.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
             .put(ShardStatus.class.getCanonicalName(), ExpirationPeriod.create(15L, TimeUnit.MINUTES))
-            .put(SummonerSpell.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
-            .put(SummonerSpells.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
-            .put(Summoner.class.getCanonicalName(), ExpirationPeriod.create(30L, TimeUnit.MINUTES))
-            .put(Timeline.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
-            .put(TournamentMatches.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
+            .put(SummonerSpell.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
+            .put(SummonerSpells.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
+            .put(Summoner.class.getCanonicalName(), ExpirationPeriod.create(1L, TimeUnit.HOURS))
+            .put(Timeline.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
+            .put(TournamentMatches.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
             .put(VerificationString.class.getCanonicalName(), ExpirationPeriod.create(3L, TimeUnit.MINUTES))
             .put(Versions.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .build();
@@ -122,7 +127,11 @@ public class InMemoryCache extends AbstractDataStore {
     private class Policy implements ExpiryPolicy<Integer, Object> {
         @Override
         public long calculateExpiryTime(final Integer key, final Object value, final long loadTime, final CacheEntry<Integer, Object> oldEntry) {
-            return loadTime + expirationPeriods.get(value.getClass()).longValue();
+            final Long period = expirationPeriods.get(value.getClass());
+            if(period != null && period > 0L) {
+                return loadTime + period.longValue();
+            }
+            return ExpiryTimeValues.ETERNAL;
         }
     }
 
@@ -919,6 +928,32 @@ public class InMemoryCache extends AbstractDataStore {
     public Versions getVersions(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forVersionsQuery(query);
         return (Versions)cache.get(key);
+    }
+
+    @Override
+    protected Set<Class<?>> ignore() {
+        final Set<String> included = new HashSet<>();
+        for(final Class<?> clazz : expirationPeriods.keySet()) {
+            if(expirationPeriods.get(clazz) != 0L) {
+                included.add(clazz.getCanonicalName());
+            }
+        }
+
+        final Set<String> names = Sets.difference(Configuration.DEFAULT_EXPIRATION_PERIODS.keySet(), included);
+        if(names.isEmpty()) {
+            return Collections.emptySet();
+        }
+
+        final Set<Class<?>> ignore = new HashSet<>();
+        for(final String name : names) {
+            try {
+                ignore.add(Class.forName(name));
+            } catch(final ClassNotFoundException e) {
+                LOGGER.error("Failed to find class for name " + name + "!", e);
+                throw new OriannaException("Failed to find class for name " + name + "! Report this to the orianna team.", e);
+            }
+        }
+        return ignore;
     }
 
     @Put(Champion.class)

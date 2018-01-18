@@ -8,12 +8,16 @@ import com.google.common.collect.ImmutableMap;
 import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Region;
+import com.merakianalytics.orianna.types.common.Season;
+import com.merakianalytics.orianna.types.common.Tier;
 import com.merakianalytics.orianna.types.core.GhostObject;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
 import com.merakianalytics.orianna.types.core.league.LeaguePositions;
+import com.merakianalytics.orianna.types.core.match.Match;
 import com.merakianalytics.orianna.types.core.match.MatchHistory;
+import com.merakianalytics.orianna.types.core.match.Participant;
 import com.merakianalytics.orianna.types.core.searchable.Searchable;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
 import com.merakianalytics.orianna.types.core.spectator.CurrentGame;
@@ -129,6 +133,16 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
 
     public CurrentGame getCurrentGame() {
         return CurrentGame.forSummoner(this).get();
+    }
+
+    public Tier getHighestTier(final Season season) {
+        final MatchHistory one = MatchHistory.forSummoner(this).withSeasons(season).withStartIndex(0).withEndIndex(1).get();
+        if(!one.isEmpty()) {
+            final Match match = one.get(0);
+            final Participant summoner = match.getParticipants().get(0);
+            return summoner.getHighestTierInSeason();
+        }
+        return null;
     }
 
     @Searchable(long.class)

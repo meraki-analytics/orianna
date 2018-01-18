@@ -275,7 +275,7 @@ public class DataDragon extends AbstractDataSource {
             synchronized(lock) {
                 supplier = cache.get(metadata);
                 if(supplier == null) {
-                    supplier = Suppliers.memoizeWithExpiration(new Supplier<String>() {
+                    supplier = new Supplier<String>() {
                         @Override
                         public String get() {
                             String URL = "https://ddragon.leagueoflegends.com/";
@@ -295,7 +295,13 @@ public class DataDragon extends AbstractDataSource {
                                     + "! Report this to the orianna team.", e);
                             }
                         }
-                    }, cacheDuration.getPeriod(), cacheDuration.getUnit());
+                    };
+
+                    if(cacheDuration.getPeriod() < 0) {
+                        supplier = Suppliers.memoize(supplier);
+                    } else if(cacheDuration.getPeriod() > 0) {
+                        supplier = Suppliers.memoizeWithExpiration(supplier, cacheDuration.getPeriod(), cacheDuration.getUnit());
+                    }
                     cache.put(metadata, supplier);
                 }
             }
@@ -454,7 +460,7 @@ public class DataDragon extends AbstractDataSource {
                     final ObjectNode item = (ObjectNode)temp.get(itemId);
                     final String itemName = item.get("name").asText();
 
-                    if(id != null && id.intValue() == Integer.parseInt(itemId) || name.equals(itemName)) {
+                    if(id != null && id.intValue() == Integer.parseInt(itemId) || name != null && name.equals(itemName)) {
                         item.set("id", new IntNode(Integer.parseInt(itemId)));
 
                         INCLUDED_DATA_PROCESSOR.apply(item);
@@ -1782,7 +1788,7 @@ public class DataDragon extends AbstractDataSource {
                     final JsonNode idNode = mastery.get("id");
                     final String masteryName = mastery.get("name").asText();
 
-                    if(id != null && idNode != null && id.intValue() == idNode.asInt() || name.equals(masteryName)) {
+                    if(id != null && idNode != null && id.intValue() == idNode.asInt() || name != null && name.equals(masteryName)) {
                         INCLUDED_DATA_PROCESSOR.apply(mastery);
                         return mastery;
                     }
@@ -1947,7 +1953,7 @@ public class DataDragon extends AbstractDataSource {
                     final ObjectNode rune = (ObjectNode)temp.get(runeId);
                     final String runeName = rune.get("name").asText();
 
-                    if(id != null && id.intValue() == Integer.parseInt(runeId) || name.equals(runeName)) {
+                    if(id != null && id.intValue() == Integer.parseInt(runeId) || name != null && name.equals(runeName)) {
                         rune.set("id", new IntNode(Integer.parseInt(runeId)));
 
                         INCLUDED_DATA_PROCESSOR.apply(rune);
@@ -2057,7 +2063,7 @@ public class DataDragon extends AbstractDataSource {
                     final JsonNode idNode = spell.get("key");
                     final String spellName = spell.get("name").asText();
 
-                    if(id != null && idNode != null && id.intValue() == idNode.asInt() || name.equals(spellName)) {
+                    if(id != null && idNode != null && id.intValue() == idNode.asInt() || name != null && name.equals(spellName)) {
                         INCLUDED_DATA_PROCESSOR.apply(spell);
                         CHAMPION_PROCESSOR.apply(spell);
                         return spell;

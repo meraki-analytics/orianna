@@ -28,7 +28,7 @@ import com.merakianalytics.orianna.types.data.CoreData;
 public abstract class OriannaObject<T extends CoreData> extends AbstractSearchableObject implements Serializable {
     public static abstract class ListProxy<T, C, L extends CoreData.ListProxy<C>> extends OriannaObject<L> implements List<T> {
         // TODO: ListProxy should be a SearchableList
-        public class ListProxyIterator implements ListIterator<T> {
+        private class ListProxyIterator implements ListIterator<T> {
             private final ListIterator<T> iterator = data.listIterator();
 
             @Override

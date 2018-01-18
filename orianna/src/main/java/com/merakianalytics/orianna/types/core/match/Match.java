@@ -79,15 +79,15 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
         }
     }
 
-    private class Participant extends com.merakianalytics.orianna.types.core.match.Participant {
+    public class Participant extends com.merakianalytics.orianna.types.core.match.Participant {
         private static final long serialVersionUID = -4802669460954679635L;
 
         private final Supplier<Champion> champion = Suppliers.memoize(new Supplier<Champion>() {
             @Override
             public Champion get() {
-                Champion.Builder builder = Champion.withId(coreData.getChampionId()).withPlatform(Platform.withTag(coreData.getPlatform()));
+                Champion.Builder builder = Champion.withId(coreData.getChampionId()).withPlatform(Platform.withTag(coreData.getCurrentPlatform()));
                 if(coreData.getVersion() != null) {
-                    final String version = Versions.withPlatform(Platform.withTag(coreData.getPlatform())).get().truncate(coreData.getVersion());
+                    final String version = Versions.withPlatform(Platform.withTag(coreData.getCurrentPlatform())).get().truncate(coreData.getVersion());
                     builder = builder.withVersion(version);
                 }
                 return builder.get();
@@ -98,9 +98,9 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
             @Override
             public SearchableList<Item> get() {
                 load(MATCH_LOAD_GROUP);
-                final String version = Versions.withPlatform(Platform.withTag(coreData.getPlatform())).get().truncate(coreData.getVersion());
+                final String version = Versions.withPlatform(Platform.withTag(coreData.getCurrentPlatform())).get().truncate(coreData.getVersion());
                 return SearchableLists.unmodifiableFrom(
-                    Items.withIds(coreData.getItems()).withPlatform(Platform.withTag(coreData.getPlatform())).withVersion(version).get());
+                    Items.withIds(coreData.getItems()).withPlatform(Platform.withTag(coreData.getCurrentPlatform())).withVersion(version).get());
             }
         });
 
@@ -116,8 +116,8 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
             @Override
             public ProfileIcon get() {
                 load(MATCH_LOAD_GROUP);
-                final String version = Versions.withPlatform(Platform.withTag(coreData.getPlatform())).get().truncate(coreData.getVersion());
-                return ProfileIcon.withId(coreData.getProfileIconId()).withPlatform(Platform.withTag(coreData.getPlatform())).withVersion(version)
+                final String version = Versions.withPlatform(Platform.withTag(coreData.getCurrentPlatform())).get().truncate(coreData.getVersion());
+                return ProfileIcon.withId(coreData.getProfileIconId()).withPlatform(Platform.withTag(coreData.getCurrentPlatform())).withVersion(version)
                     .get();
             }
         });
@@ -161,8 +161,9 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
             @Override
             public SummonerSpell get() {
                 load(MATCH_LOAD_GROUP);
-                final String version = Versions.withPlatform(Platform.withTag(coreData.getPlatform())).get().truncate(coreData.getVersion());
-                return SummonerSpell.withId(coreData.getSummonerSpellDId()).withPlatform(Platform.withTag(coreData.getPlatform())).withVersion(version).get();
+                final String version = Versions.withPlatform(Platform.withTag(coreData.getCurrentPlatform())).get().truncate(coreData.getVersion());
+                return SummonerSpell.withId(coreData.getSummonerSpellDId()).withPlatform(Platform.withTag(coreData.getCurrentPlatform())).withVersion(version)
+                    .get();
             }
         });
 
@@ -170,8 +171,9 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
             @Override
             public SummonerSpell get() {
                 load(MATCH_LOAD_GROUP);
-                final String version = Versions.withPlatform(Platform.withTag(coreData.getPlatform())).get().truncate(coreData.getVersion());
-                return SummonerSpell.withId(coreData.getSummonerSpellDId()).withPlatform(Platform.withTag(coreData.getPlatform())).withVersion(version).get();
+                final String version = Versions.withPlatform(Platform.withTag(coreData.getCurrentPlatform())).get().truncate(coreData.getVersion());
+                return SummonerSpell.withId(coreData.getSummonerSpellDId()).withPlatform(Platform.withTag(coreData.getCurrentPlatform())).withVersion(version)
+                    .get();
             }
         });
 
@@ -223,7 +225,6 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
         }
 
         @Override
-        @Searchable({Summoner.class, String.class, long.class})
         public Summoner getPreTransferSummoner() {
             return preTransferSummoner.get();
         }
@@ -291,7 +292,7 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
         }
     }
 
-    private class Team extends com.merakianalytics.orianna.types.core.match.Team {
+    public class Team extends com.merakianalytics.orianna.types.core.match.Team {
         private static final long serialVersionUID = -5787154563875265507L;
 
         private final Supplier<SearchableList<Champion>> bans = Suppliers.memoize(new Supplier<SearchableList<Champion>>() {
@@ -420,12 +421,16 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
         to.setCurrentAccountId(from.getCurrentAccountId());
         to.setCurrentPlatform(from.getCurrentPlatform());
         to.setHighestTierInSeason(from.getHighestTierInSeason());
+        to.setItems(from.getItems());
         to.setLane(from.getLane());
         to.setMatchHistoryURI(from.getMatchHistoryURI());
         to.setParticipantId(from.getParticipantId());
         to.setPlatform(from.getPlatform());
+        to.setPrimaryRunePath(from.getPrimaryRunePath());
         to.setProfileIconId(from.getProfileIconId());
         to.setRole(from.getRole());
+        to.setRuneStats(from.getRuneStats());
+        to.setSecondaryRunePath(from.getSecondaryRunePath());
         to.setStats(from.getStats());
         to.setSummonerId(from.getSummonerId());
         to.setSummonerName(from.getSummonerName());
@@ -575,6 +580,7 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
         return GameMode.valueOf(coreData.getMode());
     }
 
+    @Searchable({Summoner.class, Champion.class, Item.class, String.class, long.class, int.class})
     public SearchableList<com.merakianalytics.orianna.types.core.match.Participant> getParticipants() {
         return participants.get();
     }

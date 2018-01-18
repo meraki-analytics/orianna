@@ -40,6 +40,7 @@ public class MatchHistory extends GhostObject<com.merakianalytics.orianna.types.
                 return Orianna.getSettings().getPipeline().get(MatchHistory.class, builder.build());
             }
         }
+
         private Set<Integer> champions;
         private Set<Integer> queues;
         private Set<Integer> seasons;

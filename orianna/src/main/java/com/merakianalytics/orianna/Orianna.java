@@ -192,14 +192,24 @@ public abstract class Orianna {
             pipeline = PipelineConfiguration.toPipeline(config.getPipeline());
             defaultPlatform = config.getDefaultPlatform();
             defaultLocale = config.getDefaultLocale();
-            currentVersion = Suppliers.memoizeWithExpiration(new Supplier<String>() {
+
+            final Supplier<String> supplier = new Supplier<String>() {
                 @Override
                 public String get() {
                     return pipeline
                         .get(com.merakianalytics.orianna.types.dto.staticdata.Realm.class, ImmutableMap.<String, Object> of("platform", defaultPlatform))
                         .getV();
                 }
-            }, config.getCurrentVersionExpiration().getPeriod(), config.getCurrentVersionExpiration().getUnit());
+            };
+
+            final ExpirationPeriod period = config.getCurrentVersionExpiration();
+            if(period.getPeriod() == 0) {
+                currentVersion = supplier;
+            } else if(period.getPeriod() < 0) {
+                currentVersion = Suppliers.memoize(supplier);
+            } else {
+                currentVersion = Suppliers.memoizeWithExpiration(supplier, period.getPeriod(), period.getUnit());
+            }
         }
 
         /**

@@ -375,26 +375,41 @@ public class Champion extends GhostObject<ChampionData> {
     }
 
     public boolean isEnabled() {
+        if(coreData.getStatus().getId() == 0) {
+            load(CHAMPION_LOAD_GROUP);
+        }
         load(STATUS_LOAD_GROUP);
         return coreData.getStatus().isEnabled();
     }
 
     public boolean isEnabledInCoopVsAI() {
+        if(coreData.getStatus().getId() == 0) {
+            load(CHAMPION_LOAD_GROUP);
+        }
         load(STATUS_LOAD_GROUP);
         return coreData.getStatus().isEnabledInCoopVsAI();
     }
 
     public boolean isEnabledInCustoms() {
+        if(coreData.getStatus().getId() == 0) {
+            load(CHAMPION_LOAD_GROUP);
+        }
         load(STATUS_LOAD_GROUP);
         return coreData.getStatus().isEnabledInCustoms();
     }
 
     public boolean isEnabledInRanked() {
+        if(coreData.getStatus().getId() == 0) {
+            load(CHAMPION_LOAD_GROUP);
+        }
         load(STATUS_LOAD_GROUP);
         return coreData.getStatus().isEnabledInRanked();
     }
 
     public boolean isFreeToPlay() {
+        if(coreData.getStatus().getId() == 0) {
+            load(CHAMPION_LOAD_GROUP);
+        }
         load(STATUS_LOAD_GROUP);
         return coreData.getStatus().isEnabled();
     }
@@ -427,23 +442,31 @@ public class Champion extends GhostObject<ChampionData> {
                     builder.put("includedData", coreData.getChampion().getIncludedData());
                 }
 
-                coreData.setChampion(
-                    Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Champion.class, builder.build()));
+                coreData
+                    .setChampion(Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Champion.class, builder.build()));
+                if(coreData.getStatus().getId() == 0) {
+                    coreData.getStatus().setId(coreData.getChampion().getId());
+                }
+                if(coreData.getStatus().getPlatform() == null) {
+                    coreData.getStatus().setPlatform(coreData.getChampion().getPlatform());
+                }
                 break;
             case STATUS_LOAD_GROUP:
                 builder = ImmutableMap.builder();
-                if(coreData.getChampion().getId() != 0) {
-                    builder.put("id", coreData.getChampion().getId());
+                if(coreData.getStatus().getId() != 0) {
+                    builder.put("id", coreData.getStatus().getId());
                 }
-                if(coreData.getChampion().getName() != null) {
-                    builder.put("name", coreData.getChampion().getName());
-                }
-                if(coreData.getChampion().getPlatform() != null) {
+                if(coreData.getStatus().getPlatform() != null) {
                     builder.put("platform", Platform.withTag(coreData.getChampion().getPlatform()));
                 }
 
-                coreData.setStatus(
-                    Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.champion.ChampionStatus.class, builder.build()));
+                coreData.setStatus(Orianna.getSettings().getPipeline().get(ChampionStatus.class, builder.build()));
+                if(coreData.getChampion().getId() == 0) {
+                    coreData.getChampion().setId(coreData.getStatus().getId());
+                }
+                if(coreData.getChampion().getPlatform() == null) {
+                    coreData.getChampion().setPlatform(coreData.getStatus().getPlatform());
+                }
                 break;
             default:
                 break;

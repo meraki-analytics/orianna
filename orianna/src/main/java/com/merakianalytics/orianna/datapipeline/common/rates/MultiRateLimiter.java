@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.merakianalytics.orianna.datapipeline.common.TimeoutException;
 
 public class MultiRateLimiter implements RateLimiter {
-    public class AggregateReservedPermit implements ReservedPermit {
+    private class AggregateReservedPermit implements ReservedPermit {
         private final Set<ReservedPermit> reservations;
 
         public AggregateReservedPermit(final Set<ReservedPermit> reservations) {
@@ -35,8 +35,8 @@ public class MultiRateLimiter implements RateLimiter {
             }
         }
     }
-    private final Map<String, RateLimiter> limiters;
 
+    private final Map<String, RateLimiter> limiters;
     private final AtomicInteger permitsIssued = new AtomicInteger(0);
 
     public MultiRateLimiter(final Collection<? extends RateLimiter> limiters) {

@@ -146,58 +146,86 @@ public class MatchTransformer extends AbstractDataTransformer {
         converted.setRole(item.getTimeline().getRole());
         converted.setPrimaryRunePath(item.getStats().getPerkPrimaryStyle());
         converted.setSecondaryRunePath(item.getStats().getPerkSubStyle());
-        final List<Integer> items = new ArrayList<>(7);
-        items.add(item.getStats().getItem0());
-        items.add(item.getStats().getItem1());
-        items.add(item.getStats().getItem2());
-        items.add(item.getStats().getItem3());
-        items.add(item.getStats().getItem4());
-        items.add(item.getStats().getItem5());
-        items.add(item.getStats().getItem6());
+        final ArrayList<Integer> items = new ArrayList<>(7);
+        if(item.getStats().getItem0() != 0) {
+            items.add(item.getStats().getItem0());
+        }
+        if(item.getStats().getItem1() != 0) {
+            items.add(item.getStats().getItem1());
+        }
+        if(item.getStats().getItem2() != 0) {
+            items.add(item.getStats().getItem2());
+        }
+        if(item.getStats().getItem3() != 0) {
+            items.add(item.getStats().getItem3());
+        }
+        if(item.getStats().getItem4() != 0) {
+            items.add(item.getStats().getItem4());
+        }
+        if(item.getStats().getItem5() != 0) {
+            items.add(item.getStats().getItem5());
+        }
+        if(item.getStats().getItem6() != 0) {
+            items.add(item.getStats().getItem6());
+        }
+        items.trimToSize();
         converted.setItems(items);
-        final List<RuneStats> runes = new ArrayList<>(6);
-        RuneStats rune = new RuneStats();
-        rune.setId(item.getStats().getPerk0());
-        rune.setVariables(new ArrayList<Integer>(3));
-        rune.getVariables().add(item.getStats().getPerk0Var1());
-        rune.getVariables().add(item.getStats().getPerk0Var2());
-        rune.getVariables().add(item.getStats().getPerk0Var3());
-        runes.add(rune);
-        rune = new RuneStats();
-        rune.setId(item.getStats().getPerk1());
-        rune.setVariables(new ArrayList<Integer>(3));
-        rune.getVariables().add(item.getStats().getPerk1Var1());
-        rune.getVariables().add(item.getStats().getPerk1Var2());
-        rune.getVariables().add(item.getStats().getPerk1Var3());
-        runes.add(rune);
-        rune = new RuneStats();
-        rune.setId(item.getStats().getPerk2());
-        rune.setVariables(new ArrayList<Integer>(3));
-        rune.getVariables().add(item.getStats().getPerk2Var1());
-        rune.getVariables().add(item.getStats().getPerk2Var2());
-        rune.getVariables().add(item.getStats().getPerk2Var3());
-        runes.add(rune);
-        rune = new RuneStats();
-        rune.setId(item.getStats().getPerk3());
-        rune.setVariables(new ArrayList<Integer>(3));
-        rune.getVariables().add(item.getStats().getPerk3Var1());
-        rune.getVariables().add(item.getStats().getPerk3Var2());
-        rune.getVariables().add(item.getStats().getPerk3Var3());
-        runes.add(rune);
-        rune = new RuneStats();
-        rune.setId(item.getStats().getPerk4());
-        rune.setVariables(new ArrayList<Integer>(3));
-        rune.getVariables().add(item.getStats().getPerk4Var1());
-        rune.getVariables().add(item.getStats().getPerk4Var2());
-        rune.getVariables().add(item.getStats().getPerk4Var3());
-        runes.add(rune);
-        rune = new RuneStats();
-        rune.setId(item.getStats().getPerk5());
-        rune.setVariables(new ArrayList<Integer>(3));
-        rune.getVariables().add(item.getStats().getPerk5Var1());
-        rune.getVariables().add(item.getStats().getPerk5Var2());
-        rune.getVariables().add(item.getStats().getPerk5Var3());
-        runes.add(rune);
+        final ArrayList<RuneStats> runes = new ArrayList<>(6);
+        if(item.getStats().getPerk0() != 0) {
+            final RuneStats rune = new RuneStats();
+            rune.setId(item.getStats().getPerk0());
+            rune.setVariables(new ArrayList<Integer>(3));
+            rune.getVariables().add(item.getStats().getPerk0Var1());
+            rune.getVariables().add(item.getStats().getPerk0Var2());
+            rune.getVariables().add(item.getStats().getPerk0Var3());
+            runes.add(rune);
+        }
+        if(item.getStats().getPerk1() != 0) {
+            final RuneStats rune = new RuneStats();
+            rune.setId(item.getStats().getPerk1());
+            rune.setVariables(new ArrayList<Integer>(3));
+            rune.getVariables().add(item.getStats().getPerk1Var1());
+            rune.getVariables().add(item.getStats().getPerk1Var2());
+            rune.getVariables().add(item.getStats().getPerk1Var3());
+            runes.add(rune);
+        }
+        if(item.getStats().getPerk2() != 0) {
+            final RuneStats rune = new RuneStats();
+            rune.setId(item.getStats().getPerk2());
+            rune.setVariables(new ArrayList<Integer>(3));
+            rune.getVariables().add(item.getStats().getPerk2Var1());
+            rune.getVariables().add(item.getStats().getPerk2Var2());
+            rune.getVariables().add(item.getStats().getPerk2Var3());
+            runes.add(rune);
+        }
+        if(item.getStats().getPerk3() != 0) {
+            final RuneStats rune = new RuneStats();
+            rune.setId(item.getStats().getPerk3());
+            rune.setVariables(new ArrayList<Integer>(3));
+            rune.getVariables().add(item.getStats().getPerk3Var1());
+            rune.getVariables().add(item.getStats().getPerk3Var2());
+            rune.getVariables().add(item.getStats().getPerk3Var3());
+            runes.add(rune);
+        }
+        if(item.getStats().getPerk4() != 0) {
+            final RuneStats rune = new RuneStats();
+            rune.setId(item.getStats().getPerk4());
+            rune.setVariables(new ArrayList<Integer>(3));
+            rune.getVariables().add(item.getStats().getPerk4Var1());
+            rune.getVariables().add(item.getStats().getPerk4Var2());
+            rune.getVariables().add(item.getStats().getPerk4Var3());
+            runes.add(rune);
+        }
+        if(item.getStats().getPerk5() != 0) {
+            final RuneStats rune = new RuneStats();
+            rune.setId(item.getStats().getPerk5());
+            rune.setVariables(new ArrayList<Integer>(3));
+            rune.getVariables().add(item.getStats().getPerk5Var1());
+            rune.getVariables().add(item.getStats().getPerk5Var2());
+            rune.getVariables().add(item.getStats().getPerk5Var3());
+            runes.add(rune);
+        }
+        runes.trimToSize();
         converted.setRuneStats(runes);
         final com.merakianalytics.orianna.types.dto.match.Player player = (com.merakianalytics.orianna.types.dto.match.Player)context.get("player");
         converted.setAccountId(player.getAccountId());
@@ -344,58 +372,86 @@ public class MatchTransformer extends AbstractDataTransformer {
         player.setTimeline(transform(participant.getTimeline(), context));
         player.setPrimaryRunePath(participant.getStats().getPerkPrimaryStyle());
         player.setSecondaryRunePath(participant.getStats().getPerkSubStyle());
-        final List<Integer> items = new ArrayList<>(7);
-        items.add(participant.getStats().getItem0());
-        items.add(participant.getStats().getItem1());
-        items.add(participant.getStats().getItem2());
-        items.add(participant.getStats().getItem3());
-        items.add(participant.getStats().getItem4());
-        items.add(participant.getStats().getItem5());
-        items.add(participant.getStats().getItem6());
+        final ArrayList<Integer> items = new ArrayList<>(7);
+        if(participant.getStats().getItem0() != 0) {
+            items.add(participant.getStats().getItem0());
+        }
+        if(participant.getStats().getItem1() != 0) {
+            items.add(participant.getStats().getItem1());
+        }
+        if(participant.getStats().getItem2() != 0) {
+            items.add(participant.getStats().getItem2());
+        }
+        if(participant.getStats().getItem3() != 0) {
+            items.add(participant.getStats().getItem3());
+        }
+        if(participant.getStats().getItem4() != 0) {
+            items.add(participant.getStats().getItem4());
+        }
+        if(participant.getStats().getItem5() != 0) {
+            items.add(participant.getStats().getItem5());
+        }
+        if(participant.getStats().getItem6() != 0) {
+            items.add(participant.getStats().getItem6());
+        }
+        items.trimToSize();
         player.setItems(items);
-        final List<RuneStats> runes = new ArrayList<>(6);
-        RuneStats rune = new RuneStats();
-        rune.setId(participant.getStats().getPerk0());
-        rune.setVariables(new ArrayList<Integer>(3));
-        rune.getVariables().add(participant.getStats().getPerk0Var1());
-        rune.getVariables().add(participant.getStats().getPerk0Var2());
-        rune.getVariables().add(participant.getStats().getPerk0Var3());
-        runes.add(rune);
-        rune = new RuneStats();
-        rune.setId(participant.getStats().getPerk1());
-        rune.setVariables(new ArrayList<Integer>(3));
-        rune.getVariables().add(participant.getStats().getPerk1Var1());
-        rune.getVariables().add(participant.getStats().getPerk1Var2());
-        rune.getVariables().add(participant.getStats().getPerk1Var3());
-        runes.add(rune);
-        rune = new RuneStats();
-        rune.setId(participant.getStats().getPerk2());
-        rune.setVariables(new ArrayList<Integer>(3));
-        rune.getVariables().add(participant.getStats().getPerk2Var1());
-        rune.getVariables().add(participant.getStats().getPerk2Var2());
-        rune.getVariables().add(participant.getStats().getPerk2Var3());
-        runes.add(rune);
-        rune = new RuneStats();
-        rune.setId(participant.getStats().getPerk3());
-        rune.setVariables(new ArrayList<Integer>(3));
-        rune.getVariables().add(participant.getStats().getPerk3Var1());
-        rune.getVariables().add(participant.getStats().getPerk3Var2());
-        rune.getVariables().add(participant.getStats().getPerk3Var3());
-        runes.add(rune);
-        rune = new RuneStats();
-        rune.setId(participant.getStats().getPerk4());
-        rune.setVariables(new ArrayList<Integer>(3));
-        rune.getVariables().add(participant.getStats().getPerk4Var1());
-        rune.getVariables().add(participant.getStats().getPerk4Var2());
-        rune.getVariables().add(participant.getStats().getPerk4Var3());
-        runes.add(rune);
-        rune = new RuneStats();
-        rune.setId(participant.getStats().getPerk5());
-        rune.setVariables(new ArrayList<Integer>(3));
-        rune.getVariables().add(participant.getStats().getPerk5Var1());
-        rune.getVariables().add(participant.getStats().getPerk5Var2());
-        rune.getVariables().add(participant.getStats().getPerk5Var3());
-        runes.add(rune);
+        final ArrayList<RuneStats> runes = new ArrayList<>(6);
+        if(participant.getStats().getPerk0() != 0) {
+            final RuneStats rune = new RuneStats();
+            rune.setId(participant.getStats().getPerk0());
+            rune.setVariables(new ArrayList<Integer>(3));
+            rune.getVariables().add(participant.getStats().getPerk0Var1());
+            rune.getVariables().add(participant.getStats().getPerk0Var2());
+            rune.getVariables().add(participant.getStats().getPerk0Var3());
+            runes.add(rune);
+        }
+        if(participant.getStats().getPerk1() != 0) {
+            final RuneStats rune = new RuneStats();
+            rune.setId(participant.getStats().getPerk1());
+            rune.setVariables(new ArrayList<Integer>(3));
+            rune.getVariables().add(participant.getStats().getPerk1Var1());
+            rune.getVariables().add(participant.getStats().getPerk1Var2());
+            rune.getVariables().add(participant.getStats().getPerk1Var3());
+            runes.add(rune);
+        }
+        if(participant.getStats().getPerk2() != 0) {
+            final RuneStats rune = new RuneStats();
+            rune.setId(participant.getStats().getPerk2());
+            rune.setVariables(new ArrayList<Integer>(3));
+            rune.getVariables().add(participant.getStats().getPerk2Var1());
+            rune.getVariables().add(participant.getStats().getPerk2Var2());
+            rune.getVariables().add(participant.getStats().getPerk2Var3());
+            runes.add(rune);
+        }
+        if(participant.getStats().getPerk3() != 0) {
+            final RuneStats rune = new RuneStats();
+            rune.setId(participant.getStats().getPerk3());
+            rune.setVariables(new ArrayList<Integer>(3));
+            rune.getVariables().add(participant.getStats().getPerk3Var1());
+            rune.getVariables().add(participant.getStats().getPerk3Var2());
+            rune.getVariables().add(participant.getStats().getPerk3Var3());
+            runes.add(rune);
+        }
+        if(participant.getStats().getPerk4() != 0) {
+            final RuneStats rune = new RuneStats();
+            rune.setId(participant.getStats().getPerk4());
+            rune.setVariables(new ArrayList<Integer>(3));
+            rune.getVariables().add(participant.getStats().getPerk4Var1());
+            rune.getVariables().add(participant.getStats().getPerk4Var2());
+            rune.getVariables().add(participant.getStats().getPerk4Var3());
+            runes.add(rune);
+        }
+        if(participant.getStats().getPerk5() != 0) {
+            final RuneStats rune = new RuneStats();
+            rune.setId(participant.getStats().getPerk5());
+            rune.setVariables(new ArrayList<Integer>(3));
+            rune.getVariables().add(participant.getStats().getPerk5Var1());
+            rune.getVariables().add(participant.getStats().getPerk5Var2());
+            rune.getVariables().add(participant.getStats().getPerk5Var3());
+            runes.add(rune);
+        }
+        runes.trimToSize();
         player.setRuneStats(runes);
         return player;
     }
@@ -749,46 +805,72 @@ public class MatchTransformer extends AbstractDataTransformer {
         stats.setPlayerScore8(item.getPlayerScore8());
         stats.setPlayerScore9(item.getPlayerScore9());
         final List<Integer> items = (List<Integer>)context.get("items");
-        stats.setItem0(items.get(0));
-        stats.setItem1(items.get(1));
-        stats.setItem2(items.get(2));
-        stats.setItem3(items.get(3));
-        stats.setItem4(items.get(4));
-        stats.setItem5(items.get(5));
-        stats.setItem6(items.get(6));
+        if(items.size() > 0) {
+            stats.setItem0(items.get(0));
+        }
+        if(items.size() > 1) {
+            stats.setItem1(items.get(1));
+        }
+        if(items.size() > 2) {
+            stats.setItem2(items.get(2));
+        }
+        if(items.size() > 3) {
+            stats.setItem3(items.get(3));
+        }
+        if(items.size() > 4) {
+            stats.setItem4(items.get(4));
+        }
+        if(items.size() > 5) {
+            stats.setItem5(items.get(5));
+        }
+        if(items.size() > 6) {
+            stats.setItem6(items.get(6));
+        }
         stats.setPerkPrimaryStyle((Integer)context.get("primaryRunePath"));
         stats.setPerkSubStyle((Integer)context.get("secondaryRunePath"));
         final List<RuneStats> runeStats = (List<RuneStats>)context.get("runeStats");
-        RuneStats rune = runeStats.get(0);
-        stats.setPerk0(rune.getId());
-        stats.setPerk0Var1(rune.getVariables().get(0));
-        stats.setPerk0Var2(rune.getVariables().get(1));
-        stats.setPerk0Var3(rune.getVariables().get(2));
-        rune = runeStats.get(1);
-        stats.setPerk1(rune.getId());
-        stats.setPerk1Var1(rune.getVariables().get(0));
-        stats.setPerk1Var2(rune.getVariables().get(1));
-        stats.setPerk1Var3(rune.getVariables().get(2));
-        rune = runeStats.get(2);
-        stats.setPerk2(rune.getId());
-        stats.setPerk2Var1(rune.getVariables().get(0));
-        stats.setPerk2Var2(rune.getVariables().get(1));
-        stats.setPerk2Var3(rune.getVariables().get(2));
-        rune = runeStats.get(3);
-        stats.setPerk3(rune.getId());
-        stats.setPerk3Var1(rune.getVariables().get(0));
-        stats.setPerk3Var2(rune.getVariables().get(1));
-        stats.setPerk3Var3(rune.getVariables().get(2));
-        rune = runeStats.get(4);
-        stats.setPerk4(rune.getId());
-        stats.setPerk4Var1(rune.getVariables().get(0));
-        stats.setPerk4Var2(rune.getVariables().get(1));
-        stats.setPerk4Var3(rune.getVariables().get(2));
-        rune = runeStats.get(5);
-        stats.setPerk5(rune.getId());
-        stats.setPerk5Var1(rune.getVariables().get(0));
-        stats.setPerk5Var2(rune.getVariables().get(1));
-        stats.setPerk5Var3(rune.getVariables().get(2));
+        if(runeStats.size() > 0) {
+            final RuneStats rune = runeStats.get(0);
+            stats.setPerk0(rune.getId());
+            stats.setPerk0Var1(rune.getVariables().get(0));
+            stats.setPerk0Var2(rune.getVariables().get(1));
+            stats.setPerk0Var3(rune.getVariables().get(2));
+        }
+        if(runeStats.size() > 1) {
+            final RuneStats rune = runeStats.get(1);
+            stats.setPerk1(rune.getId());
+            stats.setPerk1Var1(rune.getVariables().get(0));
+            stats.setPerk1Var2(rune.getVariables().get(1));
+            stats.setPerk1Var3(rune.getVariables().get(2));
+        }
+        if(runeStats.size() > 2) {
+            final RuneStats rune = runeStats.get(2);
+            stats.setPerk2(rune.getId());
+            stats.setPerk2Var1(rune.getVariables().get(0));
+            stats.setPerk2Var2(rune.getVariables().get(1));
+            stats.setPerk2Var3(rune.getVariables().get(2));
+        }
+        if(runeStats.size() > 3) {
+            final RuneStats rune = runeStats.get(3);
+            stats.setPerk3(rune.getId());
+            stats.setPerk3Var1(rune.getVariables().get(0));
+            stats.setPerk3Var2(rune.getVariables().get(1));
+            stats.setPerk3Var3(rune.getVariables().get(2));
+        }
+        if(runeStats.size() > 4) {
+            final RuneStats rune = runeStats.get(4);
+            stats.setPerk4(rune.getId());
+            stats.setPerk4Var1(rune.getVariables().get(0));
+            stats.setPerk4Var2(rune.getVariables().get(1));
+            stats.setPerk4Var3(rune.getVariables().get(2));
+        }
+        if(runeStats.size() > 5) {
+            final RuneStats rune = runeStats.get(5);
+            stats.setPerk5(rune.getId());
+            stats.setPerk5Var1(rune.getVariables().get(0));
+            stats.setPerk5Var2(rune.getVariables().get(1));
+            stats.setPerk5Var3(rune.getVariables().get(2));
+        }
         stats.setKillingSprees(item.getKillingSprees());
         stats.setKills(item.getKills());
         stats.setLargestCriticalStrike(item.getLargestCriticalStrike());

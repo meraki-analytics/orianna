@@ -30,7 +30,6 @@ public abstract class Participant extends OriannaObject<com.merakianalytics.oria
 
     public abstract Lane getLane();
 
-    @Searchable({Summoner.class, String.class, long.class})
     public abstract Summoner getPreTransferSummoner();
 
     public abstract RunePath getPrimaryRunePath();

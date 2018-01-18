@@ -61,7 +61,7 @@ public class Timeline extends GhostObject.ListProxy<Frame, com.merakianalytics.o
         }
     }
 
-    private class Event extends com.merakianalytics.orianna.types.core.match.Event {
+    public class Event extends com.merakianalytics.orianna.types.core.match.Event {
         private static final long serialVersionUID = -245827734492071363L;
 
         private final Supplier<Item> after = Suppliers.memoize(new Supplier<Item>() {
@@ -280,7 +280,7 @@ public class Timeline extends GhostObject.ListProxy<Frame, com.merakianalytics.o
         }
     }
 
-    private class Frame extends com.merakianalytics.orianna.types.core.match.Frame {
+    public class Frame extends com.merakianalytics.orianna.types.core.match.Frame {
         private static final long serialVersionUID = -7952210236371512933L;
 
         private final Supplier<Map<Participant, ParticipantFrame>> participantFrames = Suppliers.memoize(new Supplier<Map<Participant, ParticipantFrame>>() {
