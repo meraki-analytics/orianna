@@ -8,7 +8,6 @@ import com.google.common.collect.ImmutableMap.Builder;
 import com.google.common.collect.ImmutableSet;
 
 public enum Queue {
-        // TODO: Replace Queues with JSON version
         ARAM(450),
         ARAM_5x5(65),
         ARSR_5x5(325),

@@ -642,7 +642,6 @@ public class StaticDataAPI extends RiotAPIService {
     @SuppressWarnings("unchecked")
     @GetMany(MapDetails.class)
     public CloseableIterator<MapDetails> getManyMapDetails(final Map<String, Object> query, final PipelineContext context) {
-        // TODO: Add some caching for MapData internally so we don't have to waste calls to get one map a bunch of times.
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
         final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
@@ -865,7 +864,6 @@ public class StaticDataAPI extends RiotAPIService {
     @SuppressWarnings("unchecked")
     @GetMany(ProfileIconDetails.class)
     public CloseableIterator<ProfileIconDetails> getManyProfileIconDetails(final Map<String, Object> query, final PipelineContext context) {
-        // TODO: Add some caching for ProfileIconData internally so we don't have to waste calls to get one profile icon a bunch of times.
         final Platform platform = (Platform)query.get("platform");
         final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
         Utilities.checkNotNull(platform, "platform", ids, "ids");
@@ -1249,7 +1247,6 @@ public class StaticDataAPI extends RiotAPIService {
 
     @Get(MapDetails.class)
     public MapDetails getMapDetails(final Map<String, Object> query, final PipelineContext context) {
-        // TODO: Add some caching for MapData internally so we don't have to waste calls to get one map a bunch of times.
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
         final Number id = (Number)query.get("id");
@@ -1406,7 +1403,6 @@ public class StaticDataAPI extends RiotAPIService {
 
     @Get(ProfileIconDetails.class)
     public ProfileIconDetails getProfileIconDetails(final Map<String, Object> query, final PipelineContext context) {
-        // TODO: Add some caching for ProfileIconData internally so we don't have to waste calls to get one profile icon a bunch of times.
         final Platform platform = (Platform)query.get("platform");
         final Number id = (Number)query.get("id");
         Utilities.checkNotNull(platform, "platform", id, "id");
