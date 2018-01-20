@@ -458,6 +458,12 @@ public class MatchHistory extends GhostObject<com.merakianalytics.orianna.types.
         return matches.listIterator(index);
     }
 
+    @Override
+    public void load() {
+        super.load();
+        matches.size(); // Forces lazy list load
+    }
+
     private com.merakianalytics.orianna.types.data.match.MatchList loadBatch() {
         if(complete) {
             return null;
