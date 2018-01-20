@@ -11,6 +11,7 @@
 	<modules>
 		<module>orianna</module>
 		<module>orianna-android</module>
+		<module>orianna-examples</module>
 	</modules>
 
 	<developers>
