@@ -3,6 +3,7 @@ package com.merakianalytics.orianna.types.data.match;
 import java.util.Set;
 
 import org.joda.time.DateTime;
+import org.joda.time.Duration;
 
 import com.merakianalytics.orianna.types.data.CoreData;
 
@@ -10,9 +11,10 @@ public class MatchList extends CoreData.ListProxy<MatchReference> {
     private static final long serialVersionUID = 5543353502654527488L;
     private long accountId;
     private Set<Integer> champions, queues, seasons;
+    private Duration maxTimeRange;
     private String platform;
     private boolean recent;
-    private int startIndex, endIndex;
+    private int startIndex, endIndex, maxSize;
     private DateTime startTime, endTime;
 
     public MatchList() {
@@ -53,6 +55,16 @@ public class MatchList extends CoreData.ListProxy<MatchReference> {
                 return false;
             }
         } else if(!endTime.equals(other.endTime)) {
+            return false;
+        }
+        if(maxSize != other.maxSize) {
+            return false;
+        }
+        if(maxTimeRange == null) {
+            if(other.maxTimeRange != null) {
+                return false;
+            }
+        } else if(!maxTimeRange.equals(other.maxTimeRange)) {
             return false;
         }
         if(platform == null) {
@@ -121,6 +133,20 @@ public class MatchList extends CoreData.ListProxy<MatchReference> {
     }
 
     /**
+     * @return the maxSize
+     */
+    public int getMaxSize() {
+        return maxSize;
+    }
+
+    /**
+     * @return the maxTimeRange
+     */
+    public Duration getMaxTimeRange() {
+        return maxTimeRange;
+    }
+
+    /**
      * @return the platform
      */
     public String getPlatform() {
@@ -163,6 +189,8 @@ public class MatchList extends CoreData.ListProxy<MatchReference> {
         result = prime * result + (champions == null ? 0 : champions.hashCode());
         result = prime * result + endIndex;
         result = prime * result + (endTime == null ? 0 : endTime.hashCode());
+        result = prime * result + maxSize;
+        result = prime * result + (maxTimeRange == null ? 0 : maxTimeRange.hashCode());
         result = prime * result + (platform == null ? 0 : platform.hashCode());
         result = prime * result + (queues == null ? 0 : queues.hashCode());
         result = prime * result + (recent ? 1231 : 1237);
@@ -209,6 +237,22 @@ public class MatchList extends CoreData.ListProxy<MatchReference> {
      */
     public void setEndTime(final DateTime endTime) {
         this.endTime = endTime;
+    }
+
+    /**
+     * @param maxSize
+     *        the maxSize to set
+     */
+    public void setMaxSize(final int maxSize) {
+        this.maxSize = maxSize;
+    }
+
+    /**
+     * @param maxTimeRange
+     *        the maxTimeRange to set
+     */
+    public void setMaxTimeRange(final Duration maxTimeRange) {
+        this.maxTimeRange = maxTimeRange;
     }
 
     /**

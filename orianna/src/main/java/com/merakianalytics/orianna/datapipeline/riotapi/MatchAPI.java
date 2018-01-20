@@ -30,6 +30,7 @@ import com.merakianalytics.orianna.types.dto.match.TournamentMatches;
 public class MatchAPI extends RiotAPIService {
     private static final int MAX_MATCH_INDEX_DIFFERENCE = 100;
     private static final long ONE_WEEK_IN_MILLISECONDS = Weeks.ONE.toStandardDuration().getMillis();
+    private static final int RECENT_GAME_MAX = 20;
 
     public MatchAPI(final Configuration config, final HTTPClient client, final Map<Platform, RateLimiter> applicationRateLimiters,
         final Map<Platform, Object> applicationRateLimiterLocks) {
@@ -110,12 +111,12 @@ public class MatchAPI extends RiotAPIService {
             beginTime = Math.max(endTime.longValue() - ONE_WEEK_IN_MILLISECONDS, 0);
         }
 
-        if(beginTime != null && endTime == null) {
-            endTime = beginTime.longValue() + ONE_WEEK_IN_MILLISECONDS;
+        // Index Handling
+        if(beginIndex != null && endIndex != null && beginIndex.intValue() + MAX_MATCH_INDEX_DIFFERENCE < endIndex.intValue()) {
+            endIndex = beginIndex.intValue() + MAX_MATCH_INDEX_DIFFERENCE;
         }
 
-        // Index Handling
-        if(beginIndex != null && (endIndex == null || beginIndex.intValue() + MAX_MATCH_INDEX_DIFFERENCE < endIndex.intValue())) {
+        if(beginIndex != null && endIndex == null && endTime == null) {
             endIndex = beginIndex.intValue() + MAX_MATCH_INDEX_DIFFERENCE;
         }
 
@@ -148,8 +149,10 @@ public class MatchAPI extends RiotAPIService {
             }
         }
 
-        final long bTime = beginTime == null ? 0L : beginTime.longValue();
-        final long eTime = endTime == null ? 0L : endTime.longValue();
+        final Number bTime = beginTime;
+        final Number eTime = endTime;
+        final Number bIndex = beginIndex;
+        final Number eIndex = endIndex;
         final Iterator<Number> iterator = accountIds.iterator();
         return CloseableIterators.from(new Iterator<Matchlist>() {
             @Override
@@ -167,7 +170,21 @@ public class MatchAPI extends RiotAPIService {
                     endpoint = "lol/match/v3/matchlists/by-account/" + accountId + "/recent";
                     data = get(Matchlist.class, endpoint, platform, "lol/match/v3/matchlists/by-account/accountId/recent");
                     if(data == null) {
-                        return null;
+                        final Matchlist empty = new Matchlist();
+                        empty.setMatches(Collections.<MatchReference> emptyList());
+                        empty.setPlatform(platform.getTag());
+                        empty.setAccountId(accountId.longValue());
+                        empty.setQueues(queues);
+                        empty.setSeasons(seasons);
+                        empty.setChampions(champions);
+                        empty.setStartTime(bTime == null ? 0L : bTime.longValue());
+                        empty.setEndTime(eTime == null ? 0L : eTime.longValue());
+                        empty.setStartIndex(bIndex == null ? 0 : bIndex.intValue());
+                        empty.setEndIndex(eIndex == null ? 0 : eIndex.intValue());
+                        empty.setRecent(recent);
+                        empty.setMaxSize(RECENT_GAME_MAX);
+                        empty.setMaxTimeRange(Long.MAX_VALUE);
+                        return empty;
                     }
 
                     data.setRecent(true);
@@ -184,16 +201,38 @@ public class MatchAPI extends RiotAPIService {
                     }
                     data.setStartTime(minTime);
                     data.setEndTime(maxTime);
+                    data.setMaxSize(RECENT_GAME_MAX);
+                    data.setMaxTimeRange(Long.MAX_VALUE);
                 } else {
                     endpoint = "lol/match/v3/matchlists/by-account/" + accountId;
                     data = get(Matchlist.class, endpoint, platform, parameters, "lol/match/v3/matchlists/by-account/{accountId}");
                     if(data == null) {
-                        return null;
+                        final Matchlist empty = new Matchlist();
+                        empty.setMatches(Collections.<MatchReference> emptyList());
+                        empty.setPlatform(platform.getTag());
+                        empty.setAccountId(accountId.longValue());
+                        empty.setQueues(queues);
+                        empty.setSeasons(seasons);
+                        empty.setChampions(champions);
+                        empty.setStartTime(bTime == null ? 0L : bTime.longValue());
+                        empty.setEndTime(eTime == null ? 0L : eTime.longValue());
+                        empty.setStartIndex(bIndex == null ? 0 : bIndex.intValue());
+                        empty.setEndIndex(eIndex == null ? 0 : eIndex.intValue());
+                        empty.setRecent(recent);
+                        empty.setMaxSize(bTime != null && eTime != null ? Integer.MAX_VALUE : MAX_MATCH_INDEX_DIFFERENCE);
+                        empty.setMaxTimeRange(eTime != null ? Long.MAX_VALUE : ONE_WEEK_IN_MILLISECONDS);
+                        return empty;
                     }
 
                     data.setRecent(false);
-                    data.setStartTime(bTime);
-                    data.setEndTime(eTime);
+                    if(bTime != null) {
+                        data.setStartTime(bTime.longValue());
+                    }
+                    if(eTime != null) {
+                        data.setEndTime(eTime.longValue());
+                    }
+                    data.setMaxSize(bTime != null && eTime != null ? Integer.MAX_VALUE : MAX_MATCH_INDEX_DIFFERENCE);
+                    data.setMaxTimeRange(eTime != null ? Long.MAX_VALUE : ONE_WEEK_IN_MILLISECONDS);
                 }
 
                 data.setQueues(queues);
@@ -341,12 +380,12 @@ public class MatchAPI extends RiotAPIService {
             beginTime = Math.max(endTime.longValue() - ONE_WEEK_IN_MILLISECONDS, 0);
         }
 
-        if(beginTime != null && endTime == null) {
-            endTime = beginTime.longValue() + ONE_WEEK_IN_MILLISECONDS;
+        // Index Handling
+        if(beginIndex != null && endIndex != null && beginIndex.intValue() + MAX_MATCH_INDEX_DIFFERENCE < endIndex.intValue()) {
+            endIndex = beginIndex.intValue() + MAX_MATCH_INDEX_DIFFERENCE;
         }
 
-        // Index Handling
-        if(beginIndex != null && (endIndex == null || beginIndex.intValue() + MAX_MATCH_INDEX_DIFFERENCE < endIndex.intValue())) {
+        if(beginIndex != null && endIndex == null && endTime == null) {
             endIndex = beginIndex.intValue() + MAX_MATCH_INDEX_DIFFERENCE;
         }
 
@@ -360,7 +399,21 @@ public class MatchAPI extends RiotAPIService {
             endpoint = "lol/match/v3/matchlists/by-account/" + accountId + "/recent";
             data = get(Matchlist.class, endpoint, platform, "lol/match/v3/matchlists/by-account/accountId/recent");
             if(data == null) {
-                return null;
+                final Matchlist empty = new Matchlist();
+                empty.setMatches(Collections.<MatchReference> emptyList());
+                empty.setPlatform(platform.getTag());
+                empty.setAccountId(accountId.longValue());
+                empty.setQueues(queues);
+                empty.setSeasons(seasons);
+                empty.setChampions(champions);
+                empty.setStartTime(beginTime == null ? 0L : beginTime.longValue());
+                empty.setEndTime(endTime == null ? 0L : endTime.longValue());
+                empty.setStartIndex(beginIndex == null ? 0 : beginIndex.intValue());
+                empty.setEndIndex(endIndex == null ? 0 : endIndex.intValue());
+                empty.setRecent(recent);
+                empty.setMaxSize(RECENT_GAME_MAX);
+                empty.setMaxTimeRange(Long.MAX_VALUE);
+                return empty;
             }
 
             data.setRecent(true);
@@ -377,6 +430,8 @@ public class MatchAPI extends RiotAPIService {
             }
             data.setStartTime(minTime);
             data.setEndTime(maxTime);
+            data.setMaxSize(RECENT_GAME_MAX);
+            data.setMaxTimeRange(Long.MAX_VALUE);
         } else {
             endpoint = "lol/match/v3/matchlists/by-account/" + accountId;
 
@@ -405,12 +460,32 @@ public class MatchAPI extends RiotAPIService {
 
             data = get(Matchlist.class, endpoint, platform, parameters, "lol/match/v3/matchlists/by-account/{accountId}");
             if(data == null) {
-                return null;
+                final Matchlist empty = new Matchlist();
+                empty.setMatches(Collections.<MatchReference> emptyList());
+                empty.setPlatform(platform.getTag());
+                empty.setAccountId(accountId.longValue());
+                empty.setQueues(queues);
+                empty.setSeasons(seasons);
+                empty.setChampions(champions);
+                empty.setStartTime(beginTime == null ? 0L : beginTime.longValue());
+                empty.setEndTime(endTime == null ? 0L : endTime.longValue());
+                empty.setStartIndex(beginIndex == null ? 0 : beginIndex.intValue());
+                empty.setEndIndex(endIndex == null ? 0 : endIndex.intValue());
+                empty.setRecent(recent);
+                empty.setMaxSize(beginTime != null && endTime != null ? Integer.MAX_VALUE : MAX_MATCH_INDEX_DIFFERENCE);
+                empty.setMaxTimeRange(endTime != null ? Long.MAX_VALUE : ONE_WEEK_IN_MILLISECONDS);
+                return empty;
             }
 
             data.setRecent(false);
-            data.setStartTime(beginTime == null ? 0L : beginTime.longValue());
-            data.setEndTime(endTime == null ? 0L : endTime.longValue());
+            if(beginTime != null) {
+                data.setStartTime(beginTime.longValue());
+            }
+            if(endTime != null) {
+                data.setEndTime(endTime.longValue());
+            }
+            data.setMaxSize(beginTime != null && endTime != null ? Integer.MAX_VALUE : MAX_MATCH_INDEX_DIFFERENCE);
+            data.setMaxTimeRange(endTime != null ? Long.MAX_VALUE : ONE_WEEK_IN_MILLISECONDS);
         }
 
         data.setQueues(queues);

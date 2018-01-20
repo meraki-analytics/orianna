@@ -655,6 +655,8 @@ public class MatchTransformer extends AbstractDataTransformer {
         list.setSeasons(new HashSet<>(item.getSeasons()));
         list.setStartIndex(item.getStartIndex());
         list.setStartTime(new DateTime(item.getStartTime()));
+        list.setMaxSize(item.getMaxSize());
+        list.setMaxTimeRange(Duration.millis(item.getMaxTimeRange()));
         return list;
     }
 
@@ -675,6 +677,8 @@ public class MatchTransformer extends AbstractDataTransformer {
         list.setSeasons(new HashSet<>(item.getSeasons()));
         list.setStartIndex(item.getStartIndex());
         list.setStartTime(item.getStartTime().getMillis());
+        list.setMaxSize(item.getMaxSize());
+        list.setMaxTimeRange(item.getMaxTimeRange().getMillis());
         return list;
     }
 
