@@ -104,6 +104,13 @@ public class LeaguePositions extends GhostObject.ListProxy<LeaguePosition, com.m
         super(coreData, 1);
     }
 
+    @Override
+    protected List<String> getLoadGroups() {
+        return Arrays.asList(new String[] {
+            LIST_PROXY_LOAD_GROUP
+        });
+    }
+
     public Platform getPlatform() {
         return Platform.withTag(coreData.getPlatform());
     }

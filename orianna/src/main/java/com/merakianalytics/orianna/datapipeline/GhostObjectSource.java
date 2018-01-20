@@ -56,7 +56,6 @@ import com.merakianalytics.orianna.types.core.thirdpartycode.VerificationString;
 public class GhostObjectSource extends AbstractDataSource {
     private static final Set<Tier> UNIQUE_TIERS = ImmutableSet.of(Tier.CHALLENGER, Tier.MASTER);
 
-    // TODO: Replace specific Number types with Number interface where possible
     private static String getCurrentVersion(final Platform platform, final PipelineContext context) {
         final com.merakianalytics.orianna.types.dto.staticdata.Realm realm =
             context.getPipeline().get(com.merakianalytics.orianna.types.dto.staticdata.Realm.class, ImmutableMap.<String, Object> of("platform", platform));
@@ -68,7 +67,7 @@ public class GhostObjectSource extends AbstractDataSource {
     public Champion getChampion(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
-        final Integer id = (Integer)query.get("id");
+        final Number id = (Number)query.get("id");
         final String name = (String)query.get("name");
         final String key = (String)query.get("key");
         Utilities.checkAtLeastOneNotNull(id, "id", name, "name", key, "key");
@@ -175,7 +174,7 @@ public class GhostObjectSource extends AbstractDataSource {
     public Item getItem(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
-        final Integer id = (Integer)query.get("id");
+        final Number id = (Number)query.get("id");
         final String name = (String)query.get("name");
         Utilities.checkAtLeastOneNotNull(id, "id", name, "name");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
@@ -288,7 +287,7 @@ public class GhostObjectSource extends AbstractDataSource {
     public CloseableIterator<Champion> getManyChampion(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
-        final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
+        final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
         final Iterable<String> names = (Iterable<String>)query.get("names");
         final Iterable<String> keys = (Iterable<String>)query.get("keys");
         Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names", keys, "keys");
@@ -317,7 +316,7 @@ public class GhostObjectSource extends AbstractDataSource {
             public Champion next() {
                 final ChampionData data = new ChampionData();
                 if(ids != null) {
-                    final int id = (Integer)iterator.next();
+                    final int id = ((Number)iterator.next()).intValue();
                     data.getChampion().setId(id);
                     data.getStatus().setId(id);
                 } else if(names != null) {
@@ -494,7 +493,7 @@ public class GhostObjectSource extends AbstractDataSource {
     public CloseableIterator<Item> getManyItem(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
-        final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
+        final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
         final Iterable<String> names = (Iterable<String>)query.get("names");
         Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
@@ -524,7 +523,7 @@ public class GhostObjectSource extends AbstractDataSource {
                 data.setLocale(locale);
                 data.setIncludedData(includedData);
                 if(ids != null) {
-                    data.setId((Integer)iterator.next());
+                    data.setId(((Number)iterator.next()).intValue());
                 } else if(names != null) {
                     data.setName((String)iterator.next());
                 } else {
@@ -624,7 +623,7 @@ public class GhostObjectSource extends AbstractDataSource {
     public CloseableIterator<Map> getManyMap(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
-        final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
+        final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
         final Iterable<String> names = (Iterable<String>)query.get("names");
         Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
@@ -652,7 +651,7 @@ public class GhostObjectSource extends AbstractDataSource {
                 data.setVersion(version);
                 data.setLocale(locale);
                 if(ids != null) {
-                    data.setId((Integer)iterator.next());
+                    data.setId(((Number)iterator.next()).intValue());
                 } else if(names != null) {
                     data.setName((String)iterator.next());
                 } else {
@@ -673,7 +672,7 @@ public class GhostObjectSource extends AbstractDataSource {
     public CloseableIterator<Mastery> getManyMastery(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
-        final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
+        final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
         final Iterable<String> names = (Iterable<String>)query.get("names");
         Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
@@ -703,7 +702,7 @@ public class GhostObjectSource extends AbstractDataSource {
                 data.setLocale(locale);
                 data.setIncludedData(includedData);
                 if(ids != null) {
-                    data.setId((Integer)iterator.next());
+                    data.setId(((Number)iterator.next()).intValue());
                 } else if(names != null) {
                     data.setName((String)iterator.next());
                 } else {
@@ -798,12 +797,12 @@ public class GhostObjectSource extends AbstractDataSource {
     @GetMany(ProfileIcon.class)
     public CloseableIterator<ProfileIcon> getManyProfileIcon(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
+        final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
         Utilities.checkNotNull(platform, "platform", ids, "ids");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
 
-        final Iterator<Integer> iterator = ids.iterator();
+        final Iterator<Number> iterator = ids.iterator();
         return CloseableIterators.from(new Iterator<ProfileIcon>() {
             @Override
             public boolean hasNext() {
@@ -816,7 +815,7 @@ public class GhostObjectSource extends AbstractDataSource {
                 data.setPlatform(platform.getTag());
                 data.setVersion(version);
                 data.setLocale(locale);
-                data.setId(iterator.next());
+                data.setId(iterator.next().intValue());
                 return new ProfileIcon(data);
             }
 
@@ -832,7 +831,7 @@ public class GhostObjectSource extends AbstractDataSource {
     public CloseableIterator<Rune> getManyRune(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
-        final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
+        final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
         final Iterable<String> names = (Iterable<String>)query.get("names");
         Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
@@ -862,7 +861,7 @@ public class GhostObjectSource extends AbstractDataSource {
                 data.setLocale(locale);
                 data.setIncludedData(includedData);
                 if(ids != null) {
-                    data.setId((Integer)iterator.next());
+                    data.setId(((Number)iterator.next()).intValue());
                 } else if(names != null) {
                     data.setName((String)iterator.next());
                 } else {
@@ -911,8 +910,8 @@ public class GhostObjectSource extends AbstractDataSource {
     public CloseableIterator<Summoner> getManySummoner(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
-        final Iterable<Long> ids = (Iterable<Long>)query.get("ids");
-        final Iterable<Long> accountIds = (Iterable<Long>)query.get("accountIds");
+        final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
+        final Iterable<Number> accountIds = (Iterable<Number>)query.get("accountIds");
         final Iterable<String> names = (Iterable<String>)query.get("names");
         Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names", accountIds, "accountIds");
 
@@ -938,9 +937,9 @@ public class GhostObjectSource extends AbstractDataSource {
                 final com.merakianalytics.orianna.types.data.summoner.Summoner data = new com.merakianalytics.orianna.types.data.summoner.Summoner();
                 data.setPlatform(platform.getTag());
                 if(ids != null) {
-                    data.setId((Long)iterator.next());
+                    data.setId(((Number)iterator.next()).longValue());
                 } else if(accountIds != null) {
-                    data.setAccountId((Long)iterator.next());
+                    data.setAccountId(((Number)iterator.next()).longValue());
                 } else if(names != null) {
                     data.setName((String)iterator.next());
                 } else {
@@ -961,7 +960,7 @@ public class GhostObjectSource extends AbstractDataSource {
     public CloseableIterator<SummonerSpell> getManySummonerSpell(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
-        final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
+        final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
         final Iterable<String> names = (Iterable<String>)query.get("names");
         Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
@@ -992,7 +991,7 @@ public class GhostObjectSource extends AbstractDataSource {
                 data.setLocale(locale);
                 data.setIncludedData(includedData);
                 if(ids != null) {
-                    data.setId((Integer)iterator.next());
+                    data.setId(((Number)iterator.next()).intValue());
                 } else if(names != null) {
                     data.setName((String)iterator.next());
                 } else {
@@ -1101,7 +1100,7 @@ public class GhostObjectSource extends AbstractDataSource {
     public Map getMap(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
-        final Integer id = (Integer)query.get("id");
+        final Number id = (Number)query.get("id");
         final String name = (String)query.get("name");
         Utilities.checkAtLeastOneNotNull(id, "id", name, "name");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
@@ -1152,7 +1151,7 @@ public class GhostObjectSource extends AbstractDataSource {
     public Mastery getMastery(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
-        final Integer id = (Integer)query.get("id");
+        final Number id = (Number)query.get("id");
         final String name = (String)query.get("name");
         Utilities.checkAtLeastOneNotNull(id, "id", name, "name");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
@@ -1217,7 +1216,7 @@ public class GhostObjectSource extends AbstractDataSource {
     @Get(ProfileIcon.class)
     public ProfileIcon getProfileIcon(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final Integer id = (Integer)query.get("id");
+        final Number id = (Number)query.get("id");
         Utilities.checkNotNull(platform, "platform", id, "id");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
@@ -1226,7 +1225,7 @@ public class GhostObjectSource extends AbstractDataSource {
         data.setPlatform(platform.getTag());
         data.setVersion(version);
         data.setLocale(locale);
-        data.setId(id);
+        data.setId(id.intValue());
         return new ProfileIcon(data);
     }
 
@@ -1259,7 +1258,7 @@ public class GhostObjectSource extends AbstractDataSource {
     public Rune getRune(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
-        final Integer id = (Integer)query.get("id");
+        final Number id = (Number)query.get("id");
         final String name = (String)query.get("name");
         Utilities.checkAtLeastOneNotNull(id, "id", name, "name");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
@@ -1307,8 +1306,8 @@ public class GhostObjectSource extends AbstractDataSource {
     public Summoner getSummoner(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
-        final Long id = (Long)query.get("id");
-        final Long accountId = (Long)query.get("accountId");
+        final Number id = (Number)query.get("id");
+        final Number accountId = (Number)query.get("accountId");
         final String name = (String)query.get("name");
         Utilities.checkAtLeastOneNotNull(id, "id", name, "name", accountId, "accountId");
 
@@ -1325,7 +1324,7 @@ public class GhostObjectSource extends AbstractDataSource {
     public SummonerSpell getSummonerSpell(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
-        final Integer id = (Integer)query.get("id");
+        final Number id = (Number)query.get("id");
         final String name = (String)query.get("name");
         Utilities.checkAtLeastOneNotNull(id, "id", name, "name");
         final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");

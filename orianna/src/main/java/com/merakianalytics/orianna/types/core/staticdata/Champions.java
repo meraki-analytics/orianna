@@ -3,6 +3,7 @@ package com.merakianalytics.orianna.types.core.staticdata;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -21,8 +22,10 @@ import com.merakianalytics.orianna.types.core.GhostObject;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
 import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 import com.merakianalytics.orianna.types.core.staticdata.Champion.ChampionData;
+import com.merakianalytics.orianna.types.data.champion.ChampionStatus;
+import com.merakianalytics.orianna.types.data.champion.ChampionStatuses;
 
-public class Champions extends GhostObject.ListProxy<Champion, com.merakianalytics.orianna.types.data.staticdata.Champion, com.merakianalytics.orianna.types.data.staticdata.Champions> {
+public class Champions extends GhostObject.ListProxy<com.merakianalytics.orianna.types.core.staticdata.Champion, com.merakianalytics.orianna.types.data.staticdata.Champion, com.merakianalytics.orianna.types.data.staticdata.Champions> {
     public static class Builder {
         private Set<String> includedData;
         private Platform platform;
@@ -40,7 +43,8 @@ public class Champions extends GhostObject.ListProxy<Champion, com.merakianalyti
             }
 
             if(locale == null) {
-                locale = platform.getDefaultLocale();
+                locale = Orianna.getSettings().getDefaultLocale();
+                locale = locale == null ? platform.getDefaultLocale() : locale;
             }
 
             if(includedData == null) {
@@ -84,6 +88,44 @@ public class Champions extends GhostObject.ListProxy<Champion, com.merakianalyti
         }
     }
 
+    private class Champion extends com.merakianalytics.orianna.types.core.staticdata.Champion {
+        private static final long serialVersionUID = -8875727517478281658L;
+
+        public Champion(final ChampionData coreData) {
+            super(coreData);
+        }
+
+        @Override
+        public boolean isEnabled() {
+            Champions.this.load(STATUS_LOAD_GROUP);
+            return super.isEnabled();
+        }
+
+        @Override
+        public boolean isEnabledInCoopVsAI() {
+            Champions.this.load(STATUS_LOAD_GROUP);
+            return super.isEnabled();
+        }
+
+        @Override
+        public boolean isEnabledInCustoms() {
+            Champions.this.load(STATUS_LOAD_GROUP);
+            return super.isEnabled();
+        }
+
+        @Override
+        public boolean isEnabledInRanked() {
+            Champions.this.load(STATUS_LOAD_GROUP);
+            return super.isEnabled();
+        }
+
+        @Override
+        public boolean isFreeToPlay() {
+            Champions.this.load(STATUS_LOAD_GROUP);
+            return super.isEnabled();
+        }
+    }
+
     public static class SubsetBuilder {
         private Iterable<Integer> ids;
         private Set<String> includedData;
@@ -104,7 +146,7 @@ public class Champions extends GhostObject.ListProxy<Champion, com.merakianalyti
             }
         }
 
-        public SearchableList<Champion> get() {
+        public SearchableList<com.merakianalytics.orianna.types.core.staticdata.Champion> get() {
             if(version == null) {
                 version = Orianna.getSettings().getCurrentVersion();
             }
@@ -114,7 +156,8 @@ public class Champions extends GhostObject.ListProxy<Champion, com.merakianalyti
             }
 
             if(locale == null) {
-                locale = platform.getDefaultLocale();
+                locale = Orianna.getSettings().getDefaultLocale();
+                locale = locale == null ? platform.getDefaultLocale() : locale;
             }
 
             if(includedData == null) {
@@ -132,7 +175,8 @@ public class Champions extends GhostObject.ListProxy<Champion, com.merakianalyti
                 builder.put("keys", keys);
             }
 
-            final CloseableIterator<Champion> result = Orianna.getSettings().getPipeline().getMany(Champion.class, builder.build(), streaming);
+            final CloseableIterator<com.merakianalytics.orianna.types.core.staticdata.Champion> result =
+                Orianna.getSettings().getPipeline().getMany(com.merakianalytics.orianna.types.core.staticdata.Champion.class, builder.build(), streaming);
             return streaming ? SearchableLists.from(CloseableIterators.toLazyList(result)) : SearchableLists.from(CloseableIterators.toList(result));
         }
 
@@ -246,6 +290,14 @@ public class Champions extends GhostObject.ListProxy<Champion, com.merakianalyti
         return includedData.get();
     }
 
+    @Override
+    protected List<String> getLoadGroups() {
+        return Arrays.asList(new String[] {
+            LIST_PROXY_LOAD_GROUP,
+            com.merakianalytics.orianna.types.core.staticdata.Champion.STATUS_LOAD_GROUP
+        });
+    }
+
     public String getLocale() {
         return coreData.getLocale();
     }
@@ -287,17 +339,34 @@ public class Champions extends GhostObject.ListProxy<Champion, com.merakianalyti
                 }
                 coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Champions.class, builder.build());
 
-                // TODO: Load all statuses when this loads instead of always doing them one-by-one
-                loadListProxyData(new Function<com.merakianalytics.orianna.types.data.staticdata.Champion, Champion>() {
-                    @Override
-                    public Champion apply(final com.merakianalytics.orianna.types.data.staticdata.Champion input) {
-                        final ChampionData data = new ChampionData();
-                        data.setChampion(input);
-                        final Champion champion = new Champion(data);
-                        champion.markAsGhostLoaded(Champion.CHAMPION_LOAD_GROUP);
-                        return champion;
-                    }
-                });
+                loadListProxyData(
+                    new Function<com.merakianalytics.orianna.types.data.staticdata.Champion, com.merakianalytics.orianna.types.core.staticdata.Champion>() {
+                        @Override
+                        public com.merakianalytics.orianna.types.core.staticdata.Champion
+                            apply(final com.merakianalytics.orianna.types.data.staticdata.Champion input) {
+                            final ChampionData data = new ChampionData();
+                            data.setChampion(input);
+                            final com.merakianalytics.orianna.types.core.staticdata.Champion champion = new Champion(data);
+                            champion.markAsGhostLoaded(com.merakianalytics.orianna.types.core.staticdata.Champion.CHAMPION_LOAD_GROUP);
+                            return champion;
+                        }
+                    });
+                break;
+            case com.merakianalytics.orianna.types.core.staticdata.Champion.STATUS_LOAD_GROUP:
+                builder = ImmutableMap.builder();
+                if(coreData.getPlatform() != null) {
+                    builder.put("platform", Platform.withTag(coreData.getPlatform()));
+                }
+                final ChampionStatuses list = Orianna.getSettings().getPipeline().get(ChampionStatuses.class, builder.build());
+
+                final java.util.Map<Integer, ChampionStatus> statuses = new HashMap<>();
+                for(final ChampionStatus status : list) {
+                    statuses.put(status.getId(), status);
+                }
+
+                for(final com.merakianalytics.orianna.types.core.staticdata.Champion champion : this) {
+                    champion.getCoreData().setStatus(statuses.get(champion.getId()));
+                }
                 break;
             default:
                 break;

@@ -1,5 +1,8 @@
 package com.merakianalytics.orianna.types.core.championmastery;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
@@ -42,6 +45,13 @@ public class ChampionMasteryScore extends GhostObject<com.merakianalytics.oriann
 
     public ChampionMasteryScore(final com.merakianalytics.orianna.types.data.championmastery.ChampionMasteryScore coreData) {
         super(coreData, 1);
+    }
+
+    @Override
+    protected List<String> getLoadGroups() {
+        return Arrays.asList(new String[] {
+            CHAMPION_MASTERY_SCORE_LOAD_GROUP
+        });
     }
 
     public Platform getPlatform() {

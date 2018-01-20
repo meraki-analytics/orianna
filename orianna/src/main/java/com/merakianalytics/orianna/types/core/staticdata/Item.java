@@ -1,5 +1,6 @@
 package com.merakianalytics.orianna.types.core.staticdata;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -48,7 +49,8 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
             }
 
             if(locale == null) {
-                locale = platform.getDefaultLocale();
+                locale = Orianna.getSettings().getDefaultLocale();
+                locale = locale == null ? platform.getDefaultLocale() : locale;
             }
 
             if(includedData == null) {
@@ -245,6 +247,13 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
 
     public Set<String> getKeywords() {
         return keywords.get();
+    }
+
+    @Override
+    protected List<String> getLoadGroups() {
+        return Arrays.asList(new String[] {
+            ITEM_LOAD_GROUP
+        });
     }
 
     public String getLocale() {

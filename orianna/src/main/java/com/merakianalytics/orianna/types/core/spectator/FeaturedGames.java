@@ -107,6 +107,13 @@ public class FeaturedGames extends GhostObject.ListProxy<FeaturedGame, com.merak
         super(coreData, 1);
     }
 
+    @Override
+    protected List<String> getLoadGroups() {
+        return Arrays.asList(new String[] {
+            LIST_PROXY_LOAD_GROUP
+        });
+    }
+
     public Platform getPlatform() {
         return Platform.withTag(coreData.getPlatform());
     }

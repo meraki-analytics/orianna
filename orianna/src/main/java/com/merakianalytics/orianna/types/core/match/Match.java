@@ -1,6 +1,7 @@
 package com.merakianalytics.orianna.types.core.match;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -568,6 +569,13 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
 
     public long getId() {
         return coreData.getId();
+    }
+
+    @Override
+    protected List<String> getLoadGroups() {
+        return Arrays.asList(new String[] {
+            MATCH_LOAD_GROUP
+        });
     }
 
     public Map getMap() {

@@ -1,6 +1,7 @@
 package com.merakianalytics.orianna.types.core.staticdata;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -54,7 +55,8 @@ public class Champion extends GhostObject<ChampionData> {
             }
 
             if(locale == null) {
-                locale = platform.getDefaultLocale();
+                locale = Orianna.getSettings().getDefaultLocale();
+                locale = locale == null ? platform.getDefaultLocale() : locale;
             }
 
             if(includedData == null) {
@@ -300,6 +302,14 @@ public class Champion extends GhostObject<ChampionData> {
         return coreData.getChampion().getKey();
     }
 
+    @Override
+    protected List<String> getLoadGroups() {
+        return Arrays.asList(new String[] {
+            CHAMPION_LOAD_GROUP,
+            STATUS_LOAD_GROUP
+        });
+    }
+
     public String getLocale() {
         return coreData.getChampion().getLocale();
     }
@@ -375,42 +385,52 @@ public class Champion extends GhostObject<ChampionData> {
     }
 
     public boolean isEnabled() {
-        if(coreData.getStatus().getId() == 0) {
+        if(coreData.getChampion().getId() == 0) {
             load(CHAMPION_LOAD_GROUP);
         }
-        load(STATUS_LOAD_GROUP);
+        if(coreData.getStatus().getId() == 0) {
+            load(STATUS_LOAD_GROUP);
+        }
         return coreData.getStatus().isEnabled();
     }
 
     public boolean isEnabledInCoopVsAI() {
-        if(coreData.getStatus().getId() == 0) {
+        if(coreData.getChampion().getId() == 0) {
             load(CHAMPION_LOAD_GROUP);
         }
-        load(STATUS_LOAD_GROUP);
+        if(coreData.getStatus().getId() == 0) {
+            load(STATUS_LOAD_GROUP);
+        }
         return coreData.getStatus().isEnabledInCoopVsAI();
     }
 
     public boolean isEnabledInCustoms() {
-        if(coreData.getStatus().getId() == 0) {
+        if(coreData.getChampion().getId() == 0) {
             load(CHAMPION_LOAD_GROUP);
         }
-        load(STATUS_LOAD_GROUP);
+        if(coreData.getStatus().getId() == 0) {
+            load(STATUS_LOAD_GROUP);
+        }
         return coreData.getStatus().isEnabledInCustoms();
     }
 
     public boolean isEnabledInRanked() {
-        if(coreData.getStatus().getId() == 0) {
+        if(coreData.getChampion().getId() == 0) {
             load(CHAMPION_LOAD_GROUP);
         }
-        load(STATUS_LOAD_GROUP);
+        if(coreData.getStatus().getId() == 0) {
+            load(STATUS_LOAD_GROUP);
+        }
         return coreData.getStatus().isEnabledInRanked();
     }
 
     public boolean isFreeToPlay() {
-        if(coreData.getStatus().getId() == 0) {
+        if(coreData.getChampion().getId() == 0) {
             load(CHAMPION_LOAD_GROUP);
         }
-        load(STATUS_LOAD_GROUP);
+        if(coreData.getStatus().getId() == 0) {
+            load(STATUS_LOAD_GROUP);
+        }
         return coreData.getStatus().isEnabled();
     }
 
@@ -444,19 +464,13 @@ public class Champion extends GhostObject<ChampionData> {
 
                 coreData
                     .setChampion(Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Champion.class, builder.build()));
-                if(coreData.getStatus().getId() == 0) {
-                    coreData.getStatus().setId(coreData.getChampion().getId());
-                }
-                if(coreData.getStatus().getPlatform() == null) {
-                    coreData.getStatus().setPlatform(coreData.getChampion().getPlatform());
-                }
                 break;
             case STATUS_LOAD_GROUP:
                 builder = ImmutableMap.builder();
-                if(coreData.getStatus().getId() != 0) {
-                    builder.put("id", coreData.getStatus().getId());
+                if(coreData.getChampion().getId() != 0) {
+                    builder.put("id", coreData.getChampion().getId());
                 }
-                if(coreData.getStatus().getPlatform() != null) {
+                if(coreData.getChampion().getPlatform() != null) {
                     builder.put("platform", Platform.withTag(coreData.getChampion().getPlatform()));
                 }
 

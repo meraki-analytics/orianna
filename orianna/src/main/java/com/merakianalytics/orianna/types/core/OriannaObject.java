@@ -21,13 +21,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import com.merakianalytics.orianna.types.common.OriannaException;
 import com.merakianalytics.orianna.types.core.searchable.AbstractSearchableObject;
+import com.merakianalytics.orianna.types.core.searchable.SearchableList;
+import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public abstract class OriannaObject<T extends CoreData> extends AbstractSearchableObject implements Serializable {
-    public static abstract class ListProxy<T, C, L extends CoreData.ListProxy<C>> extends OriannaObject<L> implements List<T> {
-        // TODO: ListProxy should be a SearchableList
+    public static class ListProxy<T, C, L extends CoreData.ListProxy<C>> extends OriannaObject<L> implements SearchableList<T> {
         private class ListProxyIterator implements ListIterator<T> {
             private final ListIterator<T> iterator = data.listIterator();
 
@@ -78,12 +80,12 @@ public abstract class OriannaObject<T extends CoreData> extends AbstractSearchab
         }
 
         private static final long serialVersionUID = -3228932387340246571L;
-        private final List<T> data;
+        private final SearchableList<T> data;
 
         @SuppressWarnings("unchecked")
         public ListProxy(final L coreData) {
             super(coreData);
-            data = (List<T>)Collections.unmodifiableList(coreData);
+            data = SearchableLists.unmodifiableFrom((List<T>)coreData);
         }
 
         public ListProxy(final L coreData, final Function<C, T> transform) {
@@ -93,12 +95,7 @@ public abstract class OriannaObject<T extends CoreData> extends AbstractSearchab
             for(final C item : coreData) {
                 d.add(transform.apply(item));
             }
-            data = Collections.unmodifiableList(d);
-        }
-
-        public ListProxy(final L coreData, final List<T> data) {
-            super(coreData);
-            this.data = Collections.unmodifiableList(new ArrayList<>(data));
+            data = SearchableLists.unmodifiableFrom(d);
         }
 
         @Override
@@ -129,6 +126,36 @@ public abstract class OriannaObject<T extends CoreData> extends AbstractSearchab
         @Override
         public boolean containsAll(final Collection<?> items) {
             return data.containsAll(items);
+        }
+
+        @Override
+        public void delete(final Object query) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void delete(final Predicate<T> predicate) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public SearchableList<T> filter(final Predicate<T> predicate) {
+            return data.filter(predicate);
+        }
+
+        @Override
+        public SearchableList<T> filter(final Predicate<T> predicate, final boolean streaming) {
+            return data.filter(predicate, streaming);
+        }
+
+        @Override
+        public T find(final Object query) {
+            return data.find(query);
+        }
+
+        @Override
+        public T find(final Predicate<T> predicate) {
+            return data.find(predicate);
         }
 
         @Override
@@ -187,6 +214,16 @@ public abstract class OriannaObject<T extends CoreData> extends AbstractSearchab
         }
 
         @Override
+        public SearchableList<T> search(final Object query) {
+            return data.search(query);
+        }
+
+        @Override
+        public SearchableList<T> search(final Object query, final boolean streaming) {
+            return data.search(query, streaming);
+        }
+
+        @Override
         public T set(final int index, final T item) {
             throw new UnsupportedOperationException();
         }
@@ -214,7 +251,6 @@ public abstract class OriannaObject<T extends CoreData> extends AbstractSearchab
     }
 
     public static abstract class MapProxy<K, V, CK, CV, P extends CoreData.MapProxy<CK, CV>> extends OriannaObject<P> implements Map<K, V> {
-        // TODO: SearchableMap should be written and MapProxy should be a SearchableMap
         private static final long serialVersionUID = 2266943596124327746L;
         private final Map<K, V> data;
 

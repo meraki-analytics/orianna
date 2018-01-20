@@ -1,5 +1,8 @@
 package com.merakianalytics.orianna.types.core.championmastery;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.joda.time.DateTime;
 
 import com.google.common.base.Supplier;
@@ -43,6 +46,7 @@ public class ChampionMastery extends GhostObject<com.merakianalytics.orianna.typ
     }
 
     public static final String CHAMPION_MASTERY_LOAD_GROUP = "champion-mastery";
+
     private static final long serialVersionUID = -4377419492958529379L;
 
     public static Builder forSummoner(final Summoner summoner) {
@@ -80,6 +84,13 @@ public class ChampionMastery extends GhostObject<com.merakianalytics.orianna.typ
     public int getLevel() {
         load(CHAMPION_MASTERY_LOAD_GROUP);
         return coreData.getLevel();
+    }
+
+    @Override
+    protected List<String> getLoadGroups() {
+        return Arrays.asList(new String[] {
+            CHAMPION_MASTERY_LOAD_GROUP
+        });
     }
 
     public Platform getPlatform() {

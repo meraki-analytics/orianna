@@ -1,5 +1,6 @@
 package com.merakianalytics.orianna.types.core.staticdata;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -45,7 +46,8 @@ public class Mastery extends GhostObject<com.merakianalytics.orianna.types.data.
             }
 
             if(locale == null) {
-                locale = platform.getDefaultLocale();
+                locale = Orianna.getSettings().getDefaultLocale();
+                locale = locale == null ? platform.getDefaultLocale() : locale;
             }
 
             if(includedData == null) {
@@ -168,6 +170,13 @@ public class Mastery extends GhostObject<com.merakianalytics.orianna.types.data.
 
     public Set<String> getIncludedData() {
         return includedData.get();
+    }
+
+    @Override
+    protected List<String> getLoadGroups() {
+        return Arrays.asList(new String[] {
+            MASTERY_LOAD_GROUP
+        });
     }
 
     public String getLocale() {

@@ -1,6 +1,7 @@
 package com.merakianalytics.orianna.types.core.staticdata;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -49,7 +50,8 @@ public class SummonerSpell extends GhostObject<com.merakianalytics.orianna.types
             }
 
             if(locale == null) {
-                locale = platform.getDefaultLocale();
+                locale = Orianna.getSettings().getDefaultLocale();
+                locale = locale == null ? platform.getDefaultLocale() : locale;
             }
 
             if(includedData == null) {
@@ -252,6 +254,13 @@ public class SummonerSpell extends GhostObject<com.merakianalytics.orianna.types
         return levelUpKeywords.get();
     }
 
+    @Override
+    protected List<String> getLoadGroups() {
+        return Arrays.asList(new String[] {
+            SUMMONER_SPELL_LOAD_GROUP
+        });
+    }
+
     public String getLocale() {
         return coreData.getLocale();
     }
@@ -347,7 +356,6 @@ public class SummonerSpell extends GhostObject<com.merakianalytics.orianna.types
                 if(coreData.getIncludedData() != null) {
                     builder.put("includedData", coreData.getIncludedData());
                 }
-
                 coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.SummonerSpell.class, builder.build());
                 break;
             default:

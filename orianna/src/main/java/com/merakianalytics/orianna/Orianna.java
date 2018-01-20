@@ -223,7 +223,6 @@ public abstract class Orianna {
          * @return the defaultLocale
          */
         public String getDefaultLocale() {
-            // TODO: Use this instead of Platform.getDefaultLocale for defaults if it's set
             return defaultLocale;
         }
 

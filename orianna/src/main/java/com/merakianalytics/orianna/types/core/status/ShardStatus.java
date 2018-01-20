@@ -1,6 +1,7 @@
 package com.merakianalytics.orianna.types.core.status;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -81,6 +82,13 @@ public class ShardStatus extends GhostObject<com.merakianalytics.orianna.types.d
     public String getHostname() {
         load(SHARD_STATUS_LOAD_GROUP);
         return coreData.getHostname();
+    }
+
+    @Override
+    protected List<String> getLoadGroups() {
+        return Arrays.asList(new String[] {
+            SHARD_STATUS_LOAD_GROUP
+        });
     }
 
     public List<String> getLocales() {

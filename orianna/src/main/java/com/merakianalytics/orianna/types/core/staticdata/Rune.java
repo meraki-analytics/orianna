@@ -1,5 +1,6 @@
 package com.merakianalytics.orianna.types.core.staticdata;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -45,7 +46,8 @@ public class Rune extends GhostObject<com.merakianalytics.orianna.types.data.sta
             }
 
             if(locale == null) {
-                locale = platform.getDefaultLocale();
+                locale = Orianna.getSettings().getDefaultLocale();
+                locale = locale == null ? platform.getDefaultLocale() : locale;
             }
 
             if(includedData == null) {
@@ -161,6 +163,13 @@ public class Rune extends GhostObject<com.merakianalytics.orianna.types.data.sta
 
     public Set<String> getIncludedData() {
         return includedData.get();
+    }
+
+    @Override
+    protected List<String> getLoadGroups() {
+        return Arrays.asList(new String[] {
+            RUNE_LOAD_GROUP
+        });
     }
 
     public String getLocale() {

@@ -1,6 +1,7 @@
 package com.merakianalytics.orianna.types.core.spectator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -126,6 +127,13 @@ public class CurrentGame extends GhostObject<com.merakianalytics.orianna.types.d
             return 0L;
         }
         return coreData.getId();
+    }
+
+    @Override
+    protected List<String> getLoadGroups() {
+        return Arrays.asList(new String[] {
+            CURRENT_GAME_LOAD_GROUP
+        });
     }
 
     public Map getMap() {

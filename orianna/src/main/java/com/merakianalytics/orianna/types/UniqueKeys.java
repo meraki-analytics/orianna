@@ -43,7 +43,6 @@ import com.merakianalytics.orianna.types.core.thirdpartycode.VerificationString;
 public abstract class UniqueKeys {
     private static final Set<Tier> UNIQUE_TIERS = ImmutableSet.of(Tier.CHALLENGER, Tier.MASTER);
 
-    // TODO: Replace specific Number types with Number interface where possible
     public static int[] forChampion(final Champion champion) {
         final com.merakianalytics.orianna.types.data.staticdata.Champion data = champion.getCoreData().getChampion();
         if(data.getId() != 0 && data.getName() != null && data.getKey() != null) {
@@ -150,7 +149,7 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static int forChampionQuery(final java.util.Map<String, Object> query) {
-        final Integer id = (Integer)query.get("id");
+        final Number id = (Number)query.get("id");
         final String name = (String)query.get("name");
         final String key = (String)query.get("key");
         return Arrays.hashCode(new Object[] {
@@ -230,7 +229,7 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static int forItemQuery(final java.util.Map<String, Object> query) {
-        final Integer id = (Integer)query.get("id");
+        final Number id = (Number)query.get("id");
         final String name = (String)query.get("name");
         return Arrays.hashCode(new Object[] {
             Item.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
@@ -363,9 +362,9 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyChampionMasteryQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Integer> championIds = (Iterable<Integer>)query.get("championIds");
+        final Iterable<Number> championIds = (Iterable<Number>)query.get("championIds");
 
-        final Iterator<Integer> iterator = championIds.iterator();
+        final Iterator<Number> iterator = championIds.iterator();
         return new Iterator<Integer>() {
             @Override
             public boolean hasNext() {
@@ -375,7 +374,7 @@ public abstract class UniqueKeys {
             @Override
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
-                    ChampionMastery.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (Long)query.get("summonerId"),
+                    ChampionMastery.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), ((Number)query.get("summonerId")).longValue(),
                     iterator.next().intValue()
                 });
             }
@@ -389,9 +388,9 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyChampionMasteryScoreQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Long> summonerIds = (Iterable<Long>)query.get("summonerIds");
+        final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
 
-        final Iterator<Long> iterator = summonerIds.iterator();
+        final Iterator<Number> iterator = summonerIds.iterator();
         return new Iterator<Integer>() {
             @Override
             public boolean hasNext() {
@@ -414,7 +413,7 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyChampionQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
+        final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
         final Iterable<String> names = (Iterable<String>)query.get("names");
         final Iterable<String> keys = (Iterable<String>)query.get("keys");
 
@@ -439,7 +438,7 @@ public abstract class UniqueKeys {
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
                     Champion.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
-                    iterator.next(), (Set<String>)query.get("includedData")
+                    ids != null ? ((Number)iterator.next()).intValue() : iterator.next(), (Set<String>)query.get("includedData")
                 });
             }
 
@@ -452,9 +451,9 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyCurrentGameQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Long> summonerIds = (Iterable<Long>)query.get("summonerIds");
+        final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
 
-        final Iterator<Long> iterator = summonerIds.iterator();
+        final Iterator<Number> iterator = summonerIds.iterator();
         return new Iterator<Integer>() {
             @Override
             public boolean hasNext() {
@@ -502,7 +501,7 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyItemQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
+        final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
         final Iterable<String> names = (Iterable<String>)query.get("names");
 
         final Iterator<?> iterator;
@@ -524,7 +523,7 @@ public abstract class UniqueKeys {
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
                     Item.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
-                    iterator.next(), (Set<String>)query.get("includedData")
+                    ids != null ? ((Number)iterator.next()).intValue() : iterator.next(), (Set<String>)query.get("includedData")
                 });
             }
 
@@ -595,7 +594,7 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyMapQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
+        final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
         final Iterable<String> names = (Iterable<String>)query.get("names");
 
         final Iterator<?> iterator;
@@ -617,7 +616,7 @@ public abstract class UniqueKeys {
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
                     Map.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
-                    iterator.next()
+                    ids != null ? ((Number)iterator.next()).intValue() : iterator.next()
                 });
             }
 
@@ -630,7 +629,7 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyMasteryQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
+        final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
         final Iterable<String> names = (Iterable<String>)query.get("names");
 
         final Iterator<?> iterator;
@@ -652,7 +651,7 @@ public abstract class UniqueKeys {
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
                     Mastery.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
-                    iterator.next(), (Set<String>)query.get("includedData")
+                    ids != null ? ((Number)iterator.next()).intValue() : iterator.next(), (Set<String>)query.get("includedData")
                 });
             }
 
@@ -690,9 +689,9 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyProfileIconQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
+        final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
 
-        final Iterator<Integer> iterator = ids.iterator();
+        final Iterator<Number> iterator = ids.iterator();
         return new Iterator<Integer>() {
             @Override
             public boolean hasNext() {
@@ -703,7 +702,7 @@ public abstract class UniqueKeys {
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
                     ProfileIcon.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
-                    iterator.next()
+                    iterator.next().intValue()
                 });
             }
 
@@ -716,7 +715,7 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyRuneQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
+        final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
         final Iterable<String> names = (Iterable<String>)query.get("names");
 
         final Iterator<?> iterator;
@@ -738,7 +737,7 @@ public abstract class UniqueKeys {
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
                     Rune.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
-                    iterator.next(), (Set<String>)query.get("includedData")
+                    ids != null ? ((Number)iterator.next()).intValue() : iterator.next(), (Set<String>)query.get("includedData")
                 });
             }
 
@@ -776,8 +775,8 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManySummonerQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Long> ids = (Iterable<Long>)query.get("ids");
-        final Iterable<Long> accountIds = (Iterable<Long>)query.get("accountIds");
+        final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
+        final Iterable<Number> accountIds = (Iterable<Number>)query.get("accountIds");
         final Iterable<String> names = (Iterable<String>)query.get("names");
 
         final Iterator<?> iterator;
@@ -800,7 +799,8 @@ public abstract class UniqueKeys {
             @Override
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
-                    Summoner.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next()
+                    Summoner.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
+                    ids != null || accountIds != null ? ((Number)iterator.next()).longValue() : iterator.next()
                 });
             }
 
@@ -813,7 +813,7 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManySummonerSpellQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Integer> ids = (Iterable<Integer>)query.get("ids");
+        final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
         final Iterable<String> names = (Iterable<String>)query.get("names");
 
         final Iterator<?> iterator;
@@ -835,8 +835,7 @@ public abstract class UniqueKeys {
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
                     SummonerSpell.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"),
-                    (String)query.get("locale"),
-                    iterator.next(), (Set<String>)query.get("includedData")
+                    (String)query.get("locale"), ids != null ? ((Number)iterator.next()).intValue() : iterator.next(), (Set<String>)query.get("includedData")
                 });
             }
 
@@ -899,9 +898,9 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyVerificationStringQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Long> summonerIds = (Iterable<Long>)query.get("summonerIds");
+        final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
 
-        final Iterator<Long> iterator = summonerIds.iterator();
+        final Iterator<Number> iterator = summonerIds.iterator();
         return new Iterator<Integer>() {
             @Override
             public boolean hasNext() {
@@ -951,7 +950,7 @@ public abstract class UniqueKeys {
     }
 
     public static int forMapQuery(final java.util.Map<String, Object> query) {
-        final Integer id = (Integer)query.get("id");
+        final Number id = (Number)query.get("id");
         final String name = (String)query.get("name");
         return Arrays.hashCode(new Object[] {
             Map.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
@@ -1017,7 +1016,7 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static int forMasteryQuery(final java.util.Map<String, Object> query) {
-        final Integer id = (Integer)query.get("id");
+        final Number id = (Number)query.get("id");
         final String name = (String)query.get("name");
         return Arrays.hashCode(new Object[] {
             Mastery.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
@@ -1046,7 +1045,7 @@ public abstract class UniqueKeys {
     }
 
     public static int forProfileIconQuery(final java.util.Map<String, Object> query) {
-        final Integer id = (Integer)query.get("id");
+        final Number id = (Number)query.get("id");
         return Arrays.hashCode(new Object[] {
             ProfileIcon.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
             id.intValue()
@@ -1109,7 +1108,7 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static int forRuneQuery(final java.util.Map<String, Object> query) {
-        final Integer id = (Integer)query.get("id");
+        final Number id = (Number)query.get("id");
         final String name = (String)query.get("name");
         return Arrays.hashCode(new Object[] {
             Rune.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
@@ -1210,11 +1209,12 @@ public abstract class UniqueKeys {
     }
 
     public static int forSummonerQuery(final java.util.Map<String, Object> query) {
-        final Long id = (Long)query.get("id");
-        final Long accountId = (Long)query.get("accountId");
+        final Number id = (Number)query.get("id");
+        final Number accountId = (Number)query.get("accountId");
         final String name = (String)query.get("name");
         return Arrays.hashCode(new Object[] {
-            Summoner.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), id == null ? accountId == null ? name : accountId : id
+            Summoner.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
+            id == null ? accountId == null ? name : accountId.longValue() : id.longValue()
         });
     }
 
@@ -1248,7 +1248,7 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static int forSummonerSpellQuery(final java.util.Map<String, Object> query) {
-        final Integer id = (Integer)query.get("id");
+        final Number id = (Number)query.get("id");
         final String name = (String)query.get("name");
         return Arrays.hashCode(new Object[] {
             SummonerSpell.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),

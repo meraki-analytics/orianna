@@ -1,5 +1,8 @@
 package com.merakianalytics.orianna.types.core.thirdpartycode;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
@@ -41,6 +44,13 @@ public class VerificationString extends GhostObject<com.merakianalytics.orianna.
 
     public VerificationString(final com.merakianalytics.orianna.types.data.thirdpartycode.VerificationString coreData) {
         super(coreData, 1);
+    }
+
+    @Override
+    protected List<String> getLoadGroups() {
+        return Arrays.asList(new String[] {
+            VERIFICATION_STRING_LOAD_GROUP
+        });
     }
 
     public Platform getPlatform() {

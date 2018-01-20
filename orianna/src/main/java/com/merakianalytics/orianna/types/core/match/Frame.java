@@ -1,6 +1,5 @@
 package com.merakianalytics.orianna.types.core.match;
 
-import java.util.List;
 import java.util.Map;
 
 import org.joda.time.Duration;
@@ -18,10 +17,6 @@ public abstract class Frame extends OriannaObject.ListProxy<Event, com.merakiana
     public Frame(final com.merakianalytics.orianna.types.data.match.Frame coreData,
         final Function<com.merakianalytics.orianna.types.data.match.Event, Event> transform) {
         super(coreData, transform);
-    }
-
-    public Frame(final com.merakianalytics.orianna.types.data.match.Frame coreData, final List<Event> data) {
-        super(coreData, data);
     }
 
     public abstract Map<Participant, ParticipantFrame> getParticipantFrames();

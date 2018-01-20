@@ -1,5 +1,8 @@
 package com.merakianalytics.orianna.types.core.staticdata;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
@@ -39,7 +42,8 @@ public class Map extends GhostObject<com.merakianalytics.orianna.types.data.stat
             }
 
             if(locale == null) {
-                locale = platform.getDefaultLocale();
+                locale = Orianna.getSettings().getDefaultLocale();
+                locale = locale == null ? platform.getDefaultLocale() : locale;
             }
 
             final ImmutableMap.Builder<String, Object> builder = ImmutableMap.<String, Object> builder().put("platform", platform).put("version", version)
@@ -117,6 +121,13 @@ public class Map extends GhostObject<com.merakianalytics.orianna.types.data.stat
 
     public Image getImage() {
         return image.get();
+    }
+
+    @Override
+    protected List<String> getLoadGroups() {
+        return Arrays.asList(new String[] {
+            MAP_LOAD_GROUP
+        });
     }
 
     public String getLocale() {

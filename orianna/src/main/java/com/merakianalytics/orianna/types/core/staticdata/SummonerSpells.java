@@ -39,7 +39,8 @@ public class SummonerSpells extends GhostObject.ListProxy<SummonerSpell, com.mer
             }
 
             if(locale == null) {
-                locale = platform.getDefaultLocale();
+                locale = Orianna.getSettings().getDefaultLocale();
+                locale = locale == null ? platform.getDefaultLocale() : locale;
             }
 
             if(includedData == null) {
@@ -110,7 +111,8 @@ public class SummonerSpells extends GhostObject.ListProxy<SummonerSpell, com.mer
             }
 
             if(locale == null) {
-                locale = platform.getDefaultLocale();
+                locale = Orianna.getSettings().getDefaultLocale();
+                locale = locale == null ? platform.getDefaultLocale() : locale;
             }
 
             if(includedData == null) {
@@ -225,6 +227,13 @@ public class SummonerSpells extends GhostObject.ListProxy<SummonerSpell, com.mer
 
     public Set<String> getIncludedData() {
         return includedData.get();
+    }
+
+    @Override
+    protected List<String> getLoadGroups() {
+        return Arrays.asList(new String[] {
+            LIST_PROXY_LOAD_GROUP
+        });
     }
 
     public String getLocale() {

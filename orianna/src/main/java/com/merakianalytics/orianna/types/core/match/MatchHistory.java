@@ -1,6 +1,7 @@
 package com.merakianalytics.orianna.types.core.match;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -347,6 +348,13 @@ public class MatchHistory extends GhostObject<com.merakianalytics.orianna.types.
 
     public DateTime getEndTime() {
         return coreData.getEndTime();
+    }
+
+    @Override
+    protected List<String> getLoadGroups() {
+        return Arrays.asList(new String[] {
+            MATCH_HISTORY_LOAD_GROUP
+        });
     }
 
     public Platform getPlatform() {

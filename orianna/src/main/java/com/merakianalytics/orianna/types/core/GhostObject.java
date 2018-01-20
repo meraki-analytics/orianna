@@ -13,11 +13,13 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.merakianalytics.orianna.types.core.searchable.SearchableList;
+import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public abstract class GhostObject<T extends CoreData> extends OriannaObject<T> {
-    public static abstract class ListProxy<T, C, L extends CoreData.ListProxy<C>> extends GhostObject<L> implements List<T> {
-        // TODO: ListProxy should be a SearchableList
+    public static abstract class ListProxy<T, C, L extends CoreData.ListProxy<C>> extends GhostObject<L> implements SearchableList<T> {
         private class ListProxyIterator implements ListIterator<T> {
             private final ListIterator<T> iterator = data.listIterator();
 
@@ -69,7 +71,7 @@ public abstract class GhostObject<T extends CoreData> extends OriannaObject<T> {
 
         public static final String LIST_PROXY_LOAD_GROUP = "list-proxy";
         private static final long serialVersionUID = 781726166394753316L;
-        private List<T> data;
+        private SearchableList<T> data;
 
         public ListProxy(final L coreData, final int loadGroups) {
             super(coreData, loadGroups);
@@ -104,6 +106,40 @@ public abstract class GhostObject<T extends CoreData> extends OriannaObject<T> {
         public boolean containsAll(final Collection<?> items) {
             load(LIST_PROXY_LOAD_GROUP);
             return data.containsAll(items);
+        }
+
+        @Override
+        public void delete(final Object query) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void delete(final Predicate<T> predicate) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public SearchableList<T> filter(final Predicate<T> predicate) {
+            load(LIST_PROXY_LOAD_GROUP);
+            return data.filter(predicate);
+        }
+
+        @Override
+        public SearchableList<T> filter(final Predicate<T> predicate, final boolean streaming) {
+            load(LIST_PROXY_LOAD_GROUP);
+            return data.filter(predicate, streaming);
+        }
+
+        @Override
+        public T find(final Object query) {
+            load(LIST_PROXY_LOAD_GROUP);
+            return data.find(query);
+        }
+
+        @Override
+        public T find(final Predicate<T> predicate) {
+            load(LIST_PROXY_LOAD_GROUP);
+            return data.find(predicate);
         }
 
         @Override
@@ -151,13 +187,13 @@ public abstract class GhostObject<T extends CoreData> extends OriannaObject<T> {
         @SuppressWarnings("unchecked")
         protected void loadListProxyData(Function<C, T> transform) {
             if(transform == null) {
-                data = (List<T>)Collections.unmodifiableList(coreData);
+                data = SearchableLists.unmodifiableFrom((List<T>)coreData);
             } else {
-                data = new ArrayList<>(coreData.size());
+                final List<T> items = new ArrayList<>(coreData.size());
                 for(final C item : coreData) {
-                    data.add(transform.apply(item));
+                    items.add(transform.apply(item));
                 }
-                data = Collections.unmodifiableList(data);
+                data = SearchableLists.unmodifiableFrom(items);
                 transform = null;
             }
         }
@@ -180,6 +216,18 @@ public abstract class GhostObject<T extends CoreData> extends OriannaObject<T> {
         @Override
         public boolean retainAll(final Collection<?> items) {
             throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public SearchableList<T> search(final Object query) {
+            load(LIST_PROXY_LOAD_GROUP);
+            return data.search(query);
+        }
+
+        @Override
+        public SearchableList<T> search(final Object query, final boolean streaming) {
+            load(LIST_PROXY_LOAD_GROUP);
+            return data.search(query, streaming);
         }
 
         @Override
@@ -218,7 +266,6 @@ public abstract class GhostObject<T extends CoreData> extends OriannaObject<T> {
     }
 
     public abstract static class MapProxy<K, V, CK, CV, P extends CoreData.MapProxy<CK, CV>> extends GhostObject<P> implements Map<K, V> {
-        // TODO: SearchableMap should be written and MapProxy should be a SearchableMap
         public static final String MAP_PROXY_LOAD_GROUP = "map-proxy";
         private static final long serialVersionUID = 3151240839151598711L;
         private Map<K, V> data;
@@ -323,17 +370,25 @@ public abstract class GhostObject<T extends CoreData> extends OriannaObject<T> {
             return data.values();
         }
     }
+
     private static final long serialVersionUID = -1133820478440391056L;
     private final Map<String, Object> groupLocks;
     private final Map<String, Boolean> groups;
     private final Object loadHookLock = new Object();
-
     private Map<String, Set<LoadHook>> loadHooks;
 
     public GhostObject(final T coreData, final int loadGroups) {
         super(coreData);
         groupLocks = new ConcurrentHashMap<>(loadGroups);
         groups = new ConcurrentHashMap<>(loadGroups);
+    }
+
+    protected abstract List<String> getLoadGroups();
+
+    public void load() {
+        for(final String loadGroup : getLoadGroups()) {
+            load(loadGroup);
+        }
     }
 
     protected void load(final String group) {
@@ -429,5 +484,23 @@ public abstract class GhostObject<T extends CoreData> extends OriannaObject<T> {
                 hooks.add(hook);
             }
         }
+    }
+
+    @Override
+    public byte[] toBytes() {
+        load();
+        return super.toBytes();
+    }
+
+    @Override
+    public String toJSON() {
+        load();
+        return super.toJSON();
+    }
+
+    @Override
+    public String toString() {
+        load();
+        return super.toString();
     }
 }

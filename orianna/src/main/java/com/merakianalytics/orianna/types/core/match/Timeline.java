@@ -1,6 +1,7 @@
 package com.merakianalytics.orianna.types.core.match;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -338,6 +339,13 @@ public class Timeline extends GhostObject.ListProxy<Frame, com.merakianalytics.o
     public Duration getInterval() {
         load(LIST_PROXY_LOAD_GROUP);
         return coreData.getInterval();
+    }
+
+    @Override
+    protected List<String> getLoadGroups() {
+        return Arrays.asList(new String[] {
+            LIST_PROXY_LOAD_GROUP
+        });
     }
 
     public Match getMatch() {

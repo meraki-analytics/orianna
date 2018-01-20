@@ -1,5 +1,8 @@
 package com.merakianalytics.orianna.types.core.league;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
 import com.merakianalytics.orianna.Orianna;
@@ -113,6 +116,13 @@ public class League extends GhostObject.ListProxy<LeagueEntry, com.merakianalyti
             load(LIST_PROXY_LOAD_GROUP);
         }
         return coreData.getId();
+    }
+
+    @Override
+    protected List<String> getLoadGroups() {
+        return Arrays.asList(new String[] {
+            LIST_PROXY_LOAD_GROUP
+        });
     }
 
     @Searchable({String.class})

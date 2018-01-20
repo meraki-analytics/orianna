@@ -141,6 +141,13 @@ public class ChampionMasteries extends GhostObject.ListProxy<ChampionMastery, co
         super(coreData, 1);
     }
 
+    @Override
+    protected List<String> getLoadGroups() {
+        return Arrays.asList(new String[] {
+            LIST_PROXY_LOAD_GROUP
+        });
+    }
+
     public Platform getPlatform() {
         return Platform.withTag(coreData.getPlatform());
     }

@@ -1,5 +1,8 @@
 package com.merakianalytics.orianna.types.core.staticdata;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
@@ -29,7 +32,8 @@ public class ProfileIcon extends GhostObject<com.merakianalytics.orianna.types.d
             }
 
             if(locale == null) {
-                locale = platform.getDefaultLocale();
+                locale = Orianna.getSettings().getDefaultLocale();
+                locale = locale == null ? platform.getDefaultLocale() : locale;
             }
 
             final ImmutableMap.Builder<String, Object> builder =
@@ -85,6 +89,13 @@ public class ProfileIcon extends GhostObject<com.merakianalytics.orianna.types.d
 
     public Image getImage() {
         return image.get();
+    }
+
+    @Override
+    protected List<String> getLoadGroups() {
+        return Arrays.asList(new String[] {
+            PROFILE_ICON_LOAD_GROUP
+        });
     }
 
     public String getLocale() {

@@ -1,6 +1,7 @@
 package com.merakianalytics.orianna.types.core.match;
 
 import java.util.Arrays;
+import java.util.List;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
@@ -98,6 +99,13 @@ public class TournamentMatches extends GhostObject.ListProxy<Match, Long, com.me
 
     public TournamentMatches(final com.merakianalytics.orianna.types.data.match.TournamentMatches coreData) {
         super(coreData, 1);
+    }
+
+    @Override
+    protected List<String> getLoadGroups() {
+        return Arrays.asList(new String[] {
+            LIST_PROXY_LOAD_GROUP
+        });
     }
 
     public Platform getPlatform() {

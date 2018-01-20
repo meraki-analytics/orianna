@@ -1,6 +1,7 @@
 package com.merakianalytics.orianna.types.core.staticdata;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.google.common.base.Function;
@@ -31,7 +32,8 @@ public class ProfileIcons extends GhostObject.ListProxy<ProfileIcon, com.merakia
             }
 
             if(locale == null) {
-                locale = platform.getDefaultLocale();
+                locale = Orianna.getSettings().getDefaultLocale();
+                locale = locale == null ? platform.getDefaultLocale() : locale;
             }
 
             final ImmutableMap.Builder<String, Object> builder = ImmutableMap.<String, Object> builder().put("platform", platform).put("version", version)
@@ -81,7 +83,8 @@ public class ProfileIcons extends GhostObject.ListProxy<ProfileIcon, com.merakia
             }
 
             if(locale == null) {
-                locale = platform.getDefaultLocale();
+                locale = Orianna.getSettings().getDefaultLocale();
+                locale = locale == null ? platform.getDefaultLocale() : locale;
             }
 
             final ImmutableMap.Builder<String, Object> builder =
@@ -154,6 +157,13 @@ public class ProfileIcons extends GhostObject.ListProxy<ProfileIcon, com.merakia
 
     public ProfileIcons(final com.merakianalytics.orianna.types.data.staticdata.ProfileIcons coreData) {
         super(coreData, 1);
+    }
+
+    @Override
+    protected List<String> getLoadGroups() {
+        return Arrays.asList(new String[] {
+            LIST_PROXY_LOAD_GROUP
+        });
     }
 
     public String getLocale() {

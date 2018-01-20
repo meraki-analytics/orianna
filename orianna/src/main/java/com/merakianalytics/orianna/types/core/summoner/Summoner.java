@@ -1,5 +1,8 @@
 package com.merakianalytics.orianna.types.core.summoner;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.joda.time.DateTime;
 
 import com.google.common.base.Supplier;
@@ -160,6 +163,13 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
     public int getLevel() {
         load(SUMMONER_LOAD_GROUP);
         return coreData.getLevel();
+    }
+
+    @Override
+    protected List<String> getLoadGroups() {
+        return Arrays.asList(new String[] {
+            SUMMONER_LOAD_GROUP
+        });
     }
 
     @Searchable(String.class)

@@ -39,7 +39,8 @@ public class Masteries extends GhostObject.ListProxy<Mastery, com.merakianalytic
             }
 
             if(locale == null) {
-                locale = platform.getDefaultLocale();
+                locale = Orianna.getSettings().getDefaultLocale();
+                locale = locale == null ? platform.getDefaultLocale() : locale;
             }
 
             if(includedData == null) {
@@ -110,7 +111,8 @@ public class Masteries extends GhostObject.ListProxy<Mastery, com.merakianalytic
             }
 
             if(locale == null) {
-                locale = platform.getDefaultLocale();
+                locale = Orianna.getSettings().getDefaultLocale();
+                locale = locale == null ? platform.getDefaultLocale() : locale;
             }
 
             if(includedData == null) {
@@ -233,6 +235,13 @@ public class Masteries extends GhostObject.ListProxy<Mastery, com.merakianalytic
 
     public Set<String> getIncludedData() {
         return includedData.get();
+    }
+
+    @Override
+    protected List<String> getLoadGroups() {
+        return Arrays.asList(new String[] {
+            LIST_PROXY_LOAD_GROUP
+        });
     }
 
     public String getLocale() {

@@ -32,7 +32,8 @@ public class Maps extends GhostObject.ListProxy<Map, com.merakianalytics.orianna
             }
 
             if(locale == null) {
-                locale = platform.getDefaultLocale();
+                locale = Orianna.getSettings().getDefaultLocale();
+                locale = locale == null ? platform.getDefaultLocale() : locale;
             }
 
             final ImmutableMap.Builder<String, Object> builder = ImmutableMap.<String, Object> builder().put("platform", platform).put("version", version)
@@ -88,7 +89,8 @@ public class Maps extends GhostObject.ListProxy<Map, com.merakianalytics.orianna
             }
 
             if(locale == null) {
-                locale = platform.getDefaultLocale();
+                locale = Orianna.getSettings().getDefaultLocale();
+                locale = locale == null ? platform.getDefaultLocale() : locale;
             }
 
             final ImmutableMap.Builder<String, Object> builder =
@@ -174,6 +176,13 @@ public class Maps extends GhostObject.ListProxy<Map, com.merakianalytics.orianna
 
     public Maps(final com.merakianalytics.orianna.types.data.staticdata.Maps coreData) {
         super(coreData, 1);
+    }
+
+    @Override
+    protected List<String> getLoadGroups() {
+        return Arrays.asList(new String[] {
+            LIST_PROXY_LOAD_GROUP
+        });
     }
 
     public String getLocale() {

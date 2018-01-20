@@ -1,6 +1,8 @@
 package com.merakianalytics.orianna.types.core.staticdata;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import com.google.common.base.Supplier;
@@ -91,6 +93,13 @@ public class Realm extends GhostObject<com.merakianalytics.orianna.types.data.st
     public String getLegacyMode() {
         load(REALM_LOAD_GROUP);
         return coreData.getLegacyMode();
+    }
+
+    @Override
+    protected List<String> getLoadGroups() {
+        return Arrays.asList(new String[] {
+            REALM_LOAD_GROUP
+        });
     }
 
     public int getMaxProfileIconId() {
