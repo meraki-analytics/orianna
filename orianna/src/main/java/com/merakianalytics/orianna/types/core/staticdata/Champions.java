@@ -88,7 +88,7 @@ public class Champions extends GhostObject.ListProxy<com.merakianalytics.orianna
         }
     }
 
-    private class Champion extends com.merakianalytics.orianna.types.core.staticdata.Champion {
+    public class Champion extends com.merakianalytics.orianna.types.core.staticdata.Champion {
         private static final long serialVersionUID = -8875727517478281658L;
 
         public Champion(final ChampionData coreData) {
@@ -366,6 +366,7 @@ public class Champions extends GhostObject.ListProxy<com.merakianalytics.orianna
 
                 for(final com.merakianalytics.orianna.types.core.staticdata.Champion champion : this) {
                     champion.getCoreData().setStatus(statuses.get(champion.getId()));
+                    champion.markAsGhostLoaded(com.merakianalytics.orianna.types.core.staticdata.Champion.STATUS_LOAD_GROUP);
                 }
                 break;
             default:
