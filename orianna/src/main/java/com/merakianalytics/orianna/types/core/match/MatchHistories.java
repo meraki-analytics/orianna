@@ -61,8 +61,8 @@ public abstract class MatchHistories {
         private Set<Integer> champions;
         private Set<Integer> queues;
         private Set<Integer> seasons;
-        private int startIndex, endIndex;
-        private long startTime, endTime;
+        private Integer startIndex, endIndex;
+        private Long startTime, endTime;
         private boolean streaming = false;
         private final Iterable<Summoner> summoners;
 
@@ -75,6 +75,10 @@ public abstract class MatchHistories {
         }
 
         public SearchableList<MatchHistory> get() {
+            if(endTime != null && startTime == null) {
+                throw new IllegalStateException("Can't set endTime without setting beginTime!");
+            }
+
             final List<Long> ids = new ArrayList<>();
             final Iterator<Summoner> iterator = summoners.iterator();
             Summoner summoner = iterator.next();
@@ -96,16 +100,16 @@ public abstract class MatchHistories {
 
             final ImmutableMap.Builder<String, Object> builder =
                 ImmutableMap.<String, Object> builder().put("platform", platform).put("accountIds", ids);
-            if(startIndex != 0) {
+            if(startIndex != null) {
                 builder.put("beginIndex", startIndex);
             }
-            if(endIndex != 0) {
+            if(endIndex != null) {
                 builder.put("endIndex", endIndex);
             }
-            if(startTime != 0L) {
-                builder.put("startTime", startTime);
+            if(startTime != null) {
+                builder.put("beginTime", startTime);
             }
-            if(endTime != 0L) {
+            if(endTime != null) {
                 builder.put("endTime", endTime);
             }
             if(champions != null) {

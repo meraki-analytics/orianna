@@ -1,5 +1,6 @@
 package com.merakianalytics.orianna.types.core.match;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -44,8 +45,8 @@ public class MatchHistory extends GhostObject<com.merakianalytics.orianna.types.
         private Set<Integer> champions;
         private Set<Integer> queues;
         private Set<Integer> seasons;
-        private int startIndex, endIndex;
-        private long startTime, endTime;
+        private Integer startIndex, endIndex;
+        private Long startTime, endTime;
         private final Summoner summoner;
 
         private Builder(final Summoner summoner) {
@@ -57,18 +58,22 @@ public class MatchHistory extends GhostObject<com.merakianalytics.orianna.types.
         }
 
         public MatchHistory get() {
+            if(endTime != null && startTime == null) {
+                throw new IllegalStateException("Can't set endTime without setting beginTime!");
+            }
+
             final ImmutableMap.Builder<String, Object> builder =
                 ImmutableMap.<String, Object> builder().put("platform", summoner.getPlatform()).put("accountId", summoner.getAccountId());
-            if(startIndex != 0) {
+            if(startIndex != null) {
                 builder.put("beginIndex", startIndex);
             }
-            if(endIndex != 0) {
+            if(endIndex != null) {
                 builder.put("endIndex", endIndex);
             }
-            if(startTime != 0L) {
-                builder.put("startTime", startTime);
+            if(startTime != null) {
+                builder.put("beginTime", startTime);
             }
-            if(endTime != 0L) {
+            if(endTime != null) {
                 builder.put("endTime", endTime);
             }
             if(champions != null) {
@@ -169,13 +174,23 @@ public class MatchHistory extends GhostObject<com.merakianalytics.orianna.types.
                 return true;
             }
 
-            // Don't load more on recent
-            if(coreData.isRecent()) {
+            final com.merakianalytics.orianna.types.data.match.MatchList list = loadBatch();
+            if(list == null) {
                 return false;
             }
 
-            // TODO: This
-            return false;
+            List<MatchReference> toAdd = new ArrayList<>(list.size());
+            final int total = matchIterator.nextIndex() + list.size();
+            if(coreData.getEndIndex() == 0 || total <= coreData.getEndIndex() - coreData.getStartIndex()) {
+                toAdd = list;
+            } else {
+                final int needed = coreData.getEndIndex() - coreData.getStartIndex() - matchIterator.nextIndex();
+                toAdd = list.subList(0, needed);
+            }
+
+            coreData.addAll(toAdd);
+            matchIterator = coreData.listIterator(matchIterator.nextIndex());
+            return matchIterator.hasNext();
         }
 
         @Override
@@ -192,13 +207,16 @@ public class MatchHistory extends GhostObject<com.merakianalytics.orianna.types.
         }
     }
 
-    private static final int DEFAULT_MAX_MATCHES_PER_REQUEST = 100;
     public static final String MATCH_HISTORY_LOAD_GROUP = "match-history";
+
     private static final long serialVersionUID = 2286295600096959941L;
 
     public static Builder forSummoner(final Summoner summoner) {
         return new Builder(summoner);
     }
+
+    private final Object batchLoadLock = new Object();
+
     private final Supplier<Set<Champion>> champions = Suppliers.memoize(new Supplier<Set<Champion>>() {
         @Override
         public Set<Champion> get() {
@@ -207,10 +225,10 @@ public class MatchHistory extends GhostObject<com.merakianalytics.orianna.types.
         }
     });
 
+    private boolean complete = false;
+    private DateTime endTime;
     private final SearchableList<Match> matches;
     private ListIterator<MatchReference> matchIterator = coreData.listIterator();
-    private final int maxMatchesPerRequest;
-
     private final Supplier<Set<Queue>> queues = Suppliers.memoize(new Supplier<Set<Queue>>() {
         @Override
         public Set<Queue> get() {
@@ -221,7 +239,6 @@ public class MatchHistory extends GhostObject<com.merakianalytics.orianna.types.
             return Collections.unmodifiableSet(queues);
         }
     });
-
     private final Supplier<Set<Season>> seasons = Suppliers.memoize(new Supplier<Set<Season>>() {
         @Override
         public Set<Season> get() {
@@ -232,6 +249,9 @@ public class MatchHistory extends GhostObject<com.merakianalytics.orianna.types.
             return Collections.unmodifiableSet(seasons);
         }
     });
+
+    private Integer startIndex;
+
     private final Supplier<Summoner> summoner = Suppliers.memoize(new Supplier<Summoner>() {
         @Override
         public Summoner get() {
@@ -240,13 +260,10 @@ public class MatchHistory extends GhostObject<com.merakianalytics.orianna.types.
     });
 
     public MatchHistory(final MatchList coreData) {
-        this(coreData, DEFAULT_MAX_MATCHES_PER_REQUEST);
-    }
-
-    public MatchHistory(final MatchList coreData, final int maxMatchesPerRequest) {
         super(coreData, 1);
         matches = SearchableLists.unmodifiableFrom(new LazyList<>(new MatchIterator()));
-        this.maxMatchesPerRequest = maxMatchesPerRequest;
+        startIndex = coreData.getStartIndex() == 0 && coreData.getEndIndex() == 0 ? null : coreData.getStartIndex();
+        endTime = coreData.getEndTime();
     }
 
     @Override
@@ -336,6 +353,39 @@ public class MatchHistory extends GhostObject<com.merakianalytics.orianna.types.
         return Platform.withTag(coreData.getPlatform());
     }
 
+    private ImmutableMap.Builder<String, Object> getQueryBuilder(final com.merakianalytics.orianna.types.data.match.MatchList data) {
+        final ImmutableMap.Builder<String, Object> builder = ImmutableMap.builder();
+        builder.put("recent", data.isRecent());
+        if(data.getPlatform() != null) {
+            builder.put("platform", Platform.withTag(data.getPlatform()));
+        }
+        if(data.getAccountId() != 0L) {
+            builder.put("accountId", data.getAccountId());
+        }
+        if(data.getChampions() != null) {
+            builder.put("champions", data.getChampions());
+        }
+        if(data.getEndIndex() != 0L) {
+            builder.put("endIndex", data.getEndIndex());
+        }
+        if(endTime != null) {
+            builder.put("endTime", endTime.getMillis());
+        }
+        if(data.getQueues() != null) {
+            builder.put("queues", data.getQueues());
+        }
+        if(data.getSeasons() != null) {
+            builder.put("seasons", data.getSeasons());
+        }
+        if(startIndex != null) {
+            builder.put("beginIndex", startIndex);
+        }
+        if(data.getStartTime() != null) {
+            builder.put("beginTime", data.getStartTime().getMillis());
+        }
+        return builder;
+    }
+
     public Set<Queue> getQueues() {
         return queues.get();
     }
@@ -400,44 +450,59 @@ public class MatchHistory extends GhostObject<com.merakianalytics.orianna.types.
         return matches.listIterator(index);
     }
 
-    @Override
-    protected void loadCoreData(final String group) {
-        ImmutableMap.Builder<String, Object> builder;
-        switch(group) {
-            case MATCH_HISTORY_LOAD_GROUP:
-                builder = ImmutableMap.builder();
-                builder.put("maxCount", maxMatchesPerRequest);
-                builder.put("recent", coreData.isRecent());
-                if(coreData.getPlatform() != null) {
-                    builder.put("platform", Platform.withTag(coreData.getPlatform()));
-                }
-                if(coreData.getAccountId() != 0L) {
-                    builder.put("accountId", coreData.getAccountId());
-                }
-                if(coreData.getChampions() != null) {
-                    builder.put("champions", coreData.getChampions());
-                }
-                if(coreData.getEndIndex() != 0) {
-                    builder.put("endIndex", coreData.getEndIndex());
-                }
-                if(coreData.getEndTime() != null) {
-                    builder.put("endTime", coreData.getEndTime().getMillis());
-                }
-                if(coreData.getQueues() != null) {
-                    builder.put("queues", coreData.getQueues());
-                }
-                if(coreData.getSeasons() != null) {
-                    builder.put("seasons", coreData.getSeasons());
-                }
-                if(coreData.getStartIndex() != 0) {
-                    builder.put("beginIndex", coreData.getStartIndex());
-                }
-                if(coreData.getStartTime() != null) {
-                    builder.put("beginTime", coreData.getStartTime().getMillis());
-                }
+    private com.merakianalytics.orianna.types.data.match.MatchList loadBatch() {
+        if(complete) {
+            return null;
+        }
 
+        synchronized(batchLoadLock) {
+            if(complete) {
+                return null;
+            }
+
+            if(coreData.isRecent()) {
+                final ImmutableMap.Builder<String, Object> builder = getQueryBuilder(coreData);
                 final com.merakianalytics.orianna.types.data.match.MatchList list =
                     Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.match.MatchList.class, builder.build());
+                complete = true;
+                return list;
+            }
+
+            final ImmutableMap.Builder<String, Object> builder = getQueryBuilder(coreData);
+            final com.merakianalytics.orianna.types.data.match.MatchList list =
+                Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.match.MatchList.class, builder.build());
+
+            final int total = matchIterator.nextIndex() + list.size();
+
+            // This was the last for this time period (or lack thereof) if it returned less than the max
+            if(list.size() < list.getMaxSize()) {
+                // We're done if we got the number of matches we wanted, or if we're done switching time periods so there are no more matches to be had.
+                if(coreData.getEndIndex() > 0 && total >= coreData.getEndIndex() - coreData.getStartIndex()
+                    || list.getStartTime().equals(coreData.getStartTime()) || list.getStartTime().isBefore(coreData.getStartTime())) {
+                    complete = true;
+                } else {
+                    endTime = list.getStartTime();
+                    if(startIndex != null) {
+                        startIndex = Math.max(coreData.getStartIndex() - total, 0);
+                    }
+                }
+            } else {
+                startIndex = list.getEndIndex();
+            }
+
+            if(list.isEmpty()) {
+                return loadBatch();
+            }
+
+            return list;
+        }
+    }
+
+    @Override
+    protected void loadCoreData(final String group) {
+        switch(group) {
+            case MATCH_HISTORY_LOAD_GROUP:
+                final com.merakianalytics.orianna.types.data.match.MatchList list = loadBatch();
                 list.setStartIndex(coreData.getStartIndex());
                 list.setEndIndex(coreData.getEndIndex());
                 list.setStartTime(coreData.getStartTime());
