@@ -281,6 +281,9 @@ public class Champions extends GhostObject.ListProxy<com.merakianalytics.orianna
     private final Supplier<Set<String>> includedData = Suppliers.memoize(new Supplier<Set<String>>() {
         @Override
         public Set<String> get() {
+            if(coreData.getIncludedData() == null) {
+                return null;
+            }
             return Collections.unmodifiableSet(coreData.getIncludedData());
         }
     });

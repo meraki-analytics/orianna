@@ -168,6 +168,9 @@ public class Champion extends GhostObject<ChampionData> {
         @Override
         public List<String> get() {
             load(CHAMPION_LOAD_GROUP);
+            if(coreData.getChampion().getAllyTips() == null) {
+                return null;
+            }
             return Collections.unmodifiableList(coreData.getChampion().getAllyTips());
         }
     });
@@ -176,6 +179,9 @@ public class Champion extends GhostObject<ChampionData> {
         @Override
         public List<String> get() {
             load(CHAMPION_LOAD_GROUP);
+            if(coreData.getChampion().getEnemyTips() == null) {
+                return null;
+            }
             return Collections.unmodifiableList(coreData.getChampion().getEnemyTips());
         }
     });
@@ -184,6 +190,9 @@ public class Champion extends GhostObject<ChampionData> {
         @Override
         public Image get() {
             load(CHAMPION_LOAD_GROUP);
+            if(coreData.getChampion().getImage() == null) {
+                return null;
+            }
             return new Image(coreData.getChampion().getImage());
         }
     });
@@ -191,6 +200,9 @@ public class Champion extends GhostObject<ChampionData> {
     private final Supplier<Set<String>> includedData = Suppliers.memoize(new Supplier<Set<String>>() {
         @Override
         public Set<String> get() {
+            if(coreData.getChampion().getIncludedData() == null) {
+                return null;
+            }
             return Collections.unmodifiableSet(coreData.getChampion().getIncludedData());
         }
     });
@@ -199,6 +211,9 @@ public class Champion extends GhostObject<ChampionData> {
         @Override
         public Passive get() {
             load(CHAMPION_LOAD_GROUP);
+            if(coreData.getChampion().getPassive() == null) {
+                return null;
+            }
             return new Passive(coreData.getChampion().getPassive());
         }
     });
@@ -207,6 +222,9 @@ public class Champion extends GhostObject<ChampionData> {
         @Override
         public SearchableList<RecommendedItems> get() {
             load(CHAMPION_LOAD_GROUP);
+            if(coreData.getChampion().getRecommendedItems() == null) {
+                return null;
+            }
             final List<RecommendedItems> recommendedItems = new ArrayList<>(coreData.getChampion().getRecommendedItems().size());
             for(final com.merakianalytics.orianna.types.data.staticdata.RecommendedItems items : coreData.getChampion().getRecommendedItems()) {
                 recommendedItems.add(new RecommendedItems(items));
@@ -219,6 +237,9 @@ public class Champion extends GhostObject<ChampionData> {
         @Override
         public SearchableList<Skin> get() {
             load(CHAMPION_LOAD_GROUP);
+            if(coreData.getChampion().getSkins() == null) {
+                return null;
+            }
             final List<Skin> skins = new ArrayList<>(coreData.getChampion().getSkins().size());
             for(final com.merakianalytics.orianna.types.data.staticdata.Skin skin : coreData.getChampion().getSkins()) {
                 skins.add(new Skin(skin));
@@ -231,6 +252,9 @@ public class Champion extends GhostObject<ChampionData> {
         @Override
         public SearchableList<ChampionSpell> get() {
             load(CHAMPION_LOAD_GROUP);
+            if(coreData.getChampion().getSpells() == null) {
+                return null;
+            }
             final List<ChampionSpell> spells = new ArrayList<>(coreData.getChampion().getSpells().size());
             for(final com.merakianalytics.orianna.types.data.staticdata.ChampionSpell spell : coreData.getChampion().getSpells()) {
                 spells.add(new ChampionSpell(spell));
@@ -243,6 +267,9 @@ public class Champion extends GhostObject<ChampionData> {
         @Override
         public ChampionStats get() {
             load(CHAMPION_LOAD_GROUP);
+            if(coreData.getChampion().getStats() == null) {
+                return null;
+            }
             return new ChampionStats(coreData.getChampion().getStats());
         }
     });
@@ -251,6 +278,9 @@ public class Champion extends GhostObject<ChampionData> {
         @Override
         public List<String> get() {
             load(CHAMPION_LOAD_GROUP);
+            if(coreData.getChampion().getTags() == null) {
+                return null;
+            }
             return Collections.unmodifiableList(coreData.getChampion().getTags());
         }
     });

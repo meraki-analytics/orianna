@@ -14,6 +14,9 @@ public class Image extends OriannaObject<com.merakianalytics.orianna.types.data.
     private final Supplier<BufferedImage> image = Suppliers.memoize(new Supplier<BufferedImage>() {
         @Override
         public BufferedImage get() {
+            if(coreData.getVersion() == null || coreData.getGroup() == null || coreData.getFull() == null) {
+                return null;
+            }
             return Orianna.getSettings().getPipeline().get(BufferedImage.class, ImmutableMap.<String, Object> of("url", getURL()));
         }
     });
@@ -21,6 +24,9 @@ public class Image extends OriannaObject<com.merakianalytics.orianna.types.data.
     private final Supplier<Sprite> sprite = Suppliers.memoize(new Supplier<Sprite>() {
         @Override
         public Sprite get() {
+            if(coreData.getSprite() == null) {
+                return null;
+            }
             return new Sprite(coreData.getSprite());
         }
     });

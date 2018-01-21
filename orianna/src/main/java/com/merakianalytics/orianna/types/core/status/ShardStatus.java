@@ -63,6 +63,9 @@ public class ShardStatus extends GhostObject<com.merakianalytics.orianna.types.d
         @Override
         public List<String> get() {
             load(SHARD_STATUS_LOAD_GROUP);
+            if(coreData.getLocales() == null) {
+                return null;
+            }
             return Collections.unmodifiableList(coreData.getLocales());
         }
     });
@@ -71,6 +74,9 @@ public class ShardStatus extends GhostObject<com.merakianalytics.orianna.types.d
         @Override
         public List<Service> get() {
             load(SHARD_STATUS_LOAD_GROUP);
+            if(coreData.getServices() == null) {
+                return null;
+            }
             final List<Service> services = new ArrayList<>(coreData.getServices().size());
             for(final com.merakianalytics.orianna.types.data.status.Service service : coreData.getServices()) {
                 services.add(new Service(service));

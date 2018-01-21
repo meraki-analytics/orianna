@@ -13,6 +13,9 @@ public class ItemTree extends OriannaObject<com.merakianalytics.orianna.types.da
     private final Supplier<List<String>> tags = Suppliers.memoize(new Supplier<List<String>>() {
         @Override
         public List<String> get() {
+            if(coreData.getTags() == null) {
+                return null;
+            }
             return Collections.unmodifiableList(coreData.getTags());
         }
     });

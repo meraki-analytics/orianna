@@ -28,6 +28,9 @@ public class FeaturedGame extends OriannaObject<com.merakianalytics.orianna.type
     private final Supplier<SearchableList<Champion>> blueTeamBans = Suppliers.memoize(new Supplier<SearchableList<Champion>>() {
         @Override
         public SearchableList<Champion> get() {
+            if(coreData.getBlueTeamBans() == null) {
+                return null;
+            }
             return SearchableLists.unmodifiableFrom(Champions.withIds(coreData.getBlueTeamBans()).withPlatform(Platform.withTag(coreData.getPlatform())).get());
         }
     });
@@ -35,6 +38,9 @@ public class FeaturedGame extends OriannaObject<com.merakianalytics.orianna.type
     private final Supplier<SearchableList<Participant>> players = Suppliers.memoize(new Supplier<SearchableList<Participant>>() {
         @Override
         public SearchableList<Participant> get() {
+            if(coreData.getPlayers() == null) {
+                return null;
+            }
             final List<Participant> players = new ArrayList<>(coreData.getPlayers().size());
             for(final com.merakianalytics.orianna.types.data.spectator.Participant player : coreData.getPlayers()) {
                 players.add(new Participant(player));
@@ -46,6 +52,9 @@ public class FeaturedGame extends OriannaObject<com.merakianalytics.orianna.type
     private final Supplier<SearchableList<Champion>> redTeamBans = Suppliers.memoize(new Supplier<SearchableList<Champion>>() {
         @Override
         public SearchableList<Champion> get() {
+            if(coreData.getRedTeamBans() == null) {
+                return null;
+            }
             return SearchableLists.unmodifiableFrom(Champions.withIds(coreData.getRedTeamBans()).withPlatform(Platform.withTag(coreData.getPlatform())).get());
         }
     });

@@ -610,6 +610,10 @@ public abstract class SearchableLists {
         }
     }
 
+    public static <T> SearchableList<T> empty() {
+        return new SearchableListWrapper<>(Collections.<T> emptyList());
+    }
+
     public static <T> SearchableList<T> from(final List<T> list) {
         if(list instanceof SearchableList) {
             return (SearchableList<T>)list;

@@ -11,6 +11,9 @@ public class MasteryTreeItem extends OriannaObject<com.merakianalytics.orianna.t
     private final Supplier<Mastery> mastery = Suppliers.memoize(new Supplier<Mastery>() {
         @Override
         public Mastery get() {
+            if(coreData.getId() == 0) {
+                return null;
+            }
             return Mastery.withId(coreData.getId()).withPlatform(Platform.withTag(coreData.getPlatform())).withVersion(coreData.getVersion())
                 .withLocale(coreData.getLocale()).get();
         }
@@ -19,6 +22,9 @@ public class MasteryTreeItem extends OriannaObject<com.merakianalytics.orianna.t
     private final Supplier<Mastery> prerequisite = Suppliers.memoize(new Supplier<Mastery>() {
         @Override
         public Mastery get() {
+            if(coreData.getPrerequisiteId() == 0) {
+                return null;
+            }
             return Mastery.withId(coreData.getPrerequisiteId()).withPlatform(Platform.withTag(coreData.getPlatform())).withVersion(coreData.getVersion())
                 .withLocale(coreData.getLocale()).get();
         }

@@ -16,6 +16,9 @@ public class Incident extends OriannaObject<com.merakianalytics.orianna.types.da
     private final Supplier<List<Message>> updates = Suppliers.memoize(new Supplier<List<Message>>() {
         @Override
         public List<Message> get() {
+            if(coreData.getUpdates() == null) {
+                return null;
+            }
             final List<Message> updates = new ArrayList<>(coreData.getUpdates().size());
             for(final com.merakianalytics.orianna.types.data.status.Message update : coreData.getUpdates()) {
                 updates.add(new Message(update));

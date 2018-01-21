@@ -10,6 +10,9 @@ public class ParticipantTimeline extends OriannaObject<com.merakianalytics.orian
     private final Supplier<StatTotals> creepScore = Suppliers.memoize(new Supplier<StatTotals>() {
         @Override
         public StatTotals get() {
+            if(coreData.getCreepScore() == null) {
+                return null;
+            }
             return new StatTotals(coreData.getCreepScore());
         }
     });
@@ -17,6 +20,9 @@ public class ParticipantTimeline extends OriannaObject<com.merakianalytics.orian
     private final Supplier<StatTotals> creepScoreDifference = Suppliers.memoize(new Supplier<StatTotals>() {
         @Override
         public StatTotals get() {
+            if(coreData.getCreepScoreDifference() == null) {
+                return null;
+            }
             return new StatTotals(coreData.getCreepScoreDifference());
         }
     });
@@ -24,6 +30,9 @@ public class ParticipantTimeline extends OriannaObject<com.merakianalytics.orian
     private final Supplier<StatTotals> damageTaken = Suppliers.memoize(new Supplier<StatTotals>() {
         @Override
         public StatTotals get() {
+            if(coreData.getDamageTaken() == null) {
+                return null;
+            }
             return new StatTotals(coreData.getDamageTaken());
         }
     });
@@ -31,6 +40,9 @@ public class ParticipantTimeline extends OriannaObject<com.merakianalytics.orian
     private final Supplier<StatTotals> damageTakenDifference = Suppliers.memoize(new Supplier<StatTotals>() {
         @Override
         public StatTotals get() {
+            if(coreData.getDamageTakenDifference() == null) {
+                return null;
+            }
             return new StatTotals(coreData.getDamageTakenDifference());
         }
     });
@@ -38,6 +50,9 @@ public class ParticipantTimeline extends OriannaObject<com.merakianalytics.orian
     private final Supplier<StatTotals> experience = Suppliers.memoize(new Supplier<StatTotals>() {
         @Override
         public StatTotals get() {
+            if(coreData.getExperience() == null) {
+                return null;
+            }
             return new StatTotals(coreData.getExperience());
         }
     });
@@ -45,6 +60,9 @@ public class ParticipantTimeline extends OriannaObject<com.merakianalytics.orian
     private final Supplier<StatTotals> experienceDifference = Suppliers.memoize(new Supplier<StatTotals>() {
         @Override
         public StatTotals get() {
+            if(coreData.getExperienceDifference() == null) {
+                return null;
+            }
             return new StatTotals(coreData.getExperienceDifference());
         }
     });
@@ -52,6 +70,9 @@ public class ParticipantTimeline extends OriannaObject<com.merakianalytics.orian
     private final Supplier<StatTotals> gold = Suppliers.memoize(new Supplier<StatTotals>() {
         @Override
         public StatTotals get() {
+            if(coreData.getGold() == null) {
+                return null;
+            }
             return new StatTotals(coreData.getGold());
         }
     });

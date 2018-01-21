@@ -107,6 +107,9 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
         @Override
         public ProfileIcon get() {
             load(SUMMONER_LOAD_GROUP);
+            if(coreData.getProfileIconId() == 0) {
+                return null;
+            }
             return ProfileIcon.withId(coreData.getProfileIconId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
         }
     });
@@ -169,7 +172,7 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
         if(!Queue.RANKED.contains(queue)) {
             throw new IllegalArgumentException("Can only get league for ranked queues!");
         }
-        
+
         final LeaguePositions positions = LeaguePositions.forSummoner(this).get();
         for(final LeaguePosition position : positions) {
             if(queue == position.getQueue()) {
@@ -183,7 +186,7 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
         if(!Queue.RANKED.contains(queue)) {
             throw new IllegalArgumentException("Can only get league positions for ranked queues!");
         }
-        
+
         final LeaguePositions positions = LeaguePositions.forSummoner(this).get();
         for(final LeaguePosition position : positions) {
             if(queue == position.getQueue()) {

@@ -14,6 +14,9 @@ public class SpellVariables extends OriannaObject<com.merakianalytics.orianna.ty
     private final Supplier<List<Double>> coefficients = Suppliers.memoize(new Supplier<List<Double>>() {
         @Override
         public List<Double> get() {
+            if(coreData.getCoefficients() == null) {
+                return null;
+            }
             return Collections.unmodifiableList(coreData.getCoefficients());
         }
     });

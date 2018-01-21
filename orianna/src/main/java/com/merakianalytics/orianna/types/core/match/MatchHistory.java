@@ -221,6 +221,9 @@ public class MatchHistory extends GhostObject<com.merakianalytics.orianna.types.
     private final Supplier<Set<Champion>> champions = Suppliers.memoize(new Supplier<Set<Champion>>() {
         @Override
         public Set<Champion> get() {
+            if(coreData.getChampions() == null) {
+                return null;
+            }
             return Collections
                 .unmodifiableSet(new HashSet<>(Champions.withIds(coreData.getChampions()).withPlatform(Platform.withTag(coreData.getPlatform())).get()));
         }
@@ -233,6 +236,9 @@ public class MatchHistory extends GhostObject<com.merakianalytics.orianna.types.
     private final Supplier<Set<Queue>> queues = Suppliers.memoize(new Supplier<Set<Queue>>() {
         @Override
         public Set<Queue> get() {
+            if(coreData.getQueues() == null) {
+                return null;
+            }
             final Set<Queue> queues = new HashSet<>();
             for(final Integer id : coreData.getQueues()) {
                 queues.add(Queue.withId(id));
@@ -243,6 +249,9 @@ public class MatchHistory extends GhostObject<com.merakianalytics.orianna.types.
     private final Supplier<Set<Season>> seasons = Suppliers.memoize(new Supplier<Set<Season>>() {
         @Override
         public Set<Season> get() {
+            if(coreData.getSeasons() == null) {
+                return null;
+            }
             final Set<Season> seasons = new HashSet<>();
             for(final Integer id : coreData.getSeasons()) {
                 seasons.add(Season.withId(id));
@@ -256,6 +265,9 @@ public class MatchHistory extends GhostObject<com.merakianalytics.orianna.types.
     private final Supplier<Summoner> summoner = Suppliers.memoize(new Supplier<Summoner>() {
         @Override
         public Summoner get() {
+            if(coreData.getAccountId() == 0L) {
+                return null;
+            }
             return Summoner.withAccountId(coreData.getAccountId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
         }
     });

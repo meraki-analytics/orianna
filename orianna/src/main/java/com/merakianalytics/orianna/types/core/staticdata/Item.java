@@ -119,6 +119,9 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
         @Override
         public SearchableList<Item> get() {
             load(ITEM_LOAD_GROUP);
+            if(coreData.getBuildsFrom() == null) {
+                return null;
+            }
             return SearchableLists.unmodifiableFrom(Items.withIds(coreData.getBuildsFrom()).withPlatform(Platform.withTag(coreData.getPlatform()))
                 .withVersion(coreData.getVersion()).withLocale(coreData.getLocale()).get());
         }
@@ -128,6 +131,9 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
         @Override
         public SearchableList<Item> get() {
             load(ITEM_LOAD_GROUP);
+            if(coreData.getBuildsInto() == null) {
+                return null;
+            }
             return SearchableLists.unmodifiableFrom(Items.withIds(coreData.getBuildsInto()).withPlatform(Platform.withTag(coreData.getPlatform()))
                 .withVersion(coreData.getVersion()).withLocale(coreData.getLocale()).get());
         }
@@ -137,6 +143,9 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
         @Override
         public Map<String, String> get() {
             load(ITEM_LOAD_GROUP);
+            if(coreData.getEffects() == null) {
+                return null;
+            }
             return Collections.unmodifiableMap(coreData.getEffects());
         }
     });
@@ -145,6 +154,9 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
         @Override
         public Image get() {
             load(ITEM_LOAD_GROUP);
+            if(coreData.getImage() == null) {
+                return null;
+            }
             return new Image(coreData.getImage());
         }
     });
@@ -152,6 +164,9 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
     private final Supplier<Set<String>> includedData = Suppliers.memoize(new Supplier<Set<String>>() {
         @Override
         public Set<String> get() {
+            if(coreData.getIncludedData() == null) {
+                return null;
+            }
             return Collections.unmodifiableSet(coreData.getIncludedData());
         }
     });
@@ -160,6 +175,9 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
         @Override
         public Set<String> get() {
             load(ITEM_LOAD_GROUP);
+            if(coreData.getKeywords() == null) {
+                return null;
+            }
             return Collections.unmodifiableSet(coreData.getKeywords());
         }
     });
@@ -169,6 +187,9 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
             @Override
             public Set<com.merakianalytics.orianna.types.common.Map> get() {
                 load(ITEM_LOAD_GROUP);
+                if(coreData.getMaps() == null) {
+                    return null;
+                }
                 final Set<com.merakianalytics.orianna.types.common.Map> maps = new HashSet<>();
                 for(final Integer id : coreData.getMaps()) {
                     maps.add(com.merakianalytics.orianna.types.common.Map.withId(id));
@@ -181,6 +202,9 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
         @Override
         public Champion get() {
             load(ITEM_LOAD_GROUP);
+            if(coreData.getRequiredChampionKey() == null) {
+                return null;
+            }
             return Champion.withKey(coreData.getRequiredChampionKey()).withPlatform(Platform.withTag(coreData.getPlatform())).withVersion(coreData.getVersion())
                 .withLocale(coreData.getLocale()).get();
         }
@@ -190,6 +214,9 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
         @Override
         public ItemStats get() {
             load(ITEM_LOAD_GROUP);
+            if(coreData.getStats() == null) {
+                return null;
+            }
             return new ItemStats(coreData.getStats());
         }
     });
@@ -198,6 +225,9 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
         @Override
         public List<String> get() {
             load(ITEM_LOAD_GROUP);
+            if(coreData.getTags() == null) {
+                return null;
+            }
             return Collections.unmodifiableList(coreData.getTags());
         }
     });

@@ -17,6 +17,9 @@ public class LeaguePosition extends OriannaObject<com.merakianalytics.orianna.ty
     private final Supplier<Series> promos = Suppliers.memoize(new Supplier<Series>() {
         @Override
         public Series get() {
+            if(coreData.getPromos() == null) {
+                return null;
+            }
             return new Series(coreData.getPromos());
         }
     });
@@ -24,6 +27,9 @@ public class LeaguePosition extends OriannaObject<com.merakianalytics.orianna.ty
     private final Supplier<Summoner> summoner = Suppliers.memoize(new Supplier<Summoner>() {
         @Override
         public Summoner get() {
+            if(coreData.getSummonerId() == 0L) {
+                return null;
+            }
             final Summoner summoner = Summoner.withId(coreData.getSummonerId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
             if(summoner.getCoreData().getName() == null) {
                 summoner.getCoreData().setName(coreData.getSummonerName());

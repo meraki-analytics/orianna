@@ -98,6 +98,9 @@ public class Map extends GhostObject<com.merakianalytics.orianna.types.data.stat
         @Override
         public Image get() {
             load(MAP_LOAD_GROUP);
+            if(coreData.getImage() == null) {
+                return null;
+            }
             return new Image(coreData.getImage());
         }
     });
@@ -106,6 +109,9 @@ public class Map extends GhostObject<com.merakianalytics.orianna.types.data.stat
         @Override
         public SearchableList<Item> get() {
             load(MAP_LOAD_GROUP);
+            if(coreData.getUnpurchasableItems() == null) {
+                return null;
+            }
             return SearchableLists.unmodifiableFrom(Items.withIds(coreData.getUnpurchasableItems()).withPlatform(Platform.withTag(coreData.getPlatform()))
                 .withVersion(coreData.getVersion()).withLocale(coreData.getLocale()).get());
         }

@@ -16,6 +16,9 @@ public class Participant extends OriannaObject<com.merakianalytics.orianna.types
     private final Supplier<Champion> champion = Suppliers.memoize(new Supplier<Champion>() {
         @Override
         public Champion get() {
+            if(coreData.getChampionId() == 0) {
+                return null;
+            }
             return Champion.withId(coreData.getChampionId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
         }
     });
@@ -23,6 +26,9 @@ public class Participant extends OriannaObject<com.merakianalytics.orianna.types
     private final Supplier<ProfileIcon> profileIcon = Suppliers.memoize(new Supplier<ProfileIcon>() {
         @Override
         public ProfileIcon get() {
+            if(coreData.getProfileIconId() == 0) {
+                return null;
+            }
             return ProfileIcon.withId(coreData.getProfileIconId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
         }
     });
@@ -30,6 +36,9 @@ public class Participant extends OriannaObject<com.merakianalytics.orianna.types
     private final Supplier<Summoner> summoner = Suppliers.memoize(new Supplier<Summoner>() {
         @Override
         public Summoner get() {
+            if(coreData.getSummonerName() == null) {
+                return null;
+            }
             return Summoner.named(coreData.getSummonerName()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
         }
     });
@@ -37,6 +46,9 @@ public class Participant extends OriannaObject<com.merakianalytics.orianna.types
     private final Supplier<SummonerSpell> summonerSpellD = Suppliers.memoize(new Supplier<SummonerSpell>() {
         @Override
         public SummonerSpell get() {
+            if(coreData.getSummonerSpellDId() == 0) {
+                return null;
+            }
             return SummonerSpell.withId(coreData.getSummonerSpellDId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
         }
     });
@@ -44,7 +56,10 @@ public class Participant extends OriannaObject<com.merakianalytics.orianna.types
     private final Supplier<SummonerSpell> summonerSpellF = Suppliers.memoize(new Supplier<SummonerSpell>() {
         @Override
         public SummonerSpell get() {
-            return SummonerSpell.withId(coreData.getSummonerSpellDId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
+            if(coreData.getSummonerSpellFId() == 0) {
+                return null;
+            }
+            return SummonerSpell.withId(coreData.getSummonerSpellFId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
         }
     });
 

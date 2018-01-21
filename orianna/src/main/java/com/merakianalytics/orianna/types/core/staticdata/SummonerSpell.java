@@ -120,6 +120,9 @@ public class SummonerSpell extends GhostObject<com.merakianalytics.orianna.types
         @Override
         public List<Double> get() {
             load(SUMMONER_SPELL_LOAD_GROUP);
+            if(coreData.getCooldowns() == null) {
+                return null;
+            }
             return Collections.unmodifiableList(coreData.getCooldowns());
         }
     });
@@ -128,6 +131,9 @@ public class SummonerSpell extends GhostObject<com.merakianalytics.orianna.types
         @Override
         public List<Integer> get() {
             load(SUMMONER_SPELL_LOAD_GROUP);
+            if(coreData.getCosts() == null) {
+                return null;
+            }
             return Collections.unmodifiableList(coreData.getCosts());
         }
     });
@@ -136,6 +142,9 @@ public class SummonerSpell extends GhostObject<com.merakianalytics.orianna.types
         @Override
         public List<List<Double>> get() {
             load(SUMMONER_SPELL_LOAD_GROUP);
+            if(coreData.getEffects() == null) {
+                return null;
+            }
             final List<List<Double>> views = new ArrayList<>(coreData.getEffects().size());
             for(final List<Double> effect : coreData.getEffects()) {
                 views.add(Collections.unmodifiableList(effect));
@@ -148,6 +157,9 @@ public class SummonerSpell extends GhostObject<com.merakianalytics.orianna.types
         @Override
         public Image get() {
             load(SUMMONER_SPELL_LOAD_GROUP);
+            if(coreData.getImage() == null) {
+                return null;
+            }
             return new Image(coreData.getImage());
         }
     });
@@ -155,6 +167,9 @@ public class SummonerSpell extends GhostObject<com.merakianalytics.orianna.types
     private final Supplier<Set<String>> includedData = Suppliers.memoize(new Supplier<Set<String>>() {
         @Override
         public Set<String> get() {
+            if(coreData.getIncludedData() == null) {
+                return null;
+            }
             return Collections.unmodifiableSet(coreData.getIncludedData());
         }
     });
@@ -163,6 +178,9 @@ public class SummonerSpell extends GhostObject<com.merakianalytics.orianna.types
         @Override
         public List<String> get() {
             load(SUMMONER_SPELL_LOAD_GROUP);
+            if(coreData.getLevelUpEffects() == null) {
+                return null;
+            }
             return Collections.unmodifiableList(coreData.getLevelUpEffects());
         }
     });
@@ -171,6 +189,9 @@ public class SummonerSpell extends GhostObject<com.merakianalytics.orianna.types
         @Override
         public List<String> get() {
             load(SUMMONER_SPELL_LOAD_GROUP);
+            if(coreData.getLevelUpKeywords() == null) {
+                return null;
+            }
             return Collections.unmodifiableList(coreData.getLevelUpKeywords());
         }
     });
@@ -179,6 +200,9 @@ public class SummonerSpell extends GhostObject<com.merakianalytics.orianna.types
         @Override
         public Set<GameMode> get() {
             load(SUMMONER_SPELL_LOAD_GROUP);
+            if(coreData.getModes() == null) {
+                return null;
+            }
             final Set<GameMode> modes = new HashSet<>();
             for(final String mode : coreData.getModes()) {
                 modes.add(GameMode.valueOf(mode));
@@ -191,6 +215,9 @@ public class SummonerSpell extends GhostObject<com.merakianalytics.orianna.types
         @Override
         public List<Integer> get() {
             load(SUMMONER_SPELL_LOAD_GROUP);
+            if(coreData.getRanges() == null) {
+                return null;
+            }
             return Collections.unmodifiableList(coreData.getRanges());
         }
     });
@@ -199,6 +226,9 @@ public class SummonerSpell extends GhostObject<com.merakianalytics.orianna.types
         @Override
         public SearchableList<SpellVariables> get() {
             load(SUMMONER_SPELL_LOAD_GROUP);
+            if(coreData.getVariables() == null) {
+                return null;
+            }
             final List<SpellVariables> variables = new ArrayList<>(coreData.getVariables().size());
             for(final com.merakianalytics.orianna.types.data.staticdata.SpellVariables vars : coreData.getVariables()) {
                 variables.add(new SpellVariables(vars));

@@ -52,7 +52,7 @@ public class CurrentGame extends GhostObject<com.merakianalytics.orianna.types.d
         @Override
         public SearchableList<Champion> get() {
             load(CURRENT_GAME_LOAD_GROUP);
-            if(coreData == null) {
+            if(coreData == null || coreData.getBlueTeamBans() == null) {
                 return null;
             }
             return SearchableLists.unmodifiableFrom(Champions.withIds(coreData.getBlueTeamBans()).withPlatform(Platform.withTag(coreData.getPlatform())).get());
@@ -63,7 +63,7 @@ public class CurrentGame extends GhostObject<com.merakianalytics.orianna.types.d
         @Override
         public SearchableList<Player> get() {
             load(CURRENT_GAME_LOAD_GROUP);
-            if(coreData == null) {
+            if(coreData == null || coreData.getPlayers() == null) {
                 return null;
             }
             final List<Player> players = new ArrayList<>(coreData.getPlayers().size());
@@ -78,7 +78,7 @@ public class CurrentGame extends GhostObject<com.merakianalytics.orianna.types.d
         @Override
         public SearchableList<Champion> get() {
             load(CURRENT_GAME_LOAD_GROUP);
-            if(coreData == null) {
+            if(coreData == null || coreData.getRedTeamBans() == null) {
                 return null;
             }
             return SearchableLists.unmodifiableFrom(Champions.withIds(coreData.getRedTeamBans()).withPlatform(Platform.withTag(coreData.getPlatform())).get());
@@ -88,6 +88,9 @@ public class CurrentGame extends GhostObject<com.merakianalytics.orianna.types.d
     private final Supplier<Summoner> summoner = Suppliers.memoize(new Supplier<Summoner>() {
         @Override
         public Summoner get() {
+            if(coreData.getSummonerId() == 0L) {
+                return null;
+            }
             return Summoner.withId(coreData.getSummonerId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
         }
     });

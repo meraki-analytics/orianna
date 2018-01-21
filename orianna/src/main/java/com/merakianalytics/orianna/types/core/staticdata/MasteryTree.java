@@ -14,6 +14,9 @@ public class MasteryTree extends OriannaObject<com.merakianalytics.orianna.types
     private final Supplier<List<MasteryTreeTier>> cunning = Suppliers.memoize(new Supplier<List<MasteryTreeTier>>() {
         @Override
         public List<MasteryTreeTier> get() {
+            if(coreData.getCunning() == null) {
+                return null;
+            }
             final List<MasteryTreeTier> cunning = new ArrayList<>(coreData.getCunning().size());
             for(final com.merakianalytics.orianna.types.data.staticdata.MasteryTreeTier tier : coreData.getCunning()) {
                 cunning.add(new MasteryTreeTier(tier));
@@ -25,6 +28,9 @@ public class MasteryTree extends OriannaObject<com.merakianalytics.orianna.types
     private final Supplier<List<MasteryTreeTier>> ferocity = Suppliers.memoize(new Supplier<List<MasteryTreeTier>>() {
         @Override
         public List<MasteryTreeTier> get() {
+            if(coreData.getFerocity() == null) {
+                return null;
+            }
             final List<MasteryTreeTier> ferocity = new ArrayList<>(coreData.getFerocity().size());
             for(final com.merakianalytics.orianna.types.data.staticdata.MasteryTreeTier tier : coreData.getFerocity()) {
                 ferocity.add(new MasteryTreeTier(tier));
@@ -36,6 +42,9 @@ public class MasteryTree extends OriannaObject<com.merakianalytics.orianna.types
     private final Supplier<List<MasteryTreeTier>> resolve = Suppliers.memoize(new Supplier<List<MasteryTreeTier>>() {
         @Override
         public List<MasteryTreeTier> get() {
+            if(coreData.getResolve() == null) {
+                return null;
+            }
             final List<MasteryTreeTier> resolve = new ArrayList<>(coreData.getResolve().size());
             for(final com.merakianalytics.orianna.types.data.staticdata.MasteryTreeTier tier : coreData.getResolve()) {
                 resolve.add(new MasteryTreeTier(tier));

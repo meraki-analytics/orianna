@@ -90,6 +90,9 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
         private final Supplier<Champion> champion = Suppliers.memoize(new Supplier<Champion>() {
             @Override
             public Champion get() {
+                if(coreData.getChampionId() == 0) {
+                    return null;
+                }
                 Champion.Builder builder = Champion.withId(coreData.getChampionId()).withPlatform(Platform.withTag(coreData.getCurrentPlatform()));
                 if(coreData.getVersion() != null) {
                     final String version = Versions.withPlatform(Platform.withTag(coreData.getCurrentPlatform())).get().truncate(coreData.getVersion());
@@ -103,6 +106,9 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
             @Override
             public SearchableList<Item> get() {
                 load(MATCH_LOAD_GROUP);
+                if(coreData.getItems() == null) {
+                    return null;
+                }
                 final String version = Versions.withPlatform(Platform.withTag(coreData.getCurrentPlatform())).get().truncate(coreData.getVersion());
                 return SearchableLists.unmodifiableFrom(
                     Items.withIds(coreData.getItems()).withPlatform(Platform.withTag(coreData.getCurrentPlatform())).withVersion(version).get());
@@ -113,6 +119,9 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
             @Override
             public Summoner get() {
                 load(MATCH_LOAD_GROUP);
+                if(coreData.getAccountId() == 0L) {
+                    return null;
+                }
                 return Summoner.withAccountId(coreData.getAccountId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
             }
         });
@@ -121,6 +130,9 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
             @Override
             public ProfileIcon get() {
                 load(MATCH_LOAD_GROUP);
+                if(coreData.getProfileIconId() == 0) {
+                    return null;
+                }
                 final String version = Versions.withPlatform(Platform.withTag(coreData.getCurrentPlatform())).get().truncate(coreData.getVersion());
                 return ProfileIcon.withId(coreData.getProfileIconId()).withPlatform(Platform.withTag(coreData.getCurrentPlatform())).withVersion(version)
                     .get();
@@ -131,6 +143,9 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
             @Override
             public SearchableList<RuneStats> get() {
                 load(MATCH_LOAD_GROUP);
+                if(coreData.getRuneStats() == null) {
+                    return null;
+                }
                 final List<RuneStats> runeStats = new ArrayList<>(coreData.getRuneStats().size());
                 for(final com.merakianalytics.orianna.types.data.match.RuneStats stats : coreData.getRuneStats()) {
                     runeStats.add(new RuneStats(stats));
@@ -143,6 +158,9 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
             @Override
             public ParticipantStats get() {
                 load(MATCH_LOAD_GROUP);
+                if(coreData.getStats() == null) {
+                    return null;
+                }
                 return new ParticipantStats(coreData.getStats());
             }
         });
@@ -150,6 +168,9 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
         private final Supplier<Summoner> summoner = Suppliers.memoize(new Supplier<Summoner>() {
             @Override
             public Summoner get() {
+                if(coreData.getCurrentAccountId() == 0L) {
+                    return null;
+                }
                 final Summoner summoner =
                     Summoner.withAccountId(coreData.getCurrentAccountId()).withPlatform(Platform.withTag(coreData.getCurrentPlatform())).get();
                 if(summoner.getCoreData().getName() == null && coreData.getSummonerName() != null) {
@@ -166,6 +187,9 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
             @Override
             public SummonerSpell get() {
                 load(MATCH_LOAD_GROUP);
+                if(coreData.getSummonerSpellDId() == 0) {
+                    return null;
+                }
                 final String version = Versions.withPlatform(Platform.withTag(coreData.getCurrentPlatform())).get().truncate(coreData.getVersion());
                 return SummonerSpell.withId(coreData.getSummonerSpellDId()).withPlatform(Platform.withTag(coreData.getCurrentPlatform())).withVersion(version)
                     .get();
@@ -176,8 +200,11 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
             @Override
             public SummonerSpell get() {
                 load(MATCH_LOAD_GROUP);
+                if(coreData.getSummonerSpellFId() == 0) {
+                    return null;
+                }
                 final String version = Versions.withPlatform(Platform.withTag(coreData.getCurrentPlatform())).get().truncate(coreData.getVersion());
-                return SummonerSpell.withId(coreData.getSummonerSpellDId()).withPlatform(Platform.withTag(coreData.getCurrentPlatform())).withVersion(version)
+                return SummonerSpell.withId(coreData.getSummonerSpellFId()).withPlatform(Platform.withTag(coreData.getCurrentPlatform())).withVersion(version)
                     .get();
             }
         });
@@ -187,6 +214,9 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
                 @Override
                 public com.merakianalytics.orianna.types.core.match.Team get() {
                     load(MATCH_LOAD_GROUP);
+                    if(coreData.getTeam() == 0) {
+                        return null;
+                    }
                     return coreData.getTeam() == Side.BLUE.getId() ? getBlueTeam() : getRedTeam();
                 }
             });
@@ -195,6 +225,9 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
             @Override
             public ParticipantTimeline get() {
                 load(MATCH_LOAD_GROUP);
+                if(coreData.getTimeline() == null) {
+                    return null;
+                }
                 return new ParticipantTimeline(coreData.getTimeline());
             }
         });
@@ -303,6 +336,9 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
         private final Supplier<SearchableList<Champion>> bans = Suppliers.memoize(new Supplier<SearchableList<Champion>>() {
             @Override
             public SearchableList<Champion> get() {
+                if(coreData.getBans() == null) {
+                    return null;
+                }
                 final String version = Versions.withPlatform(Platform.withTag(coreData.getPlatform())).get().truncate(coreData.getVersion());
                 return SearchableLists.unmodifiableFrom(
                     Champions.withIds(coreData.getBans()).withPlatform(Platform.withTag(coreData.getPlatform())).withVersion(version).get());
@@ -477,6 +513,9 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
             @Override
             public com.merakianalytics.orianna.types.core.match.Team get() {
                 load(MATCH_LOAD_GROUP);
+                if(coreData.getBlueTeam() == null) {
+                    return null;
+                }
                 return new Team(coreData.getBlueTeam());
             }
         });
@@ -489,12 +528,18 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
             public SearchableList<com.merakianalytics.orianna.types.core.match.Participant> get() {
                 if(!fromReference) {
                     load(MATCH_LOAD_GROUP);
+                    if(coreData.getParticipants() == null) {
+                        return null;
+                    }
                     final List<com.merakianalytics.orianna.types.core.match.Participant> participants = new ArrayList<>(coreData.getParticipants().size());
                     for(final com.merakianalytics.orianna.types.data.match.Participant participant : coreData.getParticipants()) {
                         participants.add(new Participant(participant));
                     }
                     return SearchableLists.unmodifiableFrom(participants);
                 } else {
+                    if(coreData.getParticipants() == null) {
+                        return null;
+                    }
                     final CloseableIterator<com.merakianalytics.orianna.types.core.match.Participant> iterator =
                         new CloseableIterator<com.merakianalytics.orianna.types.core.match.Participant>() {
                             private ListIterator<com.merakianalytics.orianna.types.data.match.Participant> iterator = coreData.getParticipants().listIterator();
@@ -535,6 +580,9 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
             @Override
             public com.merakianalytics.orianna.types.core.match.Team get() {
                 load(MATCH_LOAD_GROUP);
+                if(coreData.getRedTeam() == null) {
+                    return null;
+                }
                 return new Team(coreData.getRedTeam());
             }
         });
@@ -542,6 +590,9 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
     private final Supplier<Timeline> timeline = Suppliers.memoize(new Supplier<Timeline>() {
         @Override
         public Timeline get() {
+            if(coreData.getId() == 0L) {
+                return null;
+            }
             return Timeline.withId(coreData.getId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
         }
     });

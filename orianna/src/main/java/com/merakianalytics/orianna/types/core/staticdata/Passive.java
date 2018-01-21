@@ -10,6 +10,9 @@ public class Passive extends OriannaObject<com.merakianalytics.orianna.types.dat
     private final Supplier<Image> image = Suppliers.memoize(new Supplier<Image>() {
         @Override
         public Image get() {
+            if(coreData.getImage() == null) {
+                return null;
+            }
             return new Image(coreData.getImage());
         }
     });

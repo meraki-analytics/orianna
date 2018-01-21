@@ -72,6 +72,9 @@ public class Timeline extends GhostObject.ListProxy<Frame, com.merakianalytics.o
         private final Supplier<Item> after = Suppliers.memoize(new Supplier<Item>() {
             @Override
             public Item get() {
+                if(coreData.getAfterId() == 0) {
+                    return null;
+                }
                 return Item.withId(coreData.getAfterId()).get();
             }
         });
@@ -79,6 +82,12 @@ public class Timeline extends GhostObject.ListProxy<Frame, com.merakianalytics.o
         private final Supplier<SearchableList<Participant>> assistingParticipants = Suppliers.memoize(new Supplier<SearchableList<Participant>>() {
             @Override
             public SearchableList<Participant> get() {
+                if(coreData.getAssistingParticipants() == null) {
+                    return null;
+                }
+                if(coreData.getAssistingParticipants().isEmpty()) {
+                    return SearchableLists.empty();
+                }
                 match.get().getVersion(); // Force match load so participants have IDs
                 final List<Participant> assistingParticipants = new ArrayList<>(coreData.getAssistingParticipants().size());
                 for(final Participant participant : match.get().getParticipants()) {
@@ -93,6 +102,9 @@ public class Timeline extends GhostObject.ListProxy<Frame, com.merakianalytics.o
         private final Supplier<Item> before = Suppliers.memoize(new Supplier<Item>() {
             @Override
             public Item get() {
+                if(coreData.getBeforeId() == 0) {
+                    return null;
+                }
                 return Item.withId(coreData.getBeforeId()).get();
             }
         });
@@ -100,6 +112,9 @@ public class Timeline extends GhostObject.ListProxy<Frame, com.merakianalytics.o
         private final Supplier<Participant> creator = Suppliers.memoize(new Supplier<Participant>() {
             @Override
             public Participant get() {
+                if(coreData.getCreatorId() == 0) {
+                    return null;
+                }
                 match.get().getVersion(); // Force match load so participants have IDs
                 for(final Participant participant : match.get().getParticipants()) {
                     if(participant.getCoreData().getParticipantId() == coreData.getCreatorId()) {
@@ -113,6 +128,9 @@ public class Timeline extends GhostObject.ListProxy<Frame, com.merakianalytics.o
         private final Supplier<Item> item = Suppliers.memoize(new Supplier<Item>() {
             @Override
             public Item get() {
+                if(coreData.getItemId() == 0) {
+                    return null;
+                }
                 return Item.withId(coreData.getItemId()).get();
             }
         });
@@ -120,6 +138,9 @@ public class Timeline extends GhostObject.ListProxy<Frame, com.merakianalytics.o
         private final Supplier<Participant> killer = Suppliers.memoize(new Supplier<Participant>() {
             @Override
             public Participant get() {
+                if(coreData.getKillerId() == 0) {
+                    return null;
+                }
                 match.get().getVersion(); // Force match load so participants have IDs
                 for(final Participant participant : match.get().getParticipants()) {
                     if(participant.getCoreData().getParticipantId() == coreData.getKillerId()) {
@@ -133,6 +154,9 @@ public class Timeline extends GhostObject.ListProxy<Frame, com.merakianalytics.o
         private final Supplier<Participant> participant = Suppliers.memoize(new Supplier<Participant>() {
             @Override
             public Participant get() {
+                if(coreData.getParticipantId() == 0) {
+                    return null;
+                }
                 match.get().getVersion(); // Force match load so participants have IDs
                 for(final Participant participant : match.get().getParticipants()) {
                     if(participant.getCoreData().getParticipantId() == coreData.getParticipantId()) {
@@ -146,6 +170,9 @@ public class Timeline extends GhostObject.ListProxy<Frame, com.merakianalytics.o
         private final Supplier<Position> position = Suppliers.memoize(new Supplier<Position>() {
             @Override
             public Position get() {
+                if(coreData.getPosition() == null) {
+                    return null;
+                }
                 return new Position(coreData.getPosition());
             }
         });
@@ -153,6 +180,9 @@ public class Timeline extends GhostObject.ListProxy<Frame, com.merakianalytics.o
         private final Supplier<Team> team = Suppliers.memoize(new Supplier<Team>() {
             @Override
             public Team get() {
+                if(coreData.getTeam() == 0) {
+                    return null;
+                }
                 return coreData.getTeam() == Side.BLUE.getId() ? match.get().getBlueTeam() : match.get().getRedTeam();
             }
         });
@@ -160,6 +190,9 @@ public class Timeline extends GhostObject.ListProxy<Frame, com.merakianalytics.o
         private final Supplier<Participant> victim = Suppliers.memoize(new Supplier<Participant>() {
             @Override
             public Participant get() {
+                if(coreData.getVictimId() == 0) {
+                    return null;
+                }
                 match.get().getVersion(); // Force match load so participants have IDs
                 for(final Participant participant : match.get().getParticipants()) {
                     if(participant.getCoreData().getParticipantId() == coreData.getVictimId()) {
@@ -291,6 +324,12 @@ public class Timeline extends GhostObject.ListProxy<Frame, com.merakianalytics.o
         private final Supplier<Map<Participant, ParticipantFrame>> participantFrames = Suppliers.memoize(new Supplier<Map<Participant, ParticipantFrame>>() {
             @Override
             public Map<Participant, ParticipantFrame> get() {
+                if(coreData.getParticipantFrames() == null) {
+                    return null;
+                }
+                if(coreData.getParticipantFrames().isEmpty()) {
+                    return Collections.emptyMap();
+                }
                 match.get().getVersion(); // Force match load so participants have IDs
                 final Map<Participant, ParticipantFrame> participantFrames = new HashMap<>(coreData.getParticipantFrames().size());
                 for(final Participant participant : match.get().getParticipants()) {
@@ -332,6 +371,9 @@ public class Timeline extends GhostObject.ListProxy<Frame, com.merakianalytics.o
     private final Supplier<Match> match = Suppliers.memoize(new Supplier<Match>() {
         @Override
         public Match get() {
+            if(coreData.getId() == 0L) {
+                return null;
+            }
             return Match.withId(coreData.getId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
         }
     });

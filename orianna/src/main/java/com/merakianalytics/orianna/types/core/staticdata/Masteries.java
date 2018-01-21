@@ -225,6 +225,9 @@ public class Masteries extends GhostObject.ListProxy<Mastery, com.merakianalytic
     private final Supplier<Set<String>> includedData = Suppliers.memoize(new Supplier<Set<String>>() {
         @Override
         public Set<String> get() {
+            if(coreData.getIncludedData() == null) {
+                return null;
+            }
             return Collections.unmodifiableSet(coreData.getIncludedData());
         }
     });
@@ -233,6 +236,9 @@ public class Masteries extends GhostObject.ListProxy<Mastery, com.merakianalytic
         @Override
         public MasteryTree get() {
             load(LIST_PROXY_LOAD_GROUP);
+            if(coreData.getTree() == null) {
+                return null;
+            }
             return new MasteryTree(coreData.getTree());
         }
     });

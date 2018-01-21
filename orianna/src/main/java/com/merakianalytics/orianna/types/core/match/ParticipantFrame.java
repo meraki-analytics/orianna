@@ -10,6 +10,9 @@ public class ParticipantFrame extends OriannaObject<com.merakianalytics.orianna.
     private final Supplier<Position> position = Suppliers.memoize(new Supplier<Position>() {
         @Override
         public Position get() {
+            if(coreData.getPosition() == null) {
+                return null;
+            }
             return new Position(coreData.getPosition());
         }
     });

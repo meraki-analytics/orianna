@@ -226,6 +226,9 @@ public class Items extends GhostObject.ListProxy<Item, com.merakianalytics.orian
         @Override
         public List<ItemGroup> get() {
             load(LIST_PROXY_LOAD_GROUP);
+            if(coreData.getGroups() == null) {
+                return null;
+            }
             final List<ItemGroup> groups = new ArrayList<>(coreData.getGroups().size());
             for(final com.merakianalytics.orianna.types.data.staticdata.ItemGroup group : coreData.getGroups()) {
                 groups.add(new ItemGroup(group));
@@ -237,6 +240,9 @@ public class Items extends GhostObject.ListProxy<Item, com.merakianalytics.orian
     private final Supplier<Set<String>> includedData = Suppliers.memoize(new Supplier<Set<String>>() {
         @Override
         public Set<String> get() {
+            if(coreData.getIncludedData() == null) {
+                return null;
+            }
             return Collections.unmodifiableSet(coreData.getIncludedData());
         }
     });
@@ -245,6 +251,9 @@ public class Items extends GhostObject.ListProxy<Item, com.merakianalytics.orian
         @Override
         public List<ItemTree> get() {
             load(LIST_PROXY_LOAD_GROUP);
+            if(coreData.getTree() == null) {
+                return null;
+            }
             final List<ItemTree> tree = new ArrayList<>(coreData.getTree().size());
             for(final com.merakianalytics.orianna.types.data.staticdata.ItemTree t : coreData.getTree()) {
                 tree.add(new ItemTree(t));

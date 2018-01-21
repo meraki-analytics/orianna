@@ -39,6 +39,9 @@ public class ChampionMasteryScore extends GhostObject<com.merakianalytics.oriann
     private final Supplier<Summoner> summoner = Suppliers.memoize(new Supplier<Summoner>() {
         @Override
         public Summoner get() {
+            if(coreData.getSummonerId() == 0L) {
+                return null;
+            }
             return Summoner.withId(coreData.getSummonerId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
         }
     });

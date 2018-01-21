@@ -14,6 +14,9 @@ public class RuneStats extends OriannaObject<com.merakianalytics.orianna.types.d
     private final Supplier<List<Integer>> variables = Suppliers.memoize(new Supplier<List<Integer>>() {
         @Override
         public List<Integer> get() {
+            if(coreData.getVariables() == null) {
+                return null;
+            }
             return Collections.unmodifiableList(coreData.getVariables());
         }
     });

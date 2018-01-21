@@ -3,8 +3,6 @@ package com.merakianalytics.orianna.types.core.thirdpartycode;
 import java.util.Arrays;
 import java.util.List;
 
-import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
 import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.common.Platform;
@@ -35,13 +33,6 @@ public class VerificationString extends GhostObject<com.merakianalytics.orianna.
         return new Builder(summoner);
     }
 
-    private final Supplier<Summoner> summoner = Suppliers.memoize(new Supplier<Summoner>() {
-        @Override
-        public Summoner get() {
-            return Summoner.withId(coreData.getSummonerId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
-        }
-    });
-
     public VerificationString(final com.merakianalytics.orianna.types.data.thirdpartycode.VerificationString coreData) {
         super(coreData, 1);
     }
@@ -64,10 +55,6 @@ public class VerificationString extends GhostObject<com.merakianalytics.orianna.
     public String getString() {
         load(VERIFICATION_STRING_LOAD_GROUP);
         return coreData.getString();
-    }
-
-    public Summoner getSummoner() {
-        return summoner.get();
     }
 
     @Override

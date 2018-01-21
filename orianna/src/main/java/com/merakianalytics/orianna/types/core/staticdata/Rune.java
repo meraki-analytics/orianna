@@ -117,6 +117,9 @@ public class Rune extends GhostObject<com.merakianalytics.orianna.types.data.sta
         @Override
         public Image get() {
             load(RUNE_LOAD_GROUP);
+            if(coreData.getImage() == null) {
+                return null;
+            }
             return new Image(coreData.getImage());
         }
     });
@@ -124,6 +127,9 @@ public class Rune extends GhostObject<com.merakianalytics.orianna.types.data.sta
     private final Supplier<Set<String>> includedData = Suppliers.memoize(new Supplier<Set<String>>() {
         @Override
         public Set<String> get() {
+            if(coreData.getIncludedData() == null) {
+                return null;
+            }
             return Collections.unmodifiableSet(coreData.getIncludedData());
         }
     });
@@ -132,6 +138,9 @@ public class Rune extends GhostObject<com.merakianalytics.orianna.types.data.sta
         @Override
         public RuneStats get() {
             load(RUNE_LOAD_GROUP);
+            if(coreData.getStats() == null) {
+                return null;
+            }
             return new RuneStats(coreData.getStats());
         }
     });
@@ -140,6 +149,9 @@ public class Rune extends GhostObject<com.merakianalytics.orianna.types.data.sta
         @Override
         public List<String> get() {
             load(RUNE_LOAD_GROUP);
+            if(coreData.getTags() == null) {
+                return null;
+            }
             return Collections.unmodifiableList(coreData.getTags());
         }
     });

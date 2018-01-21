@@ -78,6 +78,9 @@ public class ProfileIcon extends GhostObject<com.merakianalytics.orianna.types.d
         @Override
         public Image get() {
             load(PROFILE_ICON_LOAD_GROUP);
+            if(coreData.getImage() == null) {
+                return null;
+            }
             return new Image(coreData.getImage());
         }
     });

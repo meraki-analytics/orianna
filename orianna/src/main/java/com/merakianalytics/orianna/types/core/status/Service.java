@@ -14,6 +14,9 @@ public class Service extends OriannaObject<com.merakianalytics.orianna.types.dat
     private final Supplier<List<Incident>> incidents = Suppliers.memoize(new Supplier<List<Incident>>() {
         @Override
         public List<Incident> get() {
+            if(coreData.getIncidents() == null) {
+                return null;
+            }
             final List<Incident> incidents = new ArrayList<>(coreData.getIncidents().size());
             for(final com.merakianalytics.orianna.types.data.status.Incident incident : coreData.getIncidents()) {
                 incidents.add(new Incident(incident));

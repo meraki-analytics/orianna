@@ -56,6 +56,9 @@ public class ChampionMastery extends GhostObject<com.merakianalytics.orianna.typ
     private final Supplier<Champion> champion = Suppliers.memoize(new Supplier<Champion>() {
         @Override
         public Champion get() {
+            if(coreData.getChampionId() == 0) {
+                return null;
+            }
             return Champion.withId(coreData.getChampionId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
         }
     });
@@ -63,6 +66,9 @@ public class ChampionMastery extends GhostObject<com.merakianalytics.orianna.typ
     private final Supplier<Summoner> summoner = Suppliers.memoize(new Supplier<Summoner>() {
         @Override
         public Summoner get() {
+            if(coreData.getSummonerId() == 0L) {
+                return null;
+            }
             return Summoner.withId(coreData.getSummonerId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
         }
     });

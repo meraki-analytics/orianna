@@ -21,6 +21,9 @@ public class Player extends OriannaObject<com.merakianalytics.orianna.types.data
     private final Supplier<Champion> champion = Suppliers.memoize(new Supplier<Champion>() {
         @Override
         public Champion get() {
+            if(coreData.getChampionId() == 0) {
+                return null;
+            }
             return Champion.withId(coreData.getChampionId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
         }
     });
@@ -28,6 +31,9 @@ public class Player extends OriannaObject<com.merakianalytics.orianna.types.data
     private final Supplier<List<GameCustomizationObject>> customizationObjects = Suppliers.memoize(new Supplier<List<GameCustomizationObject>>() {
         @Override
         public List<GameCustomizationObject> get() {
+            if(coreData.getCustomizationObjects() == null) {
+                return null;
+            }
             final List<GameCustomizationObject> objects = new ArrayList<>(coreData.getCustomizationObjects().size());
             for(final com.merakianalytics.orianna.types.data.spectator.GameCustomizationObject object : coreData.getCustomizationObjects()) {
                 objects.add(new GameCustomizationObject(object));
@@ -39,6 +45,9 @@ public class Player extends OriannaObject<com.merakianalytics.orianna.types.data
     private final Supplier<ProfileIcon> profileIcon = Suppliers.memoize(new Supplier<ProfileIcon>() {
         @Override
         public ProfileIcon get() {
+            if(coreData.getProfileIconId() == 0) {
+                return null;
+            }
             return ProfileIcon.withId(coreData.getProfileIconId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
         }
     });
@@ -46,6 +55,9 @@ public class Player extends OriannaObject<com.merakianalytics.orianna.types.data
     private final Supplier<Runes> runes = Suppliers.memoize(new Supplier<Runes>() {
         @Override
         public Runes get() {
+            if(coreData.getRunes() == null) {
+                return null;
+            }
             return new Runes(coreData.getRunes());
         }
     });
@@ -53,6 +65,9 @@ public class Player extends OriannaObject<com.merakianalytics.orianna.types.data
     private final Supplier<Summoner> summoner = Suppliers.memoize(new Supplier<Summoner>() {
         @Override
         public Summoner get() {
+            if(coreData.getSummonerId() == 0L) {
+                return null;
+            }
             final Summoner summoner = Summoner.withId(coreData.getSummonerId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
             if(summoner.getCoreData().getName() == null) {
                 summoner.getCoreData().setName(coreData.getSummonerName());
@@ -64,6 +79,9 @@ public class Player extends OriannaObject<com.merakianalytics.orianna.types.data
     private final Supplier<SummonerSpell> summonerSpellD = Suppliers.memoize(new Supplier<SummonerSpell>() {
         @Override
         public SummonerSpell get() {
+            if(coreData.getSummonerSpellDId() == 0) {
+                return null;
+            }
             return SummonerSpell.withId(coreData.getSummonerSpellDId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
         }
     });
@@ -71,7 +89,10 @@ public class Player extends OriannaObject<com.merakianalytics.orianna.types.data
     private final Supplier<SummonerSpell> summonerSpellF = Suppliers.memoize(new Supplier<SummonerSpell>() {
         @Override
         public SummonerSpell get() {
-            return SummonerSpell.withId(coreData.getSummonerSpellDId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
+            if(coreData.getSummonerSpellFId() == 0) {
+                return null;
+            }
+            return SummonerSpell.withId(coreData.getSummonerSpellFId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
         }
     });
 

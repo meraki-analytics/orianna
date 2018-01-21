@@ -116,6 +116,9 @@ public class Mastery extends GhostObject<com.merakianalytics.orianna.types.data.
         @Override
         public List<String> get() {
             load(MASTERY_LOAD_GROUP);
+            if(coreData.getDescriptions() == null) {
+                return null;
+            }
             return Collections.unmodifiableList(coreData.getDescriptions());
         }
     });
@@ -124,6 +127,9 @@ public class Mastery extends GhostObject<com.merakianalytics.orianna.types.data.
         @Override
         public Image get() {
             load(MASTERY_LOAD_GROUP);
+            if(coreData.getImage() == null) {
+                return null;
+            }
             return new Image(coreData.getImage());
         }
     });
@@ -131,6 +137,9 @@ public class Mastery extends GhostObject<com.merakianalytics.orianna.types.data.
     private final Supplier<Set<String>> includedData = Suppliers.memoize(new Supplier<Set<String>>() {
         @Override
         public Set<String> get() {
+            if(coreData.getIncludedData() == null) {
+                return null;
+            }
             return Collections.unmodifiableSet(coreData.getIncludedData());
         }
     });
@@ -139,6 +148,9 @@ public class Mastery extends GhostObject<com.merakianalytics.orianna.types.data.
         @Override
         public Mastery get() {
             load(MASTERY_LOAD_GROUP);
+            if(coreData.getPrerequisite() == 0) {
+                return null;
+            }
             return Mastery.withId(coreData.getPrerequisite()).withPlatform(Platform.withTag(coreData.getPlatform())).withVersion(coreData.getVersion())
                 .withLocale(coreData.getLocale()).get();
         }
@@ -148,6 +160,9 @@ public class Mastery extends GhostObject<com.merakianalytics.orianna.types.data.
         @Override
         public List<String> get() {
             load(MASTERY_LOAD_GROUP);
+            if(coreData.getSanitizedDescriptions() == null) {
+                return null;
+            }
             return Collections.unmodifiableList(coreData.getSanitizedDescriptions());
         }
     });
