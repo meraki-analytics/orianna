@@ -28,7 +28,7 @@ import com.merakianalytics.orianna.types.core.match.MatchHistory;
 import com.merakianalytics.orianna.types.core.match.Participant;
 import com.merakianalytics.orianna.types.core.searchable.Searchable;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
-import com.merakianalytics.orianna.types.core.spectator.CurrentGame;
+import com.merakianalytics.orianna.types.core.spectator.CurrentMatch;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcon;
 import com.merakianalytics.orianna.types.core.thirdpartycode.VerificationString;
@@ -146,8 +146,8 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
         return ChampionMasteryScore.forSummoner(this).get();
     }
 
-    public CurrentGame getCurrentGame() {
-        return CurrentGame.forSummoner(this).get();
+    public CurrentMatch getCurrentMatch() {
+        return CurrentMatch.forSummoner(this).get();
     }
 
     public Tier getHighestTier(final Season season) {
@@ -248,7 +248,7 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
     }
 
     public boolean isInGame() {
-        return CurrentGame.forSummoner(this).get().exists();
+        return CurrentMatch.forSummoner(this).get().exists();
     }
 
     @Override

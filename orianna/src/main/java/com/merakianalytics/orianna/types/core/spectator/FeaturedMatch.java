@@ -22,7 +22,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Champions;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
-public class FeaturedGame extends OriannaObject<com.merakianalytics.orianna.types.data.spectator.FeaturedGame> {
+public class FeaturedMatch extends OriannaObject<com.merakianalytics.orianna.types.data.spectator.FeaturedMatch> {
     private static final long serialVersionUID = 1986854843022789219L;
 
     private final Supplier<SearchableList<Champion>> blueTeamBans = Suppliers.memoize(new Supplier<SearchableList<Champion>>() {
@@ -59,7 +59,7 @@ public class FeaturedGame extends OriannaObject<com.merakianalytics.orianna.type
         }
     });
 
-    public FeaturedGame(final com.merakianalytics.orianna.types.data.spectator.FeaturedGame coreData) {
+    public FeaturedMatch(final com.merakianalytics.orianna.types.data.spectator.FeaturedMatch coreData) {
         super(coreData);
     }
 

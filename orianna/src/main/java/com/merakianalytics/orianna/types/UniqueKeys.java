@@ -16,8 +16,8 @@ import com.merakianalytics.orianna.types.core.league.LeaguePositions;
 import com.merakianalytics.orianna.types.core.match.Match;
 import com.merakianalytics.orianna.types.core.match.Timeline;
 import com.merakianalytics.orianna.types.core.match.TournamentMatches;
-import com.merakianalytics.orianna.types.core.spectator.CurrentGame;
-import com.merakianalytics.orianna.types.core.spectator.FeaturedGames;
+import com.merakianalytics.orianna.types.core.spectator.CurrentMatch;
+import com.merakianalytics.orianna.types.core.spectator.FeaturedMatches;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Champions;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
@@ -173,29 +173,29 @@ public abstract class UniqueKeys {
         });
     }
 
-    public static int forCurrentGame(final CurrentGame game) {
-        final com.merakianalytics.orianna.types.data.spectator.CurrentGame data = game.getCoreData();
+    public static int forCurrentMatch(final CurrentMatch game) {
+        final com.merakianalytics.orianna.types.data.spectator.CurrentMatch data = game.getCoreData();
         return Arrays.hashCode(new Object[] {
-            CurrentGame.class.getCanonicalName(), data.getPlatform(), data.getSummonerId()
+            CurrentMatch.class.getCanonicalName(), data.getPlatform(), data.getSummonerId()
         });
     }
 
-    public static int forCurrentGameQuery(final java.util.Map<String, Object> query) {
+    public static int forCurrentMatchQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
-            CurrentGame.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), ((Number)query.get("summonerId")).longValue()
+            CurrentMatch.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), ((Number)query.get("summonerId")).longValue()
         });
     }
 
-    public static int forFeaturedGames(final FeaturedGames games) {
-        final com.merakianalytics.orianna.types.data.spectator.FeaturedGames data = games.getCoreData();
+    public static int forFeaturedMatches(final FeaturedMatches games) {
+        final com.merakianalytics.orianna.types.data.spectator.FeaturedMatches data = games.getCoreData();
         return Arrays.hashCode(new Object[] {
-            FeaturedGames.class.getCanonicalName(), data.getPlatform()
+            FeaturedMatches.class.getCanonicalName(), data.getPlatform()
         });
     }
 
-    public static int forFeaturedGamesQuery(final java.util.Map<String, Object> query) {
+    public static int forFeaturedMatchesQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
-            FeaturedGames.class.getCanonicalName(), ((Platform)query.get("platform")).getTag()
+            FeaturedMatches.class.getCanonicalName(), ((Platform)query.get("platform")).getTag()
         });
     }
 
@@ -450,7 +450,7 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
-    public static Iterator<Integer> forManyCurrentGameQuery(final java.util.Map<String, Object> query) {
+    public static Iterator<Integer> forManyCurrentMatchQuery(final java.util.Map<String, Object> query) {
         final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
 
         final Iterator<Number> iterator = summonerIds.iterator();
@@ -463,7 +463,7 @@ public abstract class UniqueKeys {
             @Override
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
-                    CurrentGame.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next().longValue()
+                    CurrentMatch.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next().longValue()
                 });
             }
 
@@ -475,7 +475,7 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
-    public static Iterator<Integer> forManyFeaturedGamesQuery(final java.util.Map<String, Object> query) {
+    public static Iterator<Integer> forManyFeaturedMatchesQuery(final java.util.Map<String, Object> query) {
         final Iterable<Platform> platforms = (Iterable<Platform>)query.get("platforms");
 
         final Iterator<Platform> iterator = platforms.iterator();
@@ -488,7 +488,7 @@ public abstract class UniqueKeys {
             @Override
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
-                    FeaturedGames.class.getCanonicalName(), iterator.next().getTag()
+                    FeaturedMatches.class.getCanonicalName(), iterator.next().getTag()
                 });
             }
 

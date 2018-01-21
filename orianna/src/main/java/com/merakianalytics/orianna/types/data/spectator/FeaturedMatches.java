@@ -4,16 +4,16 @@ import org.joda.time.Duration;
 
 import com.merakianalytics.orianna.types.data.CoreData;
 
-public class FeaturedGames extends CoreData.ListProxy<FeaturedGame> {
+public class FeaturedMatches extends CoreData.ListProxy<FeaturedMatch> {
     private static final long serialVersionUID = 2972903457763427690L;
     private String platform;
     private Duration refreshInterval;
 
-    public FeaturedGames() {
+    public FeaturedMatches() {
         super();
     }
 
-    public FeaturedGames(final int initialCapacity) {
+    public FeaturedMatches(final int initialCapacity) {
         super(initialCapacity);
     }
 
@@ -28,7 +28,7 @@ public class FeaturedGames extends CoreData.ListProxy<FeaturedGame> {
         if(getClass() != obj.getClass()) {
             return false;
         }
-        final FeaturedGames other = (FeaturedGames)obj;
+        final FeaturedMatches other = (FeaturedMatches)obj;
         if(platform == null) {
             if(other.platform != null) {
                 return false;

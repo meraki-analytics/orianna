@@ -60,9 +60,9 @@ import com.merakianalytics.orianna.types.core.match.Matches;
 import com.merakianalytics.orianna.types.core.match.Timeline;
 import com.merakianalytics.orianna.types.core.match.Timelines;
 import com.merakianalytics.orianna.types.core.match.TournamentMatches;
-import com.merakianalytics.orianna.types.core.spectator.CurrentGame;
-import com.merakianalytics.orianna.types.core.spectator.CurrentGames;
-import com.merakianalytics.orianna.types.core.spectator.FeaturedGames;
+import com.merakianalytics.orianna.types.core.spectator.CurrentMatch;
+import com.merakianalytics.orianna.types.core.spectator.CurrentMatches;
+import com.merakianalytics.orianna.types.core.spectator.FeaturedMatches;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Champions;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
@@ -387,16 +387,16 @@ public abstract class Orianna {
         return Champion.withKey(key);
     }
 
-    public static CurrentGame.Builder currentGameForSummoner(final Summoner summoner) {
-        return CurrentGame.forSummoner(summoner);
+    public static CurrentMatches.Builder currentMatchesForSummoners(final Iterable<Summoner> summoners) {
+        return CurrentMatches.forSummoners(summoners);
     }
 
-    public static CurrentGames.Builder currentGamesForSummoners(final Iterable<Summoner> summoners) {
-        return CurrentGames.forSummoners(summoners);
+    public static CurrentMatches.Builder currentMatchesForSummoners(final Summoner... summoners) {
+        return CurrentMatches.forSummoners(summoners);
     }
 
-    public static CurrentGames.Builder currentGamesForSummoners(final Summoner... summoners) {
-        return CurrentGames.forSummoners(summoners);
+    public static CurrentMatch.Builder currentMatchForSummoner(final Summoner summoner) {
+        return CurrentMatch.forSummoner(summoner);
     }
 
     private static Settings defaultSettings() {
@@ -419,28 +419,28 @@ public abstract class Orianna {
         }
     }
 
-    public static FeaturedGames.Builder featuredGamesForPlatform(final Platform platform) {
-        return FeaturedGames.forPlatform(platform);
+    public static FeaturedMatches.Builder featuredMatchesForPlatform(final Platform platform) {
+        return FeaturedMatches.forPlatform(platform);
     }
 
-    public static FeaturedGames.ManyBuilder featuredGamesForPlatforms(final Iterable<Platform> platforms) {
-        return FeaturedGames.forPlatforms(platforms);
+    public static FeaturedMatches.ManyBuilder featuredMatchesForPlatforms(final Iterable<Platform> platforms) {
+        return FeaturedMatches.forPlatforms(platforms);
     }
 
-    public static FeaturedGames.ManyBuilder featuredGamesForPlatforms(final Platform... platforms) {
-        return FeaturedGames.forPlatforms(platforms);
+    public static FeaturedMatches.ManyBuilder featuredMatchesForPlatforms(final Platform... platforms) {
+        return FeaturedMatches.forPlatforms(platforms);
     }
 
-    public static FeaturedGames.Builder featuredGamesForRegion(final Region region) {
-        return FeaturedGames.forRegion(region);
+    public static FeaturedMatches.Builder featuredMatchesForRegion(final Region region) {
+        return FeaturedMatches.forRegion(region);
     }
 
-    public static FeaturedGames.ManyBuilder featuredGamesForRegions(final Iterable<Region> regions) {
-        return FeaturedGames.forRegions(regions);
+    public static FeaturedMatches.ManyBuilder featuredMatchesForRegions(final Iterable<Region> regions) {
+        return FeaturedMatches.forRegions(regions);
     }
 
-    public static FeaturedGames.ManyBuilder featuredGamesForRegions(final Region... regions) {
-        return FeaturedGames.forRegions(regions);
+    public static FeaturedMatches.ManyBuilder featuredMatchesForRegions(final Region... regions) {
+        return FeaturedMatches.forRegions(regions);
     }
 
     public static Champions getChampions() {
@@ -457,8 +457,8 @@ public abstract class Orianna {
         }
     }
 
-    public static FeaturedGames getFeaturedGames() {
-        return FeaturedGames.get();
+    public static FeaturedMatches getFeaturedMatches() {
+        return FeaturedMatches.get();
     }
 
     public static Items getItems() {

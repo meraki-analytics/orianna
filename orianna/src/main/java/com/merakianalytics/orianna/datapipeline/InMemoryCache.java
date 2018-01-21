@@ -43,8 +43,8 @@ import com.merakianalytics.orianna.types.core.league.LeaguePositions;
 import com.merakianalytics.orianna.types.core.match.Match;
 import com.merakianalytics.orianna.types.core.match.Timeline;
 import com.merakianalytics.orianna.types.core.match.TournamentMatches;
-import com.merakianalytics.orianna.types.core.spectator.CurrentGame;
-import com.merakianalytics.orianna.types.core.spectator.FeaturedGames;
+import com.merakianalytics.orianna.types.core.spectator.CurrentMatch;
+import com.merakianalytics.orianna.types.core.spectator.FeaturedMatches;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Champions;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
@@ -77,8 +77,8 @@ public class InMemoryCache extends AbstractDataStore {
             .put(ChampionMasteryScore.class.getCanonicalName(), ExpirationPeriod.create(15L, TimeUnit.MINUTES))
             .put(Champion.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
             .put(Champions.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
-            .put(CurrentGame.class.getCanonicalName(), ExpirationPeriod.create(5L, TimeUnit.MINUTES))
-            .put(FeaturedGames.class.getCanonicalName(), ExpirationPeriod.create(5L, TimeUnit.MINUTES))
+            .put(CurrentMatch.class.getCanonicalName(), ExpirationPeriod.create(5L, TimeUnit.MINUTES))
+            .put(FeaturedMatches.class.getCanonicalName(), ExpirationPeriod.create(5L, TimeUnit.MINUTES))
             .put(Item.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
             .put(Items.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
             .put(LanguageStrings.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
@@ -194,16 +194,16 @@ public class InMemoryCache extends AbstractDataStore {
         return (Champions)cache.get(key);
     }
 
-    @Get(CurrentGame.class)
-    public CurrentGame getCurrentGame(final java.util.Map<String, Object> query, final PipelineContext context) {
-        final int key = UniqueKeys.forCurrentGameQuery(query);
-        return (CurrentGame)cache.get(key);
+    @Get(CurrentMatch.class)
+    public CurrentMatch getCurrentMatch(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forCurrentMatchQuery(query);
+        return (CurrentMatch)cache.get(key);
     }
 
-    @Get(FeaturedGames.class)
-    public FeaturedGames getFeaturedGames(final java.util.Map<String, Object> query, final PipelineContext context) {
-        final int key = UniqueKeys.forFeaturedGamesQuery(query);
-        return (FeaturedGames)cache.get(key);
+    @Get(FeaturedMatches.class)
+    public FeaturedMatches getFeaturedMatches(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forFeaturedMatchesQuery(query);
+        return (FeaturedMatches)cache.get(key);
     }
 
     @Get(Item.class)
@@ -358,9 +358,9 @@ public class InMemoryCache extends AbstractDataStore {
         });
     }
 
-    @GetMany(CurrentGame.class)
-    public CloseableIterator<CurrentGame> getManyCurrentGame(final java.util.Map<String, Object> query, final PipelineContext context) {
-        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyCurrentGameQuery(query));
+    @GetMany(CurrentMatch.class)
+    public CloseableIterator<CurrentMatch> getManyCurrentMatch(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyCurrentMatchQuery(query));
         for(final Integer key : keys) {
             if(!cache.containsKey(key)) {
                 return null;
@@ -368,16 +368,16 @@ public class InMemoryCache extends AbstractDataStore {
         }
 
         final Iterator<Integer> iterator = keys.iterator();
-        return CloseableIterators.from(new Iterator<CurrentGame>() {
+        return CloseableIterators.from(new Iterator<CurrentMatch>() {
             @Override
             public boolean hasNext() {
                 return iterator.hasNext();
             }
 
             @Override
-            public CurrentGame next() {
+            public CurrentMatch next() {
                 final int key = iterator.next();
-                return (CurrentGame)cache.get(key);
+                return (CurrentMatch)cache.get(key);
             }
 
             @Override
@@ -387,9 +387,9 @@ public class InMemoryCache extends AbstractDataStore {
         });
     }
 
-    @GetMany(FeaturedGames.class)
-    public CloseableIterator<FeaturedGames> getManyFeaturedGames(final java.util.Map<String, Object> query, final PipelineContext context) {
-        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyFeaturedGamesQuery(query));
+    @GetMany(FeaturedMatches.class)
+    public CloseableIterator<FeaturedMatches> getManyFeaturedMatches(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyFeaturedMatchesQuery(query));
         for(final Integer key : keys) {
             if(!cache.containsKey(key)) {
                 return null;
@@ -397,16 +397,16 @@ public class InMemoryCache extends AbstractDataStore {
         }
 
         final Iterator<Integer> iterator = keys.iterator();
-        return CloseableIterators.from(new Iterator<FeaturedGames>() {
+        return CloseableIterators.from(new Iterator<FeaturedMatches>() {
             @Override
             public boolean hasNext() {
                 return iterator.hasNext();
             }
 
             @Override
-            public FeaturedGames next() {
+            public FeaturedMatches next() {
                 final int key = iterator.next();
-                return (FeaturedGames)cache.get(key);
+                return (FeaturedMatches)cache.get(key);
             }
 
             @Override
@@ -1027,15 +1027,15 @@ public class InMemoryCache extends AbstractDataStore {
         }
     }
 
-    @Put(CurrentGame.class)
-    public void putCurrentGame(final CurrentGame game, final PipelineContext context) {
-        final int key = UniqueKeys.forCurrentGame(game);
+    @Put(CurrentMatch.class)
+    public void putCurrentMatch(final CurrentMatch game, final PipelineContext context) {
+        final int key = UniqueKeys.forCurrentMatch(game);
         cache.put(key, game);
     }
 
-    @Put(FeaturedGames.class)
-    public void putFeaturedGames(final FeaturedGames games, final PipelineContext context) {
-        final int key = UniqueKeys.forFeaturedGames(games);
+    @Put(FeaturedMatches.class)
+    public void putFeaturedMatches(final FeaturedMatches games, final PipelineContext context) {
+        final int key = UniqueKeys.forFeaturedMatches(games);
         cache.put(key, games);
     }
 
@@ -1145,17 +1145,17 @@ public class InMemoryCache extends AbstractDataStore {
         }
     }
 
-    @PutMany(CurrentGame.class)
-    public void putManyCurrentGame(final Iterable<CurrentGame> games, final PipelineContext context) {
-        for(final CurrentGame game : games) {
-            putCurrentGame(game, context);
+    @PutMany(CurrentMatch.class)
+    public void putManyCurrentMatch(final Iterable<CurrentMatch> games, final PipelineContext context) {
+        for(final CurrentMatch game : games) {
+            putCurrentMatch(game, context);
         }
     }
 
-    @PutMany(FeaturedGames.class)
-    public void putManyFeaturedGames(final Iterable<FeaturedGames> games, final PipelineContext context) {
-        for(final FeaturedGames game : games) {
-            putFeaturedGames(game, context);
+    @PutMany(FeaturedMatches.class)
+    public void putManyFeaturedMatches(final Iterable<FeaturedMatches> games, final PipelineContext context) {
+        for(final FeaturedMatches game : games) {
+            putFeaturedMatches(game, context);
         }
     }
 

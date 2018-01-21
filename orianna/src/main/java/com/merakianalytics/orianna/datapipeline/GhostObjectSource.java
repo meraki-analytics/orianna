@@ -28,8 +28,8 @@ import com.merakianalytics.orianna.types.core.match.Match;
 import com.merakianalytics.orianna.types.core.match.MatchHistory;
 import com.merakianalytics.orianna.types.core.match.Timeline;
 import com.merakianalytics.orianna.types.core.match.TournamentMatches;
-import com.merakianalytics.orianna.types.core.spectator.CurrentGame;
-import com.merakianalytics.orianna.types.core.spectator.FeaturedGames;
+import com.merakianalytics.orianna.types.core.spectator.CurrentMatch;
+import com.merakianalytics.orianna.types.core.spectator.FeaturedMatches;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Champion.ChampionData;
 import com.merakianalytics.orianna.types.core.staticdata.Champions;
@@ -146,27 +146,27 @@ public class GhostObjectSource extends AbstractDataSource {
         return new Champions(data);
     }
 
-    @Get(CurrentGame.class)
-    public CurrentGame getCurrentGame(final java.util.Map<String, Object> query, final PipelineContext context) {
+    @Get(CurrentMatch.class)
+    public CurrentMatch getCurrentMatch(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         final Number summonerId = (Number)query.get("summonerId");
         Utilities.checkNotNull(platform, "platform", summonerId, "summonerId");
 
-        final com.merakianalytics.orianna.types.data.spectator.CurrentGame data =
-            new com.merakianalytics.orianna.types.data.spectator.CurrentGame();
+        final com.merakianalytics.orianna.types.data.spectator.CurrentMatch data =
+            new com.merakianalytics.orianna.types.data.spectator.CurrentMatch();
         data.setPlatform(platform.getTag());
         data.setSummonerId(summonerId.longValue());
-        return new CurrentGame(data);
+        return new CurrentMatch(data);
     }
 
-    @Get(FeaturedGames.class)
-    public FeaturedGames getFeaturedGames(final java.util.Map<String, Object> query, final PipelineContext context) {
+    @Get(FeaturedMatches.class)
+    public FeaturedMatches getFeaturedMatches(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
 
-        final com.merakianalytics.orianna.types.data.spectator.FeaturedGames data = new com.merakianalytics.orianna.types.data.spectator.FeaturedGames();
+        final com.merakianalytics.orianna.types.data.spectator.FeaturedMatches data = new com.merakianalytics.orianna.types.data.spectator.FeaturedMatches();
         data.setPlatform(platform.getTag());
-        return new FeaturedGames(data);
+        return new FeaturedMatches(data);
     }
 
     @SuppressWarnings("unchecked")
@@ -432,25 +432,25 @@ public class GhostObjectSource extends AbstractDataSource {
     }
 
     @SuppressWarnings("unchecked")
-    @GetMany(CurrentGame.class)
-    public CloseableIterator<CurrentGame> getManyCurrentGame(final java.util.Map<String, Object> query, final PipelineContext context) {
+    @GetMany(CurrentMatch.class)
+    public CloseableIterator<CurrentMatch> getManyCurrentMatch(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
         Utilities.checkNotNull(platform, "platform", summonerIds, "summonerIds");
 
         final Iterator<Number> iterator = summonerIds.iterator();
-        return CloseableIterators.from(new Iterator<CurrentGame>() {
+        return CloseableIterators.from(new Iterator<CurrentMatch>() {
             @Override
             public boolean hasNext() {
                 return iterator.hasNext();
             }
 
             @Override
-            public CurrentGame next() {
-                final com.merakianalytics.orianna.types.data.spectator.CurrentGame data = new com.merakianalytics.orianna.types.data.spectator.CurrentGame();
+            public CurrentMatch next() {
+                final com.merakianalytics.orianna.types.data.spectator.CurrentMatch data = new com.merakianalytics.orianna.types.data.spectator.CurrentMatch();
                 data.setPlatform(platform.getTag());
                 data.setSummonerId(iterator.next().longValue());
-                return new CurrentGame(data);
+                return new CurrentMatch(data);
             }
 
             @Override
@@ -461,24 +461,24 @@ public class GhostObjectSource extends AbstractDataSource {
     }
 
     @SuppressWarnings("unchecked")
-    @GetMany(FeaturedGames.class)
-    public CloseableIterator<FeaturedGames> getManyFeaturedGames(final java.util.Map<String, Object> query, final PipelineContext context) {
+    @GetMany(FeaturedMatches.class)
+    public CloseableIterator<FeaturedMatches> getManyFeaturedMatches(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Iterable<Platform> platforms = (Iterable<Platform>)query.get("platforms");
         Utilities.checkNotNull(platforms, "platforms");
 
         final Iterator<Platform> iterator = platforms.iterator();
-        return CloseableIterators.from(new Iterator<FeaturedGames>() {
+        return CloseableIterators.from(new Iterator<FeaturedMatches>() {
             @Override
             public boolean hasNext() {
                 return iterator.hasNext();
             }
 
             @Override
-            public FeaturedGames next() {
-                final com.merakianalytics.orianna.types.data.spectator.FeaturedGames data =
-                    new com.merakianalytics.orianna.types.data.spectator.FeaturedGames();
+            public FeaturedMatches next() {
+                final com.merakianalytics.orianna.types.data.spectator.FeaturedMatches data =
+                    new com.merakianalytics.orianna.types.data.spectator.FeaturedMatches();
                 data.setPlatform(iterator.next().getTag());
-                return new FeaturedGames(data);
+                return new FeaturedMatches(data);
             }
 
             @Override

@@ -10,9 +10,9 @@ import com.merakianalytics.datapipelines.PipelineContext;
 import com.merakianalytics.datapipelines.transformers.AbstractDataTransformer;
 import com.merakianalytics.datapipelines.transformers.Transform;
 import com.merakianalytics.orianna.types.common.Side;
-import com.merakianalytics.orianna.types.data.spectator.CurrentGame;
-import com.merakianalytics.orianna.types.data.spectator.FeaturedGame;
-import com.merakianalytics.orianna.types.data.spectator.FeaturedGames;
+import com.merakianalytics.orianna.types.data.spectator.CurrentMatch;
+import com.merakianalytics.orianna.types.data.spectator.FeaturedMatch;
+import com.merakianalytics.orianna.types.data.spectator.FeaturedMatches;
 import com.merakianalytics.orianna.types.data.spectator.GameCustomizationObject;
 import com.merakianalytics.orianna.types.data.spectator.Participant;
 import com.merakianalytics.orianna.types.data.spectator.Player;
@@ -25,9 +25,9 @@ import com.merakianalytics.orianna.types.dto.spectator.Observer;
 import com.merakianalytics.orianna.types.dto.spectator.Perks;
 
 public class SpectatorTransformer extends AbstractDataTransformer {
-    @Transform(from = com.merakianalytics.orianna.types.dto.spectator.FeaturedGames.class, to = FeaturedGames.class)
-    public FeaturedGames transform(final com.merakianalytics.orianna.types.dto.spectator.FeaturedGames item, final PipelineContext context) {
-        final FeaturedGames games = new FeaturedGames(item.getGameList().size());
+    @Transform(from = com.merakianalytics.orianna.types.dto.spectator.FeaturedGames.class, to = FeaturedMatches.class)
+    public FeaturedMatches transform(final com.merakianalytics.orianna.types.dto.spectator.FeaturedGames item, final PipelineContext context) {
+        final FeaturedMatches games = new FeaturedMatches(item.getGameList().size());
         for(final FeaturedGameInfo game : item.getGameList()) {
             games.add(transform(game, context));
         }
@@ -59,8 +59,63 @@ public class SpectatorTransformer extends AbstractDataTransformer {
         return player;
     }
 
-    @Transform(from = CurrentGame.class, to = CurrentGameInfo.class)
-    public CurrentGameInfo transform(final CurrentGame item, final PipelineContext context) {
+    @Transform(from = CurrentGameInfo.class, to = CurrentMatch.class)
+    public CurrentMatch transform(final CurrentGameInfo item, final PipelineContext context) {
+        final Object previous = context.put("platform", item.getPlatformId());
+        final CurrentMatch game = new CurrentMatch();
+        final List<Integer> blueBans = new ArrayList<>(item.getBannedChampions().size() / 2);
+        final List<Integer> redBans = new ArrayList<>(item.getBannedChampions().size() / 2);
+        for(final BannedChampion ban : item.getBannedChampions()) {
+            if(Side.BLUE.getId() == ban.getTeamId()) {
+                blueBans.add((int)ban.getChampionId());
+            } else {
+                redBans.add((int)ban.getChampionId());
+            }
+        }
+        game.setBlueTeamBans(blueBans);
+        game.setRedTeamBans(redBans);
+        game.setCreationTime(new DateTime(item.getGameStartTime()));
+        game.setDuration(Duration.millis(item.getGameLength()));
+        game.setId(item.getGameId());
+        game.setMap((int)item.getMapId());
+        game.setMode(item.getGameMode());
+        game.setObserverEncryptionKey(item.getObservers().getEncryptionKey());
+        game.setPlatform(item.getPlatformId());
+        final List<Player> players = new ArrayList<>(item.getParticipants().size());
+        for(final CurrentGameParticipant player : item.getParticipants()) {
+            players.add(transform(player, context));
+        }
+        game.setPlayers(players);
+        game.setQueue((int)item.getGameQueueConfigId());
+        game.setSummonerId(item.getSummonerId());
+        game.setType(item.getGameType());
+        context.put("platform", previous);
+        return game;
+    }
+
+    @Transform(from = CurrentGameParticipant.class, to = Player.class)
+    public Player transform(final CurrentGameParticipant item, final PipelineContext context) {
+        final Player player = new Player();
+        player.setPlatform((String)context.get("platform"));
+        player.setBot(item.isBot());
+        player.setChampionId((int)item.getChampionId());
+        player.setProfileIconId((int)item.getProfileIconId());
+        player.setRunes(transform(item.getPerks(), context));
+        final List<GameCustomizationObject> objects = new ArrayList<>();
+        for(final com.merakianalytics.orianna.types.dto.spectator.GameCustomizationObject object : item.getGameCustomizationObjects()) {
+            objects.add(transform(object, context));
+        }
+        player.setCustomizationObjects(objects);
+        player.setSummonerId(item.getSummonerId());
+        player.setSummonerName(item.getSummonerName());
+        player.setSummonerSpellDId((int)item.getSpell1Id());
+        player.setSummonerSpellFId((int)item.getSpell2Id());
+        player.setTeam((int)item.getTeamId());
+        return player;
+    }
+
+    @Transform(from = CurrentMatch.class, to = CurrentGameInfo.class)
+    public CurrentGameInfo transform(final CurrentMatch item, final PipelineContext context) {
         final CurrentGameInfo game = new CurrentGameInfo();
         final List<BannedChampion> bans = new ArrayList<>(item.getBlueTeamBans().size() + item.getRedTeamBans().size());
         final boolean isTenBanMode = item.getBlueTeamBans().size() + item.getRedTeamBans().size() == 10;
@@ -122,10 +177,10 @@ public class SpectatorTransformer extends AbstractDataTransformer {
         return game;
     }
 
-    @Transform(from = CurrentGameInfo.class, to = CurrentGame.class)
-    public CurrentGame transform(final CurrentGameInfo item, final PipelineContext context) {
+    @Transform(from = FeaturedGameInfo.class, to = FeaturedMatch.class)
+    public FeaturedMatch transform(final FeaturedGameInfo item, final PipelineContext context) {
         final Object previous = context.put("platform", item.getPlatformId());
-        final CurrentGame game = new CurrentGame();
+        final FeaturedMatch game = new FeaturedMatch();
         final List<Integer> blueBans = new ArrayList<>(item.getBannedChampions().size() / 2);
         final List<Integer> redBans = new ArrayList<>(item.getBannedChampions().size() / 2);
         for(final BannedChampion ban : item.getBannedChampions()) {
@@ -144,41 +199,19 @@ public class SpectatorTransformer extends AbstractDataTransformer {
         game.setMode(item.getGameMode());
         game.setObserverEncryptionKey(item.getObservers().getEncryptionKey());
         game.setPlatform(item.getPlatformId());
-        final List<Player> players = new ArrayList<>(item.getParticipants().size());
-        for(final CurrentGameParticipant player : item.getParticipants()) {
+        final List<Participant> players = new ArrayList<>(item.getParticipants().size());
+        for(final com.merakianalytics.orianna.types.dto.spectator.Participant player : item.getParticipants()) {
             players.add(transform(player, context));
         }
         game.setPlayers(players);
         game.setQueue((int)item.getGameQueueConfigId());
-        game.setSummonerId(item.getSummonerId());
         game.setType(item.getGameType());
         context.put("platform", previous);
         return game;
     }
 
-    @Transform(from = CurrentGameParticipant.class, to = Player.class)
-    public Player transform(final CurrentGameParticipant item, final PipelineContext context) {
-        final Player player = new Player();
-        player.setPlatform((String)context.get("platform"));
-        player.setBot(item.isBot());
-        player.setChampionId((int)item.getChampionId());
-        player.setProfileIconId((int)item.getProfileIconId());
-        player.setRunes(transform(item.getPerks(), context));
-        final List<GameCustomizationObject> objects = new ArrayList<>();
-        for(final com.merakianalytics.orianna.types.dto.spectator.GameCustomizationObject object : item.getGameCustomizationObjects()) {
-            objects.add(transform(object, context));
-        }
-        player.setCustomizationObjects(objects);
-        player.setSummonerId(item.getSummonerId());
-        player.setSummonerName(item.getSummonerName());
-        player.setSummonerSpellDId((int)item.getSpell1Id());
-        player.setSummonerSpellFId((int)item.getSpell2Id());
-        player.setTeam((int)item.getTeamId());
-        return player;
-    }
-
-    @Transform(from = FeaturedGame.class, to = FeaturedGameInfo.class)
-    public FeaturedGameInfo transform(final FeaturedGame item, final PipelineContext context) {
+    @Transform(from = FeaturedMatch.class, to = FeaturedGameInfo.class)
+    public FeaturedGameInfo transform(final FeaturedMatch item, final PipelineContext context) {
         final FeaturedGameInfo game = new FeaturedGameInfo();
         final List<BannedChampion> bans = new ArrayList<>(item.getBlueTeamBans().size() + item.getRedTeamBans().size());
         final boolean isTenBanMode = item.getBlueTeamBans().size() + item.getRedTeamBans().size() == 10;
@@ -239,44 +272,11 @@ public class SpectatorTransformer extends AbstractDataTransformer {
         return game;
     }
 
-    @Transform(from = FeaturedGameInfo.class, to = FeaturedGame.class)
-    public FeaturedGame transform(final FeaturedGameInfo item, final PipelineContext context) {
-        final Object previous = context.put("platform", item.getPlatformId());
-        final FeaturedGame game = new FeaturedGame();
-        final List<Integer> blueBans = new ArrayList<>(item.getBannedChampions().size() / 2);
-        final List<Integer> redBans = new ArrayList<>(item.getBannedChampions().size() / 2);
-        for(final BannedChampion ban : item.getBannedChampions()) {
-            if(Side.BLUE.getId() == ban.getTeamId()) {
-                blueBans.add((int)ban.getChampionId());
-            } else {
-                redBans.add((int)ban.getChampionId());
-            }
-        }
-        game.setBlueTeamBans(blueBans);
-        game.setRedTeamBans(redBans);
-        game.setCreationTime(new DateTime(item.getGameStartTime()));
-        game.setDuration(Duration.millis(item.getGameLength()));
-        game.setId(item.getGameId());
-        game.setMap((int)item.getMapId());
-        game.setMode(item.getGameMode());
-        game.setObserverEncryptionKey(item.getObservers().getEncryptionKey());
-        game.setPlatform(item.getPlatformId());
-        final List<Participant> players = new ArrayList<>(item.getParticipants().size());
-        for(final com.merakianalytics.orianna.types.dto.spectator.Participant player : item.getParticipants()) {
-            players.add(transform(player, context));
-        }
-        game.setPlayers(players);
-        game.setQueue((int)item.getGameQueueConfigId());
-        game.setType(item.getGameType());
-        context.put("platform", previous);
-        return game;
-    }
-
-    @Transform(from = FeaturedGames.class, to = com.merakianalytics.orianna.types.dto.spectator.FeaturedGames.class)
-    public com.merakianalytics.orianna.types.dto.spectator.FeaturedGames transform(final FeaturedGames item, final PipelineContext context) {
+    @Transform(from = FeaturedMatches.class, to = com.merakianalytics.orianna.types.dto.spectator.FeaturedGames.class)
+    public com.merakianalytics.orianna.types.dto.spectator.FeaturedGames transform(final FeaturedMatches item, final PipelineContext context) {
         final com.merakianalytics.orianna.types.dto.spectator.FeaturedGames games = new com.merakianalytics.orianna.types.dto.spectator.FeaturedGames();
         final List<FeaturedGameInfo> list = new ArrayList<>(item.size());
-        for(final FeaturedGame game : item) {
+        for(final FeaturedMatch game : item) {
             list.add(transform(game, context));
         }
         games.setGameList(list);

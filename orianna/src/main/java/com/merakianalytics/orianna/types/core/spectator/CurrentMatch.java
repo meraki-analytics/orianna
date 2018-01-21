@@ -25,7 +25,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Champions;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
-public class CurrentGame extends GhostObject<com.merakianalytics.orianna.types.data.spectator.CurrentGame> {
+public class CurrentMatch extends GhostObject<com.merakianalytics.orianna.types.data.spectator.CurrentMatch> {
     public static class Builder {
         private final Summoner summoner;
 
@@ -33,18 +33,18 @@ public class CurrentGame extends GhostObject<com.merakianalytics.orianna.types.d
             this.summoner = summoner;
         }
 
-        public CurrentGame get() {
+        public CurrentMatch get() {
             final ImmutableMap.Builder<String, Object> builder =
                 ImmutableMap.<String, Object> builder().put("platform", summoner.getPlatform()).put("summonerId", summoner.getId());
 
-            return Orianna.getSettings().getPipeline().get(CurrentGame.class, builder.build());
+            return Orianna.getSettings().getPipeline().get(CurrentMatch.class, builder.build());
         }
     }
 
     public static final String CURRENT_GAME_LOAD_GROUP = "current-game";
     private static final long serialVersionUID = 2151849959267002960L;
 
-    public static CurrentGame.Builder forSummoner(final Summoner summoner) {
+    public static CurrentMatch.Builder forSummoner(final Summoner summoner) {
         return new Builder(summoner);
     }
 
@@ -95,7 +95,7 @@ public class CurrentGame extends GhostObject<com.merakianalytics.orianna.types.d
         }
     });
 
-    public CurrentGame(final com.merakianalytics.orianna.types.data.spectator.CurrentGame coreData) {
+    public CurrentMatch(final com.merakianalytics.orianna.types.data.spectator.CurrentMatch coreData) {
         super(coreData, 1);
     }
 
@@ -214,7 +214,7 @@ public class CurrentGame extends GhostObject<com.merakianalytics.orianna.types.d
                 if(coreData.getSummonerId() != 0L) {
                     builder.put("summonerId", coreData.getSummonerId());
                 }
-                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.spectator.CurrentGame.class, builder.build());
+                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.spectator.CurrentMatch.class, builder.build());
                 break;
             default:
                 break;

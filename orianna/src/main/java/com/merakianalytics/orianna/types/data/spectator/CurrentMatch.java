@@ -7,7 +7,7 @@ import org.joda.time.Duration;
 
 import com.merakianalytics.orianna.types.data.CoreData;
 
-public class CurrentGame extends CoreData {
+public class CurrentMatch extends CoreData {
     private static final long serialVersionUID = 6191530707622315971L;
     private List<Integer> blueTeamBans, redTeamBans;
     private DateTime creationTime;
@@ -28,7 +28,7 @@ public class CurrentGame extends CoreData {
         if(getClass() != obj.getClass()) {
             return false;
         }
-        final CurrentGame other = (CurrentGame)obj;
+        final CurrentMatch other = (CurrentMatch)obj;
         if(blueTeamBans == null) {
             if(other.blueTeamBans != null) {
                 return false;

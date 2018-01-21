@@ -17,13 +17,13 @@ import com.merakianalytics.orianna.types.core.GhostObject;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
 import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 
-public class FeaturedGames extends GhostObject.ListProxy<FeaturedGame, com.merakianalytics.orianna.types.data.spectator.FeaturedGame, com.merakianalytics.orianna.types.data.spectator.FeaturedGames> {
+public class FeaturedMatches extends GhostObject.ListProxy<FeaturedMatch, com.merakianalytics.orianna.types.data.spectator.FeaturedMatch, com.merakianalytics.orianna.types.data.spectator.FeaturedMatches> {
     public static class Builder {
         private Platform platform;
 
         private Builder() {}
 
-        public FeaturedGames get() {
+        public FeaturedMatches get() {
             if(platform == null) {
                 platform = Orianna.getSettings().getDefaultPlatform();
                 if(platform == null) {
@@ -34,7 +34,7 @@ public class FeaturedGames extends GhostObject.ListProxy<FeaturedGame, com.merak
 
             final ImmutableMap.Builder<String, Object> builder = ImmutableMap.<String, Object> builder().put("platform", platform);
 
-            return Orianna.getSettings().getPipeline().get(FeaturedGames.class, builder.build());
+            return Orianna.getSettings().getPipeline().get(FeaturedMatches.class, builder.build());
         }
 
         public Builder withPlatform(final Platform platform) {
@@ -56,10 +56,10 @@ public class FeaturedGames extends GhostObject.ListProxy<FeaturedGame, com.merak
             this.platforms = platforms;
         }
 
-        public SearchableList<FeaturedGames> get() {
+        public SearchableList<FeaturedMatches> get() {
             final ImmutableMap.Builder<String, Object> builder = ImmutableMap.<String, Object> builder().put("platforms", platforms);
 
-            final CloseableIterator<FeaturedGames> result = Orianna.getSettings().getPipeline().getMany(FeaturedGames.class, builder.build(), streaming);
+            final CloseableIterator<FeaturedMatches> result = Orianna.getSettings().getPipeline().getMany(FeaturedMatches.class, builder.build(), streaming);
             return streaming ? SearchableLists.from(CloseableIterators.toLazyList(result)) : SearchableLists.from(CloseableIterators.toList(result));
         }
 
@@ -103,11 +103,11 @@ public class FeaturedGames extends GhostObject.ListProxy<FeaturedGame, com.merak
         return new ManyBuilder(platforms);
     }
 
-    public static FeaturedGames get() {
+    public static FeaturedMatches get() {
         return new Builder().get();
     }
 
-    public FeaturedGames(final com.merakianalytics.orianna.types.data.spectator.FeaturedGames coreData) {
+    public FeaturedMatches(final com.merakianalytics.orianna.types.data.spectator.FeaturedMatches coreData) {
         super(coreData, 1);
     }
 
@@ -140,11 +140,11 @@ public class FeaturedGames extends GhostObject.ListProxy<FeaturedGame, com.merak
                 if(coreData.getPlatform() != null) {
                     builder.put("platform", Platform.withTag(coreData.getPlatform()));
                 }
-                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.spectator.FeaturedGames.class, builder.build());
-                loadListProxyData(new Function<com.merakianalytics.orianna.types.data.spectator.FeaturedGame, FeaturedGame>() {
+                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.spectator.FeaturedMatches.class, builder.build());
+                loadListProxyData(new Function<com.merakianalytics.orianna.types.data.spectator.FeaturedMatch, FeaturedMatch>() {
                     @Override
-                    public FeaturedGame apply(final com.merakianalytics.orianna.types.data.spectator.FeaturedGame data) {
-                        return new FeaturedGame(data);
+                    public FeaturedMatch apply(final com.merakianalytics.orianna.types.data.spectator.FeaturedMatch data) {
+                        return new FeaturedMatch(data);
                     }
                 });
                 break;

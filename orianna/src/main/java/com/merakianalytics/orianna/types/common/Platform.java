@@ -2,7 +2,7 @@ package com.merakianalytics.orianna.types.common;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
-import com.merakianalytics.orianna.types.core.spectator.FeaturedGames;
+import com.merakianalytics.orianna.types.core.spectator.FeaturedMatches;
 import com.merakianalytics.orianna.types.core.staticdata.Languages;
 import com.merakianalytics.orianna.types.core.staticdata.Realm;
 import com.merakianalytics.orianna.types.core.staticdata.Versions;
@@ -47,8 +47,8 @@ public enum Platform {
         return defaultLocale;
     }
 
-    public FeaturedGames getFeaturedGames() {
-        return FeaturedGames.forPlatform(this).get();
+    public FeaturedMatches getFeaturedMatches() {
+        return FeaturedMatches.forPlatform(this).get();
     }
 
     public Languages getLanguages() {

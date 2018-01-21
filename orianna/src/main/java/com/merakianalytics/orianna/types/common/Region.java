@@ -1,6 +1,6 @@
 package com.merakianalytics.orianna.types.common;
 
-import com.merakianalytics.orianna.types.core.spectator.FeaturedGames;
+import com.merakianalytics.orianna.types.core.spectator.FeaturedMatches;
 import com.merakianalytics.orianna.types.core.staticdata.Languages;
 import com.merakianalytics.orianna.types.core.staticdata.Realm;
 import com.merakianalytics.orianna.types.core.staticdata.Versions;
@@ -31,8 +31,8 @@ public enum Region {
         return defaultLocale;
     }
 
-    public FeaturedGames getFeaturedGames() {
-        return FeaturedGames.forRegion(this).get();
+    public FeaturedMatches getFeaturedMatches() {
+        return FeaturedMatches.forRegion(this).get();
     }
 
     public Languages getLanguages() {

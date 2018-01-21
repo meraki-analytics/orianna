@@ -15,7 +15,7 @@ import com.merakianalytics.orianna.types.core.searchable.SearchableList;
 import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
-public abstract class CurrentGames {
+public abstract class CurrentMatches {
     public static class Builder {
         private boolean streaming = false;
         private final Iterable<Summoner> summoners;
@@ -24,13 +24,13 @@ public abstract class CurrentGames {
             this.summoners = summoners;
         }
 
-        public SearchableList<CurrentGame> get() {
+        public SearchableList<CurrentMatch> get() {
             final List<Long> ids = new ArrayList<>();
             final Iterator<Summoner> iterator = summoners.iterator();
             Summoner summoner = iterator.next();
 
             if(summoner == null) {
-                return SearchableLists.from(Collections.<CurrentGame> emptyList());
+                return SearchableLists.from(Collections.<CurrentMatch> emptyList());
             }
 
             final Platform platform = summoner.getPlatform();
@@ -47,8 +47,8 @@ public abstract class CurrentGames {
             final ImmutableMap.Builder<String, Object> builder =
                 ImmutableMap.<String, Object> builder().put("platform", platform).put("summonerIds", ids);
 
-            final CloseableIterator<CurrentGame> result =
-                Orianna.getSettings().getPipeline().getMany(CurrentGame.class, builder.build(), streaming);
+            final CloseableIterator<CurrentMatch> result =
+                Orianna.getSettings().getPipeline().getMany(CurrentMatch.class, builder.build(), streaming);
             return streaming ? SearchableLists.from(CloseableIterators.toLazyList(result)) : SearchableLists.from(CloseableIterators.toList(result));
         }
 
