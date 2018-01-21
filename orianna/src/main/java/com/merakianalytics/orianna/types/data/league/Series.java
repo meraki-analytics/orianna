@@ -5,7 +5,7 @@ import com.merakianalytics.orianna.types.data.CoreData;
 public class Series extends CoreData {
     private static final long serialVersionUID = -808103453588557335L;
     private String progress;
-    private int wins, losses, target;
+    private int wins, losses, winsRequired;
 
     @Override
     public boolean equals(final Object obj) {
@@ -29,7 +29,7 @@ public class Series extends CoreData {
         } else if(!progress.equals(other.progress)) {
             return false;
         }
-        if(target != other.target) {
+        if(winsRequired != other.winsRequired) {
             return false;
         }
         if(wins != other.wins) {
@@ -53,17 +53,17 @@ public class Series extends CoreData {
     }
 
     /**
-     * @return the target
-     */
-    public int getTarget() {
-        return target;
-    }
-
-    /**
      * @return the wins
      */
     public int getWins() {
         return wins;
+    }
+
+    /**
+     * @return the winsRequired
+     */
+    public int getWinsRequired() {
+        return winsRequired;
     }
 
     @Override
@@ -72,7 +72,7 @@ public class Series extends CoreData {
         int result = 1;
         result = prime * result + losses;
         result = prime * result + (progress == null ? 0 : progress.hashCode());
-        result = prime * result + target;
+        result = prime * result + winsRequired;
         result = prime * result + wins;
         return result;
     }
@@ -94,18 +94,18 @@ public class Series extends CoreData {
     }
 
     /**
-     * @param target
-     *        the target to set
-     */
-    public void setTarget(final int target) {
-        this.target = target;
-    }
-
-    /**
      * @param wins
      *        the wins to set
      */
     public void setWins(final int wins) {
         this.wins = wins;
+    }
+
+    /**
+     * @param winsRequired
+     *        the winsRequired to set
+     */
+    public void setWinsRequired(final int winsRequired) {
+        this.winsRequired = winsRequired;
     }
 }

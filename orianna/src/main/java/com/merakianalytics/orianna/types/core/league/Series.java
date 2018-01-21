@@ -13,15 +13,19 @@ public class Series extends OriannaObject<com.merakianalytics.orianna.types.data
         return coreData.getLosses();
     }
 
+    public int getNotPlayed() {
+        return coreData.getWinsRequired() * 2 - 1 - coreData.getWins() - coreData.getLosses();
+    }
+
     public String getProgess() {
         return coreData.getProgress();
     }
 
-    public int getTarget() {
-        return coreData.getTarget();
-    }
-
     public int getWins() {
         return coreData.getWins();
+    }
+
+    public int getWinsRequired() {
+        return coreData.getWinsRequired();
     }
 }

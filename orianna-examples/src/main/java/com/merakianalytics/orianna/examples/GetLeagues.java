@@ -22,8 +22,8 @@ public class GetLeagues {
             System.out.println("Promos progress: " + positions.get(0).getPromos().getProgess());
             System.out.println("Promos wins: " + positions.get(0).getPromos().getWins());
             System.out.println("Promos losses: " + positions.get(0).getPromos().getLosses());
-            // System.out.println("Games not yet played in promos: " + positions.get(0).getPromos().getNotPlayed());
-            // System.out.println("Number of wins required to win promos: " + positions.get(0).getPromos().getWinsRequired());
+            System.out.println("Games not yet played in promos: " + positions.get(0).getPromos().getNotPlayed());
+            System.out.println("Number of wins required to win promos: " + positions.get(0).getPromos().getWinsRequired());
         } else {
             System.out.println("The summoner is not in their promos.");
         }

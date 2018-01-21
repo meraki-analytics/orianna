@@ -152,7 +152,7 @@ public class LeagueTransformer extends AbstractDataTransformer {
         final Series series = new Series();
         series.setLosses(item.getLosses());
         series.setProgress(item.getProgress());
-        series.setTarget(item.getTarget());
+        series.setWinsRequired(item.getTarget());
         series.setWins(item.getWins());
         return series;
     }
@@ -162,7 +162,7 @@ public class LeagueTransformer extends AbstractDataTransformer {
         final MiniSeries series = new MiniSeries();
         series.setLosses(item.getLosses());
         series.setProgress(item.getProgress());
-        series.setTarget(item.getTarget());
+        series.setTarget(item.getWinsRequired());
         series.setWins(item.getWins());
         return series;
     }
