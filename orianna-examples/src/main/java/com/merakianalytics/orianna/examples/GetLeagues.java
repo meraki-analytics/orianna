@@ -12,23 +12,24 @@ import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
 public class GetLeagues {
     public static void main(final String[] args) {
-        final Summoner summoner = Summoner.named("FatalElement").withRegion(Region.NORTH_AMERICA).get();
+        final Summoner summoner = Summoner.named("Spartan324").withRegion(Region.NORTH_AMERICA).get();
         System.out.println("Name: " + summoner.getName());
         System.out.println("ID: " + summoner.getId());
 
-        final LeaguePositions positions = summoner.getLeaguePositions();
-        if(positions.get(0).getPromos() != null) {  // TODO change .get(0) to .getFives() or something like that (and in the below lines)
+        final LeaguePosition rankedFivesPositions = summoner.getLeaguePosition(Queue.RANKED_SOLO_5x5);
+        if(rankedFivesPositions.getPromos() != null) {
             // If the summoner is in their promos, print some info
-            System.out.println("Promos progress: " + positions.get(0).getPromos().getProgess());
-            System.out.println("Promos wins: " + positions.get(0).getPromos().getWins());
-            System.out.println("Promos losses: " + positions.get(0).getPromos().getLosses());
-            System.out.println("Games not yet played in promos: " + positions.get(0).getPromos().getNotPlayed());
-            System.out.println("Number of wins required to win promos: " + positions.get(0).getPromos().getWinsRequired());
+            System.out.println("Promos progress: " + rankedFivesPositions.getPromos().getProgess());
+            System.out.println("Promos wins: " + rankedFivesPositions.getPromos().getWins());
+            System.out.println("Promos losses: " + rankedFivesPositions.getPromos().getLosses());
+            System.out.println("Games not yet played in promos: " + rankedFivesPositions.getPromos().getNotPlayed());
+            System.out.println("Number of wins required to win promos: " + rankedFivesPositions.getPromos().getWinsRequired());
         } else {
             System.out.println("The summoner is not in their promos.");
         }
 
         System.out.println("Name of leagues this summoner is in:");
+        final LeaguePositions positions = summoner.getLeaguePositions();
         for(final LeaguePosition leaguePosition : positions) {
             System.out.println(leaguePosition.getName());
         }
@@ -41,10 +42,10 @@ public class GetLeagues {
         }
         System.out.println("\n");
 
-        System.out.println("Listing all summoners in " + leagues.get(0).getName());  // TODO ibid
-        for(final LeagueEntry entry : leagues.get(0)) {  // TOOD ibid
-            System.out.println(entry.getSummoner().getName() + " " + entry.getLeaguePoints() + " " + leagues.get(0).getTier() + " " + entry.getDivision());  // TODO
-                                                                                                                                                             // ibid
+        League rankedFivesLeague = summoner.getLeague(Queue.RANKED_SOLO_5x5);
+        System.out.println("Listing all summoners in " + rankedFivesLeague.getName());
+        for(final LeagueEntry entry : rankedFivesLeague) {
+            System.out.println(entry.getSummoner().getName() + " " + entry.getLeaguePoints() + " " + rankedFivesLeague.getTier() + " " + entry.getDivision());
         }
         System.out.println("\n");
         System.out.println("Challenger League name:");
