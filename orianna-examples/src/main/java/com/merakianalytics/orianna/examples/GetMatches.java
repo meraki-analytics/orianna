@@ -47,12 +47,12 @@ public class GetMatches {
         System.out.println("Length of match history: " + matchHistory.size());
 
         // Print the top ten aggregated champion results
-        List<Entry<String, Integer>> entries = new ArrayList<>(playedChampions.entrySet());
-        entries.sort((Entry<String, Integer> e0, Entry<String, Integer> e1) -> Integer.compare(e1.getValue(), e0.getValue()));
-        
+        final List<Entry<String, Integer>> entries = new ArrayList<>(playedChampions.entrySet());
+        entries.sort((final Entry<String, Integer> e0, final Entry<String, Integer> e1) -> Integer.compare(e1.getValue(), e0.getValue()));
+
         for(int i = 0; i < 10 && i < entries.size(); i++) {
-            String championName = entries.get(i).getKey();
-            int count = entries.get(i).getValue();
+            final String championName = entries.get(i).getKey();
+            final int count = entries.get(i).getValue();
             System.out.println(championName + " " + count);
         }
 

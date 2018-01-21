@@ -15,12 +15,12 @@ public class GetCurrentMatches {
         }
 
         final FeaturedMatch game = featured.get(0);
-        final String aSummonerName = game.getPlayers().get(0).getSummoner().getName();
+        final String aSummonerName = game.getParticipants().get(0).getSummoner().getName();
         final Summoner summoner = Summoner.named(aSummonerName).withRegion(game.getRegion()).get();
         final CurrentMatch currentGame = summoner.getCurrentMatch();
         System.out.println(currentGame.getMap());
 
-        for(final Player player : currentGame.getPlayers()) {
+        for(final Player player : currentGame.getParticipants()) {
             System.out.println(player.getSummoner().getName());
         }
     }

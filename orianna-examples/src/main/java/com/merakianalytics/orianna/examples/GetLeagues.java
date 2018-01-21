@@ -42,7 +42,7 @@ public class GetLeagues {
         }
         System.out.println("\n");
 
-        League rankedFivesLeague = summoner.getLeague(Queue.RANKED_SOLO_5x5);
+        final League rankedFivesLeague = summoner.getLeague(Queue.RANKED_SOLO_5x5);
         System.out.println("Listing all summoners in " + rankedFivesLeague.getName());
         for(final LeagueEntry entry : rankedFivesLeague) {
             System.out.println(entry.getSummoner().getName() + " " + entry.getLeaguePoints() + " " + rankedFivesLeague.getTier() + " " + entry.getDivision());

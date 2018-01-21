@@ -9,7 +9,7 @@ import com.merakianalytics.orianna.types.data.CoreData;
 
 public class FeaturedMatch extends CoreData {
     private static final long serialVersionUID = -8433513503266730183L;
-    private List<Integer> blueTeamBans, redTeamBans;
+    private Team blueTeam, redTeam;
     private DateTime creationTime;
     private Duration duration;
     private long id;
@@ -29,11 +29,11 @@ public class FeaturedMatch extends CoreData {
             return false;
         }
         final FeaturedMatch other = (FeaturedMatch)obj;
-        if(blueTeamBans == null) {
-            if(other.blueTeamBans != null) {
+        if(blueTeam == null) {
+            if(other.blueTeam != null) {
                 return false;
             }
-        } else if(!blueTeamBans.equals(other.blueTeamBans)) {
+        } else if(!blueTeam.equals(other.blueTeam)) {
             return false;
         }
         if(creationTime == null) {
@@ -87,11 +87,11 @@ public class FeaturedMatch extends CoreData {
         if(queue != other.queue) {
             return false;
         }
-        if(redTeamBans == null) {
-            if(other.redTeamBans != null) {
+        if(redTeam == null) {
+            if(other.redTeam != null) {
                 return false;
             }
-        } else if(!redTeamBans.equals(other.redTeamBans)) {
+        } else if(!redTeam.equals(other.redTeam)) {
             return false;
         }
         if(type == null) {
@@ -105,10 +105,10 @@ public class FeaturedMatch extends CoreData {
     }
 
     /**
-     * @return the blueTeamBans
+     * @return the blueTeam
      */
-    public List<Integer> getBlueTeamBans() {
-        return blueTeamBans;
+    public Team getBlueTeam() {
+        return blueTeam;
     }
 
     /**
@@ -175,10 +175,10 @@ public class FeaturedMatch extends CoreData {
     }
 
     /**
-     * @return the redTeamBans
+     * @return the redTeam
      */
-    public List<Integer> getRedTeamBans() {
-        return redTeamBans;
+    public Team getRedTeam() {
+        return redTeam;
     }
 
     /**
@@ -192,7 +192,7 @@ public class FeaturedMatch extends CoreData {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (blueTeamBans == null ? 0 : blueTeamBans.hashCode());
+        result = prime * result + (blueTeam == null ? 0 : blueTeam.hashCode());
         result = prime * result + (creationTime == null ? 0 : creationTime.hashCode());
         result = prime * result + (duration == null ? 0 : duration.hashCode());
         result = prime * result + (int)(id ^ id >>> 32);
@@ -202,17 +202,17 @@ public class FeaturedMatch extends CoreData {
         result = prime * result + (platform == null ? 0 : platform.hashCode());
         result = prime * result + (players == null ? 0 : players.hashCode());
         result = prime * result + queue;
-        result = prime * result + (redTeamBans == null ? 0 : redTeamBans.hashCode());
+        result = prime * result + (redTeam == null ? 0 : redTeam.hashCode());
         result = prime * result + (type == null ? 0 : type.hashCode());
         return result;
     }
 
     /**
-     * @param blueTeamBans
-     *        the blueTeamBans to set
+     * @param blueTeam
+     *        the blueTeam to set
      */
-    public void setBlueTeamBans(final List<Integer> blueTeamBans) {
-        this.blueTeamBans = blueTeamBans;
+    public void setBlueTeam(final Team blueTeam) {
+        this.blueTeam = blueTeam;
     }
 
     /**
@@ -288,11 +288,11 @@ public class FeaturedMatch extends CoreData {
     }
 
     /**
-     * @param redTeamBans
-     *        the redTeamBans to set
+     * @param redTeam
+     *        the redTeam to set
      */
-    public void setRedTeamBans(final List<Integer> redTeamBans) {
-        this.redTeamBans = redTeamBans;
+    public void setRedTeam(final Team redTeam) {
+        this.redTeam = redTeam;
     }
 
     /**

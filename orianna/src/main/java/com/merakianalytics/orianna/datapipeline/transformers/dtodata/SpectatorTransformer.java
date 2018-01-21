@@ -17,6 +17,7 @@ import com.merakianalytics.orianna.types.data.spectator.GameCustomizationObject;
 import com.merakianalytics.orianna.types.data.spectator.Participant;
 import com.merakianalytics.orianna.types.data.spectator.Player;
 import com.merakianalytics.orianna.types.data.spectator.Runes;
+import com.merakianalytics.orianna.types.data.spectator.Team;
 import com.merakianalytics.orianna.types.dto.spectator.BannedChampion;
 import com.merakianalytics.orianna.types.dto.spectator.CurrentGameInfo;
 import com.merakianalytics.orianna.types.dto.spectator.CurrentGameParticipant;
@@ -72,8 +73,16 @@ public class SpectatorTransformer extends AbstractDataTransformer {
                 redBans.add((int)ban.getChampionId());
             }
         }
-        game.setBlueTeamBans(blueBans);
-        game.setRedTeamBans(redBans);
+        final Team blueTeam = new Team();
+        blueTeam.setSide(Side.BLUE.getId());
+        blueTeam.setBans(blueBans);
+        blueTeam.setPlatform(item.getPlatformId());
+        game.setBlueTeam(blueTeam);
+        final Team redTeam = new Team();
+        redTeam.setSide(Side.RED.getId());
+        redTeam.setBans(redBans);
+        redTeam.setPlatform(item.getPlatformId());
+        game.setRedTeam(redTeam);
         game.setCreationTime(new DateTime(item.getGameStartTime()));
         game.setDuration(Duration.millis(item.getGameLength()));
         game.setId(item.getGameId());
@@ -117,18 +126,18 @@ public class SpectatorTransformer extends AbstractDataTransformer {
     @Transform(from = CurrentMatch.class, to = CurrentGameInfo.class)
     public CurrentGameInfo transform(final CurrentMatch item, final PipelineContext context) {
         final CurrentGameInfo game = new CurrentGameInfo();
-        final List<BannedChampion> bans = new ArrayList<>(item.getBlueTeamBans().size() + item.getRedTeamBans().size());
-        final boolean isTenBanMode = item.getBlueTeamBans().size() + item.getRedTeamBans().size() == 10;
+        final List<BannedChampion> bans = new ArrayList<>(item.getBlueTeam().getBans().size() + item.getRedTeam().getBans().size());
+        final boolean isTenBanMode = item.getBlueTeam().getBans().size() + item.getRedTeam().getBans().size() == 10;
         if(isTenBanMode) {
             int turn = 1;
-            for(final Integer championId : item.getBlueTeamBans()) {
+            for(final Integer championId : item.getBlueTeam().getBans()) {
                 final BannedChampion ban = new BannedChampion();
                 ban.setChampionId(championId);
                 ban.setPickTurn(turn++);
                 ban.setTeamId(Side.BLUE.getId());
                 bans.add(ban);
             }
-            for(final Integer championId : item.getRedTeamBans()) {
+            for(final Integer championId : item.getRedTeam().getBans()) {
                 final BannedChampion ban = new BannedChampion();
                 ban.setChampionId(championId);
                 ban.setPickTurn(turn++);
@@ -137,7 +146,7 @@ public class SpectatorTransformer extends AbstractDataTransformer {
             }
         } else {
             int turn = 1;
-            for(final Integer championId : item.getBlueTeamBans()) {
+            for(final Integer championId : item.getBlueTeam().getBans()) {
                 final BannedChampion ban = new BannedChampion();
                 ban.setChampionId(championId);
                 ban.setPickTurn(turn);
@@ -147,7 +156,7 @@ public class SpectatorTransformer extends AbstractDataTransformer {
                 bans.add(null);
             }
             turn = 2;
-            for(final Integer championId : item.getRedTeamBans()) {
+            for(final Integer championId : item.getRedTeam().getBans()) {
                 final BannedChampion ban = new BannedChampion();
                 ban.setChampionId(championId);
                 ban.setPickTurn(turn);
@@ -190,8 +199,16 @@ public class SpectatorTransformer extends AbstractDataTransformer {
                 redBans.add((int)ban.getChampionId());
             }
         }
-        game.setBlueTeamBans(blueBans);
-        game.setRedTeamBans(redBans);
+        final Team blueTeam = new Team();
+        blueTeam.setSide(Side.BLUE.getId());
+        blueTeam.setBans(blueBans);
+        blueTeam.setPlatform(item.getPlatformId());
+        game.setBlueTeam(blueTeam);
+        final Team redTeam = new Team();
+        redTeam.setSide(Side.RED.getId());
+        redTeam.setBans(redBans);
+        redTeam.setPlatform(item.getPlatformId());
+        game.setRedTeam(redTeam);
         game.setCreationTime(new DateTime(item.getGameStartTime()));
         game.setDuration(Duration.millis(item.getGameLength()));
         game.setId(item.getGameId());
@@ -213,18 +230,18 @@ public class SpectatorTransformer extends AbstractDataTransformer {
     @Transform(from = FeaturedMatch.class, to = FeaturedGameInfo.class)
     public FeaturedGameInfo transform(final FeaturedMatch item, final PipelineContext context) {
         final FeaturedGameInfo game = new FeaturedGameInfo();
-        final List<BannedChampion> bans = new ArrayList<>(item.getBlueTeamBans().size() + item.getRedTeamBans().size());
-        final boolean isTenBanMode = item.getBlueTeamBans().size() + item.getRedTeamBans().size() == 10;
+        final List<BannedChampion> bans = new ArrayList<>(item.getBlueTeam().getBans().size() + item.getRedTeam().getBans().size());
+        final boolean isTenBanMode = item.getBlueTeam().getBans().size() + item.getRedTeam().getBans().size() == 10;
         if(isTenBanMode) {
             int turn = 1;
-            for(final Integer championId : item.getBlueTeamBans()) {
+            for(final Integer championId : item.getBlueTeam().getBans()) {
                 final BannedChampion ban = new BannedChampion();
                 ban.setChampionId(championId);
                 ban.setPickTurn(turn++);
                 ban.setTeamId(Side.BLUE.getId());
                 bans.add(ban);
             }
-            for(final Integer championId : item.getRedTeamBans()) {
+            for(final Integer championId : item.getRedTeam().getBans()) {
                 final BannedChampion ban = new BannedChampion();
                 ban.setChampionId(championId);
                 ban.setPickTurn(turn++);
@@ -233,7 +250,7 @@ public class SpectatorTransformer extends AbstractDataTransformer {
             }
         } else {
             int turn = 1;
-            for(final Integer championId : item.getBlueTeamBans()) {
+            for(final Integer championId : item.getBlueTeam().getBans()) {
                 final BannedChampion ban = new BannedChampion();
                 ban.setChampionId(championId);
                 ban.setPickTurn(turn);
@@ -243,7 +260,7 @@ public class SpectatorTransformer extends AbstractDataTransformer {
                 bans.add(null);
             }
             turn = 2;
-            for(final Integer championId : item.getRedTeamBans()) {
+            for(final Integer championId : item.getRedTeam().getBans()) {
                 final BannedChampion ban = new BannedChampion();
                 ban.setChampionId(championId);
                 ban.setPickTurn(turn);
