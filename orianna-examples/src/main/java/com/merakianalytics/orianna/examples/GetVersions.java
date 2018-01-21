@@ -5,9 +5,9 @@ import com.merakianalytics.orianna.types.core.staticdata.Versions;
 
 public class GetVersions {
     public static void main(final String[] args) {
-    		final Versions versions = Versions.withRegion(Region.NORTH_AMERICA).get();
-    		for(String version : versions) {
-    			System.out.println(version);
-    		}
+        final Versions versions = Versions.withRegion(Region.NORTH_AMERICA).get();
+        for(final String version : versions) {
+            System.out.println(version);
+        }
     }
 }

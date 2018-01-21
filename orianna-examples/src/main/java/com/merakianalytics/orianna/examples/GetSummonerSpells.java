@@ -6,9 +6,9 @@ import com.merakianalytics.orianna.types.core.staticdata.SummonerSpells;
 
 public class GetSummonerSpells {
     public static void main(final String[] args) {
-    		final SummonerSpells summonerSpells = SummonerSpells.withRegion(Region.NORTH_AMERICA).get();
-    		for(SummonerSpell summonerSpell : summonerSpells) {
-    			System.out.println(summonerSpell.getName() + " " + summonerSpell.getId());
-    		}
+        final SummonerSpells summonerSpells = SummonerSpells.withRegion(Region.NORTH_AMERICA).get();
+        for(final SummonerSpell summonerSpell : summonerSpells) {
+            System.out.println(summonerSpell.getName() + " " + summonerSpell.getId());
+        }
     }
 }

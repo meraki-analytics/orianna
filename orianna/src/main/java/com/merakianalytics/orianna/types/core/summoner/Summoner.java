@@ -1,5 +1,6 @@
 package com.merakianalytics.orianna.types.core.summoner;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,7 +18,10 @@ import com.merakianalytics.orianna.types.core.GhostObject;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
+import com.merakianalytics.orianna.types.core.league.League;
+import com.merakianalytics.orianna.types.core.league.LeaguePosition;
 import com.merakianalytics.orianna.types.core.league.LeaguePositions;
+import com.merakianalytics.orianna.types.core.league.Leagues;
 import com.merakianalytics.orianna.types.core.match.Match;
 import com.merakianalytics.orianna.types.core.match.MatchHistory;
 import com.merakianalytics.orianna.types.core.match.Participant;
@@ -162,6 +166,16 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
 
     public LeaguePositions getLeaguePositions() {
         return LeaguePositions.forSummoner(this).get();
+    }
+
+    public SearchableList<League> getLeagues() {
+        final LeaguePositions positions = LeaguePositions.forSummoner(this).get();
+        final List<String> ids = new ArrayList<>(positions.size());
+        for(final LeaguePosition position : positions) {
+            ids.add(position.getLeagueId());
+        }
+
+        return Leagues.withIds(ids).withPlatform(Platform.withTag(coreData.getPlatform())).get();
     }
 
     public int getLevel() {

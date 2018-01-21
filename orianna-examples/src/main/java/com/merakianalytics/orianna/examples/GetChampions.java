@@ -9,37 +9,37 @@ import com.merakianalytics.orianna.types.core.staticdata.SpellVariables;
 
 public class GetChampions {
     public static void main(final String[] args) {
-    		final Champions champions = Champions.withRegion(Region.NORTH_AMERICA).get();
-    		for(Champion champion : champions) {
-    			System.out.println(champion.getName() + " " + champion.getId());
-    		}
-    		
-    		final Champion annie = Champion.named("Annie").get();
-    		System.out.println(annie.getName());
-    		System.out.println(annie.getTitle());
-    		for(ChampionSpell spell : annie.getSpells()) {
-    			System.out.println(spell.getName() + " " + spell.getLevelUpKeywords());
-    		}
+        final Champions champions = Champions.withRegion(Region.NORTH_AMERICA).get();
+        for(final Champion champion : champions) {
+            System.out.println(champion.getName() + " " + champion.getId());
+        }
 
-    		System.out.println(annie.getDifficultyRating());
-    		System.out.println(annie.getPassive().getName());
+        final Champion annie = Champion.named("Annie").get();
+        System.out.println(annie.getName());
+        System.out.println(annie.getTitle());
+        for(final ChampionSpell spell : annie.getSpells()) {
+            System.out.println(spell.getName() + " " + spell.getLevelUpKeywords());
+        }
 
-    		for(Item item : annie.getRecommendedItems().get(0).get(0).keySet()) {
-    			System.out.println(item.getName());
-    		}
-    		System.out.println(annie.isFreeToPlay());
+        System.out.println(annie.getDifficultyRating());
+        System.out.println(annie.getPassive().getName());
 
-    		final Champion ziggs = Champion.named("Ziggs").get();
-    		System.out.println(ziggs.getName());
-    		System.out.println(ziggs.getRegion());
-    		for(Item item : annie.getRecommendedItems().get(0).get(0).keySet()) {
-    			System.out.println(item.getName());
-    		}
-    		System.out.println(annie.isFreeToPlay());
-    		for(ChampionSpell spell : ziggs.getSpells()) {
-    			for(SpellVariables var : spell.getVariables()) {
-    				System.out.println(spell.getName() + " " + var);
-    			}
-    		}
+        for(final Item item : annie.getRecommendedItems().get(0).get(0).keySet()) {
+            System.out.println(item.getName());
+        }
+        System.out.println(annie.isFreeToPlay());
+
+        final Champion ziggs = Champion.named("Ziggs").get();
+        System.out.println(ziggs.getName());
+        System.out.println(ziggs.getRegion());
+        for(final Item item : annie.getRecommendedItems().get(0).get(0).keySet()) {
+            System.out.println(item.getName());
+        }
+        System.out.println(annie.isFreeToPlay());
+        for(final ChampionSpell spell : ziggs.getSpells()) {
+            for(final SpellVariables var : spell.getVariables()) {
+                System.out.println(spell.getName() + " " + var);
+            }
+        }
     }
 }
