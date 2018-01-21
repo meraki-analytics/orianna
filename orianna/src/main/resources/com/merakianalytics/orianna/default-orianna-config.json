@@ -3,7 +3,6 @@
     "period": 6,
     "unit": "HOURS"
   },
-  "defaultPlatform": "NORTH_AMERICA",
   "pipeline": {
     "elements": [{
       "className": "com.merakianalytics.orianna.datapipeline.InMemoryCache",

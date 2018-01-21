@@ -33,7 +33,7 @@ public class RiotAPI extends CompositeDataSource {
         private static final Set<Class<? extends RiotAPIService>> DEFAULT_SERVICES = ImmutableSet.of(ChampionAPI.class, ChampionMasteryAPI.class,
             LeagueAPI.class, MatchAPI.class, SpectatorAPI.class, StaticDataAPI.class, StatusAPI.class, SummonerAPI.class, ThirdPartyCodeAPI.class);
 
-        private String APIKey = DEFAULT_API_KEY;
+        private String apiKey = DEFAULT_API_KEY;
         private FailedRequestStrategy http404Strategy = DEFAULT_404_STRATEGY;
         private FailedRequestStrategy http429Strategy = DEFAULT_429_STRATEGY;
         private FailedRequestStrategy http500Strategy = DEFAULT_500_STRATEGY;
@@ -58,11 +58,11 @@ public class RiotAPI extends CompositeDataSource {
                 return false;
             }
             final Configuration other = (Configuration)obj;
-            if(APIKey == null) {
-                if(other.APIKey != null) {
+            if(apiKey == null) {
+                if(other.apiKey != null) {
                     return false;
                 }
-            } else if(!APIKey.equals(other.APIKey)) {
+            } else if(!apiKey.equals(other.apiKey)) {
                 return false;
             }
             if(http404Strategy == null) {
@@ -131,10 +131,10 @@ public class RiotAPI extends CompositeDataSource {
         }
 
         /**
-         * @return the APIKey
+         * @return the apiKey
          */
-        public String getAPIKey() {
-            return APIKey;
+        public String getApiKey() {
+            return apiKey;
         }
 
         /**
@@ -211,7 +211,7 @@ public class RiotAPI extends CompositeDataSource {
         public int hashCode() {
             final int prime = 31;
             int result = 1;
-            result = prime * result + (APIKey == null ? 0 : APIKey.hashCode());
+            result = prime * result + (apiKey == null ? 0 : apiKey.hashCode());
             result = prime * result + (http404Strategy == null ? 0 : http404Strategy.hashCode());
             result = prime * result + (http429Strategy == null ? 0 : http429Strategy.hashCode());
             result = prime * result + (http500Strategy == null ? 0 : http500Strategy.hashCode());
@@ -228,11 +228,11 @@ public class RiotAPI extends CompositeDataSource {
         }
 
         /**
-         * @param APIKey
-         *        the APIKey to set
+         * @param apiKey
+         *        the apiKey to set
          */
-        public void setAPIKey(final String APIKey) {
-            this.APIKey = APIKey;
+        public void setApiKey(final String apiKey) {
+            this.apiKey = apiKey;
         }
 
         /**

@@ -40,7 +40,7 @@ public enum Region {
     }
 
     public Platform getPlatform() {
-        return Platform.withTag(name());
+        return Platform.valueOf(name());
     }
 
     public Realm getRealm() {

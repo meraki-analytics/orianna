@@ -40,6 +40,7 @@ import com.merakianalytics.orianna.datapipeline.riotapi.exceptions.InternalServe
 import com.merakianalytics.orianna.datapipeline.riotapi.exceptions.NotFoundException;
 import com.merakianalytics.orianna.datapipeline.riotapi.exceptions.RateLimitExceededException;
 import com.merakianalytics.orianna.datapipeline.riotapi.exceptions.ServiceUnavailableException;
+import com.merakianalytics.orianna.datapipeline.riotapi.exceptions.UnauthorizedException;
 import com.merakianalytics.orianna.datapipeline.riotapi.exceptions.UnsupportedMediaTypeException;
 import com.merakianalytics.orianna.types.common.OriannaException;
 import com.merakianalytics.orianna.types.common.Platform;
@@ -469,7 +470,10 @@ public class RiotAPIService extends AbstractDataSource {
     private static final Logger LOGGER = LoggerFactory.getLogger(RiotAPIService.class);
 
     private static Map<String, String> getDefaultHeaders(final Configuration config) {
-        return ImmutableMap.of("X-Riot-Token", config.getAPIKey());
+        if(config.getApiKey() != null) {
+            return ImmutableMap.of("X-Riot-Token", config.getApiKey());
+        }
+        return ImmutableMap.of();
     }
 
     private static AbstractRateLimiter getSpecificLimiterForRate(final RateLimiter limiter, final String epochSeconds) {
@@ -695,6 +699,10 @@ public class RiotAPIService extends AbstractDataSource {
                 LOGGER.error("Got \"Bad Request\" from " + host + "/" + context.endpoint + "!");
                 throw new BadRequestException("A Riot API request to " + host + "/" + context.endpoint
                     + " returned \"Bad Request\". If the problem persists, report this to the orianna team.");
+            case 401:
+                LOGGER.error("Got \"Unauthorized\" from " + host + "/" + context.endpoint + "!");
+                throw new UnauthorizedException("A Riot API request to " + host + "/" + context.endpoint
+                    + " returned \"Unauthorized\". Check to make sure you're using the right API key, it hasn't expired, and you haven't been blacklisted. If the problem persists with a valid key, report this to the orianna team.");
             case 403:
                 LOGGER.error("Got \"Forbidden\" from " + host + "/" + context.endpoint + "!");
                 throw new ForbiddenException("A Riot API request to " + host + "/" + context.endpoint

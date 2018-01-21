@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableList;
@@ -88,7 +90,7 @@ public abstract class Orianna {
     public static class Configuration {
         private static final ExpirationPeriod DEFAULT_CURRENT_VERSION_EXPIRATION = ExpirationPeriod.create(6L, TimeUnit.HOURS);
         private static final String DEFAULT_DEFAULT_LOCALE = null;
-        private static final Platform DEFAULT_DEFAULT_PLATFORM = Platform.NORTH_AMERICA;
+        private static final Platform DEFAULT_DEFAULT_PLATFORM = null;
 
         private static PipelineConfiguration getDefaultPipeline() {
             final PipelineConfiguration config = new PipelineConfiguration();
@@ -183,33 +185,14 @@ public abstract class Orianna {
     }
 
     public static class Settings {
-        private final Supplier<String> currentVersion;
-        private final String defaultLocale;
-        private final Platform defaultPlatform;
-        private final DataPipeline pipeline;
+        private final Configuration configuration;
+        private Supplier<String> currentVersion;
+        private Supplier<DataPipeline> pipeline;
 
         private Settings(final Configuration config) {
-            pipeline = PipelineConfiguration.toPipeline(config.getPipeline());
-            defaultPlatform = config.getDefaultPlatform();
-            defaultLocale = config.getDefaultLocale();
-
-            final Supplier<String> supplier = new Supplier<String>() {
-                @Override
-                public String get() {
-                    return pipeline
-                        .get(com.merakianalytics.orianna.types.dto.staticdata.Realm.class, ImmutableMap.<String, Object> of("platform", defaultPlatform))
-                        .getV();
-                }
-            };
-
-            final ExpirationPeriod period = config.getCurrentVersionExpiration();
-            if(period.getPeriod() == 0) {
-                currentVersion = supplier;
-            } else if(period.getPeriod() < 0) {
-                currentVersion = Suppliers.memoize(supplier);
-            } else {
-                currentVersion = Suppliers.memoizeWithExpiration(supplier, period.getPeriod(), period.getUnit());
-            }
+            pipeline = newPipelineSupplier();
+            configuration = config;
+            currentVersion = newVersionSupplier();
         }
 
         /**
@@ -223,21 +206,77 @@ public abstract class Orianna {
          * @return the defaultLocale
          */
         public String getDefaultLocale() {
-            return defaultLocale;
+            return configuration.getDefaultLocale();
         }
 
         /**
          * @return the defaultPlatform
          */
         public Platform getDefaultPlatform() {
-            return defaultPlatform;
+            if(configuration.getDefaultPlatform() == null) {
+                throw new IllegalStateException(
+                    "Default platform/region was not set! Must set a default platform/region or specify platform/region with requests!");
+            }
+            return configuration.getDefaultPlatform();
         }
 
         /**
          * @return the pipeline
          */
         public DataPipeline getPipeline() {
-            return pipeline;
+            return pipeline.get();
+        }
+
+        private Supplier<DataPipeline> newPipelineSupplier() {
+            return Suppliers.memoize(new Supplier<DataPipeline>() {
+                @Override
+                public DataPipeline get() {
+                    return PipelineConfiguration.toPipeline(configuration.getPipeline());
+                }
+            });
+        }
+
+        private Supplier<String> newVersionSupplier() {
+            Supplier<String> supplier = new Supplier<String>() {
+                @Override
+                public String get() {
+                    return pipeline.get()
+                        .get(com.merakianalytics.orianna.types.dto.staticdata.Realm.class, ImmutableMap.<String, Object> of("platform", getDefaultPlatform()))
+                        .getV();
+                }
+            };
+
+            if(configuration.getCurrentVersionExpiration().getPeriod() < 0) {
+                supplier = Suppliers.memoize(supplier);
+            } else if(configuration.getCurrentVersionExpiration().getPeriod() > 0) {
+                supplier = Suppliers.memoizeWithExpiration(supplier, configuration.getCurrentVersionExpiration().getPeriod(),
+                    configuration.getCurrentVersionExpiration().getUnit());
+            }
+            return supplier;
+        }
+
+        private void setDefaultLocale(final String defaultLocale) {
+            configuration.setDefaultLocale(defaultLocale);
+        }
+
+        private void setDefaultPlatform(final Platform defaultPlatform) {
+            configuration.setDefaultPlatform(defaultPlatform);
+            currentVersion = newVersionSupplier();
+        }
+
+        private void setRiotAPIKey(final String key) {
+            boolean changed = false;
+            for(final PipelineElementConfiguration element : configuration.getPipeline().getElements()) {
+                if(RiotAPI.class.getCanonicalName().equals(element.getClassName())) {
+                    ((ObjectNode)element.getConfig()).set("apiKey", new TextNode(key));
+                    changed = true;
+                    break;
+                }
+            }
+
+            if(changed) {
+                pipeline = newPipelineSupplier();
+            }
         }
     }
 
@@ -733,6 +772,46 @@ public abstract class Orianna {
 
     public static Rune.Builder runeWithId(final int id) {
         return Rune.withId(id);
+    }
+
+    /**
+     * Sets the default locale. The default locale will be used for locale-aware information from the Static Data API like champion names and descriptions.
+     * The default locale starts null, and if it is set to null the default locale for the region/platform the data is from will be used.
+     *
+     * @param defaultLocale
+     *        the default locale
+     */
+    public static void setDefaultLocale(final String defaultLocale) {
+        settings.setDefaultLocale(defaultLocale);
+    }
+
+    /**
+     * Sets the default platform. If this is not set or is set to null, platforms must be provided for all API queries.
+     *
+     * @param defaultPlatform
+     */
+    public static void setDefaultPlatform(final Platform defaultPlatform) {
+        settings.setDefaultPlatform(defaultPlatform);
+    }
+
+    /**
+     * Sets the default region. If this is not set or is set to null, regions must be provided for all API queries.
+     *
+     * @param defaultRegion
+     */
+    public static void setDefaultRegion(final Region defaultRegion) {
+        settings.setDefaultPlatform(defaultRegion.getPlatform());
+    }
+
+    /**
+     * Sets the Riot API key if {@link com.merakianalytics.orianna.datapipeline.riotapi.RiotAPI} is being used in the pipeline.
+     * Also forces a full reset of the pipeline.
+     *
+     * @param key
+     *        the Riot API key to use
+     */
+    public static void setRiotAPIKey(final String key) {
+        settings.setRiotAPIKey(key);
     }
 
     public static ShardStatuses.Builder shardStatusesForPlatforms(final Iterable<Platform> platforms) {

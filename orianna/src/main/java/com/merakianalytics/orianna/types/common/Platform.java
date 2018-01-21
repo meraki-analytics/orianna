@@ -36,7 +36,6 @@ public enum Platform {
     }
 
     private final String defaultLocale;
-
     private final String tag;
 
     private Platform(final String tag, final String defaultLocale) {
