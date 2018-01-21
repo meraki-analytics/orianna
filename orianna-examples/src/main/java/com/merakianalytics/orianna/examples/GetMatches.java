@@ -1,9 +1,10 @@
 package com.merakianalytics.orianna.examples;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Map.Entry;
 
 import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.match.Match;
@@ -45,37 +46,16 @@ public class GetMatches {
         }
         System.out.println("Length of match history: " + matchHistory.size());
 
-        // Print the aggregated champion results
-        playedChampions.entrySet()
-            .stream()
-            .sorted(Map.Entry.comparingByValue(/* Collections.reverseOrder() */))
-            .collect(Collectors.toMap(
-                Map.Entry::getKey,
-                Map.Entry::getValue,
-                (e1, e2) -> e1,
-                LinkedHashMap::new));
-
-        // TODO Fix this so it only prints the top 10
-        System.out.println("Top 10 champions " + summoner.getName() + " played:");
-        for(final String championName : playedChampions.keySet()) {
-            final Integer count = playedChampions.get(championName);
+        // Print the top ten aggregated champion results
+        List<Entry<String, Integer>> entries = new ArrayList<>(playedChampions.entrySet());
+        entries.sort((Entry<String, Integer> e0, Entry<String, Integer> e1) -> Integer.compare(e1.getValue(), e0.getValue()));
+        
+        for(int i = 0; i < 10 && i < entries.size(); i++) {
+            String championName = entries.get(i).getKey();
+            int count = entries.get(i).getValue();
             System.out.println(championName + " " + count);
         }
-        /*
-         * for(String championName :
-         * playedChampions.entrySet()
-         * .stream()
-         * .sorted(Map.Entry.comparingByValue(Collections.reverseOrder()))
-         * .collect(Collectors.toMap(
-         * Map.Entry::getKey,
-         * Map.Entry::getValue,
-         * (e1, e2) -> e1,
-         * LinkedHashMap::new
-         * ))) {
-         * Integer count = playedChampions.get(championName);
-         * System.out.println(championName + " " + count);
-         * }
-         */
+
         System.out.println("\n");
 
         final Match match = matchHistory.get(0);

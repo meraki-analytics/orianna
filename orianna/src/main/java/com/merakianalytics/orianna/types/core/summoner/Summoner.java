@@ -11,6 +11,7 @@ import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
 import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.common.Platform;
+import com.merakianalytics.orianna.types.common.Queue;
 import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.common.Season;
 import com.merakianalytics.orianna.types.common.Tier;
@@ -162,6 +163,26 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
             load(SUMMONER_LOAD_GROUP);
         }
         return coreData.getId();
+    }
+
+    public League getLeague(final Queue queue) {
+        final LeaguePositions positions = LeaguePositions.forSummoner(this).get();
+        for(final LeaguePosition position : positions) {
+            if(queue == position.getQueue()) {
+                return League.withId(position.getLeagueId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
+            }
+        }
+        return null;
+    }
+
+    public LeaguePosition getLeaguePosition(final Queue queue) {
+        final LeaguePositions positions = LeaguePositions.forSummoner(this).get();
+        for(final LeaguePosition position : positions) {
+            if(queue == position.getQueue()) {
+                return position;
+            }
+        }
+        return null;
     }
 
     public LeaguePositions getLeaguePositions() {

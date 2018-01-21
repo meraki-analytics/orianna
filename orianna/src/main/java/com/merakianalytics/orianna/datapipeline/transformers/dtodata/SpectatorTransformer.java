@@ -48,6 +48,7 @@ public class SpectatorTransformer extends AbstractDataTransformer {
     @Transform(from = com.merakianalytics.orianna.types.dto.spectator.Participant.class, to = Participant.class)
     public Participant transform(final com.merakianalytics.orianna.types.dto.spectator.Participant item, final PipelineContext context) {
         final Participant player = new Participant();
+        player.setPlatform((String)context.get("platform"));
         player.setBot(item.isBot());
         player.setChampionId((int)item.getChampionId());
         player.setProfileIconId((int)item.getProfileIconId());
