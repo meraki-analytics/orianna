@@ -23,12 +23,16 @@ public class ProfileIcons extends GhostObject.ListProxy<ProfileIcon, com.merakia
         private Builder() {}
 
         public ProfileIcons get() {
-            if(version == null) {
-                version = Orianna.getSettings().getCurrentVersion();
-            }
-
             if(platform == null) {
                 platform = Orianna.getSettings().getDefaultPlatform();
+                if(platform == null) {
+                    throw new IllegalStateException(
+                        "No platform/region was set! Must either set a default platform/region with Orianna.setDefaultPlatform or Orianna.setDefaultRegion, or include a platform/region with the request!");
+                }
+            }
+
+            if(version == null) {
+                version = Orianna.getSettings().getCurrentVersion(platform);
             }
 
             if(locale == null) {
@@ -74,12 +78,16 @@ public class ProfileIcons extends GhostObject.ListProxy<ProfileIcon, com.merakia
         }
 
         public SearchableList<ProfileIcon> get() {
-            if(version == null) {
-                version = Orianna.getSettings().getCurrentVersion();
-            }
-
             if(platform == null) {
                 platform = Orianna.getSettings().getDefaultPlatform();
+                if(platform == null) {
+                    throw new IllegalStateException(
+                        "No platform/region was set! Must either set a default platform/region with Orianna.setDefaultPlatform or Orianna.setDefaultRegion, or include a platform/region with the request!");
+                }
+            }
+
+            if(version == null) {
+                version = Orianna.getSettings().getCurrentVersion(platform);
             }
 
             if(locale == null) {

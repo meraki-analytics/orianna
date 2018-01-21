@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
@@ -186,20 +187,31 @@ public abstract class Orianna {
 
     public static class Settings {
         private final Configuration configuration;
-        private Supplier<String> currentVersion;
+        private final java.util.Map<Platform, Supplier<String>> currentVersion;
+        private final Object currentVersionLock = new Object();
         private Supplier<DataPipeline> pipeline;
 
         private Settings(final Configuration config) {
             pipeline = newPipelineSupplier();
             configuration = config;
-            currentVersion = newVersionSupplier();
+            currentVersion = new ConcurrentHashMap<>();
         }
 
         /**
          * @return the currentVersion
          */
-        public String getCurrentVersion() {
-            return currentVersion.get();
+        public String getCurrentVersion(final Platform platform) {
+            Supplier<String> version = currentVersion.get(platform);
+            if(version == null) {
+                synchronized(currentVersionLock) {
+                    version = currentVersion.get(platform);
+                    if(version == null) {
+                        version = newVersionSupplier(platform);
+                        currentVersion.put(platform, version);
+                    }
+                }
+            }
+            return version.get();
         }
 
         /**
@@ -213,10 +225,6 @@ public abstract class Orianna {
          * @return the defaultPlatform
          */
         public Platform getDefaultPlatform() {
-            if(configuration.getDefaultPlatform() == null) {
-                throw new IllegalStateException(
-                    "Default platform/region was not set! Must set a default platform/region or specify platform/region with requests!");
-            }
             return configuration.getDefaultPlatform();
         }
 
@@ -236,12 +244,12 @@ public abstract class Orianna {
             });
         }
 
-        private Supplier<String> newVersionSupplier() {
+        private Supplier<String> newVersionSupplier(final Platform platform) {
             Supplier<String> supplier = new Supplier<String>() {
                 @Override
                 public String get() {
                     return pipeline.get()
-                        .get(com.merakianalytics.orianna.types.dto.staticdata.Realm.class, ImmutableMap.<String, Object> of("platform", getDefaultPlatform()))
+                        .get(com.merakianalytics.orianna.types.dto.staticdata.Realm.class, ImmutableMap.<String, Object> of("platform", platform))
                         .getV();
                 }
             };
@@ -261,7 +269,6 @@ public abstract class Orianna {
 
         private void setDefaultPlatform(final Platform defaultPlatform) {
             configuration.setDefaultPlatform(defaultPlatform);
-            currentVersion = newVersionSupplier();
         }
 
         private void setRiotAPIKey(final String key) {

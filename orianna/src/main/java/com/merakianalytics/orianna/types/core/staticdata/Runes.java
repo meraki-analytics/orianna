@@ -30,12 +30,16 @@ public class Runes extends GhostObject.ListProxy<Rune, com.merakianalytics.orian
         private Builder() {}
 
         public Runes get() {
-            if(version == null) {
-                version = Orianna.getSettings().getCurrentVersion();
-            }
-
             if(platform == null) {
                 platform = Orianna.getSettings().getDefaultPlatform();
+                if(platform == null) {
+                    throw new IllegalStateException(
+                        "No platform/region was set! Must either set a default platform/region with Orianna.setDefaultPlatform or Orianna.setDefaultRegion, or include a platform/region with the request!");
+                }
+            }
+
+            if(version == null) {
+                version = Orianna.getSettings().getCurrentVersion(platform);
             }
 
             if(locale == null) {
@@ -102,12 +106,16 @@ public class Runes extends GhostObject.ListProxy<Rune, com.merakianalytics.orian
         }
 
         public SearchableList<Rune> get() {
-            if(version == null) {
-                version = Orianna.getSettings().getCurrentVersion();
-            }
-
             if(platform == null) {
                 platform = Orianna.getSettings().getDefaultPlatform();
+                if(platform == null) {
+                    throw new IllegalStateException(
+                        "No platform/region was set! Must either set a default platform/region with Orianna.setDefaultPlatform or Orianna.setDefaultRegion, or include a platform/region with the request!");
+                }
+            }
+
+            if(version == null) {
+                version = Orianna.getSettings().getCurrentVersion(platform);
             }
 
             if(locale == null) {

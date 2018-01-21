@@ -39,6 +39,10 @@ public abstract class Summoners {
 
             if(platform == null) {
                 platform = Orianna.getSettings().getDefaultPlatform();
+                if(platform == null) {
+                    throw new IllegalStateException(
+                        "No platform/region was set! Must either set a default platform/region with Orianna.setDefaultPlatform or Orianna.setDefaultRegion, or include a platform/region with the request!");
+                }
             }
 
             final ImmutableMap.Builder<String, Object> builder = ImmutableMap.<String, Object> builder().put("platform", platform);
