@@ -456,6 +456,7 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
 
         final com.merakianalytics.orianna.types.data.match.Participant participant = new com.merakianalytics.orianna.types.data.match.Participant();
         participant.setCurrentAccountId(reference.getAccountId());
+        participant.setCurrentPlatform(reference.getPlatform());
         participant.setChampionId(reference.getChampionId());
         participant.setLane(reference.getLane());
         participant.setRole(reference.getRole());
