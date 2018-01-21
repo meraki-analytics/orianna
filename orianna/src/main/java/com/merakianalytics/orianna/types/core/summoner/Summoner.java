@@ -166,6 +166,10 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
     }
 
     public League getLeague(final Queue queue) {
+        if(!Queue.RANKED.contains(queue)) {
+            throw new IllegalArgumentException("Can only get league for ranked queues!");
+        }
+        
         final LeaguePositions positions = LeaguePositions.forSummoner(this).get();
         for(final LeaguePosition position : positions) {
             if(queue == position.getQueue()) {
@@ -176,6 +180,10 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
     }
 
     public LeaguePosition getLeaguePosition(final Queue queue) {
+        if(!Queue.RANKED.contains(queue)) {
+            throw new IllegalArgumentException("Can only get league positions for ranked queues!");
+        }
+        
         final LeaguePositions positions = LeaguePositions.forSummoner(this).get();
         for(final LeaguePosition position : positions) {
             if(queue == position.getQueue()) {
