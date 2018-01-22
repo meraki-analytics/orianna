@@ -238,6 +238,10 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
         return profileIcon.get();
     }
 
+    public Region getRegion() {
+        return Platform.withTag(coreData.getPlatform()).getRegion();
+    }
+
     public DateTime getUpdated() {
         load(SUMMONER_LOAD_GROUP);
         return coreData.getUpdated();
