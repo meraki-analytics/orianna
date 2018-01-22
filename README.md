@@ -1,9 +1,15 @@
+[![Javadocs](http://javadoc.io/badge/com.merakianalytics.orianna/orianna.svg)](http://javadoc.io/doc/com.merakianalytics.orianna/orianna)
+
 # Orianna
 A Java adaptation of the Riot Games League of Legends API (https://developer.riotgames.com/).
 
 Orianna is the sister library to [Cassiopeia](https://github.com/meraki-analytics/cassiopeia) (Python). It's been designed with usability in mind - making sure all the bookkeeping is done right so you can focus on getting the data you need and building your application.
 
 Orianna is licensed under the [MIT License](https://github.com/meraki-analytics/orianna/blob/master/LICENSE.txt).
+
+## Documentation & Examples
+The full JavaDoc for Orianna is available [here](http://javadoc.io/doc/com.merakianalytics.orianna/orianna). More details documentation about the project is coming soon!
+Examples of using Orianna can be found [here](https://github.com/meraki-analytics/orianna/tree/master/orianna-examples/src/main/java/com/merakianalytics/orianna/examples).
 
 ## Features
 Orianna is designed to make the lives of Riot API developers as easy as possible. Here are some of the ways we do it:
