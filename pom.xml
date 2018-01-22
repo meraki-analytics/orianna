@@ -7,6 +7,10 @@
 	<artifactId>orianna-parent</artifactId>
 	<version>3.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
+	
+	<name>orianna</name>
+	<description>A Java adaptation of the Riot Games LoL API (https://developer.riotgames.com/)</description>
+	<url>https://github.com/meraki-analytics/orianna</url>
 
 	<modules>
 		<module>orianna</module>
