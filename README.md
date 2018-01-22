@@ -9,14 +9,14 @@ Orianna is the sister library to [Cassiopeia](https://github.com/meraki-analytic
 Orianna is licensed under the [MIT License](https://github.com/meraki-analytics/orianna/blob/master/LICENSE.txt).
 
 ## Documentation & Examples
-The full JavaDoc for Orianna is available [here](http://javadoc.io/doc/com.merakianalytics.orianna/orianna). More details documentation about the project is coming soon!
+The full JavaDoc for Orianna is available [here](http://javadoc.io/doc/com.merakianalytics.orianna/orianna). More detailed documentation about the project is coming soon!
 Examples of using Orianna can be found [here](https://github.com/meraki-analytics/orianna/tree/master/orianna-examples/src/main/java/com/merakianalytics/orianna/examples).
 
 ## Features
 Orianna is designed to make the lives of Riot API developers as easy as possible. Here are some of the ways we do it:
 - An enhanced user interface that makes using the Riot API easy and fun
   - Restructured and renamed API data for maximum clarity
-  - Fluent APIs for requesting API types
+  - Fluent APIs for requesting data
   - Automatic conversion of foreign keys into the objects they specify (e.g player.getChampion() instead of player.getChampionId())
 - Rate limits handled automatically with optimal usage of your API key
 - Configurable handling of API errors (e.g. automatic retry on 500 errors)
@@ -28,7 +28,7 @@ Orianna is designed to make the lives of Riot API developers as easy as possible
   - Extensible to seamlessly integrate other data types and APIs, such as the [ChampionGG API](http://api.champion.gg/) (ChampionGG support coming soon!)
 
 ## How to get it
-Orianna is distributed through the [releases page](https://github.com/meraki-analytics/orianna/releases) and through [Maven Central](https://search.maven.org/). The easiest way to get it is by using [Maven](https://maven.apache.org/) or [Gradle](https://gradle.org/).
+Orianna is distributed through the [releases page](https://github.com/meraki-analytics/orianna/releases) and through [Maven Central](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.merakianalytics.orianna%22). The easiest way to get it is by using [Maven](https://maven.apache.org/) or [Gradle](https://gradle.org/).
 
 ### Maven
 To add the latest Orianna release version to your maven project, add the dependency to your pom.xml dependencies section:
@@ -143,7 +143,7 @@ public class Example {
 ```
 
 ## Configuring Orianna
-Orianna ships with a [default configuration](https://github.com/meraki-analytics/orianna/blob/master/orianna/src/main/resources/com/merakianalytics/orianna/default-orianna-config.json) set up to get new users going as quickly as possible. However, you may find you want to take advantage of some of the configuration options Orianna supports by replacing that configuration with your own.
+Orianna ships with a [default configuration](https://github.com/meraki-analytics/orianna/blob/master/orianna/src/main/resources/com/merakianalytics/orianna/default-orianna-config.json) designed to get new users going as quickly as possible. However, you may find you want to take advantage of some of the configuration options Orianna supports by replacing that configuration with your own.
 
 Orianna is able to automatically load your Riot API Key from your environment variables on startup. To take advantage of this, set your `RIOT_API_KEY` environment variable to your Riot API Key.
 
