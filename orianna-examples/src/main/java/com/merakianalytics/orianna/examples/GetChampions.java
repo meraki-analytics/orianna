@@ -14,7 +14,7 @@ public class GetChampions {
             System.out.println(champion.getName() + " " + champion.getId());
         }
 
-        final Champion annie = Champion.named("Annie").get();
+        final Champion annie = Champion.named("Annie").withRegion(Region.NORTH_AMERICA).get();
         System.out.println(annie.getName());
         System.out.println(annie.getTitle());
         for(final ChampionSpell spell : annie.getSpells()) {
@@ -29,7 +29,7 @@ public class GetChampions {
         }
         System.out.println(annie.isFreeToPlay());
 
-        final Champion ziggs = Champion.named("Ziggs").get();
+        final Champion ziggs = Champion.named("Ziggs").withRegion(Region.NORTH_AMERICA).get();
         System.out.println(ziggs.getName());
         System.out.println(ziggs.getRegion());
         for(final Item item : annie.getRecommendedItems().get(0).get(0).keySet()) {
