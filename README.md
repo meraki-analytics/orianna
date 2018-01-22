@@ -135,6 +135,17 @@ public class Example {
 }
 ```
 
+## Configuring Orianna
+Orianna ships with a [default configuration](https://github.com/meraki-analytics/orianna/blob/master/orianna/src/main/resources/com/merakianalytics/orianna/default-orianna-config.json) set up to get new users going as quickly as possible. However, you may find you want to take advantage of some of the configuration options Orianna supports by replacing that configuration with your own.
+
+Orianna is able to automatically load your Riot API Key from your environment variables on startup. To take advantage of this, set your `RIOT_API_KEY` environment variable to your Riot API Key.
+
+For more complex configuration, just download the [default configuration](https://github.com/meraki-analytics/orianna/blob/master/orianna/src/main/resources/com/merakianalytics/orianna/default-orianna-config.json), make the changes you'd like, and load the new configuration file when your program starts. Documentation describing the full range of configuration options available with Orianna is coming soon.
+```java
+Orianna.loadConfiguration(new File("/path/to/your/configuration-file.json"));
+```
+Alternatively, Orianna can automatically load your configuration file on startup if you set your `ORIANNA_CONFIGURATION_PATH` environment variable to the path of your configuration file.
+
 ## Questions & Contributions
 Feel free to send pull requests or to contact us via GitHub or [Discord](https://discord.gg/JRDk2JU). We also hang around the [Riot API Discord](https://discord.gg/riotapi) a lot. Come by and say hello! We love to hear what people are building with Orianna.
 
