@@ -18,10 +18,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Function;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
-import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.merakianalytics.datapipelines.PipelineContext;
 import com.merakianalytics.datapipelines.iterators.CloseableIterator;
@@ -49,6 +47,10 @@ import com.merakianalytics.orianna.types.dto.staticdata.MasteryList;
 import com.merakianalytics.orianna.types.dto.staticdata.ProfileIconData;
 import com.merakianalytics.orianna.types.dto.staticdata.ProfileIconDetails;
 import com.merakianalytics.orianna.types.dto.staticdata.Realm;
+import com.merakianalytics.orianna.types.dto.staticdata.ReforgedRune;
+import com.merakianalytics.orianna.types.dto.staticdata.ReforgedRunePath;
+import com.merakianalytics.orianna.types.dto.staticdata.ReforgedRuneSlot;
+import com.merakianalytics.orianna.types.dto.staticdata.ReforgedRuneTree;
 import com.merakianalytics.orianna.types.dto.staticdata.Rune;
 import com.merakianalytics.orianna.types.dto.staticdata.RuneList;
 import com.merakianalytics.orianna.types.dto.staticdata.SummonerSpell;
@@ -676,11 +678,6 @@ public class DataDragon extends AbstractDataSource {
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
         final Set<String> includedData = query.get("includedData") == null ? Collections.<String> emptySet() : (Set<String>)query.get("includedData");
         final Boolean dataById = query.get("dataById") == null ? Boolean.FALSE : (Boolean)query.get("dataById");
-
-        final Multimap<String, String> parameters = HashMultimap.create();
-        parameters.put("locale", locale);
-        parameters.putAll("tags", includedData);
-        parameters.put("dataById", dataById.toString());
 
         final Iterator<String> iterator = versions.iterator();
         return CloseableIterators.from(new Iterator<ChampionList>() {
@@ -1337,6 +1334,183 @@ public class DataDragon extends AbstractDataSource {
     }
 
     @SuppressWarnings("unchecked")
+    @GetMany(ReforgedRune.class)
+    public CloseableIterator<ReforgedRune> getManyReforgedRune(final Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
+        final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
+        final Iterable<String> names = (Iterable<String>)query.get("names");
+        final Iterable<String> keys = (Iterable<String>)query.get("keys");
+        Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names", keys, "keys");
+        final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
+        final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
+
+        final String content = get("runesReforged", version, locale);
+
+        final ReforgedRuneTree data = DataObject.fromJSON(ReforgedRuneTree.class, new Function<JsonNode, JsonNode>() {
+            @Override
+            public JsonNode apply(final JsonNode tree) {
+                if(tree == null) {
+                    return tree;
+                }
+
+                for(final JsonNode path : tree) {
+                    final JsonNode pathIdNode = path.get("id");
+                    final JsonNode slots = path.get("slots");
+                    if(slots != null) {
+                        for(int i = 0; i < slots.size(); i++) {
+                            final JsonNode slot = slots.get(i);
+                            final JsonNode runes = slot.get("runes");
+                            if(runes != null) {
+                                for(final JsonNode rune : runes) {
+                                    final ObjectNode node = (ObjectNode)rune;
+                                    node.set("pathId", pathIdNode);
+                                    node.set("slot", new IntNode(i));
+                                }
+                            }
+                        }
+                    }
+                }
+
+                return tree;
+            }
+        }, content);
+        if(data == null) {
+            return null;
+        }
+
+        data.setPlatform(platform.getTag());
+        data.setLocale(locale);
+        data.setVersion(version);
+        final Map<String, ReforgedRune> byKey = ids == null ? new HashMap<String, ReforgedRune>() : null;
+        final Map<Integer, ReforgedRune> byId = ids != null ? new HashMap<Integer, ReforgedRune>() : null;
+        for(final ReforgedRunePath path : data) {
+            for(final ReforgedRuneSlot slot : path.getSlots()) {
+                for(final ReforgedRune rune : slot.getRunes()) {
+                    rune.setPlatform(platform.getTag());
+                    rune.setVersion(data.getVersion());
+                    rune.setLocale(locale);
+
+                    if(ids != null) {
+                        byId.put(rune.getId(), rune);
+                    } else if(keys != null) {
+                        byKey.put(rune.getKey(), rune);
+                    } else {
+                        byKey.put(rune.getName(), rune);
+                    }
+                }
+            }
+        }
+
+        final Iterator<?> iterator;
+        if(ids != null) {
+            iterator = ids.iterator();
+        } else if(keys != null) {
+            iterator = keys.iterator();
+        } else {
+            iterator = names.iterator();
+        }
+
+        return CloseableIterators.from(new Iterator<ReforgedRune>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public ReforgedRune next() {
+                if(ids != null) {
+                    final int id = ((Number)iterator.next()).intValue();
+                    return byId.get(id);
+                } else {
+                    final String key = (String)iterator.next();
+                    return byKey.get(key);
+                }
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    @GetMany(ReforgedRuneTree.class)
+    public CloseableIterator<ReforgedRuneTree> getManyReforgedRuneTree(final Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        final Iterable<String> versions = (Iterable<String>)query.get("versions");
+        Utilities.checkNotNull(platform, "platform", versions, "versions");
+        final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
+
+        final Iterator<String> iterator = versions.iterator();
+        return CloseableIterators.from(new Iterator<ReforgedRuneTree>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public ReforgedRuneTree next() {
+                final String version = iterator.next();
+
+                final String content = get("runesReforged", version, locale);
+
+                final ReforgedRuneTree data = DataObject.fromJSON(ReforgedRuneTree.class, new Function<JsonNode, JsonNode>() {
+                    @Override
+                    public JsonNode apply(final JsonNode tree) {
+                        if(tree == null) {
+                            return tree;
+                        }
+
+                        for(final JsonNode path : tree) {
+                            final JsonNode pathIdNode = path.get("id");
+                            final JsonNode slots = path.get("slots");
+                            if(slots != null) {
+                                for(int i = 0; i < slots.size(); i++) {
+                                    final JsonNode slot = slots.get(i);
+                                    final JsonNode runes = slot.get("runes");
+                                    if(runes != null) {
+                                        for(final JsonNode rune : runes) {
+                                            final ObjectNode node = (ObjectNode)rune;
+                                            node.set("pathId", pathIdNode);
+                                            node.set("slot", new IntNode(i));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        return tree;
+                    }
+                }, content);
+                if(data == null) {
+                    return null;
+                }
+
+                data.setPlatform(platform.getTag());
+                data.setLocale(locale);
+                data.setVersion(version);
+                for(final ReforgedRunePath path : data) {
+                    for(final ReforgedRuneSlot slot : path.getSlots()) {
+                        for(final ReforgedRune rune : slot.getRunes()) {
+                            rune.setPlatform(platform.getTag());
+                            rune.setLocale(locale);
+                            rune.setVersion(version);
+                        }
+                    }
+                }
+                return data;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
     @GetMany(Rune.class)
     public CloseableIterator<Rune> getManyRune(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
@@ -1915,6 +2089,122 @@ public class DataDragon extends AbstractDataSource {
         }
 
         data.setPlatform(platform.getTag());
+        return data;
+    }
+
+    @Get(ReforgedRune.class)
+    public ReforgedRune getReforgedRune(final Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
+        final Number id = (Number)query.get("id");
+        final String name = (String)query.get("name");
+        final String key = (String)query.get("key");
+        Utilities.checkAtLeastOneNotNull(id, "id", name, "name", key, "key");
+        final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
+        final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
+
+        final String content = get("runesReforged", version, locale);
+
+        final ReforgedRune data = DataObject.fromJSON(ReforgedRune.class, new Function<JsonNode, JsonNode>() {
+            @Override
+            public JsonNode apply(final JsonNode tree) {
+                if(tree == null) {
+                    return null;
+                }
+
+                for(final JsonNode path : tree) {
+                    final JsonNode pathIdNode = path.get("id");
+                    final JsonNode slots = path.get("slots");
+                    if(slots != null) {
+                        for(int i = 0; i < slots.size(); i++) {
+                            final JsonNode slot = slots.get(i);
+                            final JsonNode runes = slot.get("runes");
+                            if(runes != null) {
+                                for(final JsonNode rune : runes) {
+                                    final JsonNode keyNode = rune.get("key");
+                                    final JsonNode idNode = rune.get("id");
+                                    final JsonNode nameNode = rune.get("name");
+
+                                    if(id != null && idNode != null && id.intValue() == idNode.asInt()
+                                        || key != null && keyNode != null && key.equals(keyNode.asText())
+                                        || name != null && nameNode != null && name.equals(nameNode.asText())) {
+                                        final ObjectNode node = (ObjectNode)rune;
+                                        node.set("pathId", pathIdNode);
+                                        node.set("slot", new IntNode(i));
+                                        return rune;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                return null;
+            }
+        }, content);
+        if(data == null) {
+            return null;
+        }
+
+        data.setPlatform(platform.getTag());
+        data.setVersion(version);
+        data.setLocale(locale);
+        return data;
+    }
+
+    @Get(ReforgedRuneTree.class)
+    public ReforgedRuneTree getReforgedRuneTree(final Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
+        final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
+        final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
+
+        final String content = get("runesReforged", version, locale);
+
+        final ReforgedRuneTree data = DataObject.fromJSON(ReforgedRuneTree.class, new Function<JsonNode, JsonNode>() {
+            @Override
+            public JsonNode apply(final JsonNode tree) {
+                if(tree == null) {
+                    return tree;
+                }
+
+                for(final JsonNode path : tree) {
+                    final JsonNode pathIdNode = path.get("id");
+                    final JsonNode slots = path.get("slots");
+                    if(slots != null) {
+                        for(int i = 0; i < slots.size(); i++) {
+                            final JsonNode slot = slots.get(i);
+                            final JsonNode runes = slot.get("runes");
+                            if(runes != null) {
+                                for(final JsonNode rune : runes) {
+                                    final ObjectNode node = (ObjectNode)rune;
+                                    node.set("pathId", pathIdNode);
+                                    node.set("slot", new IntNode(i));
+                                }
+                            }
+                        }
+                    }
+                }
+
+                return tree;
+            }
+        }, content);
+        if(data == null) {
+            return null;
+        }
+
+        data.setPlatform(platform.getTag());
+        data.setLocale(locale);
+        data.setVersion(version);
+        for(final ReforgedRunePath path : data) {
+            for(final ReforgedRuneSlot slot : path.getSlots()) {
+                for(final ReforgedRune rune : slot.getRunes()) {
+                    rune.setPlatform(platform.getTag());
+                    rune.setLocale(locale);
+                    rune.setVersion(version);
+                }
+            }
+        }
         return data;
     }
 

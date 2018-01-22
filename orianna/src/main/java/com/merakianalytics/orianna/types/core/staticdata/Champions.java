@@ -250,7 +250,11 @@ public class Champions extends GhostObject.ListProxy<com.merakianalytics.orianna
         return new SubsetBuilder(ids);
     }
 
-    public static Builder withIncludedData(final Set<String> includedData) {
+    public static Builder withIncludedData(final Iterable<String> includedData) {
+        return new Builder().withIncludedData(includedData);
+    }
+
+    public static Builder withIncludedData(final String... includedData) {
         return new Builder().withIncludedData(includedData);
     }
 

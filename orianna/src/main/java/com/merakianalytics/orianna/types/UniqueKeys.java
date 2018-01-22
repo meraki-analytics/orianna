@@ -31,6 +31,8 @@ import com.merakianalytics.orianna.types.core.staticdata.Mastery;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcon;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
 import com.merakianalytics.orianna.types.core.staticdata.Realm;
+import com.merakianalytics.orianna.types.core.staticdata.ReforgedRune;
+import com.merakianalytics.orianna.types.core.staticdata.ReforgedRunes;
 import com.merakianalytics.orianna.types.core.staticdata.Rune;
 import com.merakianalytics.orianna.types.core.staticdata.Runes;
 import com.merakianalytics.orianna.types.core.staticdata.SummonerSpell;
@@ -714,6 +716,45 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
+    public static Iterator<Integer> forManyReforgedRuneQuery(final java.util.Map<String, Object> query) {
+        final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
+        final Iterable<String> names = (Iterable<String>)query.get("names");
+        final Iterable<String> keys = (Iterable<String>)query.get("keys");
+
+        final Iterator<?> iterator;
+        if(ids != null) {
+            iterator = ids.iterator();
+        } else if(names != null) {
+            iterator = names.iterator();
+        } else if(keys != null) {
+            iterator = keys.iterator();
+        } else {
+            return null;
+        }
+
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                return Arrays.hashCode(new Object[] {
+                    ReforgedRune.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"),
+                    (String)query.get("locale"),
+                    ids != null ? ((Number)iterator.next()).intValue() : iterator.next()
+                });
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+    @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyRuneQuery(final java.util.Map<String, Object> query) {
         final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
         final Iterable<String> names = (Iterable<String>)query.get("names");
@@ -1075,6 +1116,93 @@ public abstract class UniqueKeys {
     public static int forRealmQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             Realm.class.getCanonicalName(), ((Platform)query.get("platform")).getTag()
+        });
+    }
+
+    public static int[] forReforgedRune(final ReforgedRune rune) {
+        final com.merakianalytics.orianna.types.data.staticdata.ReforgedRune data = rune.getCoreData();
+        if(data.getId() != 0 && data.getName() != null && data.getKey() != null) {
+            return new int[] {
+                Arrays.hashCode(new Object[] {
+                    ReforgedRune.class.getCanonicalName(), data.getPlatform(), data.getVersion(), data.getLocale(), data.getId()
+                }),
+                Arrays.hashCode(new Object[] {
+                    ReforgedRune.class.getCanonicalName(), data.getPlatform(), data.getVersion(), data.getLocale(), data.getName()
+                }),
+                Arrays.hashCode(new Object[] {
+                    ReforgedRune.class.getCanonicalName(), data.getPlatform(), data.getVersion(), data.getLocale(), data.getKey()
+                })
+            };
+        } else if(data.getId() != 0 && data.getName() != null) {
+            return new int[] {
+                Arrays.hashCode(new Object[] {
+                    ReforgedRune.class.getCanonicalName(), data.getPlatform(), data.getVersion(), data.getLocale(), data.getId()
+                }),
+                Arrays.hashCode(new Object[] {
+                    ReforgedRune.class.getCanonicalName(), data.getPlatform(), data.getVersion(), data.getLocale(), data.getName()
+                })
+            };
+        } else if(data.getId() != 0 && data.getKey() != null) {
+            return new int[] {
+                Arrays.hashCode(new Object[] {
+                    ReforgedRune.class.getCanonicalName(), data.getPlatform(), data.getVersion(), data.getLocale(), data.getId()
+                }),
+                Arrays.hashCode(new Object[] {
+                    ReforgedRune.class.getCanonicalName(), data.getPlatform(), data.getVersion(), data.getLocale(), data.getKey()
+                })
+            };
+        } else if(data.getName() != null && data.getKey() != null) {
+            return new int[] {
+                Arrays.hashCode(new Object[] {
+                    ReforgedRune.class.getCanonicalName(), data.getPlatform(), data.getVersion(), data.getLocale(), data.getName()
+                }),
+                Arrays.hashCode(new Object[] {
+                    ReforgedRune.class.getCanonicalName(), data.getPlatform(), data.getVersion(), data.getLocale(), data.getKey()
+                })
+            };
+        } else if(data.getId() != 0) {
+            return new int[] {
+                Arrays.hashCode(new Object[] {
+                    ReforgedRune.class.getCanonicalName(), data.getPlatform(), data.getVersion(), data.getLocale(), data.getId()
+                })
+            };
+        } else if(data.getName() != null) {
+            return new int[] {
+                Arrays.hashCode(new Object[] {
+                    ReforgedRune.class.getCanonicalName(), data.getPlatform(), data.getVersion(), data.getLocale(), data.getName()
+                })
+            };
+        } else if(data.getKey() != null) {
+            return new int[] {
+                Arrays.hashCode(new Object[] {
+                    ReforgedRune.class.getCanonicalName(), data.getPlatform(), data.getVersion(), data.getLocale(), data.getKey()
+                })
+            };
+        } else {
+            throw new IllegalArgumentException("Can't get key for ReforgedRune without ID, name, or key!");
+        }
+    }
+
+    public static int forReforgedRuneQuery(final java.util.Map<String, Object> query) {
+        final Number id = (Number)query.get("id");
+        final String name = (String)query.get("name");
+        final String key = (String)query.get("key");
+        return Arrays.hashCode(new Object[] {
+            ReforgedRune.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
+            id == null ? name == null ? key : name : id.intValue()
+        });
+    }
+
+    public static int forReforgedRunes(final ReforgedRunes runes) {
+        final com.merakianalytics.orianna.types.data.staticdata.ReforgedRunes data = runes.getCoreData();
+        return Arrays.hashCode(new Object[] {
+            ReforgedRunes.class.getCanonicalName(), data.getPlatform(), data.getVersion(), data.getLocale()
+        });
+    }
+
+    public static int forReforgedRunesQuery(final java.util.Map<String, Object> query) {
+        return Arrays.hashCode(new Object[] {
+            ReforgedRunes.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale")
         });
     }
 

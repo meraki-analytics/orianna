@@ -1,28 +1,37 @@
-package com.merakianalytics.orianna.types.data.match;
-
-import java.util.List;
+package com.merakianalytics.orianna.types.data.staticdata;
 
 import com.merakianalytics.orianna.types.data.CoreData;
 
-public class RuneStats extends CoreData {
-    private static final long serialVersionUID = -461218494339044648L;
-    private int id;
-    private String platform, version;
-    private List<Integer> variables;
+public class ReforgedRunes extends CoreData.ListProxy<ReforgedRune> {
+    private static final long serialVersionUID = -1084713550962362034L;
+    private String platform, version, locale;
+    private ReforgedRuneTree tree;
+
+    public ReforgedRunes() {
+        super();
+    }
+
+    public ReforgedRunes(final int initialCapacity) {
+        super(initialCapacity);
+    }
 
     @Override
     public boolean equals(final Object obj) {
         if(this == obj) {
             return true;
         }
-        if(obj == null) {
+        if(!super.equals(obj)) {
             return false;
         }
         if(getClass() != obj.getClass()) {
             return false;
         }
-        final RuneStats other = (RuneStats)obj;
-        if(id != other.id) {
+        final ReforgedRunes other = (ReforgedRunes)obj;
+        if(locale == null) {
+            if(other.locale != null) {
+                return false;
+            }
+        } else if(!locale.equals(other.locale)) {
             return false;
         }
         if(platform == null) {
@@ -32,11 +41,11 @@ public class RuneStats extends CoreData {
         } else if(!platform.equals(other.platform)) {
             return false;
         }
-        if(variables == null) {
-            if(other.variables != null) {
+        if(tree == null) {
+            if(other.tree != null) {
                 return false;
             }
-        } else if(!variables.equals(other.variables)) {
+        } else if(!tree.equals(other.tree)) {
             return false;
         }
         if(version == null) {
@@ -50,10 +59,10 @@ public class RuneStats extends CoreData {
     }
 
     /**
-     * @return the id
+     * @return the locale
      */
-    public int getId() {
-        return id;
+    public String getLocale() {
+        return locale;
     }
 
     /**
@@ -64,10 +73,10 @@ public class RuneStats extends CoreData {
     }
 
     /**
-     * @return the variables
+     * @return the tree
      */
-    public List<Integer> getVariables() {
-        return variables;
+    public ReforgedRuneTree getTree() {
+        return tree;
     }
 
     /**
@@ -80,20 +89,20 @@ public class RuneStats extends CoreData {
     @Override
     public int hashCode() {
         final int prime = 31;
-        int result = 1;
-        result = prime * result + id;
+        int result = super.hashCode();
+        result = prime * result + (locale == null ? 0 : locale.hashCode());
         result = prime * result + (platform == null ? 0 : platform.hashCode());
-        result = prime * result + (variables == null ? 0 : variables.hashCode());
+        result = prime * result + (tree == null ? 0 : tree.hashCode());
         result = prime * result + (version == null ? 0 : version.hashCode());
         return result;
     }
 
     /**
-     * @param id
-     *        the id to set
+     * @param locale
+     *        the locale to set
      */
-    public void setId(final int id) {
-        this.id = id;
+    public void setLocale(final String locale) {
+        this.locale = locale;
     }
 
     /**
@@ -105,11 +114,11 @@ public class RuneStats extends CoreData {
     }
 
     /**
-     * @param variables
-     *        the variables to set
+     * @param tree
+     *        the tree to set
      */
-    public void setVariables(final List<Integer> variables) {
-        this.variables = variables;
+    public void setTree(final ReforgedRuneTree tree) {
+        this.tree = tree;
     }
 
     /**

@@ -202,7 +202,11 @@ public class Masteries extends GhostObject.ListProxy<Mastery, com.merakianalytic
         return new SubsetBuilder(ids, true);
     }
 
-    public static Builder withIncludedData(final Set<String> includedData) {
+    public static Builder withIncludedData(final Iterable<String> includedData) {
+        return new Builder().withIncludedData(includedData);
+    }
+
+    public static Builder withIncludedData(final String... includedData) {
         return new Builder().withIncludedData(includedData);
     }
 

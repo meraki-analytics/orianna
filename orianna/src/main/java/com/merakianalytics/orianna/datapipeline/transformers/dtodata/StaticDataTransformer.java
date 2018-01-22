@@ -11,6 +11,7 @@ import com.google.common.base.Joiner;
 import com.merakianalytics.datapipelines.PipelineContext;
 import com.merakianalytics.datapipelines.transformers.AbstractDataTransformer;
 import com.merakianalytics.datapipelines.transformers.Transform;
+import com.merakianalytics.orianna.types.common.RunePath;
 import com.merakianalytics.orianna.types.data.staticdata.Champion;
 import com.merakianalytics.orianna.types.data.staticdata.ChampionSpell;
 import com.merakianalytics.orianna.types.data.staticdata.ChampionStats;
@@ -35,6 +36,11 @@ import com.merakianalytics.orianna.types.data.staticdata.ProfileIcon;
 import com.merakianalytics.orianna.types.data.staticdata.ProfileIcons;
 import com.merakianalytics.orianna.types.data.staticdata.Realm;
 import com.merakianalytics.orianna.types.data.staticdata.RecommendedItems;
+import com.merakianalytics.orianna.types.data.staticdata.ReforgedRune;
+import com.merakianalytics.orianna.types.data.staticdata.ReforgedRunePath;
+import com.merakianalytics.orianna.types.data.staticdata.ReforgedRuneSlot;
+import com.merakianalytics.orianna.types.data.staticdata.ReforgedRuneTree;
+import com.merakianalytics.orianna.types.data.staticdata.ReforgedRunes;
 import com.merakianalytics.orianna.types.data.staticdata.Rune;
 import com.merakianalytics.orianna.types.data.staticdata.RuneStats;
 import com.merakianalytics.orianna.types.data.staticdata.Runes;
@@ -559,6 +565,68 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         realm.setStore(item.getStore());
         realm.setVersion(item.getV());
         return realm;
+    }
+
+    @Transform(from = com.merakianalytics.orianna.types.dto.staticdata.ReforgedRune.class, to = ReforgedRune.class)
+    public ReforgedRune transform(final com.merakianalytics.orianna.types.dto.staticdata.ReforgedRune item, final PipelineContext context) {
+        final ReforgedRune rune = new ReforgedRune();
+        rune.setImage(item.getIcon());
+        rune.setId(item.getId());
+        rune.setKey(item.getKey());
+        rune.setLocale(item.getLocale());
+        rune.setLongDescription(item.getLongDesc());
+        rune.setName(item.getName());
+        rune.setPlatform(item.getPlatform());
+        rune.setShortDescription(item.getShortDesc());
+        rune.setVersion(item.getVersion());
+        rune.setPath(item.getPathId());
+        rune.setSlot(item.getSlot());
+        return rune;
+    }
+
+    @Transform(from = ReforgedRunePath.class, to = com.merakianalytics.orianna.types.dto.staticdata.ReforgedRunePath.class)
+    public ReforgedRunePath transform(final com.merakianalytics.orianna.types.dto.staticdata.ReforgedRunePath item, final PipelineContext context) {
+        final ReforgedRunePath path = new ReforgedRunePath(item.getSlots().size());
+        for(final com.merakianalytics.orianna.types.dto.staticdata.ReforgedRuneSlot slot : item.getSlots()) {
+            path.add(transform(slot, context));
+        }
+        path.setImage(item.getIcon());
+        path.setId(item.getId());
+        path.setKey(item.getKey());
+        path.setName(item.getName());
+        return path;
+    }
+
+    @Transform(from = com.merakianalytics.orianna.types.dto.staticdata.ReforgedRuneSlot.class, to = ReforgedRuneSlot.class)
+    public ReforgedRuneSlot transform(final com.merakianalytics.orianna.types.dto.staticdata.ReforgedRuneSlot item, final PipelineContext context) {
+        final ReforgedRuneSlot slot = new ReforgedRuneSlot(item.getRunes().size());
+        for(final com.merakianalytics.orianna.types.dto.staticdata.ReforgedRune rune : item.getRunes()) {
+            slot.add(rune.getId());
+        }
+        return slot;
+    }
+
+    @Transform(from = com.merakianalytics.orianna.types.dto.staticdata.ReforgedRuneTree.class, to = ReforgedRunes.class)
+    public ReforgedRunes transform(final com.merakianalytics.orianna.types.dto.staticdata.ReforgedRuneTree item, final PipelineContext context) {
+        int count = 0;
+        for(final com.merakianalytics.orianna.types.dto.staticdata.ReforgedRunePath path : item) {
+            for(final com.merakianalytics.orianna.types.dto.staticdata.ReforgedRuneSlot slot : path.getSlots()) {
+                count += slot.getRunes().size();
+            }
+        }
+        final ReforgedRunes runes = new ReforgedRunes(count);
+        for(final com.merakianalytics.orianna.types.dto.staticdata.ReforgedRunePath path : item) {
+            for(final com.merakianalytics.orianna.types.dto.staticdata.ReforgedRuneSlot slot : path.getSlots()) {
+                for(final com.merakianalytics.orianna.types.dto.staticdata.ReforgedRune rune : slot.getRunes()) {
+                    runes.add(transform(rune, context));
+                }
+            }
+        }
+        runes.setTree(transformTree(item, context));
+        runes.setLocale(item.getLocale());
+        runes.setPlatform(item.getPlatform());
+        runes.setVersion(item.getVersion());
+        return runes;
     }
 
     @Transform(from = com.merakianalytics.orianna.types.dto.staticdata.Rune.class, to = Rune.class)
@@ -1268,6 +1336,83 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         return items;
     }
 
+    @Transform(from = ReforgedRune.class, to = com.merakianalytics.orianna.types.dto.staticdata.ReforgedRune.class)
+    public com.merakianalytics.orianna.types.dto.staticdata.ReforgedRune transform(final ReforgedRune item, final PipelineContext context) {
+        final com.merakianalytics.orianna.types.dto.staticdata.ReforgedRune rune = new com.merakianalytics.orianna.types.dto.staticdata.ReforgedRune();
+        rune.setIcon(item.getImage());
+        rune.setId(item.getId());
+        rune.setKey(item.getKey());
+        rune.setLocale(item.getLocale());
+        rune.setLongDesc(item.getLongDescription());
+        rune.setName(item.getName());
+        rune.setPlatform(item.getPlatform());
+        rune.setShortDesc(item.getShortDescription());
+        rune.setVersion(item.getVersion());
+        rune.setPathId(item.getPath());
+        rune.setSlot(item.getSlot());
+        return rune;
+    }
+
+    @Transform(from = com.merakianalytics.orianna.types.dto.staticdata.ReforgedRunePath.class, to = ReforgedRunePath.class)
+    public com.merakianalytics.orianna.types.dto.staticdata.ReforgedRunePath transform(final ReforgedRunePath item, final PipelineContext context) {
+        final com.merakianalytics.orianna.types.dto.staticdata.ReforgedRunePath path = new com.merakianalytics.orianna.types.dto.staticdata.ReforgedRunePath();
+        final List<com.merakianalytics.orianna.types.dto.staticdata.ReforgedRuneSlot> list = new ArrayList<>(item.size());
+        for(final ReforgedRuneSlot slot : item) {
+            list.add(transform(slot, context));
+        }
+        path.setSlots(list);
+        path.setIcon(item.getImage());
+        path.setId(item.getId());
+        path.setKey(item.getKey());
+        path.setName(item.getName());
+        return path;
+    }
+
+    @Transform(from = ReforgedRunes.class, to = com.merakianalytics.orianna.types.dto.staticdata.ReforgedRuneTree.class)
+    public com.merakianalytics.orianna.types.dto.staticdata.ReforgedRuneTree transform(final ReforgedRunes item, final PipelineContext context) {
+        final Map<Integer, ReforgedRune> runes = new HashMap<>();
+        for(final ReforgedRune rune : item) {
+            runes.put(rune.getId(), rune);
+        }
+        final Object previousRunes = context.put("runes", runes);
+        final Object previousLocale = context.put("locale", item.getLocale());
+        final Object previousPlatform = context.put("platform", item.getPlatform());
+        final Object previousVersion = context.put("version", item.getVersion());
+        final com.merakianalytics.orianna.types.dto.staticdata.ReforgedRuneTree tree = transform(item, context);
+        context.put("runes", previousRunes);
+        context.put("locale", previousLocale);
+        context.put("platform", previousPlatform);
+        context.put("version", previousVersion);
+        return tree;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Transform(from = ReforgedRuneSlot.class, to = com.merakianalytics.orianna.types.dto.staticdata.ReforgedRuneSlot.class)
+    public com.merakianalytics.orianna.types.dto.staticdata.ReforgedRuneSlot transform(final ReforgedRuneSlot item, final PipelineContext context) {
+        final com.merakianalytics.orianna.types.dto.staticdata.ReforgedRuneSlot slot = new com.merakianalytics.orianna.types.dto.staticdata.ReforgedRuneSlot();
+        final Map<Integer, ReforgedRune> runes = (Map<Integer, ReforgedRune>)context.get("runes");
+        final List<com.merakianalytics.orianna.types.dto.staticdata.ReforgedRune> list = new ArrayList<>(item.size());
+        for(final Integer id : item) {
+            list.add(transform(runes.get(id), context));
+        }
+        slot.setRunes(list);
+        return slot;
+    }
+
+    @Transform(from = ReforgedRuneTree.class, to = com.merakianalytics.orianna.types.dto.staticdata.ReforgedRuneTree.class)
+    public com.merakianalytics.orianna.types.dto.staticdata.ReforgedRuneTree transform(final ReforgedRuneTree item, final PipelineContext context) {
+        final com.merakianalytics.orianna.types.dto.staticdata.ReforgedRuneTree tree = new com.merakianalytics.orianna.types.dto.staticdata.ReforgedRuneTree(5);
+        tree.add(transform(item.getDomination(), context));
+        tree.add(transform(item.getInspiration(), context));
+        tree.add(transform(item.getPrecision(), context));
+        tree.add(transform(item.getResolve(), context));
+        tree.add(transform(item.getSorcery(), context));
+        tree.setLocale((String)context.get("locale"));
+        tree.setPlatform((String)context.get("platform"));
+        tree.setVersion((String)context.get("version"));
+        return tree;
+    }
+
     @Transform(from = Rune.class, to = com.merakianalytics.orianna.types.dto.staticdata.Rune.class)
     public com.merakianalytics.orianna.types.dto.staticdata.Rune transform(final Rune item, final PipelineContext context) {
         final com.merakianalytics.orianna.types.dto.staticdata.Rune rune = new com.merakianalytics.orianna.types.dto.staticdata.Rune();
@@ -1504,5 +1649,33 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         versions.addAll(item);
         versions.setPlatform(item.getPlatform());
         return versions;
+    }
+
+    @Transform(from = com.merakianalytics.orianna.types.dto.staticdata.ReforgedRuneTree.class, to = ReforgedRuneTree.class)
+    public ReforgedRuneTree transformTree(final com.merakianalytics.orianna.types.dto.staticdata.ReforgedRuneTree item, final PipelineContext context) {
+        final ReforgedRuneTree tree = new ReforgedRuneTree();
+        for(final com.merakianalytics.orianna.types.dto.staticdata.ReforgedRunePath path : item) {
+            final RunePath p = RunePath.valueOf(path.getName().toUpperCase());
+            switch(p) {
+                case DOMINATION:
+                    tree.setDomination(transform(path, context));
+                    break;
+                case INSPIRATION:
+                    tree.setInspriation(transform(path, context));
+                    break;
+                case PRECISION:
+                    tree.setPrecision(transform(path, context));
+                    break;
+                case RESOLVE:
+                    tree.setResolve(transform(path, context));
+                    break;
+                case SORCERY:
+                    tree.setSorcery(transform(path, context));
+                    break;
+                default:
+                    break;
+            }
+        }
+        return tree;
     }
 }

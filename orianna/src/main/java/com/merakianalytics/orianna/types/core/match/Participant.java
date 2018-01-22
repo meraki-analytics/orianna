@@ -10,6 +10,7 @@ import com.merakianalytics.orianna.types.core.searchable.SearchableList;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcon;
+import com.merakianalytics.orianna.types.core.staticdata.ReforgedRune;
 import com.merakianalytics.orianna.types.core.staticdata.SummonerSpell;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
@@ -38,7 +39,7 @@ public abstract class Participant extends OriannaObject<com.merakianalytics.oria
 
     public abstract Role getRole();
 
-    @Searchable({int.class})
+    @Searchable({ReforgedRune.class, String.class, int.class})
     public abstract SearchableList<RuneStats> getRuneStats();
 
     public abstract RunePath getSecondaryRunePath();

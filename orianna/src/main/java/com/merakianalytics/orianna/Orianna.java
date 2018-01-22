@@ -75,6 +75,8 @@ import com.merakianalytics.orianna.types.core.staticdata.Masteries;
 import com.merakianalytics.orianna.types.core.staticdata.Mastery;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcon;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
+import com.merakianalytics.orianna.types.core.staticdata.ReforgedRune;
+import com.merakianalytics.orianna.types.core.staticdata.ReforgedRunes;
 import com.merakianalytics.orianna.types.core.staticdata.Rune;
 import com.merakianalytics.orianna.types.core.staticdata.Runes;
 import com.merakianalytics.orianna.types.core.staticdata.SummonerSpell;
@@ -351,7 +353,11 @@ public abstract class Orianna {
         return Champions.withIds(ids);
     }
 
-    public static Champions.Builder championsWithIncludedData(final Set<String> includedData) {
+    public static Champions.Builder championsWithIncludedData(final Iterable<String> includedData) {
+        return Champions.withIncludedData(includedData);
+    }
+
+    public static Champions.Builder championsWithIncludedData(final String... includedData) {
         return Champions.withIncludedData(includedData);
     }
 
@@ -485,6 +491,10 @@ public abstract class Orianna {
         return ProfileIcons.get();
     }
 
+    public static ReforgedRunes getReforgedRunes() {
+        return ReforgedRunes.get();
+    }
+
     public static Runes getRunes() {
         return Runes.get();
     }
@@ -525,7 +535,11 @@ public abstract class Orianna {
         return Items.withIds(ids);
     }
 
-    public static Items.Builder itemsWithIncludedData(final Set<String> includedData) {
+    public static Items.Builder itemsWithIncludedData(final Iterable<String> includedData) {
+        return Items.withIncludedData(includedData);
+    }
+
+    public static Items.Builder itemsWithIncludedData(final String... includedData) {
         return Items.withIncludedData(includedData);
     }
 
@@ -653,7 +667,11 @@ public abstract class Orianna {
         return Masteries.withIds(ids);
     }
 
-    public static Masteries.Builder masteriesWithIncludedData(final Set<String> includedData) {
+    public static Masteries.Builder masteriesWithIncludedData(final Iterable<String> includedData) {
+        return Masteries.withIncludedData(includedData);
+    }
+
+    public static Masteries.Builder masteriesWithIncludedData(final String... includedData) {
         return Masteries.withIncludedData(includedData);
     }
 
@@ -737,6 +755,58 @@ public abstract class Orianna {
         return ProfileIcon.withId(id);
     }
 
+    public static ReforgedRune.Builder reforgedRuneNamed(final String name) {
+        return ReforgedRune.named(name);
+    }
+
+    public static ReforgedRunes.SubsetBuilder reforgedRunesNamed(final Iterable<String> names) {
+        return ReforgedRunes.named(names);
+    }
+
+    public static ReforgedRunes.SubsetBuilder reforgedRunesNamed(final String... names) {
+        return ReforgedRunes.named(names);
+    }
+
+    public static ReforgedRunes.SubsetBuilder reforgedRunesWithIds(final int... ids) {
+        return ReforgedRunes.withIds(ids);
+    }
+
+    public static ReforgedRunes.SubsetBuilder reforgedRunesWithIds(final Iterable<Integer> ids) {
+        return ReforgedRunes.withIds(ids);
+    }
+
+    public static ReforgedRunes.SubsetBuilder reforgedRunesWithKeys(final Iterable<String> keys) {
+        return ReforgedRunes.withKeys(keys);
+    }
+
+    public static ReforgedRunes.SubsetBuilder reforgedRunesWithKeys(final String... keys) {
+        return ReforgedRunes.withKeys(keys);
+    }
+
+    public static ReforgedRunes.Builder reforgedRunesWithLocale(final String locale) {
+        return ReforgedRunes.withLocale(locale);
+    }
+
+    public static ReforgedRunes.Builder reforgedRunesWithPlatform(final Platform platform) {
+        return ReforgedRunes.withPlatform(platform);
+    }
+
+    public static ReforgedRunes.Builder reforgedRunesWithRegion(final Region region) {
+        return ReforgedRunes.withRegion(region);
+    }
+
+    public static ReforgedRunes.Builder reforgedRunesWithVersion(final String version) {
+        return ReforgedRunes.withVersion(version);
+    }
+
+    public static ReforgedRune.Builder reforgedRuneWithId(final int id) {
+        return ReforgedRune.withId(id);
+    }
+
+    public static ReforgedRune.Builder reforgedRuneWithKey(final String key) {
+        return ReforgedRune.withKey(key);
+    }
+
     public static Rune.Builder runeNamed(final String name) {
         return Rune.named(name);
     }
@@ -757,7 +827,11 @@ public abstract class Orianna {
         return Runes.withIds(ids);
     }
 
-    public static Runes.Builder runesWithIncludedData(final Set<String> includedData) {
+    public static Runes.Builder runesWithIncludedData(final Iterable<String> includedData) {
+        return Runes.withIncludedData(includedData);
+    }
+
+    public static Runes.Builder runesWithIncludedData(final String... includedData) {
         return Runes.withIncludedData(includedData);
     }
 
@@ -877,7 +951,11 @@ public abstract class Orianna {
         return SummonerSpells.withIds(ids);
     }
 
-    public static SummonerSpells.Builder summonerSpellsWithIncludedData(final Set<String> includedData) {
+    public static SummonerSpells.Builder summonerSpellsWithIncludedData(final Iterable<String> includedData) {
+        return SummonerSpells.withIncludedData(includedData);
+    }
+
+    public static SummonerSpells.Builder summonerSpellsWithIncludedData(final String... includedData) {
         return SummonerSpells.withIncludedData(includedData);
     }
 

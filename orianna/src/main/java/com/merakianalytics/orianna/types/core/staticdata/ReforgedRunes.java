@@ -2,16 +2,12 @@ package com.merakianalytics.orianna.types.core.staticdata;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import com.google.common.base.Function;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
 import com.merakianalytics.datapipelines.iterators.CloseableIterator;
 import com.merakianalytics.datapipelines.iterators.CloseableIterators;
 import com.merakianalytics.orianna.Orianna;
@@ -21,15 +17,14 @@ import com.merakianalytics.orianna.types.core.GhostObject;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
 import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 
-public class SummonerSpells extends GhostObject.ListProxy<SummonerSpell, com.merakianalytics.orianna.types.data.staticdata.SummonerSpell, com.merakianalytics.orianna.types.data.staticdata.SummonerSpells> {
+public class ReforgedRunes extends GhostObject.ListProxy<ReforgedRune, com.merakianalytics.orianna.types.data.staticdata.ReforgedRune, com.merakianalytics.orianna.types.data.staticdata.ReforgedRunes> {
     public static class Builder {
-        private Set<String> includedData;
         private Platform platform;
         private String version, locale;
 
         private Builder() {}
 
-        public SummonerSpells get() {
+        public ReforgedRunes get() {
             if(platform == null) {
                 platform = Orianna.getSettings().getDefaultPlatform();
                 if(platform == null) {
@@ -47,24 +42,10 @@ public class SummonerSpells extends GhostObject.ListProxy<SummonerSpell, com.mer
                 locale = locale == null ? platform.getDefaultLocale() : locale;
             }
 
-            if(includedData == null) {
-                includedData = ImmutableSet.of("all");
-            }
-
             final ImmutableMap.Builder<String, Object> builder = ImmutableMap.<String, Object> builder().put("platform", platform).put("version", version)
-                .put("locale", locale).put("includedData", includedData);
+                .put("locale", locale);
 
-            return Orianna.getSettings().getPipeline().get(SummonerSpells.class, builder.build());
-        }
-
-        public Builder withIncludedData(final Iterable<String> includedData) {
-            this.includedData = Sets.newHashSet(includedData);
-            return this;
-        }
-
-        public Builder withIncludedData(final String... includedData) {
-            this.includedData = Sets.newHashSet(includedData);
-            return this;
+            return Orianna.getSettings().getPipeline().get(ReforgedRunes.class, builder.build());
         }
 
         public Builder withLocale(final String locale) {
@@ -90,22 +71,24 @@ public class SummonerSpells extends GhostObject.ListProxy<SummonerSpell, com.mer
 
     public static class SubsetBuilder {
         private Iterable<Integer> ids;
-        private Set<String> includedData;
-        private Iterable<String> names;
+        private Iterable<String> names, keys;
         private Platform platform;
         private boolean streaming = false;
         private String version, locale;
 
-        @SuppressWarnings("unchecked")
-        private SubsetBuilder(final Iterable<?> ids, final boolean areIds) {
-            if(areIds) {
-                this.ids = (Iterable<Integer>)ids;
+        private SubsetBuilder(final Iterable<Integer> ids) {
+            this.ids = ids;
+        }
+
+        private SubsetBuilder(final Iterable<String> keys, final boolean areNames) {
+            if(areNames) {
+                names = keys;
             } else {
-                names = (Iterable<String>)ids;
+                this.keys = keys;
             }
         }
 
-        public SearchableList<SummonerSpell> get() {
+        public SearchableList<com.merakianalytics.orianna.types.core.staticdata.ReforgedRune> get() {
             if(platform == null) {
                 platform = Orianna.getSettings().getDefaultPlatform();
                 if(platform == null) {
@@ -123,35 +106,24 @@ public class SummonerSpells extends GhostObject.ListProxy<SummonerSpell, com.mer
                 locale = locale == null ? platform.getDefaultLocale() : locale;
             }
 
-            if(includedData == null) {
-                includedData = ImmutableSet.of("all");
-            }
-
             final ImmutableMap.Builder<String, Object> builder = ImmutableMap.<String, Object> builder().put("platform", platform).put("version", version)
-                .put("locale", locale).put("includedData", includedData);
+                .put("locale", locale);
 
             if(ids != null) {
                 builder.put("ids", ids);
-            } else {
+            } else if(names != null) {
                 builder.put("names", names);
+            } else {
+                builder.put("keys", keys);
             }
 
-            final CloseableIterator<SummonerSpell> result = Orianna.getSettings().getPipeline().getMany(SummonerSpell.class, builder.build(), streaming);
+            final CloseableIterator<com.merakianalytics.orianna.types.core.staticdata.ReforgedRune> result =
+                Orianna.getSettings().getPipeline().getMany(com.merakianalytics.orianna.types.core.staticdata.ReforgedRune.class, builder.build(), streaming);
             return streaming ? SearchableLists.from(CloseableIterators.toLazyList(result)) : SearchableLists.from(CloseableIterators.toList(result));
         }
 
         public SubsetBuilder streaming() {
             streaming = true;
-            return this;
-        }
-
-        public SubsetBuilder withIncludedData(final Iterable<String> includedData) {
-            this.includedData = Sets.newHashSet(includedData);
-            return this;
-        }
-
-        public SubsetBuilder withIncludedData(final String... includedData) {
-            this.includedData = Sets.newHashSet(includedData);
             return this;
         }
 
@@ -176,18 +148,18 @@ public class SummonerSpells extends GhostObject.ListProxy<SummonerSpell, com.mer
         }
     }
 
-    private static final long serialVersionUID = 5959243824688735482L;
+    private static final long serialVersionUID = -766565807713688277L;
 
-    public static SummonerSpells get() {
+    public static ReforgedRunes get() {
         return new Builder().get();
     }
 
     public static SubsetBuilder named(final Iterable<String> names) {
-        return new SubsetBuilder(names, false);
+        return new SubsetBuilder(names, true);
     }
 
     public static SubsetBuilder named(final String... names) {
-        return new SubsetBuilder(Arrays.asList(names), false);
+        return new SubsetBuilder(Arrays.asList(names), true);
     }
 
     public static SubsetBuilder withIds(final int... ids) {
@@ -195,19 +167,19 @@ public class SummonerSpells extends GhostObject.ListProxy<SummonerSpell, com.mer
         for(final int id : ids) {
             list.add(id);
         }
-        return new SubsetBuilder(list, true);
+        return new SubsetBuilder(list);
     }
 
     public static SubsetBuilder withIds(final Iterable<Integer> ids) {
-        return new SubsetBuilder(ids, true);
+        return new SubsetBuilder(ids);
     }
 
-    public static Builder withIncludedData(final Iterable<String> includedData) {
-        return new Builder().withIncludedData(includedData);
+    public static SubsetBuilder withKeys(final Iterable<String> keys) {
+        return new SubsetBuilder(keys, false);
     }
 
-    public static Builder withIncludedData(final String... includedData) {
-        return new Builder().withIncludedData(includedData);
+    public static SubsetBuilder withKeys(final String... keys) {
+        return new SubsetBuilder(Arrays.asList(keys), false);
     }
 
     public static Builder withLocale(final String locale) {
@@ -226,22 +198,19 @@ public class SummonerSpells extends GhostObject.ListProxy<SummonerSpell, com.mer
         return new Builder().withVersion(version);
     }
 
-    private final Supplier<Set<String>> includedData = Suppliers.memoize(new Supplier<Set<String>>() {
+    private final Supplier<ReforgedRuneTree> tree = Suppliers.memoize(new Supplier<ReforgedRuneTree>() {
         @Override
-        public Set<String> get() {
-            if(coreData.getIncludedData() == null) {
+        public ReforgedRuneTree get() {
+            load(LIST_PROXY_LOAD_GROUP);
+            if(coreData.getTree() == null) {
                 return null;
             }
-            return Collections.unmodifiableSet(coreData.getIncludedData());
+            return new ReforgedRuneTree(coreData.getTree());
         }
     });
 
-    public SummonerSpells(final com.merakianalytics.orianna.types.data.staticdata.SummonerSpells coreData) {
+    public ReforgedRunes(final com.merakianalytics.orianna.types.data.staticdata.ReforgedRunes coreData) {
         super(coreData, 1);
-    }
-
-    public Set<String> getIncludedData() {
-        return includedData.get();
     }
 
     @Override
@@ -263,9 +232,8 @@ public class SummonerSpells extends GhostObject.ListProxy<SummonerSpell, com.mer
         return Platform.withTag(coreData.getPlatform()).getRegion();
     }
 
-    public String getType() {
-        load(LIST_PROXY_LOAD_GROUP);
-        return coreData.getType();
+    public ReforgedRuneTree getTree() {
+        return tree.get();
     }
 
     public String getVersion() {
@@ -287,16 +255,13 @@ public class SummonerSpells extends GhostObject.ListProxy<SummonerSpell, com.mer
                 if(coreData.getLocale() != null) {
                     builder.put("locale", coreData.getLocale());
                 }
-                if(coreData.getIncludedData() != null) {
-                    builder.put("includedData", coreData.getIncludedData());
-                }
-                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.SummonerSpells.class, builder.build());
-                loadListProxyData(new Function<com.merakianalytics.orianna.types.data.staticdata.SummonerSpell, SummonerSpell>() {
+                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.ReforgedRunes.class, builder.build());
+                loadListProxyData(new Function<com.merakianalytics.orianna.types.data.staticdata.ReforgedRune, ReforgedRune>() {
                     @Override
-                    public SummonerSpell apply(final com.merakianalytics.orianna.types.data.staticdata.SummonerSpell data) {
-                        final SummonerSpell spell = new SummonerSpell(data);
-                        spell.markAsGhostLoaded(SummonerSpell.SUMMONER_SPELL_LOAD_GROUP);
-                        return spell;
+                    public ReforgedRune apply(final com.merakianalytics.orianna.types.data.staticdata.ReforgedRune data) {
+                        final ReforgedRune rune = new ReforgedRune(data);
+                        rune.markAsGhostLoaded(ReforgedRune.REFORGED_RUNE_LOAD_GROUP);
+                        return rune;
                     }
                 });
                 break;

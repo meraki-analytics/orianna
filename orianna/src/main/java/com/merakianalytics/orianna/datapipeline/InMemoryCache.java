@@ -58,6 +58,8 @@ import com.merakianalytics.orianna.types.core.staticdata.Mastery;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcon;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
 import com.merakianalytics.orianna.types.core.staticdata.Realm;
+import com.merakianalytics.orianna.types.core.staticdata.ReforgedRune;
+import com.merakianalytics.orianna.types.core.staticdata.ReforgedRunes;
 import com.merakianalytics.orianna.types.core.staticdata.Rune;
 import com.merakianalytics.orianna.types.core.staticdata.Runes;
 import com.merakianalytics.orianna.types.core.staticdata.SummonerSpell;
@@ -94,6 +96,8 @@ public class InMemoryCache extends AbstractDataStore {
             .put(ProfileIcon.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
             .put(ProfileIcons.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
             .put(Realm.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
+            .put(ReforgedRune.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
+            .put(ReforgedRunes.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
             .put(Rune.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
             .put(Runes.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
             .put(ShardStatus.class.getCanonicalName(), ExpirationPeriod.create(15L, TimeUnit.MINUTES))
@@ -619,6 +623,35 @@ public class InMemoryCache extends AbstractDataStore {
         });
     }
 
+    @GetMany(ReforgedRune.class)
+    public CloseableIterator<ReforgedRune> getManyReforgedRune(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyReforgedRuneQuery(query));
+        for(final Integer key : keys) {
+            if(!cache.containsKey(key)) {
+                return null;
+            }
+        }
+
+        final Iterator<Integer> iterator = keys.iterator();
+        return CloseableIterators.from(new Iterator<ReforgedRune>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public ReforgedRune next() {
+                final int key = iterator.next();
+                return (ReforgedRune)cache.get(key);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
     @GetMany(Rune.class)
     public CloseableIterator<Rune> getManyRune(final java.util.Map<String, Object> query, final PipelineContext context) {
         final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyRuneQuery(query));
@@ -868,6 +901,18 @@ public class InMemoryCache extends AbstractDataStore {
     public Realm getRealm(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forRealmQuery(query);
         return (Realm)cache.get(key);
+    }
+
+    @Get(ReforgedRune.class)
+    public ReforgedRune getReforgedRune(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forReforgedRuneQuery(query);
+        return (ReforgedRune)cache.get(key);
+    }
+
+    @Get(ReforgedRunes.class)
+    public ReforgedRunes getReforgedRunes(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forReforgedRunesQuery(query);
+        return (ReforgedRunes)cache.get(key);
     }
 
     @Get(Rune.class)
@@ -1208,6 +1253,13 @@ public class InMemoryCache extends AbstractDataStore {
         }
     }
 
+    @PutMany(ReforgedRune.class)
+    public void putManyReforgedRune(final Iterable<ReforgedRune> runes, final PipelineContext context) {
+        for(final ReforgedRune rune : runes) {
+            putReforgedRune(rune, context);
+        }
+    }
+
     @PutMany(Rune.class)
     public void putManyRune(final Iterable<Rune> runes, final PipelineContext context) {
         for(final Rune rune : runes) {
@@ -1370,6 +1422,45 @@ public class InMemoryCache extends AbstractDataStore {
     public void putRealm(final Realm realm, final PipelineContext context) {
         final int key = UniqueKeys.forRealm(realm);
         cache.put(key, realm);
+    }
+
+    @Put(ReforgedRune.class)
+    public void putReforgedRune(final ReforgedRune rune, final PipelineContext context) {
+        final int[] keys = UniqueKeys.forReforgedRune(rune);
+
+        if(keys.length < 3) {
+            final LoadHook hook = new LoadHook() {
+                @Override
+                public void call() {
+                    putReforgedRune(rune, null);
+                }
+            };
+
+            rune.registerGhostLoadHook(hook, ReforgedRune.REFORGED_RUNE_LOAD_GROUP);
+        }
+
+        for(final int key : keys) {
+            cache.put(key, rune);
+        }
+    }
+
+    @Put(ReforgedRunes.class)
+    public void putReforgedRunes(final ReforgedRunes runes, final PipelineContext context) {
+        final int key = UniqueKeys.forReforgedRunes(runes);
+        cache.put(key, runes);
+
+        if(runes.getCoreData().isEmpty()) {
+            final LoadHook hook = new LoadHook() {
+                @Override
+                public void call() {
+                    putReforgedRunes(runes, null);
+                }
+            };
+
+            runes.registerGhostLoadHook(hook, ListProxy.LIST_PROXY_LOAD_GROUP);
+        } else {
+            putManyReforgedRune(runes, context);
+        }
     }
 
     @Put(Rune.class)

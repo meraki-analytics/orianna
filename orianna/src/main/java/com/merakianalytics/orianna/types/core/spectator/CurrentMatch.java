@@ -227,7 +227,6 @@ public class CurrentMatch extends GhostObject<com.merakianalytics.orianna.types.
     }
 
     public static final String CURRENT_GAME_LOAD_GROUP = "current-game";
-
     private static final long serialVersionUID = 2151849959267002960L;
 
     public static CurrentMatch.Builder forSummoner(final Summoner summoner) {

@@ -92,6 +92,14 @@
             "period": 6,
             "unit": "HOURS"
           },
+          "com.merakianalytics.orianna.types.core.staticdata.ReforgedRune": {
+            "period": 6,
+            "unit": "HOURS"
+          },
+          "com.merakianalytics.orianna.types.core.staticdata.ReforgedRunes": {
+            "period": 6,
+            "unit": "HOURS"
+          },
           "com.merakianalytics.orianna.types.core.staticdata.Rune": {
             "period": 6,
             "unit": "HOURS"

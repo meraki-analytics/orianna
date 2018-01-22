@@ -178,6 +178,8 @@ public class MatchTransformer extends AbstractDataTransformer {
             rune.getVariables().add(item.getStats().getPerk0Var1());
             rune.getVariables().add(item.getStats().getPerk0Var2());
             rune.getVariables().add(item.getStats().getPerk0Var3());
+            rune.setPlatform((String)context.get("platform"));
+            rune.setVersion((String)context.get("version"));
             runes.add(rune);
         }
         if(item.getStats().getPerk1() != 0) {
@@ -187,6 +189,8 @@ public class MatchTransformer extends AbstractDataTransformer {
             rune.getVariables().add(item.getStats().getPerk1Var1());
             rune.getVariables().add(item.getStats().getPerk1Var2());
             rune.getVariables().add(item.getStats().getPerk1Var3());
+            rune.setPlatform((String)context.get("platform"));
+            rune.setVersion((String)context.get("version"));
             runes.add(rune);
         }
         if(item.getStats().getPerk2() != 0) {
@@ -196,6 +200,8 @@ public class MatchTransformer extends AbstractDataTransformer {
             rune.getVariables().add(item.getStats().getPerk2Var1());
             rune.getVariables().add(item.getStats().getPerk2Var2());
             rune.getVariables().add(item.getStats().getPerk2Var3());
+            rune.setPlatform((String)context.get("platform"));
+            rune.setVersion((String)context.get("version"));
             runes.add(rune);
         }
         if(item.getStats().getPerk3() != 0) {
@@ -205,6 +211,8 @@ public class MatchTransformer extends AbstractDataTransformer {
             rune.getVariables().add(item.getStats().getPerk3Var1());
             rune.getVariables().add(item.getStats().getPerk3Var2());
             rune.getVariables().add(item.getStats().getPerk3Var3());
+            rune.setPlatform((String)context.get("platform"));
+            rune.setVersion((String)context.get("version"));
             runes.add(rune);
         }
         if(item.getStats().getPerk4() != 0) {
@@ -214,6 +222,8 @@ public class MatchTransformer extends AbstractDataTransformer {
             rune.getVariables().add(item.getStats().getPerk4Var1());
             rune.getVariables().add(item.getStats().getPerk4Var2());
             rune.getVariables().add(item.getStats().getPerk4Var3());
+            rune.setPlatform((String)context.get("platform"));
+            rune.setVersion((String)context.get("version"));
             runes.add(rune);
         }
         if(item.getStats().getPerk5() != 0) {
@@ -223,6 +233,8 @@ public class MatchTransformer extends AbstractDataTransformer {
             rune.getVariables().add(item.getStats().getPerk5Var1());
             rune.getVariables().add(item.getStats().getPerk5Var2());
             rune.getVariables().add(item.getStats().getPerk5Var3());
+            rune.setPlatform((String)context.get("platform"));
+            rune.setVersion((String)context.get("version"));
             runes.add(rune);
         }
         runes.trimToSize();

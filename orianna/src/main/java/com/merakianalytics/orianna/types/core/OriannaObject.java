@@ -98,6 +98,11 @@ public abstract class OriannaObject<T extends CoreData> extends AbstractSearchab
             data = SearchableLists.unmodifiableFrom(d);
         }
 
+        public ListProxy(final L coreData, final List<T> data) {
+            super(coreData);
+            this.data = SearchableLists.unmodifiableFrom(new ArrayList<>(data));
+        }
+
         @Override
         public void add(final int index, final T item) {
             throw new UnsupportedOperationException();

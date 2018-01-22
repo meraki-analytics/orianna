@@ -202,7 +202,11 @@ public class Items extends GhostObject.ListProxy<Item, com.merakianalytics.orian
         return new SubsetBuilder(ids, true);
     }
 
-    public static Builder withIncludedData(final Set<String> includedData) {
+    public static Builder withIncludedData(final Iterable<String> includedData) {
+        return new Builder().withIncludedData(includedData);
+    }
+
+    public static Builder withIncludedData(final String... includedData) {
         return new Builder().withIncludedData(includedData);
     }
 

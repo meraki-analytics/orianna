@@ -36,6 +36,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Champions;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
 import com.merakianalytics.orianna.types.core.staticdata.Items;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcon;
+import com.merakianalytics.orianna.types.core.staticdata.ReforgedRune;
 import com.merakianalytics.orianna.types.core.staticdata.SummonerSpell;
 import com.merakianalytics.orianna.types.core.staticdata.Versions;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
@@ -287,7 +288,7 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
         }
 
         @Override
-        @Searchable({int.class})
+        @Searchable({ReforgedRune.class, String.class, int.class})
         public SearchableList<RuneStats> getRuneStats() {
             return runeStats.get();
         }

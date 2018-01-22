@@ -44,6 +44,8 @@ import com.merakianalytics.orianna.types.core.staticdata.Mastery;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcon;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
 import com.merakianalytics.orianna.types.core.staticdata.Realm;
+import com.merakianalytics.orianna.types.core.staticdata.ReforgedRune;
+import com.merakianalytics.orianna.types.core.staticdata.ReforgedRunes;
 import com.merakianalytics.orianna.types.core.staticdata.Rune;
 import com.merakianalytics.orianna.types.core.staticdata.Runes;
 import com.merakianalytics.orianna.types.core.staticdata.SummonerSpell;
@@ -77,11 +79,9 @@ public class GhostObjectSource extends AbstractDataSource {
 
         final ChampionData data = new ChampionData();
         data.getChampion().setId(id == null ? 0 : id.intValue());
-        data.getStatus().setId(id == null ? 0 : id.intValue());
         data.getChampion().setName(name);
         data.getChampion().setKey(key);
         data.getChampion().setPlatform(platform.getTag());
-        data.getStatus().setPlatform(platform.getTag());
         data.getChampion().setVersion(version);
         data.getChampion().setLocale(locale);
         data.getChampion().setIncludedData(includedData);
@@ -318,14 +318,12 @@ public class GhostObjectSource extends AbstractDataSource {
                 if(ids != null) {
                     final int id = ((Number)iterator.next()).intValue();
                     data.getChampion().setId(id);
-                    data.getStatus().setId(id);
                 } else if(names != null) {
                     data.getChampion().setName((String)iterator.next());
                 } else if(keys != null) {
                     data.getChampion().setKey((String)iterator.next());
                 }
                 data.getChampion().setPlatform(platform.getTag());
-                data.getStatus().setPlatform(platform.getTag());
                 data.getChampion().setVersion(version);
                 data.getChampion().setLocale(locale);
                 data.getChampion().setIncludedData(includedData);
@@ -827,6 +825,60 @@ public class GhostObjectSource extends AbstractDataSource {
     }
 
     @SuppressWarnings("unchecked")
+    @GetMany(ReforgedRune.class)
+    public CloseableIterator<ReforgedRune> getManyReforgedRune(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
+        final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
+        final Iterable<String> names = (Iterable<String>)query.get("names");
+        final Iterable<String> keys = (Iterable<String>)query.get("keys");
+        Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names", keys, "keys");
+        final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
+        final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
+
+        final Iterator<?> iterator;
+        if(ids != null) {
+            iterator = ids.iterator();
+        } else if(names != null) {
+            iterator = names.iterator();
+        } else if(keys != null) {
+            iterator = keys.iterator();
+        } else {
+            return null;
+        }
+
+        return CloseableIterators.from(new Iterator<ReforgedRune>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public ReforgedRune next() {
+                final com.merakianalytics.orianna.types.data.staticdata.ReforgedRune data =
+                    new com.merakianalytics.orianna.types.data.staticdata.ReforgedRune();
+                if(ids != null) {
+                    final int id = ((Number)iterator.next()).intValue();
+                    data.setId(id);
+                } else if(names != null) {
+                    data.setName((String)iterator.next());
+                } else if(keys != null) {
+                    data.setKey((String)iterator.next());
+                }
+                data.setPlatform(platform.getTag());
+                data.setVersion(version);
+                data.setLocale(locale);
+                return new ReforgedRune(data);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
     @GetMany(Rune.class)
     public CloseableIterator<Rune> getManyRune(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
@@ -1251,6 +1303,41 @@ public class GhostObjectSource extends AbstractDataSource {
         final com.merakianalytics.orianna.types.data.staticdata.Realm data = new com.merakianalytics.orianna.types.data.staticdata.Realm();
         data.setPlatform(platform.getTag());
         return new Realm(data);
+    }
+
+    @Get(ReforgedRune.class)
+    public ReforgedRune getReforgedRune(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
+        final Number id = (Number)query.get("id");
+        final String name = (String)query.get("name");
+        final String key = (String)query.get("key");
+        Utilities.checkAtLeastOneNotNull(id, "id", name, "name", key, "key");
+        final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
+        final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
+
+        final com.merakianalytics.orianna.types.data.staticdata.ReforgedRune data = new com.merakianalytics.orianna.types.data.staticdata.ReforgedRune();
+        data.setId(id == null ? 0 : id.intValue());
+        data.setName(name);
+        data.setKey(key);
+        data.setPlatform(platform.getTag());
+        data.setVersion(version);
+        data.setLocale(locale);
+        return new ReforgedRune(data);
+    }
+
+    @Get(ReforgedRunes.class)
+    public ReforgedRunes getReforgedRunes(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
+        final String version = query.get("version") == null ? getCurrentVersion(platform, context) : (String)query.get("version");
+        final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
+
+        final com.merakianalytics.orianna.types.data.staticdata.ReforgedRunes data = new com.merakianalytics.orianna.types.data.staticdata.ReforgedRunes();
+        data.setPlatform(platform.getTag());
+        data.setVersion(version);
+        data.setLocale(locale);
+        return new ReforgedRunes(data);
     }
 
     @SuppressWarnings("unchecked")
