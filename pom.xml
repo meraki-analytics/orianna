@@ -59,7 +59,7 @@
 		<maven.javadoc.version>3.0.0</maven.javadoc.version>
 		<maven.gpg.version>1.6</maven.gpg.version>
 		<maven.nexus.version>1.6.8</maven.nexus.version>
-		<datapipelines.version>1.0.1-SNAPSHOT</datapipelines.version>
+		<datapipelines.version>1.0.1</datapipelines.version>
 		<slf4j.version>1.7.25</slf4j.version>
 		<junit.version>4.12</junit.version>
 		<guava.version>20.0</guava.version>
@@ -67,7 +67,7 @@
 		<jackson.version>2.9.3</jackson.version>
 		<msgpack.version>0.8.14</msgpack.version>
 		<joda.version>2.9.9</joda.version>
-		<cache2k.version>1.0.1.Final</cache2k.version>
+		<cache2k.version>1.0.2.Final</cache2k.version>
 	</properties>
 
 	<dependencyManagement>
