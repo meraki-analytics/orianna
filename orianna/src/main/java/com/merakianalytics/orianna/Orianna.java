@@ -200,7 +200,9 @@ public abstract class Orianna {
         }
 
         /**
-         * @return the currentVersion
+         * @param platform
+         *        the platform to get the current version for
+         * @return the currentVersion the that platform
          */
         public String getCurrentVersion(final Platform platform) {
             Supplier<String> version = currentVersion.get(platform);
@@ -870,6 +872,7 @@ public abstract class Orianna {
      * Sets the default platform. If this is not set or is set to null, platforms must be provided for all API queries.
      *
      * @param defaultPlatform
+     *        the defaultPlatform
      */
     public static void setDefaultPlatform(final Platform defaultPlatform) {
         settings.setDefaultPlatform(defaultPlatform);
@@ -879,6 +882,7 @@ public abstract class Orianna {
      * Sets the default region. If this is not set or is set to null, regions must be provided for all API queries.
      *
      * @param defaultRegion
+     *        the defaultRegion
      */
     public static void setDefaultRegion(final Region defaultRegion) {
         settings.setDefaultPlatform(defaultRegion.getPlatform());

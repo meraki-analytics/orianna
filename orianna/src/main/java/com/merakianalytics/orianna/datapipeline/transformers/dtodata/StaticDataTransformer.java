@@ -584,7 +584,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         return rune;
     }
 
-    @Transform(from = ReforgedRunePath.class, to = com.merakianalytics.orianna.types.dto.staticdata.ReforgedRunePath.class)
+    @Transform(from = com.merakianalytics.orianna.types.dto.staticdata.ReforgedRunePath.class, to = ReforgedRunePath.class)
     public ReforgedRunePath transform(final com.merakianalytics.orianna.types.dto.staticdata.ReforgedRunePath item, final PipelineContext context) {
         final ReforgedRunePath path = new ReforgedRunePath(item.getSlots().size());
         for(final com.merakianalytics.orianna.types.dto.staticdata.ReforgedRuneSlot slot : item.getSlots()) {
@@ -1353,7 +1353,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         return rune;
     }
 
-    @Transform(from = com.merakianalytics.orianna.types.dto.staticdata.ReforgedRunePath.class, to = ReforgedRunePath.class)
+    @Transform(from = ReforgedRunePath.class, to = com.merakianalytics.orianna.types.dto.staticdata.ReforgedRunePath.class)
     public com.merakianalytics.orianna.types.dto.staticdata.ReforgedRunePath transform(final ReforgedRunePath item, final PipelineContext context) {
         final com.merakianalytics.orianna.types.dto.staticdata.ReforgedRunePath path = new com.merakianalytics.orianna.types.dto.staticdata.ReforgedRunePath();
         final List<com.merakianalytics.orianna.types.dto.staticdata.ReforgedRuneSlot> list = new ArrayList<>(item.size());
