@@ -31,7 +31,7 @@ Orianna is designed to make the lives of Riot API developers as easy as possible
 Orianna is distributed through the [releases page](https://github.com/meraki-analytics/orianna/releases) and through [Maven Central](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.merakianalytics.orianna%22). The easiest way to get it is by using [Maven](https://maven.apache.org/) or [Gradle](https://gradle.org/).
 
 ### Maven
-To add the latest Orianna release version to your maven project, add the dependency to your pom.xml dependencies section:
+To add the latest Orianna release version to your maven project, add the dependency to your `pom.xml` dependencies section:
 ```xml
 <dependencies>
   <dependency>
@@ -44,7 +44,7 @@ To add the latest Orianna release version to your maven project, add the depende
   </dependency>
 </dependencies>
 ```
-Or, if you want to get the latest development version, add the [Sonaype Snapshot Repository](https://oss.sonatype.org/content/repositories/snapshots/) to your pom.xml as well:
+Or, if you want to get the latest development version, add the [Sonaype Snapshot Repository](https://oss.sonatype.org/content/repositories/snapshots/) to your `pom.xml` as well:
 ```xml
 <dependencies>
   <dependency>
@@ -72,7 +72,7 @@ Or, if you want to get the latest development version, add the [Sonaype Snapshot
 ```
 
 ### Gradle
-To add the latest Orianna release version to your gradle project, add the [Maven Central](https://search.maven.org/) repository to your build.gradle repositories section, and add the dependency to your build.gradle dependencies section:
+To add the latest Orianna release version to your gradle project, add the [Maven Central](https://search.maven.org/) repository to your `build.gradle` repositories section, and add the dependency to your build.gradle dependencies section:
 ```gradle
 repositories {
   mavenCentral()
@@ -84,7 +84,7 @@ dependencies {
   compile "com.merakianalytics.orianna:orianna-android:3.0.0-rc1"
 }
 ```
-Or, if you want to get the latest development version, add the [Sonaype Snapshot Repository](https://oss.sonatype.org/content/repositories/snapshots/) to your build.gradle instead:
+Or, if you want to get the latest development version, add the [Sonaype Snapshot Repository](https://oss.sonatype.org/content/repositories/snapshots/) to your `build.gradle` instead:
 ```gradle
 repositories {
   maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
@@ -129,7 +129,7 @@ public class Example {
         Orianna.setDefaultRegion(Region.NORTH_AMERICA);
         
         Summoner summoner = Orianna.summonerNamed("FatalElement").get();
-        System.out.println(summoner.getName() + " is a level " + summoner.getLevel() + " summoner on the " + summoner.getPlatform() + " server.");
+        System.out.println(summoner.getName() + " is level " + summoner.getLevel() + " on the " + summoner.getPlatform() + " server.");
         
         Champions champions = Orianna.getChampions();
         Champion randomChampion = champions.get((int)(Math.random() * champions.size()));
@@ -154,10 +154,10 @@ Orianna.loadConfiguration(new File("/path/to/your/configuration-file.json"));
 Alternatively, Orianna can automatically load your configuration file on startup if you set your `ORIANNA_CONFIGURATION_PATH` environment variable to the path of your configuration file.
 
 ## Questions & Contributions
-Feel free to send pull requests or to contact us via GitHub or [Discord](https://discord.gg/JRDk2JU). We also hang around the [Riot API Discord](https://discord.gg/riotapi) a lot. Come by and say hello! We love to hear what people are building with Orianna.
+Feel free to send pull requests or to contact us via GitHub or [Discord](https://discord.gg/JRDk2JU). We also hang around the [Riot API Discord](https://discord.gg/riotapi), so come by and say hello. We love to hear what people are building with Orianna! If you would like to help us maintain Orianna, let us know on our [Discord](https://discord.gg/JRDk2JU).
 
 ## Bugs
-If you find bugs please let us know via a pull request or issue. If you would like to help us maintain Orianna, let us know on our [Discord](https://discord.gg/JRDk2JU).
+If you find bugs please let us know via a pull request or issue.
 
 ## Disclaimer
 Orianna isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.
