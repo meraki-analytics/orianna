@@ -83,7 +83,7 @@ public class InMemoryCache extends AbstractDataStore {
             .put(FeaturedMatches.class.getCanonicalName(), ExpirationPeriod.create(5L, TimeUnit.MINUTES))
             .put(Item.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
             .put(Items.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
-            .put(LanguageStrings.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
+            .put(LanguageStrings.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(Languages.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
             .put(League.class.getCanonicalName(), ExpirationPeriod.create(15L, TimeUnit.MINUTES))
             .put(LeaguePositions.class.getCanonicalName(), ExpirationPeriod.create(15L, TimeUnit.MINUTES))
