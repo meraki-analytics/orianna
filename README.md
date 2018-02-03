@@ -37,10 +37,10 @@ To add the latest Orianna release version to your maven project, add the depende
   <dependency>
     <groupId>com.merakianalytics.orianna</groupId>
     <artifactId>orianna</artifactId>
-    <version>3.0.0-rc1</version>
+    <version>3.0.0</version>
     <!-- or, for Android: -->
     <artifactId>orianna-android</artifactId>
-    <version>3.0.0-rc1</version>
+    <version>3.0.0</version>
   </dependency>
 </dependencies>
 ```
@@ -50,10 +50,10 @@ Or, if you want to get the latest development version, add the [Sonaype Snapshot
   <dependency>
     <groupId>com.merakianalytics.orianna</groupId>
     <artifactId>orianna</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
+    <version>3.0.1-SNAPSHOT</version>
     <!-- or, for Android: -->
     <artifactId>orianna-android</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
+    <version>3.0.1-SNAPSHOT</version>
   </dependency>
 </dependencies>
 
@@ -79,9 +79,9 @@ repositories {
 }
 
 dependencies {
-  compile "com.merakianalytics.orianna:orianna:3.0.0-rc1"
+  compile "com.merakianalytics.orianna:orianna:3.0.0"
   // or, for Android:
-  compile "com.merakianalytics.orianna:orianna-android:3.0.0-rc1"
+  compile "com.merakianalytics.orianna:orianna-android:3.0.0"
 }
 ```
 Or, if you want to get the latest development version, add the [Sonaype Snapshot Repository](https://oss.sonatype.org/content/repositories/snapshots/) to your `build.gradle` instead:
@@ -91,9 +91,9 @@ repositories {
 }
 
 dependencies {
-  compile "com.merakianalytics.orianna:orianna:3.0.0-SNAPSHOT"
+  compile "com.merakianalytics.orianna:orianna:3.0.1-SNAPSHOT"
   // or, for Android:
-  compile "com.merakianalytics.orianna:orianna-android:3.0.0-SNAPSHOT"
+  compile "com.merakianalytics.orianna:orianna-android:3.0.1-SNAPSHOT"
 }
 ```
 
@@ -102,11 +102,11 @@ Grab the latest JAR from the [releases page](https://github.com/meraki-analytics
 
 Additionally, Orianna depends on the following libraries which will also need to be added as dependencies:
 - [slf4j-api](https://www.slf4j.org/) (version 1.7.25)
-- [datapipelines](https://github.com/meraki-analytics/datapipelines-java) (version 1.0.1)
+- [datapipelines](https://github.com/meraki-analytics/datapipelines-java) (version 1.0.2)
 - [hipster4j](http://www.hipster4j.org/) (version 1.0.1)
 - [guava](https://github.com/google/guava) (version 20.0)
 - [okhttp](http://square.github.io/okhttp/) (version 3.9.1)
-- [jackson-databind](https://github.com/FasterXML/jackson-databind) (version 2.9.3)
+- [jackson-databind](https://github.com/FasterXML/jackson-databind) (version 2.9.4)
 - [jackson-dataformat-msgpack](https://github.com/msgpack/msgpack-java) (version 0.8.14)
 - [joda-time](http://www.joda.org/joda-time/) (version 2.9.9)
 - [jackson-datatype-joda](https://github.com/FasterXML/jackson-datatype-joda) (version 2.9.3)
@@ -129,7 +129,7 @@ public class Example {
         Orianna.setDefaultRegion(Region.NORTH_AMERICA);
         
         Summoner summoner = Orianna.summonerNamed("FatalElement").get();
-        System.out.println(summoner.getName() + " is level " + summoner.getLevel() + " on the " + summoner.getPlatform() + " server.");
+        System.out.println(summoner.getName() + " is level " + summoner.getLevel() + " on the " + summoner.getRegion() + " server.");
         
         Champions champions = Orianna.getChampions();
         Champion randomChampion = champions.get((int)(Math.random() * champions.size()));
