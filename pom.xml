@@ -7,7 +7,7 @@
 	<artifactId>orianna-parent</artifactId>
 	<version>3.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	
+
 	<name>orianna</name>
 	<description>A Java adaptation of the Riot Games LoL API (https://developer.riotgames.com/)</description>
 	<url>https://github.com/meraki-analytics/orianna</url>
@@ -58,17 +58,17 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.version>3.7.0</maven.compiler.version>
-		<maven.resources.version>3.0.2</maven.resources.version>
 		<maven.source.version>3.0.1</maven.source.version>
 		<maven.javadoc.version>3.0.0</maven.javadoc.version>
 		<maven.gpg.version>1.6</maven.gpg.version>
 		<maven.nexus.version>1.6.8</maven.nexus.version>
-		<datapipelines.version>1.0.1</datapipelines.version>
+		<maven.license.version>1.14</maven.license.version>
+		<datapipelines.version>1.0.2</datapipelines.version>
 		<slf4j.version>1.7.25</slf4j.version>
 		<junit.version>4.12</junit.version>
 		<guava.version>20.0</guava.version>
 		<okhttp.version>3.9.1</okhttp.version>
-		<jackson.version>2.9.3</jackson.version>
+		<jackson.version>2.9.4</jackson.version>
 		<msgpack.version>0.8.14</msgpack.version>
 		<joda.version>2.9.9</joda.version>
 		<cache2k.version>1.0.2.Final</cache2k.version>
@@ -209,6 +209,22 @@
 							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
 							<autoReleaseAfterClose>true</autoReleaseAfterClose>
 						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>license-maven-plugin</artifactId>
+						<version>${maven.license.version}</version>
+						<configuration>
+							<excludedScopes>system,test</excludedScopes>
+						</configuration>
+						<executions>
+							<execution>
+								<id>add-third-party</id>
+								<goals>
+									<goal>add-third-party</goal>
+								</goals>
+							</execution>
+						</executions>
 					</plugin>
 				</plugins>
 			</build>
