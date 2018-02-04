@@ -37,10 +37,10 @@ To add the latest Orianna release version to your maven project, add the depende
   <dependency>
     <groupId>com.merakianalytics.orianna</groupId>
     <artifactId>orianna</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.1</version>
     <!-- or, for Android: -->
     <artifactId>orianna-android</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.1</version>
   </dependency>
 </dependencies>
 ```
@@ -50,10 +50,10 @@ Or, if you want to get the latest development version, add the [Sonaype Snapshot
   <dependency>
     <groupId>com.merakianalytics.orianna</groupId>
     <artifactId>orianna</artifactId>
-    <version>3.0.1-SNAPSHOT</version>
+    <version>3.0.2-SNAPSHOT</version>
     <!-- or, for Android: -->
     <artifactId>orianna-android</artifactId>
-    <version>3.0.1-SNAPSHOT</version>
+    <version>3.0.2-SNAPSHOT</version>
   </dependency>
 </dependencies>
 
@@ -79,9 +79,9 @@ repositories {
 }
 
 dependencies {
-  compile "com.merakianalytics.orianna:orianna:3.0.0"
+  compile "com.merakianalytics.orianna:orianna:3.0.1"
   // or, for Android:
-  compile "com.merakianalytics.orianna:orianna-android:3.0.0"
+  compile "com.merakianalytics.orianna:orianna-android:3.0.1"
 }
 ```
 Or, if you want to get the latest development version, add the [Sonaype Snapshot Repository](https://oss.sonatype.org/content/repositories/snapshots/) to your `build.gradle` instead:
@@ -91,9 +91,9 @@ repositories {
 }
 
 dependencies {
-  compile "com.merakianalytics.orianna:orianna:3.0.1-SNAPSHOT"
+  compile "com.merakianalytics.orianna:orianna:3.0.2-SNAPSHOT"
   // or, for Android:
-  compile "com.merakianalytics.orianna:orianna-android:3.0.1-SNAPSHOT"
+  compile "com.merakianalytics.orianna:orianna-android:3.0.2-SNAPSHOT"
 }
 ```
 
@@ -127,14 +127,14 @@ public class Example {
     public static void main(String[] args) {
         Orianna.setRiotAPIKey("YOUR-API-KEY");
         Orianna.setDefaultRegion(Region.NORTH_AMERICA);
-        
+
         Summoner summoner = Orianna.summonerNamed("FatalElement").get();
         System.out.println(summoner.getName() + " is level " + summoner.getLevel() + " on the " + summoner.getRegion() + " server.");
-        
+
         Champions champions = Orianna.getChampions();
         Champion randomChampion = champions.get((int)(Math.random() * champions.size()));
         System.out.println("He enjoys playing champions such as " + randomChampion.getName());
-        
+
         League challengerLeague = Orianna.challengerLeagueInQueue(Queue.RANKED_SOLO_5x5).get();
         Summoner bestNA = challengerLeague.get(0).getSummoner();
         System.out.println("He's not as good as " + bestNA.getName() + " at League, but probably a better Java programmer!");
