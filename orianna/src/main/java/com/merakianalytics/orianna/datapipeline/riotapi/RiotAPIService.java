@@ -725,7 +725,7 @@ public class RiotAPIService extends AbstractDataSource {
                 LOGGER.error("Got \"Internal Server Error\" from " + host + "/" + context.endpoint + "!");
                 return http500Strategy.onFailedRequest(this, context, response,
                     new InternalServerErrorException("A Riot API request to " + host + "/" + context.endpoint
-                        + " returned \"Bad Request\". Sometimes the Riot API experiences these when under extreme load. If the problem persists, try catching this exception, waiting briefly, and trying again."));
+                        + " returned \"Internal Server Error\". Sometimes the Riot API experiences these when under extreme load. If the problem persists, try catching this exception, waiting briefly, and trying again."));
             case 503:
                 LOGGER.error("Got \"Service Unavailable\" from " + host + "/" + context.endpoint + "!");
                 return http503Strategy.onFailedRequest(this, context, response,
