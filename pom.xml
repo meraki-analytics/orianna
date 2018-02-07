@@ -63,6 +63,7 @@
 		<maven.gpg.version>1.6</maven.gpg.version>
 		<maven.nexus.version>1.6.8</maven.nexus.version>
 		<maven.license.version>1.14</maven.license.version>
+		<maven.shade.version>3.1.0</maven.shade.version>
 		<datapipelines.version>1.0.2</datapipelines.version>
 		<slf4j.version>1.7.25</slf4j.version>
 		<junit.version>4.12</junit.version>
@@ -223,6 +224,29 @@
 								<goals>
 									<goal>add-third-party</goal>
 								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>shaded</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-shade-plugin</artifactId>
+						<version>${maven.shade.version}</version>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>shade</goal>
+								</goals>
+								<configuration>
+									<finalName>${build.finalName}-jar-with-dependencies</finalName>
+								</configuration>
 							</execution>
 						</executions>
 					</plugin>

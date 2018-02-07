@@ -27,3 +27,4 @@ hs_err_pid*
 *.settings
 *target/
 /.metadata/
+*dependency-reduced-pom.xml
