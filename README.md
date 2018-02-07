@@ -98,9 +98,9 @@ dependencies {
 ```
 
 ### Using the release JAR directly
-Grab the latest JAR from the [releases page](https://github.com/meraki-analytics/orianna/releases) and add it to your project dependencies.
+Grab the latest JAR from the [releases page](https://github.com/meraki-analytics/orianna/releases) and add it to your project dependencies. JARs are provide both with and without Orianna's dependencies included. The `jar-with-dependencies` version will get you up & running faster, but can cause version conflicts if your project has other dependencies.
 
-Additionally, Orianna depends on the following libraries which will also need to be added as dependencies:
+If you're using the JAR without dependencies inlcuded, Orianna depends on the following libraries which will also need to be added as dependencies:
 - [slf4j-api](https://www.slf4j.org/) (version 1.7.25)
 - [datapipelines](https://github.com/meraki-analytics/datapipelines-java) (version 1.0.2)
 - [hipster4j](http://www.hipster4j.org/) (version 1.0.1)
