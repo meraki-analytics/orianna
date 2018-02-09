@@ -588,6 +588,13 @@ public class RiotAPIService extends AbstractDataSource {
                     if(application != null) {
                         limiter = new MultiRateLimiter(ImmutableMap.of("application", application, "method", limiter));
                     }
+                    try {
+                        limiter.acquire();
+                    } catch(final InterruptedException e) {
+                        LOGGER.error("Request was interrupted while creating rate limiter!", e);
+                        throw new OriannaException("Request was interrupted while creating rate limiter! Report this to the orianna team.", e);
+                    }
+                    limiter.release();
                     limiters.put(name, limiter);
                 }
             }
@@ -673,11 +680,6 @@ public class RiotAPIService extends AbstractDataSource {
                         response = client.get(host, context.endpoint, context.parameters, defaultHeaders, null);
                         final long timeAfter = System.currentTimeMillis();
                         createRateLimiter(context.platform, context.rateLimiterName, response, timeBefore, timeAfter);
-
-                        // Have to decrement the permit count for the above request. Resetter details were handled on creation.
-                        final MultiRateLimiter decrement = getRateLimiter(context.platform, context.rateLimiterName);
-                        decrement.acquire();
-                        decrement.release();
                     }
                 }
             }
@@ -693,9 +695,6 @@ public class RiotAPIService extends AbstractDataSource {
             LOGGER.error("Get request failed to " + host + "/" + context.endpoint + "!", e);
             throw new OriannaException("Something went wrong with a request to the Riot API at " + host + "/" + context.endpoint
                 + "! Report this to the orianna team.", e);
-        } catch(final InterruptedException e) {
-            LOGGER.error("Request was interrupted waiting for rate limiter!", e);
-            throw new OriannaException("Request was interrupted waiting for rate limiter! Report this to the orianna team.", e);
         }
 
         if(limiter != null) {
