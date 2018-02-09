@@ -421,11 +421,13 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         converted.setImage(transform(item.getImage(), context));
         converted.setIncludedData(new HashSet<>(item.getIncludedData()));
         converted.setInStore(item.isInStore());
-        final Set<String> keywords = new HashSet<>();
-        for(final String keyword : item.getColloq().split(";")) {
-            keywords.add(keyword);
+        if(item.getColloq() != null) {
+            final Set<String> keywords = new HashSet<>();
+            for(final String keyword : item.getColloq().split(";")) {
+                keywords.add(keyword);
+            }
+            converted.setKeywords(keywords);
         }
-        converted.setKeywords(keywords);
         converted.setLocale(item.getLocale());
         final Set<Integer> maps = new HashSet<>();
         for(final String id : item.getMaps().keySet()) {
@@ -902,7 +904,9 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         converted.setImage(transform(item.getImage(), context));
         converted.setIncludedData(new HashSet<>(item.getIncludedData()));
         converted.setInStore(item.isInStore());
-        converted.setColloq(Joiner.on(";").join(item.getKeywords()));
+        if(item.getKeywords() != null) {
+            converted.setColloq(Joiner.on(";").join(item.getKeywords()));
+        }
         converted.setLocale(item.getLocale());
         final Map<String, Boolean> maps = new HashMap<>();
         for(final com.merakianalytics.orianna.types.common.Map map : com.merakianalytics.orianna.types.common.Map.values()) {

@@ -4,6 +4,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class FixedWindowRateLimiter extends AbstractRateLimiter {
     private class Drainer extends TimerTask {
@@ -44,6 +45,7 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
     private final long epoch;
     private final TimeUnit epochUnit;
     private int permits;
+    private final AtomicInteger permitsIssued = new AtomicInteger(0);
     private final Semaphore permitter;
     private Resetter resetter = null;
     private final Object resetterLock = new Object();
@@ -61,6 +63,8 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
     public void acquire() throws InterruptedException {
         permitter.acquire();
 
+        permitsIssued.incrementAndGet();
+
         if(drainer == null) {
             synchronized(resetterLock) {
                 if(drainer == null) {
@@ -77,9 +81,16 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
 
     @Override
     public boolean acquire(final long timeout, final TimeUnit unit) throws InterruptedException {
+        if(timeout <= 0L) {
+            acquire();
+            return true;
+        }
+
         if(!permitter.tryAcquire(timeout, unit)) {
             return false;
         }
+
+        permitsIssued.incrementAndGet();
 
         synchronized(currentlyProcessingLock) {
             currentlyProcessing += 1;
@@ -115,6 +126,11 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
     }
 
     @Override
+    public int permitsIssued() {
+        return permitsIssued.get();
+    }
+
+    @Override
     public void release() {
         synchronized(currentlyProcessingLock) {
             currentlyProcessing -= 1;
@@ -133,6 +149,7 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
     @Override
     public ReservedPermit reserve() throws InterruptedException {
         permitter.acquire();
+        permitsIssued.decrementAndGet();
 
         synchronized(currentlyProcessingLock) {
             currentlyProcessing += 1;
@@ -140,7 +157,9 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
 
         return new ReservedPermit() {
             @Override
-            public void acquire() {}
+            public void acquire() {
+                permitsIssued.incrementAndGet();
+            }
 
             @Override
             public void cancel() {
@@ -157,6 +176,7 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
         if(!permitter.tryAcquire(timeout, unit)) {
             return null;
         }
+        permitsIssued.decrementAndGet();
 
         synchronized(currentlyProcessingLock) {
             currentlyProcessing += 1;
@@ -165,6 +185,7 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
         return new ReservedPermit() {
             @Override
             public void acquire() {
+                permitsIssued.incrementAndGet();
                 if(drainer == null) {
                     synchronized(resetterLock) {
                         if(drainer == null) {

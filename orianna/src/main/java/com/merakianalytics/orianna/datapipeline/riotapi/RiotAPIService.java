@@ -673,6 +673,11 @@ public class RiotAPIService extends AbstractDataSource {
                         response = client.get(host, context.endpoint, context.parameters, defaultHeaders, null);
                         final long timeAfter = System.currentTimeMillis();
                         createRateLimiter(context.platform, context.rateLimiterName, response, timeBefore, timeAfter);
+
+                        // Have to decrement the permit count for the above request. Resetter details were handled on creation.
+                        final MultiRateLimiter decrement = getRateLimiter(context.platform, context.rateLimiterName);
+                        decrement.acquire();
+                        decrement.release();
                     }
                 }
             }
@@ -688,6 +693,9 @@ public class RiotAPIService extends AbstractDataSource {
             LOGGER.error("Get request failed to " + host + "/" + context.endpoint + "!", e);
             throw new OriannaException("Something went wrong with a request to the Riot API at " + host + "/" + context.endpoint
                 + "! Report this to the orianna team.", e);
+        } catch(final InterruptedException e) {
+            LOGGER.error("Request was interrupted waiting for rate limiter!", e);
+            throw new OriannaException("Request was interrupted waiting for rate limiter! Report this to the orianna team.", e);
         }
 
         if(limiter != null) {
@@ -717,10 +725,11 @@ public class RiotAPIService extends AbstractDataSource {
                 throw new UnsupportedMediaTypeException("A Riot API request to " + host + "/" + context.endpoint
                     + " returned \"Unsupported Media Type\". If the problem persists, report this to the orianna team.");
             case 429:
-                LOGGER.info("Got \"Rate Limit Exceeded\" from " + host + "/" + context.endpoint + "!");
+                LOGGER.info("Got \"Rate Limit Exceeded (" + response.getHeaders().get("X-Rate-Limit-Type") + ")\" from " + host + "/" + context.endpoint + "!");
                 return http429Strategy.onFailedRequest(this, context, response,
                     new RateLimitExceededException("A Riot API request to " + host + "/" + context.endpoint
-                        + " returned \"Rate Limit Exceeded\". If this was unexpected, report it to the orianna team."));
+                        + " returned \"Rate Limit Exceeded (" + response.getHeaders().get("X-Rate-Limit-Type")
+                        + ")\". If this occurs frequently, report it to the orianna team."));
             case 500:
                 LOGGER.error("Got \"Internal Server Error\" from " + host + "/" + context.endpoint + "!");
                 return http500Strategy.onFailedRequest(this, context, response,
@@ -805,11 +814,9 @@ public class RiotAPIService extends AbstractDataSource {
                     .newInstance(limits.get(i), epochsInSeconds.get(i), TimeUnit.SECONDS);
                 final long windowLockoutIn = Math.max(0, TimeUnit.SECONDS.toMillis(epochsInSeconds.get(i)) + windowLowerBound - System.currentTimeMillis());
                 limiter.restrict(windowLockoutIn, TimeUnit.MILLISECONDS, windowUpperBound - windowLowerBound, TimeUnit.MILLISECONDS);
-                limiter.acquire();
-                limiter.release();
                 limiters.put(epochsInSeconds.get(i).toString(), limiter);
             } catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-                | SecurityException | InterruptedException e) {
+                | SecurityException e) {
                 LOGGER.error("Failed to instantiate " + limitingType + " Rate Limiter!", e);
                 throw new OriannaException("Failed to instantiate " + limitingType + " Rate Limiter! Report this to the orianna team.", e);
             }

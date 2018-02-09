@@ -155,8 +155,8 @@
         "requests": {
           "connectTimeout": 3,
           "connectTimeoutUnit": "SECONDS",
-          "rateLimiterTimeout": 30,
-          "rateLimiterTimeoutUnit": "SECONDS",
+          "rateLimiterTimeout": -1,
+          "rateLimiterTimeoutUnit": "DAYS",
           "readTimeout": 3,
           "readTimeoutUnit": "SECONDS"
         }
@@ -212,8 +212,8 @@
         "requests": {
           "connectTimeout": 3,
           "connectTimeoutUnit": "SECONDS",
-          "rateLimiterTimeout": 30,
-          "rateLimiterTimeoutUnit": "SECONDS",
+          "rateLimiterTimeout": -1,
+          "rateLimiterTimeoutUnit": "DAYS",
           "readTimeout": 3,
           "readTimeoutUnit": "SECONDS"
         },

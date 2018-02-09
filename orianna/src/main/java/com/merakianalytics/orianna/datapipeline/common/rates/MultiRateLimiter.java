@@ -26,6 +26,7 @@ public class MultiRateLimiter implements RateLimiter {
             for(final ReservedPermit permit : reservations) {
                 permit.acquire();
             }
+            permitsIssued.incrementAndGet();
         }
 
         @Override
@@ -61,10 +62,16 @@ public class MultiRateLimiter implements RateLimiter {
         for(final RateLimiter limiter : limiters.values()) {
             limiter.acquire();
         }
+        permitsIssued.incrementAndGet();
     }
 
     @Override
     public boolean acquire(final long timeout, final TimeUnit unit) throws InterruptedException {
+        if(timeout <= 0L) {
+            acquire();
+            return true;
+        }
+
         final long deadline = System.currentTimeMillis() + unit.toMillis(timeout);
 
         final Set<ReservedPermit> reservations = new HashSet<>();
@@ -91,6 +98,7 @@ public class MultiRateLimiter implements RateLimiter {
         for(final ReservedPermit permit : reservations) {
             permit.acquire();
         }
+        permitsIssued.incrementAndGet();
 
         return true;
     }
@@ -98,7 +106,6 @@ public class MultiRateLimiter implements RateLimiter {
     @Override
     public <T> T call(final Callable<T> callable) throws InterruptedException, Exception {
         acquire();
-        permitsIssued.incrementAndGet();
 
         try {
             return callable.call();
@@ -113,8 +120,6 @@ public class MultiRateLimiter implements RateLimiter {
             throw new TimeoutException("Rate Limiter timed out waiting for permit!", TimeoutException.Type.RATE_LIMITER);
         }
 
-        permitsIssued.incrementAndGet();
-
         try {
             return callable.call();
         } finally {
@@ -125,7 +130,6 @@ public class MultiRateLimiter implements RateLimiter {
     @Override
     public void call(final Runnable runnable) throws InterruptedException {
         acquire();
-        permitsIssued.incrementAndGet();
 
         try {
             runnable.run();
@@ -139,8 +143,6 @@ public class MultiRateLimiter implements RateLimiter {
         if(!acquire(timeout, unit)) {
             throw new TimeoutException("Rate Limiter timed out waiting for permit!", TimeoutException.Type.RATE_LIMITER);
         }
-
-        permitsIssued.incrementAndGet();
 
         try {
             runnable.run();

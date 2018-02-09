@@ -141,9 +141,11 @@ public class MatchTransformer extends AbstractDataTransformer {
         converted.setSummonerSpellDId(item.getSpell1Id());
         converted.setSummonerSpellFId(item.getSpell2Id());
         converted.setTeam(item.getTeamId());
-        converted.setTimeline(transform(item.getTimeline(), context));
-        converted.setLane(item.getTimeline().getLane());
-        converted.setRole(item.getTimeline().getRole());
+        if(item.getTimeline() != null) {
+            converted.setTimeline(transform(item.getTimeline(), context));
+            converted.setLane(item.getTimeline().getLane());
+            converted.setRole(item.getTimeline().getRole());
+        }
         converted.setPrimaryRunePath(item.getStats().getPerkPrimaryStyle());
         converted.setSecondaryRunePath(item.getStats().getPerkSubStyle());
         final ArrayList<Integer> items = new ArrayList<>(7);
@@ -1067,7 +1069,9 @@ public class MatchTransformer extends AbstractDataTransformer {
         participant.setSpell2Id(item.getSummonerSpellFId());
         participant.setStats(transform(item.getStats(), context));
         participant.setTeamId(item.getTeam());
-        participant.setTimeline(transform(item.getTimeline(), context));
+        if(item.getTimeline() != null) {
+            participant.setTimeline(transform(item.getTimeline(), context));
+        }
         context.put("participantId", previousParticipant);
         context.put("lane", previousLane);
         context.put("role", previousRole);

@@ -27,8 +27,8 @@ public class HTTPClient {
     public static class Configuration {
         private static final long DEFAULT_CONNECT_TIMEOUT = 3;
         private static final TimeUnit DEFAULT_CONNECT_TIMEOUT_UNIT = TimeUnit.SECONDS;
-        private static final long DEFAULT_RATE_LIMITER_TIMEOUT = 30;
-        private static final TimeUnit DEFAULT_RATE_LIMITER_TIMEOUT_UNIT = TimeUnit.SECONDS;
+        private static final long DEFAULT_RATE_LIMITER_TIMEOUT = -1;
+        private static final TimeUnit DEFAULT_RATE_LIMITER_TIMEOUT_UNIT = TimeUnit.DAYS;
         private static final long DEFAULT_READ_TIMEOUT = 3;
         private static final TimeUnit DEFAULT_READ_TIMEOUT_UNIT = TimeUnit.SECONDS;
 
