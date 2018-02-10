@@ -155,7 +155,8 @@ public abstract class UniqueKeys {
 
     public static int forChampionListDto(final ChampionList champions) {
         return Arrays.hashCode(new Object[] {
-            ChampionList.class.getCanonicalName(), champions.getPlatform(), champions.getVersion(), champions.getLocale(), champions.getIncludedData()
+            ChampionList.class.getCanonicalName(), champions.getPlatform(), champions.getVersion(), champions.getLocale(), champions.getIncludedData(),
+            champions.isDataById()
         });
     }
 
@@ -163,7 +164,7 @@ public abstract class UniqueKeys {
     public static int forChampionListDtoQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             ChampionList.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
-            (Set<String>)query.get("includedData")
+            (Set<String>)query.get("includedData"), (Boolean)query.get("dataById")
         });
     }
 
@@ -304,7 +305,7 @@ public abstract class UniqueKeys {
 
     public static int forCurrentGameInfoDto(final CurrentGameInfo game) {
         return Arrays.hashCode(new Object[] {
-            CurrentGameInfo.class.getCanonicalName(), game.getPlatformId(), game.getGameId()
+            CurrentGameInfo.class.getCanonicalName(), game.getPlatformId(), game.getSummonerId()
         });
     }
 
@@ -621,7 +622,7 @@ public abstract class UniqueKeys {
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
                     ChampionList.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next(), (String)query.get("locale"),
-                    (Set<String>)query.get("includedData")
+                    (Set<String>)query.get("includedData"), (Boolean)query.get("dataById")
                 });
             }
 
