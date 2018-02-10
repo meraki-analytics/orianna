@@ -104,7 +104,9 @@ public class StaticDataTransformer extends AbstractDataTransformer {
     public com.merakianalytics.orianna.types.dto.staticdata.Champion transform(final Champion item, final PipelineContext context) {
         final Object previous = context.put("key", item.getKey());
         final com.merakianalytics.orianna.types.dto.staticdata.Champion champion = new com.merakianalytics.orianna.types.dto.staticdata.Champion();
-        champion.setAllytips(new ArrayList<>(item.getAllyTips()));
+        if(item.getAllyTips() != null) {
+            champion.setAllytips(new ArrayList<>(item.getAllyTips()));
+        }
         champion.setBlurb(item.getBlurb());
         final Info info = new Info();
         info.setAttack(item.getPhysicalRating());
@@ -112,34 +114,50 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         info.setDifficulty(item.getDifficultyRating());
         info.setMagic(item.getMagicRating());
         champion.setInfo(info);
-        champion.setEnemytips(new ArrayList<>(item.getEnemyTips()));
+        if(item.getEnemyTips() != null) {
+            champion.setEnemytips(new ArrayList<>(item.getEnemyTips()));
+        }
         champion.setId(item.getId());
-        champion.setImage(transform(item.getImage(), context));
+        if(item.getImage() != null) {
+            champion.setImage(transform(item.getImage(), context));
+        }
         champion.setIncludedData(new HashSet<>(item.getIncludedData()));
         champion.setKey(item.getKey());
         champion.setLocale(item.getLocale());
         champion.setLore(item.getLore());
         champion.setName(item.getName());
-        champion.setPassive(transform(item.getPassive(), context));
+        if(item.getPassive() != null) {
+            champion.setPassive(transform(item.getPassive(), context));
+        }
         champion.setPlatform(item.getPlatform());
-        final List<Recommended> items = new ArrayList<>(item.getRecommendedItems().size());
-        for(final RecommendedItems rec : item.getRecommendedItems()) {
-            items.add(transform(rec, context));
+        if(item.getRecommendedItems() != null) {
+            final List<Recommended> items = new ArrayList<>(item.getRecommendedItems().size());
+            for(final RecommendedItems rec : item.getRecommendedItems()) {
+                items.add(transform(rec, context));
+            }
+            champion.setRecommended(items);
         }
-        champion.setRecommended(items);
         champion.setPartype(item.getResource());
-        final List<com.merakianalytics.orianna.types.dto.staticdata.Skin> skins = new ArrayList<>(item.getSkins().size());
-        for(final Skin skin : item.getSkins()) {
-            skins.add(transform(skin, context));
+        if(item.getSkins() != null) {
+            final List<com.merakianalytics.orianna.types.dto.staticdata.Skin> skins = new ArrayList<>(item.getSkins().size());
+            for(final Skin skin : item.getSkins()) {
+                skins.add(transform(skin, context));
+            }
+            champion.setSkins(skins);
         }
-        champion.setSkins(skins);
-        final List<com.merakianalytics.orianna.types.dto.staticdata.ChampionSpell> spells = new ArrayList<>(item.getSpells().size());
-        for(final ChampionSpell spell : item.getSpells()) {
-            spells.add(transform(spell, context));
+        if(item.getSpells() != null) {
+            final List<com.merakianalytics.orianna.types.dto.staticdata.ChampionSpell> spells = new ArrayList<>(item.getSpells().size());
+            for(final ChampionSpell spell : item.getSpells()) {
+                spells.add(transform(spell, context));
+            }
+            champion.setSpells(spells);
         }
-        champion.setSpells(spells);
-        champion.setStats(transform(item.getStats(), context));
-        champion.setTags(new ArrayList<>(item.getTags()));
+        if(item.getStats() != null) {
+            champion.setStats(transform(item.getStats(), context));
+        }
+        if(item.getTags() != null) {
+            champion.setTags(new ArrayList<>(item.getTags()));
+        }
         champion.setTitle(item.getTitle());
         champion.setVersion(item.getVersion());
         context.put("key", previous);
@@ -191,20 +209,28 @@ public class StaticDataTransformer extends AbstractDataTransformer {
             }
             spell.setAltImages(alternativeImages);
         }
-        spell.setCooldown(new ArrayList<>(item.getCooldowns()));
-        spell.setCooldownBurn(getBurn(item.getCooldowns()));
-        spell.setCost(new ArrayList<>(item.getCosts()));
-        spell.setCostBurn(getBurn(item.getCosts()));
-        spell.setDescription(item.getDescription());
-        final List<List<Double>> effects = new ArrayList<>(item.getEffects().size());
-        final List<String> effectBurn = new ArrayList<>(item.getEffects().size());
-        for(final List<Double> effect : item.getEffects()) {
-            effects.add(new ArrayList<>(effect));
-            effectBurn.add(getBurn(effect));
+        if(item.getCooldowns() != null) {
+            spell.setCooldown(new ArrayList<>(item.getCooldowns()));
+            spell.setCooldownBurn(getBurn(item.getCooldowns()));
         }
-        spell.setEffect(effects);
-        spell.setEffectBurn(effectBurn);
-        spell.setImage(transform(item.getImage(), context));
+        if(item.getCosts() != null) {
+            spell.setCost(new ArrayList<>(item.getCosts()));
+            spell.setCostBurn(getBurn(item.getCosts()));
+        }
+        spell.setDescription(item.getDescription());
+        if(item.getEffects() != null) {
+            final List<List<Double>> effects = new ArrayList<>(item.getEffects().size());
+            final List<String> effectBurn = new ArrayList<>(item.getEffects().size());
+            for(final List<Double> effect : item.getEffects()) {
+                effects.add(new ArrayList<>(effect));
+                effectBurn.add(getBurn(effect));
+            }
+            spell.setEffect(effects);
+            spell.setEffectBurn(effectBurn);
+        }
+        if(item.getImage() != null) {
+            spell.setImage(transform(item.getImage(), context));
+        }
         spell.setKey(item.getKey());
         if(item.getLevelUpKeywords() != null || item.getLevelUpEffects() != null) {
             final LevelTip tip = new LevelTip();
@@ -218,18 +244,22 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         }
         spell.setMaxrank(item.getMaxRank());
         spell.setName(item.getName());
-        spell.setRange(new ArrayList<>(item.getRanges()));
+        if(item.getRanges() != null) {
+            spell.setRange(new ArrayList<>(item.getRanges()));
+        }
         spell.setRangeBurn(getBurn(item.getRanges()));
         spell.setCostType(item.getResource());
         spell.setResource(item.getResourceDescription());
         spell.setSanitizedDescription(item.getSanitizedDescription());
         spell.setSanitizedTooltip(item.getSanitizedTooltip());
         spell.setTooltip(item.getTooltip());
-        final List<SpellVars> variables = new ArrayList<>(item.getVariables().size());
-        for(final SpellVariables vars : item.getVariables()) {
-            variables.add(transform(vars, context));
+        if(item.getVariables() != null) {
+            final List<SpellVars> variables = new ArrayList<>(item.getVariables().size());
+            for(final SpellVariables vars : item.getVariables()) {
+                variables.add(transform(vars, context));
+            }
+            spell.setVars(variables);
         }
-        spell.setVars(variables);
         return spell;
     }
 
@@ -285,40 +315,63 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         final Object previousLocale = context.put("locale", item.getLocale());
         final Object previousKey = context.put("key", item.getKey());
         final Champion champion = new Champion();
-        champion.setAllyTips(new ArrayList<>(item.getAllytips()));
+        if(item.getAllytips() != null) {
+            champion.setAllyTips(new ArrayList<>(item.getAllytips()));
+        }
         champion.setBlurb(item.getBlurb());
-        champion.setDefenseRating(item.getInfo().getDefense());
-        champion.setDifficultyRating(item.getInfo().getDifficulty());
-        champion.setEnemyTips(new ArrayList<>(item.getEnemytips()));
+        if(item.getInfo() != null) {
+            champion.setDefenseRating(item.getInfo().getDefense());
+        }
+        if(item.getInfo() != null) {
+            champion.setDifficultyRating(item.getInfo().getDifficulty());
+            champion.setMagicRating(item.getInfo().getMagic());
+            champion.setPhysicalRating(item.getInfo().getAttack());
+        }
+        if(item.getEnemytips() != null) {
+            champion.setEnemyTips(new ArrayList<>(item.getEnemytips()));
+        }
         champion.setId(item.getId());
-        champion.setImage(transform(item.getImage(), context));
+        if(item.getImage() != null) {
+            champion.setImage(transform(item.getImage(), context));
+        }
         champion.setIncludedData(new HashSet<>(item.getIncludedData()));
         champion.setKey(item.getKey());
         champion.setLocale(item.getLocale());
         champion.setLore(item.getLore());
-        champion.setMagicRating(item.getInfo().getMagic());
         champion.setName(item.getName());
-        champion.setPassive(transform(item.getPassive(), context));
-        champion.setPhysicalRating(item.getInfo().getAttack());
+        if(item.getPassive() != null) {
+            champion.setPassive(transform(item.getPassive(), context));
+        }
+
         champion.setPlatform(item.getPlatform());
-        final List<RecommendedItems> items = new ArrayList<>(item.getRecommended().size());
-        for(final Recommended rec : item.getRecommended()) {
-            items.add(transform(rec, context));
+        if(item.getRecommended() != null) {
+            final List<RecommendedItems> items = new ArrayList<>(item.getRecommended().size());
+            for(final Recommended rec : item.getRecommended()) {
+                items.add(transform(rec, context));
+            }
+            champion.setRecommendedItems(items);
         }
-        champion.setRecommendedItems(items);
         champion.setResource(item.getPartype());
-        final List<Skin> skins = new ArrayList<>(item.getSkins().size());
-        for(final com.merakianalytics.orianna.types.dto.staticdata.Skin skin : item.getSkins()) {
-            skins.add(transform(skin, context));
+        if(item.getSkins() != null) {
+            final List<Skin> skins = new ArrayList<>(item.getSkins().size());
+            for(final com.merakianalytics.orianna.types.dto.staticdata.Skin skin : item.getSkins()) {
+                skins.add(transform(skin, context));
+            }
+            champion.setSkins(skins);
         }
-        champion.setSkins(skins);
-        final List<ChampionSpell> spells = new ArrayList<>(item.getSpells().size());
-        for(final com.merakianalytics.orianna.types.dto.staticdata.ChampionSpell spell : item.getSpells()) {
-            spells.add(transform(spell, context));
+        if(item.getSpells() != null) {
+            final List<ChampionSpell> spells = new ArrayList<>(item.getSpells().size());
+            for(final com.merakianalytics.orianna.types.dto.staticdata.ChampionSpell spell : item.getSpells()) {
+                spells.add(transform(spell, context));
+            }
+            champion.setSpells(spells);
         }
-        champion.setSpells(spells);
-        champion.setStats(transform(item.getStats(), context));
-        champion.setTags(new ArrayList<>(item.getTags()));
+        if(item.getStats() != null) {
+            champion.setStats(transform(item.getStats(), context));
+        }
+        if(item.getTags() != null) {
+            champion.setTags(new ArrayList<>(item.getTags()));
+        }
         champion.setTitle(item.getTitle());
         champion.setVersion(item.getVersion());
         context.put("platform", previousPlatform);
@@ -338,15 +391,23 @@ public class StaticDataTransformer extends AbstractDataTransformer {
             }
             spell.setAlternativeImages(alternativeImages);
         }
-        spell.setCooldowns(new ArrayList<>(item.getCooldown()));
-        spell.setCosts(new ArrayList<>(item.getCost()));
-        spell.setDescription(item.getDescription());
-        final List<List<Double>> effects = new ArrayList<>(item.getEffect().size());
-        for(final List<Double> effect : item.getEffect()) {
-            effects.add(effect == null ? null : new ArrayList<>(effect));
+        if(item.getCooldown() != null) {
+            spell.setCooldowns(new ArrayList<>(item.getCooldown()));
         }
-        spell.setEffects(effects);
-        spell.setImage(transform(item.getImage(), context));
+        if(item.getCost() != null) {
+            spell.setCosts(new ArrayList<>(item.getCost()));
+        }
+        spell.setDescription(item.getDescription());
+        if(item.getEffect() != null) {
+            final List<List<Double>> effects = new ArrayList<>(item.getEffect().size());
+            for(final List<Double> effect : item.getEffect()) {
+                effects.add(effect == null ? null : new ArrayList<>(effect));
+            }
+            spell.setEffects(effects);
+        }
+        if(item.getImage() != null) {
+            spell.setImage(transform(item.getImage(), context));
+        }
         spell.setKey(item.getKey());
         if(item.getLeveltip() != null) {
             if(item.getLeveltip().getLabel() != null) {
@@ -359,17 +420,21 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         }
         spell.setMaxRank(item.getMaxrank());
         spell.setName(item.getName());
-        spell.setRanges(new ArrayList<>(item.getRange()));
+        if(item.getRange() != null) {
+            spell.setRanges(new ArrayList<>(item.getRange()));
+        }
         spell.setResource(item.getCostType());
         spell.setResourceDescription(item.getResource());
         spell.setSanitizedDescription(item.getSanitizedDescription());
         spell.setSanitizedTooltip(item.getSanitizedTooltip());
         spell.setTooltip(item.getTooltip());
-        final List<SpellVariables> variables = new ArrayList<>(item.getVars().size());
-        for(final SpellVars vars : item.getVars()) {
-            variables.add(transform(vars, context));
+        if(item.getVars() != null) {
+            final List<SpellVariables> variables = new ArrayList<>(item.getVars().size());
+            for(final SpellVars vars : item.getVars()) {
+                variables.add(transform(vars, context));
+            }
+            spell.setVariables(variables);
         }
-        spell.setVariables(variables);
         return spell;
     }
 
@@ -394,7 +459,12 @@ public class StaticDataTransformer extends AbstractDataTransformer {
     public Item transform(final com.merakianalytics.orianna.types.dto.staticdata.Item item, final PipelineContext context) {
         final Object previous = context.put("version", item.getVersion());
         final Item converted = new Item();
-        converted.setBasePrice(item.getGold().getBase());
+        if(item.getGold() != null) {
+            converted.setBasePrice(item.getGold().getBase());
+            converted.setPurchasable(item.getGold().isPurchasable());
+            converted.setSellPrice(item.getGold().getSell());
+            converted.setTotalPrice(item.getGold().getTotal());
+        }
         if(item.getFrom() != null) {
             final List<Integer> buildsFrom = new ArrayList<>(item.getFrom().size());
             for(final String id : item.getFrom()) {
@@ -418,7 +488,9 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         converted.setGroup(item.getGroup());
         converted.setHiddenFromAll(item.isHideFromAll());
         converted.setId(item.getId());
-        converted.setImage(transform(item.getImage(), context));
+        if(item.getImage() != null) {
+            converted.setImage(transform(item.getImage(), context));
+        }
         converted.setIncludedData(new HashSet<>(item.getIncludedData()));
         converted.setInStore(item.isInStore());
         if(item.getColloq() != null) {
@@ -429,26 +501,29 @@ public class StaticDataTransformer extends AbstractDataTransformer {
             converted.setKeywords(keywords);
         }
         converted.setLocale(item.getLocale());
-        final Set<Integer> maps = new HashSet<>();
-        for(final String id : item.getMaps().keySet()) {
-            if(item.getMaps().get(id)) {
-                maps.add(Integer.parseInt(id));
+        if(item.getMaps() != null) {
+            final Set<Integer> maps = new HashSet<>();
+            for(final String id : item.getMaps().keySet()) {
+                if(item.getMaps().get(id)) {
+                    maps.add(Integer.parseInt(id));
+                }
             }
+            converted.setMaps(maps);
         }
-        converted.setMaps(maps);
         converted.setMaxStacks(item.getStacks());
         converted.setName(item.getName());
         converted.setPlaintext(item.getPlaintext());
         converted.setPlatform(item.getPlatform());
-        converted.setPurchasable(item.getGold().isPurchasable());
         converted.setRequiredChampionKey(item.getRequiredChampion());
         converted.setSanitizedDescription(item.getSanitizedDescription());
-        converted.setSellPrice(item.getGold().getSell());
         converted.setSource(item.getSpecialRecipe());
-        converted.setStats(transform(item.getStats(), context));
-        converted.setTags(new ArrayList<>(item.getTags()));
+        if(item.getStats() != null) {
+            converted.setStats(transform(item.getStats(), context));
+        }
+        if(item.getTags() != null) {
+            converted.setTags(new ArrayList<>(item.getTags()));
+        }
         converted.setTier(item.getDepth());
-        converted.setTotalPrice(item.getGold().getTotal());
         converted.setVersion(item.getVersion());
         context.put("version", previous);
         return converted;
@@ -458,7 +533,9 @@ public class StaticDataTransformer extends AbstractDataTransformer {
     public ItemTree transform(final com.merakianalytics.orianna.types.dto.staticdata.ItemTree item, final PipelineContext context) {
         final ItemTree tree = new ItemTree();
         tree.setHeader(item.getHeader());
-        tree.setTags(new ArrayList<>(item.getTags()));
+        if(item.getTags() != null) {
+            tree.setTags(new ArrayList<>(item.getTags()));
+        }
         return tree;
     }
 
@@ -485,15 +562,21 @@ public class StaticDataTransformer extends AbstractDataTransformer {
     public Mastery transform(final com.merakianalytics.orianna.types.dto.staticdata.Mastery item, final PipelineContext context) {
         final Object previous = context.put("version", item.getVersion());
         final Mastery mastery = new Mastery();
-        mastery.setDescriptions(new ArrayList<>(item.getDescription()));
+        if(item.getDescription() != null) {
+            mastery.setDescriptions(new ArrayList<>(item.getDescription()));
+        }
         mastery.setId(item.getId());
-        mastery.setImage(transform(item.getImage(), context));
+        if(item.getImage() != null) {
+            mastery.setImage(transform(item.getImage(), context));
+        }
         mastery.setIncludedData(new HashSet<>(item.getIncludedData()));
         mastery.setLocale(item.getLocale());
         mastery.setName(item.getName());
         mastery.setPlatform(item.getPlatform());
         mastery.setPoints(item.getRanks());
-        mastery.setPrerequisite(Integer.parseInt(item.getPrereq()));
+        if(item.getPrereq() != null) {
+            mastery.setPrerequisite(Integer.parseInt(item.getPrereq()));
+        }
         if(item.getSanitizedDescription() != null) {
             mastery.setSanitizedDescriptions(new ArrayList<>(item.getSanitizedDescription()));
         }
@@ -547,7 +630,9 @@ public class StaticDataTransformer extends AbstractDataTransformer {
     public Passive transform(final com.merakianalytics.orianna.types.dto.staticdata.Passive item, final PipelineContext context) {
         final Passive passive = new Passive();
         passive.setDescription(item.getDescription());
-        passive.setImage(transform(item.getImage(), context));
+        if(item.getImage() != null) {
+            passive.setImage(transform(item.getImage(), context));
+        }
         passive.setName(item.getName());
         passive.setSanitizedDescription(item.getSanitizedDescription());
         return passive;
@@ -637,16 +722,24 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         final Rune rune = new Rune();
         rune.setDescription(item.getDescription());
         rune.setId(item.getId());
-        rune.setImage(transform(item.getImage(), context));
+        if(item.getImage() != null) {
+            rune.setImage(transform(item.getImage(), context));
+        }
         rune.setIncludedData(new HashSet<>(item.getIncludedData()));
         rune.setLocale(item.getLocale());
         rune.setName(item.getName());
         rune.setPlatform(item.getPlatform());
         rune.setSanitizedDescription(item.getSanitizedDescription());
-        rune.setStats(transform(item.getStats(), context));
-        rune.setTags(new ArrayList<>(item.getTags()));
-        rune.setTier(Integer.parseInt(item.getRune().getTier()));
-        rune.setType(item.getRune().getType());
+        if(item.getStats() != null) {
+            rune.setStats(transform(item.getStats(), context));
+        }
+        if(item.getTags() != null) {
+            rune.setTags(new ArrayList<>(item.getTags()));
+        }
+        if(item.getRune() != null) {
+            rune.setTier(Integer.parseInt(item.getRune().getTier()));
+            rune.setType(item.getRune().getType());
+        }
         rune.setVersion(item.getVersion());
         context.put("version", previous);
         return rune;
@@ -763,8 +856,12 @@ public class StaticDataTransformer extends AbstractDataTransformer {
     public SummonerSpell transform(final com.merakianalytics.orianna.types.dto.staticdata.SummonerSpell item, final PipelineContext context) {
         final Object previous = context.put("version", item.getVersion());
         final SummonerSpell spell = new SummonerSpell();
-        spell.setCooldowns(new ArrayList<>(item.getCooldown()));
-        spell.setCosts(new ArrayList<>(item.getCost()));
+        if(item.getCooldown() != null) {
+            spell.setCooldowns(new ArrayList<>(item.getCooldown()));
+        }
+        if(item.getCost() != null) {
+            spell.setCosts(new ArrayList<>(item.getCost()));
+        }
         spell.setDescription(item.getDescription());
         if(item.getEffect() != null) {
             final List<List<Double>> effects = new ArrayList<>(item.getEffect().size());
@@ -774,7 +871,9 @@ public class StaticDataTransformer extends AbstractDataTransformer {
             spell.setEffects(effects);
         }
         spell.setId(item.getId());
-        spell.setImage(transform(item.getImage(), context));
+        if(item.getImage() != null) {
+            spell.setImage(transform(item.getImage(), context));
+        }
         spell.setIncludedData(new HashSet<>(item.getIncludedData()));
         spell.setKey(item.getKey());
         if(item.getLeveltip() != null) {
@@ -783,19 +882,25 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         }
         spell.setLocale(item.getLocale());
         spell.setMaxRank(item.getMaxrank());
-        spell.setModes(new HashSet<>(item.getModes()));
+        if(item.getModes() != null) {
+            spell.setModes(new HashSet<>(item.getModes()));
+        }
         spell.setName(item.getName());
         spell.setPlatform(item.getPlatform());
-        spell.setRanges(new ArrayList<>(item.getRange()));
+        if(item.getRange() != null) {
+            spell.setRanges(new ArrayList<>(item.getRange()));
+        }
         spell.setResource(item.getCostType());
         spell.setResourceDescription(item.getResource());
         spell.setSanitizedDescription(item.getSanitizedDescription());
         spell.setSanitizedTooltip(item.getSanitizedTooltip());
-        final List<SpellVariables> variables = new ArrayList<>(item.getVars().size());
-        for(final SpellVars vars : item.getVars()) {
-            variables.add(transform(vars, context));
+        if(item.getVars() != null) {
+            final List<SpellVariables> variables = new ArrayList<>(item.getVars().size());
+            for(final SpellVars vars : item.getVars()) {
+                variables.add(transform(vars, context));
+            }
+            spell.setVariables(variables);
         }
-        spell.setVariables(variables);
         spell.setVersion(item.getVersion());
         context.put("version", previous);
         return spell;
@@ -901,7 +1006,9 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         converted.setGroup(item.getGroup());
         converted.setHideFromAll(item.isHiddenFromAll());
         converted.setId(item.getId());
-        converted.setImage(transform(item.getImage(), context));
+        if(item.getImage() != null) {
+            converted.setImage(transform(item.getImage(), context));
+        }
         converted.setIncludedData(new HashSet<>(item.getIncludedData()));
         converted.setInStore(item.isInStore());
         if(item.getKeywords() != null) {
@@ -920,8 +1027,12 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         converted.setRequiredChampion(item.getRequiredChampionKey());
         converted.setSanitizedDescription(item.getSanitizedDescription());
         converted.setSpecialRecipe(item.getSource());
-        converted.setStats(transform(item.getStats(), context));
-        converted.setTags(new ArrayList<>(item.getTags()));
+        if(item.getStats() != null) {
+            converted.setStats(transform(item.getStats(), context));
+        }
+        if(item.getTags() != null) {
+            converted.setTags(new ArrayList<>(item.getTags()));
+        }
         converted.setDepth(item.getTier());
         converted.setVersion(item.getVersion());
         return converted;
@@ -941,19 +1052,23 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         for(final com.merakianalytics.orianna.types.dto.staticdata.Item it : item.getData().values()) {
             items.add(transform(it, context));
         }
-        final List<ItemGroup> groups = new ArrayList<>(item.getGroups().size());
-        for(final Group group : item.getGroups()) {
-            groups.add(transform(group, context));
+        if(item.getGroups() != null) {
+            final List<ItemGroup> groups = new ArrayList<>(item.getGroups().size());
+            for(final Group group : item.getGroups()) {
+                groups.add(transform(group, context));
+            }
+            items.setGroups(groups);
         }
-        items.setGroups(groups);
         items.setIncludedData(new HashSet<>(item.getIncludedData()));
         items.setLocale(item.getLocale());
         items.setPlatform(item.getPlatform());
-        final List<ItemTree> tree = new ArrayList<>(item.getTree().size());
-        for(final com.merakianalytics.orianna.types.dto.staticdata.ItemTree t : item.getTree()) {
-            tree.add(transform(t, context));
+        if(item.getTree() != null) {
+            final List<ItemTree> tree = new ArrayList<>(item.getTree().size());
+            for(final com.merakianalytics.orianna.types.dto.staticdata.ItemTree t : item.getTree()) {
+                tree.add(transform(t, context));
+            }
+            items.setTree(tree);
         }
-        items.setTree(tree);
         items.setType(item.getType());
         items.setVersion(item.getVersion());
         return items;
@@ -967,19 +1082,23 @@ public class StaticDataTransformer extends AbstractDataTransformer {
             data.put(Integer.toString(it.getId()), transform(it, context));
         }
         items.setData(data);
-        final List<Group> groups = new ArrayList<>(item.getGroups().size());
-        for(final ItemGroup group : item.getGroups()) {
-            groups.add(transform(group, context));
+        if(item.getGroups() != null) {
+            final List<Group> groups = new ArrayList<>(item.getGroups().size());
+            for(final ItemGroup group : item.getGroups()) {
+                groups.add(transform(group, context));
+            }
+            items.setGroups(groups);
         }
-        items.setGroups(groups);
         items.setIncludedData(new HashSet<>(item.getIncludedData()));
         items.setLocale(item.getLocale());
         items.setPlatform(item.getPlatform());
-        final List<com.merakianalytics.orianna.types.dto.staticdata.ItemTree> tree = new ArrayList<>(item.getTree().size());
-        for(final ItemTree t : item.getTree()) {
-            tree.add(transform(t, context));
+        if(item.getTree() != null) {
+            final List<com.merakianalytics.orianna.types.dto.staticdata.ItemTree> tree = new ArrayList<>(item.getTree().size());
+            for(final ItemTree t : item.getTree()) {
+                tree.add(transform(t, context));
+            }
+            items.setTree(tree);
         }
-        items.setTree(tree);
         items.setType(item.getType());
         items.setVersion(item.getVersion());
         return items;
@@ -1043,7 +1162,9 @@ public class StaticDataTransformer extends AbstractDataTransformer {
     public com.merakianalytics.orianna.types.dto.staticdata.ItemTree transform(final ItemTree item, final PipelineContext context) {
         final com.merakianalytics.orianna.types.dto.staticdata.ItemTree tree = new com.merakianalytics.orianna.types.dto.staticdata.ItemTree();
         tree.setHeader(item.getHeader());
-        tree.setTags(new ArrayList<>(item.getTags()));
+        if(item.getTags() != null) {
+            tree.setTags(new ArrayList<>(item.getTags()));
+        }
         return tree;
     }
 
@@ -1126,7 +1247,9 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         masteries.setIncludedData(new HashSet<>(item.getIncludedData()));
         masteries.setLocale(item.getLocale());
         masteries.setPlatform(item.getPlatform());
-        masteries.setTree(transform(item.getTree(), context));
+        if(item.getTree() != null) {
+            masteries.setTree(transform(item.getTree(), context));
+        }
         masteries.setType(item.getType());
         masteries.setVersion(item.getVersion());
         return masteries;
@@ -1135,9 +1258,13 @@ public class StaticDataTransformer extends AbstractDataTransformer {
     @Transform(from = Mastery.class, to = com.merakianalytics.orianna.types.dto.staticdata.Mastery.class)
     public com.merakianalytics.orianna.types.dto.staticdata.Mastery transform(final Mastery item, final PipelineContext context) {
         final com.merakianalytics.orianna.types.dto.staticdata.Mastery mastery = new com.merakianalytics.orianna.types.dto.staticdata.Mastery();
-        mastery.setDescription(new ArrayList<>(item.getDescriptions()));
+        if(item.getDescriptions() != null) {
+            mastery.setDescription(new ArrayList<>(item.getDescriptions()));
+        }
         mastery.setId(item.getId());
-        mastery.setImage(transform(item.getImage(), context));
+        if(item.getImage() != null) {
+            mastery.setImage(transform(item.getImage(), context));
+        }
         mastery.setIncludedData(new HashSet<>(item.getIncludedData()));
         mastery.setLocale(item.getLocale());
         mastery.setName(item.getName());
@@ -1166,7 +1293,9 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         masteries.setIncludedData(new HashSet<>(item.getIncludedData()));
         masteries.setLocale(item.getLocale());
         masteries.setPlatform(item.getPlatform());
-        masteries.setTree(transform(item.getTree(), context));
+        if(item.getTree() != null) {
+            masteries.setTree(transform(item.getTree(), context));
+        }
         masteries.setType(item.getType());
         masteries.setVersion(item.getVersion());
         context.put("platform", previousPlatform);
@@ -1214,8 +1343,10 @@ public class StaticDataTransformer extends AbstractDataTransformer {
     @Transform(from = MasteryTreeList.class, to = MasteryTreeTier.class)
     public MasteryTreeTier transform(final MasteryTreeList item, final PipelineContext context) {
         final MasteryTreeTier tier = new MasteryTreeTier(item.getMasteryTreeItems().size());
-        for(final com.merakianalytics.orianna.types.dto.staticdata.MasteryTreeItem it : item.getMasteryTreeItems()) {
-            tier.add(transform(it, context));
+        if(item.getMasteryTreeItems() != null) {
+            for(final com.merakianalytics.orianna.types.dto.staticdata.MasteryTreeItem it : item.getMasteryTreeItems()) {
+                tier.add(transform(it, context));
+            }
         }
         return tier;
     }
@@ -1235,7 +1366,9 @@ public class StaticDataTransformer extends AbstractDataTransformer {
     public com.merakianalytics.orianna.types.dto.staticdata.Passive transform(final Passive item, final PipelineContext context) {
         final com.merakianalytics.orianna.types.dto.staticdata.Passive passive = new com.merakianalytics.orianna.types.dto.staticdata.Passive();
         passive.setDescription(item.getDescription());
-        passive.setImage(transform(item.getImage(), context));
+        if(item.getImage() != null) {
+            passive.setImage(transform(item.getImage(), context));
+        }
         passive.setName(item.getName());
         passive.setSanitizedDescription(item.getSanitizedDescription());
         return passive;
@@ -1312,8 +1445,10 @@ public class StaticDataTransformer extends AbstractDataTransformer {
     @Transform(from = Recommended.class, to = RecommendedItems.class)
     public RecommendedItems transform(final Recommended item, final PipelineContext context) {
         final RecommendedItems items = new RecommendedItems(item.getBlocks().size());
-        for(final Block block : item.getBlocks()) {
-            items.add(transform(block, context));
+        if(item.getBlocks() != null) {
+            for(final Block block : item.getBlocks()) {
+                items.add(transform(block, context));
+            }
         }
         items.setMap(item.getMap());
         items.setMode(item.getMode());
@@ -1422,14 +1557,20 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         final com.merakianalytics.orianna.types.dto.staticdata.Rune rune = new com.merakianalytics.orianna.types.dto.staticdata.Rune();
         rune.setDescription(item.getDescription());
         rune.setId(item.getId());
-        rune.setImage(transform(item.getImage(), context));
+        if(item.getImage() != null) {
+            rune.setImage(transform(item.getImage(), context));
+        }
         rune.setIncludedData(new HashSet<>(item.getIncludedData()));
         rune.setLocale(item.getLocale());
         rune.setName(item.getName());
         rune.setPlatform(item.getPlatform());
         rune.setSanitizedDescription(item.getSanitizedDescription());
-        rune.setStats(transform(item.getStats(), context));
-        rune.setTags(new ArrayList<>(item.getTags()));
+        if(item.getStats() != null) {
+            rune.setStats(transform(item.getStats(), context));
+        }
+        if(item.getTags() != null) {
+            rune.setTags(new ArrayList<>(item.getTags()));
+        }
         final MetaData metadata = new MetaData();
         metadata.setRune(true);
         metadata.setTier(Integer.toString(item.getTier()));
@@ -1574,10 +1715,14 @@ public class StaticDataTransformer extends AbstractDataTransformer {
     @Transform(from = SummonerSpell.class, to = com.merakianalytics.orianna.types.dto.staticdata.SummonerSpell.class)
     public com.merakianalytics.orianna.types.dto.staticdata.SummonerSpell transform(final SummonerSpell item, final PipelineContext context) {
         final com.merakianalytics.orianna.types.dto.staticdata.SummonerSpell spell = new com.merakianalytics.orianna.types.dto.staticdata.SummonerSpell();
-        spell.setCooldown(new ArrayList<>(item.getCooldowns()));
-        spell.setCooldownBurn(getBurn(item.getCooldowns()));
-        spell.setCost(new ArrayList<>(item.getCosts()));
-        spell.setCostBurn(getBurn(item.getCosts()));
+        if(item.getCooldowns() != null) {
+            spell.setCooldown(new ArrayList<>(item.getCooldowns()));
+            spell.setCooldownBurn(getBurn(item.getCooldowns()));
+        }
+        if(item.getCosts() != null) {
+            spell.setCost(new ArrayList<>(item.getCosts()));
+            spell.setCostBurn(getBurn(item.getCosts()));
+        }
         spell.setDescription(item.getDescription());
         if(item.getEffects() != null) {
             final List<List<Double>> effects = new ArrayList<>(item.getEffects().size());
@@ -1590,29 +1735,41 @@ public class StaticDataTransformer extends AbstractDataTransformer {
             spell.setEffectBurn(effectBurn);
         }
         spell.setId(item.getId());
-        spell.setImage(transform(item.getImage(), context));
+        if(item.getImage() != null) {
+            spell.setImage(transform(item.getImage(), context));
+        }
         spell.setIncludedData(new HashSet<>(item.getIncludedData()));
         spell.setKey(item.getKey());
         final LevelTip tip = new LevelTip();
-        tip.setEffect(new ArrayList<>(item.getLevelUpEffects()));
-        tip.setLabel(new ArrayList<>(item.getLevelUpKeywords()));
+        if(item.getLevelUpEffects() != null) {
+            tip.setEffect(new ArrayList<>(item.getLevelUpEffects()));
+        }
+        if(item.getLevelUpKeywords() != null) {
+            tip.setLabel(new ArrayList<>(item.getLevelUpKeywords()));
+        }
         spell.setLeveltip(tip);
         spell.setLocale(item.getLocale());
         spell.setMaxrank(item.getMaxRank());
-        spell.setModes(new HashSet<>(item.getModes()));
+        if(item.getModes() != null) {
+            spell.setModes(new HashSet<>(item.getModes()));
+        }
         spell.setName(item.getName());
         spell.setPlatform(item.getPlatform());
-        spell.setRange(new ArrayList<>(item.getRanges()));
-        spell.setRangeBurn(getBurn(item.getRanges()));
+        if(item.getRanges() != null) {
+            spell.setRange(new ArrayList<>(item.getRanges()));
+            spell.setRangeBurn(getBurn(item.getRanges()));
+        }
         spell.setCostType(item.getResource());
         spell.setResource(item.getResourceDescription());
         spell.setSanitizedDescription(item.getSanitizedDescription());
         spell.setSanitizedTooltip(item.getSanitizedTooltip());
-        final List<SpellVars> variables = new ArrayList<>(item.getVariables().size());
-        for(final SpellVariables vars : item.getVariables()) {
-            variables.add(transform(vars, context));
+        if(item.getVariables() != null) {
+            final List<SpellVars> variables = new ArrayList<>(item.getVariables().size());
+            for(final SpellVariables vars : item.getVariables()) {
+                variables.add(transform(vars, context));
+            }
+            spell.setVars(variables);
         }
-        spell.setVars(variables);
         spell.setVersion(item.getVersion());
         return spell;
     }
