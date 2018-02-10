@@ -50,10 +50,12 @@ import com.merakianalytics.orianna.types.dto.staticdata.ChampionList;
 import com.merakianalytics.orianna.types.dto.staticdata.ItemList;
 import com.merakianalytics.orianna.types.dto.staticdata.MapData;
 import com.merakianalytics.orianna.types.dto.staticdata.MapDetails;
+import com.merakianalytics.orianna.types.dto.staticdata.MasteryList;
 import com.merakianalytics.orianna.types.dto.staticdata.ProfileIconData;
 import com.merakianalytics.orianna.types.dto.staticdata.ProfileIconDetails;
 import com.merakianalytics.orianna.types.dto.staticdata.ReforgedRuneTree;
 import com.merakianalytics.orianna.types.dto.staticdata.RuneList;
+import com.merakianalytics.orianna.types.dto.staticdata.SummonerSpellList;
 
 public abstract class UniqueKeys {
     private static final Set<Tier> UNIQUE_TIERS = ImmutableSet.of(Tier.CHALLENGER, Tier.MASTER);
@@ -157,6 +159,14 @@ public abstract class UniqueKeys {
         });
     }
 
+    @SuppressWarnings("unchecked")
+    public static int forChampionListDtoQuery(final java.util.Map<String, Object> query) {
+        return Arrays.hashCode(new Object[] {
+            ChampionList.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
+            (Set<String>)query.get("includedData")
+        });
+    }
+
     public static int forChampionMasteries(final ChampionMasteries masteries) {
         final com.merakianalytics.orianna.types.data.championmastery.ChampionMasteries data = masteries.getCoreData();
         return Arrays.hashCode(new Object[] {
@@ -257,14 +267,6 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
-    public static int forChampionsDtoQuery(final java.util.Map<String, Object> query) {
-        return Arrays.hashCode(new Object[] {
-            ChampionList.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
-            (Set<String>)query.get("includedData")
-        });
-    }
-
-    @SuppressWarnings("unchecked")
     public static int forChampionsQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             Champions.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
@@ -306,7 +308,7 @@ public abstract class UniqueKeys {
         });
     }
 
-    public static int forCurrentGameInfoDto(final java.util.Map<String, Object> query) {
+    public static int forCurrentGameInfoDtoQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             CurrentGameInfo.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), ((Number)query.get("summonerId")).longValue()
         });
@@ -605,6 +607,32 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
+    public static Iterator<Integer> forManyChampionListDtoQuery(final java.util.Map<String, Object> query) {
+        final Iterable<String> versions = (Iterable<String>)query.get("versions");
+
+        final Iterator<String> iterator = versions.iterator();
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                return Arrays.hashCode(new Object[] {
+                    ChampionList.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next(), (String)query.get("locale"),
+                    (Set<String>)query.get("includedData")
+                });
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+    @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyChampionMasteriesDtoQuery(final java.util.Map<String, Object> query) {
         final Iterable<Number> ids = (Iterable<Number>)query.get("summonerIds");
 
@@ -798,32 +826,6 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
-    public static Iterator<Integer> forManyChampionsDtoQuery(final java.util.Map<String, Object> query) {
-        final Iterable<String> versions = (Iterable<String>)query.get("versions");
-
-        final Iterator<String> iterator = versions.iterator();
-        return new Iterator<Integer>() {
-            @Override
-            public boolean hasNext() {
-                return iterator.hasNext();
-            }
-
-            @Override
-            public Integer next() {
-                return Arrays.hashCode(new Object[] {
-                    ChampionList.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next(), (String)query.get("locale"),
-                    (Set<String>)query.get("includedData")
-                });
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException();
-            }
-        };
-    }
-
-    @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyChampionStatusDtoQuery(final java.util.Map<String, Object> query) {
         final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
 
@@ -876,7 +878,7 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
-    public static Iterator<Integer> forManyCurrentGameInfoDto(final java.util.Map<String, Object> query) {
+    public static Iterator<Integer> forManyCurrentGameInfoDtoQuery(final java.util.Map<String, Object> query) {
         final Iterable<Number> ids = (Iterable<Number>)query.get("summonerIds");
 
         final Iterator<Number> iterator = ids.iterator();
@@ -1232,7 +1234,7 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
-    public static Iterator<Integer> forManyMapDetailsDto(final java.util.Map<String, Object> query) {
+    public static Iterator<Integer> forManyMapDetailsDtoQuery(final java.util.Map<String, Object> query) {
         final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
         final Iterable<String> names = (Iterable<String>)query.get("names");
 
@@ -1311,6 +1313,32 @@ public abstract class UniqueKeys {
                     com.merakianalytics.orianna.types.dto.staticdata.Mastery.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
                     (String)query.get("version"), (String)query.get("locale"),
                     ids != null ? ((Number)iterator.next()).intValue() : iterator.next(), (Set<String>)query.get("includedData")
+                });
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Iterator<Integer> forManyMasteryListDtoQuery(final java.util.Map<String, Object> query) {
+        final Iterable<String> versions = (Iterable<String>)query.get("versions");
+
+        final Iterator<String> iterator = versions.iterator();
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                return Arrays.hashCode(new Object[] {
+                    MasteryList.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next(), (String)query.get("locale"),
+                    (Set<String>)query.get("includedData")
                 });
             }
 
@@ -1408,7 +1436,7 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
-    public static Iterator<Integer> forManyMatchTimelineQuery(final java.util.Map<String, Object> query) {
+    public static Iterator<Integer> forManyMatchTimelineDtoQuery(final java.util.Map<String, Object> query) {
         final Iterable<Number> ids = (Iterable<Number>)query.get("matchIds");
 
         final Iterator<Number> iterator = ids.iterator();
@@ -1889,6 +1917,32 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
+    public static Iterator<Integer> forManySummonerSpellListDtoQuery(final java.util.Map<String, Object> query) {
+        final Iterable<String> versions = (Iterable<String>)query.get("versions");
+
+        final Iterator<String> iterator = versions.iterator();
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                return Arrays.hashCode(new Object[] {
+                    SummonerSpellList.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next(), (String)query.get("locale"),
+                    (Set<String>)query.get("includedData")
+                });
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+    @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManySummonerSpellQuery(final java.util.Map<String, Object> query) {
         final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
         final Iterable<String> names = (Iterable<String>)query.get("names");
@@ -2115,15 +2169,6 @@ public abstract class UniqueKeys {
         });
     }
 
-    public static int forMapDetailsDto(final java.util.Map<String, Object> query) {
-        final Number id = (Number)query.get("id");
-        final String name = (String)query.get("name");
-        return Arrays.hashCode(new Object[] {
-            MapDetails.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
-            id == null ? name : id.intValue()
-        });
-    }
-
     public static int[] forMapDetailsDto(final MapDetails map) {
         return new int[] {
             Arrays.hashCode(new Object[] {
@@ -2133,6 +2178,15 @@ public abstract class UniqueKeys {
                 MapDetails.class.getCanonicalName(), map.getPlatform(), map.getVersion(), map.getLocale(), map.getMapName()
             })
         };
+    }
+
+    public static int forMapDetailsDtoQuery(final java.util.Map<String, Object> query) {
+        final Number id = (Number)query.get("id");
+        final String name = (String)query.get("name");
+        return Arrays.hashCode(new Object[] {
+            MapDetails.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
+            id == null ? name : id.intValue()
+        });
     }
 
     public static int forMapQuery(final java.util.Map<String, Object> query) {
@@ -2224,6 +2278,20 @@ public abstract class UniqueKeys {
         });
     }
 
+    public static int forMasteryListDto(final MasteryList masteries) {
+        return Arrays.hashCode(new Object[] {
+            MasteryList.class.getCanonicalName(), masteries.getPlatform(), masteries.getVersion(), masteries.getLocale(), masteries.getIncludedData()
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    public static int forMasteryListDtoQuery(final java.util.Map<String, Object> query) {
+        return Arrays.hashCode(new Object[] {
+            MasteryList.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
+            (Set<String>)query.get("includedData")
+        });
+    }
+
     @SuppressWarnings("unchecked")
     public static int forMasteryQuery(final java.util.Map<String, Object> query) {
         final Number id = (Number)query.get("id");
@@ -2260,13 +2328,13 @@ public abstract class UniqueKeys {
         });
     }
 
-    public static int forMatchTimeline(final MatchTimeline timeline) {
+    public static int forMatchTimelineDto(final MatchTimeline timeline) {
         return Arrays.hashCode(new Object[] {
             MatchTimeline.class.getCanonicalName(), timeline.getPlatform(), timeline.getMatchId()
         });
     }
 
-    public static int forMatchTimelineQuery(final java.util.Map<String, Object> query) {
+    public static int forMatchTimelineDtoQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             MatchTimeline.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), ((Number)query.get("matchId")).longValue()
         });
@@ -2753,6 +2821,20 @@ public abstract class UniqueKeys {
             com.merakianalytics.orianna.types.dto.staticdata.SummonerSpell.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
             (String)query.get("version"), (String)query.get("locale"),
             id == null ? name : id.intValue(), (Set<String>)query.get("includedData")
+        });
+    }
+
+    public static int forSummonerSpellListDto(final SummonerSpellList spells) {
+        return Arrays.hashCode(new Object[] {
+            SummonerSpellList.class.getCanonicalName(), spells.getPlatform(), spells.getVersion(), spells.getLocale(), spells.getIncludedData()
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    public static int forSummonerSpellListDtoQuery(final java.util.Map<String, Object> query) {
+        return Arrays.hashCode(new Object[] {
+            SummonerSpellList.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
+            (Set<String>)query.get("includedData")
         });
     }
 
