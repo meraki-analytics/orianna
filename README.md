@@ -162,7 +162,7 @@ Feel free to send pull requests or to contact us via GitHub or [Discord](https:/
 If you find bugs please let us know via a pull request or issue.
 
 ## Citing Orianna
-If you used Orianna for your research, please cite the project: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1169621.svg)](https://doi.org/10.5281/zenodo.1169621) 
+If you used Orianna for your research, please [cite the project](https://doi.org/10.5281/zenodo.1169621)
 
 ## Support Us
 If you've loved using Orianna, consider supporting us through [PayPal](https://www.paypal.me/merakianalytics) or [Patreon](https://www.patreon.com/merakianalytics)
