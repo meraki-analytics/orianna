@@ -1,4 +1,4 @@
-[![MIT Licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/meraki-analytics/orianna/blob/master/LICENSE.txt)
+[![MIT Licensed](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/meraki-analytics/orianna/blob/master/LICENSE.txt)
 [![Maven Central](https://img.shields.io/maven-central/v/com.merakianalytics.orianna/orianna.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.merakianalytics.orianna%22)
 [![JavaDocs](http://javadoc.io/badge/com.merakianalytics.orianna/orianna.svg)](http://javadoc.io/doc/com.merakianalytics.orianna/orianna)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1169621.svg)](https://doi.org/10.5281/zenodo.1169621)
