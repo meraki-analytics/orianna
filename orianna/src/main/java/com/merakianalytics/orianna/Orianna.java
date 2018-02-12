@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.node.TextNode;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.io.CharSource;
 import com.google.common.io.Files;
@@ -252,9 +251,7 @@ public abstract class Orianna {
             Supplier<String> supplier = new Supplier<String>() {
                 @Override
                 public String get() {
-                    return pipeline.get()
-                        .get(com.merakianalytics.orianna.types.dto.staticdata.Realm.class, ImmutableMap.<String, Object> of("platform", platform))
-                        .getV();
+                    return platform.getRealm().getVersion();
                 }
             };
 
