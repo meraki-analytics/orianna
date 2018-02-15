@@ -3,11 +3,15 @@ package com.merakianalytics.orianna.types.data.staticdata;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class ItemStats extends CoreData {
-    private static final long serialVersionUID = -4225498074415380418L;
+    private static final long serialVersionUID = -4186822209538997366L;
     private double percentCriticalStrikeChance, percentMagicResist, percentHealthRegen, percentMovespeed, magicResist, criticalStrikeDamage, energy,
+            percentBaseAttackDamage, gold, lethality, percentHealAndShieldPower, outOfCombatMovespeed,
             percentLifesteal, mana, movespeed, percentAttackSpeed, block, percentBlock, energyRegen, percentSpellVamp, manaRegen, percentDodge, attackSpeed,
+            magicPenetration, percentArmorPenetration, percentTenacity, percentMagicPenetration,
             armor, healthRegen, percentAbilityPower, percentMana, abilityPower, percentManaRegen, percentAttackDamage, attackDamage, percentHealth,
-            percentArmor, percentCriticalStrikeChange, percentExperience, health, criticalStrikeChance, experience;
+            onHitHealthRegen, percentCooldownReduction, onHitPercentMaxHealthPhysicalDamage, onHitPercentHealthPhysicalDamage,
+            percentArmor, percentCriticalStrikeChange, percentExperience, health, criticalStrikeChance, experience, onHitPhysicalDamage, onHitMagicDamage,
+            percentManaRegenInJungle, percentLifestealAgainstMonsters, onHitPhysicalDamageAgainstMinions, onKillManaRegen, percentHealthRegenFromPotions;
 
     @Override
     public boolean equals(final Object obj) {
@@ -51,10 +55,19 @@ public class ItemStats extends CoreData {
         if(Double.doubleToLongBits(experience) != Double.doubleToLongBits(other.experience)) {
             return false;
         }
+        if(Double.doubleToLongBits(gold) != Double.doubleToLongBits(other.gold)) {
+            return false;
+        }
         if(Double.doubleToLongBits(health) != Double.doubleToLongBits(other.health)) {
             return false;
         }
         if(Double.doubleToLongBits(healthRegen) != Double.doubleToLongBits(other.healthRegen)) {
+            return false;
+        }
+        if(Double.doubleToLongBits(lethality) != Double.doubleToLongBits(other.lethality)) {
+            return false;
+        }
+        if(Double.doubleToLongBits(magicPenetration) != Double.doubleToLongBits(other.magicPenetration)) {
             return false;
         }
         if(Double.doubleToLongBits(magicResist) != Double.doubleToLongBits(other.magicResist)) {
@@ -69,10 +82,37 @@ public class ItemStats extends CoreData {
         if(Double.doubleToLongBits(movespeed) != Double.doubleToLongBits(other.movespeed)) {
             return false;
         }
+        if(Double.doubleToLongBits(onHitHealthRegen) != Double.doubleToLongBits(other.onHitHealthRegen)) {
+            return false;
+        }
+        if(Double.doubleToLongBits(onHitMagicDamage) != Double.doubleToLongBits(other.onHitMagicDamage)) {
+            return false;
+        }
+        if(Double.doubleToLongBits(onHitPercentHealthPhysicalDamage) != Double.doubleToLongBits(other.onHitPercentHealthPhysicalDamage)) {
+            return false;
+        }
+        if(Double.doubleToLongBits(onHitPercentMaxHealthPhysicalDamage) != Double.doubleToLongBits(other.onHitPercentMaxHealthPhysicalDamage)) {
+            return false;
+        }
+        if(Double.doubleToLongBits(onHitPhysicalDamage) != Double.doubleToLongBits(other.onHitPhysicalDamage)) {
+            return false;
+        }
+        if(Double.doubleToLongBits(onHitPhysicalDamageAgainstMinions) != Double.doubleToLongBits(other.onHitPhysicalDamageAgainstMinions)) {
+            return false;
+        }
+        if(Double.doubleToLongBits(onKillManaRegen) != Double.doubleToLongBits(other.onKillManaRegen)) {
+            return false;
+        }
+        if(Double.doubleToLongBits(outOfCombatMovespeed) != Double.doubleToLongBits(other.outOfCombatMovespeed)) {
+            return false;
+        }
         if(Double.doubleToLongBits(percentAbilityPower) != Double.doubleToLongBits(other.percentAbilityPower)) {
             return false;
         }
         if(Double.doubleToLongBits(percentArmor) != Double.doubleToLongBits(other.percentArmor)) {
+            return false;
+        }
+        if(Double.doubleToLongBits(percentArmorPenetration) != Double.doubleToLongBits(other.percentArmorPenetration)) {
             return false;
         }
         if(Double.doubleToLongBits(percentAttackDamage) != Double.doubleToLongBits(other.percentAttackDamage)) {
@@ -81,7 +121,13 @@ public class ItemStats extends CoreData {
         if(Double.doubleToLongBits(percentAttackSpeed) != Double.doubleToLongBits(other.percentAttackSpeed)) {
             return false;
         }
+        if(Double.doubleToLongBits(percentBaseAttackDamage) != Double.doubleToLongBits(other.percentBaseAttackDamage)) {
+            return false;
+        }
         if(Double.doubleToLongBits(percentBlock) != Double.doubleToLongBits(other.percentBlock)) {
+            return false;
+        }
+        if(Double.doubleToLongBits(percentCooldownReduction) != Double.doubleToLongBits(other.percentCooldownReduction)) {
             return false;
         }
         if(Double.doubleToLongBits(percentCriticalStrikeChance) != Double.doubleToLongBits(other.percentCriticalStrikeChance)) {
@@ -96,13 +142,25 @@ public class ItemStats extends CoreData {
         if(Double.doubleToLongBits(percentExperience) != Double.doubleToLongBits(other.percentExperience)) {
             return false;
         }
+        if(Double.doubleToLongBits(percentHealAndShieldPower) != Double.doubleToLongBits(other.percentHealAndShieldPower)) {
+            return false;
+        }
         if(Double.doubleToLongBits(percentHealth) != Double.doubleToLongBits(other.percentHealth)) {
             return false;
         }
         if(Double.doubleToLongBits(percentHealthRegen) != Double.doubleToLongBits(other.percentHealthRegen)) {
             return false;
         }
+        if(Double.doubleToLongBits(percentHealthRegenFromPotions) != Double.doubleToLongBits(other.percentHealthRegenFromPotions)) {
+            return false;
+        }
         if(Double.doubleToLongBits(percentLifesteal) != Double.doubleToLongBits(other.percentLifesteal)) {
+            return false;
+        }
+        if(Double.doubleToLongBits(percentLifestealAgainstMonsters) != Double.doubleToLongBits(other.percentLifestealAgainstMonsters)) {
+            return false;
+        }
+        if(Double.doubleToLongBits(percentMagicPenetration) != Double.doubleToLongBits(other.percentMagicPenetration)) {
             return false;
         }
         if(Double.doubleToLongBits(percentMagicResist) != Double.doubleToLongBits(other.percentMagicResist)) {
@@ -114,10 +172,16 @@ public class ItemStats extends CoreData {
         if(Double.doubleToLongBits(percentManaRegen) != Double.doubleToLongBits(other.percentManaRegen)) {
             return false;
         }
+        if(Double.doubleToLongBits(percentManaRegenInJungle) != Double.doubleToLongBits(other.percentManaRegenInJungle)) {
+            return false;
+        }
         if(Double.doubleToLongBits(percentMovespeed) != Double.doubleToLongBits(other.percentMovespeed)) {
             return false;
         }
         if(Double.doubleToLongBits(percentSpellVamp) != Double.doubleToLongBits(other.percentSpellVamp)) {
+            return false;
+        }
+        if(Double.doubleToLongBits(percentTenacity) != Double.doubleToLongBits(other.percentTenacity)) {
             return false;
         }
         return true;
@@ -194,6 +258,13 @@ public class ItemStats extends CoreData {
     }
 
     /**
+     * @return the gold
+     */
+    public double getGold() {
+        return gold;
+    }
+
+    /**
      * @return the health
      */
     public double getHealth() {
@@ -205,6 +276,20 @@ public class ItemStats extends CoreData {
      */
     public double getHealthRegen() {
         return healthRegen;
+    }
+
+    /**
+     * @return the lethality
+     */
+    public double getLethality() {
+        return lethality;
+    }
+
+    /**
+     * @return the magicPenetration
+     */
+    public double getMagicPenetration() {
+        return magicPenetration;
     }
 
     /**
@@ -236,6 +321,62 @@ public class ItemStats extends CoreData {
     }
 
     /**
+     * @return the onHitHealthRegen
+     */
+    public double getOnHitHealthRegen() {
+        return onHitHealthRegen;
+    }
+
+    /**
+     * @return the onHitMagicDamage
+     */
+    public double getOnHitMagicDamage() {
+        return onHitMagicDamage;
+    }
+
+    /**
+     * @return the onHitPercentHealthPhysicalDamage
+     */
+    public double getOnHitPercentHealthPhysicalDamage() {
+        return onHitPercentHealthPhysicalDamage;
+    }
+
+    /**
+     * @return the onHitPercentMaxHealthPhysicalDamage
+     */
+    public double getOnHitPercentMaxHealthPhysicalDamage() {
+        return onHitPercentMaxHealthPhysicalDamage;
+    }
+
+    /**
+     * @return the onHitPhysicalDamage
+     */
+    public double getOnHitPhysicalDamage() {
+        return onHitPhysicalDamage;
+    }
+
+    /**
+     * @return the onHitPhysicalDamageAgainstMinions
+     */
+    public double getOnHitPhysicalDamageAgainstMinions() {
+        return onHitPhysicalDamageAgainstMinions;
+    }
+
+    /**
+     * @return the onKillManaRegen
+     */
+    public double getOnKillManaRegen() {
+        return onKillManaRegen;
+    }
+
+    /**
+     * @return the outOfCombatMovespeed
+     */
+    public double getOutOfCombatMovespeed() {
+        return outOfCombatMovespeed;
+    }
+
+    /**
      * @return the percentAbilityPower
      */
     public double getPercentAbilityPower() {
@@ -247,6 +388,13 @@ public class ItemStats extends CoreData {
      */
     public double getPercentArmor() {
         return percentArmor;
+    }
+
+    /**
+     * @return the percentArmorPenetration
+     */
+    public double getPercentArmorPenetration() {
+        return percentArmorPenetration;
     }
 
     /**
@@ -264,10 +412,24 @@ public class ItemStats extends CoreData {
     }
 
     /**
+     * @return the percentBaseAttackDamage
+     */
+    public double getPercentBaseAttackDamage() {
+        return percentBaseAttackDamage;
+    }
+
+    /**
      * @return the percentBlock
      */
     public double getPercentBlock() {
         return percentBlock;
+    }
+
+    /**
+     * @return the percentCooldownReduction
+     */
+    public double getPercentCooldownReduction() {
+        return percentCooldownReduction;
     }
 
     /**
@@ -299,6 +461,13 @@ public class ItemStats extends CoreData {
     }
 
     /**
+     * @return the percentHealAndShieldPower
+     */
+    public double getPercentHealAndShieldPower() {
+        return percentHealAndShieldPower;
+    }
+
+    /**
      * @return the percentHealth
      */
     public double getPercentHealth() {
@@ -313,10 +482,31 @@ public class ItemStats extends CoreData {
     }
 
     /**
+     * @return the percentHealthRegenFromPotions
+     */
+    public double getPercentHealthRegenFromPotions() {
+        return percentHealthRegenFromPotions;
+    }
+
+    /**
      * @return the percentLifesteal
      */
     public double getPercentLifesteal() {
         return percentLifesteal;
+    }
+
+    /**
+     * @return the percentLifestealAgainstMonsters
+     */
+    public double getPercentLifestealAgainstMonsters() {
+        return percentLifestealAgainstMonsters;
+    }
+
+    /**
+     * @return the percentMagicPenetration
+     */
+    public double getPercentMagicPenetration() {
+        return percentMagicPenetration;
     }
 
     /**
@@ -341,6 +531,13 @@ public class ItemStats extends CoreData {
     }
 
     /**
+     * @return the percentManaRegenInJungle
+     */
+    public double getPercentManaRegenInJungle() {
+        return percentManaRegenInJungle;
+    }
+
+    /**
      * @return the percentMovespeed
      */
     public double getPercentMovespeed() {
@@ -352,6 +549,13 @@ public class ItemStats extends CoreData {
      */
     public double getPercentSpellVamp() {
         return percentSpellVamp;
+    }
+
+    /**
+     * @return the percentTenacity
+     */
+    public double getPercentTenacity() {
+        return percentTenacity;
     }
 
     @Override
@@ -379,9 +583,15 @@ public class ItemStats extends CoreData {
         result = prime * result + (int)(temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(experience);
         result = prime * result + (int)(temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(gold);
+        result = prime * result + (int)(temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(health);
         result = prime * result + (int)(temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(healthRegen);
+        result = prime * result + (int)(temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(lethality);
+        result = prime * result + (int)(temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(magicPenetration);
         result = prime * result + (int)(temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(magicResist);
         result = prime * result + (int)(temp ^ temp >>> 32);
@@ -391,15 +601,37 @@ public class ItemStats extends CoreData {
         result = prime * result + (int)(temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(movespeed);
         result = prime * result + (int)(temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(onHitHealthRegen);
+        result = prime * result + (int)(temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(onHitMagicDamage);
+        result = prime * result + (int)(temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(onHitPercentHealthPhysicalDamage);
+        result = prime * result + (int)(temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(onHitPercentMaxHealthPhysicalDamage);
+        result = prime * result + (int)(temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(onHitPhysicalDamage);
+        result = prime * result + (int)(temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(onHitPhysicalDamageAgainstMinions);
+        result = prime * result + (int)(temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(onKillManaRegen);
+        result = prime * result + (int)(temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(outOfCombatMovespeed);
+        result = prime * result + (int)(temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(percentAbilityPower);
         result = prime * result + (int)(temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(percentArmor);
+        result = prime * result + (int)(temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(percentArmorPenetration);
         result = prime * result + (int)(temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(percentAttackDamage);
         result = prime * result + (int)(temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(percentAttackSpeed);
         result = prime * result + (int)(temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(percentBaseAttackDamage);
+        result = prime * result + (int)(temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(percentBlock);
+        result = prime * result + (int)(temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(percentCooldownReduction);
         result = prime * result + (int)(temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(percentCriticalStrikeChance);
         result = prime * result + (int)(temp ^ temp >>> 32);
@@ -409,11 +641,19 @@ public class ItemStats extends CoreData {
         result = prime * result + (int)(temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(percentExperience);
         result = prime * result + (int)(temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(percentHealAndShieldPower);
+        result = prime * result + (int)(temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(percentHealth);
         result = prime * result + (int)(temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(percentHealthRegen);
         result = prime * result + (int)(temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(percentHealthRegenFromPotions);
+        result = prime * result + (int)(temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(percentLifesteal);
+        result = prime * result + (int)(temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(percentLifestealAgainstMonsters);
+        result = prime * result + (int)(temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(percentMagicPenetration);
         result = prime * result + (int)(temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(percentMagicResist);
         result = prime * result + (int)(temp ^ temp >>> 32);
@@ -421,9 +661,13 @@ public class ItemStats extends CoreData {
         result = prime * result + (int)(temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(percentManaRegen);
         result = prime * result + (int)(temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(percentManaRegenInJungle);
+        result = prime * result + (int)(temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(percentMovespeed);
         result = prime * result + (int)(temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(percentSpellVamp);
+        result = prime * result + (int)(temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(percentTenacity);
         result = prime * result + (int)(temp ^ temp >>> 32);
         return result;
     }
@@ -509,6 +753,14 @@ public class ItemStats extends CoreData {
     }
 
     /**
+     * @param gold
+     *        the gold to set
+     */
+    public void setGold(final double gold) {
+        this.gold = gold;
+    }
+
+    /**
      * @param health
      *        the health to set
      */
@@ -522,6 +774,22 @@ public class ItemStats extends CoreData {
      */
     public void setHealthRegen(final double healthRegen) {
         this.healthRegen = healthRegen;
+    }
+
+    /**
+     * @param lethality
+     *        the lethality to set
+     */
+    public void setLethality(final double lethality) {
+        this.lethality = lethality;
+    }
+
+    /**
+     * @param magicPenetration
+     *        the magicPenetration to set
+     */
+    public void setMagicPenetration(final double magicPenetration) {
+        this.magicPenetration = magicPenetration;
     }
 
     /**
@@ -557,6 +825,70 @@ public class ItemStats extends CoreData {
     }
 
     /**
+     * @param onHitHealthRegen
+     *        the onHitHealthRegen to set
+     */
+    public void setOnHitHealthRegen(final double onHitHealthRegen) {
+        this.onHitHealthRegen = onHitHealthRegen;
+    }
+
+    /**
+     * @param onHitMagicDamage
+     *        the onHitMagicDamage to set
+     */
+    public void setOnHitMagicDamage(final double onHitMagicDamage) {
+        this.onHitMagicDamage = onHitMagicDamage;
+    }
+
+    /**
+     * @param onHitPercentHealthPhysicalDamage
+     *        the onHitPercentHealthPhysicalDamage to set
+     */
+    public void setOnHitPercentHealthPhysicalDamage(final double onHitPercentHealthPhysicalDamage) {
+        this.onHitPercentHealthPhysicalDamage = onHitPercentHealthPhysicalDamage;
+    }
+
+    /**
+     * @param onHitPercentMaxHealthPhysicalDamage
+     *        the onHitPercentMaxHealthPhysicalDamage to set
+     */
+    public void setOnHitPercentMaxHealthPhysicalDamage(final double onHitPercentMaxHealthPhysicalDamage) {
+        this.onHitPercentMaxHealthPhysicalDamage = onHitPercentMaxHealthPhysicalDamage;
+    }
+
+    /**
+     * @param onHitPhysicalDamage
+     *        the onHitPhysicalDamage to set
+     */
+    public void setOnHitPhysicalDamage(final double onHitPhysicalDamage) {
+        this.onHitPhysicalDamage = onHitPhysicalDamage;
+    }
+
+    /**
+     * @param onHitPhysicalDamageAgainstMinions
+     *        the onHitPhysicalDamageAgainstMinions to set
+     */
+    public void setOnHitPhysicalDamageAgainstMinions(final double onHitPhysicalDamageAgainstMinions) {
+        this.onHitPhysicalDamageAgainstMinions = onHitPhysicalDamageAgainstMinions;
+    }
+
+    /**
+     * @param onKillManaRegen
+     *        the onKillManaRegen to set
+     */
+    public void setOnKillManaRegen(final double onKillManaRegen) {
+        this.onKillManaRegen = onKillManaRegen;
+    }
+
+    /**
+     * @param outOfCombatMovespeed
+     *        the outOfCombatMovespeed to set
+     */
+    public void setOutOfCombatMovespeed(final double outOfCombatMovespeed) {
+        this.outOfCombatMovespeed = outOfCombatMovespeed;
+    }
+
+    /**
      * @param percentAbilityPower
      *        the percentAbilityPower to set
      */
@@ -570,6 +902,14 @@ public class ItemStats extends CoreData {
      */
     public void setPercentArmor(final double percentArmor) {
         this.percentArmor = percentArmor;
+    }
+
+    /**
+     * @param percentArmorPenetration
+     *        the percentArmorPenetration to set
+     */
+    public void setPercentArmorPenetration(final double percentArmorPenetration) {
+        this.percentArmorPenetration = percentArmorPenetration;
     }
 
     /**
@@ -589,11 +929,27 @@ public class ItemStats extends CoreData {
     }
 
     /**
+     * @param percentBaseAttackDamage
+     *        the percentBaseAttackDamage to set
+     */
+    public void setPercentBaseAttackDamage(final double percentBaseAttackDamage) {
+        this.percentBaseAttackDamage = percentBaseAttackDamage;
+    }
+
+    /**
      * @param percentBlock
      *        the percentBlock to set
      */
     public void setPercentBlock(final double percentBlock) {
         this.percentBlock = percentBlock;
+    }
+
+    /**
+     * @param percentCooldownReduction
+     *        the percentCooldownReduction to set
+     */
+    public void setPercentCooldownReduction(final double percentCooldownReduction) {
+        this.percentCooldownReduction = percentCooldownReduction;
     }
 
     /**
@@ -629,6 +985,14 @@ public class ItemStats extends CoreData {
     }
 
     /**
+     * @param percentHealAndShieldPower
+     *        the percentHealAndShieldPower to set
+     */
+    public void setPercentHealAndShieldPower(final double percentHealAndShieldPower) {
+        this.percentHealAndShieldPower = percentHealAndShieldPower;
+    }
+
+    /**
      * @param percentHealth
      *        the percentHealth to set
      */
@@ -645,11 +1009,35 @@ public class ItemStats extends CoreData {
     }
 
     /**
+     * @param percentHealthRegenFromPotions
+     *        the percentHealthRegenFromPotions to set
+     */
+    public void setPercentHealthRegenFromPotions(final double percentHealthRegenFromPotions) {
+        this.percentHealthRegenFromPotions = percentHealthRegenFromPotions;
+    }
+
+    /**
      * @param percentLifesteal
      *        the percentLifesteal to set
      */
     public void setPercentLifesteal(final double percentLifesteal) {
         this.percentLifesteal = percentLifesteal;
+    }
+
+    /**
+     * @param percentLifestealAgainstMonsters
+     *        the percentLifestealAgainstMonsters to set
+     */
+    public void setPercentLifestealAgainstMonsters(final double percentLifestealAgainstMonsters) {
+        this.percentLifestealAgainstMonsters = percentLifestealAgainstMonsters;
+    }
+
+    /**
+     * @param percentMagicPenetration
+     *        the percentMagicPenetration to set
+     */
+    public void setPercentMagicPenetration(final double percentMagicPenetration) {
+        this.percentMagicPenetration = percentMagicPenetration;
     }
 
     /**
@@ -677,6 +1065,14 @@ public class ItemStats extends CoreData {
     }
 
     /**
+     * @param percentManaRegenInJungle
+     *        the percentManaRegenInJungle to set
+     */
+    public void setPercentManaRegenInJungle(final double percentManaRegenInJungle) {
+        this.percentManaRegenInJungle = percentManaRegenInJungle;
+    }
+
+    /**
      * @param percentMovespeed
      *        the percentMovespeed to set
      */
@@ -690,5 +1086,13 @@ public class ItemStats extends CoreData {
      */
     public void setPercentSpellVamp(final double percentSpellVamp) {
         this.percentSpellVamp = percentSpellVamp;
+    }
+
+    /**
+     * @param percentTenacity
+     *        the percentTenacity to set
+     */
+    public void setPercentTenacity(final double percentTenacity) {
+        this.percentTenacity = percentTenacity;
     }
 }

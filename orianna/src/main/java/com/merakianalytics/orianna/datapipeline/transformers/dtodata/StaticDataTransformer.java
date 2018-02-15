@@ -1,16 +1,26 @@
 package com.merakianalytics.orianna.datapipeline.transformers.dtodata;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Joiner;
+import com.google.common.collect.ImmutableMap;
 import com.merakianalytics.datapipelines.PipelineContext;
 import com.merakianalytics.datapipelines.transformers.AbstractDataTransformer;
 import com.merakianalytics.datapipelines.transformers.Transform;
+import com.merakianalytics.orianna.types.common.OriannaException;
 import com.merakianalytics.orianna.types.common.RunePath;
 import com.merakianalytics.orianna.types.data.staticdata.Champion;
 import com.merakianalytics.orianna.types.data.staticdata.ChampionSpell;
@@ -72,6 +82,46 @@ import com.merakianalytics.orianna.types.dto.staticdata.SpellVars;
 import com.merakianalytics.orianna.types.dto.staticdata.SummonerSpellList;
 
 public class StaticDataTransformer extends AbstractDataTransformer {
+    private static final Logger LOGGER = LoggerFactory.getLogger(StaticDataTransformer.class);
+
+    private static final Map<String, Pattern> SCRAPING_PATTERNS =
+        ImmutableMap.<String, Pattern> builder().put("setManaRegen", Pattern.compile("\\+(\\d+) Mana regen per 5 seconds"))
+            .put("setPercentManaRegen", Pattern.compile("\\+(\\d+)% Base Mana Regen (?!while in Jungle)"))
+            .put("setPercentManaRegenInJungle", Pattern.compile("\\+(\\d+)% Base Mana Regen while in Jungle"))
+            .put("setPercentHealth", Pattern.compile("\\+(\\d+)% Bonus Health")).put("setPercentHealthRegen", Pattern.compile("\\+(\\d+)% Base Health Regen"))
+            .put("setPercentHealthRegenFromPotions", Pattern.compile("\\+(\\d+)% Increased Healing from Potions"))
+            .put("setMagicPenetration", Pattern.compile("\\+(\\d+) <a href='FlatMagicPen'>Magic Penetration</a>"))
+            .put("setPercentMagicPenetration", Pattern.compile("\\+(\\d+)% <a href='TotalMagicPen'>Magic Penetration</a>"))
+            .put("setPercentArmorPenetration", Pattern.compile("\\+(\\d+)% <a href='BonusArmorPen'>Bonus Armor Penetration</a>"))
+            .put("setPercentLifesteal",
+                Pattern.compile(
+                    "(?:Dealing physical damage heals for (\\d+)% of the damage dealt)|(?:\\+(\\d+)% Life Steal(?! .))|(?:Heal for (\\d+)% of damage dealt)"))
+            .put("setPercentSpellVamp", Pattern.compile("Heal for (\\d+)% of damage dealt"))
+            .put("setPercentLifestealAgainstMonsters", Pattern.compile("\\+(\\d+)% Life Steal vs. Monsters"))
+            .put("setOnHitPhysicalDamage", Pattern.compile("Basic attacks deal an additional (\\d+) physical damage on hit"))
+            .put("setOnHitMagicDamage",
+                Pattern.compile("Basic attacks deal (?:(?:an additional (\\d+) magic damage on hit)|(?:(\\d+) bonus magic damage on hit))"))
+            .put("setOnHitPhysicalDamageAgainstMinions", Pattern.compile("Basic attacks deal an additional (\\d+) physical damage to minions on hit"))
+            .put("setOnHitPercentMaxHealthPhysicalDamage",
+                Pattern.compile("Basic attacks deal (\\d+)% of the target's maximum Health in bonus physical damage"))
+            .put("setOnHitPercentHealthPhysicalDamage", Pattern.compile("Basic attacks deal (\\d+)% of the target's current Health as bonus physical damage"))
+            .put("setOnHitHealthRegen", Pattern.compile("\\+(\\d+) Life on Hit"))
+            .put("setOnKillManaRegen", Pattern.compile("Restores (\\d+) Mana upon killing a unit"))
+            .put("setPercentCooldownReduction", Pattern.compile("\\+(\\d+)% Cooldown Reduction"))
+            .put("setLethality", Pattern.compile("\\+(\\d+) <a href='Lethality'>Lethality"))
+            .put("setPercentHealAndShieldPower", Pattern.compile("\\+(\\d+)% Heal and Shield Power"))
+            .put("setPercentMovespeed", Pattern.compile("\\+(\\d+)% Movement Speed(?! .)"))
+            .put("setOutOfCombatMovespeed", Pattern.compile("\\+(\\d+) Movement Speed out of Combat"))
+            .put("setGold", Pattern.compile("\\+(\\d+) Gold per 10 seconds"))
+            .put("setPercentAbilityPower", Pattern.compile("Increases Ability Power by (\\d+)%"))
+            .put("setPercentBaseAttackDamage", Pattern.compile("\\+(\\d+)% Base Attack Damage"))
+            .put("setPercentTenacity",
+                Pattern.compile(
+                    "Tenacity:</unique> Reduces the duration of stuns, slows, taunts, fears, silences, blinds, polymorphs, and immobilizes by (\\d+)%"))
+            .build();
+
+    private static final Map<String, Method> STATS_MUTATORS = getScrapingMutators();
+
     private static String getBurn(final List<? extends Number> data) {
         if(data == null || data.isEmpty()) {
             return "";
@@ -84,6 +134,65 @@ public class StaticDataTransformer extends AbstractDataTransformer {
             }
         }
         return value.toString();
+    }
+
+    private static Map<String, Method> getScrapingMutators() {
+        final Map<String, Method> mutators = new HashMap<>(SCRAPING_PATTERNS.size());
+
+        for(final String mutator : SCRAPING_PATTERNS.keySet()) {
+            try {
+                final Method method = ItemStats.class.getDeclaredMethod(mutator, double.class);
+                mutators.put(mutator, method);
+            } catch(NoSuchMethodException | SecurityException e) {
+                LOGGER.error("Failed to get ItemStats mutator named " + mutator + "!", e);
+                throw new OriannaException("Failed to get ItemStats mutator named " + mutator + "! Report this to the Orianna team!", e);
+            }
+        }
+
+        return Collections.unmodifiableMap(mutators);
+    }
+
+    private static void scrapeStats(final Item item) {
+        if(!item.getLocale().startsWith("en_")) {
+            // Currently the regexes are in english so we only parse english
+            return;
+        }
+
+        final String description = item.getDescription();
+        if(description == null || description.isEmpty()) {
+            return;
+        }
+
+        for(final String mutator : SCRAPING_PATTERNS.keySet()) {
+            final Pattern pattern = SCRAPING_PATTERNS.get(mutator);
+
+            final Matcher matcher = pattern.matcher(description);
+            if(matcher.find()) {
+                int index = 1;
+                String group = matcher.group(index);
+                while(group == null) {
+                    group = matcher.group(++index);
+                }
+                double value = Double.parseDouble(group);
+                if(mutator.contains("Percent")) {
+                    value /= 100;
+                }
+                if(mutator.equals("setGold")) {
+                    value /= 10;
+                }
+                if(mutator.equals("setManaRegen")) {
+                    value /= 5;
+                }
+
+                final Method method = STATS_MUTATORS.get(mutator);
+                try {
+                    method.invoke(item.getStats(), value);
+                } catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                    LOGGER.error("Failed to call ItemStats mutator named " + mutator + "!", e);
+                    throw new OriannaException("Failed to call ItemStats mutator named " + mutator + "! Report this to the Orianna team!", e);
+                }
+            }
+        }
     }
 
     @Transform(from = Block.class, to = ItemSet.class)
@@ -519,7 +628,10 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         converted.setSource(item.getSpecialRecipe());
         if(item.getStats() != null) {
             converted.setStats(transform(item.getStats(), context));
+        } else {
+            converted.setStats(new ItemStats());
         }
+        scrapeStats(converted); // Add stats from the item description
         if(item.getTags() != null) {
             converted.setTags(new ArrayList<>(item.getTags()));
         }

@@ -1,8 +1,25 @@
 package com.merakianalytics.orianna.types.dto.staticdata;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy.PropertyNamingStrategyBase;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.merakianalytics.orianna.types.dto.DataObject;
 
+@JsonNaming(InventoryDataStats.JacksonNamingStrategy.class)
 public class InventoryDataStats extends DataObject {
+    public static class JacksonNamingStrategy extends PropertyNamingStrategyBase {
+        private static final long serialVersionUID = 860782375575167663L;
+
+        @Override
+        public String translate(final String propertyName) {
+            if(propertyName == null || propertyName.isEmpty()) {
+                return propertyName;
+            }
+            final StringBuilder sb = new StringBuilder(propertyName);
+            sb.setCharAt(0, Character.toUpperCase(propertyName.charAt(0)));
+            return sb.toString();
+        }
+    }
+
     private static final long serialVersionUID = 277601872683286664L;
     private double PercentCritDamageMod, PercentSpellBlockMod, PercentHPRegenMod, PercentMovementSpeedMod, FlatSpellBlockMod, FlatCritDamageMod,
             FlatEnergyPoolMod, PercentLifeStealMod, FlatMPPoolMod, FlatMovementSpeedMod, PercentAttackSpeedMod, FlatBlockMod, PercentBlockMod,
