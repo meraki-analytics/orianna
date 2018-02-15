@@ -1,7 +1,7 @@
 [![MIT Licensed](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/meraki-analytics/orianna/blob/master/LICENSE.txt)
 [![Maven Central](https://img.shields.io/maven-central/v/com.merakianalytics.orianna/orianna.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.merakianalytics.orianna%22)
 [![JavaDocs](http://javadoc.io/badge/com.merakianalytics.orianna/orianna.svg)](http://javadoc.io/doc/com.merakianalytics.orianna/orianna)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1169621.svg)](https://doi.org/10.5281/zenodo.1169621)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1169621.svg)](https://doi.org/10.5281/zenodo.1169620)
 
 # Orianna
 A Java adaptation of the Riot Games League of Legends API (https://developer.riotgames.com/).
@@ -162,7 +162,7 @@ Feel free to send pull requests or to contact us via GitHub or [Discord](https:/
 If you find bugs please let us know via a pull request or issue.
 
 ## Citing Orianna
-If you used Orianna for your research, please [cite the project](https://doi.org/10.5281/zenodo.1169621).
+If you used Orianna for your research, please [cite the project](https://doi.org/10.5281/zenodo.1169620).
 
 ## Support Us
 If you've loved using Orianna, consider supporting us through [PayPal](https://www.paypal.me/merakianalytics) or [Patreon](https://www.patreon.com/merakianalytics).
