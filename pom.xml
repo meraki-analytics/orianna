@@ -245,7 +245,7 @@
 									<goal>shade</goal>
 								</goals>
 								<configuration>
-									<finalName>${build.finalName}-jar-with-dependencies</finalName>
+									<finalName>${project.build.finalName}-jar-with-dependencies</finalName>
 								</configuration>
 							</execution>
 						</executions>
