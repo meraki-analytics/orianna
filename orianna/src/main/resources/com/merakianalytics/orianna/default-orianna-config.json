@@ -232,6 +232,8 @@
       "configClassName": "com.merakianalytics.orianna.datapipeline.riotapi.RiotAPI$Configuration"
     }, {
       "className": "com.merakianalytics.orianna.datapipeline.ImageDataSource"
+    }, {
+      "className": "com.merakianalytics.orianna.datapipeline.ChampionGG"
     }],
     "transformers": [{
       "className": "com.merakianalytics.orianna.datapipeline.transformers.dtodata.ChampionMasteryTransformer"
