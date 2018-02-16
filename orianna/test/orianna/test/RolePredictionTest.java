@@ -20,7 +20,6 @@ public class RolePredictionTest
         final Summoner     sum  = Summoner.named("stelar7").get();
         final MatchHistory refs = sum.matchHistory().get();
         
-        
         for (Match match : refs)
         {
             Participant self = match.getParticipants().find(new Predicate<Participant>()
