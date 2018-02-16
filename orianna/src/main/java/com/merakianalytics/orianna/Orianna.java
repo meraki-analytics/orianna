@@ -1,92 +1,37 @@
 package com.merakianalytics.orianna;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.node.TextNode;
-import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.io.CharSource;
-import com.google.common.io.Files;
-import com.google.common.io.Resources;
+import com.fasterxml.jackson.databind.node.*;
+import com.google.common.base.*;
+import com.google.common.collect.*;
+import com.google.common.io.*;
 import com.merakianalytics.datapipelines.DataPipeline;
-import com.merakianalytics.orianna.datapipeline.DataDragon;
-import com.merakianalytics.orianna.datapipeline.GhostObjectSource;
-import com.merakianalytics.orianna.datapipeline.ImageDataSource;
-import com.merakianalytics.orianna.datapipeline.InMemoryCache;
-import com.merakianalytics.orianna.datapipeline.PipelineConfiguration;
-import com.merakianalytics.orianna.datapipeline.PipelineConfiguration.PipelineElementConfiguration;
-import com.merakianalytics.orianna.datapipeline.PipelineConfiguration.TransformerConfiguration;
+import com.merakianalytics.orianna.datapipeline.*;
+import com.merakianalytics.orianna.datapipeline.PipelineConfiguration.*;
 import com.merakianalytics.orianna.datapipeline.common.expiration.ExpirationPeriod;
 import com.merakianalytics.orianna.datapipeline.riotapi.RiotAPI;
-import com.merakianalytics.orianna.datapipeline.transformers.dtodata.ChampionMasteryTransformer;
-import com.merakianalytics.orianna.datapipeline.transformers.dtodata.ChampionTransformer;
-import com.merakianalytics.orianna.datapipeline.transformers.dtodata.LeagueTransformer;
-import com.merakianalytics.orianna.datapipeline.transformers.dtodata.MatchTransformer;
-import com.merakianalytics.orianna.datapipeline.transformers.dtodata.SpectatorTransformer;
-import com.merakianalytics.orianna.datapipeline.transformers.dtodata.StaticDataTransformer;
-import com.merakianalytics.orianna.datapipeline.transformers.dtodata.StatusTransformer;
-import com.merakianalytics.orianna.datapipeline.transformers.dtodata.SummonerTransformer;
-import com.merakianalytics.orianna.datapipeline.transformers.dtodata.ThirdPartyCodeTransformer;
-import com.merakianalytics.orianna.types.common.OriannaException;
+import com.merakianalytics.orianna.datapipeline.transformers.dtodata.*;
+import com.merakianalytics.orianna.types.common.*;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Queue;
-import com.merakianalytics.orianna.types.common.Region;
-import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries;
-import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
-import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
-import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScores;
-import com.merakianalytics.orianna.types.core.league.League;
-import com.merakianalytics.orianna.types.core.league.LeaguePositions;
-import com.merakianalytics.orianna.types.core.league.Leagues;
-import com.merakianalytics.orianna.types.core.match.Match;
-import com.merakianalytics.orianna.types.core.match.MatchHistories;
-import com.merakianalytics.orianna.types.core.match.MatchHistory;
-import com.merakianalytics.orianna.types.core.match.Matches;
-import com.merakianalytics.orianna.types.core.match.Timeline;
-import com.merakianalytics.orianna.types.core.match.Timelines;
-import com.merakianalytics.orianna.types.core.match.TournamentMatches;
-import com.merakianalytics.orianna.types.core.spectator.CurrentMatch;
-import com.merakianalytics.orianna.types.core.spectator.CurrentMatches;
-import com.merakianalytics.orianna.types.core.spectator.FeaturedMatches;
-import com.merakianalytics.orianna.types.core.staticdata.Champion;
-import com.merakianalytics.orianna.types.core.staticdata.Champions;
-import com.merakianalytics.orianna.types.core.staticdata.Item;
-import com.merakianalytics.orianna.types.core.staticdata.Items;
-import com.merakianalytics.orianna.types.core.staticdata.LanguageStrings;
-import com.merakianalytics.orianna.types.core.staticdata.Languages;
+import com.merakianalytics.orianna.types.core.championmastery.*;
+import com.merakianalytics.orianna.types.core.league.*;
+import com.merakianalytics.orianna.types.core.match.*;
+import com.merakianalytics.orianna.types.core.spectator.*;
+import com.merakianalytics.orianna.types.core.staticdata.*;
 import com.merakianalytics.orianna.types.core.staticdata.Map;
 import com.merakianalytics.orianna.types.core.staticdata.Maps;
-import com.merakianalytics.orianna.types.core.staticdata.Masteries;
-import com.merakianalytics.orianna.types.core.staticdata.Mastery;
-import com.merakianalytics.orianna.types.core.staticdata.ProfileIcon;
-import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
-import com.merakianalytics.orianna.types.core.staticdata.ReforgedRune;
-import com.merakianalytics.orianna.types.core.staticdata.ReforgedRunes;
-import com.merakianalytics.orianna.types.core.staticdata.Rune;
 import com.merakianalytics.orianna.types.core.staticdata.Runes;
-import com.merakianalytics.orianna.types.core.staticdata.SummonerSpell;
-import com.merakianalytics.orianna.types.core.staticdata.SummonerSpells;
-import com.merakianalytics.orianna.types.core.staticdata.Versions;
-import com.merakianalytics.orianna.types.core.status.ShardStatus;
-import com.merakianalytics.orianna.types.core.status.ShardStatuses;
-import com.merakianalytics.orianna.types.core.summoner.Summoner;
-import com.merakianalytics.orianna.types.core.summoner.Summoners;
-import com.merakianalytics.orianna.types.core.thirdpartycode.VerificationString;
-import com.merakianalytics.orianna.types.core.thirdpartycode.VerificationStrings;
+import com.merakianalytics.orianna.types.core.status.*;
+import com.merakianalytics.orianna.types.core.summoner.*;
+import com.merakianalytics.orianna.types.core.thirdpartycode.*;
+import org.slf4j.*;
+
+import java.io.*;
+import java.nio.charset.Charset;
+import java.util.*;
+import java.util.concurrent.*;
 
 public abstract class Orianna {
     public static class Configuration {
@@ -112,6 +57,7 @@ public abstract class Orianna {
             final List<PipelineElementConfiguration> elements = ImmutableList.of(
                 PipelineElementConfiguration.defaultConfiguration(InMemoryCache.class),
                 PipelineElementConfiguration.defaultConfiguration(GhostObjectSource.class),
+                PipelineElementConfiguration.defaultConfiguration(ChampionGG.class),
                 PipelineElementConfiguration.defaultConfiguration(DataDragon.class),
                 PipelineElementConfiguration.defaultConfiguration(RiotAPI.class),
                 PipelineElementConfiguration.defaultConfiguration(ImageDataSource.class));
