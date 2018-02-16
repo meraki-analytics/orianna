@@ -12,9 +12,7 @@ Orianna is the sister library to [Cassiopeia](https://github.com/meraki-analytic
 Orianna is licensed under the [MIT License](https://github.com/meraki-analytics/orianna/blob/master/LICENSE.txt).
 
 ## Documentation & Examples
-- The full JavaDoc for Orianna is available [here](http://javadoc.io/doc/com.merakianalytics.orianna/orianna).
-- Additional detailed documentation about Orianna is located [here](http://orianna.readthedocs.io/en/latest/).
-- Examples of using Orianna can be found [here](https://github.com/meraki-analytics/orianna/tree/master/orianna-examples/src/main/java/com/merakianalytics/orianna/examples).
+The full JavaDoc for Orianna is available [here](http://javadoc.io/doc/com.merakianalytics.orianna/orianna). Additional detailed documentation about Orianna is located [here](http://orianna.readthedocs.io/en/latest/). Examples of using Orianna can be found [here](https://github.com/meraki-analytics/orianna/tree/master/orianna-examples/src/main/java/com/merakianalytics/orianna/examples).
 
 ## Features
 Orianna is designed to make the lives of Riot API developers as easy as possible. Here are some of the ways we do it:
