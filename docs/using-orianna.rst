@@ -1,7 +1,7 @@
-.. _data-pipeline:
+.. _using-orianna:
 
 *************
-Data Pipeline
+Using Orianna
 *************
 
 Coming Soon!

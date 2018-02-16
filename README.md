@@ -22,7 +22,7 @@ Orianna is designed to make the lives of Riot API developers as easy as possible
   - Automatic conversion of foreign keys into the objects they specify (e.g player.getChampion() instead of player.getChampionId())
 - Rate limits handled automatically with optimal usage of your API key
 - Configurable handling of API errors (e.g. automatic retry on 500 errors)
-- Built-in automatic caching, ready out of the box.
+- Built-in automatic caching, ready out of the box
 - DataDragon support
 - A highly configurable [pipeline](https://github.com/meraki-analytics/datapipelines-java) for requesting and caching Riot API data
   - Allows flexibility in what database(s) you want to use to cache your data

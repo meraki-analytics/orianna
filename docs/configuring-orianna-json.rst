@@ -23,6 +23,8 @@ Once you've finalized your ``config.json``, you can have Orianna load it using o
     // Use this method if you placed your config.json somewhere else on your computer
     Orianna.loadConfiguration(new File("/path/to/your/config.json"));
 
+Alternatively, if you set your ``ORIANNA_CONFIGURATION_PATH`` environment variable to the path to your ``config.json``, Orianna will automatically pick it up when it loads.
+
 Full Default Configuration
 ==========================
 

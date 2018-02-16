@@ -1,8 +1,8 @@
 .. _configuring-orianna:
 
-###################
+*******************
 Configuring Orianna
-###################
+*******************
 
 Orianna is highly configurable to meet the needs of your application. Configuration can be done using either a JSON-based configuration file, or the programmatic configuration API.
 
