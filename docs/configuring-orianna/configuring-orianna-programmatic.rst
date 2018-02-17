@@ -92,6 +92,7 @@ We also need to add the dto-to-data Transformers to make Orianna usable with jus
     PipelineConfiguration pipeline = new PipelineConfiguration();
 
     List<PipelineElementConfiguration> elements = Arrays.asList(new PipelineElementConfiguration[] {
+        PipelineElementConfiguration.defaultConfiguration(GhostObjectSource.class),
         PipelineElementConfiguration.defaultConfiguration(RiotAPI.class)
     });
     pipeline.setElements(elements);
