@@ -83,7 +83,7 @@ We'll use the default settings for illustration purposes.
     pipeline.setElements(elements);
     config.setPipeline(pipeline);
 
-If you need to users settings other than default configuration for a Pipeline Element, it's suggested to use :ref:`the JSON-based configuration file <configuring-orianna-json>` configuration approach instead, as it's far less complicated for detailed configuration changes.
+If you need to use settings other than default the configuration for a Pipeline Element, it's suggested to use :ref:`the JSON-based configuration file <configuring-orianna-json>` configuration approach instead, as it's far less complicated for detailed configuration changes.
 
 We also need to add the dto-to-data Transformers to make Orianna usable with just the RiotAPI in the pipeline.
 

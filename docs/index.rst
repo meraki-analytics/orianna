@@ -1,11 +1,11 @@
-*********************
+#####################
 Orianna Documentation
-*********************
+#####################
 
 What is Orianna?
 ================
 
-Orianna is a framework for working with data from the `Riot API <https://developer.riotgames.com/>`__. It's focused on usability and convenience, taking care of the all the little details that come with using the Riot API for you, so you can focus on building your application.
+Orianna is a Java framework for working with data from the `Riot API <https://developer.riotgames.com/>`__. It's focused on usability and convenience, taking care of the all the little details that come with using the Riot API for you, so you can focus on building your application.
 Here's a quick overview of some of the main features that set Orianna apart from other Riot API wrappers:
 
 - An enhanced user interface that makes using the Riot API easy and fun

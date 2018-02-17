@@ -29,5 +29,5 @@ Next, choose which approach you'd like to use to configure Orianna. By using the
 .. toctree::
     :maxdepth: 2
 
-    configuring-orianna-json
-    configuring-orianna-programmatic
+    configuring-orianna/configuring-orianna-json
+    configuring-orianna/configuring-orianna-programmatic

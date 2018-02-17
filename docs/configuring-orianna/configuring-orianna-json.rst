@@ -9,7 +9,7 @@ Below, we'll discuss each element of the JSON configuration, what it does, and w
 Creating and Loading Your Configuration
 =======================================
 
-The first step in writing your own ``config.json`` is to download the default configuration file, :download:`available here <../orianna/src/main/resources/com/merakianalytics/orianna/default-orianna-config.json>`.
+The first step in writing your own ``config.json`` is to download the default configuration file, :download:`available here <../../orianna/src/main/resources/com/merakianalytics/orianna/default-orianna-config.json>`.
 Use the default configuration as a base for your ``config.json`` file, adding, removing, and editing settings as needed for your application.
 You can save your ``config.json`` wherever you'd like on your computer, but it's recommended to put it in your application resources directory. This is usually the ``src/main/resources`` directory within your Java project.
 
@@ -30,7 +30,7 @@ Full Default Configuration
 
 Now that we know how to load a JSON configuration, let's break down the default configuration to see what settings are available in Orianna. First, here's the full default configuration:
 
-.. literalinclude:: ../orianna/src/main/resources/com/merakianalytics/orianna/default-orianna-config.json
+.. literalinclude:: ../../orianna/src/main/resources/com/merakianalytics/orianna/default-orianna-config.json
     :language: json
 
 Configuration Options
