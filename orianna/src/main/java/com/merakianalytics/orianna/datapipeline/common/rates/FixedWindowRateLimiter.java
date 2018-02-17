@@ -65,12 +65,10 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
 
         permitsIssued.incrementAndGet();
 
-        if(drainer == null) {
-            synchronized(resetterLock) {
-                if(drainer == null) {
-                    drainer = new Drainer();
-                    timer.schedule(drainer, epochUnit.toMillis(epoch));
-                }
+        synchronized(resetterLock) {
+            if(drainer == null) {
+                drainer = new Drainer();
+                timer.schedule(drainer, epochUnit.toMillis(epoch));
             }
         }
 
@@ -96,12 +94,10 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
             currentlyProcessing += 1;
         }
 
-        if(drainer == null) {
-            synchronized(resetterLock) {
-                if(drainer == null) {
-                    drainer = new Drainer();
-                    timer.schedule(drainer, epochUnit.toMillis(epoch));
-                }
+        synchronized(resetterLock) {
+            if(drainer == null) {
+                drainer = new Drainer();
+                timer.schedule(drainer, epochUnit.toMillis(epoch));
             }
         }
 
@@ -136,12 +132,10 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
             currentlyProcessing -= 1;
         }
 
-        if(resetter == null) {
-            synchronized(resetterLock) {
-                if(resetter == null) {
-                    resetter = new Resetter();
-                    timer.schedule(resetter, epochUnit.toMillis(epoch));
-                }
+        synchronized(resetterLock) {
+            if(resetter == null) {
+                resetter = new Resetter();
+                timer.schedule(resetter, epochUnit.toMillis(epoch));
             }
         }
     }
@@ -186,12 +180,10 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
             @Override
             public void acquire() {
                 permitsIssued.incrementAndGet();
-                if(drainer == null) {
-                    synchronized(resetterLock) {
-                        if(drainer == null) {
-                            drainer = new Drainer();
-                            timer.schedule(drainer, epochUnit.toMillis(epoch));
-                        }
+                synchronized(resetterLock) {
+                    if(drainer == null) {
+                        drainer = new Drainer();
+                        timer.schedule(drainer, epochUnit.toMillis(epoch));
                     }
                 }
             }
