@@ -27,6 +27,16 @@ public enum Season {
         return builder.build();
     }
 
+    public static Season getLatest() {
+        Season latest = null;
+        for(final Season season : Season.values()) {
+            if(latest == null || season.getId() > latest.getId()) {
+                latest = season;
+            }
+        }
+        return latest;
+    }
+
     public static Season withId(final int id) {
         return BY_ID.get(id);
     }
