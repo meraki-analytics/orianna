@@ -23,7 +23,7 @@ public class RiotAPI extends CompositeDataSource {
         private static final FailedRequestStrategy DEFAULT_404_STRATEGY = new FailedRequestStrategy.ReturnNull();
         private static final FailedRequestStrategy DEFAULT_429_STRATEGY = new FailedRequestStrategy.RetryFromHeaders();
         private static final FailedRequestStrategy DEFAULT_500_STRATEGY = new FailedRequestStrategy.ExponentialBackoff();
-        private static final FailedRequestStrategy DEFAULT_503_STRATEGY = new FailedRequestStrategy.ThrowException();
+        private static final FailedRequestStrategy DEFAULT_503_STRATEGY = new FailedRequestStrategy.ExponentialBackoff();
         private static final String DEFAULT_API_KEY = System.getenv("RIOT_API_KEY");
         private static final FailedRequestStrategy DEFAULT_HTTP_TIMEOUT_STRATEGY = new FailedRequestStrategy.ExponentialBackoff();
         private static final double DEFAULT_LIMITING_SHARE = 1.0;

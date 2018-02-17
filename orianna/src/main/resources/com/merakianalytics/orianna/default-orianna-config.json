@@ -192,7 +192,14 @@
           "type": "EXPONENTIAL_BACKOFF"
         },
         "http503Strategy": {
-          "type": "THROW_EXCEPTION"
+          "backoff": 1,
+          "backoffUnit": "SECONDS",
+          "backupStrategy": {
+            "type": "THROW_EXCEPTION"
+          },
+          "maxAttempts": 4,
+          "backoffFactor": 2,
+          "type": "EXPONENTIAL_BACKOFF"
         },
         "httpTimeoutStrategy": {
           "backoff": 1,
