@@ -39,7 +39,7 @@ Champion Mastery API
 Champion Status API
 ===================
 
-Champion Status information is avilable directly on the Champion within Orianna.
+Champion Status information is available directly on the Champion within Orianna.
 
 .. code-block:: java
 
