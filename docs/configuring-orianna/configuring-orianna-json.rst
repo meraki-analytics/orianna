@@ -137,13 +137,16 @@ There are essentially 3 parts to each ``pipeline`` element:
 
     3) ``config`` is set to the configuration to use for the Pipeline Element. This will be deserialized into the ``configClassName`` class and passed as the single argument to the constructor for ``className`` .
 
-We also need to add the dto-to-data Transformers to make Orianna usable with just the RiotAPI in the pipeline.
+We also need to add the GhostObjectSource and the dto-to-data Transformers to make Orianna usable with just the RiotAPI in the pipeline.
 
 .. code-block:: json
 
     {
       "pipeline": {
         "elements": [
+          {
+            "className": "com.merakianalytics.orianna.datapipeline.GhostObjectSource"
+          },
           {
             "className": "com.merakianalytics.orianna.datapipeline.riotapi.RiotAPI",
             "configClassName": "com.merakianalytics.orianna.datapipeline.riotapi.RiotAPI$Configuration",
