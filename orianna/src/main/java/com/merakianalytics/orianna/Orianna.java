@@ -22,6 +22,14 @@ import com.merakianalytics.orianna.types.core.spectator.*;
 import com.merakianalytics.orianna.types.core.staticdata.*;
 import com.merakianalytics.orianna.types.core.staticdata.Map;
 import com.merakianalytics.orianna.types.core.staticdata.Maps;
+import com.merakianalytics.orianna.types.core.staticdata.Masteries;
+import com.merakianalytics.orianna.types.core.staticdata.Mastery;
+import com.merakianalytics.orianna.types.core.staticdata.ProfileIcon;
+import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
+import com.merakianalytics.orianna.types.core.staticdata.Realm;
+import com.merakianalytics.orianna.types.core.staticdata.ReforgedRune;
+import com.merakianalytics.orianna.types.core.staticdata.ReforgedRunes;
+import com.merakianalytics.orianna.types.core.staticdata.Rune;
 import com.merakianalytics.orianna.types.core.staticdata.Runes;
 import com.merakianalytics.orianna.types.core.status.*;
 import com.merakianalytics.orianna.types.core.summoner.*;
@@ -698,6 +706,14 @@ public abstract class Orianna {
 
     public static ProfileIcon.Builder profileIconWithId(final int id) {
         return ProfileIcon.withId(id);
+    }
+
+    public static Realm.Builder realmWithPlatform(final Platform platform) {
+        return Realm.withPlatform(platform);
+    }
+
+    public static Realm.Builder realmWithRegion(final Region region) {
+        return Realm.withRegion(region);
     }
 
     public static ReforgedRune.Builder reforgedRuneNamed(final String name) {

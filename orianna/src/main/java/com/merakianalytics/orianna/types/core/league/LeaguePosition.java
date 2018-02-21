@@ -47,7 +47,7 @@ public class LeaguePosition extends OriannaObject<com.merakianalytics.orianna.ty
     }
 
     public League getLeague() {
-        return League.withId(coreData.getLeagueId()).get();
+        return League.withId(coreData.getLeagueId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
     }
 
     @Searchable({String.class})

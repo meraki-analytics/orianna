@@ -2355,7 +2355,7 @@ public class DataDragon extends AbstractDataSource {
 
                     if(id != null && idNode != null && id.intValue() == idNode.asInt() || name != null && name.equals(spellName)) {
                         INCLUDED_DATA_PROCESSOR.apply(spell);
-                        CHAMPION_PROCESSOR.apply(spell);
+                        SPELL_PROCESSOR.apply(spell);
                         return spell;
                     }
                 }

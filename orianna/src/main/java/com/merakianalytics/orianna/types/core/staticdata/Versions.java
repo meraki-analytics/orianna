@@ -92,12 +92,21 @@ public class Versions extends GhostObject.ListProxy<String, String, com.merakian
 
     public String truncate(final String targetVersion) {
         String[] parts = targetVersion.split("\\.");
+
         final int targetMajor = Integer.parseInt(parts[0]);
         final int targetMinor = Integer.parseInt(parts[1]);
         final int targetPatch = Integer.parseInt(parts[2]);
 
         for(int i = 0; i < size(); i++) {
+            if(targetVersion.equals(this.get(i))) {
+                return this.get(i);
+            }
+
             parts = this.get(i).split("\\.");
+            if(parts.length != 3) {
+                continue;
+            }
+
             final int major = Integer.parseInt(parts[0]);
             if(major > targetMajor) {
                 continue;

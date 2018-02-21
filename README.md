@@ -1,5 +1,6 @@
 [![MIT Licensed](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/meraki-analytics/orianna/blob/master/LICENSE.txt)
 [![Maven Central](https://img.shields.io/maven-central/v/com.merakianalytics.orianna/orianna.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.merakianalytics.orianna%22)
+[![Documentation Status](https://readthedocs.org/projects/orianna/badge/)](http://orianna.readthedocs.org/en/latest/)
 [![JavaDocs](http://javadoc.io/badge/com.merakianalytics.orianna/orianna.svg)](http://javadoc.io/doc/com.merakianalytics.orianna/orianna)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1169620.svg)](https://doi.org/10.5281/zenodo.1169620)
 
@@ -11,8 +12,7 @@ Orianna is the sister library to [Cassiopeia](https://github.com/meraki-analytic
 Orianna is licensed under the [MIT License](https://github.com/meraki-analytics/orianna/blob/master/LICENSE.txt).
 
 ## Documentation & Examples
-The full JavaDoc for Orianna is available [here](http://javadoc.io/doc/com.merakianalytics.orianna/orianna). More detailed documentation about the project is coming soon!
-Examples of using Orianna can be found [here](https://github.com/meraki-analytics/orianna/tree/master/orianna-examples/src/main/java/com/merakianalytics/orianna/examples).
+Detailed documentation about Orianna is located [here](http://orianna.readthedocs.io/en/latest/). The full JavaDoc for Orianna is available [here](http://javadoc.io/doc/com.merakianalytics.orianna/orianna). Examples of using Orianna can be found [here](https://github.com/meraki-analytics/orianna/tree/master/orianna-examples/src/main/java/com/merakianalytics/orianna/examples).
 
 ## Features
 Orianna is designed to make the lives of Riot API developers as easy as possible. Here are some of the ways we do it:
@@ -22,7 +22,7 @@ Orianna is designed to make the lives of Riot API developers as easy as possible
   - Automatic conversion of foreign keys into the objects they specify (e.g player.getChampion() instead of player.getChampionId())
 - Rate limits handled automatically with optimal usage of your API key
 - Configurable handling of API errors (e.g. automatic retry on 500 errors)
-- Built-in automatic caching, ready out of the box.
+- Built-in automatic caching, ready out of the box
 - DataDragon support
 - A highly configurable [pipeline](https://github.com/meraki-analytics/datapipelines-java) for requesting and caching Riot API data
   - Allows flexibility in what database(s) you want to use to cache your data
@@ -149,7 +149,7 @@ Orianna ships with a [default configuration](https://github.com/meraki-analytics
 
 Orianna is able to automatically load your Riot API Key from your environment variables on startup. To take advantage of this, set your `RIOT_API_KEY` environment variable to your Riot API Key.
 
-For more complex configuration, just download the [default configuration](https://github.com/meraki-analytics/orianna/blob/master/orianna/src/main/resources/com/merakianalytics/orianna/default-orianna-config.json), make the changes you'd like, and load the new configuration file when your program starts. Documentation describing the full range of configuration options available with Orianna is coming soon.
+For more complex configuration, just download the [default configuration](https://github.com/meraki-analytics/orianna/blob/master/orianna/src/main/resources/com/merakianalytics/orianna/default-orianna-config.json), make the changes you'd like, and load the new configuration file when your program starts. Documentation describing the full range of configuration options available with Orianna can be found [here](http://orianna.readthedocs.io/en/latest/configuring-orianna.html).
 ```java
 Orianna.loadConfiguration(new File("/path/to/your/configuration-file.json"));
 ```

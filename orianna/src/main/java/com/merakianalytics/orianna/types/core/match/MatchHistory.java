@@ -529,11 +529,15 @@ public class MatchHistory extends GhostObject<com.merakianalytics.orianna.types.
         switch(group) {
             case MATCH_HISTORY_LOAD_GROUP:
                 final com.merakianalytics.orianna.types.data.match.MatchList list = loadBatch();
-                list.setStartIndex(coreData.getStartIndex());
-                list.setEndIndex(coreData.getEndIndex());
-                list.setStartTime(coreData.getStartTime());
-                list.setEndTime(coreData.getEndTime());
-                coreData = list;
+                if(list == null) {
+                    complete = true;
+                } else {
+                    list.setStartIndex(coreData.getStartIndex());
+                    list.setEndIndex(coreData.getEndIndex());
+                    list.setStartTime(coreData.getStartTime());
+                    list.setEndTime(coreData.getEndTime());
+                    coreData = list;
+                }
                 matchIterator = coreData.listIterator(matchIterator.nextIndex());
                 break;
             default:
