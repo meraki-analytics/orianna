@@ -9,8 +9,6 @@ import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import java.util.*;
 import java.util.Map.Entry;
 
-import static sun.awt.FontConfiguration.*;
-
 public final class ChampionGGRolePredictor
 {
     private ChampionGGRolePredictor()
@@ -80,7 +78,7 @@ public final class ChampionGGRolePredictor
         }
     }
     
-    public static ChampionGGRolePredictionResults iterativeGetRoles(List<Integer> champions, ChampionGGRoleAssignment defaults)
+    public static ChampionGGRolePredictionResults iterativeGetRoles(List<Integer> champions, ChampionGGRoleAssignment defaults, boolean verbose)
     {
         Map<ChampionGGRole, Integer>                       fixed         = defaults.getFields();
         final Map<Integer, EnumMap<ChampionGGRole, Float>> roleDataClone = new HashMap<>(roleData);

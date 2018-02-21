@@ -143,7 +143,7 @@ public class ChampionGG extends AbstractDataSource
         
         ChampionGGRoleAssignment defaults = new ChampionGGRoleAssignment(null, smiteUsers.size() == 1 ? smiteUsers.get(0) : null, null, null, null);
         
-        return ChampionGGRolePredictor.iterativeGetRoles(champions, defaults);
+        return ChampionGGRolePredictor.iterativeGetRoles(champions, defaults, false);
     }
     
     
