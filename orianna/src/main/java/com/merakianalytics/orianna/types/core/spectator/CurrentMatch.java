@@ -288,6 +288,7 @@ public class CurrentMatch extends GhostObject<com.merakianalytics.orianna.types.
     }
 
     public boolean exists() {
+        load(CURRENT_GAME_LOAD_GROUP);
         return coreData != null;
     }
 
