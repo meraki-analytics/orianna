@@ -7,5 +7,6 @@ public enum Tier {
         GOLD,
         MASTER,
         PLATINUM,
-        SILVER;
+        SILVER,
+        UNRANKED;
 }
