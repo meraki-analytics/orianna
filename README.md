@@ -39,10 +39,10 @@ To add the latest Orianna release version to your maven project, add the depende
   <dependency>
     <groupId>com.merakianalytics.orianna</groupId>
     <artifactId>orianna</artifactId>
-    <version>3.0.3</version>
+    <version>3.0.4</version>
     <!-- or, for Android: -->
     <artifactId>orianna-android</artifactId>
-    <version>3.0.3</version>
+    <version>3.0.4</version>
   </dependency>
 </dependencies>
 ```
@@ -52,10 +52,10 @@ Or, if you want to get the latest development version, add the [Sonaype Snapshot
   <dependency>
     <groupId>com.merakianalytics.orianna</groupId>
     <artifactId>orianna</artifactId>
-    <version>3.0.4-SNAPSHOT</version>
+    <version>3.0.5-SNAPSHOT</version>
     <!-- or, for Android: -->
     <artifactId>orianna-android</artifactId>
-    <version>3.0.4-SNAPSHOT</version>
+    <version>3.0.5-SNAPSHOT</version>
   </dependency>
 </dependencies>
 
@@ -81,9 +81,9 @@ repositories {
 }
 
 dependencies {
-  compile "com.merakianalytics.orianna:orianna:3.0.3"
+  compile "com.merakianalytics.orianna:orianna:3.0.4"
   // or, for Android:
-  compile "com.merakianalytics.orianna:orianna-android:3.0.3"
+  compile "com.merakianalytics.orianna:orianna-android:3.0.4"
 }
 ```
 Or, if you want to get the latest development version, add the [Sonaype Snapshot Repository](https://oss.sonatype.org/content/repositories/snapshots/) to your `build.gradle` instead:
@@ -93,9 +93,9 @@ repositories {
 }
 
 dependencies {
-  compile "com.merakianalytics.orianna:orianna:3.0.4-SNAPSHOT"
+  compile "com.merakianalytics.orianna:orianna:3.0.5-SNAPSHOT"
   // or, for Android:
-  compile "com.merakianalytics.orianna:orianna-android:3.0.4-SNAPSHOT"
+  compile "com.merakianalytics.orianna:orianna-android:3.0.5-SNAPSHOT"
 }
 ```
 
