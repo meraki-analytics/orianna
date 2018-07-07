@@ -68,10 +68,10 @@
 		<slf4j.version>1.7.25</slf4j.version>
 		<junit.version>4.12</junit.version>
 		<guava.version>20.0</guava.version>
-		<okhttp.version>3.9.1</okhttp.version>
-		<jackson.version>2.9.4</jackson.version>
-		<msgpack.version>0.8.14</msgpack.version>
-		<joda.version>2.9.9</joda.version>
+		<okhttp.version>3.10.0</okhttp.version>
+		<jackson.version>2.9.6</jackson.version>
+		<msgpack.version>0.8.16</msgpack.version>
+		<joda.version>2.10</joda.version>
 		<cache2k.version>1.0.2.Final</cache2k.version>
 	</properties>
 
