@@ -109,8 +109,8 @@ If you're using the JAR without dependencies inlcuded, Orianna depends on the fo
 - [guava](https://github.com/google/guava) (version 20.0)
 - [okhttp](http://square.github.io/okhttp/) (version 3.10.0)
 - [jackson-databind](https://github.com/FasterXML/jackson-databind) (version 2.9.6)
-- [jackson-dataformat-msgpack](https://github.com/msgpack/msgpack-java) (version 0.8.14)
-- [joda-time](http://www.joda.org/joda-time/) (version 2.9.9)
+- [jackson-dataformat-msgpack](https://github.com/msgpack/msgpack-java) (version 0.8.16)
+- [joda-time](http://www.joda.org/joda-time/) (version 2.10)
 - [jackson-datatype-joda](https://github.com/FasterXML/jackson-datatype-joda) (version 2.9.3)
 - [cache2k](https://cache2k.org/) (version 1.0.2.Final)
 
