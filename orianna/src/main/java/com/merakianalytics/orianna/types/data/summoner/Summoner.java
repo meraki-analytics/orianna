@@ -8,7 +8,8 @@ public class Summoner extends CoreData {
     private static final long serialVersionUID = -5216558332373601872L;
     private long id, accountId;
     private String name, platform;
-    private int profileIconId, level;
+    private int profileIconId = -1;
+    private int level;
     private DateTime updated;
 
     @Override

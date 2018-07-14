@@ -127,7 +127,7 @@ public class ProfileIcon extends GhostObject<com.merakianalytics.orianna.types.d
         switch(group) {
             case PROFILE_ICON_LOAD_GROUP:
                 builder = ImmutableMap.builder();
-                if(coreData.getId() != 0) {
+                if(coreData.getId() != -1) {
                     builder.put("id", coreData.getId());
                 }
                 if(coreData.getPlatform() != null) {

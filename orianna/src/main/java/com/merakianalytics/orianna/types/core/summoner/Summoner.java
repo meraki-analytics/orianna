@@ -107,7 +107,7 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
         @Override
         public ProfileIcon get() {
             load(SUMMONER_LOAD_GROUP);
-            if(coreData.getProfileIconId() == 0) {
+            if(coreData.getProfileIconId() == -1) {
                 return null;
             }
             return ProfileIcon.withId(coreData.getProfileIconId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();

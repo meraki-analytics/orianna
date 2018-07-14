@@ -5,7 +5,7 @@ import com.merakianalytics.orianna.types.dto.DataObject;
 public class Summoner extends DataObject {
     private static final long serialVersionUID = 8693230711620500210L;
     private String name, platform;
-    private int profileIconId;
+    private int profileIconId = -1;
     private long summonerLevel, revisionDate, id, accountId;
 
     /*
