@@ -13,10 +13,14 @@ public enum GameMode {
         ODIN,
         ONEFORALL,
         OVERCHARGE,
+        PRACTICETOOL,
         PROJECT,
         SIEGE,
         SNOWURF,
         STARTGUARDIAN,
         TUTORIAL,
+        TUTORIAL_MODULE_1,
+        TUTORIAL_MODULE_2,
+        TUTORIAL_MODULE_3,
         URF;
 }
