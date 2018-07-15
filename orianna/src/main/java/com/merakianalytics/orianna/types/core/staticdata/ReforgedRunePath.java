@@ -7,11 +7,12 @@ import com.merakianalytics.orianna.types.core.OriannaObject;
 public class ReforgedRunePath extends OriannaObject.ListProxy<ReforgedRuneSlot, com.merakianalytics.orianna.types.data.staticdata.ReforgedRuneSlot, com.merakianalytics.orianna.types.data.staticdata.ReforgedRunePath> {
     private static final long serialVersionUID = -7986072459001642330L;
 
-    public ReforgedRunePath(final com.merakianalytics.orianna.types.data.staticdata.ReforgedRunePath coreData) {
+    public ReforgedRunePath(final com.merakianalytics.orianna.types.data.staticdata.ReforgedRunePath coreData,
+        final java.util.Map<Integer, ReforgedRune> runes) {
         super(coreData, new Function<com.merakianalytics.orianna.types.data.staticdata.ReforgedRuneSlot, ReforgedRuneSlot>() {
             @Override
             public ReforgedRuneSlot apply(final com.merakianalytics.orianna.types.data.staticdata.ReforgedRuneSlot data) {
-                return new ReforgedRuneSlot(data);
+                return new ReforgedRuneSlot(data, runes);
             }
         });
     }

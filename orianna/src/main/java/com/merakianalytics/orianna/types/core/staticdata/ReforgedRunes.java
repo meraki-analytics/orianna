@@ -205,7 +205,7 @@ public class ReforgedRunes extends GhostObject.ListProxy<ReforgedRune, com.merak
             if(coreData.getTree() == null) {
                 return null;
             }
-            return new ReforgedRuneTree(coreData.getTree());
+            return new ReforgedRuneTree(coreData.getTree(), ReforgedRunes.this);
         }
     });
 
