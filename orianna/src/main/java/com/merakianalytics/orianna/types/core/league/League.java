@@ -118,6 +118,14 @@ public class League extends GhostObject.ListProxy<LeagueEntry, com.merakianalyti
         super(coreData, 1);
     }
 
+    @Override
+    public boolean exists() {
+        if(coreData.isEmpty()) {
+            load(LIST_PROXY_LOAD_GROUP);
+        }
+        return !coreData.isEmpty();
+    }
+
     @Searchable({String.class})
     public String getId() {
         if(coreData.getId() == null) {
@@ -135,7 +143,9 @@ public class League extends GhostObject.ListProxy<LeagueEntry, com.merakianalyti
 
     @Searchable({String.class})
     public String getName() {
-        load(LIST_PROXY_LOAD_GROUP);
+        if(coreData.getName() == null) {
+            load(LIST_PROXY_LOAD_GROUP);
+        }
         return coreData.getName();
     }
 
@@ -179,7 +189,11 @@ public class League extends GhostObject.ListProxy<LeagueEntry, com.merakianalyti
                 if(coreData.getQueue() != null) {
                     builder.put("queue", Queue.valueOf(coreData.getQueue()));
                 }
-                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.league.League.class, builder.build());
+                final com.merakianalytics.orianna.types.data.league.League data =
+                    Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.league.League.class, builder.build());
+                if(data != null) {
+                    coreData = data;
+                }
                 loadListProxyData(new Function<com.merakianalytics.orianna.types.data.league.LeagueEntry, LeagueEntry>() {
                     @Override
                     public LeagueEntry apply(final com.merakianalytics.orianna.types.data.league.LeagueEntry data) {

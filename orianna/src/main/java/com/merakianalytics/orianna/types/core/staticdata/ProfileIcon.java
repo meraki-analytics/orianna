@@ -89,6 +89,14 @@ public class ProfileIcon extends GhostObject<com.merakianalytics.orianna.types.d
         super(coreData, 1);
     }
 
+    @Override
+    public boolean exists() {
+        if(coreData.getImage() == null) {
+            load(PROFILE_ICON_LOAD_GROUP);
+        }
+        return coreData.getImage() != null;
+    }
+
     @Searchable(int.class)
     public int getId() {
         return coreData.getId();
@@ -140,7 +148,11 @@ public class ProfileIcon extends GhostObject<com.merakianalytics.orianna.types.d
                     builder.put("locale", coreData.getLocale());
                 }
 
-                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.ProfileIcon.class, builder.build());
+                final com.merakianalytics.orianna.types.data.staticdata.ProfileIcon data =
+                    Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.ProfileIcon.class, builder.build());
+                if(data != null) {
+                    coreData = data;
+                }
                 break;
             default:
                 break;

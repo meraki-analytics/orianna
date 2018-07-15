@@ -88,6 +88,14 @@ public class LanguageStrings extends GhostObject.MapProxy<String, String, String
     }
 
     @Override
+    public boolean exists() {
+        if(coreData.isEmpty()) {
+            load(MAP_PROXY_LOAD_GROUP);
+        }
+        return !coreData.isEmpty();
+    }
+
+    @Override
     protected List<String> getLoadGroups() {
         return Arrays.asList(new String[] {
             MAP_PROXY_LOAD_GROUP
@@ -107,7 +115,9 @@ public class LanguageStrings extends GhostObject.MapProxy<String, String, String
     }
 
     public String getType() {
-        load(MAP_PROXY_LOAD_GROUP);
+        if(coreData.getType() == null) {
+            load(MAP_PROXY_LOAD_GROUP);
+        }
         return coreData.getType();
     }
 
@@ -130,7 +140,11 @@ public class LanguageStrings extends GhostObject.MapProxy<String, String, String
                 if(coreData.getLocale() != null) {
                     builder.put("locale", coreData.getLocale());
                 }
-                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.LanguageStrings.class, builder.build());
+                final com.merakianalytics.orianna.types.data.staticdata.LanguageStrings data =
+                    Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.LanguageStrings.class, builder.build());
+                if(data != null) {
+                    coreData = data;
+                }
                 loadMapProxyData();
                 break;
             default:

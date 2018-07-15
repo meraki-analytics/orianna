@@ -168,6 +168,14 @@ public class ProfileIcons extends GhostObject.ListProxy<ProfileIcon, com.merakia
     }
 
     @Override
+    public boolean exists() {
+        if(coreData.isEmpty()) {
+            load(LIST_PROXY_LOAD_GROUP);
+        }
+        return !coreData.isEmpty();
+    }
+
+    @Override
     protected List<String> getLoadGroups() {
         return Arrays.asList(new String[] {
             LIST_PROXY_LOAD_GROUP
@@ -187,7 +195,9 @@ public class ProfileIcons extends GhostObject.ListProxy<ProfileIcon, com.merakia
     }
 
     public String getType() {
-        load(LIST_PROXY_LOAD_GROUP);
+        if(coreData.getType() == null) {
+            load(LIST_PROXY_LOAD_GROUP);
+        }
         return coreData.getType();
     }
 
@@ -210,7 +220,11 @@ public class ProfileIcons extends GhostObject.ListProxy<ProfileIcon, com.merakia
                 if(coreData.getLocale() != null) {
                     builder.put("locale", coreData.getLocale());
                 }
-                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.ProfileIcons.class, builder.build());
+                final com.merakianalytics.orianna.types.data.staticdata.ProfileIcons data =
+                    Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.ProfileIcons.class, builder.build());
+                if(data != null) {
+                    coreData = data;
+                }
                 loadListProxyData(new Function<com.merakianalytics.orianna.types.data.staticdata.ProfileIcon, ProfileIcon>() {
                     @Override
                     public ProfileIcon apply(final com.merakianalytics.orianna.types.data.staticdata.ProfileIcon data) {

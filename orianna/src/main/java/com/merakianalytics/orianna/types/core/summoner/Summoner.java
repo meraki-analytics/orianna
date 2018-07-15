@@ -118,6 +118,14 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
         super(coreData, 1);
     }
 
+    @Override
+    public boolean exists() {
+        if(coreData.getUpdated() == null) {
+            load(SUMMONER_LOAD_GROUP);
+        }
+        return coreData.getUpdated() != null;
+    }
+
     @Searchable(long.class)
     public long getAccountId() {
         if(coreData.getAccountId() == 0L) {
@@ -211,7 +219,9 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
     }
 
     public int getLevel() {
-        load(SUMMONER_LOAD_GROUP);
+        if(coreData.getLevel() == 0) {
+            load(SUMMONER_LOAD_GROUP);
+        }
         return coreData.getLevel();
     }
 
@@ -243,7 +253,9 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
     }
 
     public DateTime getUpdated() {
-        load(SUMMONER_LOAD_GROUP);
+        if(coreData.getUpdated() == null) {
+            load(SUMMONER_LOAD_GROUP);
+        }
         return coreData.getUpdated();
     }
 
@@ -273,7 +285,11 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
                 if(coreData.getPlatform() != null) {
                     builder.put("platform", Platform.withTag(coreData.getPlatform()));
                 }
-                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.summoner.Summoner.class, builder.build());
+                final com.merakianalytics.orianna.types.data.summoner.Summoner data =
+                    Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.summoner.Summoner.class, builder.build());
+                if(data != null) {
+                    coreData = data;
+                }
                 break;
             default:
                 break;

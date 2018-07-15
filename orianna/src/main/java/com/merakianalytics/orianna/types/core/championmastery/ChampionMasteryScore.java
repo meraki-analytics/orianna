@@ -51,6 +51,14 @@ public class ChampionMasteryScore extends GhostObject<com.merakianalytics.oriann
     }
 
     @Override
+    public boolean exists() {
+        if(coreData.getScore() == 0) {
+            load(CHAMPION_MASTERY_SCORE_LOAD_GROUP);
+        }
+        return coreData.getScore() != 0;
+    }
+
+    @Override
     protected List<String> getLoadGroups() {
         return Arrays.asList(new String[] {
             CHAMPION_MASTERY_SCORE_LOAD_GROUP
@@ -66,7 +74,9 @@ public class ChampionMasteryScore extends GhostObject<com.merakianalytics.oriann
     }
 
     public int getScore() {
-        load(CHAMPION_MASTERY_SCORE_LOAD_GROUP);
+        if(coreData.getScore() == 0) {
+            load(CHAMPION_MASTERY_SCORE_LOAD_GROUP);
+        }
         return coreData.getScore();
     }
 
@@ -87,8 +97,11 @@ public class ChampionMasteryScore extends GhostObject<com.merakianalytics.oriann
                 if(coreData.getPlatform() != null) {
                     builder.put("platform", Platform.withTag(coreData.getPlatform()));
                 }
-                coreData =
+                final com.merakianalytics.orianna.types.data.championmastery.ChampionMasteryScore data =
                     Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.championmastery.ChampionMasteryScore.class, builder.build());
+                if(data != null) {
+                    coreData = data;
+                }
                 break;
             default:
                 break;

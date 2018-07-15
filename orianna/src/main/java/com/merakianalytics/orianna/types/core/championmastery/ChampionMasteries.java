@@ -145,6 +145,14 @@ public class ChampionMasteries extends GhostObject.ListProxy<ChampionMastery, co
     }
 
     @Override
+    public boolean exists() {
+        if(coreData.isEmpty()) {
+            load(LIST_PROXY_LOAD_GROUP);
+        }
+        return !coreData.isEmpty();
+    }
+
+    @Override
     protected List<String> getLoadGroups() {
         return Arrays.asList(new String[] {
             LIST_PROXY_LOAD_GROUP
@@ -176,8 +184,11 @@ public class ChampionMasteries extends GhostObject.ListProxy<ChampionMastery, co
                 if(coreData.getSummonerId() != 0L) {
                     builder.put("summonerId", coreData.getSummonerId());
                 }
-                coreData =
+                final com.merakianalytics.orianna.types.data.championmastery.ChampionMasteries data =
                     Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.championmastery.ChampionMasteries.class, builder.build());
+                if(data != null) {
+                    coreData = data;
+                }
                 loadListProxyData(new Function<com.merakianalytics.orianna.types.data.championmastery.ChampionMastery, ChampionMastery>() {
                     @Override
                     public ChampionMastery apply(final com.merakianalytics.orianna.types.data.championmastery.ChampionMastery data) {

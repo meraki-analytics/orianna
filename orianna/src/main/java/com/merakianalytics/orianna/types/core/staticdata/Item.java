@@ -236,8 +236,18 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
         super(coreData, 1);
     }
 
+    @Override
+    public boolean exists() {
+        if(coreData.getDescription() == null) {
+            load(ITEM_LOAD_GROUP);
+        }
+        return coreData.getDescription() != null;
+    }
+
     public int getBasePrice() {
-        load(ITEM_LOAD_GROUP);
+        if(coreData.getBasePrice() == 0) {
+            load(ITEM_LOAD_GROUP);
+        }
         return coreData.getBasePrice();
     }
 
@@ -250,7 +260,9 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
     }
 
     public String getDescription() {
-        load(ITEM_LOAD_GROUP);
+        if(coreData.getDescription() == null) {
+            load(ITEM_LOAD_GROUP);
+        }
         return coreData.getDescription();
     }
 
@@ -259,7 +271,9 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
     }
 
     public String getGroup() {
-        load(ITEM_LOAD_GROUP);
+        if(coreData.getGroup() == null) {
+            load(ITEM_LOAD_GROUP);
+        }
         return coreData.getGroup();
     }
 
@@ -312,7 +326,9 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
     }
 
     public String getPlaintext() {
-        load(ITEM_LOAD_GROUP);
+        if(coreData.getPlaintext() == null) {
+            load(ITEM_LOAD_GROUP);
+        }
         return coreData.getPlaintext();
     }
 
@@ -329,17 +345,23 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
     }
 
     public String getSanitizedDescription() {
-        load(ITEM_LOAD_GROUP);
+        if(coreData.getSanitizedDescription() == null) {
+            load(ITEM_LOAD_GROUP);
+        }
         return coreData.getSanitizedDescription();
     }
 
     public int getSellPrice() {
-        load(ITEM_LOAD_GROUP);
+        if(coreData.getSellPrice() == 0) {
+            load(ITEM_LOAD_GROUP);
+        }
         return coreData.getSellPrice();
     }
 
     public int getSource() {
-        load(ITEM_LOAD_GROUP);
+        if(coreData.getSource() == 0) {
+            load(ITEM_LOAD_GROUP);
+        }
         return coreData.getSource();
     }
 
@@ -352,12 +374,16 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
     }
 
     public int getTier() {
-        load(ITEM_LOAD_GROUP);
+        if(coreData.getTier() == 0) {
+            load(ITEM_LOAD_GROUP);
+        }
         return coreData.getTier();
     }
 
     public int getTotalPrice() {
-        load(ITEM_LOAD_GROUP);
+        if(coreData.getTotalPrice() == 0) {
+            load(ITEM_LOAD_GROUP);
+        }
         return coreData.getTotalPrice();
     }
 
@@ -366,27 +392,37 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
     }
 
     public boolean isConsumed() {
-        load(ITEM_LOAD_GROUP);
+        if(!coreData.isConsumed()) {
+            load(ITEM_LOAD_GROUP);
+        }
         return coreData.isConsumed();
     }
 
     public boolean isConsumedWhenFull() {
-        load(ITEM_LOAD_GROUP);
+        if(!coreData.isConsumedWhenFull()) {
+            load(ITEM_LOAD_GROUP);
+        }
         return coreData.isConsumedWhenFull();
     }
 
     public boolean isHiddenFromAll() {
-        load(ITEM_LOAD_GROUP);
+        if(!coreData.isHiddenFromAll()) {
+            load(ITEM_LOAD_GROUP);
+        }
         return coreData.isHiddenFromAll();
     }
 
     public boolean isInStore() {
-        load(ITEM_LOAD_GROUP);
+        if(!coreData.isInStore()) {
+            load(ITEM_LOAD_GROUP);
+        }
         return coreData.isInStore();
     }
 
     public boolean isPurchasable() {
-        load(ITEM_LOAD_GROUP);
+        if(!coreData.isPurchasable()) {
+            load(ITEM_LOAD_GROUP);
+        }
         return coreData.isPurchasable();
     }
 
@@ -415,7 +451,11 @@ public class Item extends GhostObject<com.merakianalytics.orianna.types.data.sta
                     builder.put("includedData", coreData.getIncludedData());
                 }
 
-                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Item.class, builder.build());
+                final com.merakianalytics.orianna.types.data.staticdata.Item data =
+                    Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Item.class, builder.build());
+                if(data != null) {
+                    coreData = data;
+                }
                 break;
             default:
                 break;

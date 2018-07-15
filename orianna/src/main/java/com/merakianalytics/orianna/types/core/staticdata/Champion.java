@@ -289,22 +289,36 @@ public class Champion extends GhostObject<ChampionData> {
         super(coreData, 2);
     }
 
+    @Override
+    public boolean exists() {
+        if(coreData.getChampion().getTitle() == null) {
+            load(CHAMPION_LOAD_GROUP);
+        }
+        return coreData.getChampion().getTitle() != null;
+    }
+
     public List<String> getAllyTips() {
         return allyTips.get();
     }
 
     public String getBlurb() {
-        load(CHAMPION_LOAD_GROUP);
+        if(coreData.getChampion().getBlurb() == null) {
+            load(CHAMPION_LOAD_GROUP);
+        }
         return coreData.getChampion().getBlurb();
     }
 
     public int getDefenseRating() {
-        load(CHAMPION_LOAD_GROUP);
+        if(coreData.getChampion().getDefenseRating() == 0) {
+            load(CHAMPION_LOAD_GROUP);
+        }
         return coreData.getChampion().getDefenseRating();
     }
 
     public int getDifficultyRating() {
-        load(CHAMPION_LOAD_GROUP);
+        if(coreData.getChampion().getDifficultyRating() == 0) {
+            load(CHAMPION_LOAD_GROUP);
+        }
         return coreData.getChampion().getDifficultyRating();
     }
 
@@ -349,12 +363,16 @@ public class Champion extends GhostObject<ChampionData> {
     }
 
     public String getLore() {
-        load(CHAMPION_LOAD_GROUP);
+        if(coreData.getChampion().getLore() == null) {
+            load(CHAMPION_LOAD_GROUP);
+        }
         return coreData.getChampion().getLore();
     }
 
     public int getMagicRating() {
-        load(CHAMPION_LOAD_GROUP);
+        if(coreData.getChampion().getMagicRating() == 0) {
+            load(CHAMPION_LOAD_GROUP);
+        }
         return coreData.getChampion().getMagicRating();
     }
 
@@ -371,7 +389,9 @@ public class Champion extends GhostObject<ChampionData> {
     }
 
     public int getPhysicalRating() {
-        load(CHAMPION_LOAD_GROUP);
+        if(coreData.getChampion().getPhysicalRating() == 0) {
+            load(CHAMPION_LOAD_GROUP);
+        }
         return coreData.getChampion().getPhysicalRating();
     }
 
@@ -388,7 +408,9 @@ public class Champion extends GhostObject<ChampionData> {
     }
 
     public String getResource() {
-        load(CHAMPION_LOAD_GROUP);
+        if(coreData.getChampion().getResource() == null) {
+            load(CHAMPION_LOAD_GROUP);
+        }
         return coreData.getChampion().getResource();
     }
 
@@ -410,7 +432,9 @@ public class Champion extends GhostObject<ChampionData> {
 
     @Searchable(String.class)
     public String getTitle() {
-        load(CHAMPION_LOAD_GROUP);
+        if(coreData.getChampion().getTitle() == null) {
+            load(CHAMPION_LOAD_GROUP);
+        }
         return coreData.getChampion().getTitle();
     }
 
@@ -496,8 +520,11 @@ public class Champion extends GhostObject<ChampionData> {
                     builder.put("includedData", coreData.getChampion().getIncludedData());
                 }
 
-                coreData
-                    .setChampion(Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Champion.class, builder.build()));
+                final com.merakianalytics.orianna.types.data.staticdata.Champion data =
+                    Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Champion.class, builder.build());
+                if(data != null) {
+                    coreData.setChampion(data);
+                }
                 break;
             case STATUS_LOAD_GROUP:
                 builder = ImmutableMap.builder();
@@ -508,7 +535,10 @@ public class Champion extends GhostObject<ChampionData> {
                     builder.put("platform", Platform.withTag(coreData.getChampion().getPlatform()));
                 }
 
-                coreData.setStatus(Orianna.getSettings().getPipeline().get(ChampionStatus.class, builder.build()));
+                final ChampionStatus d = Orianna.getSettings().getPipeline().get(ChampionStatus.class, builder.build());
+                if(d != null) {
+                    coreData.setStatus(d);
+                }
                 if(coreData.getChampion().getId() == 0) {
                     coreData.getChampion().setId(coreData.getStatus().getId());
                 }

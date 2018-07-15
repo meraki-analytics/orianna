@@ -110,6 +110,14 @@ public class TournamentMatches extends GhostObject.ListProxy<Match, Long, com.me
     }
 
     @Override
+    public boolean exists() {
+        if(coreData.isEmpty()) {
+            load(LIST_PROXY_LOAD_GROUP);
+        }
+        return !coreData.isEmpty();
+    }
+
+    @Override
     protected List<String> getLoadGroups() {
         return Arrays.asList(new String[] {
             LIST_PROXY_LOAD_GROUP
@@ -140,7 +148,11 @@ public class TournamentMatches extends GhostObject.ListProxy<Match, Long, com.me
                 if(coreData.getTournamentCode() != null) {
                     builder.put("tournamentCode", coreData.getTournamentCode());
                 }
-                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.match.TournamentMatches.class, builder.build());
+                final com.merakianalytics.orianna.types.data.match.TournamentMatches data =
+                    Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.match.TournamentMatches.class, builder.build());
+                if(data != null) {
+                    coreData = data;
+                }
                 loadListProxyData(new Function<Long, Match>() {
                     @Override
                     public Match apply(final Long id) {

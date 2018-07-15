@@ -62,6 +62,9 @@ public class Realm extends GhostObject<com.merakianalytics.orianna.types.data.st
         @Override
         public Map<String, String> get() {
             load(REALM_LOAD_GROUP);
+            if(coreData.getLatestVersions() == null) {
+                return null;
+            }
             return Collections.unmodifiableMap(coreData.getLatestVersions());
         }
     });
@@ -70,23 +73,39 @@ public class Realm extends GhostObject<com.merakianalytics.orianna.types.data.st
         super(coreData, 1);
     }
 
+    @Override
+    public boolean exists() {
+        if(coreData.getCDN() == null) {
+            load(REALM_LOAD_GROUP);
+        }
+        return coreData.getCDN() != null;
+    }
+
     public String getCDN() {
-        load(REALM_LOAD_GROUP);
+        if(coreData.getCDN() == null) {
+            load(REALM_LOAD_GROUP);
+        }
         return coreData.getCDN();
     }
 
     public String getCSSVersion() {
-        load(REALM_LOAD_GROUP);
+        if(coreData.getCSSVersion() == null) {
+            load(REALM_LOAD_GROUP);
+        }
         return coreData.getCSSVersion();
     }
 
     public String getDefaultLocale() {
-        load(REALM_LOAD_GROUP);
+        if(coreData.getDefaultLocale() == null) {
+            load(REALM_LOAD_GROUP);
+        }
         return coreData.getDefaultLocale();
     }
 
     public String getLatestDataDragon() {
-        load(REALM_LOAD_GROUP);
+        if(coreData.getLatestDataDragon() == null) {
+            load(REALM_LOAD_GROUP);
+        }
         return coreData.getLatestDataDragon();
     }
 
@@ -95,7 +114,9 @@ public class Realm extends GhostObject<com.merakianalytics.orianna.types.data.st
     }
 
     public String getLegacyMode() {
-        load(REALM_LOAD_GROUP);
+        if(coreData.getLegacyMode() == null) {
+            load(REALM_LOAD_GROUP);
+        }
         return coreData.getLegacyMode();
     }
 
@@ -107,7 +128,9 @@ public class Realm extends GhostObject<com.merakianalytics.orianna.types.data.st
     }
 
     public int getMaxProfileIconId() {
-        load(REALM_LOAD_GROUP);
+        if(coreData.getMaxProfileIconId() == 0) {
+            load(REALM_LOAD_GROUP);
+        }
         return coreData.getMaxProfileIconId();
     }
 
@@ -120,12 +143,16 @@ public class Realm extends GhostObject<com.merakianalytics.orianna.types.data.st
     }
 
     public String getStore() {
-        load(REALM_LOAD_GROUP);
+        if(coreData.getStore() == null) {
+            load(REALM_LOAD_GROUP);
+        }
         return coreData.getStore();
     }
 
     public String getVersion() {
-        load(REALM_LOAD_GROUP);
+        if(coreData.getVersion() == null) {
+            load(REALM_LOAD_GROUP);
+        }
         return coreData.getVersion();
     }
 
@@ -138,7 +165,11 @@ public class Realm extends GhostObject<com.merakianalytics.orianna.types.data.st
                 if(coreData.getPlatform() != null) {
                     builder.put("platform", Platform.withTag(coreData.getPlatform()));
                 }
-                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Realm.class, builder.build());
+                final com.merakianalytics.orianna.types.data.staticdata.Realm data =
+                    Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Realm.class, builder.build());
+                if(data != null) {
+                    coreData = data;
+                }
                 break;
             default:
                 break;

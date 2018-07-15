@@ -241,6 +241,14 @@ public class SummonerSpell extends GhostObject<com.merakianalytics.orianna.types
         super(coreData, 1);
     }
 
+    @Override
+    public boolean exists() {
+        if(coreData.getDescription() == null) {
+            load(SUMMONER_SPELL_LOAD_GROUP);
+        }
+        return coreData.getDescription() != null;
+    }
+
     public List<Double> getCooldowns() {
         return cooldowns.get();
     }
@@ -276,7 +284,9 @@ public class SummonerSpell extends GhostObject<com.merakianalytics.orianna.types
 
     @Searchable(String.class)
     public String getKey() {
-        load(SUMMONER_SPELL_LOAD_GROUP);
+        if(coreData.getKey() == null) {
+            load(SUMMONER_SPELL_LOAD_GROUP);
+        }
         return coreData.getKey();
     }
 
@@ -300,7 +310,9 @@ public class SummonerSpell extends GhostObject<com.merakianalytics.orianna.types
     }
 
     public int getMaxRank() {
-        load(SUMMONER_SPELL_LOAD_GROUP);
+        if(coreData.getMaxRank() == 0) {
+            load(SUMMONER_SPELL_LOAD_GROUP);
+        }
         return coreData.getMaxRank();
     }
 
@@ -329,32 +341,44 @@ public class SummonerSpell extends GhostObject<com.merakianalytics.orianna.types
     }
 
     public String getResource() {
-        load(SUMMONER_SPELL_LOAD_GROUP);
+        if(coreData.getResource() == null) {
+            load(SUMMONER_SPELL_LOAD_GROUP);
+        }
         return coreData.getResource();
     }
 
     public String getResourceDescription() {
-        load(SUMMONER_SPELL_LOAD_GROUP);
+        if(coreData.getResourceDescription() == null) {
+            load(SUMMONER_SPELL_LOAD_GROUP);
+        }
         return coreData.getResourceDescription();
     }
 
     public String getSanitizedDescription() {
-        load(SUMMONER_SPELL_LOAD_GROUP);
+        if(coreData.getSanitizedDescription() == null) {
+            load(SUMMONER_SPELL_LOAD_GROUP);
+        }
         return coreData.getSanitizedDescription();
     }
 
     public String getSanitizedTooltip() {
-        load(SUMMONER_SPELL_LOAD_GROUP);
+        if(coreData.getSanitizedTooltip() == null) {
+            load(SUMMONER_SPELL_LOAD_GROUP);
+        }
         return coreData.getSanitizedTooltip();
     }
 
     public int getSummonerLevelRequirement() {
-        load(SUMMONER_SPELL_LOAD_GROUP);
+        if(coreData.getSummonerLevelRequirement() == 0) {
+            load(SUMMONER_SPELL_LOAD_GROUP);
+        }
         return coreData.getSummonerLevelRequirement();
     }
 
     public String getTooltip() {
-        load(SUMMONER_SPELL_LOAD_GROUP);
+        if(coreData.getTooltip() == null) {
+            load(SUMMONER_SPELL_LOAD_GROUP);
+        }
         return coreData.getTooltip();
     }
 
@@ -390,7 +414,11 @@ public class SummonerSpell extends GhostObject<com.merakianalytics.orianna.types
                 if(coreData.getIncludedData() != null) {
                     builder.put("includedData", coreData.getIncludedData());
                 }
-                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.SummonerSpell.class, builder.build());
+                final com.merakianalytics.orianna.types.data.staticdata.SummonerSpell data =
+                    Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.SummonerSpell.class, builder.build());
+                if(data != null) {
+                    coreData = data;
+                }
                 break;
             default:
                 break;

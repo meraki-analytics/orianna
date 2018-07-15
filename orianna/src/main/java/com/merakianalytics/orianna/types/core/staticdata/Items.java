@@ -270,6 +270,14 @@ public class Items extends GhostObject.ListProxy<Item, com.merakianalytics.orian
         super(coreData, 1);
     }
 
+    @Override
+    public boolean exists() {
+        if(coreData.isEmpty()) {
+            load(LIST_PROXY_LOAD_GROUP);
+        }
+        return !coreData.isEmpty();
+    }
+
     public List<ItemGroup> getGroups() {
         return groups.get();
     }
@@ -302,7 +310,9 @@ public class Items extends GhostObject.ListProxy<Item, com.merakianalytics.orian
     }
 
     public String getType() {
-        load(LIST_PROXY_LOAD_GROUP);
+        if(coreData.getType() == null) {
+            load(LIST_PROXY_LOAD_GROUP);
+        }
         return coreData.getType();
     }
 
@@ -328,7 +338,11 @@ public class Items extends GhostObject.ListProxy<Item, com.merakianalytics.orian
                 if(coreData.getIncludedData() != null) {
                     builder.put("includedData", coreData.getIncludedData());
                 }
-                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Items.class, builder.build());
+                final com.merakianalytics.orianna.types.data.staticdata.Items data =
+                    Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Items.class, builder.build());
+                if(data != null) {
+                    coreData = data;
+                }
                 loadListProxyData(new Function<com.merakianalytics.orianna.types.data.staticdata.Item, Item>() {
                     @Override
                     public Item apply(final com.merakianalytics.orianna.types.data.staticdata.Item data) {

@@ -171,6 +171,14 @@ public class Mastery extends GhostObject<com.merakianalytics.orianna.types.data.
         super(coreData, 1);
     }
 
+    @Override
+    public boolean exists() {
+        if(coreData.getDescriptions() == null) {
+            load(MASTERY_LOAD_GROUP);
+        }
+        return coreData.getDescriptions() != null;
+    }
+
     public List<String> getDescriptions() {
         return descriptions.get();
     }
@@ -215,7 +223,9 @@ public class Mastery extends GhostObject<com.merakianalytics.orianna.types.data.
     }
 
     public int getPoints() {
-        load(MASTERY_LOAD_GROUP);
+        if(coreData.getPoints() == 0) {
+            load(MASTERY_LOAD_GROUP);
+        }
         return coreData.getPoints();
     }
 
@@ -232,7 +242,9 @@ public class Mastery extends GhostObject<com.merakianalytics.orianna.types.data.
     }
 
     public MasteryTree getTree() {
-        load(MASTERY_LOAD_GROUP);
+        if(coreData.getTree() == null) {
+            load(MASTERY_LOAD_GROUP);
+        }
         return MasteryTree.valueOf(coreData.getTree());
     }
 
@@ -265,7 +277,11 @@ public class Mastery extends GhostObject<com.merakianalytics.orianna.types.data.
                     builder.put("includedData", coreData.getIncludedData());
                 }
 
-                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Mastery.class, builder.build());
+                final com.merakianalytics.orianna.types.data.staticdata.Mastery data =
+                    Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Mastery.class, builder.build());
+                if(data != null) {
+                    coreData = data;
+                }
                 break;
             default:
                 break;

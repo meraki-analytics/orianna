@@ -75,7 +75,7 @@ public class CurrentMatch extends GhostObject<com.merakianalytics.orianna.types.
         private final Supplier<ProfileIcon> profileIcon = Suppliers.memoize(new Supplier<ProfileIcon>() {
             @Override
             public ProfileIcon get() {
-                if(coreData.getProfileIconId() == 0) {
+                if(coreData.getProfileIconId() == -1) {
                     return null;
                 }
                 return ProfileIcon.withId(coreData.getProfileIconId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
@@ -238,7 +238,7 @@ public class CurrentMatch extends GhostObject<com.merakianalytics.orianna.types.
             @Override
             public com.merakianalytics.orianna.types.core.spectator.CurrentMatchTeam get() {
                 load(CURRENT_GAME_LOAD_GROUP);
-                if(coreData == null || coreData.getBlueTeam() == null) {
+                if(coreData.getBlueTeam() == null) {
                     return null;
                 }
                 return new Team(coreData.getBlueTeam());
@@ -250,7 +250,7 @@ public class CurrentMatch extends GhostObject<com.merakianalytics.orianna.types.
             @Override
             public SearchableList<com.merakianalytics.orianna.types.core.spectator.Player> get() {
                 load(CURRENT_GAME_LOAD_GROUP);
-                if(coreData == null || coreData.getPlayers() == null) {
+                if(coreData.getPlayers() == null) {
                     return null;
                 }
                 final List<com.merakianalytics.orianna.types.core.spectator.Player> players = new ArrayList<>(coreData.getPlayers().size());
@@ -266,7 +266,7 @@ public class CurrentMatch extends GhostObject<com.merakianalytics.orianna.types.
             @Override
             public com.merakianalytics.orianna.types.core.spectator.CurrentMatchTeam get() {
                 load(CURRENT_GAME_LOAD_GROUP);
-                if(coreData == null || coreData.getRedTeam() == null) {
+                if(coreData.getRedTeam() == null) {
                     return null;
                 }
                 return new Team(coreData.getRedTeam());
@@ -287,9 +287,12 @@ public class CurrentMatch extends GhostObject<com.merakianalytics.orianna.types.
         super(coreData, 1);
     }
 
+    @Override
     public boolean exists() {
-        load(CURRENT_GAME_LOAD_GROUP);
-        return coreData != null;
+        if(coreData.getId() == 0L) {
+            load(CURRENT_GAME_LOAD_GROUP);
+        }
+        return coreData.getId() != 0L;
     }
 
     public com.merakianalytics.orianna.types.core.spectator.CurrentMatchTeam getBlueTeam() {
@@ -297,25 +300,22 @@ public class CurrentMatch extends GhostObject<com.merakianalytics.orianna.types.
     }
 
     public DateTime getCreationTime() {
-        load(CURRENT_GAME_LOAD_GROUP);
-        if(coreData == null) {
-            return null;
+        if(coreData.getCreationTime() == null) {
+            load(CURRENT_GAME_LOAD_GROUP);
         }
         return coreData.getCreationTime();
     }
 
     public Duration getDuration() {
-        load(CURRENT_GAME_LOAD_GROUP);
-        if(coreData == null) {
-            return null;
+        if(coreData.getDuration() == null) {
+            load(CURRENT_GAME_LOAD_GROUP);
         }
         return coreData.getDuration();
     }
 
     public long getId() {
-        load(CURRENT_GAME_LOAD_GROUP);
-        if(coreData == null) {
-            return 0L;
+        if(coreData.getId() == 0L) {
+            load(CURRENT_GAME_LOAD_GROUP);
         }
         return coreData.getId();
     }
@@ -328,25 +328,22 @@ public class CurrentMatch extends GhostObject<com.merakianalytics.orianna.types.
     }
 
     public Map getMap() {
-        load(CURRENT_GAME_LOAD_GROUP);
-        if(coreData == null) {
-            return null;
+        if(coreData.getMap() == 0) {
+            load(CURRENT_GAME_LOAD_GROUP);
         }
         return Map.withId(coreData.getMap());
     }
 
     public GameMode getMode() {
-        load(CURRENT_GAME_LOAD_GROUP);
-        if(coreData == null) {
-            return null;
+        if(coreData.getMode() == null) {
+            load(CURRENT_GAME_LOAD_GROUP);
         }
         return GameMode.valueOf(coreData.getMode());
     }
 
     public String getObserverEncryptionKey() {
-        load(CURRENT_GAME_LOAD_GROUP);
-        if(coreData == null) {
-            return null;
+        if(coreData.getObserverEncryptionKey() == null) {
+            load(CURRENT_GAME_LOAD_GROUP);
         }
         return coreData.getObserverEncryptionKey();
     }
@@ -361,9 +358,8 @@ public class CurrentMatch extends GhostObject<com.merakianalytics.orianna.types.
     }
 
     public Queue getQueue() {
-        load(CURRENT_GAME_LOAD_GROUP);
-        if(coreData == null) {
-            return null;
+        if(coreData.getQueue() == 0) {
+            load(CURRENT_GAME_LOAD_GROUP);
         }
         return Queue.withId(coreData.getQueue());
     }
@@ -382,9 +378,8 @@ public class CurrentMatch extends GhostObject<com.merakianalytics.orianna.types.
     }
 
     public GameType getType() {
-        load(CURRENT_GAME_LOAD_GROUP);
-        if(coreData == null) {
-            return null;
+        if(coreData.getType() == null) {
+            load(CURRENT_GAME_LOAD_GROUP);
         }
         return GameType.valueOf(coreData.getType());
     }
@@ -401,7 +396,11 @@ public class CurrentMatch extends GhostObject<com.merakianalytics.orianna.types.
                 if(coreData.getSummonerId() != 0L) {
                     builder.put("summonerId", coreData.getSummonerId());
                 }
-                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.spectator.CurrentMatch.class, builder.build());
+                final com.merakianalytics.orianna.types.data.spectator.CurrentMatch data =
+                    Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.spectator.CurrentMatch.class, builder.build());
+                if(data != null) {
+                    coreData = data;
+                }
                 break;
             default:
                 break;

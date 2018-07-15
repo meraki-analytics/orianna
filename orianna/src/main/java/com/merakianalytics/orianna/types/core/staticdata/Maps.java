@@ -187,6 +187,14 @@ public class Maps extends GhostObject.ListProxy<Map, com.merakianalytics.orianna
     }
 
     @Override
+    public boolean exists() {
+        if(coreData.isEmpty()) {
+            load(LIST_PROXY_LOAD_GROUP);
+        }
+        return !coreData.isEmpty();
+    }
+
+    @Override
     protected List<String> getLoadGroups() {
         return Arrays.asList(new String[] {
             LIST_PROXY_LOAD_GROUP
@@ -206,7 +214,9 @@ public class Maps extends GhostObject.ListProxy<Map, com.merakianalytics.orianna
     }
 
     public String getType() {
-        load(LIST_PROXY_LOAD_GROUP);
+        if(coreData.getType() != null) {
+            load(LIST_PROXY_LOAD_GROUP);
+        }
         return coreData.getType();
     }
 
@@ -229,7 +239,11 @@ public class Maps extends GhostObject.ListProxy<Map, com.merakianalytics.orianna
                 if(coreData.getLocale() != null) {
                     builder.put("locale", coreData.getLocale());
                 }
-                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Maps.class, builder.build());
+                final com.merakianalytics.orianna.types.data.staticdata.Maps data =
+                    Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Maps.class, builder.build());
+                if(data != null) {
+                    coreData = data;
+                }
                 loadListProxyData(new Function<com.merakianalytics.orianna.types.data.staticdata.Map, Map>() {
                     @Override
                     public Map apply(final com.merakianalytics.orianna.types.data.staticdata.Map data) {

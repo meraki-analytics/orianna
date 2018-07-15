@@ -241,6 +241,14 @@ public class Runes extends GhostObject.ListProxy<Rune, com.merakianalytics.orian
         super(coreData, 1);
     }
 
+    @Override
+    public boolean exists() {
+        if(coreData.isEmpty()) {
+            load(LIST_PROXY_LOAD_GROUP);
+        }
+        return !coreData.isEmpty();
+    }
+
     public Set<String> getIncludedData() {
         return includedData.get();
     }
@@ -265,7 +273,9 @@ public class Runes extends GhostObject.ListProxy<Rune, com.merakianalytics.orian
     }
 
     public String getType() {
-        load(LIST_PROXY_LOAD_GROUP);
+        if(coreData.getType() == null) {
+            load(LIST_PROXY_LOAD_GROUP);
+        }
         return coreData.getType();
     }
 
@@ -291,7 +301,11 @@ public class Runes extends GhostObject.ListProxy<Rune, com.merakianalytics.orian
                 if(coreData.getIncludedData() != null) {
                     builder.put("includedData", coreData.getIncludedData());
                 }
-                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Runes.class, builder.build());
+                final com.merakianalytics.orianna.types.data.staticdata.Runes data =
+                    Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Runes.class, builder.build());
+                if(data != null) {
+                    coreData = data;
+                }
                 loadListProxyData(new Function<com.merakianalytics.orianna.types.data.staticdata.Rune, Rune>() {
                     @Override
                     public Rune apply(final com.merakianalytics.orianna.types.data.staticdata.Rune data) {

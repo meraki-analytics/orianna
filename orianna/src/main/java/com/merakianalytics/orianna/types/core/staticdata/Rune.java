@@ -160,8 +160,18 @@ public class Rune extends GhostObject<com.merakianalytics.orianna.types.data.sta
         super(coreData, 1);
     }
 
+    @Override
+    public boolean exists() {
+        if(coreData.getDescription() == null) {
+            load(RUNE_LOAD_GROUP);
+        }
+        return coreData.getDescription() != null;
+    }
+
     public String getDescription() {
-        load(RUNE_LOAD_GROUP);
+        if(coreData.getDescription() == null) {
+            load(RUNE_LOAD_GROUP);
+        }
         return coreData.getDescription();
     }
 
@@ -209,7 +219,9 @@ public class Rune extends GhostObject<com.merakianalytics.orianna.types.data.sta
     }
 
     public String getSanitizedDescription() {
-        load(RUNE_LOAD_GROUP);
+        if(coreData.getSanitizedDescription() == null) {
+            load(RUNE_LOAD_GROUP);
+        }
         return coreData.getSanitizedDescription();
     }
 
@@ -222,12 +234,16 @@ public class Rune extends GhostObject<com.merakianalytics.orianna.types.data.sta
     }
 
     public int getTier() {
-        load(RUNE_LOAD_GROUP);
+        if(coreData.getTier() == 0) {
+            load(RUNE_LOAD_GROUP);
+        }
         return coreData.getTier();
     }
 
     public RuneType getType() {
-        load(RUNE_LOAD_GROUP);
+        if(coreData.getType() == null) {
+            load(RUNE_LOAD_GROUP);
+        }
         return RuneType.withColor(coreData.getType());
     }
 
@@ -260,7 +276,11 @@ public class Rune extends GhostObject<com.merakianalytics.orianna.types.data.sta
                     builder.put("includedData", coreData.getIncludedData());
                 }
 
-                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Rune.class, builder.build());
+                final com.merakianalytics.orianna.types.data.staticdata.Rune data =
+                    Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Rune.class, builder.build());
+                if(data != null) {
+                    coreData = data;
+                }
                 break;
             default:
                 break;

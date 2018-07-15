@@ -131,7 +131,7 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
             @Override
             public ProfileIcon get() {
                 load(MATCH_LOAD_GROUP);
-                if(coreData.getProfileIconId() == 0) {
+                if(coreData.getProfileIconId() == -1) {
                     return null;
                 }
                 final String version = Versions.withPlatform(Platform.withTag(coreData.getCurrentPlatform())).get().truncate(coreData.getVersion());
@@ -608,6 +608,14 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
         fromReference = true;
     }
 
+    @Override
+    public boolean exists() {
+        if(coreData.getType() == null) {
+            load(MATCH_LOAD_GROUP);
+        }
+        return coreData.getType() != null;
+    }
+
     public com.merakianalytics.orianna.types.core.match.Team getBlueTeam() {
         return blueTeam.get();
     }
@@ -620,7 +628,9 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
     }
 
     public Duration getDuration() {
-        load(MATCH_LOAD_GROUP);
+        if(coreData.getDuration() == null) {
+            load(MATCH_LOAD_GROUP);
+        }
         return coreData.getDuration();
     }
 
@@ -636,12 +646,16 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
     }
 
     public Map getMap() {
-        load(MATCH_LOAD_GROUP);
+        if(coreData.getMap() == 0) {
+            load(MATCH_LOAD_GROUP);
+        }
         return Map.withId(coreData.getMap());
     }
 
     public GameMode getMode() {
-        load(MATCH_LOAD_GROUP);
+        if(coreData.getMode() == null) {
+            load(MATCH_LOAD_GROUP);
+        }
         return GameMode.valueOf(coreData.getMode());
     }
 
@@ -685,12 +699,16 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
     }
 
     public GameType getType() {
-        load(MATCH_LOAD_GROUP);
+        if(coreData.getType() == null) {
+            load(MATCH_LOAD_GROUP);
+        }
         return GameType.valueOf(coreData.getType());
     }
 
     public String getVersion() {
-        load(MATCH_LOAD_GROUP);
+        if(coreData.getVersion() == null) {
+            load(MATCH_LOAD_GROUP);
+        }
         return coreData.getVersion();
     }
 
@@ -711,22 +729,28 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
                 }
 
                 if(!fromReference) {
-                    coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.match.Match.class, builder.build());
+                    final com.merakianalytics.orianna.types.data.match.Match data =
+                        Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.match.Match.class, builder.build());
+                    if(data != null) {
+                        coreData = data;
+                    }
                 } else {
                     final com.merakianalytics.orianna.types.data.match.Match data =
                         Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.match.Match.class, builder.build());
-                    final com.merakianalytics.orianna.types.data.match.Participant fromReference = coreData.getParticipants().get(0);
-                    final Iterator<com.merakianalytics.orianna.types.data.match.Participant> iterator = data.getParticipants().iterator();
-                    while(iterator.hasNext()) {
-                        final com.merakianalytics.orianna.types.data.match.Participant participant = iterator.next();
-                        if(participant.getCurrentAccountId() == fromReference.getCurrentAccountId()) {
-                            replaceData(participant, fromReference);
-                            iterator.remove();
-                            break;
+                    if(data != null) {
+                        final com.merakianalytics.orianna.types.data.match.Participant fromReference = coreData.getParticipants().get(0);
+                        final Iterator<com.merakianalytics.orianna.types.data.match.Participant> iterator = data.getParticipants().iterator();
+                        while(iterator.hasNext()) {
+                            final com.merakianalytics.orianna.types.data.match.Participant participant = iterator.next();
+                            if(participant.getCurrentAccountId() == fromReference.getCurrentAccountId()) {
+                                replaceData(participant, fromReference);
+                                iterator.remove();
+                                break;
+                            }
                         }
+                        data.getParticipants().add(0, fromReference);
+                        coreData = data;
                     }
-                    data.getParticipants().add(0, fromReference);
-                    coreData = data;
                 }
                 break;
             default:

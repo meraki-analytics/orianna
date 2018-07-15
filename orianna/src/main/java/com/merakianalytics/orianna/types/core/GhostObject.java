@@ -383,6 +383,8 @@ public abstract class GhostObject<T extends CoreData> extends OriannaObject<T> {
         groups = new ConcurrentHashMap<>(loadGroups);
     }
 
+    public abstract boolean exists();
+
     protected abstract List<String> getLoadGroups();
 
     public void load() {

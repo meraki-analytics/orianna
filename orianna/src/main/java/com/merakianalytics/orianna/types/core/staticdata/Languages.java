@@ -59,6 +59,14 @@ public class Languages extends GhostObject.ListProxy<String, String, com.merakia
     }
 
     @Override
+    public boolean exists() {
+        if(coreData.isEmpty()) {
+            load(LIST_PROXY_LOAD_GROUP);
+        }
+        return !coreData.isEmpty();
+    }
+
+    @Override
     protected List<String> getLoadGroups() {
         return Arrays.asList(new String[] {
             LIST_PROXY_LOAD_GROUP
@@ -82,7 +90,11 @@ public class Languages extends GhostObject.ListProxy<String, String, com.merakia
                 if(coreData.getPlatform() != null) {
                     builder.put("platform", Platform.withTag(coreData.getPlatform()));
                 }
-                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Languages.class, builder.build());
+                final com.merakianalytics.orianna.types.data.staticdata.Languages data =
+                    Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Languages.class, builder.build());
+                if(data != null) {
+                    coreData = data;
+                }
                 loadListProxyData(Functions.<String> identity());
                 break;
             default:

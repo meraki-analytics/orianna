@@ -214,6 +214,14 @@ public class ReforgedRunes extends GhostObject.ListProxy<ReforgedRune, com.merak
     }
 
     @Override
+    public boolean exists() {
+        if(coreData.isEmpty()) {
+            load(LIST_PROXY_LOAD_GROUP);
+        }
+        return !coreData.isEmpty();
+    }
+
+    @Override
     protected List<String> getLoadGroups() {
         return Arrays.asList(new String[] {
             LIST_PROXY_LOAD_GROUP
@@ -255,7 +263,11 @@ public class ReforgedRunes extends GhostObject.ListProxy<ReforgedRune, com.merak
                 if(coreData.getLocale() != null) {
                     builder.put("locale", coreData.getLocale());
                 }
-                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.ReforgedRunes.class, builder.build());
+                final com.merakianalytics.orianna.types.data.staticdata.ReforgedRunes data =
+                    Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.ReforgedRunes.class, builder.build());
+                if(data != null) {
+                    coreData = data;
+                }
                 loadListProxyData(new Function<com.merakianalytics.orianna.types.data.staticdata.ReforgedRune, ReforgedRune>() {
                     @Override
                     public ReforgedRune apply(final com.merakianalytics.orianna.types.data.staticdata.ReforgedRune data) {

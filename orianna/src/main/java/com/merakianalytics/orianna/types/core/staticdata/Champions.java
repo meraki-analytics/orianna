@@ -296,8 +296,18 @@ public class Champions extends GhostObject.ListProxy<com.merakianalytics.orianna
         super(coreData, 1);
     }
 
+    @Override
+    public boolean exists() {
+        if(coreData.isEmpty()) {
+            load(LIST_PROXY_LOAD_GROUP);
+        }
+        return !coreData.isEmpty();
+    }
+
     public String getFormat() {
-        load(LIST_PROXY_LOAD_GROUP);
+        if(coreData.getFormat() == null) {
+            load(LIST_PROXY_LOAD_GROUP);
+        }
         return coreData.getFormat();
     }
 
@@ -326,7 +336,9 @@ public class Champions extends GhostObject.ListProxy<com.merakianalytics.orianna
     }
 
     public String getType() {
-        load(LIST_PROXY_LOAD_GROUP);
+        if(coreData.getType() == null) {
+            load(LIST_PROXY_LOAD_GROUP);
+        }
         return coreData.getType();
     }
 
@@ -352,8 +364,11 @@ public class Champions extends GhostObject.ListProxy<com.merakianalytics.orianna
                 if(coreData.getIncludedData() != null) {
                     builder.put("includedData", coreData.getIncludedData());
                 }
-                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Champions.class, builder.build());
-
+                final com.merakianalytics.orianna.types.data.staticdata.Champions data =
+                    Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Champions.class, builder.build());
+                if(data != null) {
+                    coreData = data;
+                }
                 loadListProxyData(
                     new Function<com.merakianalytics.orianna.types.data.staticdata.Champion, com.merakianalytics.orianna.types.core.staticdata.Champion>() {
                         @Override

@@ -38,6 +38,14 @@ public class VerificationString extends GhostObject<com.merakianalytics.orianna.
     }
 
     @Override
+    public boolean exists() {
+        if(coreData.getString() == null) {
+            load(VERIFICATION_STRING_LOAD_GROUP);
+        }
+        return coreData.getString() != null;
+    }
+
+    @Override
     protected List<String> getLoadGroups() {
         return Arrays.asList(new String[] {
             VERIFICATION_STRING_LOAD_GROUP
@@ -53,7 +61,9 @@ public class VerificationString extends GhostObject<com.merakianalytics.orianna.
     }
 
     public String getString() {
-        load(VERIFICATION_STRING_LOAD_GROUP);
+        if(coreData.getString() == null) {
+            load(VERIFICATION_STRING_LOAD_GROUP);
+        }
         return coreData.getString();
     }
 
@@ -69,8 +79,11 @@ public class VerificationString extends GhostObject<com.merakianalytics.orianna.
                 if(coreData.getPlatform() != null) {
                     builder.put("platform", Platform.withTag(coreData.getPlatform()));
                 }
-                coreData =
+                final com.merakianalytics.orianna.types.data.thirdpartycode.VerificationString data =
                     Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.thirdpartycode.VerificationString.class, builder.build());
+                if(data != null) {
+                    coreData = data;
+                }
                 break;
             default:
                 break;

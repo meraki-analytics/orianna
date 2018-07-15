@@ -121,6 +121,14 @@ public class Map extends GhostObject<com.merakianalytics.orianna.types.data.stat
         super(coreData, 1);
     }
 
+    @Override
+    public boolean exists() {
+        if(coreData.getImage() == null) {
+            load(MAP_LOAD_GROUP);
+        }
+        return coreData.getImage() != null;
+    }
+
     @Searchable(int.class)
     public int getId() {
         if(coreData.getId() == 0) {
@@ -197,7 +205,11 @@ public class Map extends GhostObject<com.merakianalytics.orianna.types.data.stat
                     builder.put("locale", coreData.getLocale());
                 }
 
-                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Map.class, builder.build());
+                final com.merakianalytics.orianna.types.data.staticdata.Map data =
+                    Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Map.class, builder.build());
+                if(data != null) {
+                    coreData = data;
+                }
                 break;
             default:
                 break;

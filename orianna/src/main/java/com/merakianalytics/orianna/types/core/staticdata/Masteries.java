@@ -251,6 +251,14 @@ public class Masteries extends GhostObject.ListProxy<Mastery, com.merakianalytic
         super(coreData, 1);
     }
 
+    @Override
+    public boolean exists() {
+        if(coreData.isEmpty()) {
+            load(LIST_PROXY_LOAD_GROUP);
+        }
+        return !coreData.isEmpty();
+    }
+
     public Set<String> getIncludedData() {
         return includedData.get();
     }
@@ -279,7 +287,9 @@ public class Masteries extends GhostObject.ListProxy<Mastery, com.merakianalytic
     }
 
     public String getType() {
-        load(LIST_PROXY_LOAD_GROUP);
+        if(coreData.getType() == null) {
+            load(LIST_PROXY_LOAD_GROUP);
+        }
         return coreData.getType();
     }
 
@@ -305,7 +315,11 @@ public class Masteries extends GhostObject.ListProxy<Mastery, com.merakianalytic
                 if(coreData.getIncludedData() != null) {
                     builder.put("includedData", coreData.getIncludedData());
                 }
-                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Masteries.class, builder.build());
+                final com.merakianalytics.orianna.types.data.staticdata.Masteries data =
+                    Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Masteries.class, builder.build());
+                if(data != null) {
+                    coreData = data;
+                }
                 loadListProxyData(new Function<com.merakianalytics.orianna.types.data.staticdata.Mastery, Mastery>() {
                     @Override
                     public Mastery apply(final com.merakianalytics.orianna.types.data.staticdata.Mastery data) {

@@ -112,6 +112,14 @@ public class FeaturedMatches extends GhostObject.ListProxy<FeaturedMatch, com.me
     }
 
     @Override
+    public boolean exists() {
+        if(coreData.isEmpty()) {
+            load(LIST_PROXY_LOAD_GROUP);
+        }
+        return !coreData.isEmpty();
+    }
+
+    @Override
     protected List<String> getLoadGroups() {
         return Arrays.asList(new String[] {
             LIST_PROXY_LOAD_GROUP
@@ -123,7 +131,9 @@ public class FeaturedMatches extends GhostObject.ListProxy<FeaturedMatch, com.me
     }
 
     public Duration getRefreshInterval() {
-        load(LIST_PROXY_LOAD_GROUP);
+        if(coreData.getRefreshInterval() == null) {
+            load(LIST_PROXY_LOAD_GROUP);
+        }
         return coreData.getRefreshInterval();
     }
 
@@ -140,7 +150,11 @@ public class FeaturedMatches extends GhostObject.ListProxy<FeaturedMatch, com.me
                 if(coreData.getPlatform() != null) {
                     builder.put("platform", Platform.withTag(coreData.getPlatform()));
                 }
-                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.spectator.FeaturedMatches.class, builder.build());
+                final com.merakianalytics.orianna.types.data.spectator.FeaturedMatches data =
+                    Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.spectator.FeaturedMatches.class, builder.build());
+                if(data != null) {
+                    coreData = data;
+                }
                 loadListProxyData(new Function<com.merakianalytics.orianna.types.data.spectator.FeaturedMatch, FeaturedMatch>() {
                     @Override
                     public FeaturedMatch apply(final com.merakianalytics.orianna.types.data.spectator.FeaturedMatch data) {

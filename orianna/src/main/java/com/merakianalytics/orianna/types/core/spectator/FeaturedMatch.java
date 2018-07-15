@@ -42,7 +42,7 @@ public class FeaturedMatch extends OriannaObject<com.merakianalytics.orianna.typ
         private final Supplier<ProfileIcon> profileIcon = Suppliers.memoize(new Supplier<ProfileIcon>() {
             @Override
             public ProfileIcon get() {
-                if(coreData.getProfileIconId() == 0) {
+                if(coreData.getProfileIconId() == -1) {
                     return null;
                 }
                 return ProfileIcon.withId(coreData.getProfileIconId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();

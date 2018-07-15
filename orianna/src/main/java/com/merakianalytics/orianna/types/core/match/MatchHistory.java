@@ -209,7 +209,6 @@ public class MatchHistory extends GhostObject<com.merakianalytics.orianna.types.
     }
 
     public static final String MATCH_HISTORY_LOAD_GROUP = "match-history";
-
     private static final long serialVersionUID = 2286295600096959941L;
 
     public static Builder forSummoner(final Summoner summoner) {
@@ -233,6 +232,7 @@ public class MatchHistory extends GhostObject<com.merakianalytics.orianna.types.
     private DateTime endTime;
     private final SearchableList<Match> matches;
     private ListIterator<MatchReference> matchIterator = coreData.listIterator();
+
     private final Supplier<Set<Queue>> queues = Suppliers.memoize(new Supplier<Set<Queue>>() {
         @Override
         public Set<Queue> get() {
@@ -246,6 +246,7 @@ public class MatchHistory extends GhostObject<com.merakianalytics.orianna.types.
             return Collections.unmodifiableSet(queues);
         }
     });
+
     private final Supplier<Set<Season>> seasons = Suppliers.memoize(new Supplier<Set<Season>>() {
         @Override
         public Set<Season> get() {
@@ -318,6 +319,14 @@ public class MatchHistory extends GhostObject<com.merakianalytics.orianna.types.
     @Override
     public void delete(final Predicate<Match> predicate) {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean exists() {
+        if(coreData.isEmpty()) {
+            load(MATCH_HISTORY_LOAD_GROUP);
+        }
+        return !coreData.isEmpty();
     }
 
     @Override

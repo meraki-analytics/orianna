@@ -89,8 +89,18 @@ public class ShardStatus extends GhostObject<com.merakianalytics.orianna.types.d
         super(coreData, 1);
     }
 
+    @Override
+    public boolean exists() {
+        if(coreData.getName() == null) {
+            load(SHARD_STATUS_LOAD_GROUP);
+        }
+        return coreData.getName() != null;
+    }
+
     public String getHostname() {
-        load(SHARD_STATUS_LOAD_GROUP);
+        if(coreData.getHostname() == null) {
+            load(SHARD_STATUS_LOAD_GROUP);
+        }
         return coreData.getHostname();
     }
 
@@ -106,7 +116,9 @@ public class ShardStatus extends GhostObject<com.merakianalytics.orianna.types.d
     }
 
     public String getName() {
-        load(SHARD_STATUS_LOAD_GROUP);
+        if(coreData.getName() == null) {
+            load(SHARD_STATUS_LOAD_GROUP);
+        }
         return coreData.getName();
     }
 
@@ -119,17 +131,20 @@ public class ShardStatus extends GhostObject<com.merakianalytics.orianna.types.d
     }
 
     public String getRegionTag() {
-        load(SHARD_STATUS_LOAD_GROUP);
+        if(coreData.getRegionTag() == null) {
+            load(SHARD_STATUS_LOAD_GROUP);
+        }
         return coreData.getRegionTag();
     }
 
     public List<Service> getServices() {
-        load(SHARD_STATUS_LOAD_GROUP);
         return services.get();
     }
 
     public String getSlug() {
-        load(SHARD_STATUS_LOAD_GROUP);
+        if(coreData.getSlug() == null) {
+            load(SHARD_STATUS_LOAD_GROUP);
+        }
         return coreData.getSlug();
     }
 
@@ -142,7 +157,11 @@ public class ShardStatus extends GhostObject<com.merakianalytics.orianna.types.d
                 if(coreData.getPlatform() != null) {
                     builder.put("platform", Platform.withTag(coreData.getPlatform()));
                 }
-                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.status.ShardStatus.class, builder.build());
+                final com.merakianalytics.orianna.types.data.status.ShardStatus data =
+                    Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.status.ShardStatus.class, builder.build());
+                if(data != null) {
+                    coreData = data;
+                }
                 break;
             default:
                 break;

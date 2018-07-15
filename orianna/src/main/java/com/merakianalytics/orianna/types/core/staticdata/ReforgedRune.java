@@ -105,6 +105,14 @@ public class ReforgedRune extends GhostObject<com.merakianalytics.orianna.types.
         super(coreData, 1);
     }
 
+    @Override
+    public boolean exists() {
+        if(coreData.getShortDescription() == null) {
+            load(REFORGED_RUNE_LOAD_GROUP);
+        }
+        return coreData.getShortDescription() != null;
+    }
+
     @Searchable(int.class)
     public int getId() {
         if(coreData.getId() == 0) {
@@ -114,7 +122,9 @@ public class ReforgedRune extends GhostObject<com.merakianalytics.orianna.types.
     }
 
     public String getImage() {
-        load(REFORGED_RUNE_LOAD_GROUP);
+        if(coreData.getImage() == null) {
+            load(REFORGED_RUNE_LOAD_GROUP);
+        }
         return coreData.getImage();
     }
 
@@ -138,7 +148,9 @@ public class ReforgedRune extends GhostObject<com.merakianalytics.orianna.types.
     }
 
     public String getLongDescription() {
-        load(REFORGED_RUNE_LOAD_GROUP);
+        if(coreData.getLongDescription() == null) {
+            load(REFORGED_RUNE_LOAD_GROUP);
+        }
         return coreData.getLongDescription();
     }
 
@@ -151,7 +163,9 @@ public class ReforgedRune extends GhostObject<com.merakianalytics.orianna.types.
     }
 
     public RunePath getPath() {
-        load(REFORGED_RUNE_LOAD_GROUP);
+        if(coreData.getPath() == 0) {
+            load(REFORGED_RUNE_LOAD_GROUP);
+        }
         return RunePath.withId(coreData.getPath());
     }
 
@@ -164,12 +178,16 @@ public class ReforgedRune extends GhostObject<com.merakianalytics.orianna.types.
     }
 
     public String getShortDescription() {
-        load(REFORGED_RUNE_LOAD_GROUP);
+        if(coreData.getShortDescription() == null) {
+            load(REFORGED_RUNE_LOAD_GROUP);
+        }
         return coreData.getShortDescription();
     }
 
     public int getSlot() {
-        load(REFORGED_RUNE_LOAD_GROUP);
+        if(coreData.getSlot() == 0) {
+            load(REFORGED_RUNE_LOAD_GROUP);
+        }
         return coreData.getSlot();
     }
 
@@ -202,7 +220,11 @@ public class ReforgedRune extends GhostObject<com.merakianalytics.orianna.types.
                     builder.put("locale", coreData.getLocale());
                 }
 
-                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.ReforgedRune.class, builder.build());
+                final com.merakianalytics.orianna.types.data.staticdata.ReforgedRune data =
+                    Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.ReforgedRune.class, builder.build());
+                if(data != null) {
+                    coreData = data;
+                }
                 break;
             default:
                 break;

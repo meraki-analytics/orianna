@@ -46,7 +46,6 @@ public class ChampionMastery extends GhostObject<com.merakianalytics.orianna.typ
     }
 
     public static final String CHAMPION_MASTERY_LOAD_GROUP = "champion-mastery";
-
     private static final long serialVersionUID = -4377419492958529379L;
 
     public static Builder forSummoner(final Summoner summoner) {
@@ -77,18 +76,30 @@ public class ChampionMastery extends GhostObject<com.merakianalytics.orianna.typ
         super(coreData, 1);
     }
 
+    @Override
+    public boolean exists() {
+        if(coreData.getPoints() == 0) {
+            load(CHAMPION_MASTERY_LOAD_GROUP);
+        }
+        return coreData.getPoints() != 0;
+    }
+
     @Searchable({Champion.class, String.class, int.class})
     public Champion getChampion() {
         return champion.get();
     }
 
     public DateTime getLastPlayed() {
-        load(CHAMPION_MASTERY_LOAD_GROUP);
+        if(coreData.getLastPlayed() == null) {
+            load(CHAMPION_MASTERY_LOAD_GROUP);
+        }
         return coreData.getLastPlayed();
     }
 
     public int getLevel() {
-        load(CHAMPION_MASTERY_LOAD_GROUP);
+        if(coreData.getLevel() == 0) {
+            load(CHAMPION_MASTERY_LOAD_GROUP);
+        }
         return coreData.getLevel();
     }
 
@@ -104,17 +115,23 @@ public class ChampionMastery extends GhostObject<com.merakianalytics.orianna.typ
     }
 
     public int getPoints() {
-        load(CHAMPION_MASTERY_LOAD_GROUP);
+        if(coreData.getPoints() == 0) {
+            load(CHAMPION_MASTERY_LOAD_GROUP);
+        }
         return coreData.getPoints();
     }
 
     public int getPointsSinceLastLevel() {
-        load(CHAMPION_MASTERY_LOAD_GROUP);
+        if(coreData.getPointsSinceLastLevel() == 0) {
+            load(CHAMPION_MASTERY_LOAD_GROUP);
+        }
         return coreData.getPointsSinceLastLevel();
     }
 
     public int getPointsUntilNextLevel() {
-        load(CHAMPION_MASTERY_LOAD_GROUP);
+        if(coreData.getPointsUntilNextLevel() == 0) {
+            load(CHAMPION_MASTERY_LOAD_GROUP);
+        }
         return coreData.getPointsUntilNextLevel();
     }
 
@@ -128,12 +145,16 @@ public class ChampionMastery extends GhostObject<com.merakianalytics.orianna.typ
     }
 
     public int getTokens() {
-        load(CHAMPION_MASTERY_LOAD_GROUP);
+        if(coreData.getTokens() == 0) {
+            load(CHAMPION_MASTERY_LOAD_GROUP);
+        }
         return coreData.getTokens();
     }
 
     public boolean isChestGranted() {
-        load(CHAMPION_MASTERY_LOAD_GROUP);
+        if(coreData.isChestGranted()) {
+            load(CHAMPION_MASTERY_LOAD_GROUP);
+        }
         return coreData.isChestGranted();
     }
 
@@ -152,8 +173,11 @@ public class ChampionMastery extends GhostObject<com.merakianalytics.orianna.typ
                 if(coreData.getPlatform() != null) {
                     builder.put("platform", Platform.withTag(coreData.getPlatform()));
                 }
-                coreData =
+                final com.merakianalytics.orianna.types.data.championmastery.ChampionMastery data =
                     Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.championmastery.ChampionMastery.class, builder.build());
+                if(data != null) {
+                    coreData = data;
+                }
                 break;
             default:
                 break;

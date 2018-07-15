@@ -382,8 +382,18 @@ public class Timeline extends GhostObject.ListProxy<Frame, com.merakianalytics.o
         super(coreData, 1);
     }
 
+    @Override
+    public boolean exists() {
+        if(coreData.isEmpty()) {
+            load(LIST_PROXY_LOAD_GROUP);
+        }
+        return !coreData.isEmpty();
+    }
+
     public Duration getInterval() {
-        load(LIST_PROXY_LOAD_GROUP);
+        if(coreData.getInterval() == null) {
+            load(LIST_PROXY_LOAD_GROUP);
+        }
         return coreData.getInterval();
     }
 
@@ -418,7 +428,11 @@ public class Timeline extends GhostObject.ListProxy<Frame, com.merakianalytics.o
                 if(coreData.getId() != 0L) {
                     builder.put("matchId", coreData.getId());
                 }
-                coreData = Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.match.Timeline.class, builder.build());
+                final com.merakianalytics.orianna.types.data.match.Timeline data =
+                    Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.match.Timeline.class, builder.build());
+                if(data != null) {
+                    coreData = data;
+                }
                 loadListProxyData(new Function<com.merakianalytics.orianna.types.data.match.Frame, com.merakianalytics.orianna.types.core.match.Frame>() {
                     @Override
                     public com.merakianalytics.orianna.types.core.match.Frame apply(final com.merakianalytics.orianna.types.data.match.Frame data) {
