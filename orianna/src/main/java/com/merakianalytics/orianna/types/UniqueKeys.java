@@ -2428,6 +2428,31 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
+    public static Iterator<Integer> forManyRealmQuery(final java.util.Map<String, Object> query) {
+        final Iterable<Platform> platforms = (Iterable<Platform>)query.get("platforms");
+
+        final Iterator<Platform> iterator = platforms.iterator();
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                return Arrays.hashCode(new Object[] {
+                    Realm.class.getCanonicalName(), iterator.next().getTag()
+                });
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+    @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyReforgedRuneDataQuery(final java.util.Map<String, Object> query) {
         final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
         final Iterable<String> names = (Iterable<String>)query.get("names");

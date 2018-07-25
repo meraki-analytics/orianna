@@ -623,6 +623,35 @@ public class InMemoryCache extends AbstractDataStore {
         });
     }
 
+    @GetMany(Realm.class)
+    public CloseableIterator<Realm> getManyRealm(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyRealmQuery(query));
+        for(final Integer key : keys) {
+            if(!cache.containsKey(key)) {
+                return null;
+            }
+        }
+
+        final Iterator<Integer> iterator = keys.iterator();
+        return CloseableIterators.from(new Iterator<Realm>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Realm next() {
+                final int key = iterator.next();
+                return (Realm)cache.get(key);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
     @GetMany(ReforgedRune.class)
     public CloseableIterator<ReforgedRune> getManyReforgedRune(final java.util.Map<String, Object> query, final PipelineContext context) {
         final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyReforgedRuneQuery(query));
@@ -1250,6 +1279,13 @@ public class InMemoryCache extends AbstractDataStore {
     public void putManyProfileIcon(final Iterable<ProfileIcon> icons, final PipelineContext context) {
         for(final ProfileIcon icon : icons) {
             putProfileIcon(icon, context);
+        }
+    }
+
+    @PutMany(Realm.class)
+    public void putManyRealm(final Iterable<Realm> realms, final PipelineContext context) {
+        for(final Realm realm : realms) {
+            putRealm(realm, context);
         }
     }
 

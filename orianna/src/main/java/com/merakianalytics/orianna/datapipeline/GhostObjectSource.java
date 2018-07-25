@@ -825,6 +825,34 @@ public class GhostObjectSource extends AbstractDataSource {
     }
 
     @SuppressWarnings("unchecked")
+    @GetMany(Realm.class)
+    public CloseableIterator<Realm> getManyRealm(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Iterable<Platform> platforms = (Iterable<Platform>)query.get("platforms");
+        Utilities.checkNotNull(platforms, "platforms");
+
+        final Iterator<Platform> iterator = platforms.iterator();
+        return CloseableIterators.from(new Iterator<Realm>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Realm next() {
+                final com.merakianalytics.orianna.types.data.staticdata.Realm data =
+                    new com.merakianalytics.orianna.types.data.staticdata.Realm();
+                data.setPlatform(iterator.next().getTag());
+                return new Realm(data);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
     @GetMany(ReforgedRune.class)
     public CloseableIterator<ReforgedRune> getManyReforgedRune(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");

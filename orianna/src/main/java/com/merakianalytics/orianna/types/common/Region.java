@@ -48,7 +48,7 @@ public enum Region {
     }
 
     public ShardStatus getStatus() {
-        return ShardStatus.forRegion(this).get();
+        return ShardStatus.withRegion(this).get();
     }
 
     public String getTag() {

@@ -47,16 +47,16 @@ public class ShardStatus extends GhostObject<com.merakianalytics.orianna.types.d
     private static final long serialVersionUID = -7141887712080838849L;
     public static final String SHARD_STATUS_LOAD_GROUP = "shard-status";
 
-    public static Builder forPlatform(final Platform platform) {
+    public static ShardStatus get() {
+        return new Builder().get();
+    }
+
+    public static Builder withPlatform(final Platform platform) {
         return new Builder().withPlatform(platform);
     }
 
-    public static Builder forRegion(final Region region) {
+    public static Builder withRegion(final Region region) {
         return new Builder().withRegion(region);
-    }
-
-    public static ShardStatus get() {
-        return new Builder().get();
     }
 
     private final Supplier<List<String>> locales = Suppliers.memoize(new Supplier<List<String>>() {

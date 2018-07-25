@@ -175,5 +175,4 @@ public class Realm extends GhostObject<com.merakianalytics.orianna.types.data.st
                 break;
         }
     }
-
 }

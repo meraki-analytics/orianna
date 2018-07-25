@@ -64,7 +64,7 @@ public enum Platform {
     }
 
     public ShardStatus getStatus() {
-        return ShardStatus.forPlatform(this).get();
+        return ShardStatus.withPlatform(this).get();
     }
 
     public String getTag() {

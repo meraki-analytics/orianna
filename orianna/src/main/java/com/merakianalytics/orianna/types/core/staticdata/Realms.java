@@ -1,4 +1,4 @@
-package com.merakianalytics.orianna.types.core.status;
+package com.merakianalytics.orianna.types.core.staticdata;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,7 +13,7 @@ import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
 import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 
-public abstract class ShardStatuses {
+public abstract class Realms {
     public static class Builder {
         private final Iterable<Platform> platforms;
         private boolean streaming = false;
@@ -22,10 +22,10 @@ public abstract class ShardStatuses {
             this.platforms = platforms;
         }
 
-        public SearchableList<ShardStatus> get() {
+        public SearchableList<Realm> get() {
             final ImmutableMap.Builder<String, Object> builder = ImmutableMap.<String, Object> builder().put("platforms", platforms);
 
-            final CloseableIterator<ShardStatus> result = Orianna.getSettings().getPipeline().getMany(ShardStatus.class, builder.build(), streaming);
+            final CloseableIterator<Realm> result = Orianna.getSettings().getPipeline().getMany(Realm.class, builder.build(), streaming);
             return streaming ? SearchableLists.from(CloseableIterators.toLazyList(result)) : SearchableLists.from(CloseableIterators.toList(result));
         }
 

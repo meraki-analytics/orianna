@@ -75,6 +75,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Mastery;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcon;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
 import com.merakianalytics.orianna.types.core.staticdata.Realm;
+import com.merakianalytics.orianna.types.core.staticdata.Realms;
 import com.merakianalytics.orianna.types.core.staticdata.ReforgedRune;
 import com.merakianalytics.orianna.types.core.staticdata.ReforgedRunes;
 import com.merakianalytics.orianna.types.core.staticdata.Rune;
@@ -755,6 +756,22 @@ public abstract class Orianna {
         return ProfileIcon.withId(id);
     }
 
+    public static Realms.Builder realmsWithPlatforms(final Iterable<Platform> platforms) {
+        return Realms.withPlatforms(platforms);
+    }
+
+    public static Realms.Builder realmsWithPlatforms(final Platform... platforms) {
+        return Realms.withPlatforms(platforms);
+    }
+
+    public static Realms.Builder realmsWithRegions(final Iterable<Region> regions) {
+        return Realms.withRegions(regions);
+    }
+
+    public static Realms.Builder realmsWithRegions(final Region... regions) {
+        return Realms.withRegions(regions);
+    }
+
     public static Realm.Builder realmWithPlatform(final Platform platform) {
         return Realm.withPlatform(platform);
     }
@@ -905,28 +922,28 @@ public abstract class Orianna {
         settings.setRiotAPIKey(key);
     }
 
-    public static ShardStatuses.Builder shardStatusesForPlatforms(final Iterable<Platform> platforms) {
-        return ShardStatuses.forPlatforms(platforms);
+    public static ShardStatuses.Builder shardStatusesWithPlatforms(final Iterable<Platform> platforms) {
+        return ShardStatuses.withPlatforms(platforms);
     }
 
-    public static ShardStatuses.Builder shardStatusesForPlatforms(final Platform... platforms) {
-        return ShardStatuses.forPlatforms(platforms);
+    public static ShardStatuses.Builder shardStatusesWithPlatforms(final Platform... platforms) {
+        return ShardStatuses.withPlatforms(platforms);
     }
 
-    public static ShardStatuses.Builder shardStatusesForRegions(final Iterable<Region> regions) {
-        return ShardStatuses.forRegions(regions);
+    public static ShardStatuses.Builder shardStatusesWithRegions(final Iterable<Region> regions) {
+        return ShardStatuses.withRegions(regions);
     }
 
-    public static ShardStatuses.Builder shardStatusesForRegions(final Region... regions) {
-        return ShardStatuses.forRegions(regions);
+    public static ShardStatuses.Builder shardStatusesWithRegions(final Region... regions) {
+        return ShardStatuses.withRegions(regions);
     }
 
-    public static ShardStatus.Builder shardStatusForPlatform(final Platform platform) {
-        return ShardStatus.forPlatform(platform);
+    public static ShardStatus.Builder shardStatusWithPlatform(final Platform platform) {
+        return ShardStatus.withPlatform(platform);
     }
 
-    public static ShardStatus.Builder shardStatusForRegion(final Region region) {
-        return ShardStatus.forRegion(region);
+    public static ShardStatus.Builder shardStatusWithRegion(final Region region) {
+        return ShardStatus.withRegion(region);
     }
 
     public static Summoner.Builder summonerNamed(final String name) {
