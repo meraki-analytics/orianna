@@ -8,7 +8,7 @@ public class Patch extends CoreData {
     private static final long serialVersionUID = -7009192986793480792L;
     private String platform, name;
     private int season = -1;
-    private DateTime start, end;
+    private DateTime startTime, endTime;
 
     @Override
     public boolean equals(final Object obj) {
@@ -22,11 +22,11 @@ public class Patch extends CoreData {
             return false;
         }
         final Patch other = (Patch)obj;
-        if(end == null) {
-            if(other.end != null) {
+        if(endTime == null) {
+            if(other.endTime != null) {
                 return false;
             }
-        } else if(!end.equals(other.end)) {
+        } else if(!endTime.equals(other.endTime)) {
             return false;
         }
         if(name == null) {
@@ -46,21 +46,21 @@ public class Patch extends CoreData {
         if(season != other.season) {
             return false;
         }
-        if(start == null) {
-            if(other.start != null) {
+        if(startTime == null) {
+            if(other.startTime != null) {
                 return false;
             }
-        } else if(!start.equals(other.start)) {
+        } else if(!startTime.equals(other.startTime)) {
             return false;
         }
         return true;
     }
 
     /**
-     * @return the end
+     * @return the endTime
      */
-    public DateTime getEnd() {
-        return end;
+    public DateTime getEndTime() {
+        return endTime;
     }
 
     /**
@@ -85,30 +85,30 @@ public class Patch extends CoreData {
     }
 
     /**
-     * @return the start
+     * @return the startTime
      */
-    public DateTime getStart() {
-        return start;
+    public DateTime getStartTime() {
+        return startTime;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (end == null ? 0 : end.hashCode());
+        result = prime * result + (endTime == null ? 0 : endTime.hashCode());
         result = prime * result + (name == null ? 0 : name.hashCode());
         result = prime * result + (platform == null ? 0 : platform.hashCode());
         result = prime * result + season;
-        result = prime * result + (start == null ? 0 : start.hashCode());
+        result = prime * result + (startTime == null ? 0 : startTime.hashCode());
         return result;
     }
 
     /**
-     * @param end
-     *        the end to set
+     * @param endTime
+     *        the endTime to set
      */
-    public void setEnd(final DateTime end) {
-        this.end = end;
+    public void setEndTime(final DateTime endTime) {
+        this.endTime = endTime;
     }
 
     /**
@@ -136,10 +136,10 @@ public class Patch extends CoreData {
     }
 
     /**
-     * @param start
-     *        the start to set
+     * @param startTime
+     *        the startTime to set
      */
-    public void setStart(final DateTime start) {
-        this.start = start;
+    public void setStartTime(final DateTime startTime) {
+        this.startTime = startTime;
     }
 }

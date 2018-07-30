@@ -83,11 +83,11 @@ public class Patch extends GhostObject<com.merakianalytics.orianna.types.data.st
         return coreData.getSeason() != -1;
     }
 
-    public DateTime getEnd() {
-        if(coreData.getEnd() == null) {
+    public DateTime getEndTime() {
+        if(coreData.getEndTime() == null) {
             load(PATCH_LOAD_GROUP);
         }
-        return coreData.getEnd();
+        return coreData.getEndTime();
     }
 
     @Override
@@ -119,11 +119,11 @@ public class Patch extends GhostObject<com.merakianalytics.orianna.types.data.st
         return Season.withId(coreData.getSeason());
     }
 
-    public DateTime getStart() {
-        if(coreData.getStart() == null) {
+    public DateTime getStartTime() {
+        if(coreData.getStartTime() == null) {
             load(PATCH_LOAD_GROUP);
         }
-        return coreData.getStart();
+        return coreData.getStartTime();
     }
 
     @Override

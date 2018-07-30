@@ -28,6 +28,7 @@ import com.merakianalytics.orianna.types.core.searchable.SearchableList;
 import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Champions;
+import com.merakianalytics.orianna.types.core.staticdata.Patch;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 import com.merakianalytics.orianna.types.data.match.MatchList;
 import com.merakianalytics.orianna.types.data.match.MatchReference;
@@ -88,6 +89,12 @@ public class MatchHistory extends GhostObject<com.merakianalytics.orianna.types.
             }
 
             return Orianna.getSettings().getPipeline().get(MatchHistory.class, builder.build());
+        }
+
+        public Builder onPatch(final Patch patch) {
+            startTime = patch.getStartTime().getMillis();
+            endTime = patch.getEndTime() == null ? null : patch.getEndTime().getMillis();
+            return this;
         }
 
         public Builder withChampions(final Champion... champions) {

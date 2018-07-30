@@ -758,12 +758,12 @@ public class StaticDataTransformer extends AbstractDataTransformer {
     public Patch transform(final com.merakianalytics.orianna.types.dto.staticdata.Patch item, final PipelineContext context) {
         final Patch patch = new Patch();
         if(item.getEnd() != 0) {
-            patch.setEnd(new DateTime(item.getEnd()));
+            patch.setEndTime(new DateTime(item.getEnd()));
         }
         patch.setName(item.getName());
         patch.setPlatform(item.getPlatform());
         patch.setSeason(item.getSeason());
-        patch.setStart(new DateTime(item.getStart()));
+        patch.setStartTime(new DateTime(item.getStart()));
         return patch;
     }
 
@@ -1521,13 +1521,13 @@ public class StaticDataTransformer extends AbstractDataTransformer {
     @Transform(from = Patch.class, to = com.merakianalytics.orianna.types.dto.staticdata.Patch.class)
     public com.merakianalytics.orianna.types.dto.staticdata.Patch transform(final Patch item, final PipelineContext context) {
         final com.merakianalytics.orianna.types.dto.staticdata.Patch patch = new com.merakianalytics.orianna.types.dto.staticdata.Patch();
-        if(item.getEnd() != null) {
-            patch.setEnd(item.getEnd().getMillis());
+        if(item.getEndTime() != null) {
+            patch.setEnd(item.getEndTime().getMillis());
         }
         patch.setName(item.getName());
         patch.setPlatform(item.getPlatform());
         patch.setSeason(item.getSeason());
-        patch.setStart(item.getEnd().getMillis());
+        patch.setStart(item.getEndTime().getMillis());
         return patch;
     }
 

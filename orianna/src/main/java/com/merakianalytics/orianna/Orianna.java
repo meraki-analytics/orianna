@@ -73,6 +73,8 @@ import com.merakianalytics.orianna.types.core.staticdata.Map;
 import com.merakianalytics.orianna.types.core.staticdata.Maps;
 import com.merakianalytics.orianna.types.core.staticdata.Masteries;
 import com.merakianalytics.orianna.types.core.staticdata.Mastery;
+import com.merakianalytics.orianna.types.core.staticdata.Patch;
+import com.merakianalytics.orianna.types.core.staticdata.Patches;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcon;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
 import com.merakianalytics.orianna.types.core.staticdata.Realm;
@@ -488,6 +490,42 @@ public abstract class Orianna {
 
     public static Masteries getMasteries() {
         return Masteries.get();
+    }
+
+    public static Patch getPatch() {
+        return Patch.get();
+    }
+
+    public static Patches getPatches() {
+        return Patches.get();
+    }
+
+    public static Patches.SubsetBuilder getPatchesNamed(final Iterable<String> names) {
+        return Patches.named(names);
+    }
+
+    public static Patches.SubsetBuilder getPatchesNamed(final String... names) {
+        return Patches.named(names);
+    }
+
+    public static Patches.Builder getPatchesWithPlatform(final Platform platform) {
+        return Patches.withPlatform(platform);
+    }
+
+    public static Patches.Builder getPatchesWithRegion(final Region region) {
+        return Patches.withRegion(region);
+    }
+
+    public static Patch.Builder getPatchNamed(final String name) {
+        return Patch.named(name);
+    }
+
+    public static Patch.Builder getPatchWithPlatform(final Platform platform) {
+        return Patch.withPlatform(platform);
+    }
+
+    public static Patch.Builder getPatchWithRegion(final Region region) {
+        return Patch.withRegion(region);
     }
 
     public static ProfileIcons getProfileIcons() {

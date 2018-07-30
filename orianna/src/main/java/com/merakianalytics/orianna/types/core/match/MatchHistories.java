@@ -20,6 +20,7 @@ import com.merakianalytics.orianna.types.common.Season;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
 import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
+import com.merakianalytics.orianna.types.core.staticdata.Patch;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
 public abstract class MatchHistories {
@@ -124,6 +125,12 @@ public abstract class MatchHistories {
 
             final CloseableIterator<MatchHistory> result = Orianna.getSettings().getPipeline().getMany(MatchHistory.class, builder.build(), streaming);
             return streaming ? SearchableLists.from(CloseableIterators.toLazyList(result)) : SearchableLists.from(CloseableIterators.toList(result));
+        }
+
+        public Builder onPatch(final Patch patch) {
+            startTime = patch.getStartTime().getMillis();
+            endTime = patch.getEndTime() == null ? null : patch.getEndTime().getMillis();
+            return this;
         }
 
         public Builder streaming() {
