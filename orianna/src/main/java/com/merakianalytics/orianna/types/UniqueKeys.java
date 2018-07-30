@@ -28,6 +28,8 @@ import com.merakianalytics.orianna.types.core.staticdata.Map;
 import com.merakianalytics.orianna.types.core.staticdata.Maps;
 import com.merakianalytics.orianna.types.core.staticdata.Masteries;
 import com.merakianalytics.orianna.types.core.staticdata.Mastery;
+import com.merakianalytics.orianna.types.core.staticdata.Patch;
+import com.merakianalytics.orianna.types.core.staticdata.Patches;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcon;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
 import com.merakianalytics.orianna.types.core.staticdata.Realm;
@@ -2246,6 +2248,82 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
+    public static Iterator<Integer> forManyPatchDataQuery(final java.util.Map<String, Object> query) {
+        final Iterable<String> names = (Iterable<String>)query.get("names");
+
+        final Iterator<String> iterator = names.iterator();
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                return Arrays.hashCode(new Object[] {
+                    com.merakianalytics.orianna.types.data.staticdata.Patch.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
+                    iterator.next()
+                });
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Iterator<Integer> forManyPatchDtoQuery(final java.util.Map<String, Object> query) {
+        final Iterable<String> names = (Iterable<String>)query.get("names");
+
+        final Iterator<String> iterator = names.iterator();
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                return Arrays.hashCode(new Object[] {
+                    com.merakianalytics.orianna.types.dto.staticdata.Patch.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next()
+                });
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Iterator<Integer> forManyPatchQuery(final java.util.Map<String, Object> query) {
+        final Iterable<String> names = (Iterable<String>)query.get("names");
+
+        final Iterator<String> iterator = names.iterator();
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                return Arrays.hashCode(new Object[] {
+                    Patch.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next()
+                });
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+    @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyProfileIconDataDtoQuery(final java.util.Map<String, Object> query) {
         final Iterable<String> versions = (Iterable<String>)query.get("versions");
 
@@ -3634,6 +3712,82 @@ public abstract class UniqueKeys {
     public static int forMatchTimelineDtoQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             MatchTimeline.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), ((Number)query.get("matchId")).longValue()
+        });
+    }
+
+    public static int forPatch(final Patch patch) {
+        final com.merakianalytics.orianna.types.data.staticdata.Patch data = patch.getCoreData();
+        return Arrays.hashCode(new Object[] {
+            Patch.class, data.getPlatform(), data.getName()
+        });
+    }
+
+    public static int forPatchData(final com.merakianalytics.orianna.types.data.staticdata.Patch patch) {
+        return Arrays.hashCode(new Object[] {
+            com.merakianalytics.orianna.types.data.staticdata.Patch.class, patch.getPlatform(), patch.getName()
+        });
+    }
+
+    public static int forPatchDataQuery(final java.util.Map<String, Object> query) {
+        return Arrays.hashCode(new Object[] {
+            com.merakianalytics.orianna.types.data.staticdata.Patch.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
+            (String)query.get("name")
+        });
+    }
+
+    public static int forPatchDto(final com.merakianalytics.orianna.types.dto.staticdata.Patch patch) {
+        return Arrays.hashCode(new Object[] {
+            com.merakianalytics.orianna.types.dto.staticdata.Patch.class, patch.getPlatform(), patch.getName()
+        });
+    }
+
+    public static int forPatchDtoQuery(final java.util.Map<String, Object> query) {
+        return Arrays.hashCode(new Object[] {
+            com.merakianalytics.orianna.types.dto.staticdata.Patch.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
+            (String)query.get("name")
+        });
+    }
+
+    public static int forPatches(final Patches patches) {
+        final com.merakianalytics.orianna.types.data.staticdata.Patches data = patches.getCoreData();
+        return Arrays.hashCode(new Object[] {
+            Patches.class.getCanonicalName(), data.getPlatform()
+        });
+    }
+
+    public static int forPatchesData(final com.merakianalytics.orianna.types.data.staticdata.Patches patches) {
+        return Arrays.hashCode(new Object[] {
+            com.merakianalytics.orianna.types.data.staticdata.Patches.class.getCanonicalName(), patches.getPlatform()
+        });
+    }
+
+    public static int forPatchesDataQuery(final java.util.Map<String, Object> query) {
+        return Arrays.hashCode(new Object[] {
+            Patches.class.getCanonicalName(), ((Platform)query.get("platform")).getTag()
+        });
+    }
+
+    public static int forPatchesDto(final com.merakianalytics.orianna.types.dto.staticdata.Patches patches) {
+        return Arrays.hashCode(new Object[] {
+            com.merakianalytics.orianna.types.dto.staticdata.Patches.class.getCanonicalName(), patches.getPlatform()
+        });
+    }
+
+    public static int forPatchesDtoQuery(final java.util.Map<String, Object> query) {
+        return Arrays.hashCode(new Object[] {
+            Patches.class.getCanonicalName(), ((Platform)query.get("platform")).getTag()
+        });
+    }
+
+    public static int forPatchesQuery(final java.util.Map<String, Object> query) {
+        return Arrays.hashCode(new Object[] {
+            Patches.class.getCanonicalName(), ((Platform)query.get("platform")).getTag()
+        });
+    }
+
+    public static int forPatchQuery(final java.util.Map<String, Object> query) {
+        return Arrays.hashCode(new Object[] {
+            Patch.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("name")
         });
     }
 

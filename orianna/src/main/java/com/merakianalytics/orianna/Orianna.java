@@ -27,6 +27,7 @@ import com.merakianalytics.orianna.datapipeline.DataDragon;
 import com.merakianalytics.orianna.datapipeline.GhostObjectSource;
 import com.merakianalytics.orianna.datapipeline.ImageDataSource;
 import com.merakianalytics.orianna.datapipeline.InMemoryCache;
+import com.merakianalytics.orianna.datapipeline.MerakiAnalyticsCDN;
 import com.merakianalytics.orianna.datapipeline.PipelineConfiguration;
 import com.merakianalytics.orianna.datapipeline.PipelineConfiguration.PipelineElementConfiguration;
 import com.merakianalytics.orianna.datapipeline.PipelineConfiguration.TransformerConfiguration;
@@ -114,6 +115,7 @@ public abstract class Orianna {
             final List<PipelineElementConfiguration> elements = ImmutableList.of(
                 PipelineElementConfiguration.defaultConfiguration(InMemoryCache.class),
                 PipelineElementConfiguration.defaultConfiguration(GhostObjectSource.class),
+                PipelineElementConfiguration.defaultConfiguration(MerakiAnalyticsCDN.class),
                 PipelineElementConfiguration.defaultConfiguration(DataDragon.class),
                 PipelineElementConfiguration.defaultConfiguration(RiotAPI.class),
                 PipelineElementConfiguration.defaultConfiguration(ImageDataSource.class));

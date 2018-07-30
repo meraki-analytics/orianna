@@ -55,6 +55,8 @@ import com.merakianalytics.orianna.types.core.staticdata.Map;
 import com.merakianalytics.orianna.types.core.staticdata.Maps;
 import com.merakianalytics.orianna.types.core.staticdata.Masteries;
 import com.merakianalytics.orianna.types.core.staticdata.Mastery;
+import com.merakianalytics.orianna.types.core.staticdata.Patch;
+import com.merakianalytics.orianna.types.core.staticdata.Patches;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcon;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
 import com.merakianalytics.orianna.types.core.staticdata.Realm;
@@ -93,6 +95,8 @@ public class InMemoryCache extends AbstractDataStore {
             .put(Masteries.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
             .put(Match.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
             // TODO: MatchHistory
+            .put(Patch.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
+            .put(Patches.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
             .put(ProfileIcon.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
             .put(ProfileIcons.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
             .put(Realm.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
@@ -594,6 +598,35 @@ public class InMemoryCache extends AbstractDataStore {
         });
     }
 
+    @GetMany(Patch.class)
+    public CloseableIterator<Patch> getManyPatch(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyPatchQuery(query));
+        for(final Integer key : keys) {
+            if(!cache.containsKey(key)) {
+                return null;
+            }
+        }
+
+        final Iterator<Integer> iterator = keys.iterator();
+        return CloseableIterators.from(new Iterator<Patch>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Patch next() {
+                final int key = iterator.next();
+                return (Patch)cache.get(key);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
     @GetMany(ProfileIcon.class)
     public CloseableIterator<ProfileIcon> getManyProfileIcon(final java.util.Map<String, Object> query, final PipelineContext context) {
         final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyProfileIconQuery(query));
@@ -912,6 +945,18 @@ public class InMemoryCache extends AbstractDataStore {
     public Match getMatch(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forMatchQuery(query);
         return (Match)cache.get(key);
+    }
+
+    @Get(Patch.class)
+    public Patch getPatch(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forPatchQuery(query);
+        return (Patch)cache.get(key);
+    }
+
+    @Get(Patches.class)
+    public Patches getPatches(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forPatchesQuery(query);
+        return (Patches)cache.get(key);
     }
 
     @Get(ProfileIcon.class)
@@ -1275,6 +1320,13 @@ public class InMemoryCache extends AbstractDataStore {
         }
     }
 
+    @PutMany(Patch.class)
+    public void putManyPatch(final Iterable<Patch> patches, final PipelineContext context) {
+        for(final Patch patch : patches) {
+            putPatch(patch, context);
+        }
+    }
+
     @PutMany(ProfileIcon.class)
     public void putManyProfileIcon(final Iterable<ProfileIcon> icons, final PipelineContext context) {
         for(final ProfileIcon icon : icons) {
@@ -1427,6 +1479,43 @@ public class InMemoryCache extends AbstractDataStore {
     public void putMatch(final Match match, final PipelineContext context) {
         final int key = UniqueKeys.forMatch(match);
         cache.put(key, match);
+    }
+
+    @Put(Patch.class)
+    public void putPatch(final Patch patch, final PipelineContext context) {
+        final int key = UniqueKeys.forPatch(patch);
+
+        if(patch.getCoreData().getName() == null) {
+            final LoadHook hook = new LoadHook() {
+                @Override
+                public void call() {
+                    putPatch(patch, null);
+                }
+            };
+
+            patch.registerGhostLoadHook(hook, Patch.PATCH_LOAD_GROUP);
+        }
+
+        cache.put(key, patch);
+    }
+
+    @Put(Patches.class)
+    public void putPatches(final Patches patches, final PipelineContext context) {
+        final int key = UniqueKeys.forPatches(patches);
+        cache.put(key, patches);
+
+        if(patches.getCoreData().isEmpty()) {
+            final LoadHook hook = new LoadHook() {
+                @Override
+                public void call() {
+                    putPatches(patches, null);
+                }
+            };
+
+            patches.registerGhostLoadHook(hook, ListProxy.LIST_PROXY_LOAD_GROUP);
+        } else {
+            putManyPatch(patches, context);
+        }
     }
 
     @Put(ProfileIcon.class)

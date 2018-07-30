@@ -12,6 +12,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +44,8 @@ import com.merakianalytics.orianna.types.data.staticdata.MasteryTree;
 import com.merakianalytics.orianna.types.data.staticdata.MasteryTreeItem;
 import com.merakianalytics.orianna.types.data.staticdata.MasteryTreeTier;
 import com.merakianalytics.orianna.types.data.staticdata.Passive;
+import com.merakianalytics.orianna.types.data.staticdata.Patch;
+import com.merakianalytics.orianna.types.data.staticdata.Patches;
 import com.merakianalytics.orianna.types.data.staticdata.ProfileIcon;
 import com.merakianalytics.orianna.types.data.staticdata.ProfileIcons;
 import com.merakianalytics.orianna.types.data.staticdata.Realm;
@@ -748,6 +752,34 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         passive.setName(item.getName());
         passive.setSanitizedDescription(item.getSanitizedDescription());
         return passive;
+    }
+
+    @Transform(from = com.merakianalytics.orianna.types.dto.staticdata.Patch.class, to = Patch.class)
+    public Patch transform(final com.merakianalytics.orianna.types.dto.staticdata.Patch item, final PipelineContext context) {
+        final Patch patch = new Patch();
+        if(item.getEnd() != 0) {
+            patch.setEnd(new DateTime(item.getEnd()));
+        }
+        patch.setName(item.getName());
+        patch.setPlatform(item.getPlatform());
+        patch.setSeason(item.getSeason());
+        patch.setStart(new DateTime(item.getStart()));
+        return patch;
+    }
+
+    @Transform(from = com.merakianalytics.orianna.types.dto.staticdata.Patches.class, to = Patches.class)
+    public Patches transform(final com.merakianalytics.orianna.types.dto.staticdata.Patches item, final PipelineContext context) {
+        final Patches patches = new Patches(item.getPatches().size());
+        for(int i = item.getPatches().size() - 1; i >= 0; i--) {
+            patches.add(transform(item.getPatches().get(i), context));
+        }
+        patches.setPlatform(item.getPlatform());
+        patches.setShifts(new HashMap<String, Duration>());
+        for(final String platform : item.getShifts().keySet()) {
+            final Duration shift = new Duration(item.getShifts().get(platform));
+            patches.getShifts().put(platform, shift);
+        }
+        return patches;
     }
 
     @Transform(from = com.merakianalytics.orianna.types.dto.staticdata.Realm.class, to = Realm.class)
@@ -1484,6 +1516,34 @@ public class StaticDataTransformer extends AbstractDataTransformer {
         passive.setName(item.getName());
         passive.setSanitizedDescription(item.getSanitizedDescription());
         return passive;
+    }
+
+    @Transform(from = Patch.class, to = com.merakianalytics.orianna.types.dto.staticdata.Patch.class)
+    public com.merakianalytics.orianna.types.dto.staticdata.Patch transform(final Patch item, final PipelineContext context) {
+        final com.merakianalytics.orianna.types.dto.staticdata.Patch patch = new com.merakianalytics.orianna.types.dto.staticdata.Patch();
+        if(item.getEnd() != null) {
+            patch.setEnd(item.getEnd().getMillis());
+        }
+        patch.setName(item.getName());
+        patch.setPlatform(item.getPlatform());
+        patch.setSeason(item.getSeason());
+        patch.setStart(item.getEnd().getMillis());
+        return patch;
+    }
+
+    @Transform(from = Patches.class, to = com.merakianalytics.orianna.types.dto.staticdata.Patches.class)
+    public com.merakianalytics.orianna.types.dto.staticdata.Patches transform(final Patches item, final PipelineContext context) {
+        final com.merakianalytics.orianna.types.dto.staticdata.Patches patches = new com.merakianalytics.orianna.types.dto.staticdata.Patches();
+        patches.setPatches(new ArrayList<com.merakianalytics.orianna.types.dto.staticdata.Patch>(item.size()));
+        for(int i = item.size() - 1; i >= 0; i--) {
+            patches.getPatches().add(transform(item.get(i), context));
+        }
+        patches.setPlatform(item.getPlatform());
+        patches.setShifts(new HashMap<String, Long>());
+        for(final String platform : item.getShifts().keySet()) {
+            patches.getShifts().put(platform, item.getShifts().get(platform).getMillis());
+        }
+        return patches;
     }
 
     @Transform(from = ProfileIcon.class, to = ProfileIconDetails.class)

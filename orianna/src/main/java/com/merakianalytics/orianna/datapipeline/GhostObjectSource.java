@@ -41,6 +41,8 @@ import com.merakianalytics.orianna.types.core.staticdata.Map;
 import com.merakianalytics.orianna.types.core.staticdata.Maps;
 import com.merakianalytics.orianna.types.core.staticdata.Masteries;
 import com.merakianalytics.orianna.types.core.staticdata.Mastery;
+import com.merakianalytics.orianna.types.core.staticdata.Patch;
+import com.merakianalytics.orianna.types.core.staticdata.Patches;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcon;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcons;
 import com.merakianalytics.orianna.types.core.staticdata.Realm;
@@ -792,6 +794,35 @@ public class GhostObjectSource extends AbstractDataSource {
     }
 
     @SuppressWarnings("unchecked")
+    @GetMany(Patch.class)
+    public CloseableIterator<Patch> getManyPatch(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        final Iterable<String> names = (Iterable<String>)query.get("names");
+        Utilities.checkNotNull(platform, "platform", names, "names");
+
+        final Iterator<String> iterator = names.iterator();
+        return CloseableIterators.from(new Iterator<Patch>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Patch next() {
+                final com.merakianalytics.orianna.types.data.staticdata.Patch data = new com.merakianalytics.orianna.types.data.staticdata.Patch();
+                data.setPlatform(platform.getTag());
+                data.setName(iterator.next());
+                return new Patch(data);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
     @GetMany(ProfileIcon.class)
     public CloseableIterator<ProfileIcon> getManyProfileIcon(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
@@ -1291,6 +1322,28 @@ public class GhostObjectSource extends AbstractDataSource {
         data.setEndIndex(endIndex == null ? 0 : endIndex.intValue());
         data.setRecent(recent);
         return new MatchHistory(data);
+    }
+
+    @Get(Patch.class)
+    public Patch getPatch(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
+        final String name = (String)query.get("name");
+
+        final com.merakianalytics.orianna.types.data.staticdata.Patch data = new com.merakianalytics.orianna.types.data.staticdata.Patch();
+        data.setName(name);
+        data.setPlatform(platform.getTag());
+        return new Patch(data);
+    }
+
+    @Get(Patches.class)
+    public Patches getPatches(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
+
+        final com.merakianalytics.orianna.types.data.staticdata.Patches data = new com.merakianalytics.orianna.types.data.staticdata.Patches();
+        data.setPlatform(platform.getTag());
+        return new Patches(data);
     }
 
     @Get(ProfileIcon.class)

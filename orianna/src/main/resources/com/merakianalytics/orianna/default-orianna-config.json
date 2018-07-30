@@ -80,6 +80,14 @@
             "period": 6,
             "unit": "HOURS"
           },
+          "com.merakianalytics.orianna.types.core.staticdata.Patch": {
+            "period": 6,
+            "unit": "HOURS"
+          },
+          "com.merakianalytics.orianna.types.core.staticdata.Patches": {
+            "period": 6,
+            "unit": "HOURS"
+          },
           "com.merakianalytics.orianna.types.core.staticdata.ProfileIcon": {
             "period": 6,
             "unit": "HOURS"
@@ -145,6 +153,24 @@
       "configClassName": "com.merakianalytics.orianna.datapipeline.InMemoryCache$Configuration"
     }, {
       "className": "com.merakianalytics.orianna.datapipeline.GhostObjectSource"
+    }, {
+      "className": "com.merakianalytics.orianna.datapipeline.MerakiAnalyticsCDN",
+      "config": {
+        "host": "cdn.merakianalytics.com",
+        "cacheDuration": {
+          "period": 6,
+          "unit": "HOURS"
+        },
+        "requests": {
+          "connectTimeout": 3,
+          "connectTimeoutUnit": "SECONDS",
+          "rateLimiterTimeout": -1,
+          "rateLimiterTimeoutUnit": "DAYS",
+          "readTimeout": 3,
+          "readTimeoutUnit": "SECONDS"
+        }
+      },
+      "configClassName": "com.merakianalytics.orianna.datapipeline.MerakiAnalyticsCDN$Configuration"
     }, {
       "className": "com.merakianalytics.orianna.datapipeline.DataDragon",
       "config": {

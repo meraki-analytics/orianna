@@ -1,37 +1,28 @@
 package com.merakianalytics.orianna.datapipeline;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Function;
-import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.merakianalytics.datapipelines.PipelineContext;
 import com.merakianalytics.datapipelines.iterators.CloseableIterator;
 import com.merakianalytics.datapipelines.iterators.CloseableIterators;
-import com.merakianalytics.datapipelines.sources.AbstractDataSource;
 import com.merakianalytics.datapipelines.sources.Get;
 import com.merakianalytics.datapipelines.sources.GetMany;
+import com.merakianalytics.orianna.datapipeline.DataDragon.Request;
 import com.merakianalytics.orianna.datapipeline.common.HTTPClient;
-import com.merakianalytics.orianna.datapipeline.common.TimeoutException;
 import com.merakianalytics.orianna.datapipeline.common.Utilities;
 import com.merakianalytics.orianna.datapipeline.common.expiration.ExpirationPeriod;
-import com.merakianalytics.orianna.types.common.OriannaException;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.dto.DataObject;
 import com.merakianalytics.orianna.types.dto.staticdata.Champion;
@@ -57,41 +48,14 @@ import com.merakianalytics.orianna.types.dto.staticdata.SummonerSpell;
 import com.merakianalytics.orianna.types.dto.staticdata.SummonerSpellList;
 import com.merakianalytics.orianna.types.dto.staticdata.Versions;
 
-public class DataDragon extends AbstractDataSource {
-    public static class Configuration {
+public class DataDragon extends AbstractLocallyCachedCDN<Request> {
+    public static class Configuration extends AbstractLocallyCachedCDN.Configuration {
         private static final ExpirationPeriod DEFAULT_CACHE_DURATION = ExpirationPeriod.create(6L, TimeUnit.HOURS);
         private static final HTTPClient.Configuration DEFAULT_REQUESTS = new HTTPClient.Configuration();
-        private ExpirationPeriod cacheDuration = DEFAULT_CACHE_DURATION;
-        private HTTPClient.Configuration requests = DEFAULT_REQUESTS;
 
-        /**
-         * @return the cacheDuration
-         */
-        public ExpirationPeriod getCacheDuration() {
-            return cacheDuration;
-        }
-
-        /**
-         * @return the requests
-         */
-        public HTTPClient.Configuration getRequests() {
-            return requests;
-        }
-
-        /**
-         * @param cacheDuration
-         *        the cacheDuration to set
-         */
-        public void setCacheDuration(final ExpirationPeriod cacheDuration) {
-            this.cacheDuration = cacheDuration;
-        }
-
-        /**
-         * @param requests
-         *        the requests to set
-         */
-        public void setRequests(final HTTPClient.Configuration requests) {
-            this.requests = requests;
+        public Configuration() {
+            setCacheDuration(DEFAULT_CACHE_DURATION);
+            setRequests(DEFAULT_REQUESTS);
         }
     }
 
@@ -120,7 +84,7 @@ public class DataDragon extends AbstractDataSource {
         }
     }
 
-    private static class RequestMetadata {
+    protected static class Request {
         public String file, version, locale;
 
         @Override
@@ -134,7 +98,7 @@ public class DataDragon extends AbstractDataSource {
             if(getClass() != obj.getClass()) {
                 return false;
             }
-            final RequestMetadata other = (RequestMetadata)obj;
+            final Request other = (Request)obj;
             if(file == null) {
                 if(other.file != null) {
                     return false;
@@ -198,8 +162,6 @@ public class DataDragon extends AbstractDataSource {
         }
     };
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DataDragon.class);
-
     private static final Function<JsonNode, JsonNode> SPELL_PROCESSOR = new Function<JsonNode, JsonNode>() {
         @Override
         public JsonNode apply(final JsonNode spellTree) {
@@ -241,75 +203,21 @@ public class DataDragon extends AbstractDataSource {
         return realm.getV();
     }
 
-    private final ConcurrentHashMap<RequestMetadata, Supplier<String>> cache = new ConcurrentHashMap<>();
-    private final ExpirationPeriod cacheDuration;
-    private final ConcurrentHashMap<RequestMetadata, Object> cacheLocks = new ConcurrentHashMap<>();
-    private final HTTPClient client;
-
     public DataDragon() {
         this(new Configuration());
     }
 
     public DataDragon(final Configuration config) {
-        client = new HTTPClient(config.getRequests());
-        cacheDuration = config.getCacheDuration();
+        super(config);
     }
 
     private String get(final String file, final String version, final String locale) {
-        final RequestMetadata metadata = new RequestMetadata();
-        metadata.file = file;
-        metadata.version = version;
-        metadata.locale = locale;
+        final Request request = new Request();
+        request.file = file;
+        request.version = version;
+        request.locale = locale;
 
-        Supplier<String> supplier = cache.get(metadata);
-        if(supplier == null) {
-            Object lock = cacheLocks.get(metadata);
-            if(lock == null) {
-                synchronized(cacheLocks) {
-                    lock = cacheLocks.get(metadata);
-                    if(lock == null) {
-                        lock = new Object();
-                        cacheLocks.put(metadata, lock);
-                    }
-                }
-            }
-
-            synchronized(lock) {
-                supplier = cache.get(metadata);
-                if(supplier == null) {
-                    supplier = new Supplier<String>() {
-                        @Override
-                        public String get() {
-                            String URL = "https://ddragon.leagueoflegends.com/";
-                            if(version != null && locale != null) {
-                                URL += "cdn/" + version + "/data/" + locale + "/";
-                            }
-                            URL += file + ".json";
-
-                            try {
-                                return client.get(URL).getBody();
-                            } catch(final TimeoutException e) {
-                                LOGGER.info("Get request timed out to " + URL + "!", e);
-                                return null;
-                            } catch(final IOException e) {
-                                LOGGER.error("Get request failed to " + URL + "!", e);
-                                throw new OriannaException("Something went wrong with a request to DataDragon API at " + URL
-                                    + "! Report this to the orianna team.", e);
-                            }
-                        }
-                    };
-
-                    if(cacheDuration.getPeriod() < 0) {
-                        supplier = Suppliers.memoize(supplier);
-                    } else if(cacheDuration.getPeriod() > 0) {
-                        supplier = Suppliers.memoizeWithExpiration(supplier, cacheDuration.getPeriod(), cacheDuration.getUnit());
-                    }
-                    cache.put(metadata, supplier);
-                }
-            }
-        }
-
-        return supplier.get();
+        return get(request);
     }
 
     @SuppressWarnings("unchecked")
@@ -2429,6 +2337,16 @@ public class DataDragon extends AbstractDataSource {
             spell.setIncludedData(includedData);
         }
         return data;
+    }
+
+    @Override
+    protected String getURL(final Request request) {
+        String URL = "https://ddragon.leagueoflegends.com/";
+        if(request.version != null && request.locale != null) {
+            URL += "cdn/" + request.version + "/data/" + request.locale + "/";
+        }
+        URL += request.file + ".json";
+        return URL;
     }
 
     @Get(Versions.class)
