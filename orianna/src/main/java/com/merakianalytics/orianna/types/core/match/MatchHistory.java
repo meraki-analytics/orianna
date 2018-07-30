@@ -93,7 +93,7 @@ public class MatchHistory extends GhostObject<com.merakianalytics.orianna.types.
 
         public Builder onPatch(final Patch patch) {
             startTime = patch.getStartTime().getMillis();
-            endTime = patch.getEndTime() == null ? null : patch.getEndTime().getMillis();
+            endTime = patch.getEndTime() == null ? System.currentTimeMillis() : patch.getEndTime().getMillis();
             return this;
         }
 
