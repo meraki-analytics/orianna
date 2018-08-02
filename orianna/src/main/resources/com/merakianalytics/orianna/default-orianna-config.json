@@ -256,7 +256,6 @@
           "com.merakianalytics.orianna.datapipeline.riotapi.LeagueAPI",
           "com.merakianalytics.orianna.datapipeline.riotapi.MatchAPI",
           "com.merakianalytics.orianna.datapipeline.riotapi.SpectatorAPI",
-          "com.merakianalytics.orianna.datapipeline.riotapi.StaticDataAPI",
           "com.merakianalytics.orianna.datapipeline.riotapi.StatusAPI",
           "com.merakianalytics.orianna.datapipeline.riotapi.SummonerAPI",
           "com.merakianalytics.orianna.datapipeline.riotapi.ThirdPartyCodeAPI"
