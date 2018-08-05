@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
@@ -64,11 +65,12 @@
 		<maven.nexus.version>1.6.8</maven.nexus.version>
 		<maven.license.version>1.14</maven.license.version>
 		<maven.shade.version>3.1.0</maven.shade.version>
-		<datapipelines.version>1.0.2</datapipelines.version>
+		<junit.version>5.2.0</junit.version>
+		<junit.launcher.version>1.2.0</junit.launcher.version>
 		<slf4j.version>1.7.25</slf4j.version>
-		<junit.version>4.12</junit.version>
+		<datapipelines.version>1.0.3</datapipelines.version>
 		<guava.version>20.0</guava.version>
-		<okhttp.version>3.10.0</okhttp.version>
+		<okhttp.version>3.11.0</okhttp.version>
 		<jackson.version>2.9.6</jackson.version>
 		<msgpack.version>0.8.16</msgpack.version>
 		<joda.version>2.10</joda.version>
@@ -78,15 +80,21 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter-engine</artifactId>
+				<version>${junit.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.junit.platform</groupId>
+				<artifactId>junit-platform-launcher</artifactId>
+				<version>${junit.launcher.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
 				<version>${slf4j.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>${junit.version}</version>
-				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.merakianalytics.datapipelines</groupId>
