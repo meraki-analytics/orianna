@@ -2299,6 +2299,56 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
+    public static Iterator<Integer> forManyPatchesDataQuery(final java.util.Map<String, Object> query) {
+        final Iterable<Platform> platforms = (Iterable<Platform>)query.get("platforms");
+
+        final Iterator<Platform> iterator = platforms.iterator();
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                return Arrays.hashCode(new Object[] {
+                    com.merakianalytics.orianna.types.data.staticdata.Patches.class.getCanonicalName(), iterator.next().getTag()
+                });
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Iterator<Integer> forManyPatchesDtoQuery(final java.util.Map<String, Object> query) {
+        final Iterable<Platform> platforms = (Iterable<Platform>)query.get("platforms");
+
+        final Iterator<Platform> iterator = platforms.iterator();
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                return Arrays.hashCode(new Object[] {
+                    com.merakianalytics.orianna.types.dto.staticdata.Patches.class.getCanonicalName(), iterator.next().getTag()
+                });
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+    @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyPatchQuery(final java.util.Map<String, Object> query) {
         final Iterable<String> names = (Iterable<String>)query.get("names");
 
@@ -3405,56 +3455,6 @@ public abstract class UniqueKeys {
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
                     com.merakianalytics.orianna.types.dto.staticdata.Versions.class.getCanonicalName(), iterator.next().getTag()
-                });
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException();
-            }
-        };
-    }
-    
-    @SuppressWarnings("unchecked")
-    public static Iterator<Integer> forManyPatchesDataQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Platform> platforms = (Iterable<Platform>)query.get("platforms");
-
-        final Iterator<Platform> iterator = platforms.iterator();
-        return new Iterator<Integer>() {
-            @Override
-            public boolean hasNext() {
-                return iterator.hasNext();
-            }
-
-            @Override
-            public Integer next() {
-                return Arrays.hashCode(new Object[] {
-                    com.merakianalytics.orianna.types.data.staticdata.Patches.class.getCanonicalName(), iterator.next().getTag()
-                });
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException();
-            }
-        };
-    }
-
-    @SuppressWarnings("unchecked")
-    public static Iterator<Integer> forManyPatchesDtoQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Platform> platforms = (Iterable<Platform>)query.get("platforms");
-
-        final Iterator<Platform> iterator = platforms.iterator();
-        return new Iterator<Integer>() {
-            @Override
-            public boolean hasNext() {
-                return iterator.hasNext();
-            }
-
-            @Override
-            public Integer next() {
-                return Arrays.hashCode(new Object[] {
-                    com.merakianalytics.orianna.types.dto.staticdata.Patches.class.getCanonicalName(), iterator.next().getTag()
                 });
             }
 
