@@ -31,6 +31,9 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
                     synchronized(currentlyProcessingLock) {
                         permitter.release(permits - currentlyProcessing);
                     }
+                    if(drainer != null) {
+                        drainer.cancel();
+                    }
                     resetter = null;
                     drainer = null;
                     timer.purge();
@@ -39,15 +42,15 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
         }
     }
 
-    private int currentlyProcessing = 0;
+    private volatile int currentlyProcessing = 0;
     private final Object currentlyProcessingLock = new Object();
-    private Drainer drainer = null;
+    private volatile Drainer drainer = null;
     private final long epoch;
     private final TimeUnit epochUnit;
-    private int permits;
+    private volatile int permits;
     private final AtomicInteger permitsIssued = new AtomicInteger(0);
     private final Semaphore permitter;
-    private Resetter resetter = null;
+    private volatile Resetter resetter = null;
     private final Object resetterLock = new Object();
     private final Timer timer = new Timer(true);
 
