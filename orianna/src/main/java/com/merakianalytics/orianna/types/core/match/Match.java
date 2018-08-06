@@ -711,7 +711,7 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
         }
         return coreData.getVersion();
     }
-    
+
     public boolean isRemake() {
         if(coreData.getDuration() == null) {
             load(MATCH_LOAD_GROUP);

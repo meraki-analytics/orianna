@@ -48,7 +48,7 @@ public enum Platform {
     }
 
     public FeaturedMatches getFeaturedMatches() {
-        return FeaturedMatches.forPlatform(this).get();
+        return FeaturedMatches.withPlatform(this).get();
     }
 
     public Languages getLanguages() {

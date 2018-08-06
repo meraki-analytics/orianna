@@ -9,7 +9,7 @@ import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
 public class GetCurrentMatches {
     public static void main(final String[] args) {
-        final FeaturedMatches featured = FeaturedMatches.forRegion(Region.NORTH_AMERICA).get();
+        final FeaturedMatches featured = FeaturedMatches.withRegion(Region.NORTH_AMERICA).get();
         for(final FeaturedMatch game : featured) {
             System.out.println(game.getRegion() + " " + game.getId());
         }

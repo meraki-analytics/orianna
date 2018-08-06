@@ -157,6 +157,12 @@ Static Data API
             Mastery mastery = Orianna.masteryNamed("Warlord's Bloodlust").withVersion("7.23.1").withRegion(Region.NORTH_AMERICA).get();
             mastery = Orianna.masteryWithId(6161).withVersion("7.23.1").withRegion(Region.NORTH_AMERICA).get();
 
+            // Patches
+            Patches patches = Orianna.patchesWithRegion(Region.NORTH_AMERICA).get();
+            Patch latestPatch = patches.get(0);
+
+            Patch patch = Orianna.patchNamed("8.9").withRegion(Region.NORTH_AMERICA).get();
+
             // Profile Icons
             ProfileIcons profileIcons = Orianna.profileIconsWithRegion(Region.NORTH_AMERICA).get();
 
@@ -202,8 +208,8 @@ Status API
 
     public class Example {
         public static void main(String[] args) {
-            ShardStatus status = Orianna.shardStatusForRegion(Region.NORTH_AMERICA).get();
-            List<ShardStatus> statuses = Orianna.shardStatusesForPlatforms(Platform.NORTH_AMERICA, Platform.EUROPE_WEST).get();
+            ShardStatus status = Orianna.shardStatusWithRegion(Region.NORTH_AMERICA).get();
+            List<ShardStatus> statuses = Orianna.shardStatusesWithPlatforms(Platform.NORTH_AMERICA, Platform.EUROPE_WEST).get();
         }
     }
 
@@ -267,8 +273,8 @@ Spectator API
 
             List<CurrentMatch> matches = Orianna.currentMatchesForSummoners(summoners).get();
 
-            FeaturedMatches featuredMatches = Orianna.featuredMatchesForRegion(Region.NORTH_AMERICA).get();
-            List<FeaturedMatches> manyFeaturedMatches = Orianna.featuredMatchesForRegions(Region.NORTH_AMERICA, Region.EUROPE_WEST).get();
+            FeaturedMatches featuredMatches = Orianna.featuredMatchesWithRegion(Region.NORTH_AMERICA).get();
+            List<FeaturedMatches> manyFeaturedMatches = Orianna.featuredMatchesWithRegions(Region.NORTH_AMERICA, Region.EUROPE_WEST).get();
         }
     }
 

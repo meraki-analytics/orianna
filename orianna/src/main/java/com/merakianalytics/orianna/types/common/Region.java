@@ -32,7 +32,7 @@ public enum Region {
     }
 
     public FeaturedMatches getFeaturedMatches() {
-        return FeaturedMatches.forRegion(this).get();
+        return FeaturedMatches.withRegion(this).get();
     }
 
     public Languages getLanguages() {

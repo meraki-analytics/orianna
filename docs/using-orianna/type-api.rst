@@ -155,6 +155,12 @@ Static Data API
             Mastery mastery = Mastery.named("Warlord's Bloodlust").withVersion("7.23.1").withRegion(Region.NORTH_AMERICA).get();
             mastery = Mastery.withId(6161).withVersion("7.23.1").withRegion(Region.NORTH_AMERICA).get();
 
+            // Patches
+            Patches patches = Patches.withRegion(Region.NORTH_AMERICA).get();
+            Patch latestPatch = patches.get(0);
+
+            Patch patch = Patch.named("8.9").withRegion(Region.NORTH_AMERICA).get();
+
             // Profile Icons
             ProfileIcons profileIcons = ProfileIcons.withRegion(Region.NORTH_AMERICA).get();
 
@@ -200,8 +206,8 @@ Status API
 
     public class Example {
         public static void main(String[] args) {
-            ShardStatus status = ShardStatus.forRegion(Region.NORTH_AMERICA).get();
-            List<ShardStatus> statuses = ShardStatuses.forPlatforms(Platform.NORTH_AMERICA, Platform.EUROPE_WEST).get();
+            ShardStatus status = ShardStatus.withRegion(Region.NORTH_AMERICA).get();
+            List<ShardStatus> statuses = ShardStatuses.withPlatforms(Platform.NORTH_AMERICA, Platform.EUROPE_WEST).get();
         }
     }
 
@@ -269,8 +275,8 @@ Spectator API
 
             List<CurrentMatch> matches = CurrentMatches.forSummoners(summoners).get();
 
-            FeaturedMatches featuredMatches = FeaturedMatches.forRegion(Region.NORTH_AMERICA).get();
-            List<FeaturedMatches> manyFeaturedMatches = FeaturedMatches.forRegions(Region.NORTH_AMERICA, Region.EUROPE_WEST).get();
+            FeaturedMatches featuredMatches = FeaturedMatches.withRegion(Region.NORTH_AMERICA).get();
+            List<FeaturedMatches> manyFeaturedMatches = FeaturedMatches.withRegions(Region.NORTH_AMERICA, Region.EUROPE_WEST).get();
         }
     }
 

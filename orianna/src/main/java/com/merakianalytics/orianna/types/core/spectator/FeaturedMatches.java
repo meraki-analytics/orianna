@@ -71,23 +71,27 @@ public class FeaturedMatches extends GhostObject.ListProxy<FeaturedMatch, com.me
 
     private static final long serialVersionUID = 5550281909391512286L;
 
-    public static Builder forPlatform(final Platform platform) {
+    public static FeaturedMatches get() {
+        return new Builder().get();
+    }
+
+    public static Builder withPlatform(final Platform platform) {
         return new Builder().withPlatform(platform);
     }
 
-    public static ManyBuilder forPlatforms(final Iterable<Platform> platforms) {
+    public static ManyBuilder withPlatforms(final Iterable<Platform> platforms) {
         return new ManyBuilder(platforms);
     }
 
-    public static ManyBuilder forPlatforms(final Platform... platforms) {
+    public static ManyBuilder withPlatforms(final Platform... platforms) {
         return new ManyBuilder(Arrays.asList(platforms));
     }
 
-    public static Builder forRegion(final Region region) {
+    public static Builder withRegion(final Region region) {
         return new Builder().withRegion(region);
     }
 
-    public static ManyBuilder forRegions(final Iterable<Region> regions) {
+    public static ManyBuilder withRegions(final Iterable<Region> regions) {
         final List<Platform> platforms = new ArrayList<>();
         for(final Region region : regions) {
             platforms.add(region.getPlatform());
@@ -95,16 +99,12 @@ public class FeaturedMatches extends GhostObject.ListProxy<FeaturedMatch, com.me
         return new ManyBuilder(platforms);
     }
 
-    public static ManyBuilder forRegions(final Region... regions) {
+    public static ManyBuilder withRegions(final Region... regions) {
         final List<Platform> platforms = new ArrayList<>(regions.length);
         for(final Region region : regions) {
             platforms.add(region.getPlatform());
         }
         return new ManyBuilder(platforms);
-    }
-
-    public static FeaturedMatches get() {
-        return new Builder().get();
     }
 
     public FeaturedMatches(final com.merakianalytics.orianna.types.data.spectator.FeaturedMatches coreData) {

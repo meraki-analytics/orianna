@@ -430,28 +430,28 @@ public abstract class Orianna {
         }
     }
 
-    public static FeaturedMatches.Builder featuredMatchesForPlatform(final Platform platform) {
-        return FeaturedMatches.forPlatform(platform);
+    public static FeaturedMatches.Builder featuredMatchesWithPlatform(final Platform platform) {
+        return FeaturedMatches.withPlatform(platform);
     }
 
-    public static FeaturedMatches.ManyBuilder featuredMatchesForPlatforms(final Iterable<Platform> platforms) {
-        return FeaturedMatches.forPlatforms(platforms);
+    public static FeaturedMatches.ManyBuilder featuredMatchesWithPlatforms(final Iterable<Platform> platforms) {
+        return FeaturedMatches.withPlatforms(platforms);
     }
 
-    public static FeaturedMatches.ManyBuilder featuredMatchesForPlatforms(final Platform... platforms) {
-        return FeaturedMatches.forPlatforms(platforms);
+    public static FeaturedMatches.ManyBuilder featuredMatchesWithPlatforms(final Platform... platforms) {
+        return FeaturedMatches.withPlatforms(platforms);
     }
 
-    public static FeaturedMatches.Builder featuredMatchesForRegion(final Region region) {
-        return FeaturedMatches.forRegion(region);
+    public static FeaturedMatches.Builder featuredMatchesWithRegion(final Region region) {
+        return FeaturedMatches.withRegion(region);
     }
 
-    public static FeaturedMatches.ManyBuilder featuredMatchesForRegions(final Iterable<Region> regions) {
-        return FeaturedMatches.forRegions(regions);
+    public static FeaturedMatches.ManyBuilder featuredMatchesWithRegions(final Iterable<Region> regions) {
+        return FeaturedMatches.withRegions(regions);
     }
 
-    public static FeaturedMatches.ManyBuilder featuredMatchesForRegions(final Region... regions) {
-        return FeaturedMatches.forRegions(regions);
+    public static FeaturedMatches.ManyBuilder featuredMatchesWithRegions(final Region... regions) {
+        return FeaturedMatches.withRegions(regions);
     }
 
     public static Champions getChampions() {
