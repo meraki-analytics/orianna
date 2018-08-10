@@ -6,5 +6,6 @@ public enum Lane {
         JUNGLE,
         MID,
         MIDDLE,
-        TOP;
+        TOP,
+        NONE;
 }
