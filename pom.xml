@@ -65,7 +65,7 @@
 		<maven.nexus.version>1.6.8</maven.nexus.version>
 		<maven.license.version>1.14</maven.license.version>
 		<maven.shade.version>3.1.0</maven.shade.version>
-		<junit.version>5.2.0</junit.version>
+		<junit.version>5.3.1</junit.version>
 		<junit.launcher.version>1.2.0</junit.launcher.version>
 		<slf4j.version>1.7.25</slf4j.version>
 		<datapipelines.version>1.0.4-SNAPSHOT</datapipelines.version>
@@ -92,9 +92,14 @@
 				<scope>test</scope>
 			</dependency>
 			<dependency>
+				<groupId>org.junit.platform</groupId>
+				<artifactId>junit-platform-surefire-provider</artifactId>
+				<version>1.2.0</version>
+			</dependency>
+			<dependency>
 				<groupId>org.junit.jupiter</groupId>
 				<artifactId>junit-jupiter-api</artifactId>
-				<version>5.1.0</version>
+				<version>${junit.version}</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
@@ -147,6 +152,16 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.19.1</version>
+				<configuration>
+					<excludes>
+						<exclude></exclude>
+					</excludes>
+				</configuration>
+			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven.compiler.version}</version>
