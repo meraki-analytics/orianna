@@ -18,48 +18,55 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-
+@DisplayName("Orianna abstract class' test suite.")
 public class OriannaTest {
 
     @Nested
+    @DisplayName("Orianna Class' Configuration class test suite.")
     public static class ConfigurationTest {
 
         private Configuration pipeConfig;
 
         @BeforeEach
-        public void setup() {
-            this.pipeConfig = new Configuration();
+        public void setUp() {
+            pipeConfig = new Configuration();
         }
 
         @Test
+        @DisplayName("Ensure default version expiration value is not null and is an ExpirationPeriod.")
         public void testDefaultVersionExpiration() {
             Assertions.assertNotNull(this.pipeConfig.getCurrentVersionExpiration());
             Assertions.assertEquals(this.pipeConfig.getCurrentVersionExpiration().getClass(), ExpirationPeriod.class);
         }
 
         @Test
+        @DisplayName("Ensure default pipeline elements are generated.")
         public void testDefaultPipelineElements() {
             List<PipelineConfiguration.PipelineElementConfiguration> actualElements = this.pipeConfig.getPipeline().getElements();
             Assertions.assertTrue(actualElements.size() > 0);
         }
 
         @Test
+        @DisplayName("Ensure default pipline transformers are generated.")
         public void testDefaultPipelineTransformers() {
             Set<PipelineConfiguration.TransformerConfiguration> actualTransformers = this.pipeConfig.getPipeline().getTransformers();
             Assertions.assertTrue(actualTransformers.size() > 0);
         }
 
         @Test
+        @DisplayName("Ensure default platform is null.")
         public void testDefaultPlatform() {
             Assertions.assertNull(this.pipeConfig.getDefaultPlatform());
         }
 
         @Test
+        @DisplayName("Ensure default locale value is null.")
         public void testDefaultLocale() {
             Assertions.assertNull(this.pipeConfig.getDefaultLocale());
         }
 
         @Test
+        @DisplayName("Ensure that mutating the version expiration is reflected in its accessor.")
         public void testSetCurrentVersionExpiration() {
             ExpirationPeriod newPeriod = ExpirationPeriod.create(24L, TimeUnit.HOURS);
             this.pipeConfig.setCurrentVersionExpiration(newPeriod);
@@ -68,6 +75,7 @@ public class OriannaTest {
         }
 
         @Test
+        @DisplayName("Ensure that mutating the locale is reflected in its accessor.")
         public void testSetDefaultLocale() {
             String locale = "en-US";
             this.pipeConfig.setDefaultLocale(locale);
@@ -75,6 +83,7 @@ public class OriannaTest {
         }
 
         @Test
+        @DisplayName("Ensure that mutating the Platform is reflected in its accessor.")
         public void testSetDefaultPlatform() {
             Platform newPlatform = Platform.NORTH_AMERICA;
             this.pipeConfig.setDefaultPlatform(newPlatform);
@@ -82,6 +91,7 @@ public class OriannaTest {
         }
 
         @Test
+        @DisplayName("Ensure mutating a pipeline's content gets reflected in its accessor.")
         public void testSetPipeline() {
             PipelineConfiguration newPipe = new PipelineConfiguration();
             newPipe.setElements(
@@ -94,6 +104,8 @@ public class OriannaTest {
 
     }
 
+    @Nested
+    @DisplayName("Orianna Class' test suite for the Settings class.")
     public static class SettingsTest {
 
         private Settings settings;
@@ -106,22 +118,26 @@ public class OriannaTest {
         //TODO: Mock Get Current Version. This will require response mocking.
 
         @Test
+        @DisplayName("Ensure default locale is null.")
         public void testGetDefaultLocale() {
             Assertions.assertNull(this.settings.getDefaultLocale());
         }
 
         @Test
+        @DisplayName("Ensure default platform is null.")
         public void testGetDefaultPlatform() {
             Assertions.assertNull(this.settings.getDefaultPlatform());
         }
 
         @Test
+        @DisplayName("Ensure pipeline elements are generated.")
         public void testDefaultPipelineElements() {
             List<PipelineElement> actualElements = this.settings.getPipeline().getElements();
             Assertions.assertTrue(actualElements.size() > 0);
         }
 
         @Test
+        @DisplayName("Ensure pipeline transformers are generated.")
         public void testDefaultPipelineTransformers() {
             Set<DataTransformer> actualTransformers = this.settings.getPipeline().getTransformers();
             Assertions.assertTrue(actualTransformers.size() > 0);
