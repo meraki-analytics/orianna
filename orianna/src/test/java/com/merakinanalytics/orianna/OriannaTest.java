@@ -1,8 +1,12 @@
 package com.merakinanalytics.orianna;
 
+import com.merakianalytics.datapipelines.PipelineElement;
+import com.merakianalytics.datapipelines.transformers.DataTransformer;
+import com.merakianalytics.orianna.Orianna;
 import com.google.common.collect.ImmutableList;
 import com.merakianalytics.orianna.datapipeline.PipelineConfiguration;
 import com.merakianalytics.orianna.Orianna.Configuration;
+import com.merakianalytics.orianna.Orianna.Settings;
 import com.merakianalytics.orianna.datapipeline.common.expiration.ExpirationPeriod;
 import com.merakianalytics.orianna.datapipeline.riotapi.RiotAPI;
 import com.merakianalytics.orianna.types.common.Platform;
@@ -12,7 +16,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-class Orianna {
+class OriannaTest {
 
     public static class TestConfiguration {
 
@@ -82,6 +86,41 @@ class Orianna {
             this.pipeConfig.setPipeline(newPipe);
             Assertions.assertEquals(this.pipeConfig.getPipeline().getElements().size(), 1);
             Assertions.assertEquals(this.pipeConfig.getPipeline().getElements().get(0).getClassName(), RiotAPI.class.getName());
+        }
+
+    }
+
+    public static class TestSettings {
+
+        private Settings settings;
+
+        @BeforeEach
+        public void setup() {
+            this.settings = Orianna.getSettings();
+        }
+
+        //TODO: Mock Get Current Version. This will require response mocking.
+
+        @Test
+        public void testGetDefaultLocale() {
+            Assertions.assertNull(this.settings.getDefaultLocale());
+        }
+
+        @Test
+        public void testGetDefaultPlatform() {
+            Assertions.assertNull(this.settings.getDefaultPlatform());
+        }
+
+        @Test
+        void testDefaultPipelineElements() {
+            List<PipelineElement> actualElements = this.settings.getPipeline().getElements();
+            Assertions.assertTrue(actualElements.size() > 0);
+        }
+
+        @Test
+        void testDefaultPipelineTransformers() {
+            Set<DataTransformer> actualTransformers = this.settings.getPipeline().getTransformers();
+            Assertions.assertTrue(actualTransformers.size() > 0);
         }
 
     }
