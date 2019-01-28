@@ -64,6 +64,10 @@
             "period": 15,
             "unit": "MINUTES"
           },
+          "com.merakianalytics.orianna.types.core.league.PositionalQueues": {
+            "period": 6,
+            "unit": "HOURS"
+          },
           "com.merakianalytics.orianna.types.core.staticdata.Map": {
             "period": 6,
             "unit": "HOURS"

@@ -5,6 +5,7 @@ public enum Tier {
         CHALLENGER,
         DIAMOND,
         GOLD,
+        GRANDMASTER,
         MASTER,
         PLATINUM,
         SILVER,

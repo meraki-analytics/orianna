@@ -106,6 +106,10 @@ public class League extends GhostObject.ListProxy<LeagueEntry, com.merakianalyti
         return new SelectBuilder(Tier.CHALLENGER).inQueue(queue);
     }
 
+    public static SelectBuilder.SubBuilder grandmasterInQueue(final Queue queue) {
+        return new SelectBuilder(Tier.GRANDMASTER).inQueue(queue);
+    }
+
     public static SelectBuilder.SubBuilder masterInQueue(final Queue queue) {
         return new SelectBuilder(Tier.MASTER).inQueue(queue);
     }

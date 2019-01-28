@@ -41,6 +41,7 @@ import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
 import com.merakianalytics.orianna.types.core.league.League;
 import com.merakianalytics.orianna.types.core.league.LeaguePositions;
+import com.merakianalytics.orianna.types.core.league.PositionalQueues;
 import com.merakianalytics.orianna.types.core.match.Match;
 import com.merakianalytics.orianna.types.core.match.Timeline;
 import com.merakianalytics.orianna.types.core.match.TournamentMatches;
@@ -91,6 +92,7 @@ public class InMemoryCache extends AbstractDataStore {
             .put(Languages.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
             .put(League.class.getCanonicalName(), ExpirationPeriod.create(15L, TimeUnit.MINUTES))
             .put(LeaguePositions.class.getCanonicalName(), ExpirationPeriod.create(15L, TimeUnit.MINUTES))
+            .put(PositionalQueues.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(Map.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
             .put(Maps.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
             .put(Mastery.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
@@ -664,6 +666,35 @@ public class InMemoryCache extends AbstractDataStore {
         });
     }
 
+    @GetMany(PositionalQueues.class)
+    public CloseableIterator<PositionalQueues> getManyPositionalQueues(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyPositionalQueuesQuery(query));
+        for(final Integer key : keys) {
+            if(!cache.containsKey(key)) {
+                return null;
+            }
+        }
+
+        final Iterator<Integer> iterator = keys.iterator();
+        return CloseableIterators.from(new Iterator<PositionalQueues>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public PositionalQueues next() {
+                final int key = iterator.next();
+                return (PositionalQueues)cache.get(key);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
     @GetMany(ProfileIcon.class)
     public CloseableIterator<ProfileIcon> getManyProfileIcon(final java.util.Map<String, Object> query, final PipelineContext context) {
         final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyProfileIconQuery(query));
@@ -954,6 +985,35 @@ public class InMemoryCache extends AbstractDataStore {
         });
     }
 
+    @GetMany(Versions.class)
+    public CloseableIterator<Versions> getManyVersions(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyVersionsQuery(query));
+        for(final Integer key : keys) {
+            if(!cache.containsKey(key)) {
+                return null;
+            }
+        }
+
+        final Iterator<Integer> iterator = keys.iterator();
+        return CloseableIterators.from(new Iterator<Versions>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Versions next() {
+                final int key = iterator.next();
+                return (Versions)cache.get(key);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
     @Get(Map.class)
     public Map getMap(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forMapQuery(query);
@@ -994,6 +1054,12 @@ public class InMemoryCache extends AbstractDataStore {
     public Patches getPatches(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forPatchesQuery(query);
         return (Patches)cache.get(key);
+    }
+
+    @Get(PositionalQueues.class)
+    public PositionalQueues getPositionalQueues(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forPositionalQueuesQuery(query);
+        return (PositionalQueues)cache.get(key);
     }
 
     @Get(ProfileIcon.class)
@@ -1376,6 +1442,13 @@ public class InMemoryCache extends AbstractDataStore {
         }
     }
 
+    @PutMany(PositionalQueues.class)
+    public void putManyPositionalQueues(final Iterable<PositionalQueues> queues, final PipelineContext context) {
+        for(final PositionalQueues queue : queues) {
+            putPositionalQueues(queue, context);
+        }
+    }
+
     @PutMany(ProfileIcon.class)
     public void putManyProfileIcon(final Iterable<ProfileIcon> icons, final PipelineContext context) {
         for(final ProfileIcon icon : icons) {
@@ -1443,6 +1516,13 @@ public class InMemoryCache extends AbstractDataStore {
     public void putManyVerificationString(final Iterable<VerificationString> strings, final PipelineContext context) {
         for(final VerificationString string : strings) {
             putVerificationString(string, context);
+        }
+    }
+
+    @PutMany(Versions.class)
+    public void putManyVersions(final Iterable<Versions> versions, final PipelineContext context) {
+        for(final Versions version : versions) {
+            putVersions(version, context);
         }
     }
 
@@ -1565,6 +1645,12 @@ public class InMemoryCache extends AbstractDataStore {
         } else {
             putManyPatch(patches, context);
         }
+    }
+
+    @Put(PositionalQueues.class)
+    public void putPositionalQueues(final PositionalQueues queues, final PipelineContext context) {
+        final int key = UniqueKeys.forPositionalQueues(queues);
+        cache.put(key, queues);
     }
 
     @Put(ProfileIcon.class)

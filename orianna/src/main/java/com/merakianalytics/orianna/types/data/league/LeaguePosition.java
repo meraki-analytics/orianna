@@ -3,11 +3,10 @@ package com.merakianalytics.orianna.types.data.league;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class LeaguePosition extends CoreData {
-    private static final long serialVersionUID = 7745380809131095259L;
-    private String name, summonerName, leagueId, division, platform, queue, tier;
+    private static final long serialVersionUID = 3807174768546132504L;
+    private String name, summonerName, leagueId, division, platform, queue, tier, summonerId, position;
     private boolean onHotStreak, veteran, inactive, freshBlood;
     private Series promos;
-    private long summonerId;
     private int wins, losses, leaguePoints;
 
     @Override
@@ -65,6 +64,13 @@ public class LeaguePosition extends CoreData {
         } else if(!platform.equals(other.platform)) {
             return false;
         }
+        if(position == null) {
+            if(other.position != null) {
+                return false;
+            }
+        } else if(!position.equals(other.position)) {
+            return false;
+        }
         if(promos == null) {
             if(other.promos != null) {
                 return false;
@@ -79,7 +85,11 @@ public class LeaguePosition extends CoreData {
         } else if(!queue.equals(other.queue)) {
             return false;
         }
-        if(summonerId != other.summonerId) {
+        if(summonerId == null) {
+            if(other.summonerId != null) {
+                return false;
+            }
+        } else if(!summonerId.equals(other.summonerId)) {
             return false;
         }
         if(summonerName == null) {
@@ -148,6 +158,13 @@ public class LeaguePosition extends CoreData {
     }
 
     /**
+     * @return the position
+     */
+    public String getPosition() {
+        return position;
+    }
+
+    /**
      * @return the promos
      */
     public Series getPromos() {
@@ -164,7 +181,7 @@ public class LeaguePosition extends CoreData {
     /**
      * @return the summonerId
      */
-    public long getSummonerId() {
+    public String getSummonerId() {
         return summonerId;
     }
 
@@ -202,9 +219,10 @@ public class LeaguePosition extends CoreData {
         result = prime * result + (name == null ? 0 : name.hashCode());
         result = prime * result + (onHotStreak ? 1231 : 1237);
         result = prime * result + (platform == null ? 0 : platform.hashCode());
+        result = prime * result + (position == null ? 0 : position.hashCode());
         result = prime * result + (promos == null ? 0 : promos.hashCode());
         result = prime * result + (queue == null ? 0 : queue.hashCode());
-        result = prime * result + (int)(summonerId ^ summonerId >>> 32);
+        result = prime * result + (summonerId == null ? 0 : summonerId.hashCode());
         result = prime * result + (summonerName == null ? 0 : summonerName.hashCode());
         result = prime * result + (tier == null ? 0 : tier.hashCode());
         result = prime * result + (veteran ? 1231 : 1237);
@@ -313,6 +331,14 @@ public class LeaguePosition extends CoreData {
     }
 
     /**
+     * @param position
+     *        the position to set
+     */
+    public void setPosition(final String position) {
+        this.position = position;
+    }
+
+    /**
      * @param promos
      *        the promos to set
      */
@@ -332,7 +358,7 @@ public class LeaguePosition extends CoreData {
      * @param summonerId
      *        the summonerId to set
      */
-    public void setSummonerId(final long summonerId) {
+    public void setSummonerId(final String summonerId) {
         this.summonerId = summonerId;
     }
 

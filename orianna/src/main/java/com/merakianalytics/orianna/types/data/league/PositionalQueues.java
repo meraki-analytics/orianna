@@ -2,15 +2,15 @@ package com.merakianalytics.orianna.types.data.league;
 
 import com.merakianalytics.orianna.types.data.CoreData;
 
-public class LeaguePositions extends CoreData.ListProxy<LeaguePosition> {
-    private static final long serialVersionUID = -78697578110185006L;
-    private String platform, summonerId;
+public class PositionalQueues extends CoreData.ListProxy<String> {
+    private static final long serialVersionUID = 3797565252885167561L;
+    private String platform;
 
-    public LeaguePositions() {
+    public PositionalQueues() {
         super();
     }
 
-    public LeaguePositions(final int initialCapacity) {
+    public PositionalQueues(final int initialCapacity) {
         super(initialCapacity);
     }
 
@@ -25,19 +25,12 @@ public class LeaguePositions extends CoreData.ListProxy<LeaguePosition> {
         if(getClass() != obj.getClass()) {
             return false;
         }
-        final LeaguePositions other = (LeaguePositions)obj;
+        final PositionalQueues other = (PositionalQueues)obj;
         if(platform == null) {
             if(other.platform != null) {
                 return false;
             }
         } else if(!platform.equals(other.platform)) {
-            return false;
-        }
-        if(summonerId == null) {
-            if(other.summonerId != null) {
-                return false;
-            }
-        } else if(!summonerId.equals(other.summonerId)) {
             return false;
         }
         return true;
@@ -50,19 +43,11 @@ public class LeaguePositions extends CoreData.ListProxy<LeaguePosition> {
         return platform;
     }
 
-    /**
-     * @return the summonerId
-     */
-    public String getSummonerId() {
-        return summonerId;
-    }
-
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
         result = prime * result + (platform == null ? 0 : platform.hashCode());
-        result = prime * result + (summonerId == null ? 0 : summonerId.hashCode());
         return result;
     }
 
@@ -72,13 +57,5 @@ public class LeaguePositions extends CoreData.ListProxy<LeaguePosition> {
      */
     public void setPlatform(final String platform) {
         this.platform = platform;
-    }
-
-    /**
-     * @param summonerId
-     *        the summonerId to set
-     */
-    public void setSummonerId(final String summonerId) {
-        this.summonerId = summonerId;
     }
 }

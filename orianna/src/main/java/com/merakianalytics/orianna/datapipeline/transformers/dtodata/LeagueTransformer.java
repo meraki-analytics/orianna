@@ -10,10 +10,12 @@ import com.merakianalytics.orianna.types.data.league.League;
 import com.merakianalytics.orianna.types.data.league.LeagueEntry;
 import com.merakianalytics.orianna.types.data.league.LeaguePosition;
 import com.merakianalytics.orianna.types.data.league.LeaguePositions;
+import com.merakianalytics.orianna.types.data.league.PositionalQueues;
 import com.merakianalytics.orianna.types.data.league.Series;
 import com.merakianalytics.orianna.types.dto.league.LeagueItem;
 import com.merakianalytics.orianna.types.dto.league.LeagueList;
 import com.merakianalytics.orianna.types.dto.league.MiniSeries;
+import com.merakianalytics.orianna.types.dto.league.PositionalQueuesList;
 import com.merakianalytics.orianna.types.dto.league.SummonerPositions;
 
 public class LeagueTransformer extends AbstractDataTransformer {
@@ -33,11 +35,12 @@ public class LeagueTransformer extends AbstractDataTransformer {
             position.setPromos(transform(item.getMiniSeries(), context));
         }
         position.setQueue(item.getQueueType());
-        position.setSummonerId(Long.parseLong(item.getPlayerOrTeamId()));
-        position.setSummonerName(item.getPlayerOrTeamName());
+        position.setSummonerId(item.getSummonerId());
+        position.setSummonerName(item.getSummonerName());
         position.setTier(item.getTier());
         position.setVeteran(item.isVeteran());
         position.setWins(item.getWins());
+        position.setPosition(item.getPosition());
         return position;
     }
 
@@ -69,8 +72,8 @@ public class LeagueTransformer extends AbstractDataTransformer {
         if(item.getPromos() != null) {
             entry.setMiniSeries(transform(item.getPromos(), context));
         }
-        entry.setPlayerOrTeamId(Long.toString(item.getSummonerId()));
-        entry.setPlayerOrTeamName(item.getSummonerName());
+        entry.setSummonerId(item.getSummonerId());
+        entry.setSummonerName(item.getSummonerName());
         entry.setVeteran(item.isVeteran());
         entry.setWins(item.getWins());
         return entry;
@@ -89,8 +92,8 @@ public class LeagueTransformer extends AbstractDataTransformer {
         if(item.getMiniSeries() != null) {
             entry.setPromos(transform(item.getMiniSeries(), context));
         }
-        entry.setSummonerId(Long.parseLong(item.getPlayerOrTeamId()));
-        entry.setSummonerName(item.getPlayerOrTeamName());
+        entry.setSummonerId(item.getSummonerId());
+        entry.setSummonerName(item.getSummonerName());
         entry.setVeteran(item.isVeteran());
         entry.setWins(item.getWins());
         return entry;
@@ -128,11 +131,12 @@ public class LeagueTransformer extends AbstractDataTransformer {
             position.setMiniSeries(transform(item.getPromos(), context));
         }
         position.setQueueType(item.getQueue().toString());
-        position.setPlayerOrTeamId(Long.toString(item.getSummonerId()));
-        position.setPlayerOrTeamName(item.getSummonerName());
+        position.setSummonerId(item.getSummonerId());
+        position.setSummonerName(item.getSummonerName());
         position.setTier(item.getTier().toString());
         position.setVeteran(item.isVeteran());
         position.setWins(item.getWins());
+        position.setPosition(item.getPosition());
         return position;
     }
 
@@ -155,6 +159,20 @@ public class LeagueTransformer extends AbstractDataTransformer {
         series.setWinsRequired(item.getTarget());
         series.setWins(item.getWins());
         return series;
+    }
+
+    @Transform(from = PositionalQueues.class, to = PositionalQueuesList.class)
+    public PositionalQueuesList transform(final PositionalQueues item, final PipelineContext context) {
+        final PositionalQueuesList list = new PositionalQueuesList(item.size());
+        list.addAll(item);
+        return list;
+    }
+
+    @Transform(from = PositionalQueuesList.class, to = PositionalQueues.class)
+    public PositionalQueues transform(final PositionalQueuesList item, final PipelineContext context) {
+        final PositionalQueues list = new PositionalQueues(item.size());
+        list.addAll(item);
+        return list;
     }
 
     @Transform(from = Series.class, to = MiniSeries.class)

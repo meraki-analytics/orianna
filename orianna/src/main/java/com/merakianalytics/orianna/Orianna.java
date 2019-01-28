@@ -55,6 +55,7 @@ import com.merakianalytics.orianna.types.core.championmastery.ChampionMasterySco
 import com.merakianalytics.orianna.types.core.league.League;
 import com.merakianalytics.orianna.types.core.league.LeaguePositions;
 import com.merakianalytics.orianna.types.core.league.Leagues;
+import com.merakianalytics.orianna.types.core.league.PositionalQueues;
 import com.merakianalytics.orianna.types.core.match.Match;
 import com.merakianalytics.orianna.types.core.match.MatchHistories;
 import com.merakianalytics.orianna.types.core.match.MatchHistory;
@@ -582,6 +583,18 @@ public abstract class Orianna {
         return Versions.get();
     }
 
+    public static League.SelectBuilder.SubBuilder grandmasterLeagueInQueue(final Queue queue) {
+        return League.grandmasterInQueue(queue);
+    }
+
+    public static Leagues.SelectBuilder.SubBuilder grandmasterLeaguesInQueues(final Iterable<Queue> queues) {
+        return Leagues.grandmasterInQueues(queues);
+    }
+
+    public static Leagues.SelectBuilder.SubBuilder grandmasterLeaguesInQueues(final Queue... queues) {
+        return Leagues.grandmasterInQueues(queues);
+    }
+
     public static Item.Builder itemNamed(final String name) {
         return Item.named(name);
     }
@@ -800,6 +813,30 @@ public abstract class Orianna {
 
     public static Match.Builder matchWithId(final long id) {
         return Match.withId(id);
+    }
+
+    public static PositionalQueues.Builder positionalQueuesWithPlatform(final Platform platform) {
+        return PositionalQueues.withPlatform(platform);
+    }
+
+    public static PositionalQueues.ManyBuilder positionalQueuesWithPlatforms(final Iterable<Platform> platforms) {
+        return PositionalQueues.withPlatforms(platforms);
+    }
+
+    public static PositionalQueues.ManyBuilder positionalQueuesWithPlatforms(final Platform... platforms) {
+        return PositionalQueues.withPlatforms(platforms);
+    }
+
+    public static PositionalQueues.Builder positionalQueuesWithRegion(final Region region) {
+        return PositionalQueues.withRegion(region);
+    }
+
+    public static PositionalQueues.ManyBuilder positionalQueuesWithRegions(final Iterable<Region> regions) {
+        return PositionalQueues.withRegions(regions);
+    }
+
+    public static PositionalQueues.ManyBuilder positionalQueuesWithRegions(final Region... regions) {
+        return PositionalQueues.withRegions(regions);
     }
 
     public static ProfileIcons.Builder profileIconsWithLocale(final String locale) {
@@ -1148,7 +1185,23 @@ public abstract class Orianna {
         return Versions.withPlatform(platform);
     }
 
+    public static Versions.ManyBuilder versionsWithPlatforms(final Iterable<Platform> platforms) {
+        return Versions.withPlatforms(platforms);
+    }
+
+    public static Versions.ManyBuilder versionsWithPlatforms(final Platform... platforms) {
+        return Versions.withPlatforms(platforms);
+    }
+
     public static Versions.Builder versionsWithRegion(final Region region) {
         return Versions.withRegion(region);
+    }
+
+    public static Versions.ManyBuilder versionsWithRegions(final Iterable<Region> regions) {
+        return Versions.withRegions(regions);
+    }
+
+    public static Versions.ManyBuilder versionsWithRegions(final Region... regions) {
+        return Versions.withRegions(regions);
     }
 }

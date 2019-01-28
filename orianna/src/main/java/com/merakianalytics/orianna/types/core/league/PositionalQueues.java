@@ -1,27 +1,28 @@
-package com.merakianalytics.orianna.types.core.staticdata;
+package com.merakianalytics.orianna.types.core.league;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.google.common.base.Functions;
+import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
 import com.merakianalytics.datapipelines.iterators.CloseableIterator;
 import com.merakianalytics.datapipelines.iterators.CloseableIterators;
 import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.common.Platform;
+import com.merakianalytics.orianna.types.common.Queue;
 import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.GhostObject;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
 import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 
-public class Versions extends GhostObject.ListProxy<String, String, com.merakianalytics.orianna.types.data.staticdata.Versions> {
+public class PositionalQueues extends GhostObject.ListProxy<Queue, String, com.merakianalytics.orianna.types.data.league.PositionalQueues> {
     public static class Builder {
         private Platform platform;
 
         private Builder() {}
 
-        public Versions get() {
+        public PositionalQueues get() {
             if(platform == null) {
                 platform = Orianna.getSettings().getDefaultPlatform();
                 if(platform == null) {
@@ -31,7 +32,7 @@ public class Versions extends GhostObject.ListProxy<String, String, com.merakian
             }
 
             final ImmutableMap.Builder<String, Object> builder = ImmutableMap.<String, Object> builder().put("platform", platform);
-            return Orianna.getSettings().getPipeline().get(Versions.class, builder.build());
+            return Orianna.getSettings().getPipeline().get(PositionalQueues.class, builder.build());
         }
 
         public Builder withPlatform(final Platform platform) {
@@ -53,10 +54,10 @@ public class Versions extends GhostObject.ListProxy<String, String, com.merakian
             this.platforms = platforms;
         }
 
-        public SearchableList<Versions> get() {
+        public SearchableList<PositionalQueues> get() {
             final ImmutableMap.Builder<String, Object> builder = ImmutableMap.<String, Object> builder().put("platforms", platforms);
 
-            final CloseableIterator<Versions> result = Orianna.getSettings().getPipeline().getMany(Versions.class, builder.build(), streaming);
+            final CloseableIterator<PositionalQueues> result = Orianna.getSettings().getPipeline().getMany(PositionalQueues.class, builder.build(), streaming);
             return streaming ? SearchableLists.from(CloseableIterators.toLazyList(result)) : SearchableLists.from(CloseableIterators.toList(result));
         }
 
@@ -68,7 +69,7 @@ public class Versions extends GhostObject.ListProxy<String, String, com.merakian
 
     private static final long serialVersionUID = 6003302668600909723L;
 
-    public static Versions get() {
+    public static PositionalQueues get() {
         return new Builder().get();
     }
 
@@ -104,7 +105,7 @@ public class Versions extends GhostObject.ListProxy<String, String, com.merakian
         return new ManyBuilder(platforms);
     }
 
-    public Versions(final com.merakianalytics.orianna.types.data.staticdata.Versions coreData) {
+    public PositionalQueues(final com.merakianalytics.orianna.types.data.league.PositionalQueues coreData) {
         super(coreData, 1);
     }
 
@@ -140,52 +141,20 @@ public class Versions extends GhostObject.ListProxy<String, String, com.merakian
                 if(coreData.getPlatform() != null) {
                     builder.put("platform", Platform.withTag(coreData.getPlatform()));
                 }
-                final com.merakianalytics.orianna.types.data.staticdata.Versions data =
-                    Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Versions.class, builder.build());
+                final com.merakianalytics.orianna.types.data.league.PositionalQueues data =
+                    Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.league.PositionalQueues.class, builder.build());
                 if(data != null) {
                     coreData = data;
                 }
-                loadListProxyData(Functions.<String> identity());
+                loadListProxyData(new Function<String, Queue>() {
+                    @Override
+                    public Queue apply(final String queue) {
+                        return Queue.valueOf(queue);
+                    }
+                });
                 break;
             default:
                 break;
         }
-    }
-
-    public String truncate(final String targetVersion) {
-        String[] parts = targetVersion.split("\\.");
-
-        final int targetMajor = Integer.parseInt(parts[0]);
-        final int targetMinor = Integer.parseInt(parts[1]);
-        final int targetPatch = Integer.parseInt(parts[2]);
-
-        for(int i = 0; i < size(); i++) {
-            if(targetVersion.equals(this.get(i))) {
-                return this.get(i);
-            }
-
-            parts = this.get(i).split("\\.");
-            if(parts.length != 3) {
-                continue;
-            }
-
-            final int major = Integer.parseInt(parts[0]);
-            if(major > targetMajor) {
-                continue;
-            }
-
-            final int minor = Integer.parseInt(parts[1]);
-            if(minor > targetMinor) {
-                continue;
-            }
-
-            final int patch = Integer.parseInt(parts[2]);
-            if(patch > targetPatch) {
-                continue;
-            }
-
-            return this.get(i); // Since the versions are ordered, this is the first version <= the target.
-        }
-        return null;
     }
 }
