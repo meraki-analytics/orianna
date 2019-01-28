@@ -1211,10 +1211,10 @@ public class GhostObjectSource extends AbstractDataSource {
     @GetMany(VerificationString.class)
     public CloseableIterator<VerificationString> getManyVerificationString(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
+        final Iterable<String> summonerIds = (Iterable<String>)query.get("summonerIds");
         Utilities.checkNotNull(platform, "platform", summonerIds, "summonerIds");
 
-        final Iterator<Number> iterator = summonerIds.iterator();
+        final Iterator<String> iterator = summonerIds.iterator();
         return CloseableIterators.from(new Iterator<VerificationString>() {
             @Override
             public boolean hasNext() {
@@ -1226,7 +1226,7 @@ public class GhostObjectSource extends AbstractDataSource {
                 final com.merakianalytics.orianna.types.data.thirdpartycode.VerificationString data =
                     new com.merakianalytics.orianna.types.data.thirdpartycode.VerificationString();
                 data.setPlatform(platform.getTag());
-                data.setSummonerId(iterator.next().longValue());
+                data.setSummonerId(iterator.next());
                 return new VerificationString(data);
             }
 
@@ -1585,13 +1585,13 @@ public class GhostObjectSource extends AbstractDataSource {
     @Get(VerificationString.class)
     public VerificationString getVerificationString(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final Number summonerId = (Number)query.get("summonerId");
+        final String summonerId = (String)query.get("summonerId");
         Utilities.checkNotNull(platform, "platform", summonerId, "summonerId");
 
         final com.merakianalytics.orianna.types.data.thirdpartycode.VerificationString data =
             new com.merakianalytics.orianna.types.data.thirdpartycode.VerificationString();
         data.setPlatform(platform.getTag());
-        data.setSummonerId(summonerId.longValue());
+        data.setSummonerId(summonerId);
         return new VerificationString(data);
     }
 

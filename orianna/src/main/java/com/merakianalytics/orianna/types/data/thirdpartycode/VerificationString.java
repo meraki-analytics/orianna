@@ -31,10 +31,8 @@ public class VerificationString extends CoreData {
         }
     }
 
-    private static final long serialVersionUID = -8461377976162422339L;
-
-    private String platform, string;
-    private long summonerId;
+    private static final long serialVersionUID = 6011690200339393247L;
+    private String platform, string, summonerId;
 
     @Override
     public boolean equals(final Object obj) {
@@ -62,7 +60,11 @@ public class VerificationString extends CoreData {
         } else if(!string.equals(other.string)) {
             return false;
         }
-        if(summonerId != other.summonerId) {
+        if(summonerId == null) {
+            if(other.summonerId != null) {
+                return false;
+            }
+        } else if(!summonerId.equals(other.summonerId)) {
             return false;
         }
         return true;
@@ -85,7 +87,7 @@ public class VerificationString extends CoreData {
     /**
      * @return the summonerId
      */
-    public long getSummonerId() {
+    public String getSummonerId() {
         return summonerId;
     }
 
@@ -95,7 +97,7 @@ public class VerificationString extends CoreData {
         int result = 1;
         result = prime * result + (platform == null ? 0 : platform.hashCode());
         result = prime * result + (string == null ? 0 : string.hashCode());
-        result = prime * result + (int)(summonerId ^ summonerId >>> 32);
+        result = prime * result + (summonerId == null ? 0 : summonerId.hashCode());
         return result;
     }
 
@@ -119,7 +121,7 @@ public class VerificationString extends CoreData {
      * @param summonerId
      *        the summonerId to set
      */
-    public void setSummonerId(final long summonerId) {
+    public void setSummonerId(final String summonerId) {
         this.summonerId = summonerId;
     }
 }

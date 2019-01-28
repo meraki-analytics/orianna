@@ -25,7 +25,7 @@ public abstract class VerificationStrings {
         }
 
         public SearchableList<VerificationString> get() {
-            final List<Long> ids = new ArrayList<>();
+            final List<String> ids = new ArrayList<>();
             final Iterator<Summoner> iterator = summoners.iterator();
             Summoner summoner = iterator.next();
 
