@@ -1,64 +1,44 @@
 package com.merakianalytics.orianna.datapipeline.transformers.dtodata;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 
 import com.merakianalytics.datapipelines.PipelineContext;
 import com.merakianalytics.datapipelines.transformers.AbstractDataTransformer;
 import com.merakianalytics.datapipelines.transformers.Transform;
-import com.merakianalytics.orianna.types.data.champion.ChampionStatus;
-import com.merakianalytics.orianna.types.data.champion.ChampionStatuses;
-import com.merakianalytics.orianna.types.dto.champion.Champion;
-import com.merakianalytics.orianna.types.dto.champion.ChampionList;
+import com.merakianalytics.orianna.types.data.champion.ChampionRotation;
+import com.merakianalytics.orianna.types.dto.champion.ChampionInfo;
 
 public class ChampionTransformer extends AbstractDataTransformer {
-    @Transform(from = Champion.class, to = ChampionStatus.class)
-    public ChampionStatus transform(final Champion item, final PipelineContext context) {
-        final ChampionStatus status = new ChampionStatus();
-        status.setEnabled(item.isActive());
-        status.setEnabledInCoopVsAI(item.isBotMmEnabled());
-        status.setEnabledInCustoms(item.isBotEnabled());
-        status.setEnabledInRanked(item.isRankedPlayEnabled());
-        status.setFreeToPlay(item.isFreeToPlay());
-        status.setId((int)item.getId());
-        status.setPlatform(item.getPlatform());
-        return status;
-    }
-
-    @Transform(from = ChampionList.class, to = ChampionStatuses.class)
-    public ChampionStatuses transform(final ChampionList item, final PipelineContext context) {
-        final ChampionStatuses statuses = new ChampionStatuses(item.getChampions().size());
-        for(final Champion champion : item.getChampions()) {
-            statuses.add(transform(champion, context));
+    @Transform(from = ChampionInfo.class, to = ChampionRotation.class)
+    public ChampionRotation transform(final ChampionInfo item, final PipelineContext context) {
+        final ChampionRotation rotation = new ChampionRotation();
+        rotation.setFreeChampionIds(new HashSet<Integer>(item.getFreeChampionIds().size()));
+        for(final Integer id : item.getFreeChampionIds()) {
+            rotation.getFreeChampionIds().add(id);
         }
-        statuses.setFreeToPlay(item.isFreeToPlay());
-        statuses.setPlatform(item.getPlatform());
-        return statuses;
-    }
-
-    @Transform(from = ChampionStatus.class, to = Champion.class)
-    public Champion transform(final ChampionStatus item, final PipelineContext context) {
-        final Champion status = new Champion();
-        status.setActive(item.isEnabled());
-        status.setBotMmEnabled(item.isEnabledInCoopVsAI());
-        status.setBotEnabled(item.isEnabledInCustoms());
-        status.setRankedPlayEnabled(item.isEnabledInRanked());
-        status.setFreeToPlay(item.isFreeToPlay());
-        status.setId(item.getId());
-        status.setPlatform(item.getPlatform());
-        return status;
-    }
-
-    @Transform(from = ChampionStatuses.class, to = ChampionList.class)
-    public ChampionList transform(final ChampionStatuses item, final PipelineContext context) {
-        final ChampionList statuses = new ChampionList();
-        final List<Champion> stats = new ArrayList<>(item.size());
-        for(final ChampionStatus status : item) {
-            stats.add(transform(status, context));
+        rotation.setFreeChampionIdsForNewPlayers(new HashSet<Integer>(item.getFreeChampionIdsForNewPlayers().size()));
+        for(final Integer id : item.getFreeChampionIdsForNewPlayers()) {
+            rotation.getFreeChampionIdsForNewPlayers().add(id);
         }
-        statuses.setChampions(stats);
-        statuses.setFreeToPlay(item.isFreeToPlay());
-        statuses.setPlatform(item.getPlatform());
-        return statuses;
+        rotation.setMaxNewPlayerLevel(item.getMaxNewPlayerLevel());
+        rotation.setPlatform(item.getPlatform());
+        return rotation;
+    }
+
+    @Transform(from = ChampionRotation.class, to = ChampionInfo.class)
+    public ChampionInfo transform(final ChampionRotation item, final PipelineContext context) {
+        final ChampionInfo info = new ChampionInfo();
+        info.setFreeChampionIds(new ArrayList<Integer>(item.getFreeChampionIds().size()));
+        for(final Integer id : item.getFreeChampionIds()) {
+            info.getFreeChampionIds().add(id);
+        }
+        info.setFreeChampionIdsForNewPlayers(new ArrayList<Integer>(item.getFreeChampionIdsForNewPlayers().size()));
+        for(final Integer id : item.getFreeChampionIdsForNewPlayers()) {
+            info.getFreeChampionIdsForNewPlayers().add(id);
+        }
+        info.setMaxNewPlayerLevel(item.getMaxNewPlayerLevel());
+        info.setPlatform(item.getPlatform());
+        return info;
     }
 }

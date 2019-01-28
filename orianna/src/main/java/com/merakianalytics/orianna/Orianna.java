@@ -46,6 +46,8 @@ import com.merakianalytics.orianna.types.common.OriannaException;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Queue;
 import com.merakianalytics.orianna.types.common.Region;
+import com.merakianalytics.orianna.types.core.champion.ChampionRotation;
+import com.merakianalytics.orianna.types.core.champion.ChampionRotations;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
@@ -340,6 +342,30 @@ public abstract class Orianna {
 
     public static Champion.Builder championNamed(final String name) {
         return Champion.named(name);
+    }
+
+    public static ChampionRotations.Builder championRotationsWithPlatforms(final Iterable<Platform> platforms) {
+        return ChampionRotations.withPlatforms(platforms);
+    }
+
+    public static ChampionRotations.Builder championRotationsWithPlatforms(final Platform... platforms) {
+        return ChampionRotations.withPlatforms(platforms);
+    }
+
+    public static ChampionRotations.Builder championRotationsWithRegions(final Iterable<Region> regions) {
+        return ChampionRotations.withRegions(regions);
+    }
+
+    public static ChampionRotations.Builder championRotationsWithRegions(final Region... regions) {
+        return ChampionRotations.withRegions(regions);
+    }
+
+    public static ChampionRotation.Builder championRotationWithPlatform(final Platform platform) {
+        return ChampionRotation.withPlatform(platform);
+    }
+
+    public static ChampionRotation.Builder championRotationWithRegion(final Region region) {
+        return ChampionRotation.withRegion(region);
     }
 
     public static Champions.SubsetBuilder championsNamed(final Iterable<String> names) {

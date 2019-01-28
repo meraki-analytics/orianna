@@ -1,6 +1,7 @@
 package com.merakianalytics.orianna.examples;
 
 import com.merakianalytics.orianna.types.common.Region;
+import com.merakianalytics.orianna.types.core.champion.ChampionRotation;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.ChampionSpell;
 import com.merakianalytics.orianna.types.core.staticdata.Champions;
@@ -27,7 +28,9 @@ public class GetChampions {
         for(final Item item : annie.getRecommendedItems().get(0).get(0).keySet()) {
             System.out.println(item.getName());
         }
-        System.out.println(annie.isFreeToPlay());
+
+        final ChampionRotation rotation = ChampionRotation.withRegion(Region.NORTH_AMERICA).get();
+        System.out.println(rotation.getFreeChampions().contains(annie));
 
         final Champion ziggs = Champion.named("Ziggs").withRegion(Region.NORTH_AMERICA).get();
         System.out.println(ziggs.getName());
@@ -35,7 +38,7 @@ public class GetChampions {
         for(final Item item : annie.getRecommendedItems().get(0).get(0).keySet()) {
             System.out.println(item.getName());
         }
-        System.out.println(annie.isFreeToPlay());
+        System.out.println(rotation.getFreeChampions().contains(annie));
         for(final ChampionSpell spell : ziggs.getSpells()) {
             for(final SpellVariables var : spell.getVariables()) {
                 System.out.println(spell.getName() + " " + var);

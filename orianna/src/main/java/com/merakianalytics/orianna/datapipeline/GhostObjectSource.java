@@ -19,6 +19,7 @@ import com.merakianalytics.orianna.datapipeline.common.Utilities;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Queue;
 import com.merakianalytics.orianna.types.common.Tier;
+import com.merakianalytics.orianna.types.core.champion.ChampionRotation;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
@@ -31,7 +32,6 @@ import com.merakianalytics.orianna.types.core.match.TournamentMatches;
 import com.merakianalytics.orianna.types.core.spectator.CurrentMatch;
 import com.merakianalytics.orianna.types.core.spectator.FeaturedMatches;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
-import com.merakianalytics.orianna.types.core.staticdata.Champion.ChampionData;
 import com.merakianalytics.orianna.types.core.staticdata.Champions;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
 import com.merakianalytics.orianna.types.core.staticdata.Items;
@@ -79,14 +79,14 @@ public class GhostObjectSource extends AbstractDataSource {
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
 
-        final ChampionData data = new ChampionData();
-        data.getChampion().setId(id == null ? 0 : id.intValue());
-        data.getChampion().setName(name);
-        data.getChampion().setKey(key);
-        data.getChampion().setPlatform(platform.getTag());
-        data.getChampion().setVersion(version);
-        data.getChampion().setLocale(locale);
-        data.getChampion().setIncludedData(includedData);
+        final com.merakianalytics.orianna.types.data.staticdata.Champion data = new com.merakianalytics.orianna.types.data.staticdata.Champion();
+        data.setId(id == null ? 0 : id.intValue());
+        data.setName(name);
+        data.setKey(key);
+        data.setPlatform(platform.getTag());
+        data.setVersion(version);
+        data.setLocale(locale);
+        data.setIncludedData(includedData);
         return new Champion(data);
     }
 
@@ -129,6 +129,16 @@ public class GhostObjectSource extends AbstractDataSource {
         data.setPlatform(platform.getTag());
         data.setSummonerId(summonerId.longValue());
         return new ChampionMasteryScore(data);
+    }
+
+    @Get(ChampionRotation.class)
+    public ChampionRotation getChampionRotation(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
+
+        final com.merakianalytics.orianna.types.data.champion.ChampionRotation data = new com.merakianalytics.orianna.types.data.champion.ChampionRotation();
+        data.setPlatform(platform.getTag());
+        return new ChampionRotation(data);
     }
 
     @SuppressWarnings("unchecked")
@@ -316,19 +326,19 @@ public class GhostObjectSource extends AbstractDataSource {
 
             @Override
             public Champion next() {
-                final ChampionData data = new ChampionData();
+                final com.merakianalytics.orianna.types.data.staticdata.Champion data = new com.merakianalytics.orianna.types.data.staticdata.Champion();
                 if(ids != null) {
                     final int id = ((Number)iterator.next()).intValue();
-                    data.getChampion().setId(id);
+                    data.setId(id);
                 } else if(names != null) {
-                    data.getChampion().setName((String)iterator.next());
+                    data.setName((String)iterator.next());
                 } else if(keys != null) {
-                    data.getChampion().setKey((String)iterator.next());
+                    data.setKey((String)iterator.next());
                 }
-                data.getChampion().setPlatform(platform.getTag());
-                data.getChampion().setVersion(version);
-                data.getChampion().setLocale(locale);
-                data.getChampion().setIncludedData(includedData);
+                data.setPlatform(platform.getTag());
+                data.setVersion(version);
+                data.setLocale(locale);
+                data.setIncludedData(includedData);
                 return new Champion(data);
             }
 
@@ -422,6 +432,34 @@ public class GhostObjectSource extends AbstractDataSource {
                 data.setPlatform(platform.getTag());
                 data.setSummonerId(iterator.next().longValue());
                 return new ChampionMasteryScore(data);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    @GetMany(ChampionRotation.class)
+    public CloseableIterator<ChampionRotation> getManyChampionRotation(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Iterable<Platform> platforms = (Iterable<Platform>)query.get("platforms");
+        Utilities.checkNotNull(platforms, "platforms");
+
+        final Iterator<Platform> iterator = platforms.iterator();
+        return CloseableIterators.from(new Iterator<ChampionRotation>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public ChampionRotation next() {
+                final com.merakianalytics.orianna.types.data.champion.ChampionRotation data =
+                    new com.merakianalytics.orianna.types.data.champion.ChampionRotation();
+                data.setPlatform(iterator.next().getTag());
+                return new ChampionRotation(data);
             }
 
             @Override

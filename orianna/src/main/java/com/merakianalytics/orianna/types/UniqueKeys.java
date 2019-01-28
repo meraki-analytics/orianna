@@ -8,6 +8,7 @@ import com.google.common.collect.ImmutableSet;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Queue;
 import com.merakianalytics.orianna.types.common.Tier;
+import com.merakianalytics.orianna.types.core.champion.ChampionRotation;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
@@ -43,6 +44,7 @@ import com.merakianalytics.orianna.types.core.staticdata.Versions;
 import com.merakianalytics.orianna.types.core.status.ShardStatus;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 import com.merakianalytics.orianna.types.core.thirdpartycode.VerificationString;
+import com.merakianalytics.orianna.types.dto.champion.ChampionInfo;
 import com.merakianalytics.orianna.types.dto.league.LeagueList;
 import com.merakianalytics.orianna.types.dto.league.SummonerPositions;
 import com.merakianalytics.orianna.types.dto.match.MatchTimeline;
@@ -63,7 +65,7 @@ public abstract class UniqueKeys {
     private static final Set<Tier> UNIQUE_TIERS = ImmutableSet.of(Tier.CHALLENGER, Tier.MASTER);
 
     public static int[] forChampion(final Champion champion) {
-        final com.merakianalytics.orianna.types.data.staticdata.Champion data = champion.getCoreData().getChampion();
+        final com.merakianalytics.orianna.types.data.staticdata.Champion data = champion.getCoreData();
         if(data.getId() != 0 && data.getName() != null && data.getKey() != null) {
             return new int[] {
                 Arrays.hashCode(new Object[] {
@@ -181,6 +183,18 @@ public abstract class UniqueKeys {
             com.merakianalytics.orianna.types.dto.staticdata.Champion.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
             (String)query.get("version"), (String)query.get("locale"),
             id == null ? name == null ? key : name : id.intValue(), (Set<String>)query.get("includedData")
+        });
+    }
+
+    public static int forChampionInfoDto(final ChampionInfo info) {
+        return Arrays.hashCode(new Object[] {
+            ChampionInfo.class.getCanonicalName(), info.getPlatform()
+        });
+    }
+
+    public static int forChampionInfoDtoQuery(final java.util.Map<String, Object> query) {
+        return Arrays.hashCode(new Object[] {
+            ChampionInfo.class.getCanonicalName(), ((Platform)query.get("platform")).getTag()
         });
     }
 
@@ -333,6 +347,30 @@ public abstract class UniqueKeys {
         });
     }
 
+    public static int forChampionRotation(final ChampionRotation rotation) {
+        return Arrays.hashCode(new Object[] {
+            ChampionRotation.class.getCanonicalName(), rotation.getPlatform().getTag()
+        });
+    }
+
+    public static int forChampionRotationData(final com.merakianalytics.orianna.types.data.champion.ChampionRotation rotation) {
+        return Arrays.hashCode(new Object[] {
+            com.merakianalytics.orianna.types.data.champion.ChampionRotation.class.getCanonicalName(), rotation.getPlatform()
+        });
+    }
+
+    public static int forChampionRotationDataQuery(final java.util.Map<String, Object> query) {
+        return Arrays.hashCode(new Object[] {
+            com.merakianalytics.orianna.types.data.champion.ChampionRotation.class.getCanonicalName(), ((Platform)query.get("platform")).getTag()
+        });
+    }
+
+    public static int forChampionRotationQuery(final java.util.Map<String, Object> query) {
+        return Arrays.hashCode(new Object[] {
+            ChampionRotation.class.getCanonicalName(), ((Platform)query.get("platform")).getTag()
+        });
+    }
+
     public static int forChampions(final Champions champions) {
         final com.merakianalytics.orianna.types.data.staticdata.Champions data = champions.getCoreData();
         return Arrays.hashCode(new Object[] {
@@ -361,62 +399,6 @@ public abstract class UniqueKeys {
         return Arrays.hashCode(new Object[] {
             Champions.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("version"), (String)query.get("locale"),
             (Set<String>)query.get("includedData")
-        });
-    }
-
-    public static int forChampionStatusData(final com.merakianalytics.orianna.types.data.champion.ChampionStatus champion) {
-        return Arrays.hashCode(new Object[] {
-            com.merakianalytics.orianna.types.data.champion.ChampionStatus.class.getCanonicalName(), champion.getPlatform(), champion.getId()
-        });
-    }
-
-    public static int forChampionStatusDataQuery(final java.util.Map<String, Object> query) {
-        return Arrays.hashCode(new Object[] {
-            com.merakianalytics.orianna.types.data.champion.ChampionStatus.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-            ((Number)query.get("id")).intValue()
-        });
-    }
-
-    public static int forChampionStatusDto(final com.merakianalytics.orianna.types.dto.champion.Champion champion) {
-        return Arrays.hashCode(new Object[] {
-            com.merakianalytics.orianna.types.dto.champion.Champion.class.getCanonicalName(), champion.getPlatform(), champion.getId()
-        });
-    }
-
-    public static int forChampionStatusDtoQuery(final java.util.Map<String, Object> query) {
-        return Arrays.hashCode(new Object[] {
-            com.merakianalytics.orianna.types.dto.champion.Champion.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-            ((Number)query.get("id")).longValue()
-        });
-    }
-
-    public static int forChampionStatusesData(final com.merakianalytics.orianna.types.data.champion.ChampionStatuses champions) {
-        return Arrays.hashCode(new Object[] {
-            com.merakianalytics.orianna.types.data.champion.ChampionStatuses.class.getCanonicalName(), champions.getPlatform(), champions.isFreeToPlay()
-        });
-    }
-
-    public static int forChampionStatusesDataQuery(final java.util.Map<String, Object> query) {
-        final Boolean freeToPlay = query.get("freeToPlay") == null ? Boolean.FALSE : (Boolean)query.get("freeToPlay");
-
-        return Arrays.hashCode(new Object[] {
-            com.merakianalytics.orianna.types.data.champion.ChampionStatuses.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-            freeToPlay.booleanValue()
-        });
-    }
-
-    public static int forChampionStatusListDto(final com.merakianalytics.orianna.types.dto.champion.ChampionList champions) {
-        return Arrays.hashCode(new Object[] {
-            com.merakianalytics.orianna.types.dto.champion.ChampionList.class.getCanonicalName(), champions.getPlatform(), champions.isFreeToPlay()
-        });
-    }
-
-    public static int forChampionStatusListDtoQuery(final java.util.Map<String, Object> query) {
-        final Boolean freeToPlay = query.get("freeToPlay") == null ? Boolean.FALSE : (Boolean)query.get("freeToPlay");
-
-        return Arrays.hashCode(new Object[] {
-            com.merakianalytics.orianna.types.dto.champion.ChampionList.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-            freeToPlay.booleanValue()
         });
     }
 
@@ -884,6 +866,31 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
+    public static Iterator<Integer> forManyChampionInfoDtoQuery(final java.util.Map<String, Object> query) {
+        final Iterable<Platform> platforms = (Iterable<Platform>)query.get("platforms");
+
+        final Iterator<Platform> iterator = platforms.iterator();
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                return Arrays.hashCode(new Object[] {
+                    com.merakianalytics.orianna.types.dto.champion.ChampionInfo.class.getCanonicalName(), iterator.next().getTag()
+                });
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+    @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyChampionListDtoQuery(final java.util.Map<String, Object> query) {
         final Iterable<String> versions = (Iterable<String>)query.get("versions");
 
@@ -1180,6 +1187,56 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
+    public static Iterator<Integer> forManyChampionRotationDataQuery(final java.util.Map<String, Object> query) {
+        final Iterable<Platform> platforms = (Iterable<Platform>)query.get("platforms");
+
+        final Iterator<Platform> iterator = platforms.iterator();
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                return Arrays.hashCode(new Object[] {
+                    com.merakianalytics.orianna.types.data.champion.ChampionRotation.class.getCanonicalName(), iterator.next().getTag()
+                });
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Iterator<Integer> forManyChampionRotationQuery(final java.util.Map<String, Object> query) {
+        final Iterable<Platform> platforms = (Iterable<Platform>)query.get("platforms");
+
+        final Iterator<Platform> iterator = platforms.iterator();
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                return Arrays.hashCode(new Object[] {
+                    ChampionRotation.class.getCanonicalName(), iterator.next().getTag()
+                });
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+    @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyChampionsDataQuery(final java.util.Map<String, Object> query) {
         final Iterable<String> versions = (Iterable<String>)query.get("versions");
 
@@ -1196,111 +1253,6 @@ public abstract class UniqueKeys {
                     com.merakianalytics.orianna.types.data.staticdata.Champions.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
                     iterator.next(), (String)query.get("locale"),
                     (Set<String>)query.get("includedData")
-                });
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException();
-            }
-        };
-    }
-
-    @SuppressWarnings("unchecked")
-    public static Iterator<Integer> forManyChampionStatusDataQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
-
-        final Iterator<Number> iterator = ids.iterator();
-        return new Iterator<Integer>() {
-            @Override
-            public boolean hasNext() {
-                return iterator.hasNext();
-            }
-
-            @Override
-            public Integer next() {
-                return Arrays.hashCode(new Object[] {
-                    com.merakianalytics.orianna.types.data.champion.ChampionStatus.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-                    iterator.next().intValue()
-                });
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException();
-            }
-        };
-    }
-
-    @SuppressWarnings("unchecked")
-    public static Iterator<Integer> forManyChampionStatusDtoQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
-
-        final Iterator<Number> iterator = ids.iterator();
-        return new Iterator<Integer>() {
-            @Override
-            public boolean hasNext() {
-                return iterator.hasNext();
-            }
-
-            @Override
-            public Integer next() {
-                return Arrays.hashCode(new Object[] {
-                    com.merakianalytics.orianna.types.dto.champion.Champion.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-                    iterator.next().longValue()
-                });
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException();
-            }
-        };
-    }
-
-    @SuppressWarnings("unchecked")
-    public static Iterator<Integer> forManyChampionStatusesDataQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Platform> platforms = (Iterable<Platform>)query.get("platforms");
-        final Boolean freeToPlay = query.get("freeToPlay") == null ? Boolean.FALSE : (Boolean)query.get("freeToPlay");
-
-        final Iterator<Platform> iterator = platforms.iterator();
-        return new Iterator<Integer>() {
-            @Override
-            public boolean hasNext() {
-                return iterator.hasNext();
-            }
-
-            @Override
-            public Integer next() {
-                return Arrays.hashCode(new Object[] {
-                    com.merakianalytics.orianna.types.data.champion.ChampionStatuses.class.getCanonicalName(), iterator.next().getTag(),
-                    freeToPlay.booleanValue()
-                });
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException();
-            }
-        };
-    }
-
-    @SuppressWarnings("unchecked")
-    public static Iterator<Integer> forManyChampionStatusListDtoQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Platform> platforms = (Iterable<Platform>)query.get("platforms");
-        final Boolean freeToPlay = query.get("freeToPlay") == null ? Boolean.FALSE : (Boolean)query.get("freeToPlay");
-
-        final Iterator<Platform> iterator = platforms.iterator();
-        return new Iterator<Integer>() {
-            @Override
-            public boolean hasNext() {
-                return iterator.hasNext();
-            }
-
-            @Override
-            public Integer next() {
-                return Arrays.hashCode(new Object[] {
-                    com.merakianalytics.orianna.types.dto.champion.ChampionList.class.getCanonicalName(), iterator.next().getTag(), freeToPlay.booleanValue()
                 });
             }
 

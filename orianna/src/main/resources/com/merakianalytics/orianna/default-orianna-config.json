@@ -8,6 +8,10 @@
       "className": "com.merakianalytics.orianna.datapipeline.InMemoryCache",
       "config": {
         "expirationPeriods": {
+          "com.merakianalytics.orianna.types.core.champion.ChampionRotation": {
+            "period": 6,
+            "unit": "HOURS"
+          },
           "com.merakianalytics.orianna.types.core.championmastery.ChampionMastery": {
             "period": 15,
             "unit": "MINUTES"
