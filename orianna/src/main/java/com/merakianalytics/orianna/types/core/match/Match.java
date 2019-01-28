@@ -120,7 +120,7 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
             @Override
             public Summoner get() {
                 load(MATCH_LOAD_GROUP);
-                if(coreData.getAccountId() == 0L) {
+                if(coreData.getAccountId() == null) {
                     return null;
                 }
                 return Summoner.withAccountId(coreData.getAccountId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
@@ -169,7 +169,7 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
         private final Supplier<Summoner> summoner = Suppliers.memoize(new Supplier<Summoner>() {
             @Override
             public Summoner get() {
-                if(coreData.getCurrentAccountId() == 0L) {
+                if(coreData.getCurrentAccountId() == null) {
                     return null;
                 }
                 final Summoner summoner =
@@ -177,7 +177,7 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
                 if(summoner.getCoreData().getName() == null && coreData.getSummonerName() != null) {
                     summoner.getCoreData().setName(coreData.getSummonerName());
                 }
-                if(summoner.getCoreData().getId() == 0L && coreData.getSummonerId() != 0L) {
+                if(summoner.getCoreData().getId() == null && coreData.getSummonerId() != null) {
                     summoner.getCoreData().setId(coreData.getSummonerId());
                 }
                 return summoner;

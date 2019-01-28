@@ -5,9 +5,8 @@ import java.util.List;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class Participant extends CoreData {
-    private static final long serialVersionUID = -5799473707680536580L;
-    private long currentAccountId, summonerId, accountId;
-    private String currentPlatform, platform, highestTierInSeason, summonerName, matchHistoryURI, version, lane, role;
+    private static final long serialVersionUID = -5475067567739256742L;
+    private String currentPlatform, platform, highestTierInSeason, summonerName, matchHistoryURI, version, lane, role, currentAccountId, summonerId, accountId;
     private List<Integer> items;
     private List<RuneStats> runeStats;
     private ParticipantStats stats;
@@ -26,13 +25,21 @@ public class Participant extends CoreData {
             return false;
         }
         final Participant other = (Participant)obj;
-        if(accountId != other.accountId) {
+        if(accountId == null) {
+            if(other.accountId != null) {
+                return false;
+            }
+        } else if(!accountId.equals(other.accountId)) {
             return false;
         }
         if(championId != other.championId) {
             return false;
         }
-        if(currentAccountId != other.currentAccountId) {
+        if(currentAccountId == null) {
+            if(other.currentAccountId != null) {
+                return false;
+            }
+        } else if(!currentAccountId.equals(other.currentAccountId)) {
             return false;
         }
         if(currentPlatform == null) {
@@ -110,7 +117,11 @@ public class Participant extends CoreData {
         } else if(!stats.equals(other.stats)) {
             return false;
         }
-        if(summonerId != other.summonerId) {
+        if(summonerId == null) {
+            if(other.summonerId != null) {
+                return false;
+            }
+        } else if(!summonerId.equals(other.summonerId)) {
             return false;
         }
         if(summonerName == null) {
@@ -149,7 +160,7 @@ public class Participant extends CoreData {
     /**
      * @return the accountId
      */
-    public long getAccountId() {
+    public String getAccountId() {
         return accountId;
     }
 
@@ -163,7 +174,7 @@ public class Participant extends CoreData {
     /**
      * @return the currentAccountId
      */
-    public long getCurrentAccountId() {
+    public String getCurrentAccountId() {
         return currentAccountId;
     }
 
@@ -261,7 +272,7 @@ public class Participant extends CoreData {
     /**
      * @return the summonerId
      */
-    public long getSummonerId() {
+    public String getSummonerId() {
         return summonerId;
     }
 
@@ -311,9 +322,9 @@ public class Participant extends CoreData {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (int)(accountId ^ accountId >>> 32);
+        result = prime * result + (accountId == null ? 0 : accountId.hashCode());
         result = prime * result + championId;
-        result = prime * result + (int)(currentAccountId ^ currentAccountId >>> 32);
+        result = prime * result + (currentAccountId == null ? 0 : currentAccountId.hashCode());
         result = prime * result + (currentPlatform == null ? 0 : currentPlatform.hashCode());
         result = prime * result + (highestTierInSeason == null ? 0 : highestTierInSeason.hashCode());
         result = prime * result + (items == null ? 0 : items.hashCode());
@@ -327,7 +338,7 @@ public class Participant extends CoreData {
         result = prime * result + (runeStats == null ? 0 : runeStats.hashCode());
         result = prime * result + secondaryRunePath;
         result = prime * result + (stats == null ? 0 : stats.hashCode());
-        result = prime * result + (int)(summonerId ^ summonerId >>> 32);
+        result = prime * result + (summonerId == null ? 0 : summonerId.hashCode());
         result = prime * result + (summonerName == null ? 0 : summonerName.hashCode());
         result = prime * result + summonerSpellDId;
         result = prime * result + summonerSpellFId;
@@ -341,7 +352,7 @@ public class Participant extends CoreData {
      * @param accountId
      *        the accountId to set
      */
-    public void setAccountId(final long accountId) {
+    public void setAccountId(final String accountId) {
         this.accountId = accountId;
     }
 
@@ -357,7 +368,7 @@ public class Participant extends CoreData {
      * @param currentAccountId
      *        the currentAccountId to set
      */
-    public void setCurrentAccountId(final long currentAccountId) {
+    public void setCurrentAccountId(final String currentAccountId) {
         this.currentAccountId = currentAccountId;
     }
 
@@ -469,7 +480,7 @@ public class Participant extends CoreData {
      * @param summonerId
      *        the summonerId to set
      */
-    public void setSummonerId(final long summonerId) {
+    public void setSummonerId(final String summonerId) {
         this.summonerId = summonerId;
     }
 

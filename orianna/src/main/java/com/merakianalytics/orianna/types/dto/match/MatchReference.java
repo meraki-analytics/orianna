@@ -3,10 +3,10 @@ package com.merakianalytics.orianna.types.dto.match;
 import com.merakianalytics.orianna.types.dto.DataObject;
 
 public class MatchReference extends DataObject {
-    private static final long serialVersionUID = 1703644943475245715L;
+    private static final long serialVersionUID = 4433468912283592631L;
     private int champion, season, queue;
-    private long gameId, timestamp, accountId;
-    private String lane, platformId, role;
+    private long gameId, timestamp;
+    private String lane, platformId, role, accountId;
 
     @Override
     public boolean equals(final Object obj) {
@@ -20,7 +20,11 @@ public class MatchReference extends DataObject {
             return false;
         }
         final MatchReference other = (MatchReference)obj;
-        if(accountId != other.accountId) {
+        if(accountId == null) {
+            if(other.accountId != null) {
+                return false;
+            }
+        } else if(!accountId.equals(other.accountId)) {
             return false;
         }
         if(champion != other.champion) {
@@ -65,7 +69,7 @@ public class MatchReference extends DataObject {
     /**
      * @return the accountId
      */
-    public long getAccountId() {
+    public String getAccountId() {
         return accountId;
     }
 
@@ -129,7 +133,7 @@ public class MatchReference extends DataObject {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (int)(accountId ^ accountId >>> 32);
+        result = prime * result + (accountId == null ? 0 : accountId.hashCode());
         result = prime * result + champion;
         result = prime * result + (int)(gameId ^ gameId >>> 32);
         result = prime * result + (lane == null ? 0 : lane.hashCode());
@@ -145,7 +149,7 @@ public class MatchReference extends DataObject {
      * @param accountId
      *        the accountId to set
      */
-    public void setAccountId(final long accountId) {
+    public void setAccountId(final String accountId) {
         this.accountId = accountId;
     }
 

@@ -273,7 +273,7 @@ public class MatchHistory extends GhostObject<com.merakianalytics.orianna.types.
     private final Supplier<Summoner> summoner = Suppliers.memoize(new Supplier<Summoner>() {
         @Override
         public Summoner get() {
-            if(coreData.getAccountId() == 0L) {
+            if(coreData.getAccountId() == null) {
                 return null;
             }
             return Summoner.withAccountId(coreData.getAccountId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
@@ -391,11 +391,10 @@ public class MatchHistory extends GhostObject<com.merakianalytics.orianna.types.
 
     private ImmutableMap.Builder<String, Object> getQueryBuilder(final com.merakianalytics.orianna.types.data.match.MatchList data) {
         final ImmutableMap.Builder<String, Object> builder = ImmutableMap.builder();
-        builder.put("recent", data.isRecent());
         if(data.getPlatform() != null) {
             builder.put("platform", Platform.withTag(data.getPlatform()));
         }
-        if(data.getAccountId() != 0L) {
+        if(data.getAccountId() != null) {
             builder.put("accountId", data.getAccountId());
         }
         if(data.getChampions() != null) {
@@ -458,10 +457,6 @@ public class MatchHistory extends GhostObject<com.merakianalytics.orianna.types.
         return matches.isEmpty();
     }
 
-    public boolean isRecent() {
-        return coreData.isRecent();
-    }
-
     @Override
     public Iterator<Match> iterator() {
         load(MATCH_HISTORY_LOAD_GROUP);
@@ -500,14 +495,6 @@ public class MatchHistory extends GhostObject<com.merakianalytics.orianna.types.
         synchronized(batchLoadLock) {
             if(complete) {
                 return null;
-            }
-
-            if(coreData.isRecent()) {
-                final ImmutableMap.Builder<String, Object> builder = getQueryBuilder(coreData);
-                final com.merakianalytics.orianna.types.data.match.MatchList list =
-                    Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.match.MatchList.class, builder.build());
-                complete = true;
-                return list;
             }
 
             final ImmutableMap.Builder<String, Object> builder = getQueryBuilder(coreData);

@@ -789,7 +789,7 @@ public class GhostObjectSource extends AbstractDataSource {
     @GetMany(MatchHistory.class)
     public CloseableIterator<MatchHistory> getManyMatchHistory(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final Iterable<Number> accountIds = (Iterable<Number>)query.get("accountIds");
+        final Iterable<String> accountIds = (Iterable<String>)query.get("accountIds");
         final Set<Integer> queues = query.get("queues") == null ? Collections.<Integer> emptySet() : (Set<Integer>)query.get("queues");
         final Set<Integer> seasons = query.get("seasons") == null ? Collections.<Integer> emptySet() : (Set<Integer>)query.get("seasons");
         final Set<Integer> champions = query.get("champions") == null ? Collections.<Integer> emptySet() : (Set<Integer>)query.get("champions");
@@ -797,10 +797,9 @@ public class GhostObjectSource extends AbstractDataSource {
         final Number endTime = (Number)query.get("endTime");
         final Number beginIndex = (Number)query.get("beginIndex");
         final Number endIndex = (Number)query.get("endIndex");
-        final boolean recent = query.get("recent") == null ? false : (Boolean)query.get("recent");
         Utilities.checkNotNull(platform, "platform", accountIds, "accountIds");
 
-        final Iterator<Number> iterator = accountIds.iterator();
+        final Iterator<String> iterator = accountIds.iterator();
         return CloseableIterators.from(new Iterator<MatchHistory>() {
             @Override
             public boolean hasNext() {
@@ -812,7 +811,7 @@ public class GhostObjectSource extends AbstractDataSource {
                 final com.merakianalytics.orianna.types.data.match.MatchList data =
                     new com.merakianalytics.orianna.types.data.match.MatchList();
                 data.setPlatform(platform.getTag());
-                data.setAccountId(iterator.next().longValue());
+                data.setAccountId(iterator.next());
                 data.setQueues(queues);
                 data.setSeasons(seasons);
                 data.setChampions(champions);
@@ -820,7 +819,6 @@ public class GhostObjectSource extends AbstractDataSource {
                 data.setEndTime(endTime == null ? null : new DateTime(endTime.longValue()));
                 data.setStartIndex(beginIndex == null ? 0 : beginIndex.intValue());
                 data.setEndIndex(endIndex == null ? 0 : endIndex.intValue());
-                data.setRecent(recent);
                 return new MatchHistory(data);
             }
 
@@ -1330,7 +1328,7 @@ public class GhostObjectSource extends AbstractDataSource {
     @Get(MatchHistory.class)
     public MatchHistory getMatchHistory(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final Number accountId = (Number)query.get("accountId");
+        final String accountId = (String)query.get("accountId");
         final Set<Integer> queues = query.get("queues") == null ? Collections.<Integer> emptySet() : (Set<Integer>)query.get("queues");
         final Set<Integer> seasons = query.get("seasons") == null ? Collections.<Integer> emptySet() : (Set<Integer>)query.get("seasons");
         final Set<Integer> champions = query.get("champions") == null ? Collections.<Integer> emptySet() : (Set<Integer>)query.get("champions");
@@ -1338,13 +1336,12 @@ public class GhostObjectSource extends AbstractDataSource {
         final Number endTime = (Number)query.get("endTime");
         final Number beginIndex = (Number)query.get("beginIndex");
         final Number endIndex = (Number)query.get("endIndex");
-        final boolean recent = query.get("recent") == null ? false : (Boolean)query.get("recent");
         Utilities.checkNotNull(platform, "platform", accountId, "accountId");
 
         final com.merakianalytics.orianna.types.data.match.MatchList data =
             new com.merakianalytics.orianna.types.data.match.MatchList();
         data.setPlatform(platform.getTag());
-        data.setAccountId(accountId.longValue());
+        data.setAccountId(accountId);
         data.setQueues(queues);
         data.setSeasons(seasons);
         data.setChampions(champions);
@@ -1352,7 +1349,6 @@ public class GhostObjectSource extends AbstractDataSource {
         data.setEndTime(endTime == null ? null : new DateTime(endTime.longValue()));
         data.setStartIndex(beginIndex == null ? 0 : beginIndex.intValue());
         data.setEndIndex(endIndex == null ? 0 : endIndex.intValue());
-        data.setRecent(recent);
         return new MatchHistory(data);
     }
 

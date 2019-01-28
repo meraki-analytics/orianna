@@ -27,7 +27,7 @@ public abstract class MatchHistories {
     public static class Builder {
         public class RecentBuilder {
             public SearchableList<MatchHistory> get() {
-                final List<Long> ids = new ArrayList<>();
+                final List<String> ids = new ArrayList<>();
                 final Iterator<Summoner> iterator = summoners.iterator();
                 Summoner summoner = iterator.next();
 
@@ -80,7 +80,7 @@ public abstract class MatchHistories {
                 throw new IllegalStateException("Can't set endTime without setting beginTime!");
             }
 
-            final List<Long> ids = new ArrayList<>();
+            final List<String> ids = new ArrayList<>();
             final Iterator<Summoner> iterator = summoners.iterator();
             Summoner summoner = iterator.next();
 
