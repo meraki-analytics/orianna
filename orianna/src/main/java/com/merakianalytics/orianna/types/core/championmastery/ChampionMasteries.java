@@ -83,7 +83,7 @@ public class ChampionMasteries extends GhostObject.ListProxy<ChampionMastery, co
         }
 
         public SearchableList<ChampionMasteries> get() {
-            final List<Long> ids = new ArrayList<>();
+            final List<String> ids = new ArrayList<>();
             final Iterator<Summoner> iterator = summoners.iterator();
             Summoner summoner = iterator.next();
 
@@ -133,7 +133,7 @@ public class ChampionMasteries extends GhostObject.ListProxy<ChampionMastery, co
     private final Supplier<Summoner> summoner = Suppliers.memoize(new Supplier<Summoner>() {
         @Override
         public Summoner get() {
-            if(coreData.getSummonerId() == 0L) {
+            if(coreData.getSummonerId() == null) {
                 return null;
             }
             return Summoner.withId(coreData.getSummonerId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
@@ -181,7 +181,7 @@ public class ChampionMasteries extends GhostObject.ListProxy<ChampionMastery, co
                 if(coreData.getPlatform() != null) {
                     builder.put("platform", Platform.withTag(coreData.getPlatform()));
                 }
-                if(coreData.getSummonerId() != 0L) {
+                if(coreData.getSummonerId() != null) {
                     builder.put("summonerId", coreData.getSummonerId());
                 }
                 final com.merakianalytics.orianna.types.data.championmastery.ChampionMasteries data =

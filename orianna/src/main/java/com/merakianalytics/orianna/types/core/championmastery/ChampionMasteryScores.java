@@ -25,7 +25,7 @@ public abstract class ChampionMasteryScores {
         }
 
         public SearchableList<ChampionMasteryScore> get() {
-            final List<Long> ids = new ArrayList<>();
+            final List<String> ids = new ArrayList<>();
             final Iterator<Summoner> iterator = summoners.iterator();
             Summoner summoner = iterator.next();
 

@@ -3,10 +3,9 @@ package com.merakianalytics.orianna.types.data.championmastery;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class ChampionMasteryScore extends CoreData {
-    private static final long serialVersionUID = -3668246370989344023L;
-    private String platform;
+    private static final long serialVersionUID = -1304459443086713631L;
+    private String platform, summonerId;
     private int score;
-    private long summonerId;
 
     @Override
     public boolean equals(final Object obj) {
@@ -30,7 +29,11 @@ public class ChampionMasteryScore extends CoreData {
         if(score != other.score) {
             return false;
         }
-        if(summonerId != other.summonerId) {
+        if(summonerId == null) {
+            if(other.summonerId != null) {
+                return false;
+            }
+        } else if(!summonerId.equals(other.summonerId)) {
             return false;
         }
         return true;
@@ -53,7 +56,7 @@ public class ChampionMasteryScore extends CoreData {
     /**
      * @return the summonerId
      */
-    public long getSummonerId() {
+    public String getSummonerId() {
         return summonerId;
     }
 
@@ -63,7 +66,7 @@ public class ChampionMasteryScore extends CoreData {
         int result = 1;
         result = prime * result + (platform == null ? 0 : platform.hashCode());
         result = prime * result + score;
-        result = prime * result + (int)(summonerId ^ summonerId >>> 32);
+        result = prime * result + (summonerId == null ? 0 : summonerId.hashCode());
         return result;
     }
 
@@ -87,7 +90,7 @@ public class ChampionMasteryScore extends CoreData {
      * @param summonerId
      *        the summonerId to set
      */
-    public void setSummonerId(final long summonerId) {
+    public void setSummonerId(final String summonerId) {
         this.summonerId = summonerId;
     }
 }

@@ -230,7 +230,7 @@ public abstract class UniqueKeys {
     public static int forChampionMasteriesDataQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             com.merakianalytics.orianna.types.data.championmastery.ChampionMasteries.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-            ((Number)query.get("summonerId")).longValue()
+            query.get("summonerId")
         });
     }
 
@@ -243,13 +243,13 @@ public abstract class UniqueKeys {
     public static int forChampionMasteriesDtoQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             com.merakianalytics.orianna.types.dto.championmastery.ChampionMasteries.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-            ((Number)query.get("summonerId")).longValue()
+            query.get("summonerId")
         });
     }
 
     public static int forChampionMasteriesQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
-            ChampionMasteries.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), ((Number)query.get("summonerId")).longValue()
+            ChampionMasteries.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), query.get("summonerId")
         });
     }
 
@@ -270,14 +270,14 @@ public abstract class UniqueKeys {
     public static int forChampionMasteryDataQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             com.merakianalytics.orianna.types.data.championmastery.ChampionMastery.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-            ((Number)query.get("summonerId")).longValue(),
+            query.get("summonerId"),
             ((Number)query.get("championId")).longValue()
         });
     }
 
     public static int forChampionMasteryDto(final com.merakianalytics.orianna.types.dto.championmastery.ChampionMastery mastery) {
         return Arrays.hashCode(new Object[] {
-            com.merakianalytics.orianna.types.dto.championmastery.ChampionMastery.class.getCanonicalName(), mastery.getPlatform(), mastery.getPlayerId(),
+            com.merakianalytics.orianna.types.dto.championmastery.ChampionMastery.class.getCanonicalName(), mastery.getPlatform(), mastery.getSummonerId(),
             mastery.getChampionId()
         });
     }
@@ -285,14 +285,14 @@ public abstract class UniqueKeys {
     public static int forChampionMasteryDtoQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             com.merakianalytics.orianna.types.dto.championmastery.ChampionMastery.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-            ((Number)query.get("summonerId")).longValue(),
+            query.get("summonerId"),
             ((Number)query.get("championId")).longValue()
         });
     }
 
     public static int forChampionMasteryQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
-            ChampionMastery.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), ((Number)query.get("summonerId")).longValue(),
+            ChampionMastery.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), query.get("summonerId"),
             ((Number)query.get("championId")).intValue()
         });
     }
@@ -313,7 +313,7 @@ public abstract class UniqueKeys {
     public static int forChampionMasteryScoreDataQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             com.merakianalytics.orianna.types.data.championmastery.ChampionMasteryScore.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-            ((Number)query.get("summonerId")).longValue()
+            query.get("summonerId")
         });
     }
 
@@ -326,13 +326,13 @@ public abstract class UniqueKeys {
     public static int forChampionMasteryScoreDtoQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             com.merakianalytics.orianna.types.dto.championmastery.ChampionMasteryScore.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-            ((Number)query.get("summonerId")).longValue()
+            query.get("summonerId")
         });
     }
 
     public static int forChampionMasteryScoreQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
-            ChampionMasteryScore.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), ((Number)query.get("summonerId")).longValue()
+            ChampionMasteryScore.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), query.get("summonerId")
         });
     }
 
@@ -410,7 +410,7 @@ public abstract class UniqueKeys {
 
     public static int forCurrentGameInfoDtoQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
-            CurrentGameInfo.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), ((Number)query.get("summonerId")).longValue()
+            CurrentGameInfo.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), query.get("summonerId")
         });
     }
 
@@ -430,13 +430,13 @@ public abstract class UniqueKeys {
     public static int forCurrentMatchDataQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             com.merakianalytics.orianna.types.data.spectator.CurrentMatch.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-            ((Number)query.get("summonerId")).longValue()
+            query.get("summonerId")
         });
     }
 
     public static int forCurrentMatchQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
-            CurrentMatch.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), ((Number)query.get("summonerId")).longValue()
+            CurrentMatch.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), query.get("summonerId")
         });
     }
 
@@ -783,13 +783,13 @@ public abstract class UniqueKeys {
     public static int forLeaguePositionsDataQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             com.merakianalytics.orianna.types.data.league.LeaguePositions.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-            ((Number)query.get("summonerId")).longValue()
+            query.get("summonerId")
         });
     }
 
     public static int forLeaguePositionsQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
-            LeaguePositions.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), ((Number)query.get("summonerId")).longValue()
+            LeaguePositions.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), query.get("summonerId")
         });
     }
 
@@ -1008,7 +1008,7 @@ public abstract class UniqueKeys {
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
                     com.merakianalytics.orianna.types.data.championmastery.ChampionMastery.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-                    ((Number)query.get("summonerId")).longValue(), iterator.next().longValue()
+                    query.get("summonerId"), iterator.next().longValue()
                 });
             }
 
@@ -1034,7 +1034,7 @@ public abstract class UniqueKeys {
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
                     com.merakianalytics.orianna.types.dto.championmastery.ChampionMastery.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-                    ((Number)query.get("summonerId")).longValue(), iterator.next().longValue()
+                    query.get("summonerId"), iterator.next().longValue()
                 });
             }
 
@@ -1059,7 +1059,7 @@ public abstract class UniqueKeys {
             @Override
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
-                    ChampionMastery.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), ((Number)query.get("summonerId")).longValue(),
+                    ChampionMastery.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), query.get("summonerId"),
                     iterator.next().intValue()
                 });
             }
@@ -4354,7 +4354,7 @@ public abstract class UniqueKeys {
 
     public static int forSummonerPositionsDtoQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
-            SummonerPositions.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), ((Number)query.get("summonerId")).longValue()
+            SummonerPositions.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), query.get("summonerId")
         });
     }
 
@@ -4581,7 +4581,7 @@ public abstract class UniqueKeys {
     public static int forVerificationStringDataQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             com.merakianalytics.orianna.types.data.thirdpartycode.VerificationString.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-            ((Number)query.get("summonerId")).longValue()
+            query.get("summonerId")
         });
     }
 
@@ -4594,13 +4594,13 @@ public abstract class UniqueKeys {
     public static int forVerificationStringDtoQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             com.merakianalytics.orianna.types.dto.thirdpartycode.VerificationString.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-            ((Number)query.get("summonerId")).longValue()
+            query.get("summonerId")
         });
     }
 
     public static int forVerificationStringQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
-            VerificationString.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), ((Number)query.get("summonerId")).longValue()
+            VerificationString.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), query.get("summonerId")
         });
     }
 

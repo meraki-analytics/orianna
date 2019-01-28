@@ -31,16 +31,10 @@ public class ChampionMasteryScore extends DataObject {
         }
     }
 
-    private static final long serialVersionUID = 3028996515848181793L;
-
-    private String platform;
+    private static final long serialVersionUID = -5431839360536213388L;
+    private String platform, summonerId;
     private int score;
-    private long summonerId;
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(final Object obj) {
         if(this == obj) {
@@ -63,7 +57,11 @@ public class ChampionMasteryScore extends DataObject {
         if(score != other.score) {
             return false;
         }
-        if(summonerId != other.summonerId) {
+        if(summonerId == null) {
+            if(other.summonerId != null) {
+                return false;
+            }
+        } else if(!summonerId.equals(other.summonerId)) {
             return false;
         }
         return true;
@@ -86,21 +84,17 @@ public class ChampionMasteryScore extends DataObject {
     /**
      * @return the summonerId
      */
-    public long getSummonerId() {
+    public String getSummonerId() {
         return summonerId;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + (platform == null ? 0 : platform.hashCode());
         result = prime * result + score;
-        result = prime * result + (int)(summonerId ^ summonerId >>> 32);
+        result = prime * result + (summonerId == null ? 0 : summonerId.hashCode());
         return result;
     }
 
@@ -124,7 +118,7 @@ public class ChampionMasteryScore extends DataObject {
      * @param summonerId
      *        the summonerId to set
      */
-    public void setSummonerId(final long summonerId) {
+    public void setSummonerId(final String summonerId) {
         this.summonerId = summonerId;
     }
 }

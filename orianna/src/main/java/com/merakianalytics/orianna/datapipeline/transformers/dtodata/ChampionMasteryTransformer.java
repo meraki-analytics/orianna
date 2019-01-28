@@ -34,7 +34,7 @@ public class ChampionMasteryTransformer extends AbstractDataTransformer {
         mastery.setChestGranted(item.isChestGranted());
         mastery.setLastPlayTime(item.getLastPlayed().getMillis());
         mastery.setPlatform(item.getPlatform());
-        mastery.setPlayerId(item.getSummonerId());
+        mastery.setSummonerId(item.getSummonerId());
         mastery.setTokensEarned(item.getTokens());
         return mastery;
     }
@@ -69,7 +69,7 @@ public class ChampionMasteryTransformer extends AbstractDataTransformer {
         mastery.setLastPlayed(new DateTime(item.getLastPlayTime()));
         mastery.setLevel(item.getChampionLevel());
         mastery.setPlatform(item.getPlatform());
-        mastery.setSummonerId(item.getPlayerId());
+        mastery.setSummonerId(item.getSummonerId());
         mastery.setPoints(item.getChampionPoints());
         mastery.setPointsSinceLastLevel((int)item.getChampionPointsSinceLastLevel());
         mastery.setPointsUntilNextLevel((int)item.getChampionPointsUntilNextLevel());

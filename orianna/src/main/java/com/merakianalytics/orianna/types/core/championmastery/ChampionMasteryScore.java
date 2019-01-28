@@ -39,7 +39,7 @@ public class ChampionMasteryScore extends GhostObject<com.merakianalytics.oriann
     private final Supplier<Summoner> summoner = Suppliers.memoize(new Supplier<Summoner>() {
         @Override
         public Summoner get() {
-            if(coreData.getSummonerId() == 0L) {
+            if(coreData.getSummonerId() == null) {
                 return null;
             }
             return Summoner.withId(coreData.getSummonerId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
@@ -91,7 +91,7 @@ public class ChampionMasteryScore extends GhostObject<com.merakianalytics.oriann
         switch(group) {
             case CHAMPION_MASTERY_SCORE_LOAD_GROUP:
                 builder = ImmutableMap.builder();
-                if(coreData.getSummonerId() != 0L) {
+                if(coreData.getSummonerId() != null) {
                     builder.put("summonerId", coreData.getSummonerId());
                 }
                 if(coreData.getPlatform() != null) {

@@ -3,16 +3,12 @@ package com.merakianalytics.orianna.types.dto.championmastery;
 import com.merakianalytics.orianna.types.dto.DataObject;
 
 public class ChampionMastery extends DataObject {
-    private static final long serialVersionUID = 2924340461805546618L;
-    private long championId, playerId, championPointsUntilNextLevel, championPointsSinceLastLevel, lastPlayTime;
+    private static final long serialVersionUID = 7394525704993951448L;
+    private long championId, championPointsUntilNextLevel, championPointsSinceLastLevel, lastPlayTime;
     private int championLevel, championPoints, tokensEarned;
     private boolean chestGranted;
-    private String platform;
+    private String platform, summonerId;
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(final Object obj) {
         if(this == obj) {
@@ -53,7 +49,11 @@ public class ChampionMastery extends DataObject {
         } else if(!platform.equals(other.platform)) {
             return false;
         }
-        if(playerId != other.playerId) {
+        if(summonerId == null) {
+            if(other.summonerId != null) {
+                return false;
+            }
+        } else if(!summonerId.equals(other.summonerId)) {
             return false;
         }
         if(tokensEarned != other.tokensEarned) {
@@ -112,10 +112,10 @@ public class ChampionMastery extends DataObject {
     }
 
     /**
-     * @return the playerId
+     * @return the summonerId
      */
-    public long getPlayerId() {
-        return playerId;
+    public String getSummonerId() {
+        return summonerId;
     }
 
     /**
@@ -125,10 +125,6 @@ public class ChampionMastery extends DataObject {
         return tokensEarned;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -141,7 +137,7 @@ public class ChampionMastery extends DataObject {
         result = prime * result + (chestGranted ? 1231 : 1237);
         result = prime * result + (int)(lastPlayTime ^ lastPlayTime >>> 32);
         result = prime * result + (platform == null ? 0 : platform.hashCode());
-        result = prime * result + (int)(playerId ^ playerId >>> 32);
+        result = prime * result + (summonerId == null ? 0 : summonerId.hashCode());
         result = prime * result + tokensEarned;
         return result;
     }
@@ -218,11 +214,11 @@ public class ChampionMastery extends DataObject {
     }
 
     /**
-     * @param playerId
-     *        the playerId to set
+     * @param summonerId
+     *        the summonerId to set
      */
-    public void setPlayerId(final long playerId) {
-        this.playerId = playerId;
+    public void setSummonerId(final String summonerId) {
+        this.summonerId = summonerId;
     }
 
     /**
