@@ -17,7 +17,7 @@ import com.merakianalytics.orianna.types.core.summoner.Summoner;
 public class GetMatches {
     public static void main(final String[] args) {
         // Notice how this object never requires a call to the summoner endpoint because we provide all the needed data!
-        final Summoner summoner = Summoner.withAccountId(36321079).withRegion(Region.NORTH_AMERICA).get(); // .withId(22508641).named("FatalElement")
+        final Summoner summoner = Summoner.named("FatalElement").withRegion(Region.NORTH_AMERICA).get();
 
         // A MatchHistory is a lazy list, meaning it's elements only get loaded as-needed.
 

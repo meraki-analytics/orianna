@@ -1059,22 +1059,14 @@ public class GhostObjectSource extends AbstractDataSource {
     public CloseableIterator<Summoner> getManySummoner(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
-        final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
-        final Iterable<Number> accountIds = (Iterable<Number>)query.get("accountIds");
-        final Iterable<String> names = (Iterable<String>)query.get("names");
-        Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names", accountIds, "accountIds");
+        final Iterable<String> puuids = (Iterable<String>)query.get("puuids");
+        final Iterable<String> accountIds = (Iterable<String>)query.get("accountIds");
+        final Iterable<String> summonerIds = (Iterable<String>)query.get("ids");
+        final Iterable<String> summonerNames = (Iterable<String>)query.get("names");
+        Utilities.checkAtLeastOneNotNull(puuids, "puuids", accountIds, "accountIds", summonerIds, "ids", summonerNames, "names");
 
-        final Iterator<?> iterator;
-        if(ids != null) {
-            iterator = ids.iterator();
-        } else if(accountIds != null) {
-            iterator = accountIds.iterator();
-        } else if(names != null) {
-            iterator = names.iterator();
-        } else {
-            return null;
-        }
-
+        final Iterator<String> iterator = puuids != null ? puuids.iterator()
+            : accountIds != null ? accountIds.iterator() : summonerIds != null ? summonerIds.iterator() : summonerNames.iterator();
         return CloseableIterators.from(new Iterator<Summoner>() {
             @Override
             public boolean hasNext() {
@@ -1085,12 +1077,14 @@ public class GhostObjectSource extends AbstractDataSource {
             public Summoner next() {
                 final com.merakianalytics.orianna.types.data.summoner.Summoner data = new com.merakianalytics.orianna.types.data.summoner.Summoner();
                 data.setPlatform(platform.getTag());
-                if(ids != null) {
-                    data.setId(((Number)iterator.next()).longValue());
+                if(puuids != null) {
+                    data.setPuuid(iterator.next());
                 } else if(accountIds != null) {
-                    data.setAccountId(((Number)iterator.next()).longValue());
-                } else if(names != null) {
-                    data.setName((String)iterator.next());
+                    data.setAccountId(iterator.next());
+                } else if(summonerIds != null) {
+                    data.setId(iterator.next());
+                } else if(summonerNames != null) {
+                    data.setName(iterator.next());
                 } else {
                     return null;
                 }
@@ -1512,16 +1506,18 @@ public class GhostObjectSource extends AbstractDataSource {
     public Summoner getSummoner(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
-        final Number id = (Number)query.get("id");
-        final Number accountId = (Number)query.get("accountId");
+        final String puuid = (String)query.get("puuid");
+        final String accountId = (String)query.get("accountId");
+        final String id = (String)query.get("id");
         final String name = (String)query.get("name");
-        Utilities.checkAtLeastOneNotNull(id, "id", name, "name", accountId, "accountId");
+        Utilities.checkAtLeastOneNotNull(puuid, "puuid", accountId, "accountId", id, "id", name, "name");
 
         final com.merakianalytics.orianna.types.data.summoner.Summoner data = new com.merakianalytics.orianna.types.data.summoner.Summoner();
         data.setPlatform(platform.getTag());
+        data.setPuuid(puuid);
+        data.setAccountId(accountId);
+        data.setId(id);
         data.setName(name);
-        data.setId(id == null ? 0 : id.longValue());
-        data.setAccountId(accountId == null ? 0 : accountId.longValue());
         return new Summoner(data);
     }
 

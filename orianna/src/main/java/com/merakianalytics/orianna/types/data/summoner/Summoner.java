@@ -5,10 +5,9 @@ import org.joda.time.DateTime;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class Summoner extends CoreData {
-    private static final long serialVersionUID = -5216558332373601872L;
-    private long id, accountId;
+    private static final long serialVersionUID = -1972373394213716333L;
     private int level;
-    private String name, platform;
+    private String name, platform, puuid, accountId, id;
     private int profileIconId = -1;
     private DateTime updated;
 
@@ -24,10 +23,18 @@ public class Summoner extends CoreData {
             return false;
         }
         final Summoner other = (Summoner)obj;
-        if(accountId != other.accountId) {
+        if(accountId == null) {
+            if(other.accountId != null) {
+                return false;
+            }
+        } else if(!accountId.equals(other.accountId)) {
             return false;
         }
-        if(id != other.id) {
+        if(id == null) {
+            if(other.id != null) {
+                return false;
+            }
+        } else if(!id.equals(other.id)) {
             return false;
         }
         if(level != other.level) {
@@ -50,6 +57,13 @@ public class Summoner extends CoreData {
         if(profileIconId != other.profileIconId) {
             return false;
         }
+        if(puuid == null) {
+            if(other.puuid != null) {
+                return false;
+            }
+        } else if(!puuid.equals(other.puuid)) {
+            return false;
+        }
         if(updated == null) {
             if(other.updated != null) {
                 return false;
@@ -63,14 +77,14 @@ public class Summoner extends CoreData {
     /**
      * @return the accountId
      */
-    public long getAccountId() {
+    public String getAccountId() {
         return accountId;
     }
 
     /**
      * @return the id
      */
-    public long getId() {
+    public String getId() {
         return id;
     }
 
@@ -103,6 +117,13 @@ public class Summoner extends CoreData {
     }
 
     /**
+     * @return the puuid
+     */
+    public String getPuuid() {
+        return puuid;
+    }
+
+    /**
      * @return the updated
      */
     public DateTime getUpdated() {
@@ -113,12 +134,13 @@ public class Summoner extends CoreData {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (int)(accountId ^ accountId >>> 32);
-        result = prime * result + (int)(id ^ id >>> 32);
+        result = prime * result + (accountId == null ? 0 : accountId.hashCode());
+        result = prime * result + (id == null ? 0 : id.hashCode());
         result = prime * result + level;
         result = prime * result + (name == null ? 0 : name.hashCode());
         result = prime * result + (platform == null ? 0 : platform.hashCode());
         result = prime * result + profileIconId;
+        result = prime * result + (puuid == null ? 0 : puuid.hashCode());
         result = prime * result + (updated == null ? 0 : updated.hashCode());
         return result;
     }
@@ -127,7 +149,7 @@ public class Summoner extends CoreData {
      * @param accountId
      *        the accountId to set
      */
-    public void setAccountId(final long accountId) {
+    public void setAccountId(final String accountId) {
         this.accountId = accountId;
     }
 
@@ -135,7 +157,7 @@ public class Summoner extends CoreData {
      * @param id
      *        the id to set
      */
-    public void setId(final long id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
@@ -169,6 +191,14 @@ public class Summoner extends CoreData {
      */
     public void setProfileIconId(final int profileIconId) {
         this.profileIconId = profileIconId;
+    }
+
+    /**
+     * @param puuid
+     *        the puuid to set
+     */
+    public void setPuuid(final String puuid) {
+        this.puuid = puuid;
     }
 
     /**

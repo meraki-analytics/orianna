@@ -1072,28 +1072,40 @@ public abstract class Orianna {
         return SummonerSpell.withId(id);
     }
 
-    public static Summoners.Builder summonersWithAccountIds(final Iterable<Long> accountIds) {
+    public static Summoners.Builder summonersWithAccountIds(final Iterable<String> accountIds) {
         return Summoners.withAccountIds(accountIds);
     }
 
-    public static Summoners.Builder summonersWithAccountIds(final long... accountIds) {
+    public static Summoners.Builder summonersWithAccountIds(final String... accountIds) {
         return Summoners.withAccountIds(accountIds);
     }
 
-    public static Summoners.Builder summonersWithIds(final Iterable<Long> ids) {
+    public static Summoners.Builder summonersWithIds(final Iterable<String> ids) {
         return Summoners.withIds(ids);
     }
 
-    public static Summoners.Builder summonersWithIds(final long... ids) {
+    public static Summoners.Builder summonersWithIds(final String... ids) {
         return Summoners.withIds(ids);
     }
 
-    public static Summoner.Builder summonerWithAccountId(final long accountId) {
+    public static Summoners.Builder summonersWithPuuids(final Iterable<String> puuids) {
+        return Summoners.withPuuids(puuids);
+    }
+
+    public static Summoners.Builder summonersWithPuuids(final String... puuids) {
+        return Summoners.withPuuids(puuids);
+    }
+
+    public static Summoner.Builder summonerWithAccountId(final String accountId) {
         return Summoner.withAccountId(accountId);
     }
 
-    public static Summoner.Builder summonerWithId(final long id) {
+    public static Summoner.Builder summonerWithId(final String id) {
         return Summoner.withId(id);
+    }
+
+    public static Summoner.Builder summonerWithPuuid(final String puuid) {
+        return Summoner.withPuuid(puuid);
     }
 
     public static Timelines.Builder timelinesWithIds(final Iterable<Long> ids) {

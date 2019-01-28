@@ -35,25 +35,38 @@ import com.merakianalytics.orianna.types.core.thirdpartycode.VerificationString;
 
 public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data.summoner.Summoner> {
     public static class Builder {
-        private Long id, accountId;
-        private String name;
-        private Platform platform;
+        private enum KeyType {
+                ACCOUNT_ID,
+                ID,
+                NAME,
+                PUUID;
+        }
 
-        private Builder(final long id, final boolean isSummonerId) {
-            if(isSummonerId) {
-                this.id = id;
-            } else {
-                accountId = id;
+        private Platform platform;
+        private String puuid, accountId, id, name;
+
+        private Builder(final String key, final KeyType keyType) {
+            switch(keyType) {
+                case ACCOUNT_ID:
+                    accountId = key;
+                    break;
+                case ID:
+                    id = key;
+                    break;
+                case NAME:
+                    name = key;
+                    break;
+                case PUUID:
+                    puuid = key;
+                    break;
+                default:
+                    break;
             }
         }
 
-        private Builder(final String name) {
-            this.name = name;
-        }
-
         public Summoner get() {
-            if(name == null && id == null && accountId == null) {
-                throw new IllegalStateException("Must set an ID, account ID, or name for the Summoner!");
+            if(puuid == null && accountId == null && name == null && id == null) {
+                throw new IllegalStateException("Must set a PUUID, account ID, ID, or name for the Summoner!");
             }
 
             if(platform == null) {
@@ -66,10 +79,12 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
 
             final ImmutableMap.Builder<String, Object> builder = ImmutableMap.<String, Object> builder().put("platform", platform);
 
-            if(id != null) {
-                builder.put("id", id);
+            if(puuid != null) {
+                builder.put("puuid", puuid);
             } else if(accountId != null) {
                 builder.put("accountId", accountId);
+            } else if(id != null) {
+                builder.put("id", id);
             } else {
                 builder.put("name", name);
             }
@@ -92,15 +107,19 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
     public static final String SUMMONER_LOAD_GROUP = "summoner";
 
     public static Builder named(final String name) {
-        return new Builder(name);
+        return new Builder(name, Builder.KeyType.NAME);
     }
 
-    public static Builder withAccountId(final long accountId) {
-        return new Builder(accountId, false);
+    public static Builder withAccountId(final String accountId) {
+        return new Builder(accountId, Builder.KeyType.ACCOUNT_ID);
     }
 
-    public static Builder withId(final long id) {
-        return new Builder(id, true);
+    public static Builder withId(final String id) {
+        return new Builder(id, Builder.KeyType.ID);
+    }
+
+    public static Builder withPuuid(final String puuid) {
+        return new Builder(puuid, Builder.KeyType.PUUID);
     }
 
     private final Supplier<ProfileIcon> profileIcon = Suppliers.memoize(new Supplier<ProfileIcon>() {
@@ -126,9 +145,9 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
         return coreData.getUpdated() != null;
     }
 
-    @Searchable(long.class)
-    public long getAccountId() {
-        if(coreData.getAccountId() == 0L) {
+    @Searchable(String.class)
+    public String getAccountId() {
+        if(coreData.getAccountId() == null) {
             load(SUMMONER_LOAD_GROUP);
         }
         return coreData.getAccountId();
@@ -168,9 +187,9 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
         return null;
     }
 
-    @Searchable(long.class)
-    public long getId() {
-        if(coreData.getId() == 0L) {
+    @Searchable(String.class)
+    public String getId() {
+        if(coreData.getId() == null) {
             load(SUMMONER_LOAD_GROUP);
         }
         return coreData.getId();
@@ -248,6 +267,14 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
         return profileIcon.get();
     }
 
+    @Searchable(String.class)
+    public String getPuuid() {
+        if(coreData.getPuuid() == null) {
+            load(SUMMONER_LOAD_GROUP);
+        }
+        return coreData.getPuuid();
+    }
+
     public Region getRegion() {
         return Platform.withTag(coreData.getPlatform()).getRegion();
     }
@@ -273,11 +300,14 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
         switch(group) {
             case SUMMONER_LOAD_GROUP:
                 builder = ImmutableMap.builder();
-                if(coreData.getId() != 0) {
-                    builder.put("id", coreData.getId());
+                if(coreData.getPuuid() != null) {
+                    builder.put("puuid", coreData.getPuuid());
                 }
-                if(coreData.getAccountId() != 0) {
+                if(coreData.getAccountId() != null) {
                     builder.put("accountId", coreData.getAccountId());
+                }
+                if(coreData.getId() != null) {
+                    builder.put("id", coreData.getId());
                 }
                 if(coreData.getName() != null) {
                     builder.put("name", coreData.getName());

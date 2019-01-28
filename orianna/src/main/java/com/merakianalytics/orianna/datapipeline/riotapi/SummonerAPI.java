@@ -26,26 +26,31 @@ public class SummonerAPI extends RiotAPIService {
     public CloseableIterator<Summoner> getManySummoner(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
-        final Iterable<Number> summonerIds = (Iterable<Number>)query.get("ids");
-        final Iterable<Number> accountIds = (Iterable<Number>)query.get("accountIds");
+        final Iterable<String> puuids = (Iterable<String>)query.get("puuids");
+        final Iterable<String> accountIds = (Iterable<String>)query.get("accountIds");
+        final Iterable<String> summonerIds = (Iterable<String>)query.get("ids");
         final Iterable<String> summonerNames = (Iterable<String>)query.get("names");
-        Utilities.checkAtLeastOneNotNull(summonerIds, "ids", accountIds, "accountIds", summonerNames, "names");
+        Utilities.checkAtLeastOneNotNull(puuids, "puuids", accountIds, "accountIds", summonerIds, "ids", summonerNames, "names");
 
-        final Iterator<?> iterator;
+        final Iterator<String> iterator;
         final String baseEndpoint;
         final String limiter;
-        if(summonerIds != null) {
-            iterator = summonerIds.iterator();
-            baseEndpoint = "lol/summoner/v3/summoners/";
-            limiter = "lol/summoner/v3/summoners/summonerId";
+        if(puuids != null) {
+            iterator = puuids.iterator();
+            baseEndpoint = "lol/summoner/v4/summoners/by-puuid/";
+            limiter = "lol/summoner/v4/summoners/by-puuid/puuid";
         } else if(accountIds != null) {
             iterator = accountIds.iterator();
-            baseEndpoint = "lol/summoner/v3/summoners/by-account/";
-            limiter = "lol/summoner/v3/summoners/by-account/accountId";
+            baseEndpoint = "lol/summoner/v4/summoners/by-account/";
+            limiter = "lol/summoner/v4/summoners/by-account/accountId";
+        } else if(summonerIds != null) {
+            iterator = summonerIds.iterator();
+            baseEndpoint = "lol/summoner/v4/summoners/";
+            limiter = "lol/summoner/v4/summoners/summonerId";
         } else if(summonerNames != null) {
             iterator = summonerNames.iterator();
-            baseEndpoint = "lol/summoner/v3/summoners/by-name/";
-            limiter = "lol/summoner/v3/summoners/by-name/summonerName";
+            baseEndpoint = "lol/summoner/v4/summoners/by-name/";
+            limiter = "lol/summoner/v4/summoners/by-name/summonerName";
         } else {
             return null;
         }
@@ -81,22 +86,26 @@ public class SummonerAPI extends RiotAPIService {
     public Summoner getSummoner(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
-        final Number summonerId = (Number)query.get("id");
-        final Number accountId = (Number)query.get("accountId");
+        final String puuid = (String)query.get("puuid");
+        final String accountId = (String)query.get("accountId");
+        final String summonerId = (String)query.get("id");
         final String summonerName = (String)query.get("name");
-        Utilities.checkAtLeastOneNotNull(summonerId, "id", accountId, "accountId", summonerName, "name");
+        Utilities.checkAtLeastOneNotNull(puuid, "puuid", accountId, "accountId", summonerId, "id", summonerName, "name");
 
         String endpoint;
         String limiter;
-        if(summonerId != null) {
-            endpoint = "lol/summoner/v3/summoners/" + summonerId;
-            limiter = "lol/summoner/v3/summoners/summonerId";
+        if(puuid != null) {
+            endpoint = "lol/summoner/v4/summoners/by-puuid/" + puuid;
+            limiter = "lol/summoner/v4/summoners/by-puuid/puuid";
         } else if(accountId != null) {
-            endpoint = "lol/summoner/v3/summoners/by-account/" + accountId;
-            limiter = "lol/summoner/v3/summoners/by-account/accountId";
+            endpoint = "lol/summoner/v4/summoners/by-account/" + accountId;
+            limiter = "lol/summoner/v4/summoners/by-account/accountId";
+        } else if(summonerId != null) {
+            endpoint = "lol/summoner/v4/summoners/" + summonerId;
+            limiter = "lol/summoner/v4/summoners/summonerId";
         } else if(summonerName != null) {
-            endpoint = "lol/summoner/v3/summoners/by-name/" + summonerName;
-            limiter = "lol/summoner/v3/summoners/by-name/summonerName";
+            endpoint = "lol/summoner/v4/summoners/by-name/" + summonerName;
+            limiter = "lol/summoner/v4/summoners/by-name/summonerName";
         } else {
             return null;
         }

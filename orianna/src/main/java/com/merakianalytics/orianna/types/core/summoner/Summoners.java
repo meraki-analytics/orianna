@@ -1,8 +1,6 @@
 package com.merakianalytics.orianna.types.core.summoner;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import com.google.common.collect.ImmutableMap;
 import com.merakianalytics.datapipelines.iterators.CloseableIterator;
@@ -15,26 +13,39 @@ import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 
 public abstract class Summoners {
     public static class Builder {
-        private Iterable<Long> ids, accountIds;
-        private Iterable<String> names;
+        private enum KeyType {
+                ACCOUNT_ID,
+                ID,
+                NAME,
+                PUUID;
+        }
+
         private Platform platform;
+        private Iterable<String> puuids, accountIds, ids, names;
         private boolean streaming = false;
 
-        private Builder(final Iterable<Long> ids, final boolean areSummonerIds) {
-            if(areSummonerIds) {
-                this.ids = ids;
-            } else {
-                accountIds = ids;
+        private Builder(final Iterable<String> keys, final KeyType keyType) {
+            switch(keyType) {
+                case ACCOUNT_ID:
+                    accountIds = keys;
+                    break;
+                case ID:
+                    ids = keys;
+                    break;
+                case NAME:
+                    names = keys;
+                    break;
+                case PUUID:
+                    puuids = keys;
+                    break;
+                default:
+                    break;
             }
         }
 
-        private Builder(final Iterable<String> names) {
-            this.names = names;
-        }
-
         public SearchableList<Summoner> get() {
-            if(names == null && ids == null && accountIds == null) {
-                throw new IllegalStateException("Must IDs, account IDs, or names for the Summoners!");
+            if(puuids == null && accountIds == null && names == null && ids == null) {
+                throw new IllegalStateException("Must PUUIDs, account IDs, IDs, or names for the Summoners!");
             }
 
             if(platform == null) {
@@ -47,10 +58,12 @@ public abstract class Summoners {
 
             final ImmutableMap.Builder<String, Object> builder = ImmutableMap.<String, Object> builder().put("platform", platform);
 
-            if(ids != null) {
-                builder.put("ids", ids);
+            if(puuids != null) {
+                builder.put("puuids", puuids);
             } else if(accountIds != null) {
                 builder.put("accountIds", accountIds);
+            } else if(ids != null) {
+                builder.put("ids", ids);
             } else {
                 builder.put("names", names);
             }
@@ -76,34 +89,34 @@ public abstract class Summoners {
     }
 
     public static Builder named(final Iterable<String> names) {
-        return new Builder(names);
+        return new Builder(names, Builder.KeyType.NAME);
     }
 
     public static Builder named(final String... names) {
-        return new Builder(Arrays.asList(names));
+        return new Builder(Arrays.asList(names), Builder.KeyType.NAME);
     }
 
-    public static Builder withAccountIds(final Iterable<Long> accountIds) {
-        return new Builder(accountIds, false);
+    public static Builder withAccountIds(final Iterable<String> accountIds) {
+        return new Builder(accountIds, Builder.KeyType.ACCOUNT_ID);
     }
 
-    public static Builder withAccountIds(final long... accountIds) {
-        final List<Long> list = new ArrayList<>(accountIds.length);
-        for(final long id : accountIds) {
-            list.add(id);
-        }
-        return new Builder(list, false);
+    public static Builder withAccountIds(final String... accountIds) {
+        return new Builder(Arrays.asList(accountIds), Builder.KeyType.ACCOUNT_ID);
     }
 
-    public static Builder withIds(final Iterable<Long> ids) {
-        return new Builder(ids, true);
+    public static Builder withIds(final Iterable<String> ids) {
+        return new Builder(ids, Builder.KeyType.ID);
     }
 
-    public static Builder withIds(final long... ids) {
-        final List<Long> list = new ArrayList<>(ids.length);
-        for(final long id : ids) {
-            list.add(id);
-        }
-        return new Builder(list, true);
+    public static Builder withIds(final String... ids) {
+        return new Builder(Arrays.asList(ids), Builder.KeyType.ID);
+    }
+
+    public static Builder withPuuids(final Iterable<String> puuids) {
+        return new Builder(puuids, Builder.KeyType.PUUID);
+    }
+
+    public static Builder withPuuids(final String... puuids) {
+        return new Builder(Arrays.asList(puuids), Builder.KeyType.PUUID);
     }
 }

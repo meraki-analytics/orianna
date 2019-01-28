@@ -20,16 +20,16 @@ public class CollectMatches {
         final Summoner summoner = Summoner.named("GustavEnk").withRegion(Region.EUROPE_WEST).get();
         final Region region = summoner.getRegion();
 
-        final HashSet<Long> unpulledSummonerIds = new HashSet<>();
+        final HashSet<String> unpulledSummonerIds = new HashSet<>();
         unpulledSummonerIds.add(summoner.getId());
-        final HashSet<Long> pulledSummonerIds = new HashSet<>();
+        final HashSet<String> pulledSummonerIds = new HashSet<>();
 
         final HashSet<Long> unpulledMatchIds = new HashSet<>();
         final HashSet<Long> pulledMatchIds = new HashSet<>();
 
         while(!unpulledSummonerIds.isEmpty()) {
             // Get a new summoner from our list of unpulled summoners and pull their match history
-            final long newSummonerId = unpulledSummonerIds.iterator().next();
+            final String newSummonerId = unpulledSummonerIds.iterator().next();
             final Summoner newSummoner = Summoner.withId(newSummonerId).withRegion(region).get();
             final MatchHistory matches = filterMatchHistory(newSummoner);
             for(final Match match : matches) {

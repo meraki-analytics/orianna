@@ -11,6 +11,7 @@ public class SummonerTransformer extends AbstractDataTransformer {
     @Transform(from = com.merakianalytics.orianna.types.dto.summoner.Summoner.class, to = Summoner.class)
     public Summoner transformer(final com.merakianalytics.orianna.types.dto.summoner.Summoner item, final PipelineContext context) {
         final Summoner summoner = new Summoner();
+        summoner.setPuuid(item.getPuuid());
         summoner.setAccountId(item.getAccountId());
         summoner.setId(item.getId());
         summoner.setLevel((int)item.getSummonerLevel());
@@ -24,6 +25,7 @@ public class SummonerTransformer extends AbstractDataTransformer {
     @Transform(from = Summoner.class, to = com.merakianalytics.orianna.types.dto.summoner.Summoner.class)
     public com.merakianalytics.orianna.types.dto.summoner.Summoner transformer(final Summoner item, final PipelineContext context) {
         final com.merakianalytics.orianna.types.dto.summoner.Summoner summoner = new com.merakianalytics.orianna.types.dto.summoner.Summoner();
+        summoner.setPuuid(item.getPuuid());
         summoner.setAccountId(item.getAccountId());
         summoner.setId(item.getId());
         summoner.setSummonerLevel(item.getLevel());

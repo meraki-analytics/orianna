@@ -2901,11 +2901,13 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManySummonerDataQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Number> summonerIds = (Iterable<Number>)query.get("ids");
-        final Iterable<Number> accountIds = (Iterable<Number>)query.get("accountIds");
+        final Iterable<String> puuids = (Iterable<String>)query.get("puuids");
+        final Iterable<String> accountIds = (Iterable<String>)query.get("accountIds");
+        final Iterable<String> summonerIds = (Iterable<String>)query.get("ids");
         final Iterable<String> summonerNames = (Iterable<String>)query.get("names");
 
-        final Iterator<?> iterator = summonerIds != null ? summonerIds.iterator() : accountIds != null ? accountIds.iterator() : summonerNames.iterator();
+        final Iterator<String> iterator = puuids != null ? puuids.iterator()
+            : accountIds != null ? accountIds.iterator() : summonerIds != null ? summonerIds.iterator() : summonerNames.iterator();
         return new Iterator<Integer>() {
             @Override
             public boolean hasNext() {
@@ -2916,7 +2918,7 @@ public abstract class UniqueKeys {
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
                     com.merakianalytics.orianna.types.data.summoner.Summoner.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-                    summonerIds != null || accountIds != null ? ((Number)iterator.next()).longValue() : iterator.next()
+                    iterator.next()
                 });
             }
 
@@ -2929,11 +2931,13 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManySummonerDtoQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Number> summonerIds = (Iterable<Number>)query.get("ids");
-        final Iterable<Number> accountIds = (Iterable<Number>)query.get("accountIds");
+        final Iterable<String> puuids = (Iterable<String>)query.get("puuids");
+        final Iterable<String> accountIds = (Iterable<String>)query.get("accountIds");
+        final Iterable<String> summonerIds = (Iterable<String>)query.get("ids");
         final Iterable<String> summonerNames = (Iterable<String>)query.get("names");
 
-        final Iterator<?> iterator = summonerIds != null ? summonerIds.iterator() : accountIds != null ? accountIds.iterator() : summonerNames.iterator();
+        final Iterator<String> iterator = puuids != null ? puuids.iterator()
+            : accountIds != null ? accountIds.iterator() : summonerIds != null ? summonerIds.iterator() : summonerNames.iterator();
         return new Iterator<Integer>() {
             @Override
             public boolean hasNext() {
@@ -2944,7 +2948,7 @@ public abstract class UniqueKeys {
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
                     com.merakianalytics.orianna.types.dto.summoner.Summoner.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-                    summonerIds != null || accountIds != null ? ((Number)iterator.next()).longValue() : iterator.next()
+                    iterator.next()
                 });
             }
 
@@ -2982,21 +2986,13 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManySummonerQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
-        final Iterable<Number> accountIds = (Iterable<Number>)query.get("accountIds");
-        final Iterable<String> names = (Iterable<String>)query.get("names");
+        final Iterable<String> puuids = (Iterable<String>)query.get("puuids");
+        final Iterable<String> accountIds = (Iterable<String>)query.get("accountIds");
+        final Iterable<String> summonerIds = (Iterable<String>)query.get("ids");
+        final Iterable<String> summonerNames = (Iterable<String>)query.get("names");
 
-        final Iterator<?> iterator;
-        if(ids != null) {
-            iterator = ids.iterator();
-        } else if(accountIds != null) {
-            iterator = accountIds.iterator();
-        } else if(names != null) {
-            iterator = names.iterator();
-        } else {
-            return null;
-        }
-
+        final Iterator<String> iterator = puuids != null ? puuids.iterator()
+            : accountIds != null ? accountIds.iterator() : summonerIds != null ? summonerIds.iterator() : summonerNames.iterator();
         return new Iterator<Integer>() {
             @Override
             public boolean hasNext() {
@@ -3006,8 +3002,7 @@ public abstract class UniqueKeys {
             @Override
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
-                    Summoner.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-                    ids != null || accountIds != null ? ((Number)iterator.next()).longValue() : iterator.next()
+                    Summoner.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next()
                 });
             }
 
@@ -4255,75 +4250,56 @@ public abstract class UniqueKeys {
 
     public static int[] forSummoner(final Summoner summoner) {
         final com.merakianalytics.orianna.types.data.summoner.Summoner data = summoner.getCoreData();
-        if(data.getId() != 0L && data.getAccountId() != 0L && data.getName() != null) {
-            return new int[] {
-                Arrays.hashCode(new Object[] {
-                    Summoner.class.getCanonicalName(), data.getPlatform(), data.getId()
-                }),
-                Arrays.hashCode(new Object[] {
-                    Summoner.class.getCanonicalName(), data.getPlatform(), data.getAccountId()
-                }),
-                Arrays.hashCode(new Object[] {
-                    Summoner.class.getCanonicalName(), data.getPlatform(), data.getName()
-                })
-            };
-        } else if(data.getId() != 0L && data.getAccountId() != 0L) {
-            return new int[] {
-                Arrays.hashCode(new Object[] {
-                    Summoner.class.getCanonicalName(), data.getPlatform(), data.getId()
-                }),
-                Arrays.hashCode(new Object[] {
-                    Summoner.class.getCanonicalName(), data.getPlatform(), data.getAccountId()
-                }),
-            };
-        } else if(data.getId() != 0L && data.getName() != null) {
-            return new int[] {
-                Arrays.hashCode(new Object[] {
-                    Summoner.class.getCanonicalName(), data.getPlatform(), data.getId()
-                }),
-                Arrays.hashCode(new Object[] {
-                    Summoner.class.getCanonicalName(), data.getPlatform(), data.getName()
-                })
-            };
-        } else if(data.getAccountId() != 0L && data.getName() != null) {
-            return new int[] {
-                Arrays.hashCode(new Object[] {
-                    Summoner.class.getCanonicalName(), data.getPlatform(), data.getAccountId()
-                }),
-                Arrays.hashCode(new Object[] {
-                    Summoner.class.getCanonicalName(), data.getPlatform(), data.getName()
-                })
-            };
-        } else if(data.getId() != 0L) {
-            return new int[] {
-                Arrays.hashCode(new Object[] {
-                    Summoner.class.getCanonicalName(), data.getPlatform(), data.getId()
-                })
-            };
-        } else if(data.getAccountId() != 0L) {
-            return new int[] {
-                Arrays.hashCode(new Object[] {
-                    Summoner.class.getCanonicalName(), data.getPlatform(), data.getAccountId()
-                })
-            };
-        } else if(data.getName() != null) {
-            return new int[] {
-                Arrays.hashCode(new Object[] {
-                    Summoner.class.getCanonicalName(), data.getPlatform(), data.getName()
-                })
-            };
-        } else {
-            throw new IllegalArgumentException("Can't get key for Summoner without ID, account ID, or name!");
+        int count = 0;
+        if(data.getPuuid() != null) {
+            count++;
         }
+        if(data.getAccountId() != null) {
+            count++;
+        }
+        if(data.getId() != null) {
+            count++;
+        }
+        if(data.getName() != null) {
+            count++;
+        }
+
+        final int[] keys = new int[count];
+        count = 0;
+
+        if(data.getPuuid() != null) {
+            keys[count++] = Arrays.hashCode(new Object[] {
+                Summoner.class.getCanonicalName(), data.getPlatform(), data.getPuuid()
+            });
+        }
+        if(data.getAccountId() != null) {
+            keys[count++] = Arrays.hashCode(new Object[] {
+                Summoner.class.getCanonicalName(), data.getPlatform(), data.getAccountId()
+            });
+        }
+        if(data.getId() != null) {
+            keys[count++] = Arrays.hashCode(new Object[] {
+                Summoner.class.getCanonicalName(), data.getPlatform(), data.getId()
+            });
+        }
+        if(data.getName() != null) {
+            keys[count++] = Arrays.hashCode(new Object[] {
+                Summoner.class.getCanonicalName(), data.getPlatform(), data.getName()
+            });
+        }
+        return keys;
     }
 
     public static int[] forSummonerData(final com.merakianalytics.orianna.types.data.summoner.Summoner summoner) {
         return new int[] {
             Arrays.hashCode(new Object[] {
-                com.merakianalytics.orianna.types.data.summoner.Summoner.class.getCanonicalName(), summoner.getPlatform(), summoner.getId()
+                com.merakianalytics.orianna.types.data.summoner.Summoner.class.getCanonicalName(), summoner.getPlatform(), summoner.getPuuid()
             }),
             Arrays.hashCode(new Object[] {
                 com.merakianalytics.orianna.types.data.summoner.Summoner.class.getCanonicalName(), summoner.getPlatform(), summoner.getAccountId()
+            }),
+            Arrays.hashCode(new Object[] {
+                com.merakianalytics.orianna.types.data.summoner.Summoner.class.getCanonicalName(), summoner.getPlatform(), summoner.getId()
             }),
             Arrays.hashCode(new Object[] {
                 com.merakianalytics.orianna.types.data.summoner.Summoner.class.getCanonicalName(), summoner.getPlatform(), summoner.getName()
@@ -4332,22 +4308,26 @@ public abstract class UniqueKeys {
     }
 
     public static int forSummonerDataQuery(final java.util.Map<String, Object> query) {
-        final Number id = (Number)query.get("id");
-        final Number accountId = (Number)query.get("accountId");
+        final String puuid = (String)query.get("puuid");
+        final String accountId = (String)query.get("accountId");
+        final String id = (String)query.get("id");
         final String name = (String)query.get("name");
         return Arrays.hashCode(new Object[] {
             com.merakianalytics.orianna.types.data.summoner.Summoner.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-            id == null ? accountId == null ? name : accountId.longValue() : id.longValue()
+            puuid != null ? puuid : accountId != null ? accountId : id != null ? id : name
         });
     }
 
     public static int[] forSummonerDto(final com.merakianalytics.orianna.types.dto.summoner.Summoner summoner) {
         return new int[] {
             Arrays.hashCode(new Object[] {
-                com.merakianalytics.orianna.types.dto.summoner.Summoner.class.getCanonicalName(), summoner.getPlatform(), summoner.getId()
+                com.merakianalytics.orianna.types.dto.summoner.Summoner.class.getCanonicalName(), summoner.getPlatform(), summoner.getPuuid()
             }),
             Arrays.hashCode(new Object[] {
                 com.merakianalytics.orianna.types.dto.summoner.Summoner.class.getCanonicalName(), summoner.getPlatform(), summoner.getAccountId()
+            }),
+            Arrays.hashCode(new Object[] {
+                com.merakianalytics.orianna.types.dto.summoner.Summoner.class.getCanonicalName(), summoner.getPlatform(), summoner.getId()
             }),
             Arrays.hashCode(new Object[] {
                 com.merakianalytics.orianna.types.dto.summoner.Summoner.class.getCanonicalName(), summoner.getPlatform(), summoner.getName()
@@ -4356,12 +4336,13 @@ public abstract class UniqueKeys {
     }
 
     public static int forSummonerDtoQuery(final java.util.Map<String, Object> query) {
-        final Number id = (Number)query.get("id");
-        final Number accountId = (Number)query.get("accountId");
+        final String puuid = (String)query.get("puuid");
+        final String accountId = (String)query.get("accountId");
+        final String id = (String)query.get("id");
         final String name = (String)query.get("name");
         return Arrays.hashCode(new Object[] {
             com.merakianalytics.orianna.types.dto.summoner.Summoner.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-            id == null ? accountId == null ? name : accountId.longValue() : id.longValue()
+            puuid != null ? puuid : accountId != null ? accountId : id != null ? id : name
         });
     }
 
@@ -4378,12 +4359,13 @@ public abstract class UniqueKeys {
     }
 
     public static int forSummonerQuery(final java.util.Map<String, Object> query) {
-        final Number id = (Number)query.get("id");
-        final Number accountId = (Number)query.get("accountId");
+        final String puuid = (String)query.get("puuid");
+        final String accountId = (String)query.get("accountId");
+        final String id = (String)query.get("id");
         final String name = (String)query.get("name");
         return Arrays.hashCode(new Object[] {
             Summoner.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-            id == null ? accountId == null ? name : accountId.longValue() : id.longValue()
+            puuid != null ? puuid : accountId != null ? accountId : id != null ? id : name
         });
     }
 
