@@ -5,13 +5,12 @@ import java.util.List;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class Player extends CoreData {
-    private static final long serialVersionUID = 1307854768571313682L;
+    private static final long serialVersionUID = -970406077124574599L;
     private boolean bot;
     private List<GameCustomizationObject> customizationObjects;
     private int profileIconId, championId, summonerSpellDId, summonerSpellFId, team;
     private Runes runes;
-    private long summonerId;
-    private String summonerName, platform;
+    private String summonerName, platform, summonerId;
 
     @Override
     public boolean equals(final Object obj) {
@@ -55,7 +54,11 @@ public class Player extends CoreData {
         } else if(!runes.equals(other.runes)) {
             return false;
         }
-        if(summonerId != other.summonerId) {
+        if(summonerId == null) {
+            if(other.summonerId != null) {
+                return false;
+            }
+        } else if(!summonerId.equals(other.summonerId)) {
             return false;
         }
         if(summonerName == null) {
@@ -115,7 +118,7 @@ public class Player extends CoreData {
     /**
      * @return the summonerId
      */
-    public long getSummonerId() {
+    public String getSummonerId() {
         return summonerId;
     }
 
@@ -157,7 +160,7 @@ public class Player extends CoreData {
         result = prime * result + (platform == null ? 0 : platform.hashCode());
         result = prime * result + profileIconId;
         result = prime * result + (runes == null ? 0 : runes.hashCode());
-        result = prime * result + (int)(summonerId ^ summonerId >>> 32);
+        result = prime * result + (summonerId == null ? 0 : summonerId.hashCode());
         result = prime * result + (summonerName == null ? 0 : summonerName.hashCode());
         result = prime * result + summonerSpellDId;
         result = prime * result + summonerSpellFId;
@@ -224,7 +227,7 @@ public class Player extends CoreData {
      * @param summonerId
      *        the summonerId to set
      */
-    public void setSummonerId(final long summonerId) {
+    public void setSummonerId(final String summonerId) {
         this.summonerId = summonerId;
     }
 

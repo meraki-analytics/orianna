@@ -95,7 +95,7 @@ public class CurrentMatch extends GhostObject<com.merakianalytics.orianna.types.
         private final Supplier<Summoner> summoner = Suppliers.memoize(new Supplier<Summoner>() {
             @Override
             public Summoner get() {
-                if(coreData.getSummonerId() == 0L) {
+                if(coreData.getSummonerId() == null) {
                     return null;
                 }
                 final Summoner summoner = Summoner.withId(coreData.getSummonerId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
@@ -276,7 +276,7 @@ public class CurrentMatch extends GhostObject<com.merakianalytics.orianna.types.
     private final Supplier<Summoner> summoner = Suppliers.memoize(new Supplier<Summoner>() {
         @Override
         public Summoner get() {
-            if(coreData.getSummonerId() == 0L) {
+            if(coreData.getSummonerId() == null) {
                 return null;
             }
             return Summoner.withId(coreData.getSummonerId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
@@ -393,7 +393,7 @@ public class CurrentMatch extends GhostObject<com.merakianalytics.orianna.types.
                 if(coreData.getPlatform() != null) {
                     builder.put("platform", Platform.withTag(coreData.getPlatform()));
                 }
-                if(coreData.getSummonerId() != 0L) {
+                if(coreData.getSummonerId() != null) {
                     builder.put("summonerId", coreData.getSummonerId());
                 }
                 final com.merakianalytics.orianna.types.data.spectator.CurrentMatch data =

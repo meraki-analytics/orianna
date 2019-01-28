@@ -161,13 +161,13 @@ public class GhostObjectSource extends AbstractDataSource {
     @Get(CurrentMatch.class)
     public CurrentMatch getCurrentMatch(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final Number summonerId = (Number)query.get("summonerId");
+        final String summonerId = (String)query.get("summonerId");
         Utilities.checkNotNull(platform, "platform", summonerId, "summonerId");
 
         final com.merakianalytics.orianna.types.data.spectator.CurrentMatch data =
             new com.merakianalytics.orianna.types.data.spectator.CurrentMatch();
         data.setPlatform(platform.getTag());
-        data.setSummonerId(summonerId.longValue());
+        data.setSummonerId(summonerId);
         return new CurrentMatch(data);
     }
 
@@ -473,10 +473,10 @@ public class GhostObjectSource extends AbstractDataSource {
     @GetMany(CurrentMatch.class)
     public CloseableIterator<CurrentMatch> getManyCurrentMatch(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
+        final Iterable<String> summonerIds = (Iterable<String>)query.get("summonerIds");
         Utilities.checkNotNull(platform, "platform", summonerIds, "summonerIds");
 
-        final Iterator<Number> iterator = summonerIds.iterator();
+        final Iterator<String> iterator = summonerIds.iterator();
         return CloseableIterators.from(new Iterator<CurrentMatch>() {
             @Override
             public boolean hasNext() {
@@ -487,7 +487,7 @@ public class GhostObjectSource extends AbstractDataSource {
             public CurrentMatch next() {
                 final com.merakianalytics.orianna.types.data.spectator.CurrentMatch data = new com.merakianalytics.orianna.types.data.spectator.CurrentMatch();
                 data.setPlatform(platform.getTag());
-                data.setSummonerId(iterator.next().longValue());
+                data.setSummonerId(iterator.next());
                 return new CurrentMatch(data);
             }
 

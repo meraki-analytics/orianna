@@ -8,12 +8,12 @@ import org.joda.time.Duration;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class CurrentMatch extends CoreData {
-    private static final long serialVersionUID = 6191530707622315971L;
+    private static final long serialVersionUID = -8753680578603170373L;
     private Team blueTeam, redTeam;
     private DateTime creationTime;
     private Duration duration;
-    private long id, summonerId;
-    private String mode, observerEncryptionKey, platform, type;
+    private long id;
+    private String mode, observerEncryptionKey, platform, type, summonerId;
     private List<Player> players;
     private int queue, map;
 
@@ -94,7 +94,11 @@ public class CurrentMatch extends CoreData {
         } else if(!redTeam.equals(other.redTeam)) {
             return false;
         }
-        if(summonerId != other.summonerId) {
+        if(summonerId == null) {
+            if(other.summonerId != null) {
+                return false;
+            }
+        } else if(!summonerId.equals(other.summonerId)) {
             return false;
         }
         if(type == null) {
@@ -187,7 +191,7 @@ public class CurrentMatch extends CoreData {
     /**
      * @return the summonerId
      */
-    public long getSummonerId() {
+    public String getSummonerId() {
         return summonerId;
     }
 
@@ -213,7 +217,7 @@ public class CurrentMatch extends CoreData {
         result = prime * result + (players == null ? 0 : players.hashCode());
         result = prime * result + queue;
         result = prime * result + (redTeam == null ? 0 : redTeam.hashCode());
-        result = prime * result + (int)(summonerId ^ summonerId >>> 32);
+        result = prime * result + (summonerId == null ? 0 : summonerId.hashCode());
         result = prime * result + (type == null ? 0 : type.hashCode());
         return result;
     }
@@ -310,7 +314,7 @@ public class CurrentMatch extends CoreData {
      * @param summonerId
      *        the summonerId to set
      */
-    public void setSummonerId(final long summonerId) {
+    public void setSummonerId(final String summonerId) {
         this.summonerId = summonerId;
     }
 
