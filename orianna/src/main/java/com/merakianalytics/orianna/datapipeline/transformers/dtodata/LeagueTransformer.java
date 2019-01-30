@@ -165,6 +165,7 @@ public class LeagueTransformer extends AbstractDataTransformer {
     public PositionalQueuesList transform(final PositionalQueues item, final PipelineContext context) {
         final PositionalQueuesList list = new PositionalQueuesList(item.size());
         list.addAll(item);
+        list.setPlatform(item.getPlatform());
         return list;
     }
 
@@ -172,6 +173,7 @@ public class LeagueTransformer extends AbstractDataTransformer {
     public PositionalQueues transform(final PositionalQueuesList item, final PipelineContext context) {
         final PositionalQueues list = new PositionalQueues(item.size());
         list.addAll(item);
+        list.setPlatform(item.getPlatform());
         return list;
     }
 

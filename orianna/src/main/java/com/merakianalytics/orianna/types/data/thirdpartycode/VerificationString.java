@@ -1,36 +1,8 @@
 package com.merakianalytics.orianna.types.data.thirdpartycode;
 
-import java.io.IOException;
-
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.merakianalytics.orianna.types.data.CoreData;
 
-@JsonDeserialize(using = VerificationString.Deserializer.class)
-@JsonSerialize(using = VerificationString.Serializer.class)
 public class VerificationString extends CoreData {
-    public static class Deserializer extends JsonDeserializer<VerificationString> {
-        @Override
-        public VerificationString deserialize(final JsonParser parser, final DeserializationContext context) throws IOException {
-            final VerificationString result = new VerificationString();
-            result.string = parser.readValueAs(String.class);
-            return result;
-        }
-    }
-
-    public static class Serializer extends JsonSerializer<VerificationString> {
-        @Override
-        public void serialize(final VerificationString string, final JsonGenerator generator, final SerializerProvider provider) throws IOException {
-            generator.writeObject(string.string);
-        }
-    }
-
     private static final long serialVersionUID = 6011690200339393247L;
     private String platform, string, summonerId;
 
