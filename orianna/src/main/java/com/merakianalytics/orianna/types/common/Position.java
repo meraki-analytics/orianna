@@ -5,6 +5,7 @@ public enum Position {
         BOTTOM,
         JUNGLE,
         MIDDLE,
+        NONE,
         TOP,
         UTILITY;
 }
