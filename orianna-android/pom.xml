@@ -15,12 +15,22 @@
 	<name>orianna-android</name>
 	<description>A Java adaptation of the Riot Games LoL API (https://developer.riotgames.com/)</description>
 	<url>https://github.com/meraki-analytics/orianna</url>
+	
+	<properties>
+		<android.sdk.version>4.1.1.4</android.sdk.version>
+	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.merakianalytics.orianna</groupId>
 			<artifactId>orianna</artifactId>
 			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>android</artifactId>
+			<version>${android.sdk.version}</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>
