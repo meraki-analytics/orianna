@@ -58,7 +58,7 @@ import com.merakianalytics.orianna.types.core.status.ShardStatus;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 import com.merakianalytics.orianna.types.core.thirdpartycode.VerificationString;
 
-public class GhostObjectSource extends AbstractDataSource {
+public class GhostLoader extends AbstractDataSource {
     private static final Set<Tier> UNIQUE_TIERS = ImmutableSet.of(Tier.CHALLENGER, Tier.MASTER, Tier.GRANDMASTER);
 
     private static String getCurrentVersion(final Platform platform, final PipelineContext context) {

@@ -160,7 +160,7 @@
       },
       "configClassName": "com.merakianalytics.orianna.datapipeline.InMemoryCache$Configuration"
     }, {
-      "className": "com.merakianalytics.orianna.datapipeline.GhostObjectSource"
+      "className": "com.merakianalytics.orianna.datapipeline.GhostLoader"
     }, {
       "className": "com.merakianalytics.orianna.datapipeline.MerakiAnalyticsCDN",
       "config": {
@@ -271,7 +271,7 @@
       },
       "configClassName": "com.merakianalytics.orianna.datapipeline.riotapi.RiotAPI$Configuration"
     }, {
-      "className": "com.merakianalytics.orianna.datapipeline.ImageDataSource"
+      "className": "com.merakianalytics.orianna.datapipeline.ImageDownloader"
     }],
     "transformers": [{
       "className": "com.merakianalytics.orianna.datapipeline.transformers.dtodata.ChampionMasteryTransformer"

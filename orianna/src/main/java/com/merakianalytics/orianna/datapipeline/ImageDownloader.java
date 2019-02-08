@@ -19,10 +19,10 @@ import com.merakianalytics.orianna.datapipeline.common.HTTPClient.Response;
 import com.merakianalytics.orianna.datapipeline.common.Utilities;
 import com.merakianalytics.orianna.types.common.OriannaException;
 
-public class ImageDataSource extends AbstractDataSource {
+public class ImageDownloader extends AbstractDataSource {
     private final HTTPClient client;
 
-    public ImageDataSource() {
+    public ImageDownloader() {
         client = new HTTPClient();
     }
 

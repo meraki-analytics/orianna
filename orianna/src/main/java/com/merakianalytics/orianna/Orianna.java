@@ -24,8 +24,8 @@ import com.google.common.io.Files;
 import com.google.common.io.Resources;
 import com.merakianalytics.datapipelines.DataPipeline;
 import com.merakianalytics.orianna.datapipeline.DataDragon;
-import com.merakianalytics.orianna.datapipeline.GhostObjectSource;
-import com.merakianalytics.orianna.datapipeline.ImageDataSource;
+import com.merakianalytics.orianna.datapipeline.GhostLoader;
+import com.merakianalytics.orianna.datapipeline.ImageDownloader;
 import com.merakianalytics.orianna.datapipeline.InMemoryCache;
 import com.merakianalytics.orianna.datapipeline.MerakiAnalyticsCDN;
 import com.merakianalytics.orianna.datapipeline.PipelineConfiguration;
@@ -119,11 +119,11 @@ public abstract class Orianna {
 
             final List<PipelineElementConfiguration> elements = ImmutableList.of(
                 PipelineElementConfiguration.defaultConfiguration(InMemoryCache.class),
-                PipelineElementConfiguration.defaultConfiguration(GhostObjectSource.class),
+                PipelineElementConfiguration.defaultConfiguration(GhostLoader.class),
                 PipelineElementConfiguration.defaultConfiguration(MerakiAnalyticsCDN.class),
                 PipelineElementConfiguration.defaultConfiguration(DataDragon.class),
                 PipelineElementConfiguration.defaultConfiguration(RiotAPI.class),
-                PipelineElementConfiguration.defaultConfiguration(ImageDataSource.class));
+                PipelineElementConfiguration.defaultConfiguration(ImageDownloader.class));
             config.setElements(elements);
 
             return config;
