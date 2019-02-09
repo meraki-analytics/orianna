@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -15,7 +13,7 @@
 	<name>orianna-android</name>
 	<description>A Java adaptation of the Riot Games LoL API (https://developer.riotgames.com/)</description>
 	<url>https://github.com/meraki-analytics/orianna</url>
-	
+
 	<properties>
 		<android.sdk.version>4.1.1.4</android.sdk.version>
 	</properties>
@@ -33,4 +31,45 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>shaded</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-shade-plugin</artifactId>
+						<version>${maven.shade.version}</version>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>shade</goal>
+								</goals>
+								<configuration>
+									<finalName>${project.build.finalName}-jar-with-dependencies</finalName>
+									<filters>
+										<filter>
+											<artifact>com.merakianalytics.orianna:orianna</artifact>
+											<excludes>
+												<exclude>com/merakianalytics/orianna/types/core/staticdata/Sprite.class</exclude>
+												<exclude>com/merakianalytics/orianna/types/core/staticdata/Sprite$1.class</exclude>
+												<exclude>com/merakianalytics/orianna/types/core/staticdata/Skin.class</exclude>
+												<exclude>com/merakianalytics/orianna/types/core/staticdata/Image.class</exclude>
+												<exclude>com/merakianalytics/orianna/types/core/staticdata/Image$1.class</exclude>
+												<exclude>com/merakianalytics/orianna/types/core/staticdata/Image$2.class</exclude>
+												<exclude>com/merakianalytics/orianna/datapipeline/ImageDownloader.class</exclude>
+												<exclude>com/merakianalytics/orianna/datapipeline/ImageDownloader$1.class</exclude>
+											</excludes>
+										</filter>
+									</filters>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
