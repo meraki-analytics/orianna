@@ -160,8 +160,8 @@ public class Kernel extends CompositeDataSource {
          * @param msgpack
          *        the msgpack to set
          */
-        public void setMsgpack(final boolean useMsgpack) {
-            msgpack = useMsgpack;
+        public void setMsgpack(final boolean msgpack) {
+            this.msgpack = msgpack;
         }
 
         /**
