@@ -81,9 +81,9 @@ repositories {
 }
 
 dependencies {
-  compile "com.merakianalytics.orianna:orianna:4.0.0-rc1"
+  implementation "com.merakianalytics.orianna:orianna:4.0.0-rc1"
   // or, for Android:
-  compile "com.merakianalytics.orianna:orianna-android:4.0.0-rc1"
+  implementation "com.merakianalytics.orianna:orianna-android:4.0.0-rc1"
 }
 ```
 Or, if you want to get the latest development version, add the [Sonaype Snapshot Repository](https://oss.sonatype.org/content/repositories/snapshots/) to your `build.gradle` instead:
@@ -93,9 +93,9 @@ repositories {
 }
 
 dependencies {
-  compile "com.merakianalytics.orianna:orianna:4.0.0-SNAPSHOT"
+  implementation "com.merakianalytics.orianna:orianna:4.0.0-SNAPSHOT"
   // or, for Android:
-  compile "com.merakianalytics.orianna:orianna-android:4.0.0-SNAPSHOT"
+  implementation "com.merakianalytics.orianna:orianna-android:4.0.0-SNAPSHOT"
 }
 ```
 
