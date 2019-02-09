@@ -155,6 +155,9 @@ Orianna.loadConfiguration(new File("/path/to/your/configuration-file.json"));
 ```
 Alternatively, Orianna can automatically load your configuration file on startup if you set your `ORIANNA_CONFIGURATION_PATH` environment variable to the path of your configuration file.
 
+## Android Usage Note
+If you're using orianna with Android, be aware that using the default configuration which uses the RiotAPI Data Source will result in leaking your API key to the users of your application. For personal applications you won't be sharing, that's okay. If you're going to distribute your application, however, you'll need to have orianna make its calls indirectly through a proxy server. You can use [Kernel](https://github.com/meraki-analytics/kernel) to easily set up a proxy server along with the Kernel Data Source in orianna to send your requests to it instead of the Riot API. [Here's an example](https://gist.github.com/robrua/c9248aa80212849e95e9002fac1970eb) of an orianna configuration file that uses Kernel instead of the Riot API.
+
 ## Questions & Contributions
 Feel free to send pull requests or to contact us via GitHub or [Discord](https://discord.gg/JRDk2JU). We also hang around the [Riot API Discord](https://discord.gg/riotapi), so come by and say hello. We love to hear what people are building with Orianna! If you would like to help us maintain Orianna, let us know on our [Discord](https://discord.gg/JRDk2JU).
 

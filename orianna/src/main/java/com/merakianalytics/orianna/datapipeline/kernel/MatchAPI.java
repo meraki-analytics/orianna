@@ -1,4 +1,4 @@
-package com.merakianalytics.orianna.datapipeline.riotapi;
+package com.merakianalytics.orianna.datapipeline.kernel;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -10,6 +10,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.Weeks;
 
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Multimap;
 import com.merakianalytics.datapipelines.PipelineContext;
 import com.merakianalytics.datapipelines.iterators.CloseableIterator;
@@ -18,8 +19,7 @@ import com.merakianalytics.datapipelines.sources.Get;
 import com.merakianalytics.datapipelines.sources.GetMany;
 import com.merakianalytics.orianna.datapipeline.common.HTTPClient;
 import com.merakianalytics.orianna.datapipeline.common.Utilities;
-import com.merakianalytics.orianna.datapipeline.common.rates.RateLimiter;
-import com.merakianalytics.orianna.datapipeline.riotapi.RiotAPI.Configuration;
+import com.merakianalytics.orianna.datapipeline.kernel.Kernel.Configuration;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.dto.match.Match;
 import com.merakianalytics.orianna.types.dto.match.MatchReference;
@@ -27,13 +27,12 @@ import com.merakianalytics.orianna.types.dto.match.MatchTimeline;
 import com.merakianalytics.orianna.types.dto.match.Matchlist;
 import com.merakianalytics.orianna.types.dto.match.TournamentMatches;
 
-public class MatchAPI extends RiotAPIService {
+public class MatchAPI extends KernelService {
     private static final int MAX_MATCH_INDEX_DIFFERENCE = 100;
     private static final long ONE_WEEK_IN_MILLISECONDS = Weeks.ONE.toStandardDuration().getMillis();
 
-    public MatchAPI(final Configuration config, final HTTPClient client, final Map<Platform, RateLimiter> applicationRateLimiters,
-        final Map<Platform, Object> applicationRateLimiterLocks) {
-        super(config, client, applicationRateLimiters, applicationRateLimiterLocks);
+    public MatchAPI(final Configuration config, final HTTPClient client) {
+        super(config, client);
     }
 
     @SuppressWarnings("unchecked")
@@ -59,10 +58,10 @@ public class MatchAPI extends RiotAPIService {
                 Match data;
                 if(tournamentCode == null) {
                     endpoint = "lol/match/v4/matches/" + matchId;
-                    data = get(Match.class, endpoint, platform, "lol/match/v4/matches/matchId");
+                    data = get(Match.class, endpoint, ImmutableMap.of("platform", platform.getTag()));
                 } else {
                     endpoint = "lol/match/v4/matches/" + matchId + "/by-tournament-code/" + tournamentCode;
-                    data = get(Match.class, endpoint, platform, "lol/match/v4/matches/matchId/by-tournament-code/tournamentCode");
+                    data = get(Match.class, endpoint, ImmutableMap.of("platform", platform.getTag()));
                 }
                 if(data == null) {
                     return null;
@@ -123,6 +122,7 @@ public class MatchAPI extends RiotAPIService {
         }
 
         final Multimap<String, String> parameters = HashMultimap.create();
+        parameters.put("platform", platform.getTag());
         if(beginTime != null) {
             parameters.put("beginTime", beginTime.toString());
         }
@@ -160,7 +160,7 @@ public class MatchAPI extends RiotAPIService {
             public Matchlist next() {
                 final String accountId = iterator.next();
                 final String endpoint = "lol/match/v4/matchlists/by-account/" + accountId;
-                final Matchlist data = get(Matchlist.class, endpoint, platform, parameters, "lol/match/v4/matchlists/by-account/accountId");
+                final Matchlist data = get(Matchlist.class, endpoint, parameters);
                 if(data == null) {
                     final Matchlist empty = new Matchlist();
                     empty.setMatches(Collections.<MatchReference> emptyList());
@@ -223,7 +223,7 @@ public class MatchAPI extends RiotAPIService {
                 final Number matchId = iterator.next();
 
                 final String endpoint = "lol/match/v4/timelines/by-match/" + matchId;
-                final MatchTimeline data = get(MatchTimeline.class, endpoint, platform, "lol/match/v4/timelines/by-match/matchId");
+                final MatchTimeline data = get(MatchTimeline.class, endpoint, ImmutableMap.of("platform", platform.getTag()));
                 if(data == null) {
                     return null;
                 }
@@ -259,7 +259,7 @@ public class MatchAPI extends RiotAPIService {
                 final String tournamentCode = iterator.next();
 
                 final String endpoint = "lol/match/v4/matches/by-tournament-code/" + tournamentCode + "/ids";
-                final TournamentMatches data = get(TournamentMatches.class, endpoint, platform, "lol/match/v4/matches/by-tournament-code/tournamentCode/ids");
+                final TournamentMatches data = get(TournamentMatches.class, endpoint, ImmutableMap.of("platform", platform.getTag()));
                 if(data == null) {
                     return null;
                 }
@@ -287,10 +287,10 @@ public class MatchAPI extends RiotAPIService {
         Match data;
         if(tournamentCode == null) {
             endpoint = "lol/match/v4/matches/" + matchId;
-            data = get(Match.class, endpoint, platform, "lol/match/v4/matches/matchId");
+            data = get(Match.class, endpoint, ImmutableMap.of("platform", platform.getTag()));
         } else {
             endpoint = "lol/match/v4/matches/" + matchId + "/by-tournament-code/" + tournamentCode;
-            data = get(Match.class, endpoint, platform, "lol/match/v4/matches/matchId/by-tournament-code/tournamentCode");
+            data = get(Match.class, endpoint, ImmutableMap.of("platform", platform.getTag()));
         }
         if(data == null) {
             return null;
@@ -346,6 +346,7 @@ public class MatchAPI extends RiotAPIService {
         final String endpoint = "lol/match/v4/matchlists/by-account/" + accountId;
 
         final Multimap<String, String> parameters = HashMultimap.create();
+        parameters.put("platform", platform.getTag());
         if(beginTime != null) {
             parameters.put("beginTime", beginTime.toString());
         }
@@ -368,7 +369,7 @@ public class MatchAPI extends RiotAPIService {
             parameters.put("champion", champion.toString());
         }
 
-        final Matchlist data = get(Matchlist.class, endpoint, platform, parameters, "lol/match/v4/matchlists/by-account/accountId");
+        final Matchlist data = get(Matchlist.class, endpoint, parameters);
         if(data == null) {
             final Matchlist empty = new Matchlist();
             empty.setMatches(Collections.<MatchReference> emptyList());
@@ -413,7 +414,7 @@ public class MatchAPI extends RiotAPIService {
         Utilities.checkNotNull(platform, "platform", matchId, "matchId");
 
         final String endpoint = "lol/match/v4/timelines/by-match/" + matchId;
-        final MatchTimeline data = get(MatchTimeline.class, endpoint, platform, "lol/match/v4/timelines/by-match/matchId");
+        final MatchTimeline data = get(MatchTimeline.class, endpoint, ImmutableMap.of("platform", platform.getTag()));
         if(data == null) {
             return null;
         }
@@ -430,7 +431,7 @@ public class MatchAPI extends RiotAPIService {
         Utilities.checkNotNull(platform, "platform", tournamentCode, "tournamentCode");
 
         final String endpoint = "lol/match/v4/matches/by-tournament-code/" + tournamentCode + "/ids";
-        final TournamentMatches data = get(TournamentMatches.class, endpoint, platform, "lol/match/v4/matches/by-tournament-code/tournamentCode/ids");
+        final TournamentMatches data = get(TournamentMatches.class, endpoint, ImmutableMap.of("platform", platform.getTag()));
         if(data == null) {
             return null;
         }

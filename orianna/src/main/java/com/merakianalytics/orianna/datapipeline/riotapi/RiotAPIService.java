@@ -467,13 +467,14 @@ public class RiotAPIService extends AbstractDataSource {
             this.attemptCount = 1;
         }
     }
+
     private static final Logger LOGGER = LoggerFactory.getLogger(RiotAPIService.class);
 
     private static Map<String, String> getDefaultHeaders(final Configuration config) {
         if(config.getApiKey() != null) {
-            return ImmutableMap.of("X-Riot-Token", config.getApiKey());
+            return ImmutableMap.of("Accept", "application/json", "X-Riot-Token", config.getApiKey());
         }
-        return ImmutableMap.of();
+        return ImmutableMap.of("Accept", "application/json");
     }
 
     private static AbstractRateLimiter getSpecificLimiterForRate(final RateLimiter limiter, final String epochSeconds) {
@@ -484,6 +485,7 @@ public class RiotAPIService extends AbstractDataSource {
             return (AbstractRateLimiter)multi.limiter(epochSeconds);
         }
     }
+
     private final Map<Platform, Object> applicationRateLimiterLocks;
     private final Map<Platform, RateLimiter> applicationRateLimiters;
     private final HTTPClient client;

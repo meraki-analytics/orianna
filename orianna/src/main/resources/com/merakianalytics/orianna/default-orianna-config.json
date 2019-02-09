@@ -175,7 +175,8 @@
           "rateLimiterTimeout": -1,
           "rateLimiterTimeoutUnit": "DAYS",
           "readTimeout": 3,
-          "readTimeoutUnit": "SECONDS"
+          "readTimeoutUnit": "SECONDS",
+          "https": true
         }
       },
       "configClassName": "com.merakianalytics.orianna.datapipeline.MerakiAnalyticsCDN$Configuration"
@@ -192,7 +193,8 @@
           "rateLimiterTimeout": -1,
           "rateLimiterTimeoutUnit": "DAYS",
           "readTimeout": 3,
-          "readTimeoutUnit": "SECONDS"
+          "readTimeoutUnit": "SECONDS",
+          "https": true
         }
       },
       "configClassName": "com.merakianalytics.orianna.datapipeline.DataDragon$Configuration"
@@ -256,7 +258,8 @@
           "rateLimiterTimeout": -1,
           "rateLimiterTimeoutUnit": "DAYS",
           "readTimeout": 3,
-          "readTimeoutUnit": "SECONDS"
+          "readTimeoutUnit": "SECONDS",
+          "https": true
         },
         "services": [
           "com.merakianalytics.orianna.datapipeline.riotapi.ChampionAPI",
