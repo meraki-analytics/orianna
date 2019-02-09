@@ -3,15 +3,10 @@ package com.merakianalytics.orianna.types.dto.match;
 import com.merakianalytics.orianna.types.dto.DataObject;
 
 public class Player extends DataObject {
-    private static final long serialVersionUID = 7345802174817911491L;
-    private long currentAccountId, summonerId, accountId;
-    private String currentPlatformId, summonerName, matchHistoryUri, platformId;
+    private static final long serialVersionUID = -6098509258697874128L;
+    private String currentPlatformId, summonerName, matchHistoryUri, platformId, currentAccountId, summonerId, accountId;
     private int profileIcon;
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(final Object obj) {
         if(this == obj) {
@@ -24,10 +19,18 @@ public class Player extends DataObject {
             return false;
         }
         final Player other = (Player)obj;
-        if(accountId != other.accountId) {
+        if(accountId == null) {
+            if(other.accountId != null) {
+                return false;
+            }
+        } else if(!accountId.equals(other.accountId)) {
             return false;
         }
-        if(currentAccountId != other.currentAccountId) {
+        if(currentAccountId == null) {
+            if(other.currentAccountId != null) {
+                return false;
+            }
+        } else if(!currentAccountId.equals(other.currentAccountId)) {
             return false;
         }
         if(currentPlatformId == null) {
@@ -54,7 +57,11 @@ public class Player extends DataObject {
         if(profileIcon != other.profileIcon) {
             return false;
         }
-        if(summonerId != other.summonerId) {
+        if(summonerId == null) {
+            if(other.summonerId != null) {
+                return false;
+            }
+        } else if(!summonerId.equals(other.summonerId)) {
             return false;
         }
         if(summonerName == null) {
@@ -70,14 +77,14 @@ public class Player extends DataObject {
     /**
      * @return the accountId
      */
-    public long getAccountId() {
+    public String getAccountId() {
         return accountId;
     }
 
     /**
      * @return the currentAccountId
      */
-    public long getCurrentAccountId() {
+    public String getCurrentAccountId() {
         return currentAccountId;
     }
 
@@ -112,7 +119,7 @@ public class Player extends DataObject {
     /**
      * @return the summonerId
      */
-    public long getSummonerId() {
+    public String getSummonerId() {
         return summonerId;
     }
 
@@ -123,21 +130,17 @@ public class Player extends DataObject {
         return summonerName;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (int)(accountId ^ accountId >>> 32);
-        result = prime * result + (int)(currentAccountId ^ currentAccountId >>> 32);
+        result = prime * result + (accountId == null ? 0 : accountId.hashCode());
+        result = prime * result + (currentAccountId == null ? 0 : currentAccountId.hashCode());
         result = prime * result + (currentPlatformId == null ? 0 : currentPlatformId.hashCode());
         result = prime * result + (matchHistoryUri == null ? 0 : matchHistoryUri.hashCode());
         result = prime * result + (platformId == null ? 0 : platformId.hashCode());
         result = prime * result + profileIcon;
-        result = prime * result + (int)(summonerId ^ summonerId >>> 32);
+        result = prime * result + (summonerId == null ? 0 : summonerId.hashCode());
         result = prime * result + (summonerName == null ? 0 : summonerName.hashCode());
         return result;
     }
@@ -146,7 +149,7 @@ public class Player extends DataObject {
      * @param accountId
      *        the accountId to set
      */
-    public void setAccountId(final long accountId) {
+    public void setAccountId(final String accountId) {
         this.accountId = accountId;
     }
 
@@ -154,7 +157,7 @@ public class Player extends DataObject {
      * @param currentAccountId
      *        the currentAccountId to set
      */
-    public void setCurrentAccountId(final long currentAccountId) {
+    public void setCurrentAccountId(final String currentAccountId) {
         this.currentAccountId = currentAccountId;
     }
 
@@ -194,7 +197,7 @@ public class Player extends DataObject {
      * @param summonerId
      *        the summonerId to set
      */
-    public void setSummonerId(final long summonerId) {
+    public void setSummonerId(final String summonerId) {
         this.summonerId = summonerId;
     }
 

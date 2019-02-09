@@ -18,11 +18,8 @@ import com.merakianalytics.orianna.types.core.GhostObject;
 import com.merakianalytics.orianna.types.core.searchable.Searchable;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
 import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
-import com.merakianalytics.orianna.types.core.staticdata.Champion.ChampionData;
-import com.merakianalytics.orianna.types.data.CoreData;
-import com.merakianalytics.orianna.types.data.champion.ChampionStatus;
 
-public class Champion extends GhostObject<ChampionData> {
+public class Champion extends GhostObject<com.merakianalytics.orianna.types.data.staticdata.Champion> {
     public static class Builder {
         private Integer id;
         private Set<String> includedData;
@@ -112,45 +109,8 @@ public class Champion extends GhostObject<ChampionData> {
         }
     }
 
-    public static class ChampionData extends CoreData {
-        private static final long serialVersionUID = 8024144237694671276L;
-        private com.merakianalytics.orianna.types.data.staticdata.Champion champion = new com.merakianalytics.orianna.types.data.staticdata.Champion();
-        private ChampionStatus status = new ChampionStatus();
-
-        /**
-         * @return the champion
-         */
-        public com.merakianalytics.orianna.types.data.staticdata.Champion getChampion() {
-            return champion;
-        }
-
-        /**
-         * @return the status
-         */
-        public ChampionStatus getStatus() {
-            return status;
-        }
-
-        /**
-         * @param champion
-         *        the champion to set
-         */
-        public void setChampion(final com.merakianalytics.orianna.types.data.staticdata.Champion champion) {
-            this.champion = champion;
-        }
-
-        /**
-         * @param status
-         *        the status to set
-         */
-        public void setStatus(final ChampionStatus status) {
-            this.status = status;
-        }
-    }
-
     public static final String CHAMPION_LOAD_GROUP = "champion";
     private static final long serialVersionUID = -2685748491353023270L;
-    public static final String STATUS_LOAD_GROUP = "status";
 
     public static Builder named(final String name) {
         return new Builder(name, true);
@@ -168,10 +128,10 @@ public class Champion extends GhostObject<ChampionData> {
         @Override
         public List<String> get() {
             load(CHAMPION_LOAD_GROUP);
-            if(coreData.getChampion().getAllyTips() == null) {
+            if(coreData.getAllyTips() == null) {
                 return null;
             }
-            return Collections.unmodifiableList(coreData.getChampion().getAllyTips());
+            return Collections.unmodifiableList(coreData.getAllyTips());
         }
     });
 
@@ -179,10 +139,10 @@ public class Champion extends GhostObject<ChampionData> {
         @Override
         public List<String> get() {
             load(CHAMPION_LOAD_GROUP);
-            if(coreData.getChampion().getEnemyTips() == null) {
+            if(coreData.getEnemyTips() == null) {
                 return null;
             }
-            return Collections.unmodifiableList(coreData.getChampion().getEnemyTips());
+            return Collections.unmodifiableList(coreData.getEnemyTips());
         }
     });
 
@@ -190,20 +150,20 @@ public class Champion extends GhostObject<ChampionData> {
         @Override
         public Image get() {
             load(CHAMPION_LOAD_GROUP);
-            if(coreData.getChampion().getImage() == null) {
+            if(coreData.getImage() == null) {
                 return null;
             }
-            return new Image(coreData.getChampion().getImage());
+            return new Image(coreData.getImage());
         }
     });
 
     private final Supplier<Set<String>> includedData = Suppliers.memoize(new Supplier<Set<String>>() {
         @Override
         public Set<String> get() {
-            if(coreData.getChampion().getIncludedData() == null) {
+            if(coreData.getIncludedData() == null) {
                 return null;
             }
-            return Collections.unmodifiableSet(coreData.getChampion().getIncludedData());
+            return Collections.unmodifiableSet(coreData.getIncludedData());
         }
     });
 
@@ -211,10 +171,10 @@ public class Champion extends GhostObject<ChampionData> {
         @Override
         public Passive get() {
             load(CHAMPION_LOAD_GROUP);
-            if(coreData.getChampion().getPassive() == null) {
+            if(coreData.getPassive() == null) {
                 return null;
             }
-            return new Passive(coreData.getChampion().getPassive());
+            return new Passive(coreData.getPassive());
         }
     });
 
@@ -222,11 +182,11 @@ public class Champion extends GhostObject<ChampionData> {
         @Override
         public SearchableList<RecommendedItems> get() {
             load(CHAMPION_LOAD_GROUP);
-            if(coreData.getChampion().getRecommendedItems() == null) {
+            if(coreData.getRecommendedItems() == null) {
                 return null;
             }
-            final List<RecommendedItems> recommendedItems = new ArrayList<>(coreData.getChampion().getRecommendedItems().size());
-            for(final com.merakianalytics.orianna.types.data.staticdata.RecommendedItems items : coreData.getChampion().getRecommendedItems()) {
+            final List<RecommendedItems> recommendedItems = new ArrayList<>(coreData.getRecommendedItems().size());
+            for(final com.merakianalytics.orianna.types.data.staticdata.RecommendedItems items : coreData.getRecommendedItems()) {
                 recommendedItems.add(new RecommendedItems(items));
             }
             return SearchableLists.unmodifiableFrom(recommendedItems);
@@ -237,11 +197,11 @@ public class Champion extends GhostObject<ChampionData> {
         @Override
         public SearchableList<Skin> get() {
             load(CHAMPION_LOAD_GROUP);
-            if(coreData.getChampion().getSkins() == null) {
+            if(coreData.getSkins() == null) {
                 return null;
             }
-            final List<Skin> skins = new ArrayList<>(coreData.getChampion().getSkins().size());
-            for(final com.merakianalytics.orianna.types.data.staticdata.Skin skin : coreData.getChampion().getSkins()) {
+            final List<Skin> skins = new ArrayList<>(coreData.getSkins().size());
+            for(final com.merakianalytics.orianna.types.data.staticdata.Skin skin : coreData.getSkins()) {
                 skins.add(new Skin(skin));
             }
             return SearchableLists.unmodifiableFrom(skins);
@@ -252,11 +212,11 @@ public class Champion extends GhostObject<ChampionData> {
         @Override
         public SearchableList<ChampionSpell> get() {
             load(CHAMPION_LOAD_GROUP);
-            if(coreData.getChampion().getSpells() == null) {
+            if(coreData.getSpells() == null) {
                 return null;
             }
-            final List<ChampionSpell> spells = new ArrayList<>(coreData.getChampion().getSpells().size());
-            for(final com.merakianalytics.orianna.types.data.staticdata.ChampionSpell spell : coreData.getChampion().getSpells()) {
+            final List<ChampionSpell> spells = new ArrayList<>(coreData.getSpells().size());
+            for(final com.merakianalytics.orianna.types.data.staticdata.ChampionSpell spell : coreData.getSpells()) {
                 spells.add(new ChampionSpell(spell));
             }
             return SearchableLists.unmodifiableFrom(spells);
@@ -267,10 +227,10 @@ public class Champion extends GhostObject<ChampionData> {
         @Override
         public ChampionStats get() {
             load(CHAMPION_LOAD_GROUP);
-            if(coreData.getChampion().getStats() == null) {
+            if(coreData.getStats() == null) {
                 return null;
             }
-            return new ChampionStats(coreData.getChampion().getStats());
+            return new ChampionStats(coreData.getStats());
         }
     });
 
@@ -278,23 +238,23 @@ public class Champion extends GhostObject<ChampionData> {
         @Override
         public List<String> get() {
             load(CHAMPION_LOAD_GROUP);
-            if(coreData.getChampion().getTags() == null) {
+            if(coreData.getTags() == null) {
                 return null;
             }
-            return Collections.unmodifiableList(coreData.getChampion().getTags());
+            return Collections.unmodifiableList(coreData.getTags());
         }
     });
 
-    public Champion(final ChampionData coreData) {
-        super(coreData, 2);
+    public Champion(final com.merakianalytics.orianna.types.data.staticdata.Champion coreData) {
+        super(coreData, 1);
     }
 
     @Override
     public boolean exists() {
-        if(coreData.getChampion().getTitle() == null) {
+        if(coreData.getTitle() == null) {
             load(CHAMPION_LOAD_GROUP);
         }
-        return coreData.getChampion().getTitle() != null;
+        return coreData.getTitle() != null;
     }
 
     public List<String> getAllyTips() {
@@ -302,36 +262,36 @@ public class Champion extends GhostObject<ChampionData> {
     }
 
     public String getBlurb() {
-        if(coreData.getChampion().getBlurb() == null) {
+        if(coreData.getBlurb() == null) {
             load(CHAMPION_LOAD_GROUP);
         }
-        return coreData.getChampion().getBlurb();
+        return coreData.getBlurb();
     }
 
     public int getDefenseRating() {
-        if(coreData.getChampion().getDefenseRating() == 0) {
+        if(coreData.getDefenseRating() == 0) {
             load(CHAMPION_LOAD_GROUP);
         }
-        return coreData.getChampion().getDefenseRating();
+        return coreData.getDefenseRating();
     }
 
     public int getDifficultyRating() {
-        if(coreData.getChampion().getDifficultyRating() == 0) {
+        if(coreData.getDifficultyRating() == 0) {
             load(CHAMPION_LOAD_GROUP);
         }
-        return coreData.getChampion().getDifficultyRating();
+        return coreData.getDifficultyRating();
     }
 
     public List<String> getEnemyTips() {
         return enemyTips.get();
     }
 
-    @Searchable({int.class})
+    @Searchable(int.class)
     public int getId() {
-        if(coreData.getChampion().getId() == 0) {
+        if(coreData.getId() == 0) {
             load(CHAMPION_LOAD_GROUP);
         }
-        return coreData.getChampion().getId();
+        return coreData.getId();
     }
 
     public Image getImage() {
@@ -344,44 +304,43 @@ public class Champion extends GhostObject<ChampionData> {
 
     @Searchable(String.class)
     public String getKey() {
-        if(coreData.getChampion().getKey() == null) {
+        if(coreData.getKey() == null) {
             load(CHAMPION_LOAD_GROUP);
         }
-        return coreData.getChampion().getKey();
+        return coreData.getKey();
     }
 
     @Override
     protected List<String> getLoadGroups() {
         return Arrays.asList(new String[] {
-            CHAMPION_LOAD_GROUP,
-            STATUS_LOAD_GROUP
+            CHAMPION_LOAD_GROUP
         });
     }
 
     public String getLocale() {
-        return coreData.getChampion().getLocale();
+        return coreData.getLocale();
     }
 
     public String getLore() {
-        if(coreData.getChampion().getLore() == null) {
+        if(coreData.getLore() == null) {
             load(CHAMPION_LOAD_GROUP);
         }
-        return coreData.getChampion().getLore();
+        return coreData.getLore();
     }
 
     public int getMagicRating() {
-        if(coreData.getChampion().getMagicRating() == 0) {
+        if(coreData.getMagicRating() == 0) {
             load(CHAMPION_LOAD_GROUP);
         }
-        return coreData.getChampion().getMagicRating();
+        return coreData.getMagicRating();
     }
 
     @Searchable(String.class)
     public String getName() {
-        if(coreData.getChampion().getName() == null) {
+        if(coreData.getName() == null) {
             load(CHAMPION_LOAD_GROUP);
         }
-        return coreData.getChampion().getName();
+        return coreData.getName();
     }
 
     public Passive getPassive() {
@@ -389,14 +348,14 @@ public class Champion extends GhostObject<ChampionData> {
     }
 
     public int getPhysicalRating() {
-        if(coreData.getChampion().getPhysicalRating() == 0) {
+        if(coreData.getPhysicalRating() == 0) {
             load(CHAMPION_LOAD_GROUP);
         }
-        return coreData.getChampion().getPhysicalRating();
+        return coreData.getPhysicalRating();
     }
 
     public Platform getPlatform() {
-        return Platform.withTag(coreData.getChampion().getPlatform());
+        return Platform.withTag(coreData.getPlatform());
     }
 
     public SearchableList<RecommendedItems> getRecommendedItems() {
@@ -404,14 +363,14 @@ public class Champion extends GhostObject<ChampionData> {
     }
 
     public Region getRegion() {
-        return Platform.withTag(coreData.getChampion().getPlatform()).getRegion();
+        return Platform.withTag(coreData.getPlatform()).getRegion();
     }
 
     public String getResource() {
-        if(coreData.getChampion().getResource() == null) {
+        if(coreData.getResource() == null) {
             load(CHAMPION_LOAD_GROUP);
         }
-        return coreData.getChampion().getResource();
+        return coreData.getResource();
     }
 
     public SearchableList<Skin> getSkins() {
@@ -432,64 +391,14 @@ public class Champion extends GhostObject<ChampionData> {
 
     @Searchable(String.class)
     public String getTitle() {
-        if(coreData.getChampion().getTitle() == null) {
+        if(coreData.getTitle() == null) {
             load(CHAMPION_LOAD_GROUP);
         }
-        return coreData.getChampion().getTitle();
+        return coreData.getTitle();
     }
 
     public String getVersion() {
-        return coreData.getChampion().getVersion();
-    }
-
-    public boolean isEnabled() {
-        if(coreData.getChampion().getId() == 0) {
-            load(CHAMPION_LOAD_GROUP);
-        }
-        if(coreData.getStatus().getId() == 0) {
-            load(STATUS_LOAD_GROUP);
-        }
-        return coreData.getStatus().isEnabled();
-    }
-
-    public boolean isEnabledInCoopVsAI() {
-        if(coreData.getChampion().getId() == 0) {
-            load(CHAMPION_LOAD_GROUP);
-        }
-        if(coreData.getStatus().getId() == 0) {
-            load(STATUS_LOAD_GROUP);
-        }
-        return coreData.getStatus().isEnabledInCoopVsAI();
-    }
-
-    public boolean isEnabledInCustoms() {
-        if(coreData.getChampion().getId() == 0) {
-            load(CHAMPION_LOAD_GROUP);
-        }
-        if(coreData.getStatus().getId() == 0) {
-            load(STATUS_LOAD_GROUP);
-        }
-        return coreData.getStatus().isEnabledInCustoms();
-    }
-
-    public boolean isEnabledInRanked() {
-        if(coreData.getChampion().getId() == 0) {
-            load(CHAMPION_LOAD_GROUP);
-        }
-        if(coreData.getStatus().getId() == 0) {
-            load(STATUS_LOAD_GROUP);
-        }
-        return coreData.getStatus().isEnabledInRanked();
-    }
-
-    public boolean isFreeToPlay() {
-        if(coreData.getChampion().getId() == 0) {
-            load(CHAMPION_LOAD_GROUP);
-        }
-        if(coreData.getStatus().getId() == 0) {
-            load(STATUS_LOAD_GROUP);
-        }
-        return coreData.getStatus().isEnabled();
+        return coreData.getVersion();
     }
 
     @Override
@@ -498,52 +407,32 @@ public class Champion extends GhostObject<ChampionData> {
         switch(group) {
             case CHAMPION_LOAD_GROUP:
                 builder = ImmutableMap.builder();
-                if(coreData.getChampion().getId() != 0) {
-                    builder.put("id", coreData.getChampion().getId());
+                if(coreData.getId() != 0) {
+                    builder.put("id", coreData.getId());
                 }
-                if(coreData.getChampion().getName() != null) {
-                    builder.put("name", coreData.getChampion().getName());
+                if(coreData.getName() != null) {
+                    builder.put("name", coreData.getName());
                 }
-                if(coreData.getChampion().getKey() != null) {
-                    builder.put("key", coreData.getChampion().getKey());
+                if(coreData.getKey() != null) {
+                    builder.put("key", coreData.getKey());
                 }
-                if(coreData.getChampion().getPlatform() != null) {
-                    builder.put("platform", Platform.withTag(coreData.getChampion().getPlatform()));
+                if(coreData.getPlatform() != null) {
+                    builder.put("platform", Platform.withTag(coreData.getPlatform()));
                 }
-                if(coreData.getChampion().getVersion() != null) {
-                    builder.put("version", coreData.getChampion().getVersion());
+                if(coreData.getVersion() != null) {
+                    builder.put("version", coreData.getVersion());
                 }
-                if(coreData.getChampion().getLocale() != null) {
-                    builder.put("locale", coreData.getChampion().getLocale());
+                if(coreData.getLocale() != null) {
+                    builder.put("locale", coreData.getLocale());
                 }
-                if(coreData.getChampion().getIncludedData() != null) {
-                    builder.put("includedData", coreData.getChampion().getIncludedData());
+                if(coreData.getIncludedData() != null) {
+                    builder.put("includedData", coreData.getIncludedData());
                 }
 
                 final com.merakianalytics.orianna.types.data.staticdata.Champion data =
                     Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.staticdata.Champion.class, builder.build());
                 if(data != null) {
-                    coreData.setChampion(data);
-                }
-                break;
-            case STATUS_LOAD_GROUP:
-                builder = ImmutableMap.builder();
-                if(coreData.getChampion().getId() != 0) {
-                    builder.put("id", coreData.getChampion().getId());
-                }
-                if(coreData.getChampion().getPlatform() != null) {
-                    builder.put("platform", Platform.withTag(coreData.getChampion().getPlatform()));
-                }
-
-                final ChampionStatus d = Orianna.getSettings().getPipeline().get(ChampionStatus.class, builder.build());
-                if(d != null) {
-                    coreData.setStatus(d);
-                }
-                if(coreData.getChampion().getId() == 0) {
-                    coreData.getChampion().setId(coreData.getStatus().getId());
-                }
-                if(coreData.getChampion().getPlatform() == null) {
-                    coreData.getChampion().setPlatform(coreData.getStatus().getPlatform());
+                    coreData = data;
                 }
                 break;
             default:

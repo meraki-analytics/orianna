@@ -31,9 +31,8 @@ public class VerificationString extends DataObject {
         }
     }
 
-    private static final long serialVersionUID = -7422547490021592184L;
-    private String string, platform;
-    private long summonerId;
+    private static final long serialVersionUID = 9177660941963582527L;
+    private String string, platform, summonerId;
 
     @Override
     public boolean equals(final Object obj) {
@@ -61,7 +60,11 @@ public class VerificationString extends DataObject {
         } else if(!string.equals(other.string)) {
             return false;
         }
-        if(summonerId != other.summonerId) {
+        if(summonerId == null) {
+            if(other.summonerId != null) {
+                return false;
+            }
+        } else if(!summonerId.equals(other.summonerId)) {
             return false;
         }
         return true;
@@ -84,7 +87,7 @@ public class VerificationString extends DataObject {
     /**
      * @return the summonerId
      */
-    public long getSummonerId() {
+    public String getSummonerId() {
         return summonerId;
     }
 
@@ -94,7 +97,7 @@ public class VerificationString extends DataObject {
         int result = 1;
         result = prime * result + (platform == null ? 0 : platform.hashCode());
         result = prime * result + (string == null ? 0 : string.hashCode());
-        result = prime * result + (int)(summonerId ^ summonerId >>> 32);
+        result = prime * result + (summonerId == null ? 0 : summonerId.hashCode());
         return result;
     }
 
@@ -118,7 +121,7 @@ public class VerificationString extends DataObject {
      * @param summonerId
      *        the summonerId to set
      */
-    public void setSummonerId(final long summonerId) {
+    public void setSummonerId(final String summonerId) {
         this.summonerId = summonerId;
     }
 }

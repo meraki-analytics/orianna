@@ -24,8 +24,8 @@ import com.google.common.io.Files;
 import com.google.common.io.Resources;
 import com.merakianalytics.datapipelines.DataPipeline;
 import com.merakianalytics.orianna.datapipeline.DataDragon;
-import com.merakianalytics.orianna.datapipeline.GhostObjectSource;
-import com.merakianalytics.orianna.datapipeline.ImageDataSource;
+import com.merakianalytics.orianna.datapipeline.GhostLoader;
+import com.merakianalytics.orianna.datapipeline.ImageDownloader;
 import com.merakianalytics.orianna.datapipeline.InMemoryCache;
 import com.merakianalytics.orianna.datapipeline.MerakiAnalyticsCDN;
 import com.merakianalytics.orianna.datapipeline.PipelineConfiguration;
@@ -46,6 +46,8 @@ import com.merakianalytics.orianna.types.common.OriannaException;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Queue;
 import com.merakianalytics.orianna.types.common.Region;
+import com.merakianalytics.orianna.types.core.champion.ChampionRotation;
+import com.merakianalytics.orianna.types.core.champion.ChampionRotations;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
@@ -53,6 +55,7 @@ import com.merakianalytics.orianna.types.core.championmastery.ChampionMasterySco
 import com.merakianalytics.orianna.types.core.league.League;
 import com.merakianalytics.orianna.types.core.league.LeaguePositions;
 import com.merakianalytics.orianna.types.core.league.Leagues;
+import com.merakianalytics.orianna.types.core.league.PositionalQueues;
 import com.merakianalytics.orianna.types.core.match.Match;
 import com.merakianalytics.orianna.types.core.match.MatchHistories;
 import com.merakianalytics.orianna.types.core.match.MatchHistory;
@@ -116,11 +119,11 @@ public abstract class Orianna {
 
             final List<PipelineElementConfiguration> elements = ImmutableList.of(
                 PipelineElementConfiguration.defaultConfiguration(InMemoryCache.class),
-                PipelineElementConfiguration.defaultConfiguration(GhostObjectSource.class),
+                PipelineElementConfiguration.defaultConfiguration(GhostLoader.class),
                 PipelineElementConfiguration.defaultConfiguration(MerakiAnalyticsCDN.class),
                 PipelineElementConfiguration.defaultConfiguration(DataDragon.class),
                 PipelineElementConfiguration.defaultConfiguration(RiotAPI.class),
-                PipelineElementConfiguration.defaultConfiguration(ImageDataSource.class));
+                PipelineElementConfiguration.defaultConfiguration(ImageDownloader.class));
             config.setElements(elements);
 
             return config;
@@ -342,6 +345,30 @@ public abstract class Orianna {
         return Champion.named(name);
     }
 
+    public static ChampionRotations.Builder championRotationsWithPlatforms(final Iterable<Platform> platforms) {
+        return ChampionRotations.withPlatforms(platforms);
+    }
+
+    public static ChampionRotations.Builder championRotationsWithPlatforms(final Platform... platforms) {
+        return ChampionRotations.withPlatforms(platforms);
+    }
+
+    public static ChampionRotations.Builder championRotationsWithRegions(final Iterable<Region> regions) {
+        return ChampionRotations.withRegions(regions);
+    }
+
+    public static ChampionRotations.Builder championRotationsWithRegions(final Region... regions) {
+        return ChampionRotations.withRegions(regions);
+    }
+
+    public static ChampionRotation.Builder championRotationWithPlatform(final Platform platform) {
+        return ChampionRotation.withPlatform(platform);
+    }
+
+    public static ChampionRotation.Builder championRotationWithRegion(final Region region) {
+        return ChampionRotation.withRegion(region);
+    }
+
     public static Champions.SubsetBuilder championsNamed(final Iterable<String> names) {
         return Champions.named(names);
     }
@@ -554,6 +581,18 @@ public abstract class Orianna {
 
     public static Versions getVersions() {
         return Versions.get();
+    }
+
+    public static League.SelectBuilder.SubBuilder grandmasterLeagueInQueue(final Queue queue) {
+        return League.grandmasterInQueue(queue);
+    }
+
+    public static Leagues.SelectBuilder.SubBuilder grandmasterLeaguesInQueues(final Iterable<Queue> queues) {
+        return Leagues.grandmasterInQueues(queues);
+    }
+
+    public static Leagues.SelectBuilder.SubBuilder grandmasterLeaguesInQueues(final Queue... queues) {
+        return Leagues.grandmasterInQueues(queues);
     }
 
     public static Item.Builder itemNamed(final String name) {
@@ -774,6 +813,30 @@ public abstract class Orianna {
 
     public static Match.Builder matchWithId(final long id) {
         return Match.withId(id);
+    }
+
+    public static PositionalQueues.Builder positionalQueuesWithPlatform(final Platform platform) {
+        return PositionalQueues.withPlatform(platform);
+    }
+
+    public static PositionalQueues.ManyBuilder positionalQueuesWithPlatforms(final Iterable<Platform> platforms) {
+        return PositionalQueues.withPlatforms(platforms);
+    }
+
+    public static PositionalQueues.ManyBuilder positionalQueuesWithPlatforms(final Platform... platforms) {
+        return PositionalQueues.withPlatforms(platforms);
+    }
+
+    public static PositionalQueues.Builder positionalQueuesWithRegion(final Region region) {
+        return PositionalQueues.withRegion(region);
+    }
+
+    public static PositionalQueues.ManyBuilder positionalQueuesWithRegions(final Iterable<Region> regions) {
+        return PositionalQueues.withRegions(regions);
+    }
+
+    public static PositionalQueues.ManyBuilder positionalQueuesWithRegions(final Region... regions) {
+        return PositionalQueues.withRegions(regions);
     }
 
     public static ProfileIcons.Builder profileIconsWithLocale(final String locale) {
@@ -1046,28 +1109,40 @@ public abstract class Orianna {
         return SummonerSpell.withId(id);
     }
 
-    public static Summoners.Builder summonersWithAccountIds(final Iterable<Long> accountIds) {
+    public static Summoners.Builder summonersWithAccountIds(final Iterable<String> accountIds) {
         return Summoners.withAccountIds(accountIds);
     }
 
-    public static Summoners.Builder summonersWithAccountIds(final long... accountIds) {
+    public static Summoners.Builder summonersWithAccountIds(final String... accountIds) {
         return Summoners.withAccountIds(accountIds);
     }
 
-    public static Summoners.Builder summonersWithIds(final Iterable<Long> ids) {
+    public static Summoners.Builder summonersWithIds(final Iterable<String> ids) {
         return Summoners.withIds(ids);
     }
 
-    public static Summoners.Builder summonersWithIds(final long... ids) {
+    public static Summoners.Builder summonersWithIds(final String... ids) {
         return Summoners.withIds(ids);
     }
 
-    public static Summoner.Builder summonerWithAccountId(final long accountId) {
+    public static Summoners.Builder summonersWithPuuids(final Iterable<String> puuids) {
+        return Summoners.withPuuids(puuids);
+    }
+
+    public static Summoners.Builder summonersWithPuuids(final String... puuids) {
+        return Summoners.withPuuids(puuids);
+    }
+
+    public static Summoner.Builder summonerWithAccountId(final String accountId) {
         return Summoner.withAccountId(accountId);
     }
 
-    public static Summoner.Builder summonerWithId(final long id) {
+    public static Summoner.Builder summonerWithId(final String id) {
         return Summoner.withId(id);
+    }
+
+    public static Summoner.Builder summonerWithPuuid(final String puuid) {
+        return Summoner.withPuuid(puuid);
     }
 
     public static Timelines.Builder timelinesWithIds(final Iterable<Long> ids) {
@@ -1110,7 +1185,23 @@ public abstract class Orianna {
         return Versions.withPlatform(platform);
     }
 
+    public static Versions.ManyBuilder versionsWithPlatforms(final Iterable<Platform> platforms) {
+        return Versions.withPlatforms(platforms);
+    }
+
+    public static Versions.ManyBuilder versionsWithPlatforms(final Platform... platforms) {
+        return Versions.withPlatforms(platforms);
+    }
+
     public static Versions.Builder versionsWithRegion(final Region region) {
         return Versions.withRegion(region);
+    }
+
+    public static Versions.ManyBuilder versionsWithRegions(final Iterable<Region> regions) {
+        return Versions.withRegions(regions);
+    }
+
+    public static Versions.ManyBuilder versionsWithRegions(final Region... regions) {
+        return Versions.withRegions(regions);
     }
 }

@@ -25,16 +25,16 @@ public class SpectatorAPI extends RiotAPIService {
     @Get(CurrentGameInfo.class)
     public CurrentGameInfo getCurrentGameInfo(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final Number summonerId = (Number)query.get("summonerId");
+        final String summonerId = (String)query.get("summonerId");
         Utilities.checkNotNull(platform, "platform", summonerId, "summonerId");
 
-        final String endpoint = "lol/spectator/v3/active-games/by-summoner/" + summonerId;
-        final CurrentGameInfo data = get(CurrentGameInfo.class, endpoint, platform, "lol/spectator/v3/active-games/by-summoner/summonerId");
+        final String endpoint = "lol/spectator/v4/active-games/by-summoner/" + summonerId;
+        final CurrentGameInfo data = get(CurrentGameInfo.class, endpoint, platform, "lol/spectator/v4/active-games/by-summoner/summonerId");
         if(data == null) {
             return null;
         }
 
-        data.setSummonerId(summonerId.longValue());
+        data.setSummonerId(summonerId);
         return data;
     }
 
@@ -43,8 +43,8 @@ public class SpectatorAPI extends RiotAPIService {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
 
-        final String endpoint = "lol/spectator/v3/featured-games";
-        final FeaturedGames data = get(FeaturedGames.class, endpoint, platform, "lol/spectator/v3/featured-games");
+        final String endpoint = "lol/spectator/v4/featured-games";
+        final FeaturedGames data = get(FeaturedGames.class, endpoint, platform, "lol/spectator/v4/featured-games");
         if(data == null) {
             return null;
         }
@@ -57,10 +57,10 @@ public class SpectatorAPI extends RiotAPIService {
     @GetMany(CurrentGameInfo.class)
     public CloseableIterator<CurrentGameInfo> getManyCurrentGameInfo(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
+        final Iterable<String> summonerIds = (Iterable<String>)query.get("summonerIds");
         Utilities.checkNotNull(platform, "platform", summonerIds, "summonerIds");
 
-        final Iterator<Number> iterator = summonerIds.iterator();
+        final Iterator<String> iterator = summonerIds.iterator();
         return CloseableIterators.from(new Iterator<CurrentGameInfo>() {
             @Override
             public boolean hasNext() {
@@ -69,15 +69,15 @@ public class SpectatorAPI extends RiotAPIService {
 
             @Override
             public CurrentGameInfo next() {
-                final Number summonerId = iterator.next();
+                final String summonerId = iterator.next();
 
-                final String endpoint = "lol/spectator/v3/active-games/by-summoner/" + summonerId;
-                final CurrentGameInfo data = get(CurrentGameInfo.class, endpoint, platform, "lol/spectator/v3/active-games/by-summoner/summonerId");
+                final String endpoint = "lol/spectator/v4/active-games/by-summoner/" + summonerId;
+                final CurrentGameInfo data = get(CurrentGameInfo.class, endpoint, platform, "lol/spectator/v4/active-games/by-summoner/summonerId");
                 if(data == null) {
                     return null;
                 }
 
-                data.setSummonerId(summonerId.longValue());
+                data.setSummonerId(summonerId);
                 return data;
             }
 
@@ -105,8 +105,8 @@ public class SpectatorAPI extends RiotAPIService {
             public FeaturedGames next() {
                 final Platform platform = iterator.next();
 
-                final String endpoint = "lol/spectator/v3/featured-games";
-                final FeaturedGames data = get(FeaturedGames.class, endpoint, platform, "lol/spectator/v3/featured-games");
+                final String endpoint = "lol/spectator/v4/featured-games";
+                final FeaturedGames data = get(FeaturedGames.class, endpoint, platform, "lol/spectator/v4/featured-games");
                 if(data == null) {
                     return null;
                 }

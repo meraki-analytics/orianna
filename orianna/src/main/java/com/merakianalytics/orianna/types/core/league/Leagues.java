@@ -119,6 +119,14 @@ public abstract class Leagues {
         return new SelectBuilder(Tier.CHALLENGER).inQueues(queues);
     }
 
+    public static SelectBuilder.SubBuilder grandmasterInQueues(final Iterable<Queue> queues) {
+        return new SelectBuilder(Tier.GRANDMASTER).inQueues(queues);
+    }
+
+    public static SelectBuilder.SubBuilder grandmasterInQueues(final Queue... queues) {
+        return new SelectBuilder(Tier.GRANDMASTER).inQueues(queues);
+    }
+
     public static SelectBuilder.SubBuilder masterInQueues(final Iterable<Queue> queues) {
         return new SelectBuilder(Tier.MASTER).inQueues(queues);
     }

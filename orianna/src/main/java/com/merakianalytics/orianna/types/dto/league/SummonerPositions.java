@@ -3,9 +3,8 @@ package com.merakianalytics.orianna.types.dto.league;
 import com.merakianalytics.orianna.types.dto.DataObject;
 
 public class SummonerPositions extends DataObject.SetProxy<LeaguePosition> {
-    private static final long serialVersionUID = 2991229866561625904L;
-    private String platform;
-    private long summonerId;
+    private static final long serialVersionUID = 3274909886912241039L;
+    private String platform, summonerId;
 
     @Override
     public boolean equals(final Object obj) {
@@ -26,7 +25,11 @@ public class SummonerPositions extends DataObject.SetProxy<LeaguePosition> {
         } else if(!platform.equals(other.platform)) {
             return false;
         }
-        if(summonerId != other.summonerId) {
+        if(summonerId == null) {
+            if(other.summonerId != null) {
+                return false;
+            }
+        } else if(!summonerId.equals(other.summonerId)) {
             return false;
         }
         return true;
@@ -42,7 +45,7 @@ public class SummonerPositions extends DataObject.SetProxy<LeaguePosition> {
     /**
      * @return the summonerId
      */
-    public long getSummonerId() {
+    public String getSummonerId() {
         return summonerId;
     }
 
@@ -51,7 +54,7 @@ public class SummonerPositions extends DataObject.SetProxy<LeaguePosition> {
         final int prime = 31;
         int result = 1;
         result = prime * result + (platform == null ? 0 : platform.hashCode());
-        result = prime * result + (int)(summonerId ^ summonerId >>> 32);
+        result = prime * result + (summonerId == null ? 0 : summonerId.hashCode());
         return result;
     }
 
@@ -67,7 +70,7 @@ public class SummonerPositions extends DataObject.SetProxy<LeaguePosition> {
      * @param summonerId
      *        the summonerId to set
      */
-    public void setSummonerId(final long summonerId) {
+    public void setSummonerId(final String summonerId) {
         this.summonerId = summonerId;
     }
 }

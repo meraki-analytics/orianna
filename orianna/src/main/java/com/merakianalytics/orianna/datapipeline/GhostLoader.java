@@ -19,11 +19,13 @@ import com.merakianalytics.orianna.datapipeline.common.Utilities;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Queue;
 import com.merakianalytics.orianna.types.common.Tier;
+import com.merakianalytics.orianna.types.core.champion.ChampionRotation;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
 import com.merakianalytics.orianna.types.core.league.League;
 import com.merakianalytics.orianna.types.core.league.LeaguePositions;
+import com.merakianalytics.orianna.types.core.league.PositionalQueues;
 import com.merakianalytics.orianna.types.core.match.Match;
 import com.merakianalytics.orianna.types.core.match.MatchHistory;
 import com.merakianalytics.orianna.types.core.match.Timeline;
@@ -31,7 +33,6 @@ import com.merakianalytics.orianna.types.core.match.TournamentMatches;
 import com.merakianalytics.orianna.types.core.spectator.CurrentMatch;
 import com.merakianalytics.orianna.types.core.spectator.FeaturedMatches;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
-import com.merakianalytics.orianna.types.core.staticdata.Champion.ChampionData;
 import com.merakianalytics.orianna.types.core.staticdata.Champions;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
 import com.merakianalytics.orianna.types.core.staticdata.Items;
@@ -57,8 +58,8 @@ import com.merakianalytics.orianna.types.core.status.ShardStatus;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 import com.merakianalytics.orianna.types.core.thirdpartycode.VerificationString;
 
-public class GhostObjectSource extends AbstractDataSource {
-    private static final Set<Tier> UNIQUE_TIERS = ImmutableSet.of(Tier.CHALLENGER, Tier.MASTER);
+public class GhostLoader extends AbstractDataSource {
+    private static final Set<Tier> UNIQUE_TIERS = ImmutableSet.of(Tier.CHALLENGER, Tier.MASTER, Tier.GRANDMASTER);
 
     private static String getCurrentVersion(final Platform platform, final PipelineContext context) {
         final com.merakianalytics.orianna.types.dto.staticdata.Realm realm =
@@ -79,41 +80,41 @@ public class GhostObjectSource extends AbstractDataSource {
         final String locale = query.get("locale") == null ? platform.getDefaultLocale() : (String)query.get("locale");
         final Set<String> includedData = query.get("includedData") == null ? ImmutableSet.of("all") : (Set<String>)query.get("includedData");
 
-        final ChampionData data = new ChampionData();
-        data.getChampion().setId(id == null ? 0 : id.intValue());
-        data.getChampion().setName(name);
-        data.getChampion().setKey(key);
-        data.getChampion().setPlatform(platform.getTag());
-        data.getChampion().setVersion(version);
-        data.getChampion().setLocale(locale);
-        data.getChampion().setIncludedData(includedData);
+        final com.merakianalytics.orianna.types.data.staticdata.Champion data = new com.merakianalytics.orianna.types.data.staticdata.Champion();
+        data.setId(id == null ? 0 : id.intValue());
+        data.setName(name);
+        data.setKey(key);
+        data.setPlatform(platform.getTag());
+        data.setVersion(version);
+        data.setLocale(locale);
+        data.setIncludedData(includedData);
         return new Champion(data);
     }
 
     @Get(ChampionMasteries.class)
     public ChampionMasteries getChampionMasteries(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final Number summonerId = (Number)query.get("summonerId");
+        final String summonerId = (String)query.get("summonerId");
         Utilities.checkNotNull(platform, "platform", summonerId, "summonerId");
 
         final com.merakianalytics.orianna.types.data.championmastery.ChampionMasteries data =
             new com.merakianalytics.orianna.types.data.championmastery.ChampionMasteries();
         data.setPlatform(platform.getTag());
-        data.setSummonerId(summonerId.longValue());
+        data.setSummonerId(summonerId);
         return new ChampionMasteries(data);
     }
 
     @Get(ChampionMastery.class)
     public ChampionMastery getChampionMastery(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final Number summonerId = (Number)query.get("summonerId");
+        final String summonerId = (String)query.get("summonerId");
         final Number championId = (Number)query.get("championId");
         Utilities.checkNotNull(platform, "platform", summonerId, "summonerId", championId, "championId");
 
         final com.merakianalytics.orianna.types.data.championmastery.ChampionMastery data =
             new com.merakianalytics.orianna.types.data.championmastery.ChampionMastery();
         data.setPlatform(platform.getTag());
-        data.setSummonerId(summonerId.longValue());
+        data.setSummonerId(summonerId);
         data.setChampionId(championId.intValue());
         return new ChampionMastery(data);
     }
@@ -121,14 +122,24 @@ public class GhostObjectSource extends AbstractDataSource {
     @Get(ChampionMasteryScore.class)
     public ChampionMasteryScore getChampionMasteryScore(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final Number summonerId = (Number)query.get("summonerId");
+        final String summonerId = (String)query.get("summonerId");
         Utilities.checkNotNull(platform, "platform", summonerId, "summonerId");
 
         final com.merakianalytics.orianna.types.data.championmastery.ChampionMasteryScore data =
             new com.merakianalytics.orianna.types.data.championmastery.ChampionMasteryScore();
         data.setPlatform(platform.getTag());
-        data.setSummonerId(summonerId.longValue());
+        data.setSummonerId(summonerId);
         return new ChampionMasteryScore(data);
+    }
+
+    @Get(ChampionRotation.class)
+    public ChampionRotation getChampionRotation(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
+
+        final com.merakianalytics.orianna.types.data.champion.ChampionRotation data = new com.merakianalytics.orianna.types.data.champion.ChampionRotation();
+        data.setPlatform(platform.getTag());
+        return new ChampionRotation(data);
     }
 
     @SuppressWarnings("unchecked")
@@ -151,13 +162,13 @@ public class GhostObjectSource extends AbstractDataSource {
     @Get(CurrentMatch.class)
     public CurrentMatch getCurrentMatch(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final Number summonerId = (Number)query.get("summonerId");
+        final String summonerId = (String)query.get("summonerId");
         Utilities.checkNotNull(platform, "platform", summonerId, "summonerId");
 
         final com.merakianalytics.orianna.types.data.spectator.CurrentMatch data =
             new com.merakianalytics.orianna.types.data.spectator.CurrentMatch();
         data.setPlatform(platform.getTag());
-        data.setSummonerId(summonerId.longValue());
+        data.setSummonerId(summonerId);
         return new CurrentMatch(data);
     }
 
@@ -274,13 +285,13 @@ public class GhostObjectSource extends AbstractDataSource {
     @Get(LeaguePositions.class)
     public LeaguePositions getLeaguePositions(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final Number summonerId = (Number)query.get("summonerId");
+        final String summonerId = (String)query.get("summonerId");
         Utilities.checkNotNull(platform, "platform", summonerId, "summonerId");
 
         final com.merakianalytics.orianna.types.data.league.LeaguePositions data =
             new com.merakianalytics.orianna.types.data.league.LeaguePositions();
         data.setPlatform(platform.getTag());
-        data.setSummonerId(summonerId.longValue());
+        data.setSummonerId(summonerId);
         return new LeaguePositions(data);
     }
 
@@ -316,19 +327,19 @@ public class GhostObjectSource extends AbstractDataSource {
 
             @Override
             public Champion next() {
-                final ChampionData data = new ChampionData();
+                final com.merakianalytics.orianna.types.data.staticdata.Champion data = new com.merakianalytics.orianna.types.data.staticdata.Champion();
                 if(ids != null) {
                     final int id = ((Number)iterator.next()).intValue();
-                    data.getChampion().setId(id);
+                    data.setId(id);
                 } else if(names != null) {
-                    data.getChampion().setName((String)iterator.next());
+                    data.setName((String)iterator.next());
                 } else if(keys != null) {
-                    data.getChampion().setKey((String)iterator.next());
+                    data.setKey((String)iterator.next());
                 }
-                data.getChampion().setPlatform(platform.getTag());
-                data.getChampion().setVersion(version);
-                data.getChampion().setLocale(locale);
-                data.getChampion().setIncludedData(includedData);
+                data.setPlatform(platform.getTag());
+                data.setVersion(version);
+                data.setLocale(locale);
+                data.setIncludedData(includedData);
                 return new Champion(data);
             }
 
@@ -343,10 +354,10 @@ public class GhostObjectSource extends AbstractDataSource {
     @GetMany(ChampionMasteries.class)
     public CloseableIterator<ChampionMasteries> getManyChampionMasteries(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
+        final Iterable<String> summonerIds = (Iterable<String>)query.get("summonerIds");
         Utilities.checkNotNull(platform, "platform", summonerIds, "summonerIds");
 
-        final Iterator<Number> iterator = summonerIds.iterator();
+        final Iterator<String> iterator = summonerIds.iterator();
         return CloseableIterators.from(new Iterator<ChampionMasteries>() {
             @Override
             public boolean hasNext() {
@@ -358,7 +369,7 @@ public class GhostObjectSource extends AbstractDataSource {
                 final com.merakianalytics.orianna.types.data.championmastery.ChampionMasteries data =
                     new com.merakianalytics.orianna.types.data.championmastery.ChampionMasteries();
                 data.setPlatform(platform.getTag());
-                data.setSummonerId(iterator.next().longValue());
+                data.setSummonerId(iterator.next());
                 return new ChampionMasteries(data);
             }
 
@@ -373,7 +384,7 @@ public class GhostObjectSource extends AbstractDataSource {
     @GetMany(ChampionMastery.class)
     public CloseableIterator<ChampionMastery> getManyChampionMastery(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final Number summonerId = (Number)query.get("summonerId");
+        final String summonerId = (String)query.get("summonerId");
         final Iterable<Number> championIds = (Iterable<Number>)query.get("championIds");
         Utilities.checkNotNull(platform, "platform", summonerId, "summonerId", championIds, "championIds");
 
@@ -389,7 +400,7 @@ public class GhostObjectSource extends AbstractDataSource {
                 final com.merakianalytics.orianna.types.data.championmastery.ChampionMastery data =
                     new com.merakianalytics.orianna.types.data.championmastery.ChampionMastery();
                 data.setPlatform(platform.getTag());
-                data.setSummonerId(summonerId.longValue());
+                data.setSummonerId(summonerId);
                 data.setChampionId(iterator.next().intValue());
                 return new ChampionMastery(data);
             }
@@ -405,10 +416,10 @@ public class GhostObjectSource extends AbstractDataSource {
     @GetMany(ChampionMasteryScore.class)
     public CloseableIterator<ChampionMasteryScore> getManyChampionMasteryScore(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
+        final Iterable<String> summonerIds = (Iterable<String>)query.get("summonerIds");
         Utilities.checkNotNull(platform, "platform", summonerIds, "summonerIds");
 
-        final Iterator<Number> iterator = summonerIds.iterator();
+        final Iterator<String> iterator = summonerIds.iterator();
         return CloseableIterators.from(new Iterator<ChampionMasteryScore>() {
             @Override
             public boolean hasNext() {
@@ -420,8 +431,36 @@ public class GhostObjectSource extends AbstractDataSource {
                 final com.merakianalytics.orianna.types.data.championmastery.ChampionMasteryScore data =
                     new com.merakianalytics.orianna.types.data.championmastery.ChampionMasteryScore();
                 data.setPlatform(platform.getTag());
-                data.setSummonerId(iterator.next().longValue());
+                data.setSummonerId(iterator.next());
                 return new ChampionMasteryScore(data);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    @GetMany(ChampionRotation.class)
+    public CloseableIterator<ChampionRotation> getManyChampionRotation(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Iterable<Platform> platforms = (Iterable<Platform>)query.get("platforms");
+        Utilities.checkNotNull(platforms, "platforms");
+
+        final Iterator<Platform> iterator = platforms.iterator();
+        return CloseableIterators.from(new Iterator<ChampionRotation>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public ChampionRotation next() {
+                final com.merakianalytics.orianna.types.data.champion.ChampionRotation data =
+                    new com.merakianalytics.orianna.types.data.champion.ChampionRotation();
+                data.setPlatform(iterator.next().getTag());
+                return new ChampionRotation(data);
             }
 
             @Override
@@ -435,10 +474,10 @@ public class GhostObjectSource extends AbstractDataSource {
     @GetMany(CurrentMatch.class)
     public CloseableIterator<CurrentMatch> getManyCurrentMatch(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
+        final Iterable<String> summonerIds = (Iterable<String>)query.get("summonerIds");
         Utilities.checkNotNull(platform, "platform", summonerIds, "summonerIds");
 
-        final Iterator<Number> iterator = summonerIds.iterator();
+        final Iterator<String> iterator = summonerIds.iterator();
         return CloseableIterators.from(new Iterator<CurrentMatch>() {
             @Override
             public boolean hasNext() {
@@ -449,7 +488,7 @@ public class GhostObjectSource extends AbstractDataSource {
             public CurrentMatch next() {
                 final com.merakianalytics.orianna.types.data.spectator.CurrentMatch data = new com.merakianalytics.orianna.types.data.spectator.CurrentMatch();
                 data.setPlatform(platform.getTag());
-                data.setSummonerId(iterator.next().longValue());
+                data.setSummonerId(iterator.next());
                 return new CurrentMatch(data);
             }
 
@@ -592,10 +631,10 @@ public class GhostObjectSource extends AbstractDataSource {
     @GetMany(LeaguePositions.class)
     public CloseableIterator<LeaguePositions> getManyLeaguePositions(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
+        final Iterable<String> summonerIds = (Iterable<String>)query.get("summonerIds");
         Utilities.checkNotNull(platform, "platform", summonerIds, "summonerIds");
 
-        final Iterator<Number> iterator = summonerIds.iterator();
+        final Iterator<String> iterator = summonerIds.iterator();
         return CloseableIterators.from(new Iterator<LeaguePositions>() {
             @Override
             public boolean hasNext() {
@@ -607,7 +646,7 @@ public class GhostObjectSource extends AbstractDataSource {
                 final com.merakianalytics.orianna.types.data.league.LeaguePositions data =
                     new com.merakianalytics.orianna.types.data.league.LeaguePositions();
                 data.setPlatform(platform.getTag());
-                data.setSummonerId(iterator.next().longValue());
+                data.setSummonerId(iterator.next());
                 return new LeaguePositions(data);
             }
 
@@ -751,7 +790,7 @@ public class GhostObjectSource extends AbstractDataSource {
     @GetMany(MatchHistory.class)
     public CloseableIterator<MatchHistory> getManyMatchHistory(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final Iterable<Number> accountIds = (Iterable<Number>)query.get("accountIds");
+        final Iterable<String> accountIds = (Iterable<String>)query.get("accountIds");
         final Set<Integer> queues = query.get("queues") == null ? Collections.<Integer> emptySet() : (Set<Integer>)query.get("queues");
         final Set<Integer> seasons = query.get("seasons") == null ? Collections.<Integer> emptySet() : (Set<Integer>)query.get("seasons");
         final Set<Integer> champions = query.get("champions") == null ? Collections.<Integer> emptySet() : (Set<Integer>)query.get("champions");
@@ -759,10 +798,9 @@ public class GhostObjectSource extends AbstractDataSource {
         final Number endTime = (Number)query.get("endTime");
         final Number beginIndex = (Number)query.get("beginIndex");
         final Number endIndex = (Number)query.get("endIndex");
-        final boolean recent = query.get("recent") == null ? false : (Boolean)query.get("recent");
         Utilities.checkNotNull(platform, "platform", accountIds, "accountIds");
 
-        final Iterator<Number> iterator = accountIds.iterator();
+        final Iterator<String> iterator = accountIds.iterator();
         return CloseableIterators.from(new Iterator<MatchHistory>() {
             @Override
             public boolean hasNext() {
@@ -774,7 +812,7 @@ public class GhostObjectSource extends AbstractDataSource {
                 final com.merakianalytics.orianna.types.data.match.MatchList data =
                     new com.merakianalytics.orianna.types.data.match.MatchList();
                 data.setPlatform(platform.getTag());
-                data.setAccountId(iterator.next().longValue());
+                data.setAccountId(iterator.next());
                 data.setQueues(queues);
                 data.setSeasons(seasons);
                 data.setChampions(champions);
@@ -782,7 +820,6 @@ public class GhostObjectSource extends AbstractDataSource {
                 data.setEndTime(endTime == null ? null : new DateTime(endTime.longValue()));
                 data.setStartIndex(beginIndex == null ? 0 : beginIndex.intValue());
                 data.setEndIndex(endIndex == null ? 0 : endIndex.intValue());
-                data.setRecent(recent);
                 return new MatchHistory(data);
             }
 
@@ -813,6 +850,34 @@ public class GhostObjectSource extends AbstractDataSource {
                 data.setPlatform(platform.getTag());
                 data.setName(iterator.next());
                 return new Patch(data);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    @GetMany(PositionalQueues.class)
+    public CloseableIterator<PositionalQueues> getManyPositionalQueues(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Iterable<Platform> platforms = (Iterable<Platform>)query.get("platforms");
+        Utilities.checkNotNull(platforms, "platforms");
+
+        final Iterator<Platform> iterator = platforms.iterator();
+        return CloseableIterators.from(new Iterator<PositionalQueues>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public PositionalQueues next() {
+                final com.merakianalytics.orianna.types.data.league.PositionalQueues data =
+                    new com.merakianalytics.orianna.types.data.league.PositionalQueues();
+                data.setPlatform(iterator.next().getTag());
+                return new PositionalQueues(data);
             }
 
             @Override
@@ -1021,22 +1086,14 @@ public class GhostObjectSource extends AbstractDataSource {
     public CloseableIterator<Summoner> getManySummoner(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
-        final Iterable<Number> ids = (Iterable<Number>)query.get("ids");
-        final Iterable<Number> accountIds = (Iterable<Number>)query.get("accountIds");
-        final Iterable<String> names = (Iterable<String>)query.get("names");
-        Utilities.checkAtLeastOneNotNull(ids, "ids", names, "names", accountIds, "accountIds");
+        final Iterable<String> puuids = (Iterable<String>)query.get("puuids");
+        final Iterable<String> accountIds = (Iterable<String>)query.get("accountIds");
+        final Iterable<String> summonerIds = (Iterable<String>)query.get("ids");
+        final Iterable<String> summonerNames = (Iterable<String>)query.get("names");
+        Utilities.checkAtLeastOneNotNull(puuids, "puuids", accountIds, "accountIds", summonerIds, "ids", summonerNames, "names");
 
-        final Iterator<?> iterator;
-        if(ids != null) {
-            iterator = ids.iterator();
-        } else if(accountIds != null) {
-            iterator = accountIds.iterator();
-        } else if(names != null) {
-            iterator = names.iterator();
-        } else {
-            return null;
-        }
-
+        final Iterator<String> iterator = puuids != null ? puuids.iterator()
+            : accountIds != null ? accountIds.iterator() : summonerIds != null ? summonerIds.iterator() : summonerNames.iterator();
         return CloseableIterators.from(new Iterator<Summoner>() {
             @Override
             public boolean hasNext() {
@@ -1047,12 +1104,14 @@ public class GhostObjectSource extends AbstractDataSource {
             public Summoner next() {
                 final com.merakianalytics.orianna.types.data.summoner.Summoner data = new com.merakianalytics.orianna.types.data.summoner.Summoner();
                 data.setPlatform(platform.getTag());
-                if(ids != null) {
-                    data.setId(((Number)iterator.next()).longValue());
+                if(puuids != null) {
+                    data.setPuuid(iterator.next());
                 } else if(accountIds != null) {
-                    data.setAccountId(((Number)iterator.next()).longValue());
-                } else if(names != null) {
-                    data.setName((String)iterator.next());
+                    data.setAccountId(iterator.next());
+                } else if(summonerIds != null) {
+                    data.setId(iterator.next());
+                } else if(summonerNames != null) {
+                    data.setName(iterator.next());
                 } else {
                     return null;
                 }
@@ -1181,10 +1240,10 @@ public class GhostObjectSource extends AbstractDataSource {
     @GetMany(VerificationString.class)
     public CloseableIterator<VerificationString> getManyVerificationString(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
+        final Iterable<String> summonerIds = (Iterable<String>)query.get("summonerIds");
         Utilities.checkNotNull(platform, "platform", summonerIds, "summonerIds");
 
-        final Iterator<Number> iterator = summonerIds.iterator();
+        final Iterator<String> iterator = summonerIds.iterator();
         return CloseableIterators.from(new Iterator<VerificationString>() {
             @Override
             public boolean hasNext() {
@@ -1196,8 +1255,36 @@ public class GhostObjectSource extends AbstractDataSource {
                 final com.merakianalytics.orianna.types.data.thirdpartycode.VerificationString data =
                     new com.merakianalytics.orianna.types.data.thirdpartycode.VerificationString();
                 data.setPlatform(platform.getTag());
-                data.setSummonerId(iterator.next().longValue());
+                data.setSummonerId(iterator.next());
                 return new VerificationString(data);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    @GetMany(Versions.class)
+    public CloseableIterator<Versions> getManyVersions(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Iterable<Platform> platforms = (Iterable<Platform>)query.get("platforms");
+        Utilities.checkNotNull(platforms, "platforms");
+
+        final Iterator<Platform> iterator = platforms.iterator();
+        return CloseableIterators.from(new Iterator<Versions>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Versions next() {
+                final com.merakianalytics.orianna.types.data.staticdata.Versions data =
+                    new com.merakianalytics.orianna.types.data.staticdata.Versions();
+                data.setPlatform(iterator.next().getTag());
+                return new Versions(data);
             }
 
             @Override
@@ -1298,7 +1385,7 @@ public class GhostObjectSource extends AbstractDataSource {
     @Get(MatchHistory.class)
     public MatchHistory getMatchHistory(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final Number accountId = (Number)query.get("accountId");
+        final String accountId = (String)query.get("accountId");
         final Set<Integer> queues = query.get("queues") == null ? Collections.<Integer> emptySet() : (Set<Integer>)query.get("queues");
         final Set<Integer> seasons = query.get("seasons") == null ? Collections.<Integer> emptySet() : (Set<Integer>)query.get("seasons");
         final Set<Integer> champions = query.get("champions") == null ? Collections.<Integer> emptySet() : (Set<Integer>)query.get("champions");
@@ -1306,13 +1393,12 @@ public class GhostObjectSource extends AbstractDataSource {
         final Number endTime = (Number)query.get("endTime");
         final Number beginIndex = (Number)query.get("beginIndex");
         final Number endIndex = (Number)query.get("endIndex");
-        final boolean recent = query.get("recent") == null ? false : (Boolean)query.get("recent");
         Utilities.checkNotNull(platform, "platform", accountId, "accountId");
 
         final com.merakianalytics.orianna.types.data.match.MatchList data =
             new com.merakianalytics.orianna.types.data.match.MatchList();
         data.setPlatform(platform.getTag());
-        data.setAccountId(accountId.longValue());
+        data.setAccountId(accountId);
         data.setQueues(queues);
         data.setSeasons(seasons);
         data.setChampions(champions);
@@ -1320,7 +1406,6 @@ public class GhostObjectSource extends AbstractDataSource {
         data.setEndTime(endTime == null ? null : new DateTime(endTime.longValue()));
         data.setStartIndex(beginIndex == null ? 0 : beginIndex.intValue());
         data.setEndIndex(endIndex == null ? 0 : endIndex.intValue());
-        data.setRecent(recent);
         return new MatchHistory(data);
     }
 
@@ -1344,6 +1429,16 @@ public class GhostObjectSource extends AbstractDataSource {
         final com.merakianalytics.orianna.types.data.staticdata.Patches data = new com.merakianalytics.orianna.types.data.staticdata.Patches();
         data.setPlatform(platform.getTag());
         return new Patches(data);
+    }
+
+    @Get(PositionalQueues.class)
+    public PositionalQueues getPositionalQueues(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
+
+        final com.merakianalytics.orianna.types.data.league.PositionalQueues data = new com.merakianalytics.orianna.types.data.league.PositionalQueues();
+        data.setPlatform(platform.getTag());
+        return new PositionalQueues(data);
     }
 
     @Get(ProfileIcon.class)
@@ -1474,16 +1569,18 @@ public class GhostObjectSource extends AbstractDataSource {
     public Summoner getSummoner(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         Utilities.checkNotNull(platform, "platform");
-        final Number id = (Number)query.get("id");
-        final Number accountId = (Number)query.get("accountId");
+        final String puuid = (String)query.get("puuid");
+        final String accountId = (String)query.get("accountId");
+        final String id = (String)query.get("id");
         final String name = (String)query.get("name");
-        Utilities.checkAtLeastOneNotNull(id, "id", name, "name", accountId, "accountId");
+        Utilities.checkAtLeastOneNotNull(puuid, "puuid", accountId, "accountId", id, "id", name, "name");
 
         final com.merakianalytics.orianna.types.data.summoner.Summoner data = new com.merakianalytics.orianna.types.data.summoner.Summoner();
         data.setPlatform(platform.getTag());
+        data.setPuuid(puuid);
+        data.setAccountId(accountId);
+        data.setId(id);
         data.setName(name);
-        data.setId(id == null ? 0 : id.longValue());
-        data.setAccountId(accountId == null ? 0 : accountId.longValue());
         return new Summoner(data);
     }
 
@@ -1555,13 +1652,13 @@ public class GhostObjectSource extends AbstractDataSource {
     @Get(VerificationString.class)
     public VerificationString getVerificationString(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final Number summonerId = (Number)query.get("summonerId");
+        final String summonerId = (String)query.get("summonerId");
         Utilities.checkNotNull(platform, "platform", summonerId, "summonerId");
 
         final com.merakianalytics.orianna.types.data.thirdpartycode.VerificationString data =
             new com.merakianalytics.orianna.types.data.thirdpartycode.VerificationString();
         data.setPlatform(platform.getTag());
-        data.setSummonerId(summonerId.longValue());
+        data.setSummonerId(summonerId);
         return new VerificationString(data);
     }
 

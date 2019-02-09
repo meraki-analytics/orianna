@@ -5,17 +5,13 @@ import java.util.List;
 import com.merakianalytics.orianna.types.dto.DataObject;
 
 public class CurrentGameInfo extends DataObject {
-    private static final long serialVersionUID = 1441488279750583051L;
+    private static final long serialVersionUID = 8404258577980252927L;
     private List<BannedChampion> bannedChampions;
-    private long gameId, gameStartTime, mapId, gameLength, gameQueueConfigId, summonerId;
+    private long gameId, gameStartTime, mapId, gameLength, gameQueueConfigId;
     private Observer observers;
     private List<CurrentGameParticipant> participants;
-    private String platformId, gameMode, gameType;
+    private String platformId, gameMode, gameType, summonerId;
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(final Object obj) {
         if(this == obj) {
@@ -85,7 +81,11 @@ public class CurrentGameInfo extends DataObject {
         } else if(!platformId.equals(other.platformId)) {
             return false;
         }
-        if(summonerId != other.summonerId) {
+        if(summonerId == null) {
+            if(other.summonerId != null) {
+                return false;
+            }
+        } else if(!summonerId.equals(other.summonerId)) {
             return false;
         }
         return true;
@@ -171,14 +171,10 @@ public class CurrentGameInfo extends DataObject {
     /**
      * @return the summonerId
      */
-    public long getSummonerId() {
+    public String getSummonerId() {
         return summonerId;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -194,7 +190,7 @@ public class CurrentGameInfo extends DataObject {
         result = prime * result + (observers == null ? 0 : observers.hashCode());
         result = prime * result + (participants == null ? 0 : participants.hashCode());
         result = prime * result + (platformId == null ? 0 : platformId.hashCode());
-        result = prime * result + (int)(summonerId ^ summonerId >>> 32);
+        result = prime * result + (summonerId == null ? 0 : summonerId.hashCode());
         return result;
     }
 
@@ -290,7 +286,7 @@ public class CurrentGameInfo extends DataObject {
      * @param summonerId
      *        the summonerId to set
      */
-    public void setSummonerId(final long summonerId) {
+    public void setSummonerId(final String summonerId) {
         this.summonerId = summonerId;
     }
 }

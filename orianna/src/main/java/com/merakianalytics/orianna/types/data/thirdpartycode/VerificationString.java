@@ -1,40 +1,10 @@
 package com.merakianalytics.orianna.types.data.thirdpartycode;
 
-import java.io.IOException;
-
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.merakianalytics.orianna.types.data.CoreData;
 
-@JsonDeserialize(using = VerificationString.Deserializer.class)
-@JsonSerialize(using = VerificationString.Serializer.class)
 public class VerificationString extends CoreData {
-    public static class Deserializer extends JsonDeserializer<VerificationString> {
-        @Override
-        public VerificationString deserialize(final JsonParser parser, final DeserializationContext context) throws IOException {
-            final VerificationString result = new VerificationString();
-            result.string = parser.readValueAs(String.class);
-            return result;
-        }
-    }
-
-    public static class Serializer extends JsonSerializer<VerificationString> {
-        @Override
-        public void serialize(final VerificationString string, final JsonGenerator generator, final SerializerProvider provider) throws IOException {
-            generator.writeObject(string.string);
-        }
-    }
-
-    private static final long serialVersionUID = -8461377976162422339L;
-
-    private String platform, string;
-    private long summonerId;
+    private static final long serialVersionUID = 6011690200339393247L;
+    private String platform, string, summonerId;
 
     @Override
     public boolean equals(final Object obj) {
@@ -62,7 +32,11 @@ public class VerificationString extends CoreData {
         } else if(!string.equals(other.string)) {
             return false;
         }
-        if(summonerId != other.summonerId) {
+        if(summonerId == null) {
+            if(other.summonerId != null) {
+                return false;
+            }
+        } else if(!summonerId.equals(other.summonerId)) {
             return false;
         }
         return true;
@@ -85,7 +59,7 @@ public class VerificationString extends CoreData {
     /**
      * @return the summonerId
      */
-    public long getSummonerId() {
+    public String getSummonerId() {
         return summonerId;
     }
 
@@ -95,7 +69,7 @@ public class VerificationString extends CoreData {
         int result = 1;
         result = prime * result + (platform == null ? 0 : platform.hashCode());
         result = prime * result + (string == null ? 0 : string.hashCode());
-        result = prime * result + (int)(summonerId ^ summonerId >>> 32);
+        result = prime * result + (summonerId == null ? 0 : summonerId.hashCode());
         return result;
     }
 
@@ -119,7 +93,7 @@ public class VerificationString extends CoreData {
      * @param summonerId
      *        the summonerId to set
      */
-    public void setSummonerId(final long summonerId) {
+    public void setSummonerId(final String summonerId) {
         this.summonerId = summonerId;
     }
 }

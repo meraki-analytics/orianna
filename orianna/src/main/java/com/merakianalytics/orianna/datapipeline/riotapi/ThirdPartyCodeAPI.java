@@ -25,10 +25,10 @@ public class ThirdPartyCodeAPI extends RiotAPIService {
     @GetMany(VerificationString.class)
     public CloseableIterator<VerificationString> getManyVerificationString(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
+        final Iterable<String> summonerIds = (Iterable<String>)query.get("summonerIds");
         Utilities.checkNotNull(platform, "platform", summonerIds, "summonerIds");
 
-        final Iterator<Number> iterator = summonerIds.iterator();
+        final Iterator<String> iterator = summonerIds.iterator();
         return CloseableIterators.from(new Iterator<VerificationString>() {
             @Override
             public boolean hasNext() {
@@ -37,16 +37,16 @@ public class ThirdPartyCodeAPI extends RiotAPIService {
 
             @Override
             public VerificationString next() {
-                final Number summonerId = iterator.next();
+                final String summonerId = iterator.next();
 
-                final String endpoint = "lol/platform/v3/third-party-code/by-summoner/" + summonerId;
-                final VerificationString data = get(VerificationString.class, endpoint, platform, "lol/platform/v3/third-party-code/by-summoner/summonerId");
+                final String endpoint = "lol/platform/v4/third-party-code/by-summoner/" + summonerId;
+                final VerificationString data = get(VerificationString.class, endpoint, platform, "lol/platform/v4/third-party-code/by-summoner/summonerId");
                 if(data == null) {
                     return null;
                 }
 
                 data.setPlatform(platform.getTag());
-                data.setSummonerId(summonerId.longValue());
+                data.setSummonerId(summonerId);
                 return data;
             }
 
@@ -60,17 +60,17 @@ public class ThirdPartyCodeAPI extends RiotAPIService {
     @Get(VerificationString.class)
     public VerificationString getVerificationString(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
-        final Number summonerId = (Number)query.get("summonerId");
+        final String summonerId = (String)query.get("summonerId");
         Utilities.checkNotNull(platform, "platform", summonerId, "summonerId");
 
-        final String endpoint = "lol/platform/v3/third-party-code/by-summoner/" + summonerId;
-        final VerificationString data = get(VerificationString.class, endpoint, platform, "lol/platform/v3/third-party-code/by-summoner/summonerId");
+        final String endpoint = "lol/platform/v4/third-party-code/by-summoner/" + summonerId;
+        final VerificationString data = get(VerificationString.class, endpoint, platform, "lol/platform/v4/third-party-code/by-summoner/summonerId");
         if(data == null) {
             return null;
         }
 
         data.setPlatform(platform.getTag());
-        data.setSummonerId(summonerId.longValue());
+        data.setSummonerId(summonerId);
         return data;
     }
 }

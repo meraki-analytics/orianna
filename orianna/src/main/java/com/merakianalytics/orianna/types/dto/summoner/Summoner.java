@@ -3,15 +3,11 @@ package com.merakianalytics.orianna.types.dto.summoner;
 import com.merakianalytics.orianna.types.dto.DataObject;
 
 public class Summoner extends DataObject {
-    private static final long serialVersionUID = 8693230711620500210L;
-    private String name, platform;
+    private static final long serialVersionUID = 2765678846662981362L;
+    private String name, platform, puuid, accountId, id;
     private int profileIconId = -1;
-    private long summonerLevel, revisionDate, id, accountId;
+    private long summonerLevel, revisionDate;
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(final Object obj) {
         if(this == obj) {
@@ -24,10 +20,18 @@ public class Summoner extends DataObject {
             return false;
         }
         final Summoner other = (Summoner)obj;
-        if(accountId != other.accountId) {
+        if(accountId == null) {
+            if(other.accountId != null) {
+                return false;
+            }
+        } else if(!accountId.equals(other.accountId)) {
             return false;
         }
-        if(id != other.id) {
+        if(id == null) {
+            if(other.id != null) {
+                return false;
+            }
+        } else if(!id.equals(other.id)) {
             return false;
         }
         if(name == null) {
@@ -47,6 +51,13 @@ public class Summoner extends DataObject {
         if(profileIconId != other.profileIconId) {
             return false;
         }
+        if(puuid == null) {
+            if(other.puuid != null) {
+                return false;
+            }
+        } else if(!puuid.equals(other.puuid)) {
+            return false;
+        }
         if(revisionDate != other.revisionDate) {
             return false;
         }
@@ -59,14 +70,14 @@ public class Summoner extends DataObject {
     /**
      * @return the accountId
      */
-    public long getAccountId() {
+    public String getAccountId() {
         return accountId;
     }
 
     /**
      * @return the id
      */
-    public long getId() {
+    public String getId() {
         return id;
     }
 
@@ -92,6 +103,13 @@ public class Summoner extends DataObject {
     }
 
     /**
+     * @return the puuid
+     */
+    public String getPuuid() {
+        return puuid;
+    }
+
+    /**
      * @return the revisionDate
      */
     public long getRevisionDate() {
@@ -105,19 +123,16 @@ public class Summoner extends DataObject {
         return summonerLevel;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (int)(accountId ^ accountId >>> 32);
-        result = prime * result + (int)(id ^ id >>> 32);
+        result = prime * result + (accountId == null ? 0 : accountId.hashCode());
+        result = prime * result + (id == null ? 0 : id.hashCode());
         result = prime * result + (name == null ? 0 : name.hashCode());
         result = prime * result + (platform == null ? 0 : platform.hashCode());
         result = prime * result + profileIconId;
+        result = prime * result + (puuid == null ? 0 : puuid.hashCode());
         result = prime * result + (int)(revisionDate ^ revisionDate >>> 32);
         result = prime * result + (int)(summonerLevel ^ summonerLevel >>> 32);
         return result;
@@ -127,7 +142,7 @@ public class Summoner extends DataObject {
      * @param accountId
      *        the accountId to set
      */
-    public void setAccountId(final long accountId) {
+    public void setAccountId(final String accountId) {
         this.accountId = accountId;
     }
 
@@ -135,7 +150,7 @@ public class Summoner extends DataObject {
      * @param id
      *        the id to set
      */
-    public void setId(final long id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
@@ -161,6 +176,14 @@ public class Summoner extends DataObject {
      */
     public void setProfileIconId(final int profileIconId) {
         this.profileIconId = profileIconId;
+    }
+
+    /**
+     * @param puuid
+     *        the puuid to set
+     */
+    public void setPuuid(final String puuid) {
+        this.puuid = puuid;
     }
 
     /**

@@ -1,17 +1,16 @@
-package com.merakianalytics.orianna.types.data.champion;
+package com.merakianalytics.orianna.types.dto.league;
 
-import com.merakianalytics.orianna.types.data.CoreData;
+import com.merakianalytics.orianna.types.dto.DataObject;
 
-public class ChampionStatuses extends CoreData.ListProxy<ChampionStatus> {
-    private static final long serialVersionUID = -691536865912805170L;
-    private boolean freeToPlay;
+public class PositionalQueuesList extends DataObject.ListProxy<String> {
+    private static final long serialVersionUID = -2684536089075701179L;
     private String platform;
 
-    public ChampionStatuses() {
+    public PositionalQueuesList() {
         super();
     }
 
-    public ChampionStatuses(final int initialCapacity) {
+    public PositionalQueuesList(final int initialCapacity) {
         super(initialCapacity);
     }
 
@@ -26,10 +25,7 @@ public class ChampionStatuses extends CoreData.ListProxy<ChampionStatus> {
         if(getClass() != obj.getClass()) {
             return false;
         }
-        final ChampionStatuses other = (ChampionStatuses)obj;
-        if(freeToPlay != other.freeToPlay) {
-            return false;
-        }
+        final PositionalQueuesList other = (PositionalQueuesList)obj;
         if(platform == null) {
             if(other.platform != null) {
                 return false;
@@ -51,24 +47,8 @@ public class ChampionStatuses extends CoreData.ListProxy<ChampionStatus> {
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + (freeToPlay ? 1231 : 1237);
         result = prime * result + (platform == null ? 0 : platform.hashCode());
         return result;
-    }
-
-    /**
-     * @return the freeToPlay
-     */
-    public boolean isFreeToPlay() {
-        return freeToPlay;
-    }
-
-    /**
-     * @param freeToPlay
-     *        the freeToPlay to set
-     */
-    public void setFreeToPlay(final boolean freeToPlay) {
-        this.freeToPlay = freeToPlay;
     }
 
     /**

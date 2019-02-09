@@ -8,6 +8,10 @@
       "className": "com.merakianalytics.orianna.datapipeline.InMemoryCache",
       "config": {
         "expirationPeriods": {
+          "com.merakianalytics.orianna.types.core.champion.ChampionRotation": {
+            "period": 6,
+            "unit": "HOURS"
+          },
           "com.merakianalytics.orianna.types.core.championmastery.ChampionMastery": {
             "period": 15,
             "unit": "MINUTES"
@@ -59,6 +63,10 @@
           "com.merakianalytics.orianna.types.core.league.LeaguePositions": {
             "period": 15,
             "unit": "MINUTES"
+          },
+          "com.merakianalytics.orianna.types.core.league.PositionalQueues": {
+            "period": 6,
+            "unit": "HOURS"
           },
           "com.merakianalytics.orianna.types.core.staticdata.Map": {
             "period": 6,
@@ -152,7 +160,7 @@
       },
       "configClassName": "com.merakianalytics.orianna.datapipeline.InMemoryCache$Configuration"
     }, {
-      "className": "com.merakianalytics.orianna.datapipeline.GhostObjectSource"
+      "className": "com.merakianalytics.orianna.datapipeline.GhostLoader"
     }, {
       "className": "com.merakianalytics.orianna.datapipeline.MerakiAnalyticsCDN",
       "config": {
@@ -167,7 +175,8 @@
           "rateLimiterTimeout": -1,
           "rateLimiterTimeoutUnit": "DAYS",
           "readTimeout": 3,
-          "readTimeoutUnit": "SECONDS"
+          "readTimeoutUnit": "SECONDS",
+          "https": true
         }
       },
       "configClassName": "com.merakianalytics.orianna.datapipeline.MerakiAnalyticsCDN$Configuration"
@@ -184,7 +193,8 @@
           "rateLimiterTimeout": -1,
           "rateLimiterTimeoutUnit": "DAYS",
           "readTimeout": 3,
-          "readTimeoutUnit": "SECONDS"
+          "readTimeoutUnit": "SECONDS",
+          "https": true
         }
       },
       "configClassName": "com.merakianalytics.orianna.datapipeline.DataDragon$Configuration"
@@ -248,7 +258,8 @@
           "rateLimiterTimeout": -1,
           "rateLimiterTimeoutUnit": "DAYS",
           "readTimeout": 3,
-          "readTimeoutUnit": "SECONDS"
+          "readTimeoutUnit": "SECONDS",
+          "https": true
         },
         "services": [
           "com.merakianalytics.orianna.datapipeline.riotapi.ChampionAPI",
@@ -263,7 +274,7 @@
       },
       "configClassName": "com.merakianalytics.orianna.datapipeline.riotapi.RiotAPI$Configuration"
     }, {
-      "className": "com.merakianalytics.orianna.datapipeline.ImageDataSource"
+      "className": "com.merakianalytics.orianna.datapipeline.ImageDownloader"
     }],
     "transformers": [{
       "className": "com.merakianalytics.orianna.datapipeline.transformers.dtodata.ChampionMasteryTransformer"

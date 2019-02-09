@@ -4,6 +4,7 @@ import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.merakianalytics.orianna.types.common.Division;
 import com.merakianalytics.orianna.types.common.Platform;
+import com.merakianalytics.orianna.types.common.Position;
 import com.merakianalytics.orianna.types.common.Queue;
 import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.common.Tier;
@@ -27,7 +28,7 @@ public class LeaguePosition extends OriannaObject<com.merakianalytics.orianna.ty
     private final Supplier<Summoner> summoner = Suppliers.memoize(new Supplier<Summoner>() {
         @Override
         public Summoner get() {
-            if(coreData.getSummonerId() == 0L) {
+            if(coreData.getSummonerId() == null) {
                 return null;
             }
             final Summoner summoner = Summoner.withId(coreData.getSummonerId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
@@ -70,6 +71,10 @@ public class LeaguePosition extends OriannaObject<com.merakianalytics.orianna.ty
 
     public Platform getPlatform() {
         return Platform.withTag(coreData.getPlatform());
+    }
+
+    public Position getPosition() {
+        return Position.valueOf(coreData.getPosition());
     }
 
     public Series getPromos() {

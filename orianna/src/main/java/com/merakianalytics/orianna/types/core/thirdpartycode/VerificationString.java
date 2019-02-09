@@ -73,7 +73,7 @@ public class VerificationString extends GhostObject<com.merakianalytics.orianna.
         switch(group) {
             case VERIFICATION_STRING_LOAD_GROUP:
                 builder = ImmutableMap.builder();
-                if(coreData.getSummonerId() != 0L) {
+                if(coreData.getSummonerId() != null) {
                     builder.put("summonerId", coreData.getSummonerId());
                 }
                 if(coreData.getPlatform() != null) {

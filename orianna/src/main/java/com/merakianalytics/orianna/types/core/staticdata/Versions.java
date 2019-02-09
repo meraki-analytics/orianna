@@ -1,14 +1,19 @@
 package com.merakianalytics.orianna.types.core.staticdata;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import com.google.common.base.Functions;
 import com.google.common.collect.ImmutableMap;
+import com.merakianalytics.datapipelines.iterators.CloseableIterator;
+import com.merakianalytics.datapipelines.iterators.CloseableIterators;
 import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.GhostObject;
+import com.merakianalytics.orianna.types.core.searchable.SearchableList;
+import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 
 public class Versions extends GhostObject.ListProxy<String, String, com.merakianalytics.orianna.types.data.staticdata.Versions> {
     public static class Builder {
@@ -40,6 +45,27 @@ public class Versions extends GhostObject.ListProxy<String, String, com.merakian
         }
     }
 
+    public static class ManyBuilder {
+        private final Iterable<Platform> platforms;
+        private boolean streaming = false;
+
+        private ManyBuilder(final Iterable<Platform> platforms) {
+            this.platforms = platforms;
+        }
+
+        public SearchableList<Versions> get() {
+            final ImmutableMap.Builder<String, Object> builder = ImmutableMap.<String, Object> builder().put("platforms", platforms);
+
+            final CloseableIterator<Versions> result = Orianna.getSettings().getPipeline().getMany(Versions.class, builder.build(), streaming);
+            return streaming ? SearchableLists.from(CloseableIterators.toLazyList(result)) : SearchableLists.from(CloseableIterators.toList(result));
+        }
+
+        public ManyBuilder streaming() {
+            streaming = true;
+            return this;
+        }
+    }
+
     private static final long serialVersionUID = 6003302668600909723L;
 
     public static Versions get() {
@@ -50,8 +76,32 @@ public class Versions extends GhostObject.ListProxy<String, String, com.merakian
         return new Builder().withPlatform(platform);
     }
 
+    public static ManyBuilder withPlatforms(final Iterable<Platform> platforms) {
+        return new ManyBuilder(platforms);
+    }
+
+    public static ManyBuilder withPlatforms(final Platform... platforms) {
+        return new ManyBuilder(Arrays.asList(platforms));
+    }
+
     public static Builder withRegion(final Region region) {
         return new Builder().withRegion(region);
+    }
+
+    public static ManyBuilder withRegions(final Iterable<Region> regions) {
+        final List<Platform> platforms = new ArrayList<>();
+        for(final Region region : regions) {
+            platforms.add(region.getPlatform());
+        }
+        return new ManyBuilder(platforms);
+    }
+
+    public static ManyBuilder withRegions(final Region... regions) {
+        final List<Platform> platforms = new ArrayList<>(regions.length);
+        for(final Region region : regions) {
+            platforms.add(region.getPlatform());
+        }
+        return new ManyBuilder(platforms);
     }
 
     public Versions(final com.merakianalytics.orianna.types.data.staticdata.Versions coreData) {

@@ -39,10 +39,10 @@ To add the latest Orianna release version to your maven project, add the depende
   <dependency>
     <groupId>com.merakianalytics.orianna</groupId>
     <artifactId>orianna</artifactId>
-    <version>3.0.4</version>
+    <version>4.0.0-rc1</version>
     <!-- or, for Android: -->
     <artifactId>orianna-android</artifactId>
-    <version>3.0.4</version>
+    <version>4.0.0-rc1</version>
   </dependency>
 </dependencies>
 ```
@@ -52,10 +52,10 @@ Or, if you want to get the latest development version, add the [Sonaype Snapshot
   <dependency>
     <groupId>com.merakianalytics.orianna</groupId>
     <artifactId>orianna</artifactId>
-    <version>3.1.0-SNAPSHOT</version>
+    <version>4.0.0-SNAPSHOT</version>
     <!-- or, for Android: -->
     <artifactId>orianna-android</artifactId>
-    <version>3.1.0-SNAPSHOT</version>
+    <version>4.0.0-SNAPSHOT</version>
   </dependency>
 </dependencies>
 
@@ -81,9 +81,9 @@ repositories {
 }
 
 dependencies {
-  compile "com.merakianalytics.orianna:orianna:3.0.4"
+  compile "com.merakianalytics.orianna:orianna:4.0.0-rc1"
   // or, for Android:
-  compile "com.merakianalytics.orianna:orianna-android:3.0.4"
+  compile "com.merakianalytics.orianna:orianna-android:4.0.0-rc1"
 }
 ```
 Or, if you want to get the latest development version, add the [Sonaype Snapshot Repository](https://oss.sonatype.org/content/repositories/snapshots/) to your `build.gradle` instead:
@@ -93,9 +93,9 @@ repositories {
 }
 
 dependencies {
-  compile "com.merakianalytics.orianna:orianna:3.1.0-SNAPSHOT"
+  compile "com.merakianalytics.orianna:orianna:4.0.0-SNAPSHOT"
   // or, for Android:
-  compile "com.merakianalytics.orianna:orianna-android:3.1.0-SNAPSHOT"
+  compile "com.merakianalytics.orianna:orianna-android:4.0.0-SNAPSHOT"
 }
 ```
 
@@ -104,15 +104,15 @@ Grab the latest JAR from the [releases page](https://github.com/meraki-analytics
 
 If you're using the JAR without dependencies inlcuded, Orianna depends on the following libraries which will also need to be added as dependencies:
 - [slf4j-api](https://www.slf4j.org/) (version 1.7.25)
-- [datapipelines](https://github.com/meraki-analytics/datapipelines-java) (version 1.0.2)
+- [datapipelines](https://github.com/meraki-analytics/datapipelines-java) (version 1.0.4)
 - [hipster4j](http://www.hipster4j.org/) (version 1.0.1)
 - [guava](https://github.com/google/guava) (version 20.0)
-- [okhttp](http://square.github.io/okhttp/) (version 3.10.0)
-- [jackson-databind](https://github.com/FasterXML/jackson-databind) (version 2.9.6)
+- [okhttp](http://square.github.io/okhttp/) (version 3.12.1)
+- [jackson-databind](https://github.com/FasterXML/jackson-databind) (version 2.9.8)
 - [jackson-dataformat-msgpack](https://github.com/msgpack/msgpack-java) (version 0.8.16)
-- [joda-time](http://www.joda.org/joda-time/) (version 2.10)
-- [jackson-datatype-joda](https://github.com/FasterXML/jackson-datatype-joda) (version 2.9.3)
-- [cache2k](https://cache2k.org/) (version 1.0.2.Final)
+- [joda-time](http://www.joda.org/joda-time/) (version 2.10.1)
+- [jackson-datatype-joda](https://github.com/FasterXML/jackson-datatype-joda) (version 2.9.8)
+- [cache2k](https://cache2k.org/) (version 1.2.0.Final)
 
 ## Example
 Check out a basic example of Orianna in action. More examples are available [here](https://github.com/meraki-analytics/orianna/tree/master/orianna-examples/src/main/java/com/merakianalytics/orianna/examples).
@@ -154,6 +154,9 @@ For more complex configuration, just download the [default configuration](https:
 Orianna.loadConfiguration(new File("/path/to/your/configuration-file.json"));
 ```
 Alternatively, Orianna can automatically load your configuration file on startup if you set your `ORIANNA_CONFIGURATION_PATH` environment variable to the path of your configuration file.
+
+## Android Usage Note
+If you're using Orianna with Android, be aware that using the default configuration which uses the [RiotAPI Data Source](https://github.com/meraki-analytics/orianna/blob/master/orianna/src/main/java/com/merakianalytics/orianna/datapipeline/riotapi/RiotAPI.java) will result in leaking your API key to the users of your application. For personal applications you won't be sharing, that's okay. If you're going to distribute your application, however, you'll need to have Orianna make its calls indirectly through a proxy server. You can use [Kernel](https://github.com/meraki-analytics/kernel) to easily set up a proxy server along with the [Kernel Data Source](https://github.com/meraki-analytics/orianna/blob/master/orianna/src/main/java/com/merakianalytics/orianna/datapipeline/kernel/Kernel.java) in Orianna to send your requests to it instead of the Riot API. [Here's an example](https://gist.github.com/robrua/c9248aa80212849e95e9002fac1970eb) of an Orianna configuration file that uses Kernel instead of the Riot API.
 
 ## Questions & Contributions
 Feel free to send pull requests or to contact us via GitHub or [Discord](https://discord.gg/JRDk2JU). We also hang around the [Riot API Discord](https://discord.gg/riotapi), so come by and say hello. We love to hear what people are building with Orianna! If you would like to help us maintain Orianna, let us know on our [Discord](https://discord.gg/JRDk2JU).

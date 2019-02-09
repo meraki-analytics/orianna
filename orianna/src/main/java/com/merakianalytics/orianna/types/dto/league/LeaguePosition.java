@@ -3,10 +3,10 @@ package com.merakianalytics.orianna.types.dto.league;
 import com.merakianalytics.orianna.types.dto.DataObject;
 
 public class LeaguePosition extends DataObject {
-    private static final long serialVersionUID = -8412637506825155695L;
+    private static final long serialVersionUID = -5421614013697709731L;
     private boolean hotStreak, veteran, inactive, freshBlood;
     private MiniSeries miniSeries;
-    private String rank, queueType, playerOrTeamId, leagueName, playerOrTeamName, tier, platform, leagueId;
+    private String rank, queueType, summonerId, leagueName, summonerName, tier, platform, leagueId, position;
     private int wins, losses, leaguePoints;
 
     @Override
@@ -64,18 +64,11 @@ public class LeaguePosition extends DataObject {
         } else if(!platform.equals(other.platform)) {
             return false;
         }
-        if(playerOrTeamId == null) {
-            if(other.playerOrTeamId != null) {
+        if(position == null) {
+            if(other.position != null) {
                 return false;
             }
-        } else if(!playerOrTeamId.equals(other.playerOrTeamId)) {
-            return false;
-        }
-        if(playerOrTeamName == null) {
-            if(other.playerOrTeamName != null) {
-                return false;
-            }
-        } else if(!playerOrTeamName.equals(other.playerOrTeamName)) {
+        } else if(!position.equals(other.position)) {
             return false;
         }
         if(queueType == null) {
@@ -90,6 +83,20 @@ public class LeaguePosition extends DataObject {
                 return false;
             }
         } else if(!rank.equals(other.rank)) {
+            return false;
+        }
+        if(summonerId == null) {
+            if(other.summonerId != null) {
+                return false;
+            }
+        } else if(!summonerId.equals(other.summonerId)) {
+            return false;
+        }
+        if(summonerName == null) {
+            if(other.summonerName != null) {
+                return false;
+            }
+        } else if(!summonerName.equals(other.summonerName)) {
             return false;
         }
         if(tier == null) {
@@ -151,17 +158,10 @@ public class LeaguePosition extends DataObject {
     }
 
     /**
-     * @return the playerOrTeamId
+     * @return the position
      */
-    public String getPlayerOrTeamId() {
-        return playerOrTeamId;
-    }
-
-    /**
-     * @return the playerOrTeamName
-     */
-    public String getPlayerOrTeamName() {
-        return playerOrTeamName;
+    public String getPosition() {
+        return position;
     }
 
     /**
@@ -176,6 +176,20 @@ public class LeaguePosition extends DataObject {
      */
     public String getRank() {
         return rank;
+    }
+
+    /**
+     * @return the summonerId
+     */
+    public String getSummonerId() {
+        return summonerId;
+    }
+
+    /**
+     * @return the summonerName
+     */
+    public String getSummonerName() {
+        return summonerName;
     }
 
     /**
@@ -205,10 +219,11 @@ public class LeaguePosition extends DataObject {
         result = prime * result + losses;
         result = prime * result + (miniSeries == null ? 0 : miniSeries.hashCode());
         result = prime * result + (platform == null ? 0 : platform.hashCode());
-        result = prime * result + (playerOrTeamId == null ? 0 : playerOrTeamId.hashCode());
-        result = prime * result + (playerOrTeamName == null ? 0 : playerOrTeamName.hashCode());
+        result = prime * result + (position == null ? 0 : position.hashCode());
         result = prime * result + (queueType == null ? 0 : queueType.hashCode());
         result = prime * result + (rank == null ? 0 : rank.hashCode());
+        result = prime * result + (summonerId == null ? 0 : summonerId.hashCode());
+        result = prime * result + (summonerName == null ? 0 : summonerName.hashCode());
         result = prime * result + (tier == null ? 0 : tier.hashCode());
         result = prime * result + (veteran ? 1231 : 1237);
         result = prime * result + wins;
@@ -316,19 +331,11 @@ public class LeaguePosition extends DataObject {
     }
 
     /**
-     * @param playerOrTeamId
-     *        the playerOrTeamId to set
+     * @param position
+     *        the position to set
      */
-    public void setPlayerOrTeamId(final String playerOrTeamId) {
-        this.playerOrTeamId = playerOrTeamId;
-    }
-
-    /**
-     * @param playerOrTeamName
-     *        the playerOrTeamName to set
-     */
-    public void setPlayerOrTeamName(final String playerOrTeamName) {
-        this.playerOrTeamName = playerOrTeamName;
+    public void setPosition(final String position) {
+        this.position = position;
     }
 
     /**
@@ -345,6 +352,22 @@ public class LeaguePosition extends DataObject {
      */
     public void setRank(final String rank) {
         this.rank = rank;
+    }
+
+    /**
+     * @param summonerId
+     *        the summonerId to set
+     */
+    public void setSummonerId(final String summonerId) {
+        this.summonerId = summonerId;
+    }
+
+    /**
+     * @param summonerName
+     *        the summonerName to set
+     */
+    public void setSummonerName(final String summonerName) {
+        this.summonerName = summonerName;
     }
 
     /**

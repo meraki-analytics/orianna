@@ -27,13 +27,15 @@ public class HTTPClient {
     public static class Configuration {
         private static final long DEFAULT_CONNECT_TIMEOUT = 3;
         private static final TimeUnit DEFAULT_CONNECT_TIMEOUT_UNIT = TimeUnit.SECONDS;
+        private static final boolean DEFAULT_HTTPS = true;
         private static final long DEFAULT_RATE_LIMITER_TIMEOUT = -1;
         private static final TimeUnit DEFAULT_RATE_LIMITER_TIMEOUT_UNIT = TimeUnit.DAYS;
         private static final long DEFAULT_READ_TIMEOUT = 3;
         private static final TimeUnit DEFAULT_READ_TIMEOUT_UNIT = TimeUnit.SECONDS;
-
         private long connectTimeout = DEFAULT_CONNECT_TIMEOUT;
         private TimeUnit connectTimeoutUnit = DEFAULT_CONNECT_TIMEOUT_UNIT;
+
+        private boolean https = DEFAULT_HTTPS;
         private long rateLimiterTimeout = DEFAULT_RATE_LIMITER_TIMEOUT;
         private TimeUnit rateLimiterTimeoutUnit = DEFAULT_RATE_LIMITER_TIMEOUT_UNIT;
         private long readTimeout = DEFAULT_READ_TIMEOUT;
@@ -82,6 +84,13 @@ public class HTTPClient {
         }
 
         /**
+         * @return the https
+         */
+        public boolean isHttps() {
+            return https;
+        }
+
+        /**
          * @param connectTimeout
          *        the connectTimeout to set
          */
@@ -95,6 +104,14 @@ public class HTTPClient {
          */
         public void setConnectTimeoutUnit(final TimeUnit connectTimeoutUnit) {
             this.connectTimeoutUnit = connectTimeoutUnit;
+        }
+
+        /**
+         * @param https
+         *        the https to set
+         */
+        public void setHttps(final boolean https) {
+            this.https = https;
         }
 
         /**
@@ -197,6 +214,7 @@ public class HTTPClient {
     }
 
     private final OkHttpClient client;
+    private final boolean https;
     private final long rateLimiterTimeout;
     private final TimeUnit rateLimiterTimeoutUnit;
 
@@ -209,33 +227,36 @@ public class HTTPClient {
             .readTimeout(config.getReadTimeout(), config.getReadTimeoutUnit()).build();
         rateLimiterTimeout = config.getRateLimiterTimeout();
         rateLimiterTimeoutUnit = config.getRateLimiterTimeoutUnit();
+        https = config.isHttps();
     }
 
     public Response get(final String url) throws IOException {
         final HttpUrl parsed = HttpUrl.parse(url);
-        return get(parsed.host(), parsed.encodedPath(), (Multimap<String, String>)null, null, null);
+        return get(parsed.host(), parsed.port(), parsed.encodedPath(), (Multimap<String, String>)null, null, null);
     }
 
-    public Response get(final String host, final String url) throws IOException {
-        return get(host, url, (Multimap<String, String>)null, null, null);
+    public Response get(final String host, final int port, final String url) throws IOException {
+        return get(host, port, url, (Multimap<String, String>)null, null, null);
     }
 
-    public Response get(final String host, final String url, final Map<String, String> parameters, final Map<String, String> headers) throws IOException {
-        return get(host, url, parameters == null ? null : ImmutableListMultimap.copyOf(parameters.entrySet()), headers, null);
+    public Response get(final String host, final int port, final String url, final Map<String, String> parameters, final Map<String, String> headers)
+        throws IOException {
+        return get(host, port, url, parameters == null ? null : ImmutableListMultimap.copyOf(parameters.entrySet()), headers, null);
     }
 
-    public Response get(final String host, final String url, final Map<String, String> parameters, final Map<String, String> headers,
+    public Response get(final String host, final int port, final String url, final Map<String, String> parameters, final Map<String, String> headers,
         final RateLimiter rateLimiter) throws IOException {
-        return get(host, url, parameters == null ? null : ImmutableListMultimap.copyOf(parameters.entrySet()), headers, rateLimiter);
+        return get(host, port, url, parameters == null ? null : ImmutableListMultimap.copyOf(parameters.entrySet()), headers, rateLimiter);
     }
 
-    public Response get(final String host, final String url, final Multimap<String, String> parameters, final Map<String, String> headers) throws IOException {
-        return get(host, url, parameters, headers, null);
+    public Response get(final String host, final int port, final String url, final Multimap<String, String> parameters, final Map<String, String> headers)
+        throws IOException {
+        return get(host, port, url, parameters, headers, null);
     }
 
-    public Response get(final String host, final String url, final Multimap<String, String> parameters, final Map<String, String> headers,
+    public Response get(final String host, final int port, final String url, final Multimap<String, String> parameters, final Map<String, String> headers,
         final RateLimiter rateLimiter) throws IOException {
-        HttpUrl.Builder urlBuilder = new HttpUrl.Builder().scheme("https").host(host).addPathSegments(removeLeadingSlashes(url));
+        HttpUrl.Builder urlBuilder = new HttpUrl.Builder().scheme(https ? "https" : "http").host(host).port(port).addPathSegments(removeLeadingSlashes(url));
         if(parameters != null && !parameters.isEmpty()) {
             for(final String key : parameters.keySet()) {
                 for(final String value : parameters.get(key)) {
@@ -306,5 +327,27 @@ public class HTTPClient {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public Response get(final String host, final String url) throws IOException {
+        return get(host, https ? 443 : https ? 443 : 80, url, (Multimap<String, String>)null, null, null);
+    }
+
+    public Response get(final String host, final String url, final Map<String, String> parameters, final Map<String, String> headers) throws IOException {
+        return get(host, https ? 443 : 80, url, parameters == null ? null : ImmutableListMultimap.copyOf(parameters.entrySet()), headers, null);
+    }
+
+    public Response get(final String host, final String url, final Map<String, String> parameters, final Map<String, String> headers,
+        final RateLimiter rateLimiter) throws IOException {
+        return get(host, https ? 443 : 80, url, parameters == null ? null : ImmutableListMultimap.copyOf(parameters.entrySet()), headers, rateLimiter);
+    }
+
+    public Response get(final String host, final String url, final Multimap<String, String> parameters, final Map<String, String> headers) throws IOException {
+        return get(host, https ? 443 : 80, url, parameters, headers, null);
+    }
+
+    public Response get(final String host, final String url, final Multimap<String, String> parameters, final Map<String, String> headers,
+        final RateLimiter limiter) throws IOException {
+        return get(host, https ? 443 : 80, url, parameters, headers, null);
     }
 }

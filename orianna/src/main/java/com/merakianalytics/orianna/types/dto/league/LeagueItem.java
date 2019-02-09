@@ -3,16 +3,12 @@ package com.merakianalytics.orianna.types.dto.league;
 import com.merakianalytics.orianna.types.dto.DataObject;
 
 public class LeagueItem extends DataObject {
-    private static final long serialVersionUID = 9122058247241019504L;
+    private static final long serialVersionUID = -3026182755595917036L;
     private boolean hotStreak, veteran, inactive, freshBlood;
     private MiniSeries miniSeries;
-    private String rank, playerOrTeamId, playerOrTeamName;
+    private String rank, summonerId, summonerName;
     private int wins, losses, leaguePoints;
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(final Object obj) {
         if(this == obj) {
@@ -47,25 +43,25 @@ public class LeagueItem extends DataObject {
         } else if(!miniSeries.equals(other.miniSeries)) {
             return false;
         }
-        if(playerOrTeamId == null) {
-            if(other.playerOrTeamId != null) {
-                return false;
-            }
-        } else if(!playerOrTeamId.equals(other.playerOrTeamId)) {
-            return false;
-        }
-        if(playerOrTeamName == null) {
-            if(other.playerOrTeamName != null) {
-                return false;
-            }
-        } else if(!playerOrTeamName.equals(other.playerOrTeamName)) {
-            return false;
-        }
         if(rank == null) {
             if(other.rank != null) {
                 return false;
             }
         } else if(!rank.equals(other.rank)) {
+            return false;
+        }
+        if(summonerId == null) {
+            if(other.summonerId != null) {
+                return false;
+            }
+        } else if(!summonerId.equals(other.summonerId)) {
+            return false;
+        }
+        if(summonerName == null) {
+            if(other.summonerName != null) {
+                return false;
+            }
+        } else if(!summonerName.equals(other.summonerName)) {
             return false;
         }
         if(veteran != other.veteran) {
@@ -99,24 +95,24 @@ public class LeagueItem extends DataObject {
     }
 
     /**
-     * @return the playerOrTeamId
-     */
-    public String getPlayerOrTeamId() {
-        return playerOrTeamId;
-    }
-
-    /**
-     * @return the playerOrTeamName
-     */
-    public String getPlayerOrTeamName() {
-        return playerOrTeamName;
-    }
-
-    /**
      * @return the rank
      */
     public String getRank() {
         return rank;
+    }
+
+    /**
+     * @return the summonerId
+     */
+    public String getSummonerId() {
+        return summonerId;
+    }
+
+    /**
+     * @return the summonerName
+     */
+    public String getSummonerName() {
+        return summonerName;
     }
 
     /**
@@ -126,10 +122,6 @@ public class LeagueItem extends DataObject {
         return wins;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -140,9 +132,9 @@ public class LeagueItem extends DataObject {
         result = prime * result + leaguePoints;
         result = prime * result + losses;
         result = prime * result + (miniSeries == null ? 0 : miniSeries.hashCode());
-        result = prime * result + (playerOrTeamId == null ? 0 : playerOrTeamId.hashCode());
-        result = prime * result + (playerOrTeamName == null ? 0 : playerOrTeamName.hashCode());
         result = prime * result + (rank == null ? 0 : rank.hashCode());
+        result = prime * result + (summonerId == null ? 0 : summonerId.hashCode());
+        result = prime * result + (summonerName == null ? 0 : summonerName.hashCode());
         result = prime * result + (veteran ? 1231 : 1237);
         result = prime * result + wins;
         return result;
@@ -225,27 +217,27 @@ public class LeagueItem extends DataObject {
     }
 
     /**
-     * @param playerOrTeamId
-     *        the playerOrTeamId to set
-     */
-    public void setPlayerOrTeamId(final String playerOrTeamId) {
-        this.playerOrTeamId = playerOrTeamId;
-    }
-
-    /**
-     * @param playerOrTeamName
-     *        the playerOrTeamName to set
-     */
-    public void setPlayerOrTeamName(final String playerOrTeamName) {
-        this.playerOrTeamName = playerOrTeamName;
-    }
-
-    /**
      * @param rank
      *        the rank to set
      */
     public void setRank(final String rank) {
         this.rank = rank;
+    }
+
+    /**
+     * @param summonerId
+     *        the summonerId to set
+     */
+    public void setSummonerId(final String summonerId) {
+        this.summonerId = summonerId;
+    }
+
+    /**
+     * @param summonerName
+     *        the summonerName to set
+     */
+    public void setSummonerName(final String summonerName) {
+        this.summonerName = summonerName;
     }
 
     /**

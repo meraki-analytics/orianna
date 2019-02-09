@@ -8,12 +8,10 @@ import org.joda.time.Duration;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class MatchList extends CoreData.ListProxy<MatchReference> {
-    private static final long serialVersionUID = 5543353502654527488L;
-    private long accountId;
+    private static final long serialVersionUID = -9207577178873187266L;
     private Set<Integer> champions, queues, seasons;
     private Duration maxTimeRange;
-    private String platform;
-    private boolean recent;
+    private String platform, accountId;
     private int startIndex, endIndex, maxSize;
     private DateTime startTime, endTime;
 
@@ -37,7 +35,11 @@ public class MatchList extends CoreData.ListProxy<MatchReference> {
             return false;
         }
         final MatchList other = (MatchList)obj;
-        if(accountId != other.accountId) {
+        if(accountId == null) {
+            if(other.accountId != null) {
+                return false;
+            }
+        } else if(!accountId.equals(other.accountId)) {
             return false;
         }
         if(champions == null) {
@@ -81,9 +83,6 @@ public class MatchList extends CoreData.ListProxy<MatchReference> {
         } else if(!queues.equals(other.queues)) {
             return false;
         }
-        if(recent != other.recent) {
-            return false;
-        }
         if(seasons == null) {
             if(other.seasons != null) {
                 return false;
@@ -107,7 +106,7 @@ public class MatchList extends CoreData.ListProxy<MatchReference> {
     /**
      * @return the accountId
      */
-    public long getAccountId() {
+    public String getAccountId() {
         return accountId;
     }
 
@@ -185,7 +184,7 @@ public class MatchList extends CoreData.ListProxy<MatchReference> {
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + (int)(accountId ^ accountId >>> 32);
+        result = prime * result + (accountId == null ? 0 : accountId.hashCode());
         result = prime * result + (champions == null ? 0 : champions.hashCode());
         result = prime * result + endIndex;
         result = prime * result + (endTime == null ? 0 : endTime.hashCode());
@@ -193,7 +192,6 @@ public class MatchList extends CoreData.ListProxy<MatchReference> {
         result = prime * result + (maxTimeRange == null ? 0 : maxTimeRange.hashCode());
         result = prime * result + (platform == null ? 0 : platform.hashCode());
         result = prime * result + (queues == null ? 0 : queues.hashCode());
-        result = prime * result + (recent ? 1231 : 1237);
         result = prime * result + (seasons == null ? 0 : seasons.hashCode());
         result = prime * result + startIndex;
         result = prime * result + (startTime == null ? 0 : startTime.hashCode());
@@ -201,17 +199,10 @@ public class MatchList extends CoreData.ListProxy<MatchReference> {
     }
 
     /**
-     * @return the recent
-     */
-    public boolean isRecent() {
-        return recent;
-    }
-
-    /**
      * @param accountId
      *        the accountId to set
      */
-    public void setAccountId(final long accountId) {
+    public void setAccountId(final String accountId) {
         this.accountId = accountId;
     }
 
@@ -269,14 +260,6 @@ public class MatchList extends CoreData.ListProxy<MatchReference> {
      */
     public void setQueues(final Set<Integer> queues) {
         this.queues = queues;
-    }
-
-    /**
-     * @param recent
-     *        the recent to set
-     */
-    public void setRecent(final boolean recent) {
-        this.recent = recent;
     }
 
     /**

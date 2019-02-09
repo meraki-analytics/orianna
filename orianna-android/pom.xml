@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
 		<groupId>com.merakianalytics.orianna</groupId>
 		<artifactId>orianna-parent</artifactId>
-		<version>3.1.0-SNAPSHOT</version>
+		<version>4.0.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>orianna-android</artifactId>
@@ -14,12 +15,22 @@
 	<name>orianna-android</name>
 	<description>A Java adaptation of the Riot Games LoL API (https://developer.riotgames.com/)</description>
 	<url>https://github.com/meraki-analytics/orianna</url>
+	
+	<properties>
+		<android.sdk.version>4.1.1.4</android.sdk.version>
+	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.merakianalytics.orianna</groupId>
 			<artifactId>orianna</artifactId>
 			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>android</artifactId>
+			<version>${android.sdk.version}</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>

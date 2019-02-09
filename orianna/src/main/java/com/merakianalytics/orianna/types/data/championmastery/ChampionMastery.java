@@ -5,12 +5,11 @@ import org.joda.time.DateTime;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class ChampionMastery extends CoreData {
-    private static final long serialVersionUID = 7560794990575728149L;
+    private static final long serialVersionUID = -6045032013873774634L;
     private boolean chestGranted;
     private DateTime lastPlayed;
     private int level, points, tokens, championId, pointsUntilNextLevel, pointsSinceLastLevel;
-    private String platform;
-    private long summonerId;
+    private String platform, summonerId;
 
     @Override
     public boolean equals(final Object obj) {
@@ -47,9 +46,6 @@ public class ChampionMastery extends CoreData {
         } else if(!platform.equals(other.platform)) {
             return false;
         }
-        if(summonerId != other.summonerId) {
-            return false;
-        }
         if(points != other.points) {
             return false;
         }
@@ -57,6 +53,13 @@ public class ChampionMastery extends CoreData {
             return false;
         }
         if(pointsUntilNextLevel != other.pointsUntilNextLevel) {
+            return false;
+        }
+        if(summonerId == null) {
+            if(other.summonerId != null) {
+                return false;
+            }
+        } else if(!summonerId.equals(other.summonerId)) {
             return false;
         }
         if(tokens != other.tokens) {
@@ -117,7 +120,7 @@ public class ChampionMastery extends CoreData {
     /**
      * @return the summonerId
      */
-    public long getSummonerId() {
+    public String getSummonerId() {
         return summonerId;
     }
 
@@ -137,10 +140,10 @@ public class ChampionMastery extends CoreData {
         result = prime * result + (lastPlayed == null ? 0 : lastPlayed.hashCode());
         result = prime * result + level;
         result = prime * result + (platform == null ? 0 : platform.hashCode());
-        result = prime * result + (int)(summonerId ^ summonerId >>> 32);
         result = prime * result + points;
         result = prime * result + pointsSinceLastLevel;
         result = prime * result + pointsUntilNextLevel;
+        result = prime * result + (summonerId == null ? 0 : summonerId.hashCode());
         result = prime * result + tokens;
         return result;
     }
@@ -220,7 +223,7 @@ public class ChampionMastery extends CoreData {
      * @param summonerId
      *        the summonerId to set
      */
-    public void setSummonerId(final long summonerId) {
+    public void setSummonerId(final String summonerId) {
         this.summonerId = summonerId;
     }
 

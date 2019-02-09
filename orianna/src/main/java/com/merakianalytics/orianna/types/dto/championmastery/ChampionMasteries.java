@@ -3,9 +3,8 @@ package com.merakianalytics.orianna.types.dto.championmastery;
 import com.merakianalytics.orianna.types.dto.DataObject;
 
 public class ChampionMasteries extends DataObject.ListProxy<ChampionMastery> {
-    private static final long serialVersionUID = -3179572905292008077L;
-    private String platform;
-    private long summonerId;
+    private static final long serialVersionUID = 1227811809749905862L;
+    private String platform, summonerId;
 
     public ChampionMasteries() {
         super();
@@ -34,7 +33,11 @@ public class ChampionMasteries extends DataObject.ListProxy<ChampionMastery> {
         } else if(!platform.equals(other.platform)) {
             return false;
         }
-        if(summonerId != other.summonerId) {
+        if(summonerId == null) {
+            if(other.summonerId != null) {
+                return false;
+            }
+        } else if(!summonerId.equals(other.summonerId)) {
             return false;
         }
         return true;
@@ -50,7 +53,7 @@ public class ChampionMasteries extends DataObject.ListProxy<ChampionMastery> {
     /**
      * @return the summonerId
      */
-    public long getSummonerId() {
+    public String getSummonerId() {
         return summonerId;
     }
 
@@ -59,7 +62,7 @@ public class ChampionMasteries extends DataObject.ListProxy<ChampionMastery> {
         final int prime = 31;
         int result = super.hashCode();
         result = prime * result + (platform == null ? 0 : platform.hashCode());
-        result = prime * result + (int)(summonerId ^ summonerId >>> 32);
+        result = prime * result + (summonerId == null ? 0 : summonerId.hashCode());
         return result;
     }
 
@@ -75,7 +78,7 @@ public class ChampionMasteries extends DataObject.ListProxy<ChampionMastery> {
      * @param summonerId
      *        the summonerId to set
      */
-    public void setSummonerId(final long summonerId) {
+    public void setSummonerId(final String summonerId) {
         this.summonerId = summonerId;
     }
 }

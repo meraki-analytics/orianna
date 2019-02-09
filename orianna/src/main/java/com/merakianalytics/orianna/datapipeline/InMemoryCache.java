@@ -35,11 +35,13 @@ import com.merakianalytics.orianna.types.common.Queue;
 import com.merakianalytics.orianna.types.common.Tier;
 import com.merakianalytics.orianna.types.core.GhostObject.ListProxy;
 import com.merakianalytics.orianna.types.core.GhostObject.LoadHook;
+import com.merakianalytics.orianna.types.core.champion.ChampionRotation;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
 import com.merakianalytics.orianna.types.core.league.League;
 import com.merakianalytics.orianna.types.core.league.LeaguePositions;
+import com.merakianalytics.orianna.types.core.league.PositionalQueues;
 import com.merakianalytics.orianna.types.core.match.Match;
 import com.merakianalytics.orianna.types.core.match.Timeline;
 import com.merakianalytics.orianna.types.core.match.TournamentMatches;
@@ -76,6 +78,7 @@ public class InMemoryCache extends AbstractDataStore {
         private static final long DEFAULT_EXPIRATION_PERIOD_MAX = 6L;
         private static final TimeUnit DEFAULT_EXPIRATION_PERIOD_UNIT_MAX = TimeUnit.HOURS;
         private static final java.util.Map<String, ExpirationPeriod> DEFAULT_EXPIRATION_PERIODS = ImmutableMap.<String, ExpirationPeriod> builder()
+            .put(ChampionRotation.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(ChampionMastery.class.getCanonicalName(), ExpirationPeriod.create(15L, TimeUnit.MINUTES))
             .put(ChampionMasteries.class.getCanonicalName(), ExpirationPeriod.create(15L, TimeUnit.MINUTES))
             .put(ChampionMasteryScore.class.getCanonicalName(), ExpirationPeriod.create(15L, TimeUnit.MINUTES))
@@ -89,6 +92,7 @@ public class InMemoryCache extends AbstractDataStore {
             .put(Languages.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
             .put(League.class.getCanonicalName(), ExpirationPeriod.create(15L, TimeUnit.MINUTES))
             .put(LeaguePositions.class.getCanonicalName(), ExpirationPeriod.create(15L, TimeUnit.MINUTES))
+            .put(PositionalQueues.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(Map.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
             .put(Maps.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
             .put(Mastery.class.getCanonicalName(), ExpirationPeriod.create(DEFAULT_EXPIRATION_PERIOD_MAX, DEFAULT_EXPIRATION_PERIOD_UNIT_MAX))
@@ -168,8 +172,8 @@ public class InMemoryCache extends AbstractDataStore {
 
         expirationPeriods = Collections.unmodifiableMap(periods);
 
-        cache = new Cache2kBuilder<Integer, Object>() {}.disableLastModificationTime(true).disableStatistics(true).expiryPolicy(new Policy())
-            .keepDataAfterExpired(false).permitNullValues(false).storeByReference(true).build();
+        cache = new Cache2kBuilder<Integer, Object>() {}.disableStatistics(true).expiryPolicy(new Policy()).keepDataAfterExpired(false).permitNullValues(false)
+            .storeByReference(true).build();
     }
 
     @Get(Champion.class)
@@ -194,6 +198,12 @@ public class InMemoryCache extends AbstractDataStore {
     public ChampionMasteryScore getChampionMasteryScore(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forChampionMasteryScoreQuery(query);
         return (ChampionMasteryScore)cache.get(key);
+    }
+
+    @Get(ChampionRotation.class)
+    public ChampionRotation getChampionRotation(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forChampionRotationQuery(query);
+        return (ChampionRotation)cache.get(key);
     }
 
     @Get(Champions.class)
@@ -357,6 +367,35 @@ public class InMemoryCache extends AbstractDataStore {
             public ChampionMasteryScore next() {
                 final int key = iterator.next();
                 return (ChampionMasteryScore)cache.get(key);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @GetMany(ChampionRotation.class)
+    public CloseableIterator<ChampionRotation> getManyChampionRotation(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyChampionRotationQuery(query));
+        for(final Integer key : keys) {
+            if(!cache.containsKey(key)) {
+                return null;
+            }
+        }
+
+        final Iterator<Integer> iterator = keys.iterator();
+        return CloseableIterators.from(new Iterator<ChampionRotation>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public ChampionRotation next() {
+                final int key = iterator.next();
+                return (ChampionRotation)cache.get(key);
             }
 
             @Override
@@ -618,6 +657,35 @@ public class InMemoryCache extends AbstractDataStore {
             public Patch next() {
                 final int key = iterator.next();
                 return (Patch)cache.get(key);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
+    @GetMany(PositionalQueues.class)
+    public CloseableIterator<PositionalQueues> getManyPositionalQueues(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyPositionalQueuesQuery(query));
+        for(final Integer key : keys) {
+            if(!cache.containsKey(key)) {
+                return null;
+            }
+        }
+
+        final Iterator<Integer> iterator = keys.iterator();
+        return CloseableIterators.from(new Iterator<PositionalQueues>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public PositionalQueues next() {
+                final int key = iterator.next();
+                return (PositionalQueues)cache.get(key);
             }
 
             @Override
@@ -917,6 +985,35 @@ public class InMemoryCache extends AbstractDataStore {
         });
     }
 
+    @GetMany(Versions.class)
+    public CloseableIterator<Versions> getManyVersions(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final List<Integer> keys = Lists.newArrayList(UniqueKeys.forManyVersionsQuery(query));
+        for(final Integer key : keys) {
+            if(!cache.containsKey(key)) {
+                return null;
+            }
+        }
+
+        final Iterator<Integer> iterator = keys.iterator();
+        return CloseableIterators.from(new Iterator<Versions>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Versions next() {
+                final int key = iterator.next();
+                return (Versions)cache.get(key);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
+
     @Get(Map.class)
     public Map getMap(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forMapQuery(query);
@@ -957,6 +1054,12 @@ public class InMemoryCache extends AbstractDataStore {
     public Patches getPatches(final java.util.Map<String, Object> query, final PipelineContext context) {
         final int key = UniqueKeys.forPatchesQuery(query);
         return (Patches)cache.get(key);
+    }
+
+    @Get(PositionalQueues.class)
+    public PositionalQueues getPositionalQueues(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final int key = UniqueKeys.forPositionalQueuesQuery(query);
+        return (PositionalQueues)cache.get(key);
     }
 
     @Get(ProfileIcon.class)
@@ -1088,7 +1191,6 @@ public class InMemoryCache extends AbstractDataStore {
             };
 
             champion.registerGhostLoadHook(hook, Champion.CHAMPION_LOAD_GROUP);
-            champion.registerGhostLoadHook(hook, Champion.STATUS_LOAD_GROUP);
         }
 
         for(final int key : keys) {
@@ -1125,6 +1227,12 @@ public class InMemoryCache extends AbstractDataStore {
     public void putChampionMasteryScore(final ChampionMasteryScore score, final PipelineContext context) {
         final int key = UniqueKeys.forChampionMasteryScore(score);
         cache.put(key, score);
+    }
+
+    @Put(ChampionRotation.class)
+    public void putChampionRotation(final ChampionRotation rotation, final PipelineContext context) {
+        final int key = UniqueKeys.forChampionRotation(rotation);
+        cache.put(key, rotation);
     }
 
     @Put(Champions.class)
@@ -1264,6 +1372,13 @@ public class InMemoryCache extends AbstractDataStore {
         }
     }
 
+    @PutMany(ChampionRotation.class)
+    public void putManyChampionRotation(final Iterable<ChampionRotation> rotations, final PipelineContext context) {
+        for(final ChampionRotation rotation : rotations) {
+            putChampionRotation(rotation, context);
+        }
+    }
+
     @PutMany(CurrentMatch.class)
     public void putManyCurrentMatch(final Iterable<CurrentMatch> games, final PipelineContext context) {
         for(final CurrentMatch game : games) {
@@ -1324,6 +1439,13 @@ public class InMemoryCache extends AbstractDataStore {
     public void putManyPatch(final Iterable<Patch> patches, final PipelineContext context) {
         for(final Patch patch : patches) {
             putPatch(patch, context);
+        }
+    }
+
+    @PutMany(PositionalQueues.class)
+    public void putManyPositionalQueues(final Iterable<PositionalQueues> queues, final PipelineContext context) {
+        for(final PositionalQueues queue : queues) {
+            putPositionalQueues(queue, context);
         }
     }
 
@@ -1394,6 +1516,13 @@ public class InMemoryCache extends AbstractDataStore {
     public void putManyVerificationString(final Iterable<VerificationString> strings, final PipelineContext context) {
         for(final VerificationString string : strings) {
             putVerificationString(string, context);
+        }
+    }
+
+    @PutMany(Versions.class)
+    public void putManyVersions(final Iterable<Versions> versions, final PipelineContext context) {
+        for(final Versions version : versions) {
+            putVersions(version, context);
         }
     }
 
@@ -1516,6 +1645,12 @@ public class InMemoryCache extends AbstractDataStore {
         } else {
             putManyPatch(patches, context);
         }
+    }
+
+    @Put(PositionalQueues.class)
+    public void putPositionalQueues(final PositionalQueues queues, final PipelineContext context) {
+        final int key = UniqueKeys.forPositionalQueues(queues);
+        cache.put(key, queues);
     }
 
     @Put(ProfileIcon.class)

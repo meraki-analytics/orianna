@@ -665,7 +665,6 @@ public class MatchTransformer extends AbstractDataTransformer {
         list.setEndTime(new DateTime(item.getEndTime()));
         list.setPlatform(item.getPlatform());
         list.setQueues(new HashSet<>(item.getQueues()));
-        list.setRecent(item.isRecent());
         list.setSeasons(new HashSet<>(item.getSeasons()));
         list.setStartIndex(item.getStartIndex());
         list.setStartTime(new DateTime(item.getStartTime()));
@@ -687,7 +686,6 @@ public class MatchTransformer extends AbstractDataTransformer {
         list.setEndTime(item.getEndTime().getMillis());
         list.setPlatform(item.getPlatform());
         list.setQueues(new HashSet<>(item.getQueues()));
-        list.setRecent(item.isRecent());
         list.setSeasons(new HashSet<>(item.getSeasons()));
         list.setStartIndex(item.getStartIndex());
         list.setStartTime(item.getStartTime().getMillis());

@@ -6,18 +6,95 @@ import java.util.Set;
 import com.merakianalytics.orianna.types.dto.DataObject;
 
 public class Matchlist extends DataObject {
-    private static final long serialVersionUID = 6693751756707534012L;
-    private long accountId, startTime, endTime, maxTimeRange;
+    private static final long serialVersionUID = -5053758681800361333L;
     private List<MatchReference> matches;
-    private String platform;
+    private String platform, accountId;
     private Set<Integer> queues, seasons, champions;
-    private boolean recent;
+    private long startTime, endTime, maxTimeRange;
     private int totalGames, startIndex, endIndex, maxSize;
+
+    @Override
+    public boolean equals(final Object obj) {
+        if(this == obj) {
+            return true;
+        }
+        if(obj == null) {
+            return false;
+        }
+        if(getClass() != obj.getClass()) {
+            return false;
+        }
+        final Matchlist other = (Matchlist)obj;
+        if(accountId == null) {
+            if(other.accountId != null) {
+                return false;
+            }
+        } else if(!accountId.equals(other.accountId)) {
+            return false;
+        }
+        if(champions == null) {
+            if(other.champions != null) {
+                return false;
+            }
+        } else if(!champions.equals(other.champions)) {
+            return false;
+        }
+        if(endIndex != other.endIndex) {
+            return false;
+        }
+        if(endTime != other.endTime) {
+            return false;
+        }
+        if(matches == null) {
+            if(other.matches != null) {
+                return false;
+            }
+        } else if(!matches.equals(other.matches)) {
+            return false;
+        }
+        if(maxSize != other.maxSize) {
+            return false;
+        }
+        if(maxTimeRange != other.maxTimeRange) {
+            return false;
+        }
+        if(platform == null) {
+            if(other.platform != null) {
+                return false;
+            }
+        } else if(!platform.equals(other.platform)) {
+            return false;
+        }
+        if(queues == null) {
+            if(other.queues != null) {
+                return false;
+            }
+        } else if(!queues.equals(other.queues)) {
+            return false;
+        }
+        if(seasons == null) {
+            if(other.seasons != null) {
+                return false;
+            }
+        } else if(!seasons.equals(other.seasons)) {
+            return false;
+        }
+        if(startIndex != other.startIndex) {
+            return false;
+        }
+        if(startTime != other.startTime) {
+            return false;
+        }
+        if(totalGames != other.totalGames) {
+            return false;
+        }
+        return true;
+    }
 
     /**
      * @return the accountId
      */
-    public long getAccountId() {
+    public String getAccountId() {
         return accountId;
     }
 
@@ -105,18 +182,31 @@ public class Matchlist extends DataObject {
         return totalGames;
     }
 
-    /**
-     * @return the recent
-     */
-    public boolean isRecent() {
-        return recent;
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (accountId == null ? 0 : accountId.hashCode());
+        result = prime * result + (champions == null ? 0 : champions.hashCode());
+        result = prime * result + endIndex;
+        result = prime * result + (int)(endTime ^ endTime >>> 32);
+        result = prime * result + (matches == null ? 0 : matches.hashCode());
+        result = prime * result + maxSize;
+        result = prime * result + (int)(maxTimeRange ^ maxTimeRange >>> 32);
+        result = prime * result + (platform == null ? 0 : platform.hashCode());
+        result = prime * result + (queues == null ? 0 : queues.hashCode());
+        result = prime * result + (seasons == null ? 0 : seasons.hashCode());
+        result = prime * result + startIndex;
+        result = prime * result + (int)(startTime ^ startTime >>> 32);
+        result = prime * result + totalGames;
+        return result;
     }
 
     /**
      * @param accountId
      *        the accountId to set
      */
-    public void setAccountId(final long accountId) {
+    public void setAccountId(final String accountId) {
         this.accountId = accountId;
     }
 
@@ -182,14 +272,6 @@ public class Matchlist extends DataObject {
      */
     public void setQueues(final Set<Integer> queues) {
         this.queues = queues;
-    }
-
-    /**
-     * @param recent
-     *        the recent to set
-     */
-    public void setRecent(final boolean recent) {
-        this.recent = recent;
     }
 
     /**

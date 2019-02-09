@@ -46,7 +46,7 @@ public class LeaguePositions extends GhostObject.ListProxy<LeaguePosition, com.m
         }
 
         public SearchableList<LeaguePositions> get() {
-            final List<Long> ids = new ArrayList<>();
+            final List<String> ids = new ArrayList<>();
             final Iterator<Summoner> iterator = summoners.iterator();
             Summoner summoner = iterator.next();
 
@@ -96,7 +96,7 @@ public class LeaguePositions extends GhostObject.ListProxy<LeaguePosition, com.m
     private final Supplier<Summoner> summoner = Suppliers.memoize(new Supplier<Summoner>() {
         @Override
         public Summoner get() {
-            if(coreData.getSummonerId() == 0L) {
+            if(coreData.getSummonerId() == null) {
                 return null;
             }
             return Summoner.withId(coreData.getSummonerId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
@@ -144,7 +144,7 @@ public class LeaguePositions extends GhostObject.ListProxy<LeaguePosition, com.m
                 if(coreData.getPlatform() != null) {
                     builder.put("platform", Platform.withTag(coreData.getPlatform()));
                 }
-                if(coreData.getSummonerId() != 0L) {
+                if(coreData.getSummonerId() != null) {
                     builder.put("summonerId", coreData.getSummonerId());
                 }
                 final com.merakianalytics.orianna.types.data.league.LeaguePositions data =

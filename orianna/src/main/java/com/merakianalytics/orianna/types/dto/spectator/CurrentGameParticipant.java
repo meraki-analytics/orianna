@@ -5,12 +5,12 @@ import java.util.List;
 import com.merakianalytics.orianna.types.dto.DataObject;
 
 public class CurrentGameParticipant extends DataObject {
-    private static final long serialVersionUID = -3010619107564679228L;
+    private static final long serialVersionUID = 8063243501212757938L;
     private boolean bot;
     private List<GameCustomizationObject> gameCustomizationObjects;
     private Perks perks;
-    private long profileIconId, championId, teamId, spell2Id, spell1Id, summonerId;
-    private String summonerName;
+    private long profileIconId, championId, teamId, spell2Id, spell1Id;
+    private String summonerName, summonerId;
 
     @Override
     public boolean equals(final Object obj) {
@@ -53,7 +53,11 @@ public class CurrentGameParticipant extends DataObject {
         if(spell2Id != other.spell2Id) {
             return false;
         }
-        if(summonerId != other.summonerId) {
+        if(summonerId == null) {
+            if(other.summonerId != null) {
+                return false;
+            }
+        } else if(!summonerId.equals(other.summonerId)) {
             return false;
         }
         if(summonerName == null) {
@@ -114,7 +118,7 @@ public class CurrentGameParticipant extends DataObject {
     /**
      * @return the summonerId
      */
-    public long getSummonerId() {
+    public String getSummonerId() {
         return summonerId;
     }
 
@@ -143,7 +147,7 @@ public class CurrentGameParticipant extends DataObject {
         result = prime * result + (int)(profileIconId ^ profileIconId >>> 32);
         result = prime * result + (int)(spell1Id ^ spell1Id >>> 32);
         result = prime * result + (int)(spell2Id ^ spell2Id >>> 32);
-        result = prime * result + (int)(summonerId ^ summonerId >>> 32);
+        result = prime * result + (summonerId == null ? 0 : summonerId.hashCode());
         result = prime * result + (summonerName == null ? 0 : summonerName.hashCode());
         result = prime * result + (int)(teamId ^ teamId >>> 32);
         return result;
@@ -216,7 +220,7 @@ public class CurrentGameParticipant extends DataObject {
      * @param summonerId
      *        the summonerId to set
      */
-    public void setSummonerId(final long summonerId) {
+    public void setSummonerId(final String summonerId) {
         this.summonerId = summonerId;
     }
 
