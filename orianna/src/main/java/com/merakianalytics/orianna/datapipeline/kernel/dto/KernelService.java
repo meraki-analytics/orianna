@@ -1,4 +1,4 @@
-package com.merakianalytics.orianna.datapipeline.kernel;
+package com.merakianalytics.orianna.datapipeline.kernel.dto;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -24,7 +24,7 @@ import com.merakianalytics.datapipelines.sources.AbstractDataSource;
 import com.merakianalytics.orianna.datapipeline.common.HTTPClient;
 import com.merakianalytics.orianna.datapipeline.common.HTTPClient.Response;
 import com.merakianalytics.orianna.datapipeline.common.TimeoutException;
-import com.merakianalytics.orianna.datapipeline.kernel.Kernel.Configuration;
+import com.merakianalytics.orianna.datapipeline.kernel.dto.Kernel.Configuration;
 import com.merakianalytics.orianna.datapipeline.kernel.exceptions.GatewayTimeoutException;
 import com.merakianalytics.orianna.datapipeline.riotapi.exceptions.BadRequestException;
 import com.merakianalytics.orianna.datapipeline.riotapi.exceptions.InternalServerErrorException;

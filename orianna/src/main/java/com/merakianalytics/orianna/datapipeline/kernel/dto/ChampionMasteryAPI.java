@@ -1,4 +1,4 @@
-package com.merakianalytics.orianna.datapipeline.kernel;
+package com.merakianalytics.orianna.datapipeline.kernel.dto;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -11,7 +11,7 @@ import com.merakianalytics.datapipelines.sources.Get;
 import com.merakianalytics.datapipelines.sources.GetMany;
 import com.merakianalytics.orianna.datapipeline.common.HTTPClient;
 import com.merakianalytics.orianna.datapipeline.common.Utilities;
-import com.merakianalytics.orianna.datapipeline.kernel.Kernel.Configuration;
+import com.merakianalytics.orianna.datapipeline.kernel.dto.Kernel.Configuration;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.dto.championmastery.ChampionMasteries;
 import com.merakianalytics.orianna.types.dto.championmastery.ChampionMastery;
@@ -35,7 +35,6 @@ public class ChampionMasteryAPI extends KernelService {
             return null;
         }
 
-        data.setPlatform(platform.getTag());
         return data;
     }
 
@@ -51,11 +50,6 @@ public class ChampionMasteryAPI extends KernelService {
             return null;
         }
 
-        data.setSummonerId(summonerId);
-        data.setPlatform(platform.getTag());
-        for(final ChampionMastery mastery : data) {
-            mastery.setPlatform(platform.getTag());
-        }
         return data;
     }
 
@@ -71,8 +65,6 @@ public class ChampionMasteryAPI extends KernelService {
             return null;
         }
 
-        data.setPlatform(platform.getTag());
-        data.setSummonerId(summonerId);
         return data;
     }
 
@@ -88,12 +80,6 @@ public class ChampionMasteryAPI extends KernelService {
         final ChampionMasteries data = get(ChampionMasteries.class, endpoint, ImmutableMap.of("platform", platform.getTag()));
         if(data == null) {
             return null;
-        }
-
-        data.setSummonerId(summonerId);
-        data.setPlatform(platform.getTag());
-        for(final ChampionMastery mastery : data) {
-            mastery.setPlatform(platform.getTag());
         }
 
         final Iterator<Number> iterator = championIds.iterator();
@@ -145,11 +131,6 @@ public class ChampionMasteryAPI extends KernelService {
                     return null;
                 }
 
-                data.setSummonerId(summonerId);
-                data.setPlatform(platform.getTag());
-                for(final ChampionMastery mastery : data) {
-                    mastery.setPlatform(platform.getTag());
-                }
                 return data;
             }
 
@@ -184,8 +165,6 @@ public class ChampionMasteryAPI extends KernelService {
                     return null;
                 }
 
-                data.setPlatform(platform.getTag());
-                data.setSummonerId(summonerId);
                 return data;
             }
 

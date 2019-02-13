@@ -1,4 +1,4 @@
-package com.merakianalytics.orianna.datapipeline.kernel;
+package com.merakianalytics.orianna.datapipeline.kernel.dto;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -12,12 +12,11 @@ import com.merakianalytics.datapipelines.sources.GetMany;
 import com.merakianalytics.orianna.datapipeline.common.HTTPClient;
 import com.merakianalytics.orianna.datapipeline.common.QueryValidationException;
 import com.merakianalytics.orianna.datapipeline.common.Utilities;
-import com.merakianalytics.orianna.datapipeline.kernel.Kernel.Configuration;
+import com.merakianalytics.orianna.datapipeline.kernel.dto.Kernel.Configuration;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Queue;
 import com.merakianalytics.orianna.types.common.Tier;
 import com.merakianalytics.orianna.types.dto.league.LeagueList;
-import com.merakianalytics.orianna.types.dto.league.LeaguePosition;
 import com.merakianalytics.orianna.types.dto.league.PositionalQueuesList;
 import com.merakianalytics.orianna.types.dto.league.SummonerPositions;
 
@@ -69,10 +68,6 @@ public class LeagueAPI extends KernelService {
             return null;
         }
 
-        if(data.getQueue() == null && queue != null) {
-            data.setQueue(queue.toString());
-        }
-        data.setPlatform(platform.getTag());
         return data;
     }
 
@@ -116,10 +111,6 @@ public class LeagueAPI extends KernelService {
 
                     final String endpoint = LEAGUE_LIST_ENDPOINTS.get(tier) + queue;
                     data = get(LeagueList.class, endpoint, ImmutableMap.of("platform", platform.getTag()));
-
-                    if(data.getQueue() == null && queue != null) {
-                        data.setQueue(queue.toString());
-                    }
                 } else {
                     final String leagueId = (String)iterator.next();
                     final String endpoint = "lol/league/v4/leagues/" + leagueId;
@@ -129,7 +120,6 @@ public class LeagueAPI extends KernelService {
                     return null;
                 }
 
-                data.setPlatform(platform.getTag());
                 return data;
             }
 
@@ -163,7 +153,6 @@ public class LeagueAPI extends KernelService {
                     return null;
                 }
 
-                data.setPlatform(platform.getTag());
                 return data;
             }
 
@@ -198,11 +187,6 @@ public class LeagueAPI extends KernelService {
                     return null;
                 }
 
-                data.setSummonerId(summonerId);
-                data.setPlatform(platform.getTag());
-                for(final LeaguePosition position : data) {
-                    position.setPlatform(platform.getTag());
-                }
                 return data;
             }
 
@@ -224,7 +208,6 @@ public class LeagueAPI extends KernelService {
             return null;
         }
 
-        data.setPlatform(platform.getTag());
         return data;
     }
 
@@ -240,11 +223,6 @@ public class LeagueAPI extends KernelService {
             return null;
         }
 
-        data.setSummonerId(summonerId);
-        data.setPlatform(platform.getTag());
-        for(final LeaguePosition position : data) {
-            position.setPlatform(platform.getTag());
-        }
         return data;
     }
 }

@@ -1,4 +1,4 @@
-package com.merakianalytics.orianna.datapipeline.kernel;
+package com.merakianalytics.orianna.datapipeline.kernel.dto;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -19,7 +19,7 @@ import com.merakianalytics.datapipelines.sources.Get;
 import com.merakianalytics.datapipelines.sources.GetMany;
 import com.merakianalytics.orianna.datapipeline.common.HTTPClient;
 import com.merakianalytics.orianna.datapipeline.common.Utilities;
-import com.merakianalytics.orianna.datapipeline.kernel.Kernel.Configuration;
+import com.merakianalytics.orianna.datapipeline.kernel.dto.Kernel.Configuration;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.dto.match.Match;
 import com.merakianalytics.orianna.types.dto.match.MatchReference;
@@ -67,7 +67,6 @@ public class MatchAPI extends KernelService {
                     return null;
                 }
 
-                data.setTournamentCode(tournamentCode);
                 return data;
             }
 
@@ -178,22 +177,6 @@ public class MatchAPI extends KernelService {
                     return empty;
                 }
 
-                if(bTime != null) {
-                    data.setStartTime(bTime.longValue());
-                }
-                if(eTime != null) {
-                    data.setEndTime(eTime.longValue());
-                }
-                data.setMaxSize(bTime != null && eTime != null ? Integer.MAX_VALUE : MAX_MATCH_INDEX_DIFFERENCE);
-                data.setMaxTimeRange(eTime != null ? Long.MAX_VALUE : ONE_WEEK_IN_MILLISECONDS);
-                data.setQueues(queues);
-                data.setSeasons(seasons);
-                data.setChampions(champions);
-                data.setPlatform(platform.getTag());
-                data.setAccountId(accountId);
-                for(final MatchReference reference : data.getMatches()) {
-                    reference.setAccountId(accountId);
-                }
                 return data;
             }
 
@@ -228,8 +211,6 @@ public class MatchAPI extends KernelService {
                     return null;
                 }
 
-                data.setPlatform(platform.getTag());
-                data.setMatchId(matchId.longValue());
                 return data;
             }
 
@@ -264,8 +245,6 @@ public class MatchAPI extends KernelService {
                     return null;
                 }
 
-                data.setPlatform(platform.getTag());
-                data.setTournamentCode(tournamentCode);
                 return data;
             }
 
@@ -296,7 +275,6 @@ public class MatchAPI extends KernelService {
             return null;
         }
 
-        data.setTournamentCode(tournamentCode);
         return data;
     }
 
@@ -387,23 +365,6 @@ public class MatchAPI extends KernelService {
             return empty;
         }
 
-        if(beginTime != null) {
-            data.setStartTime(beginTime.longValue());
-        }
-        if(endTime != null) {
-            data.setEndTime(endTime.longValue());
-        }
-        data.setMaxSize(beginTime != null && endTime != null ? Integer.MAX_VALUE : MAX_MATCH_INDEX_DIFFERENCE);
-        data.setMaxTimeRange(endTime != null ? Long.MAX_VALUE : ONE_WEEK_IN_MILLISECONDS);
-
-        data.setQueues(queues);
-        data.setSeasons(seasons);
-        data.setChampions(champions);
-        data.setPlatform(platform.getTag());
-        data.setAccountId(accountId);
-        for(final MatchReference reference : data.getMatches()) {
-            reference.setAccountId(accountId);
-        }
         return data;
     }
 
@@ -419,8 +380,6 @@ public class MatchAPI extends KernelService {
             return null;
         }
 
-        data.setPlatform(platform.getTag());
-        data.setMatchId(matchId.longValue());
         return data;
     }
 
@@ -436,8 +395,6 @@ public class MatchAPI extends KernelService {
             return null;
         }
 
-        data.setPlatform(platform.getTag());
-        data.setTournamentCode(tournamentCode);
         return data;
     }
 }

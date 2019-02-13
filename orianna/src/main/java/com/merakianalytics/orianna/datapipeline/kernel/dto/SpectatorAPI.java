@@ -1,4 +1,4 @@
-package com.merakianalytics.orianna.datapipeline.kernel;
+package com.merakianalytics.orianna.datapipeline.kernel.dto;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -11,7 +11,7 @@ import com.merakianalytics.datapipelines.sources.Get;
 import com.merakianalytics.datapipelines.sources.GetMany;
 import com.merakianalytics.orianna.datapipeline.common.HTTPClient;
 import com.merakianalytics.orianna.datapipeline.common.Utilities;
-import com.merakianalytics.orianna.datapipeline.kernel.Kernel.Configuration;
+import com.merakianalytics.orianna.datapipeline.kernel.dto.Kernel.Configuration;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.dto.spectator.CurrentGameInfo;
 import com.merakianalytics.orianna.types.dto.spectator.FeaturedGames;
@@ -33,7 +33,6 @@ public class SpectatorAPI extends KernelService {
             return null;
         }
 
-        data.setSummonerId(summonerId);
         return data;
     }
 
@@ -48,7 +47,6 @@ public class SpectatorAPI extends KernelService {
             return null;
         }
 
-        data.setPlatform(platform.getTag());
         return data;
     }
 
@@ -76,7 +74,6 @@ public class SpectatorAPI extends KernelService {
                     return null;
                 }
 
-                data.setSummonerId(summonerId);
                 return data;
             }
 
@@ -110,7 +107,6 @@ public class SpectatorAPI extends KernelService {
                     return null;
                 }
 
-                data.setPlatform(platform.getTag());
                 return data;
             }
 

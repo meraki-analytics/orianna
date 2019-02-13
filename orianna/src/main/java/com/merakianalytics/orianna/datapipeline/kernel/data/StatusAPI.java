@@ -1,4 +1,4 @@
-package com.merakianalytics.orianna.datapipeline.kernel;
+package com.merakianalytics.orianna.datapipeline.kernel.data;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -11,9 +11,9 @@ import com.merakianalytics.datapipelines.sources.Get;
 import com.merakianalytics.datapipelines.sources.GetMany;
 import com.merakianalytics.orianna.datapipeline.common.HTTPClient;
 import com.merakianalytics.orianna.datapipeline.common.Utilities;
-import com.merakianalytics.orianna.datapipeline.kernel.Kernel.Configuration;
+import com.merakianalytics.orianna.datapipeline.kernel.data.Kernel.Configuration;
 import com.merakianalytics.orianna.types.common.Platform;
-import com.merakianalytics.orianna.types.dto.status.ShardStatus;
+import com.merakianalytics.orianna.types.data.status.ShardStatus;
 
 public class StatusAPI extends KernelService {
     public StatusAPI(final Configuration config, final HTTPClient client) {
@@ -43,7 +43,6 @@ public class StatusAPI extends KernelService {
                     return null;
                 }
 
-                data.setPlatform(platform.getTag());
                 return data;
             }
 
@@ -65,7 +64,6 @@ public class StatusAPI extends KernelService {
             return null;
         }
 
-        data.setPlatform(platform.getTag());
         return data;
     }
 }

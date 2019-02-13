@@ -1,4 +1,4 @@
-package com.merakianalytics.orianna.datapipeline.kernel;
+package com.merakianalytics.orianna.datapipeline.kernel.dto;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.ImmutableSet;
 import com.merakianalytics.datapipelines.sources.CompositeDataSource;
 import com.merakianalytics.orianna.datapipeline.common.HTTPClient;
-import com.merakianalytics.orianna.datapipeline.kernel.KernelService.FailedRequestStrategy;
+import com.merakianalytics.orianna.datapipeline.kernel.dto.KernelService.FailedRequestStrategy;
 import com.merakianalytics.orianna.types.common.OriannaException;
 
 public class Kernel extends CompositeDataSource {
