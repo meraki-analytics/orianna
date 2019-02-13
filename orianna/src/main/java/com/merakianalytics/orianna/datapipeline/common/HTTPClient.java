@@ -284,7 +284,10 @@ public class HTTPClient {
                     statusCode = response.code();
                     responseHeaders = response.headers();
                     try(ResponseBody responseBody = response.body()) {
-                        if(JSON_MEDIA_TYPE.type().equals(responseBody.contentType().type())
+                        if(responseBody.contentLength() == 0L) {
+                            body = "";
+                            bytes = new byte[0];
+                        } else if(JSON_MEDIA_TYPE.type().equals(responseBody.contentType().type())
                             && JSON_MEDIA_TYPE.subtype().equals(responseBody.contentType().subtype())) {
                             body = responseBody.string();
                         } else {
