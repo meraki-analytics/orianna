@@ -311,11 +311,13 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
         }
 
         @Override
+        @Searchable({SummonerSpell.class, String.class, long.class})
         public SummonerSpell getSummonerSpellD() {
             return summonerSpellD.get();
         }
 
         @Override
+        @Searchable({SummonerSpell.class, String.class, long.class})
         public SummonerSpell getSummonerSpellF() {
             return summonerSpellF.get();
         }
@@ -392,7 +394,7 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
         }
 
         @Override
-        @Searchable({Summoner.class, Champion.class, Item.class, String.class, long.class, int.class})
+        @Searchable({Summoner.class, Champion.class, Item.class, SummonerSpell.class, String.class, long.class, int.class})
         public SearchableList<com.merakianalytics.orianna.types.core.match.Participant> getParticipants() {
             return participants.get();
         }

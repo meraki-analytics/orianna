@@ -6,6 +6,7 @@ import com.merakianalytics.orianna.types.core.searchable.Searchable;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.Item;
+import com.merakianalytics.orianna.types.core.staticdata.SummonerSpell;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
 public abstract class Team extends OriannaObject<com.merakianalytics.orianna.types.data.match.Team> {
@@ -26,7 +27,7 @@ public abstract class Team extends OriannaObject<com.merakianalytics.orianna.typ
 
     public abstract int getInhibitorKills();
 
-    @Searchable({Summoner.class, Champion.class, Item.class, String.class, long.class, int.class})
+    @Searchable({Summoner.class, Champion.class, Item.class, SummonerSpell.class, String.class, long.class, int.class})
     public abstract SearchableList<Participant> getParticipants();
 
     public abstract int getRiftHeraldKills();

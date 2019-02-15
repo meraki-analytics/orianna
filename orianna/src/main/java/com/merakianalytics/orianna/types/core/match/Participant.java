@@ -49,8 +49,10 @@ public abstract class Participant extends OriannaObject<com.merakianalytics.oria
     @Searchable({Summoner.class, String.class, long.class})
     public abstract Summoner getSummoner();
 
+    @Searchable({SummonerSpell.class, String.class, long.class})
     public abstract SummonerSpell getSummonerSpellD();
 
+    @Searchable({SummonerSpell.class, String.class, long.class})
     public abstract SummonerSpell getSummonerSpellF();
 
     public abstract Team getTeam();
