@@ -351,6 +351,6 @@ public class HTTPClient {
 
     public Response get(final String host, final String url, final Multimap<String, String> parameters, final Map<String, String> headers,
         final RateLimiter limiter) throws IOException {
-        return get(host, https ? 443 : 80, url, parameters, headers, null);
+        return get(host, https ? 443 : 80, url, parameters, headers, limiter);
     }
 }
