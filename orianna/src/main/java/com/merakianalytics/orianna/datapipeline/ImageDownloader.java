@@ -15,6 +15,7 @@ import com.merakianalytics.datapipelines.sources.AbstractDataSource;
 import com.merakianalytics.datapipelines.sources.Get;
 import com.merakianalytics.datapipelines.sources.GetMany;
 import com.merakianalytics.orianna.datapipeline.common.HTTPClient;
+import com.merakianalytics.orianna.datapipeline.common.HTTPClient.Configuration;
 import com.merakianalytics.orianna.datapipeline.common.HTTPClient.Response;
 import com.merakianalytics.orianna.datapipeline.common.Utilities;
 import com.merakianalytics.orianna.types.common.OriannaException;
@@ -23,7 +24,9 @@ public class ImageDownloader extends AbstractDataSource {
     private final HTTPClient client;
 
     public ImageDownloader() {
-        client = new HTTPClient();
+        final Configuration config = new Configuration();
+        config.setHttps(false); // TODO: Make this configurable
+        client = new HTTPClient(config);
     }
 
     @Get(BufferedImage.class)
