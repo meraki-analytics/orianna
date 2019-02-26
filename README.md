@@ -39,10 +39,10 @@ To add the latest Orianna release version to your maven project, add the depende
   <dependency>
     <groupId>com.merakianalytics.orianna</groupId>
     <artifactId>orianna</artifactId>
-    <version>4.0.0-rc2</version>
+    <version>4.0.0-rc3</version>
     <!-- or, for Android: -->
     <artifactId>orianna-android</artifactId>
-    <version>4.0.0-rc2</version>
+    <version>4.0.0-rc3</version>
   </dependency>
 </dependencies>
 ```
@@ -81,9 +81,9 @@ repositories {
 }
 
 dependencies {
-  implementation "com.merakianalytics.orianna:orianna:4.0.0-rc2"
+  implementation "com.merakianalytics.orianna:orianna:4.0.0-rc3"
   // or, for Android:
-  implementation "com.merakianalytics.orianna:orianna-android:4.0.0-rc2"
+  implementation "com.merakianalytics.orianna:orianna-android:4.0.0-rc3"
 }
 ```
 Or, if you want to get the latest development version, add the [Sonaype Snapshot Repository](https://oss.sonatype.org/content/repositories/snapshots/) to your `build.gradle` instead:
