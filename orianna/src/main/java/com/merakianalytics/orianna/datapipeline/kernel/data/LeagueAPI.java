@@ -20,8 +20,6 @@ import com.merakianalytics.orianna.types.data.league.League;
 import com.merakianalytics.orianna.types.data.league.LeaguePositions;
 
 public class LeagueAPI extends KernelService {
-    // TODO: Add /lol/league/v4/positions/{positionalQueue}/{tier}/{division}/{position}/{page}
-
     private static final Map<Tier, String> LEAGUE_ENDPOINTS = ImmutableMap.of(Tier.CHALLENGER, "lol/league/v4/challengerleagues/by-queue/",
         Tier.MASTER, "lol/league/v4/masterleagues/by-queue/", Tier.GRANDMASTER, "lol/league/v4/grandmasterleagues/by-queue/");
 

@@ -22,8 +22,6 @@ import com.merakianalytics.orianna.types.dto.league.LeaguePosition;
 import com.merakianalytics.orianna.types.dto.league.SummonerPositions;
 
 public class LeagueAPI extends RiotAPIService {
-    // TODO: Add /lol/league/v4/positions/{positionalQueue}/{tier}/{division}/{position}/{page}
-
     private static final Map<Tier, String> LEAGUE_LIST_ENDPOINTS = ImmutableMap.of(Tier.CHALLENGER, "lol/league/v4/challengerleagues/by-queue/",
         Tier.MASTER, "lol/league/v4/masterleagues/by-queue/", Tier.GRANDMASTER, "lol/league/v4/grandmasterleagues/by-queue/");
 
