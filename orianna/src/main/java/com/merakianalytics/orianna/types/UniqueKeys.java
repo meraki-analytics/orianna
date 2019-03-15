@@ -14,7 +14,6 @@ import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
 import com.merakianalytics.orianna.types.core.league.League;
 import com.merakianalytics.orianna.types.core.league.LeaguePositions;
-import com.merakianalytics.orianna.types.core.league.PositionalQueues;
 import com.merakianalytics.orianna.types.core.match.Match;
 import com.merakianalytics.orianna.types.core.match.Timeline;
 import com.merakianalytics.orianna.types.core.match.TournamentMatches;
@@ -47,7 +46,6 @@ import com.merakianalytics.orianna.types.core.summoner.Summoner;
 import com.merakianalytics.orianna.types.core.thirdpartycode.VerificationString;
 import com.merakianalytics.orianna.types.dto.champion.ChampionInfo;
 import com.merakianalytics.orianna.types.dto.league.LeagueList;
-import com.merakianalytics.orianna.types.dto.league.PositionalQueuesList;
 import com.merakianalytics.orianna.types.dto.league.SummonerPositions;
 import com.merakianalytics.orianna.types.dto.match.MatchTimeline;
 import com.merakianalytics.orianna.types.dto.spectator.CurrentGameInfo;
@@ -2328,81 +2326,6 @@ public abstract class UniqueKeys {
     }
 
     @SuppressWarnings("unchecked")
-    public static Iterator<Integer> forManyPositionalQueuesDataQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Platform> platforms = (Iterable<Platform>)query.get("platforms");
-
-        final Iterator<Platform> iterator = platforms.iterator();
-        return new Iterator<Integer>() {
-            @Override
-            public boolean hasNext() {
-                return iterator.hasNext();
-            }
-
-            @Override
-            public Integer next() {
-                return Arrays.hashCode(new Object[] {
-                    com.merakianalytics.orianna.types.data.league.PositionalQueues.class.getCanonicalName(), iterator.next().getTag()
-                });
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException();
-            }
-        };
-    }
-
-    @SuppressWarnings("unchecked")
-    public static Iterator<Integer> forManyPositionalQueuesListDtoQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Platform> platforms = (Iterable<Platform>)query.get("platforms");
-
-        final Iterator<Platform> iterator = platforms.iterator();
-        return new Iterator<Integer>() {
-            @Override
-            public boolean hasNext() {
-                return iterator.hasNext();
-            }
-
-            @Override
-            public Integer next() {
-                return Arrays.hashCode(new Object[] {
-                    PositionalQueuesList.class.getCanonicalName(), iterator.next().getTag()
-                });
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException();
-            }
-        };
-    }
-
-    @SuppressWarnings("unchecked")
-    public static Iterator<Integer> forManyPositionalQueuesQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Platform> platforms = (Iterable<Platform>)query.get("platforms");
-
-        final Iterator<Platform> iterator = platforms.iterator();
-        return new Iterator<Integer>() {
-            @Override
-            public boolean hasNext() {
-                return iterator.hasNext();
-            }
-
-            @Override
-            public Integer next() {
-                return Arrays.hashCode(new Object[] {
-                    PositionalQueues.class.getCanonicalName(), iterator.next().getTag()
-                });
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException();
-            }
-        };
-    }
-
-    @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyProfileIconDataDtoQuery(final java.util.Map<String, Object> query) {
         final Iterable<String> versions = (Iterable<String>)query.get("versions");
 
@@ -3887,43 +3810,6 @@ public abstract class UniqueKeys {
     public static int forPatchQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             Patch.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), (String)query.get("name")
-        });
-    }
-
-    public static int forPositionalQueues(final PositionalQueues queues) {
-        final com.merakianalytics.orianna.types.data.league.PositionalQueues data = queues.getCoreData();
-        return Arrays.hashCode(new Object[] {
-            PositionalQueues.class.getCanonicalName(), data.getPlatform()
-        });
-    }
-
-    public static int forPositionalQueuesData(final com.merakianalytics.orianna.types.data.league.PositionalQueues queues) {
-        return Arrays.hashCode(new Object[] {
-            com.merakianalytics.orianna.types.data.league.PositionalQueues.class.getCanonicalName(), queues.getPlatform()
-        });
-    }
-
-    public static int forPositionalQueuesDataQuery(final java.util.Map<String, Object> query) {
-        return Arrays.hashCode(new Object[] {
-            com.merakianalytics.orianna.types.data.league.PositionalQueues.class.getCanonicalName(), ((Platform)query.get("platform")).getTag()
-        });
-    }
-
-    public static int forPositionalQueuesListDto(final PositionalQueuesList queues) {
-        return Arrays.hashCode(new Object[] {
-            PositionalQueuesList.class.getCanonicalName(), queues.getPlatform()
-        });
-    }
-
-    public static int forPositionalQueuesListDtoQuery(final java.util.Map<String, Object> query) {
-        return Arrays.hashCode(new Object[] {
-            PositionalQueuesList.class.getCanonicalName(), ((Platform)query.get("platform")).getTag()
-        });
-    }
-
-    public static int forPositionalQueuesQuery(final java.util.Map<String, Object> query) {
-        return Arrays.hashCode(new Object[] {
-            PositionalQueues.class.getCanonicalName(), ((Platform)query.get("platform")).getTag()
         });
     }
 

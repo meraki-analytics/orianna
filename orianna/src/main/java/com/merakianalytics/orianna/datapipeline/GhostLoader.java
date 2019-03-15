@@ -25,7 +25,6 @@ import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
 import com.merakianalytics.orianna.types.core.league.League;
 import com.merakianalytics.orianna.types.core.league.LeaguePositions;
-import com.merakianalytics.orianna.types.core.league.PositionalQueues;
 import com.merakianalytics.orianna.types.core.match.Match;
 import com.merakianalytics.orianna.types.core.match.MatchHistory;
 import com.merakianalytics.orianna.types.core.match.Timeline;
@@ -860,34 +859,6 @@ public class GhostLoader extends AbstractDataSource {
     }
 
     @SuppressWarnings("unchecked")
-    @GetMany(PositionalQueues.class)
-    public CloseableIterator<PositionalQueues> getManyPositionalQueues(final java.util.Map<String, Object> query, final PipelineContext context) {
-        final Iterable<Platform> platforms = (Iterable<Platform>)query.get("platforms");
-        Utilities.checkNotNull(platforms, "platforms");
-
-        final Iterator<Platform> iterator = platforms.iterator();
-        return CloseableIterators.from(new Iterator<PositionalQueues>() {
-            @Override
-            public boolean hasNext() {
-                return iterator.hasNext();
-            }
-
-            @Override
-            public PositionalQueues next() {
-                final com.merakianalytics.orianna.types.data.league.PositionalQueues data =
-                    new com.merakianalytics.orianna.types.data.league.PositionalQueues();
-                data.setPlatform(iterator.next().getTag());
-                return new PositionalQueues(data);
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException();
-            }
-        });
-    }
-
-    @SuppressWarnings("unchecked")
     @GetMany(ProfileIcon.class)
     public CloseableIterator<ProfileIcon> getManyProfileIcon(final java.util.Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
@@ -1429,16 +1400,6 @@ public class GhostLoader extends AbstractDataSource {
         final com.merakianalytics.orianna.types.data.staticdata.Patches data = new com.merakianalytics.orianna.types.data.staticdata.Patches();
         data.setPlatform(platform.getTag());
         return new Patches(data);
-    }
-
-    @Get(PositionalQueues.class)
-    public PositionalQueues getPositionalQueues(final java.util.Map<String, Object> query, final PipelineContext context) {
-        final Platform platform = (Platform)query.get("platform");
-        Utilities.checkNotNull(platform, "platform");
-
-        final com.merakianalytics.orianna.types.data.league.PositionalQueues data = new com.merakianalytics.orianna.types.data.league.PositionalQueues();
-        data.setPlatform(platform.getTag());
-        return new PositionalQueues(data);
     }
 
     @Get(ProfileIcon.class)

@@ -18,7 +18,6 @@ import com.merakianalytics.orianna.types.common.Queue;
 import com.merakianalytics.orianna.types.common.Tier;
 import com.merakianalytics.orianna.types.data.league.League;
 import com.merakianalytics.orianna.types.data.league.LeaguePositions;
-import com.merakianalytics.orianna.types.data.league.PositionalQueues;
 
 public class LeagueAPI extends KernelService {
     // TODO: Add /lol/league/v4/positions/{positionalQueue}/{tier}/{division}/{position}/{page}
@@ -177,52 +176,5 @@ public class LeagueAPI extends KernelService {
                 throw new UnsupportedOperationException();
             }
         });
-    }
-
-    @SuppressWarnings("unchecked")
-    @GetMany(PositionalQueues.class)
-    public CloseableIterator<PositionalQueues> getManyPositionalQueues(final Map<String, Object> query, final PipelineContext context) {
-        final Iterable<Platform> platforms = (Iterable<Platform>)query.get("platforms");
-        Utilities.checkNotNull(platforms, "platforms");
-
-        final Iterator<Platform> iterator = platforms.iterator();
-        return CloseableIterators.from(new Iterator<PositionalQueues>() {
-            @Override
-            public boolean hasNext() {
-                return iterator.hasNext();
-            }
-
-            @Override
-            public PositionalQueues next() {
-                final Platform platform = iterator.next();
-
-                final String endpoint = "lol/league/v4/positional-rank-queues";
-                final PositionalQueues data = get(PositionalQueues.class, endpoint, ImmutableMap.of("platform", platform.getTag()));
-                if(data == null) {
-                    return null;
-                }
-
-                return data;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException();
-            }
-        });
-    }
-
-    @Get(PositionalQueues.class)
-    public PositionalQueues getPositionalQueues(final Map<String, Object> query, final PipelineContext context) {
-        final Platform platform = (Platform)query.get("platform");
-        Utilities.checkNotNull(platform, "platform");
-
-        final String endpoint = "lol/league/v4/positional-rank-queues";
-        final PositionalQueues data = get(PositionalQueues.class, endpoint, ImmutableMap.of("platform", platform.getTag()));
-        if(data == null) {
-            return null;
-        }
-
-        return data;
     }
 }

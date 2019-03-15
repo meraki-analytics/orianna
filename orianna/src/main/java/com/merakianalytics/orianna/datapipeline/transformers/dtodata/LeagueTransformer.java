@@ -10,12 +10,10 @@ import com.merakianalytics.orianna.types.data.league.League;
 import com.merakianalytics.orianna.types.data.league.LeagueEntry;
 import com.merakianalytics.orianna.types.data.league.LeaguePosition;
 import com.merakianalytics.orianna.types.data.league.LeaguePositions;
-import com.merakianalytics.orianna.types.data.league.PositionalQueues;
 import com.merakianalytics.orianna.types.data.league.Series;
 import com.merakianalytics.orianna.types.dto.league.LeagueItem;
 import com.merakianalytics.orianna.types.dto.league.LeagueList;
 import com.merakianalytics.orianna.types.dto.league.MiniSeries;
-import com.merakianalytics.orianna.types.dto.league.PositionalQueuesList;
 import com.merakianalytics.orianna.types.dto.league.SummonerPositions;
 
 public class LeagueTransformer extends AbstractDataTransformer {
@@ -159,22 +157,6 @@ public class LeagueTransformer extends AbstractDataTransformer {
         series.setWinsRequired(item.getTarget());
         series.setWins(item.getWins());
         return series;
-    }
-
-    @Transform(from = PositionalQueues.class, to = PositionalQueuesList.class)
-    public PositionalQueuesList transform(final PositionalQueues item, final PipelineContext context) {
-        final PositionalQueuesList list = new PositionalQueuesList(item.size());
-        list.addAll(item);
-        list.setPlatform(item.getPlatform());
-        return list;
-    }
-
-    @Transform(from = PositionalQueuesList.class, to = PositionalQueues.class)
-    public PositionalQueues transform(final PositionalQueuesList item, final PipelineContext context) {
-        final PositionalQueues list = new PositionalQueues(item.size());
-        list.addAll(item);
-        list.setPlatform(item.getPlatform());
-        return list;
     }
 
     @Transform(from = Series.class, to = MiniSeries.class)
