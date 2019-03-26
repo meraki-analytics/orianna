@@ -14,6 +14,7 @@ import com.merakianalytics.datapipelines.iterators.LazyList;
 
 public abstract class SearchableLists {
     private static class SearchableListWrapper<T> implements SearchableList<T> {
+        private static final long serialVersionUID = 3608438788294069007L;
         protected final List<T> list;
 
         private SearchableListWrapper(final List<T> list) {
@@ -361,6 +362,8 @@ public abstract class SearchableLists {
     }
 
     private static class UnmodifiableSearchableListWrapper<T> extends SearchableListWrapper<T> {
+        private static final long serialVersionUID = -8091054954955153572L;
+
         private UnmodifiableSearchableListWrapper(final List<T> list) {
             super(list);
         }
@@ -447,6 +450,7 @@ public abstract class SearchableLists {
     }
 
     private static class UnmodifiableView<T> implements SearchableList<T> {
+        private static final long serialVersionUID = -2970557245660245211L;
         protected final SearchableList<T> list;
 
         private UnmodifiableView(final SearchableList<T> list) {

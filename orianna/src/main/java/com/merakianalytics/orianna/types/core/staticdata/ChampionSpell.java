@@ -56,7 +56,7 @@ public class ChampionSpell extends OriannaObject<com.merakianalytics.orianna.typ
             }
             final List<List<Double>> views = new ArrayList<>(coreData.getEffects().size());
             for(final List<Double> effect : coreData.getEffects()) {
-                views.add(Collections.unmodifiableList(effect));
+                views.add(effect != null ? Collections.unmodifiableList(effect) : null);
             }
             return Collections.unmodifiableList(views);
         }
