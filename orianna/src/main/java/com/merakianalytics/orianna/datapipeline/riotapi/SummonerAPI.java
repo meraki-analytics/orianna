@@ -117,7 +117,11 @@ public class SummonerAPI extends RiotAPIService {
             endpoint = "lol/summoner/v4/summoners/" + summonerId;
             limiter = "lol/summoner/v4/summoners/summonerId";
         } else if(summonerName != null) {
-            Utilities.checkSummonerName(summonerName);
+            try {
+                Utilities.checkSummonerName(summonerName);
+            } catch(final QueryValidationException e) {
+                return null;
+            }
             endpoint = "lol/summoner/v4/summoners/by-name/" + summonerName;
             limiter = "lol/summoner/v4/summoners/by-name/summonerName";
         } else {
