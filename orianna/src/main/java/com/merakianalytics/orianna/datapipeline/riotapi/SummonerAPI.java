@@ -9,6 +9,7 @@ import com.merakianalytics.datapipelines.iterators.CloseableIterators;
 import com.merakianalytics.datapipelines.sources.Get;
 import com.merakianalytics.datapipelines.sources.GetMany;
 import com.merakianalytics.orianna.datapipeline.common.HTTPClient;
+import com.merakianalytics.orianna.datapipeline.common.QueryValidationException;
 import com.merakianalytics.orianna.datapipeline.common.Utilities;
 import com.merakianalytics.orianna.datapipeline.common.rates.RateLimiter;
 import com.merakianalytics.orianna.datapipeline.riotapi.RiotAPI.Configuration;
@@ -35,22 +36,27 @@ public class SummonerAPI extends RiotAPIService {
         final Iterator<String> iterator;
         final String baseEndpoint;
         final String limiter;
+        final boolean names;
         if(puuids != null) {
             iterator = puuids.iterator();
             baseEndpoint = "lol/summoner/v4/summoners/by-puuid/";
             limiter = "lol/summoner/v4/summoners/by-puuid/puuid";
+            names = false;
         } else if(accountIds != null) {
             iterator = accountIds.iterator();
             baseEndpoint = "lol/summoner/v4/summoners/by-account/";
             limiter = "lol/summoner/v4/summoners/by-account/accountId";
+            names = false;
         } else if(summonerIds != null) {
             iterator = summonerIds.iterator();
             baseEndpoint = "lol/summoner/v4/summoners/";
             limiter = "lol/summoner/v4/summoners/summonerId";
+            names = false;
         } else if(summonerNames != null) {
             iterator = summonerNames.iterator();
             baseEndpoint = "lol/summoner/v4/summoners/by-name/";
             limiter = "lol/summoner/v4/summoners/by-name/summonerName";
+            names = true;
         } else {
             return null;
         }
@@ -63,7 +69,14 @@ public class SummonerAPI extends RiotAPIService {
 
             @Override
             public Summoner next() {
-                final Object identifier = iterator.next();
+                final String identifier = iterator.next();
+                if(names) {
+                    try {
+                        Utilities.checkSummonerName(identifier);
+                    } catch(final QueryValidationException e) {
+                        return null;
+                    }
+                }
 
                 final String endpoint = baseEndpoint + identifier;
                 final Summoner data = get(Summoner.class, endpoint, platform, limiter);
@@ -104,6 +117,7 @@ public class SummonerAPI extends RiotAPIService {
             endpoint = "lol/summoner/v4/summoners/" + summonerId;
             limiter = "lol/summoner/v4/summoners/summonerId";
         } else if(summonerName != null) {
+            Utilities.checkSummonerName(summonerName);
             endpoint = "lol/summoner/v4/summoners/by-name/" + summonerName;
             limiter = "lol/summoner/v4/summoners/by-name/summonerName";
         } else {
