@@ -74,7 +74,7 @@
 		<datapipelines.version>1.0.4</datapipelines.version>
 		<guava.version>20.0</guava.version>
 		<okhttp.version>3.13.1</okhttp.version>
-		<jackson.version>2.9.8</jackson.version>
+		<jackson.version>2.9.9</jackson.version>
 		<msgpack.version>0.8.16</msgpack.version>
 		<joda.version>2.10.1</joda.version>
 		<cache2k.version>1.2.0.Final</cache2k.version>
