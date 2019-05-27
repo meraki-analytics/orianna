@@ -19,7 +19,7 @@ import com.merakianalytics.orianna.types.common.Queue;
 import com.merakianalytics.orianna.types.common.Tier;
 import com.merakianalytics.orianna.types.dto.league.LeagueList;
 import com.merakianalytics.orianna.types.dto.league.LeaguePosition;
-import com.merakianalytics.orianna.types.dto.league.SummonerPositions;
+import com.merakianalytics.orianna.types.dto.league.LeaguePositions;
 
 public class LeagueAPI extends RiotAPIService {
     private static final Map<Tier, String> LEAGUE_LIST_ENDPOINTS = ImmutableMap.of(Tier.CHALLENGER, "lol/league/v4/challengerleagues/by-queue/",
@@ -72,6 +72,26 @@ public class LeagueAPI extends RiotAPIService {
             data.setQueue(queue.toString());
         }
         data.setPlatform(platform.getTag());
+        return data;
+    }
+
+    @Get(LeaguePositions.class)
+    public LeaguePositions getLeaguePositions(final Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        final String summonerId = (String)query.get("summonerId");
+        Utilities.checkNotNull(platform, "platform", summonerId, "summonerId");
+
+        final String endpoint = "lol/league/v4/positions/by-summoner/" + summonerId;
+        final LeaguePositions data = get(LeaguePositions.class, endpoint, platform, "lol/league/v4/positions/by-summoner/summonerId");
+        if(data == null) {
+            return null;
+        }
+
+        data.setSummonerId(summonerId);
+        data.setPlatform(platform.getTag());
+        for(final LeaguePosition position : data) {
+            position.setPlatform(platform.getTag());
+        }
         return data;
     }
 
@@ -140,25 +160,25 @@ public class LeagueAPI extends RiotAPIService {
     }
 
     @SuppressWarnings("unchecked")
-    @GetMany(SummonerPositions.class)
-    public CloseableIterator<SummonerPositions> getManySummonerPositions(final Map<String, Object> query, final PipelineContext context) {
+    @GetMany(LeaguePositions.class)
+    public CloseableIterator<LeaguePositions> getManyLeaguePositions(final Map<String, Object> query, final PipelineContext context) {
         final Platform platform = (Platform)query.get("platform");
         final Iterable<String> summonerIds = (Iterable<String>)query.get("summonerIds");
         Utilities.checkNotNull(platform, "platform", summonerIds, "summonerIds");
 
         final Iterator<String> iterator = summonerIds.iterator();
-        return CloseableIterators.from(new Iterator<SummonerPositions>() {
+        return CloseableIterators.from(new Iterator<LeaguePositions>() {
             @Override
             public boolean hasNext() {
                 return iterator.hasNext();
             }
 
             @Override
-            public SummonerPositions next() {
+            public LeaguePositions next() {
                 final String summonerId = iterator.next();
 
                 final String endpoint = "lol/league/v4/positions/by-summoner/" + summonerId;
-                final SummonerPositions data = get(SummonerPositions.class, endpoint, platform, "lol/league/v4/positions/by-summoner/summonerId");
+                final LeaguePositions data = get(LeaguePositions.class, endpoint, platform, "lol/league/v4/positions/by-summoner/summonerId");
                 if(data == null) {
                     return null;
                 }
@@ -176,25 +196,5 @@ public class LeagueAPI extends RiotAPIService {
                 throw new UnsupportedOperationException();
             }
         });
-    }
-
-    @Get(SummonerPositions.class)
-    public SummonerPositions getSummonerPositions(final Map<String, Object> query, final PipelineContext context) {
-        final Platform platform = (Platform)query.get("platform");
-        final String summonerId = (String)query.get("summonerId");
-        Utilities.checkNotNull(platform, "platform", summonerId, "summonerId");
-
-        final String endpoint = "lol/league/v4/positions/by-summoner/" + summonerId;
-        final SummonerPositions data = get(SummonerPositions.class, endpoint, platform, "lol/league/v4/positions/by-summoner/summonerId");
-        if(data == null) {
-            return null;
-        }
-
-        data.setSummonerId(summonerId);
-        data.setPlatform(platform.getTag());
-        for(final LeaguePosition position : data) {
-            position.setPlatform(platform.getTag());
-        }
-        return data;
     }
 }

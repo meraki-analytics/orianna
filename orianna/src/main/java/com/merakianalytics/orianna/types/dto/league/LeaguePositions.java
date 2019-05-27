@@ -2,7 +2,7 @@ package com.merakianalytics.orianna.types.dto.league;
 
 import com.merakianalytics.orianna.types.dto.DataObject;
 
-public class SummonerPositions extends DataObject.SetProxy<LeaguePosition> {
+public class LeaguePositions extends DataObject.SetProxy<LeaguePosition> {
     private static final long serialVersionUID = 3274909886912241039L;
     private String platform, summonerId;
 
@@ -17,7 +17,7 @@ public class SummonerPositions extends DataObject.SetProxy<LeaguePosition> {
         if(getClass() != obj.getClass()) {
             return false;
         }
-        final SummonerPositions other = (SummonerPositions)obj;
+        final LeaguePositions other = (LeaguePositions)obj;
         if(platform == null) {
             if(other.platform != null) {
                 return false;

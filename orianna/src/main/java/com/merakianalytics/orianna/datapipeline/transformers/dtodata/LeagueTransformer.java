@@ -14,7 +14,6 @@ import com.merakianalytics.orianna.types.data.league.Series;
 import com.merakianalytics.orianna.types.dto.league.LeagueItem;
 import com.merakianalytics.orianna.types.dto.league.LeagueList;
 import com.merakianalytics.orianna.types.dto.league.MiniSeries;
-import com.merakianalytics.orianna.types.dto.league.SummonerPositions;
 
 public class LeagueTransformer extends AbstractDataTransformer {
     @Transform(from = com.merakianalytics.orianna.types.dto.league.LeaguePosition.class, to = LeaguePosition.class)
@@ -40,6 +39,17 @@ public class LeagueTransformer extends AbstractDataTransformer {
         position.setWins(item.getWins());
         position.setPosition(item.getPosition());
         return position;
+    }
+
+    @Transform(from = com.merakianalytics.orianna.types.dto.league.LeaguePositions.class, to = LeaguePositions.class)
+    public LeaguePositions transform(final com.merakianalytics.orianna.types.dto.league.LeaguePositions item, final PipelineContext context) {
+        final LeaguePositions positions = new LeaguePositions(item.size());
+        for(final com.merakianalytics.orianna.types.dto.league.LeaguePosition position : item) {
+            positions.add(transform(position, context));
+        }
+        positions.setPlatform(item.getPlatform());
+        positions.setSummonerId(item.getSummonerId());
+        return positions;
     }
 
     @Transform(from = League.class, to = LeagueList.class)
@@ -138,9 +148,9 @@ public class LeagueTransformer extends AbstractDataTransformer {
         return position;
     }
 
-    @Transform(from = LeaguePositions.class, to = SummonerPositions.class)
-    public SummonerPositions transform(final LeaguePositions item, final PipelineContext context) {
-        final SummonerPositions positions = new SummonerPositions();
+    @Transform(from = LeaguePositions.class, to = com.merakianalytics.orianna.types.dto.league.LeaguePositions.class)
+    public com.merakianalytics.orianna.types.dto.league.LeaguePositions transform(final LeaguePositions item, final PipelineContext context) {
+        final com.merakianalytics.orianna.types.dto.league.LeaguePositions positions = new com.merakianalytics.orianna.types.dto.league.LeaguePositions();
         for(final LeaguePosition position : item) {
             positions.add(transform(position, context));
         }
@@ -167,16 +177,5 @@ public class LeagueTransformer extends AbstractDataTransformer {
         series.setTarget(item.getWinsRequired());
         series.setWins(item.getWins());
         return series;
-    }
-
-    @Transform(from = SummonerPositions.class, to = LeaguePositions.class)
-    public LeaguePositions transform(final SummonerPositions item, final PipelineContext context) {
-        final LeaguePositions positions = new LeaguePositions(item.size());
-        for(final com.merakianalytics.orianna.types.dto.league.LeaguePosition position : item) {
-            positions.add(transform(position, context));
-        }
-        positions.setPlatform(item.getPlatform());
-        positions.setSummonerId(item.getSummonerId());
-        return positions;
     }
 }
