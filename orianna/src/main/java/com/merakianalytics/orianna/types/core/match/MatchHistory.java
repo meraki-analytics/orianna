@@ -35,15 +35,6 @@ import com.merakianalytics.orianna.types.data.match.MatchReference;
 
 public class MatchHistory extends GhostObject<com.merakianalytics.orianna.types.data.match.MatchList> implements SearchableList<Match> {
     public static class Builder {
-        public class RecentBuilder {
-            public MatchHistory get() {
-                final ImmutableMap.Builder<String, Object> builder = ImmutableMap.<String, Object> builder().put("platform", summoner.getPlatform())
-                    .put("accountId", summoner.getAccountId()).put("recent", Boolean.TRUE);
-
-                return Orianna.getSettings().getPipeline().get(MatchHistory.class, builder.build());
-            }
-        }
-
         private Set<Integer> champions;
         private Set<Integer> queues;
         private Set<Integer> seasons;
@@ -53,10 +44,6 @@ public class MatchHistory extends GhostObject<com.merakianalytics.orianna.types.
 
         private Builder(final Summoner summoner) {
             this.summoner = summoner;
-        }
-
-        public RecentBuilder fromRecentMatches() {
-            return new RecentBuilder();
         }
 
         public MatchHistory get() {
