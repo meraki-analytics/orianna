@@ -74,7 +74,7 @@ public class LeagueAPI extends KernelService {
         final String summonerId = (String)query.get("summonerId");
         Utilities.checkNotNull(platform, "platform", summonerId, "summonerId");
 
-        final String endpoint = "lol/league/v4/positions/by-summoner/" + summonerId;
+        final String endpoint = "lol/league/v4/entries/by-summoner/" + summonerId;
         final LeaguePositions data = get(LeaguePositions.class, endpoint, ImmutableMap.of("platform", platform.getTag()));
         if(data == null) {
             return null;
@@ -160,7 +160,7 @@ public class LeagueAPI extends KernelService {
             public LeaguePositions next() {
                 final String summonerId = iterator.next();
 
-                final String endpoint = "lol/league/v4/positions/by-summoner/" + summonerId;
+                final String endpoint = "lol/league/v4/entries/by-summoner/" + summonerId;
                 final LeaguePositions data = get(LeaguePositions.class, endpoint, ImmutableMap.of("platform", platform.getTag()));
                 if(data == null) {
                     return null;
