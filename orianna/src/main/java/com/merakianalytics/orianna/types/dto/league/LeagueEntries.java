@@ -1,13 +1,11 @@
 package com.merakianalytics.orianna.types.dto.league;
 
-import java.util.List;
-
 import com.merakianalytics.orianna.types.dto.DataObject;
 
-public class LeagueList extends DataObject {
-    private static final long serialVersionUID = -8010527033889002648L;
-    private List<LeagueItem> entries;
-    private String leagueId, tier, queue, name, platform;
+public class LeagueEntries extends DataObject.SetProxy<LeagueEntry> {
+    private static final long serialVersionUID = 6598031825026805624L;
+    private String division, tier, queue, platform;
+    private int page;
 
     @Override
     public boolean equals(final Object obj) {
@@ -20,26 +18,15 @@ public class LeagueList extends DataObject {
         if(getClass() != obj.getClass()) {
             return false;
         }
-        final LeagueList other = (LeagueList)obj;
-        if(entries == null) {
-            if(other.entries != null) {
+        final LeagueEntries other = (LeagueEntries)obj;
+        if(division == null) {
+            if(other.division != null) {
                 return false;
             }
-        } else if(!entries.equals(other.entries)) {
+        } else if(!division.equals(other.division)) {
             return false;
         }
-        if(leagueId == null) {
-            if(other.leagueId != null) {
-                return false;
-            }
-        } else if(!leagueId.equals(other.leagueId)) {
-            return false;
-        }
-        if(name == null) {
-            if(other.name != null) {
-                return false;
-            }
-        } else if(!name.equals(other.name)) {
+        if(page != other.page) {
             return false;
         }
         if(platform == null) {
@@ -67,24 +54,17 @@ public class LeagueList extends DataObject {
     }
 
     /**
-     * @return the entries
+     * @return the division
      */
-    public List<LeagueItem> getEntries() {
-        return entries;
+    public String getDivision() {
+        return division;
     }
 
     /**
-     * @return the leagueId
+     * @return the page
      */
-    public String getLeagueId() {
-        return leagueId;
-    }
-
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
+    public int getPage() {
+        return page;
     }
 
     /**
@@ -112,9 +92,8 @@ public class LeagueList extends DataObject {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (entries == null ? 0 : entries.hashCode());
-        result = prime * result + (leagueId == null ? 0 : leagueId.hashCode());
-        result = prime * result + (name == null ? 0 : name.hashCode());
+        result = prime * result + (division == null ? 0 : division.hashCode());
+        result = prime * result + page;
         result = prime * result + (platform == null ? 0 : platform.hashCode());
         result = prime * result + (queue == null ? 0 : queue.hashCode());
         result = prime * result + (tier == null ? 0 : tier.hashCode());
@@ -122,27 +101,19 @@ public class LeagueList extends DataObject {
     }
 
     /**
-     * @param entries
-     *        the entries to set
+     * @param division
+     *        the division to set
      */
-    public void setEntries(final List<LeagueItem> entries) {
-        this.entries = entries;
+    public void setDivision(final String division) {
+        this.division = division;
     }
 
     /**
-     * @param leagueId
-     *        the leagueId to set
+     * @param page
+     *        the page to set
      */
-    public void setLeagueId(final String leagueId) {
-        this.leagueId = leagueId;
-    }
-
-    /**
-     * @param name
-     *        the name to set
-     */
-    public void setName(final String name) {
-        this.name = name;
+    public void setPage(final int page) {
+        this.page = page;
     }
 
     /**

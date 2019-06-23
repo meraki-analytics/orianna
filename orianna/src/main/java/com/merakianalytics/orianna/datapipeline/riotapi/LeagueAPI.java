@@ -17,8 +17,8 @@ import com.merakianalytics.orianna.datapipeline.riotapi.RiotAPI.Configuration;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Queue;
 import com.merakianalytics.orianna.types.common.Tier;
+import com.merakianalytics.orianna.types.dto.league.LeagueEntry;
 import com.merakianalytics.orianna.types.dto.league.LeagueList;
-import com.merakianalytics.orianna.types.dto.league.LeaguePosition;
 import com.merakianalytics.orianna.types.dto.league.LeaguePositions;
 
 public class LeagueAPI extends RiotAPIService {
@@ -81,16 +81,16 @@ public class LeagueAPI extends RiotAPIService {
         final String summonerId = (String)query.get("summonerId");
         Utilities.checkNotNull(platform, "platform", summonerId, "summonerId");
 
-        final String endpoint = "lol/league/v4/positions/by-summoner/" + summonerId;
-        final LeaguePositions data = get(LeaguePositions.class, endpoint, platform, "lol/league/v4/positions/by-summoner/summonerId");
+        final String endpoint = "lol/league/v4/entries/by-summoner/" + summonerId;
+        final LeaguePositions data = get(LeaguePositions.class, endpoint, platform, "lol/league/v4/entries/by-summoner/summonerId");
         if(data == null) {
             return null;
         }
 
         data.setSummonerId(summonerId);
         data.setPlatform(platform.getTag());
-        for(final LeaguePosition position : data) {
-            position.setPlatform(platform.getTag());
+        for(final LeagueEntry entry : data) {
+            entry.setPlatform(platform.getTag());
         }
         return data;
     }
@@ -136,7 +136,7 @@ public class LeagueAPI extends RiotAPIService {
                     final String endpoint = LEAGUE_LIST_ENDPOINTS.get(tier) + queue;
                     data = get(LeagueList.class, endpoint, platform, LEAGUE_LIST_ENDPOINTS.get(tier) + "/queue");
 
-                    if(data.getQueue() == null && queue != null) {
+                    if(data != null && data.getQueue() == null && queue != null) {
                         data.setQueue(queue.toString());
                     }
                 } else {
@@ -177,16 +177,16 @@ public class LeagueAPI extends RiotAPIService {
             public LeaguePositions next() {
                 final String summonerId = iterator.next();
 
-                final String endpoint = "lol/league/v4/positions/by-summoner/" + summonerId;
-                final LeaguePositions data = get(LeaguePositions.class, endpoint, platform, "lol/league/v4/positions/by-summoner/summonerId");
+                final String endpoint = "lol/league/v4/entries/by-summoner/" + summonerId;
+                final LeaguePositions data = get(LeaguePositions.class, endpoint, platform, "lol/league/v4/entries/by-summoner/summonerId");
                 if(data == null) {
                     return null;
                 }
 
                 data.setSummonerId(summonerId);
                 data.setPlatform(platform.getTag());
-                for(final LeaguePosition position : data) {
-                    position.setPlatform(platform.getTag());
+                for(final LeagueEntry entry : data) {
+                    entry.setPlatform(platform.getTag());
                 }
                 return data;
             }

@@ -2,7 +2,7 @@ package com.merakianalytics.orianna.types.data.league;
 
 import com.merakianalytics.orianna.types.data.CoreData;
 
-public class LeaguePositions extends CoreData.ListProxy<LeaguePosition> {
+public class LeaguePositions extends CoreData.ListProxy<LeagueEntry> {
     private static final long serialVersionUID = -78697578110185006L;
     private String platform, summonerId;
 

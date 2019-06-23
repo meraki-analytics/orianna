@@ -1,12 +1,12 @@
-package com.merakianalytics.orianna.types.data.league;
+package com.merakianalytics.orianna.types.dto.league;
 
-import com.merakianalytics.orianna.types.data.CoreData;
+import com.merakianalytics.orianna.types.dto.DataObject;
 
-public class LeaguePosition extends CoreData {
-    private static final long serialVersionUID = 3807174768546132504L;
-    private String name, summonerName, leagueId, division, platform, queue, tier, summonerId, position;
-    private boolean onHotStreak, veteran, inactive, freshBlood;
-    private Series promos;
+public class LeagueEntry extends DataObject {
+    private static final long serialVersionUID = -8885805858383620383L;
+    private boolean hotStreak, veteran, inactive, freshBlood;
+    private MiniSeries miniSeries;
+    private String queueType, summonerName, rank, leagueId, tier, summonerId, platform;
     private int wins, losses, leaguePoints;
 
     @Override
@@ -20,15 +20,11 @@ public class LeaguePosition extends CoreData {
         if(getClass() != obj.getClass()) {
             return false;
         }
-        final LeaguePosition other = (LeaguePosition)obj;
-        if(division == null) {
-            if(other.division != null) {
-                return false;
-            }
-        } else if(!division.equals(other.division)) {
+        final LeagueEntry other = (LeagueEntry)obj;
+        if(freshBlood != other.freshBlood) {
             return false;
         }
-        if(freshBlood != other.freshBlood) {
+        if(hotStreak != other.hotStreak) {
             return false;
         }
         if(inactive != other.inactive) {
@@ -47,14 +43,11 @@ public class LeaguePosition extends CoreData {
         if(losses != other.losses) {
             return false;
         }
-        if(name == null) {
-            if(other.name != null) {
+        if(miniSeries == null) {
+            if(other.miniSeries != null) {
                 return false;
             }
-        } else if(!name.equals(other.name)) {
-            return false;
-        }
-        if(onHotStreak != other.onHotStreak) {
+        } else if(!miniSeries.equals(other.miniSeries)) {
             return false;
         }
         if(platform == null) {
@@ -64,25 +57,18 @@ public class LeaguePosition extends CoreData {
         } else if(!platform.equals(other.platform)) {
             return false;
         }
-        if(position == null) {
-            if(other.position != null) {
+        if(queueType == null) {
+            if(other.queueType != null) {
                 return false;
             }
-        } else if(!position.equals(other.position)) {
+        } else if(!queueType.equals(other.queueType)) {
             return false;
         }
-        if(promos == null) {
-            if(other.promos != null) {
+        if(rank == null) {
+            if(other.rank != null) {
                 return false;
             }
-        } else if(!promos.equals(other.promos)) {
-            return false;
-        }
-        if(queue == null) {
-            if(other.queue != null) {
-                return false;
-            }
-        } else if(!queue.equals(other.queue)) {
+        } else if(!rank.equals(other.rank)) {
             return false;
         }
         if(summonerId == null) {
@@ -116,13 +102,6 @@ public class LeaguePosition extends CoreData {
     }
 
     /**
-     * @return the division
-     */
-    public String getDivision() {
-        return division;
-    }
-
-    /**
      * @return the leagueId
      */
     public String getLeagueId() {
@@ -144,10 +123,10 @@ public class LeaguePosition extends CoreData {
     }
 
     /**
-     * @return the name
+     * @return the miniSeries
      */
-    public String getName() {
-        return name;
+    public MiniSeries getMiniSeries() {
+        return miniSeries;
     }
 
     /**
@@ -158,24 +137,17 @@ public class LeaguePosition extends CoreData {
     }
 
     /**
-     * @return the position
+     * @return the queueType
      */
-    public String getPosition() {
-        return position;
+    public String getQueueType() {
+        return queueType;
     }
 
     /**
-     * @return the promos
+     * @return the rank
      */
-    public Series getPromos() {
-        return promos;
-    }
-
-    /**
-     * @return the queue
-     */
-    public String getQueue() {
-        return queue;
+    public String getRank() {
+        return rank;
     }
 
     /**
@@ -210,18 +182,16 @@ public class LeaguePosition extends CoreData {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (division == null ? 0 : division.hashCode());
         result = prime * result + (freshBlood ? 1231 : 1237);
+        result = prime * result + (hotStreak ? 1231 : 1237);
         result = prime * result + (inactive ? 1231 : 1237);
         result = prime * result + (leagueId == null ? 0 : leagueId.hashCode());
         result = prime * result + leaguePoints;
         result = prime * result + losses;
-        result = prime * result + (name == null ? 0 : name.hashCode());
-        result = prime * result + (onHotStreak ? 1231 : 1237);
+        result = prime * result + (miniSeries == null ? 0 : miniSeries.hashCode());
         result = prime * result + (platform == null ? 0 : platform.hashCode());
-        result = prime * result + (position == null ? 0 : position.hashCode());
-        result = prime * result + (promos == null ? 0 : promos.hashCode());
-        result = prime * result + (queue == null ? 0 : queue.hashCode());
+        result = prime * result + (queueType == null ? 0 : queueType.hashCode());
+        result = prime * result + (rank == null ? 0 : rank.hashCode());
         result = prime * result + (summonerId == null ? 0 : summonerId.hashCode());
         result = prime * result + (summonerName == null ? 0 : summonerName.hashCode());
         result = prime * result + (tier == null ? 0 : tier.hashCode());
@@ -238,17 +208,17 @@ public class LeaguePosition extends CoreData {
     }
 
     /**
+     * @return the hotStreak
+     */
+    public boolean isHotStreak() {
+        return hotStreak;
+    }
+
+    /**
      * @return the inactive
      */
     public boolean isInactive() {
         return inactive;
-    }
-
-    /**
-     * @return the onHotStreak
-     */
-    public boolean isOnHotStreak() {
-        return onHotStreak;
     }
 
     /**
@@ -259,19 +229,19 @@ public class LeaguePosition extends CoreData {
     }
 
     /**
-     * @param division
-     *        the division to set
-     */
-    public void setDivision(final String division) {
-        this.division = division;
-    }
-
-    /**
      * @param freshBlood
      *        the freshBlood to set
      */
     public void setFreshBlood(final boolean freshBlood) {
         this.freshBlood = freshBlood;
+    }
+
+    /**
+     * @param hotStreak
+     *        the hotStreak to set
+     */
+    public void setHotStreak(final boolean hotStreak) {
+        this.hotStreak = hotStreak;
     }
 
     /**
@@ -307,19 +277,11 @@ public class LeaguePosition extends CoreData {
     }
 
     /**
-     * @param name
-     *        the name to set
+     * @param miniSeries
+     *        the miniSeries to set
      */
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    /**
-     * @param onHotStreak
-     *        the onHotStreak to set
-     */
-    public void setOnHotStreak(final boolean onHotStreak) {
-        this.onHotStreak = onHotStreak;
+    public void setMiniSeries(final MiniSeries miniSeries) {
+        this.miniSeries = miniSeries;
     }
 
     /**
@@ -331,27 +293,19 @@ public class LeaguePosition extends CoreData {
     }
 
     /**
-     * @param position
-     *        the position to set
+     * @param queueType
+     *        the queueType to set
      */
-    public void setPosition(final String position) {
-        this.position = position;
+    public void setQueueType(final String queueType) {
+        this.queueType = queueType;
     }
 
     /**
-     * @param promos
-     *        the promos to set
+     * @param rank
+     *        the rank to set
      */
-    public void setPromos(final Series promos) {
-        this.promos = promos;
-    }
-
-    /**
-     * @param queue
-     *        the queue to set
-     */
-    public void setQueue(final String queue) {
-        this.queue = queue;
+    public void setRank(final String rank) {
+        this.rank = rank;
     }
 
     /**

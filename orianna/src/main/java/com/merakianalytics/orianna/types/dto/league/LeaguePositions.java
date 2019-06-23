@@ -2,9 +2,9 @@ package com.merakianalytics.orianna.types.dto.league;
 
 import com.merakianalytics.orianna.types.dto.DataObject;
 
-public class LeaguePositions extends DataObject.SetProxy<LeaguePosition> {
-    private static final long serialVersionUID = 3274909886912241039L;
-    private String platform, summonerId;
+public class LeaguePositions extends DataObject.SetProxy<LeagueEntry> {
+    private static final long serialVersionUID = 2055785943725036877L;
+    private String summonerId, platform;
 
     @Override
     public boolean equals(final Object obj) {

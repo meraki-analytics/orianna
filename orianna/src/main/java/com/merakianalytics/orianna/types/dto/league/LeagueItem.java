@@ -3,10 +3,10 @@ package com.merakianalytics.orianna.types.dto.league;
 import com.merakianalytics.orianna.types.dto.DataObject;
 
 public class LeagueItem extends DataObject {
-    private static final long serialVersionUID = -3026182755595917036L;
-    private boolean hotStreak, veteran, inactive, freshBlood;
+    private static final long serialVersionUID = 2521820374904983414L;
+    private boolean hotStreak, veteran, freshBlood, inactive;
     private MiniSeries miniSeries;
-    private String rank, summonerId, summonerName;
+    private String summonerName, rank, summonerId;
     private int wins, losses, leaguePoints;
 
     @Override

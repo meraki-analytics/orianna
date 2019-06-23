@@ -4,12 +4,25 @@ import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.merakianalytics.orianna.types.common.Division;
 import com.merakianalytics.orianna.types.common.Platform;
+import com.merakianalytics.orianna.types.common.Queue;
+import com.merakianalytics.orianna.types.common.Region;
+import com.merakianalytics.orianna.types.common.Tier;
 import com.merakianalytics.orianna.types.core.OriannaObject;
 import com.merakianalytics.orianna.types.core.searchable.Searchable;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
 public class LeagueEntry extends OriannaObject<com.merakianalytics.orianna.types.data.league.LeagueEntry> {
     private static final long serialVersionUID = -8320702451565649681L;
+
+    private final Supplier<League> league = Suppliers.memoize(new Supplier<League>() {
+        @Override
+        public League get() {
+            if(coreData.getLeagueId() == null) {
+                return null;
+            }
+            return League.withId(coreData.getLeagueId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
+        }
+    });
 
     private final Supplier<Series> promos = Suppliers.memoize(new Supplier<Series>() {
         @Override
@@ -43,6 +56,10 @@ public class LeagueEntry extends OriannaObject<com.merakianalytics.orianna.types
         return Division.valueOf(coreData.getDivision());
     }
 
+    public League getLeague() {
+        return league.get();
+    }
+
     public int getLeaguePoints() {
         return coreData.getLeaguePoints();
     }
@@ -51,13 +68,29 @@ public class LeagueEntry extends OriannaObject<com.merakianalytics.orianna.types
         return coreData.getLosses();
     }
 
+    public Platform getPlatform() {
+        return Platform.withTag(coreData.getPlatform());
+    }
+
     public Series getPromos() {
         return promos.get();
+    }
+
+    public Queue getQueue() {
+        return Queue.valueOf(coreData.getQueue());
+    }
+
+    public Region getRegion() {
+        return Platform.withTag(coreData.getPlatform()).getRegion();
     }
 
     @Searchable({Summoner.class, String.class, long.class})
     public Summoner getSummoner() {
         return summoner.get();
+    }
+
+    public Tier getTier() {
+        return Tier.valueOf(coreData.getTier());
     }
 
     public int getWins() {

@@ -20,14 +20,14 @@ import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
 import com.merakianalytics.orianna.types.core.league.League;
-import com.merakianalytics.orianna.types.core.league.LeaguePosition;
+import com.merakianalytics.orianna.types.core.league.LeagueEntry;
 import com.merakianalytics.orianna.types.core.league.LeaguePositions;
-import com.merakianalytics.orianna.types.core.league.Leagues;
 import com.merakianalytics.orianna.types.core.match.Match;
 import com.merakianalytics.orianna.types.core.match.MatchHistory;
 import com.merakianalytics.orianna.types.core.match.Participant;
 import com.merakianalytics.orianna.types.core.searchable.Searchable;
 import com.merakianalytics.orianna.types.core.searchable.SearchableList;
+import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 import com.merakianalytics.orianna.types.core.spectator.CurrentMatch;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.staticdata.ProfileIcon;
@@ -200,24 +200,24 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
             throw new IllegalArgumentException("Can only get league for ranked queues!");
         }
 
-        final LeaguePositions positions = LeaguePositions.forSummoner(this).get();
-        for(final LeaguePosition position : positions) {
-            if(queue == position.getQueue()) {
-                return League.withId(position.getLeagueId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
+        final LeaguePositions entries = LeaguePositions.forSummoner(this).get();
+        for(final LeagueEntry entry : entries) {
+            if(queue == entry.getQueue()) {
+                return entry.getLeague();
             }
         }
         return null;
     }
 
-    public LeaguePosition getLeaguePosition(final Queue queue) {
+    public LeagueEntry getLeaguePosition(final Queue queue) {
         if(!Queue.RANKED.contains(queue)) {
-            throw new IllegalArgumentException("Can only get league positions for ranked queues!");
+            throw new IllegalArgumentException("Can only get league for ranked queues!");
         }
 
-        final LeaguePositions positions = LeaguePositions.forSummoner(this).get();
-        for(final LeaguePosition position : positions) {
-            if(queue == position.getQueue()) {
-                return position;
+        final LeaguePositions entries = LeaguePositions.forSummoner(this).get();
+        for(final LeagueEntry entry : entries) {
+            if(queue == entry.getQueue()) {
+                return entry;
             }
         }
         return null;
@@ -229,12 +229,12 @@ public class Summoner extends GhostObject<com.merakianalytics.orianna.types.data
 
     public SearchableList<League> getLeagues() {
         final LeaguePositions positions = LeaguePositions.forSummoner(this).get();
-        final List<String> ids = new ArrayList<>(positions.size());
-        for(final LeaguePosition position : positions) {
-            ids.add(position.getLeagueId());
+        final List<League> leagues = new ArrayList<>(positions.size());
+        for(final LeagueEntry entry : positions) {
+            leagues.add(entry.getLeague());
         }
 
-        return Leagues.withIds(ids).withPlatform(Platform.withTag(coreData.getPlatform())).get();
+        return SearchableLists.from(leagues);
     }
 
     public int getLevel() {

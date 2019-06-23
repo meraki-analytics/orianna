@@ -21,7 +21,7 @@ import com.merakianalytics.orianna.types.core.searchable.SearchableList;
 import com.merakianalytics.orianna.types.core.searchable.SearchableLists;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
-public class LeaguePositions extends GhostObject.ListProxy<LeaguePosition, com.merakianalytics.orianna.types.data.league.LeaguePosition, com.merakianalytics.orianna.types.data.league.LeaguePositions> {
+public class LeaguePositions extends GhostObject.ListProxy<LeagueEntry, com.merakianalytics.orianna.types.data.league.LeagueEntry, com.merakianalytics.orianna.types.data.league.LeaguePositions> {
     public static class Builder {
         private final Summoner summoner;
 
@@ -152,10 +152,10 @@ public class LeaguePositions extends GhostObject.ListProxy<LeaguePosition, com.m
                 if(data != null) {
                     coreData = data;
                 }
-                loadListProxyData(new Function<com.merakianalytics.orianna.types.data.league.LeaguePosition, LeaguePosition>() {
+                loadListProxyData(new Function<com.merakianalytics.orianna.types.data.league.LeagueEntry, LeagueEntry>() {
                     @Override
-                    public LeaguePosition apply(final com.merakianalytics.orianna.types.data.league.LeaguePosition data) {
-                        return new LeaguePosition(data);
+                    public LeagueEntry apply(final com.merakianalytics.orianna.types.data.league.LeagueEntry data) {
+                        return new LeagueEntry(data);
                     }
                 });
                 break;

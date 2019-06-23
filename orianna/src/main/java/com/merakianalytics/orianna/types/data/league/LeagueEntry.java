@@ -3,88 +3,24 @@ package com.merakianalytics.orianna.types.data.league;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class LeagueEntry extends CoreData {
-    private static final long serialVersionUID = -386628078546948368L;
-    private String division, summonerName, platform, summonerId;
+    private static final long serialVersionUID = 2972094204019879043L;
+    private String division, summonerName, platform, summonerId, queue, tier, leagueId;
     private boolean onHotStreak, veteran, inactive, freshBlood;
     private Series promos;
     private int wins, losses, leaguePoints;
-
-    @Override
-    public boolean equals(final Object obj) {
-        if(this == obj) {
-            return true;
-        }
-        if(obj == null) {
-            return false;
-        }
-        if(getClass() != obj.getClass()) {
-            return false;
-        }
-        final LeagueEntry other = (LeagueEntry)obj;
-        if(division == null) {
-            if(other.division != null) {
-                return false;
-            }
-        } else if(!division.equals(other.division)) {
-            return false;
-        }
-        if(freshBlood != other.freshBlood) {
-            return false;
-        }
-        if(inactive != other.inactive) {
-            return false;
-        }
-        if(leaguePoints != other.leaguePoints) {
-            return false;
-        }
-        if(losses != other.losses) {
-            return false;
-        }
-        if(onHotStreak != other.onHotStreak) {
-            return false;
-        }
-        if(platform == null) {
-            if(other.platform != null) {
-                return false;
-            }
-        } else if(!platform.equals(other.platform)) {
-            return false;
-        }
-        if(promos == null) {
-            if(other.promos != null) {
-                return false;
-            }
-        } else if(!promos.equals(other.promos)) {
-            return false;
-        }
-        if(summonerId == null) {
-            if(other.summonerId != null) {
-                return false;
-            }
-        } else if(!summonerId.equals(other.summonerId)) {
-            return false;
-        }
-        if(summonerName == null) {
-            if(other.summonerName != null) {
-                return false;
-            }
-        } else if(!summonerName.equals(other.summonerName)) {
-            return false;
-        }
-        if(veteran != other.veteran) {
-            return false;
-        }
-        if(wins != other.wins) {
-            return false;
-        }
-        return true;
-    }
 
     /**
      * @return the division
      */
     public String getDivision() {
         return division;
+    }
+
+    /**
+     * @return the leagueId
+     */
+    public String getLeagueId() {
+        return leagueId;
     }
 
     /**
@@ -116,6 +52,13 @@ public class LeagueEntry extends CoreData {
     }
 
     /**
+     * @return the queue
+     */
+    public String getQueue() {
+        return queue;
+    }
+
+    /**
      * @return the summonerId
      */
     public String getSummonerId() {
@@ -130,29 +73,17 @@ public class LeagueEntry extends CoreData {
     }
 
     /**
+     * @return the tier
+     */
+    public String getTier() {
+        return tier;
+    }
+
+    /**
      * @return the wins
      */
     public int getWins() {
         return wins;
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (division == null ? 0 : division.hashCode());
-        result = prime * result + (freshBlood ? 1231 : 1237);
-        result = prime * result + (inactive ? 1231 : 1237);
-        result = prime * result + leaguePoints;
-        result = prime * result + losses;
-        result = prime * result + (onHotStreak ? 1231 : 1237);
-        result = prime * result + (platform == null ? 0 : platform.hashCode());
-        result = prime * result + (promos == null ? 0 : promos.hashCode());
-        result = prime * result + (summonerId == null ? 0 : summonerId.hashCode());
-        result = prime * result + (summonerName == null ? 0 : summonerName.hashCode());
-        result = prime * result + (veteran ? 1231 : 1237);
-        result = prime * result + wins;
-        return result;
     }
 
     /**
@@ -208,6 +139,14 @@ public class LeagueEntry extends CoreData {
     }
 
     /**
+     * @param leagueId
+     *        the leagueId to set
+     */
+    public void setLeagueId(final String leagueId) {
+        this.leagueId = leagueId;
+    }
+
+    /**
      * @param leaguePoints
      *        the leaguePoints to set
      */
@@ -248,6 +187,14 @@ public class LeagueEntry extends CoreData {
     }
 
     /**
+     * @param queue
+     *        the queue to set
+     */
+    public void setQueue(final String queue) {
+        this.queue = queue;
+    }
+
+    /**
      * @param summonerId
      *        the summonerId to set
      */
@@ -261,6 +208,14 @@ public class LeagueEntry extends CoreData {
      */
     public void setSummonerName(final String summonerName) {
         this.summonerName = summonerName;
+    }
+
+    /**
+     * @param tier
+     *        the tier to set
+     */
+    public void setTier(final String tier) {
+        this.tier = tier;
     }
 
     /**
