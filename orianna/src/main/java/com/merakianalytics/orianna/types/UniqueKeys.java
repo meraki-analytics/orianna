@@ -930,9 +930,9 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyChampionMasteriesDataQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Number> ids = (Iterable<Number>)query.get("summonerIds");
+        final Iterable<String> ids = (Iterable<String>)query.get("summonerIds");
 
-        final Iterator<Number> iterator = ids.iterator();
+        final Iterator<String> iterator = ids.iterator();
         return new Iterator<Integer>() {
             @Override
             public boolean hasNext() {
@@ -943,7 +943,7 @@ public abstract class UniqueKeys {
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
                     com.merakianalytics.orianna.types.data.championmastery.ChampionMasteries.class.getCanonicalName(),
-                    ((Platform)query.get("platform")).getTag(), iterator.next().longValue()
+                    ((Platform)query.get("platform")).getTag(), iterator.next()
                 });
             }
 
@@ -956,9 +956,9 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyChampionMasteriesDtoQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Number> ids = (Iterable<Number>)query.get("summonerIds");
+        final Iterable<String> ids = (Iterable<String>)query.get("summonerIds");
 
-        final Iterator<Number> iterator = ids.iterator();
+        final Iterator<String> iterator = ids.iterator();
         return new Iterator<Integer>() {
             @Override
             public boolean hasNext() {
@@ -969,7 +969,7 @@ public abstract class UniqueKeys {
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
                     com.merakianalytics.orianna.types.dto.championmastery.ChampionMasteries.class.getCanonicalName(),
-                    ((Platform)query.get("platform")).getTag(), iterator.next().longValue()
+                    ((Platform)query.get("platform")).getTag(), iterator.next()
                 });
             }
 
@@ -982,9 +982,9 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyChampionMasteriesQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
+        final Iterable<String> summonerIds = (Iterable<String>)query.get("summonerIds");
 
-        final Iterator<Number> iterator = summonerIds.iterator();
+        final Iterator<String> iterator = summonerIds.iterator();
         return new Iterator<Integer>() {
             @Override
             public boolean hasNext() {
@@ -994,7 +994,7 @@ public abstract class UniqueKeys {
             @Override
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
-                    ChampionMasteries.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next().longValue()
+                    ChampionMasteries.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next()
                 });
             }
 
@@ -1085,9 +1085,9 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyChampionMasteryScoreDataQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Number> ids = (Iterable<Number>)query.get("summonerIds");
+        final Iterable<String> ids = (Iterable<String>)query.get("summonerIds");
 
-        final Iterator<Number> iterator = ids.iterator();
+        final Iterator<String> iterator = ids.iterator();
         return new Iterator<Integer>() {
             @Override
             public boolean hasNext() {
@@ -1098,7 +1098,7 @@ public abstract class UniqueKeys {
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
                     com.merakianalytics.orianna.types.data.championmastery.ChampionMasteryScore.class.getCanonicalName(),
-                    ((Platform)query.get("platform")).getTag(), iterator.next().longValue()
+                    ((Platform)query.get("platform")).getTag(), iterator.next()
                 });
             }
 
@@ -1111,9 +1111,9 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyChampionMasteryScoreDtoQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Number> ids = (Iterable<Number>)query.get("summonerIds");
+        final Iterable<String> ids = (Iterable<String>)query.get("summonerIds");
 
-        final Iterator<Number> iterator = ids.iterator();
+        final Iterator<String> iterator = ids.iterator();
         return new Iterator<Integer>() {
             @Override
             public boolean hasNext() {
@@ -1124,7 +1124,7 @@ public abstract class UniqueKeys {
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
                     com.merakianalytics.orianna.types.dto.championmastery.ChampionMasteryScore.class.getCanonicalName(),
-                    ((Platform)query.get("platform")).getTag(), iterator.next().longValue()
+                    ((Platform)query.get("platform")).getTag(), iterator.next()
                 });
             }
 
@@ -1137,9 +1137,9 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyChampionMasteryScoreQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
+        final Iterable<String> summonerIds = (Iterable<String>)query.get("summonerIds");
 
-        final Iterator<Number> iterator = summonerIds.iterator();
+        final Iterator<String> iterator = summonerIds.iterator();
         return new Iterator<Integer>() {
             @Override
             public boolean hasNext() {
@@ -1149,7 +1149,7 @@ public abstract class UniqueKeys {
             @Override
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
-                    ChampionMasteryScore.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next().longValue()
+                    ChampionMasteryScore.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next()
                 });
             }
 
@@ -1277,9 +1277,9 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyCurrentGameInfoDtoQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Number> ids = (Iterable<Number>)query.get("summonerIds");
+        final Iterable<String> ids = (Iterable<String>)query.get("summonerIds");
 
-        final Iterator<Number> iterator = ids.iterator();
+        final Iterator<String> iterator = ids.iterator();
         return new Iterator<Integer>() {
             @Override
             public boolean hasNext() {
@@ -1289,7 +1289,7 @@ public abstract class UniqueKeys {
             @Override
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
-                    CurrentGameInfo.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next().longValue()
+                    CurrentGameInfo.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next()
                 });
             }
 
@@ -1302,9 +1302,9 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyCurrentMatchDataQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Number> ids = (Iterable<Number>)query.get("summonerIds");
+        final Iterable<String> ids = (Iterable<String>)query.get("summonerIds");
 
-        final Iterator<Number> iterator = ids.iterator();
+        final Iterator<String> iterator = ids.iterator();
         return new Iterator<Integer>() {
             @Override
             public boolean hasNext() {
@@ -1315,7 +1315,7 @@ public abstract class UniqueKeys {
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
                     com.merakianalytics.orianna.types.data.spectator.CurrentMatch.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-                    iterator.next().longValue()
+                    iterator.next()
                 });
             }
 
@@ -1328,9 +1328,9 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyCurrentMatchQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
+        final Iterable<String> summonerIds = (Iterable<String>)query.get("summonerIds");
 
-        final Iterator<Number> iterator = summonerIds.iterator();
+        final Iterator<String> iterator = summonerIds.iterator();
         return new Iterator<Integer>() {
             @Override
             public boolean hasNext() {
@@ -1340,7 +1340,7 @@ public abstract class UniqueKeys {
             @Override
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
-                    CurrentMatch.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next().longValue()
+                    CurrentMatch.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next()
                 });
             }
 
@@ -1742,9 +1742,9 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyLeaguePositionsDataQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Number> ids = (Iterable<Number>)query.get("summonerIds");
+        final Iterable<String> ids = (Iterable<String>)query.get("summonerIds");
 
-        final Iterator<Number> iterator = ids.iterator();
+        final Iterator<String> iterator = ids.iterator();
         return new Iterator<Integer>() {
             @Override
             public boolean hasNext() {
@@ -1755,7 +1755,7 @@ public abstract class UniqueKeys {
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
                     com.merakianalytics.orianna.types.data.league.LeaguePositions.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-                    iterator.next().longValue()
+                    iterator.next()
                 });
             }
 
@@ -1768,9 +1768,9 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyLeaguePositionsDtoQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Number> ids = (Iterable<Number>)query.get("summonerIds");
+        final Iterable<String> ids = (Iterable<String>)query.get("summonerIds");
 
-        final Iterator<Number> iterator = ids.iterator();
+        final Iterator<String> iterator = ids.iterator();
         return new Iterator<Integer>() {
             @Override
             public boolean hasNext() {
@@ -1781,7 +1781,7 @@ public abstract class UniqueKeys {
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
                     com.merakianalytics.orianna.types.dto.league.LeaguePositions.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-                    iterator.next().longValue()
+                    iterator.next()
                 });
             }
 
@@ -1794,9 +1794,9 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyLeaguePositionsQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
+        final Iterable<String> summonerIds = (Iterable<String>)query.get("summonerIds");
 
-        final Iterator<Number> iterator = summonerIds.iterator();
+        final Iterator<String> iterator = summonerIds.iterator();
         return new Iterator<Integer>() {
             @Override
             public boolean hasNext() {
@@ -1806,7 +1806,7 @@ public abstract class UniqueKeys {
             @Override
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
-                    LeaguePositions.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next().longValue()
+                    LeaguePositions.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next()
                 });
             }
 
@@ -3300,9 +3300,9 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyVerificationStringDataQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Number> ids = (Iterable<Number>)query.get("summonerIds");
+        final Iterable<String> ids = (Iterable<String>)query.get("summonerIds");
 
-        final Iterator<Number> iterator = ids.iterator();
+        final Iterator<String> iterator = ids.iterator();
         return new Iterator<Integer>() {
             @Override
             public boolean hasNext() {
@@ -3313,7 +3313,7 @@ public abstract class UniqueKeys {
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
                     com.merakianalytics.orianna.types.data.thirdpartycode.VerificationString.class.getCanonicalName(),
-                    ((Platform)query.get("platform")).getTag(), iterator.next().longValue()
+                    ((Platform)query.get("platform")).getTag(), iterator.next()
                 });
             }
 
@@ -3326,9 +3326,9 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyVerificationStringDtoQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Number> ids = (Iterable<Number>)query.get("summonerIds");
+        final Iterable<String> ids = (Iterable<String>)query.get("summonerIds");
 
-        final Iterator<Number> iterator = ids.iterator();
+        final Iterator<String> iterator = ids.iterator();
         return new Iterator<Integer>() {
             @Override
             public boolean hasNext() {
@@ -3339,7 +3339,7 @@ public abstract class UniqueKeys {
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
                     com.merakianalytics.orianna.types.dto.thirdpartycode.VerificationString.class.getCanonicalName(),
-                    ((Platform)query.get("platform")).getTag(), iterator.next().longValue()
+                    ((Platform)query.get("platform")).getTag(), iterator.next()
                 });
             }
 
@@ -3352,9 +3352,9 @@ public abstract class UniqueKeys {
 
     @SuppressWarnings("unchecked")
     public static Iterator<Integer> forManyVerificationStringQuery(final java.util.Map<String, Object> query) {
-        final Iterable<Number> summonerIds = (Iterable<Number>)query.get("summonerIds");
+        final Iterable<String> summonerIds = (Iterable<String>)query.get("summonerIds");
 
-        final Iterator<Number> iterator = summonerIds.iterator();
+        final Iterator<String> iterator = summonerIds.iterator();
         return new Iterator<Integer>() {
             @Override
             public boolean hasNext() {
@@ -3364,7 +3364,7 @@ public abstract class UniqueKeys {
             @Override
             public Integer next() {
                 return Arrays.hashCode(new Object[] {
-                    VerificationString.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next().longValue()
+                    VerificationString.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), iterator.next()
                 });
             }
 
