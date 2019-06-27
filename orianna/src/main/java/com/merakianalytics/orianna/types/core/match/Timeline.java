@@ -16,6 +16,7 @@ import com.google.common.collect.ImmutableMap;
 import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.common.AscensionType;
 import com.merakianalytics.orianna.types.common.BuildingType;
+import com.merakianalytics.orianna.types.common.EventType;
 import com.merakianalytics.orianna.types.common.LaneType;
 import com.merakianalytics.orianna.types.common.LevelUpType;
 import com.merakianalytics.orianna.types.common.MonsterSubType;
@@ -305,6 +306,11 @@ public class Timeline extends GhostObject.ListProxy<Frame, com.merakianalytics.o
         @Override
         public TurretType getTurretType() {
             return TurretType.valueOf(coreData.getTurretType());
+        }
+
+        @Override
+        public EventType getType() {
+            return EventType.valueOf(coreData.getType());
         }
 
         @Override

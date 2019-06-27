@@ -4,6 +4,7 @@ import org.joda.time.Duration;
 
 import com.merakianalytics.orianna.types.common.AscensionType;
 import com.merakianalytics.orianna.types.common.BuildingType;
+import com.merakianalytics.orianna.types.common.EventType;
 import com.merakianalytics.orianna.types.common.LaneType;
 import com.merakianalytics.orianna.types.common.LevelUpType;
 import com.merakianalytics.orianna.types.common.MonsterSubType;
@@ -63,6 +64,8 @@ public abstract class Event extends OriannaObject<com.merakianalytics.orianna.ty
     public abstract Duration getTimestamp();
 
     public abstract TurretType getTurretType();
+
+    public abstract EventType getType();
 
     public abstract Participant getVictim();
 
