@@ -20,33 +20,33 @@ public class CollectMatches {
         final Summoner summoner = Summoner.named("GustavEnk").withRegion(Region.EUROPE_WEST).get();
         final Region region = summoner.getRegion();
 
-        final HashSet<String> unpulledSummonerIds = new HashSet<>();
-        unpulledSummonerIds.add(summoner.getId());
-        final HashSet<String> pulledSummonerIds = new HashSet<>();
+        final HashSet<String> unpulledAccountIds = new HashSet<>();
+        unpulledAccountIds.add(summoner.getAccountId());
+        final HashSet<String> pulledAccountIds = new HashSet<>();
 
         final HashSet<Long> unpulledMatchIds = new HashSet<>();
         final HashSet<Long> pulledMatchIds = new HashSet<>();
 
-        while(!unpulledSummonerIds.isEmpty()) {
+        while(!unpulledAccountIds.isEmpty()) {
             // Get a new summoner from our list of unpulled summoners and pull their match history
-            final String newSummonerId = unpulledSummonerIds.iterator().next();
-            final Summoner newSummoner = Summoner.withId(newSummonerId).withRegion(region).get();
+            final String newAccountId = unpulledAccountIds.iterator().next();
+            final Summoner newSummoner = Summoner.withId(newAccountId).withRegion(region).get();
             final MatchHistory matches = filterMatchHistory(newSummoner);
             for(final Match match : matches) {
                 if(!pulledMatchIds.contains(match.getId())) {
                     unpulledMatchIds.add(match.getId());
                 }
             }
-            unpulledSummonerIds.remove(newSummonerId);
-            pulledSummonerIds.add(newSummonerId);
+            unpulledAccountIds.remove(newAccountId);
+            pulledAccountIds.add(newAccountId);
 
             while(!unpulledMatchIds.isEmpty()) {
                 // Get a random match from our list of matches
                 final long newMatchId = unpulledMatchIds.iterator().next();
                 final Match newMatch = Match.withId(newMatchId).withRegion(region).get();
                 for(final Participant p : newMatch.getParticipants()) {
-                    if(!pulledSummonerIds.contains(p.getSummoner().getId()) && !unpulledSummonerIds.contains(p.getSummoner().getId())) {
-                        unpulledSummonerIds.add(p.getSummoner().getId());
+                    if(!pulledAccountIds.contains(p.getSummoner().getAccountId()) && !unpulledAccountIds.contains(p.getSummoner().getAccountId())) {
+                        unpulledAccountIds.add(p.getSummoner().getId());
                     }
                 }
                 // The above lines will trigger the match to load its data by iterating over all the participants.
