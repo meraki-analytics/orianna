@@ -1,5 +1,7 @@
 package com.merakianalytics.orianna.types.common;
 
+import java.util.Comparator;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 
@@ -29,6 +31,15 @@ public enum Season {
         return builder.build();
     }
 
+    public static Comparator<Season> getComparator() {
+        return new Comparator<Season>() {
+            @Override
+            public int compare(final Season o1, final Season o2) {
+                return Integer.compare(o1.id, o2.id);
+            }
+        };
+    }
+
     public static Season getLatest() {
         Season latest = null;
         for(final Season season : Season.values()) {
@@ -47,6 +58,10 @@ public enum Season {
 
     private Season(final int id) {
         this.id = id;
+    }
+
+    public int compare(final Season o) {
+        return Integer.compare(id, o.id);
     }
 
     public int getId() {

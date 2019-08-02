@@ -11,7 +11,7 @@ import com.merakianalytics.orianna.types.core.OriannaObject;
 import com.merakianalytics.orianna.types.core.searchable.Searchable;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
-public class LeagueEntry extends OriannaObject<com.merakianalytics.orianna.types.data.league.LeagueEntry> {
+public class LeagueEntry extends OriannaObject<com.merakianalytics.orianna.types.data.league.LeagueEntry> implements Comparable<LeagueEntry> {
     private static final long serialVersionUID = -8320702451565649681L;
 
     private final Supplier<League> league = Suppliers.memoize(new Supplier<League>() {
@@ -50,6 +50,19 @@ public class LeagueEntry extends OriannaObject<com.merakianalytics.orianna.types
 
     public LeagueEntry(final com.merakianalytics.orianna.types.data.league.LeagueEntry coreData) {
         super(coreData);
+    }
+
+    @Override
+    public int compareTo(final LeagueEntry o) {
+        int result = getTier().compare(o.getTier());
+        if(result != 0) {
+            return result;
+        }
+        result = getDivision().compare(o.getDivision());
+        if(result != 0) {
+            return result;
+        }
+        return Integer.compare(getLeaguePoints(), o.getLeaguePoints());
     }
 
     public Division getDivision() {

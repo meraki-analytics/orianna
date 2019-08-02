@@ -13,7 +13,7 @@ import com.merakianalytics.orianna.types.core.GhostObject;
 import com.merakianalytics.orianna.types.core.searchable.Searchable;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
-public class ChampionMasteryScore extends GhostObject<com.merakianalytics.orianna.types.data.championmastery.ChampionMasteryScore> {
+public class ChampionMasteryScore extends GhostObject<com.merakianalytics.orianna.types.data.championmastery.ChampionMasteryScore> implements Comparable<ChampionMasteryScore> {
     public static class Builder {
         private final Summoner summoner;
 
@@ -48,6 +48,11 @@ public class ChampionMasteryScore extends GhostObject<com.merakianalytics.oriann
 
     public ChampionMasteryScore(final com.merakianalytics.orianna.types.data.championmastery.ChampionMasteryScore coreData) {
         super(coreData, 1);
+    }
+
+    @Override
+    public int compareTo(final ChampionMasteryScore o) {
+        return Integer.compare(getScore(), o.getScore());
     }
 
     @Override

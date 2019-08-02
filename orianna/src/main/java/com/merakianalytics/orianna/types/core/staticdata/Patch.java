@@ -12,7 +12,7 @@ import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.common.Season;
 import com.merakianalytics.orianna.types.core.GhostObject;
 
-public class Patch extends GhostObject<com.merakianalytics.orianna.types.data.staticdata.Patch> {
+public class Patch extends GhostObject<com.merakianalytics.orianna.types.data.staticdata.Patch> implements Comparable<Patch> {
     public static class Builder {
         private String name;
         private Platform platform;
@@ -73,6 +73,11 @@ public class Patch extends GhostObject<com.merakianalytics.orianna.types.data.st
 
     public Patch(final com.merakianalytics.orianna.types.data.staticdata.Patch coreData) {
         super(coreData, 1);
+    }
+
+    @Override
+    public int compareTo(final Patch o) {
+        return getStartTime().compareTo(o.getStartTime());
     }
 
     @Override
