@@ -2,11 +2,7 @@ package com.merakianalytics.orianna.types.core.league;
 
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
-import com.merakianalytics.orianna.types.common.Division;
-import com.merakianalytics.orianna.types.common.Platform;
-import com.merakianalytics.orianna.types.common.Queue;
-import com.merakianalytics.orianna.types.common.Region;
-import com.merakianalytics.orianna.types.common.Tier;
+import com.merakianalytics.orianna.types.common.*;
 import com.merakianalytics.orianna.types.core.OriannaObject;
 import com.merakianalytics.orianna.types.core.searchable.Searchable;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
@@ -90,7 +86,7 @@ public class LeagueEntry extends OriannaObject<com.merakianalytics.orianna.types
     }
 
     public Queue getQueue() {
-        return Queue.valueOf(coreData.getQueue());
+        return Queue.withApiName(coreData.getQueue());
     }
 
     public Region getRegion() {
