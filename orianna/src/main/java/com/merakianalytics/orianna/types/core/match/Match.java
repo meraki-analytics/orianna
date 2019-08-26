@@ -751,7 +751,7 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
                         final Iterator<com.merakianalytics.orianna.types.data.match.Participant> iterator = data.getParticipants().iterator();
                         while(iterator.hasNext()) {
                             final com.merakianalytics.orianna.types.data.match.Participant participant = iterator.next();
-                            if(participant.getCurrentAccountId() == fromReference.getCurrentAccountId()) {
+                            if(participant.getCurrentAccountId().equals(fromReference.getCurrentAccountId())) {
                                 replaceData(participant, fromReference);
                                 iterator.remove();
                                 break;
