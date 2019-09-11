@@ -670,6 +670,7 @@ public class MatchTransformer extends AbstractDataTransformer {
         list.setStartTime(new DateTime(item.getStartTime()));
         list.setMaxSize(item.getMaxSize());
         list.setMaxTimeRange(Duration.millis(item.getMaxTimeRange()));
+        list.setHistoryLength(Duration.millis(item.getHistoryLength()));
         return list;
     }
 
@@ -691,6 +692,7 @@ public class MatchTransformer extends AbstractDataTransformer {
         list.setStartTime(item.getStartTime().getMillis());
         list.setMaxSize(item.getMaxSize());
         list.setMaxTimeRange(item.getMaxTimeRange().getMillis());
+        list.setHistoryLength(item.getHistoryLength().getMillis());
         return list;
     }
 

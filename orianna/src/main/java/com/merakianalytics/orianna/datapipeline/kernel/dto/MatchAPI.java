@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.Days;
 import org.joda.time.Weeks;
 
 import com.google.common.collect.HashMultimap;
@@ -28,6 +29,7 @@ import com.merakianalytics.orianna.types.dto.match.Matchlist;
 import com.merakianalytics.orianna.types.dto.match.TournamentMatches;
 
 public class MatchAPI extends KernelService {
+    private static final long HISTORY_LENGTH = Days.days(730).toStandardDuration().getMillis();  // 2 Years
     private static final int MAX_MATCH_INDEX_DIFFERENCE = 100;
     private static final long ONE_WEEK_IN_MILLISECONDS = Weeks.ONE.toStandardDuration().getMillis();
 
@@ -174,6 +176,7 @@ public class MatchAPI extends KernelService {
                     empty.setEndIndex(eIndex == null ? 0 : eIndex.intValue());
                     empty.setMaxSize(bTime != null && eTime != null ? Integer.MAX_VALUE : MAX_MATCH_INDEX_DIFFERENCE);
                     empty.setMaxTimeRange(eTime != null ? Long.MAX_VALUE : ONE_WEEK_IN_MILLISECONDS);
+                    empty.setHistoryLength(HISTORY_LENGTH);
                     return empty;
                 }
 
@@ -362,6 +365,7 @@ public class MatchAPI extends KernelService {
             empty.setEndIndex(endIndex == null ? 0 : endIndex.intValue());
             empty.setMaxSize(beginTime != null && endTime != null ? Integer.MAX_VALUE : MAX_MATCH_INDEX_DIFFERENCE);
             empty.setMaxTimeRange(endTime != null ? Long.MAX_VALUE : ONE_WEEK_IN_MILLISECONDS);
+            empty.setHistoryLength(HISTORY_LENGTH);
             return empty;
         }
 

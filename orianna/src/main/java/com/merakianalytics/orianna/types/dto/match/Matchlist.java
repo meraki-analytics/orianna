@@ -6,11 +6,11 @@ import java.util.Set;
 import com.merakianalytics.orianna.types.dto.DataObject;
 
 public class Matchlist extends DataObject {
-    private static final long serialVersionUID = -5053758681800361333L;
+    private static final long serialVersionUID = 1154277546012627022L;
     private List<MatchReference> matches;
     private String platform, accountId;
     private Set<Integer> queues, seasons, champions;
-    private long startTime, endTime, maxTimeRange;
+    private long startTime, endTime, maxTimeRange, historyLength;
     private int totalGames, startIndex, endIndex, maxSize;
 
     @Override
@@ -43,6 +43,9 @@ public class Matchlist extends DataObject {
             return false;
         }
         if(endTime != other.endTime) {
+            return false;
+        }
+        if(historyLength != other.historyLength) {
             return false;
         }
         if(matches == null) {
@@ -120,6 +123,13 @@ public class Matchlist extends DataObject {
     }
 
     /**
+     * @return the historyLength
+     */
+    public long getHistoryLength() {
+        return historyLength;
+    }
+
+    /**
      * @return the matches
      */
     public List<MatchReference> getMatches() {
@@ -190,6 +200,7 @@ public class Matchlist extends DataObject {
         result = prime * result + (champions == null ? 0 : champions.hashCode());
         result = prime * result + endIndex;
         result = prime * result + (int)(endTime ^ endTime >>> 32);
+        result = prime * result + (int)(historyLength ^ historyLength >>> 32);
         result = prime * result + (matches == null ? 0 : matches.hashCode());
         result = prime * result + maxSize;
         result = prime * result + (int)(maxTimeRange ^ maxTimeRange >>> 32);
@@ -232,6 +243,14 @@ public class Matchlist extends DataObject {
      */
     public void setEndTime(final long endTime) {
         this.endTime = endTime;
+    }
+
+    /**
+     * @param historyLength
+     *        the historyLength to set
+     */
+    public void setHistoryLength(final long historyLength) {
+        this.historyLength = historyLength;
     }
 
     /**

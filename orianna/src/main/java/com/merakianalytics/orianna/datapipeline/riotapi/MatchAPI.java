@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.Days;
 import org.joda.time.Weeks;
 
 import com.google.common.collect.HashMultimap;
@@ -28,6 +29,7 @@ import com.merakianalytics.orianna.types.dto.match.Matchlist;
 import com.merakianalytics.orianna.types.dto.match.TournamentMatches;
 
 public class MatchAPI extends RiotAPIService {
+    private static final long HISTORY_LENGTH = Days.days(730).toStandardDuration().getMillis();  // 2 Years
     private static final int MAX_MATCH_INDEX_DIFFERENCE = 100;
     private static final long ONE_WEEK_IN_MILLISECONDS = Weeks.ONE.toStandardDuration().getMillis();
 
@@ -94,7 +96,7 @@ public class MatchAPI extends RiotAPIService {
         Utilities.checkNotNull(platform, "platform", accountIds, "accountIds");
 
         final DateTime now = DateTime.now(DateTimeZone.UTC);
-        final DateTime historyStart = now.minusYears(3);
+        final DateTime historyStart = now.minusYears(2);
 
         // Time Handling
         if(beginTime != null && beginTime.longValue() < historyStart.getMillis()) {
@@ -175,6 +177,7 @@ public class MatchAPI extends RiotAPIService {
                     empty.setEndIndex(eIndex == null ? 0 : eIndex.intValue());
                     empty.setMaxSize(bTime != null && eTime != null ? Integer.MAX_VALUE : MAX_MATCH_INDEX_DIFFERENCE);
                     empty.setMaxTimeRange(eTime != null ? Long.MAX_VALUE : ONE_WEEK_IN_MILLISECONDS);
+                    empty.setHistoryLength(HISTORY_LENGTH);
                     return empty;
                 }
 
@@ -186,6 +189,7 @@ public class MatchAPI extends RiotAPIService {
                 }
                 data.setMaxSize(bTime != null && eTime != null ? Integer.MAX_VALUE : MAX_MATCH_INDEX_DIFFERENCE);
                 data.setMaxTimeRange(eTime != null ? Long.MAX_VALUE : ONE_WEEK_IN_MILLISECONDS);
+                data.setHistoryLength(HISTORY_LENGTH);
                 data.setQueues(queues);
                 data.setSeasons(seasons);
                 data.setChampions(champions);
@@ -315,7 +319,7 @@ public class MatchAPI extends RiotAPIService {
         Utilities.checkNotNull(platform, "platform", accountId, "accountId");
 
         final DateTime now = DateTime.now(DateTimeZone.UTC);
-        final DateTime historyStart = now.minusYears(3);
+        final DateTime historyStart = now.minusYears(2);
 
         // Time Handling
         if(beginTime != null && beginTime.longValue() < historyStart.getMillis()) {
@@ -383,6 +387,7 @@ public class MatchAPI extends RiotAPIService {
             empty.setEndIndex(endIndex == null ? 0 : endIndex.intValue());
             empty.setMaxSize(beginTime != null && endTime != null ? Integer.MAX_VALUE : MAX_MATCH_INDEX_DIFFERENCE);
             empty.setMaxTimeRange(endTime != null ? Long.MAX_VALUE : ONE_WEEK_IN_MILLISECONDS);
+            empty.setHistoryLength(HISTORY_LENGTH);
             return empty;
         }
 
@@ -394,6 +399,7 @@ public class MatchAPI extends RiotAPIService {
         }
         data.setMaxSize(beginTime != null && endTime != null ? Integer.MAX_VALUE : MAX_MATCH_INDEX_DIFFERENCE);
         data.setMaxTimeRange(endTime != null ? Long.MAX_VALUE : ONE_WEEK_IN_MILLISECONDS);
+        data.setHistoryLength(HISTORY_LENGTH);
 
         data.setQueues(queues);
         data.setSeasons(seasons);

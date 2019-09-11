@@ -8,9 +8,9 @@ import org.joda.time.Duration;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class MatchList extends CoreData.ListProxy<MatchReference> {
-    private static final long serialVersionUID = -9207577178873187266L;
+    private static final long serialVersionUID = 4476774447235568745L;
     private Set<Integer> champions, queues, seasons;
-    private Duration maxTimeRange;
+    private Duration maxTimeRange, historyLength;
     private String platform, accountId;
     private int startIndex, endIndex, maxSize;
     private DateTime startTime, endTime;
@@ -57,6 +57,13 @@ public class MatchList extends CoreData.ListProxy<MatchReference> {
                 return false;
             }
         } else if(!endTime.equals(other.endTime)) {
+            return false;
+        }
+        if(historyLength == null) {
+            if(other.historyLength != null) {
+                return false;
+            }
+        } else if(!historyLength.equals(other.historyLength)) {
             return false;
         }
         if(maxSize != other.maxSize) {
@@ -132,6 +139,13 @@ public class MatchList extends CoreData.ListProxy<MatchReference> {
     }
 
     /**
+     * @return the historyLength
+     */
+    public Duration getHistoryLength() {
+        return historyLength;
+    }
+
+    /**
      * @return the maxSize
      */
     public int getMaxSize() {
@@ -188,6 +202,7 @@ public class MatchList extends CoreData.ListProxy<MatchReference> {
         result = prime * result + (champions == null ? 0 : champions.hashCode());
         result = prime * result + endIndex;
         result = prime * result + (endTime == null ? 0 : endTime.hashCode());
+        result = prime * result + (historyLength == null ? 0 : historyLength.hashCode());
         result = prime * result + maxSize;
         result = prime * result + (maxTimeRange == null ? 0 : maxTimeRange.hashCode());
         result = prime * result + (platform == null ? 0 : platform.hashCode());
@@ -228,6 +243,14 @@ public class MatchList extends CoreData.ListProxy<MatchReference> {
      */
     public void setEndTime(final DateTime endTime) {
         this.endTime = endTime;
+    }
+
+    /**
+     * @param historyLength
+     *        the historyLength to set
+     */
+    public void setHistoryLength(final Duration historyLength) {
+        this.historyLength = historyLength;
     }
 
     /**

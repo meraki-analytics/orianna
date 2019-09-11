@@ -494,7 +494,7 @@ public class MatchHistory extends GhostObject<com.merakianalytics.orianna.types.
             if(list.size() < list.getMaxSize()) {
                 // We're done if we got the number of matches we wanted, or if we're done switching time periods so there are no more matches to be had.
                 if(coreData.getEndIndex() > 0 && total >= coreData.getEndIndex() - coreData.getStartIndex()
-                    || list.getStartTime().equals(coreData.getStartTime()) || list.getStartTime().isBefore(coreData.getStartTime())) {
+                    || !list.getStartTime().isAfter(coreData.getStartTime()) || !list.getStartTime().isAfter(DateTime.now().minus(list.getHistoryLength()))) {
                     complete = true;
                 } else {
                     endTime = list.getStartTime();

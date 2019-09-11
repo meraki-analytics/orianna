@@ -3,16 +3,16 @@ package com.merakianalytics.orianna.types.common;
 import java.util.Comparator;
 
 public enum Tier {
-        UNRANKED(0),
-        IRON(1),
         BRONZE(2),
-        SILVER(3),
-        GOLD(4),
-        PLATINUM(5),
+        CHALLENGER(9),
         DIAMOND(6),
-        MASTER(7),
+        GOLD(4),
         GRANDMASTER(8),
-        CHALLENGER(9);
+        IRON(1),
+        MASTER(7),
+        PLATINUM(5),
+        SILVER(3),
+        UNRANKED(0);
 
     public static Comparator<Tier> getComparator() {
         return new Comparator<Tier>() {
