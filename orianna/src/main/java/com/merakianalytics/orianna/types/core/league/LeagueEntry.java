@@ -90,7 +90,7 @@ public class LeagueEntry extends OriannaObject<com.merakianalytics.orianna.types
     }
 
     public Queue getQueue() {
-        return Queue.valueOf(coreData.getQueue());
+        return Queue.withTag(coreData.getQueue());
     }
 
     public Region getRegion() {

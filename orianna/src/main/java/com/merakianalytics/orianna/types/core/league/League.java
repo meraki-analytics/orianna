@@ -161,7 +161,7 @@ public class League extends GhostObject.ListProxy<LeagueEntry, com.merakianalyti
         if(coreData.getQueue() == null) {
             load(LIST_PROXY_LOAD_GROUP);
         }
-        return Queue.valueOf(coreData.getQueue());
+        return Queue.withTag(coreData.getQueue());
     }
 
     public Region getRegion() {
@@ -191,7 +191,7 @@ public class League extends GhostObject.ListProxy<LeagueEntry, com.merakianalyti
                     builder.put("tier", Tier.valueOf(coreData.getTier()));
                 }
                 if(coreData.getQueue() != null) {
-                    builder.put("queue", Queue.valueOf(coreData.getQueue()));
+                    builder.put("queue", Queue.withTag(coreData.getQueue()));
                 }
                 final com.merakianalytics.orianna.types.data.league.League data =
                     Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.league.League.class, builder.build());
