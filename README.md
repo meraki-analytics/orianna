@@ -107,12 +107,12 @@ If you're using the JAR without dependencies inlcuded, Orianna depends on the fo
 - [datapipelines](https://github.com/meraki-analytics/datapipelines-java) (version 1.0.4)
 - [hipster4j](http://www.hipster4j.org/) (version 1.0.1)
 - [guava](https://github.com/google/guava) (version 20.0)
-- [okhttp](http://square.github.io/okhttp/) (version 3.12.1)
-- [jackson-databind](https://github.com/FasterXML/jackson-databind) (version 2.9.8)
+- [okhttp](http://square.github.io/okhttp/) (version 3.13.1)
+- [jackson-databind](https://github.com/FasterXML/jackson-databind) (version 2.10.0.pr1)
 - [jackson-dataformat-msgpack](https://github.com/msgpack/msgpack-java) (version 0.8.16)
 - [joda-time](http://www.joda.org/joda-time/) (version 2.10.1)
-- [jackson-datatype-joda](https://github.com/FasterXML/jackson-datatype-joda) (version 2.9.8)
-- [cache2k](https://cache2k.org/) (version 1.2.0.Final)
+- [jackson-datatype-joda](https://github.com/FasterXML/jackson-datatype-joda) (version 2.10.0.pr1)
+- [cache2k](https://cache2k.org/) (version 1.2.3.Final)
 
 ## Example
 Check out a basic example of Orianna in action. More examples are available [here](https://github.com/meraki-analytics/orianna/tree/master/orianna-examples/src/main/java/com/merakianalytics/orianna/examples).
