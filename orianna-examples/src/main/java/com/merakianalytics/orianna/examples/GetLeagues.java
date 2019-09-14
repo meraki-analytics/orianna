@@ -15,7 +15,7 @@ public class GetLeagues {
         System.out.println("Name: " + summoner.getName());
         System.out.println("ID: " + summoner.getId());
 
-        final LeagueEntry rankedFivesEntries = summoner.getLeaguePosition(Queue.RANKED_SOLO_5X5);
+        final LeagueEntry rankedFivesEntries = summoner.getLeaguePosition(Queue.RANKED_SOLO);
         if(rankedFivesEntries.getPromos() != null) {
             // If the summoner is in their promos, print some info
             System.out.println("Promos progress: " + rankedFivesEntries.getPromos().getProgess());
@@ -41,14 +41,14 @@ public class GetLeagues {
         }
         System.out.println("\n");
 
-        final League rankedFivesLeague = summoner.getLeague(Queue.RANKED_SOLO_5X5);
+        final League rankedFivesLeague = summoner.getLeague(Queue.RANKED_SOLO);
         System.out.println("Listing all summoners in " + rankedFivesLeague.getName());
         for(final LeagueEntry entry : rankedFivesLeague) {
             System.out.println(entry.getSummoner().getName() + " " + entry.getLeaguePoints() + " " + rankedFivesLeague.getTier() + " " + entry.getDivision());
         }
         System.out.println("\n");
         System.out.println("Challenger League name:");
-        final League challenger = League.challengerInQueue(Queue.RANKED_SOLO_5X5).withRegion(Region.NORTH_AMERICA).get();
+        final League challenger = League.challengerInQueue(Queue.RANKED_SOLO).withRegion(Region.NORTH_AMERICA).get();
         System.out.println(challenger.getName());
     }
 }

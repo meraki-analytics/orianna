@@ -1,5 +1,8 @@
 package com.merakianalytics.orianna.types.core.league;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
 import com.merakianalytics.orianna.Orianna;
@@ -9,9 +12,6 @@ import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.common.Tier;
 import com.merakianalytics.orianna.types.core.GhostObject;
 import com.merakianalytics.orianna.types.core.searchable.Searchable;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class League extends GhostObject.ListProxy<LeagueEntry, com.merakianalytics.orianna.types.data.league.LeagueEntry, com.merakianalytics.orianna.types.data.league.League> {
     public static class Builder {
@@ -27,11 +27,11 @@ public class League extends GhostObject.ListProxy<LeagueEntry, com.merakianalyti
                 platform = Orianna.getSettings().getDefaultPlatform();
                 if(platform == null) {
                     throw new IllegalStateException(
-                            "No platform/region was set! Must either set a default platform/region with Orianna.setDefaultPlatform or Orianna.setDefaultRegion, or include a platform/region with the request!");
+                        "No platform/region was set! Must either set a default platform/region with Orianna.setDefaultPlatform or Orianna.setDefaultRegion, or include a platform/region with the request!");
                 }
             }
 
-            final ImmutableMap.Builder<String, Object> builder = ImmutableMap.<String, Object>builder().put("platform", platform).put("leagueId", id);
+            final ImmutableMap.Builder<String, Object> builder = ImmutableMap.<String, Object> builder().put("platform", platform).put("leagueId", id);
 
             return Orianna.getSettings().getPipeline().get(League.class, builder.build());
         }
@@ -61,12 +61,12 @@ public class League extends GhostObject.ListProxy<LeagueEntry, com.merakianalyti
                     platform = Orianna.getSettings().getDefaultPlatform();
                     if(platform == null) {
                         throw new IllegalStateException(
-                                "No platform/region was set! Must either set a default platform/region with Orianna.setDefaultPlatform or Orianna.setDefaultRegion, or include a platform/region with the request!");
+                            "No platform/region was set! Must either set a default platform/region with Orianna.setDefaultPlatform or Orianna.setDefaultRegion, or include a platform/region with the request!");
                     }
                 }
 
                 final ImmutableMap.Builder<String, Object> builder =
-                        ImmutableMap.<String, Object>builder().put("platform", platform).put("tier", tier).put("queue", queue);
+                    ImmutableMap.<String, Object> builder().put("platform", platform).put("tier", tier).put("queue", queue);
 
                 return Orianna.getSettings().getPipeline().get(League.class, builder.build());
             }
@@ -141,7 +141,7 @@ public class League extends GhostObject.ListProxy<LeagueEntry, com.merakianalyti
     @Override
     protected List<String> getLoadGroups() {
         return Arrays.asList(new String[] {
-                LIST_PROXY_LOAD_GROUP
+            LIST_PROXY_LOAD_GROUP
         });
     }
 
@@ -161,7 +161,7 @@ public class League extends GhostObject.ListProxy<LeagueEntry, com.merakianalyti
         if(coreData.getQueue() == null) {
             load(LIST_PROXY_LOAD_GROUP);
         }
-        return Queue.withApiName(coreData.getQueue());
+        return Queue.withTag(coreData.getQueue());
     }
 
     public Region getRegion() {
@@ -191,10 +191,10 @@ public class League extends GhostObject.ListProxy<LeagueEntry, com.merakianalyti
                     builder.put("tier", Tier.valueOf(coreData.getTier()));
                 }
                 if(coreData.getQueue() != null) {
-                    builder.put("queue", Queue.withApiName(coreData.getQueue()));
+                    builder.put("queue", Queue.withTag(coreData.getQueue()));
                 }
                 final com.merakianalytics.orianna.types.data.league.League data =
-                        Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.league.League.class, builder.build());
+                    Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.league.League.class, builder.build());
                 if(data != null) {
                     coreData = data;
                 }

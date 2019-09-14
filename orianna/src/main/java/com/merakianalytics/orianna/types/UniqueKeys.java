@@ -736,7 +736,7 @@ public abstract class UniqueKeys {
             return Arrays.hashCode(new Object[] {
                 com.merakianalytics.orianna.types.data.league.League.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
                 ((Tier)query.get("tier")).name(),
-                ((Queue)query.get("queue")).name()
+                ((Queue)query.get("queue")).getTag()
             });
         }
     }
@@ -761,7 +761,7 @@ public abstract class UniqueKeys {
         } else {
             return Arrays.hashCode(new Object[] {
                 LeagueList.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), ((Tier)query.get("tier")).name(),
-                ((Queue)query.get("queue")).name()
+                ((Queue)query.get("queue")).getTag()
             });
         }
     }
@@ -814,7 +814,7 @@ public abstract class UniqueKeys {
         } else {
             return Arrays.hashCode(new Object[] {
                 League.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), ((Tier)query.get("tier")).name(),
-                ((Queue)query.get("queue")).name()
+                ((Queue)query.get("queue")).getTag()
             });
         }
     }
@@ -1695,7 +1695,7 @@ public abstract class UniqueKeys {
                     return Arrays.hashCode(new Object[] {
                         com.merakianalytics.orianna.types.data.league.League.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
                         ((Tier)query.get("tier")).name(),
-                        ((Queue)iterator.next()).name()
+                        ((Queue)iterator.next()).getTag()
                     });
                 }
             }
@@ -1728,7 +1728,7 @@ public abstract class UniqueKeys {
                 } else {
                     return Arrays.hashCode(new Object[] {
                         LeagueList.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), ((Tier)query.get("tier")).name(),
-                        ((Queue)iterator.next()).name()
+                        ((Queue)iterator.next()).getTag()
                     });
                 }
             }
@@ -1838,7 +1838,7 @@ public abstract class UniqueKeys {
                 } else {
                     return Arrays.hashCode(new Object[] {
                         League.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), ((Tier)query.get("tier")).name(),
-                        ((Queue)iterator.next()).name()
+                        ((Queue)iterator.next()).getTag()
                     });
                 }
             }
