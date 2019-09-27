@@ -344,11 +344,13 @@ public class RiotAPIService extends AbstractDataSource {
                 if(retryAfterHeaders == null || retryAfterHeaders.isEmpty()) {
                     backupStrategy.onFailedRequest(service, context, response, e);
                 }
-
-                final long retryAfter = Long.parseLong(retryAfterHeaders.iterator().next());
-                if(retryAfter <= 0) {
-                    backupStrategy.onFailedRequest(service, context, response, e);
+                else {
+                    final long retryAfter = Long.parseLong(retryAfterHeaders.iterator().next());
+                    if(retryAfter <= 0) {
+                        backupStrategy.onFailedRequest(service, context, response, e);
+                    }
                 }
+    
                 final String type = response.getHeaders().get("X-Rate-Limit-Type").iterator().next();
 
                 final RateLimiter limiter = service.getRateLimiter(context.platform, context.rateLimiterName).limiter(type);
