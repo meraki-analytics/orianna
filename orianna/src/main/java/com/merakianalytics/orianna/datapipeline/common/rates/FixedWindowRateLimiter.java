@@ -218,6 +218,8 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
             timer.schedule(drainer, afterUnit.toMillis(afterTime));
             resetter = new Resetter();
             timer.schedule(resetter, afterUnit.toMillis(afterTime) + forUnit.toMillis(forTime));
+            // let the listener handle a rate limit (assuming this is where a rate limit will occur, may be in other places)
+            listener.handle(...);
         }
     }
 
@@ -238,6 +240,8 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
 
             resetter = new Resetter();
             timer.schedule(resetter, unit.toMillis(time));
+            // let the listener handle a rate limit (assuming this is where a rate limit will occur, may be in other places)
+            listener.handle(...);
         }
     }
 
@@ -255,5 +259,18 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
 
             this.permits = permits;
         }
+    }
+    
+    public interface RateLimitListener {
+        // RateLimitContext could contain i.e the rate limit duration and whether it's now or in the future
+        void handle(RateLimitContext context);
+    }
+    
+    // DefaultRateLimitListener could do something with a logger or just do nothing as a default implementation
+    private static RateLimitListener rateLimitListener = new DefaultRateLimitListener();
+    
+    // ability to use our own listener
+    public static void setRateLimitListener(RateLimitListener listener) {
+        rateLimitListener = listener;
     }
 }
