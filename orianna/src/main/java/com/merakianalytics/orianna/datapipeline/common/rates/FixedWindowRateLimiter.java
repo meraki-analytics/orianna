@@ -217,9 +217,10 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
             drainer = new Drainer();
             timer.schedule(drainer, afterUnit.toMillis(afterTime));
             resetter = new Resetter();
-            timer.schedule(resetter, afterUnit.toMillis(afterTime) + forUnit.toMillis(forTime));
             // let the listener handle a rate limit (assuming this is where a rate limit will occur, may be in other places)
+            // before it happens (i.e we might want to log a message to console)
             listener.handle(...);
+            timer.schedule(resetter, afterUnit.toMillis(afterTime) + forUnit.toMillis(forTime));
         }
     }
 
@@ -239,9 +240,11 @@ public class FixedWindowRateLimiter extends AbstractRateLimiter {
             }
 
             resetter = new Resetter();
-            timer.schedule(resetter, unit.toMillis(time));
             // let the listener handle a rate limit (assuming this is where a rate limit will occur, may be in other places)
+            // before it happens (i.e we might want to log a message to console)
             listener.handle(...);
+            timer.schedule(resetter, unit.toMillis(time));
+            
         }
     }
 
