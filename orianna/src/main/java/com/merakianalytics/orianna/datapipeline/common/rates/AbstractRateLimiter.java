@@ -9,12 +9,6 @@ public abstract class AbstractRateLimiter implements RateLimiter {
     public AbstractRateLimiter(final int permits, final long epoch, final TimeUnit epochUnit) {}
 
     @Override
-    public abstract void acquire() throws InterruptedException;
-
-    @Override
-    public abstract boolean acquire(final long timeout, final TimeUnit unit) throws InterruptedException;
-
-    @Override
     public <T> T call(final Callable<T> callable) throws InterruptedException, Exception {
         acquire();
 
@@ -67,12 +61,6 @@ public abstract class AbstractRateLimiter implements RateLimiter {
     public abstract TimeUnit getEpochUnit();
 
     public abstract int getPermits();
-
-    @Override
-    public abstract void release();
-
-    @Override
-    public abstract void restrictFor(final long time, final TimeUnit unit);
 
     public abstract void setPermits(final int permits);
 }
