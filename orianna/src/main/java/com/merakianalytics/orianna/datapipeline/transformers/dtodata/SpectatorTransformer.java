@@ -332,7 +332,7 @@ public class SpectatorTransformer extends AbstractDataTransformer {
             runes.add(id.intValue());
         }
         runes.setPrimaryPath((int)item.getPerkStyle());
-        runes.setSecondaryPath((int)item.getPerkStyle());
+        runes.setSecondaryPath((int)item.getPerkSubStyle());
         return runes;
     }
 
