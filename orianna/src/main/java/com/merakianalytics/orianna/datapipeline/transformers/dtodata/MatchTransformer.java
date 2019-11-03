@@ -645,8 +645,8 @@ public class MatchTransformer extends AbstractDataTransformer {
             frame.add(transform(event, context));
         }
         final Map<Integer, ParticipantFrame> participantFrames = new HashMap<>();
-        for(final String participantId : item.getParticipantFrames().keySet()) {
-            participantFrames.put(Integer.parseInt(participantId), transform(item.getParticipantFrames().get(participantId), context));
+        for(final MatchParticipantFrame participantFrame : item.getParticipantFrames().values()) {
+            participantFrames.put(participantFrame.getParticipantId(), transform(participantFrame, context));
         }
         frame.setParticipantFrames(participantFrames);
         frame.setTimestamp(Duration.millis(item.getTimestamp()));
