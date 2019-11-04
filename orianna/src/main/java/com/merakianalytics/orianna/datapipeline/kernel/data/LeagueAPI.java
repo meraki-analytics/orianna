@@ -55,7 +55,7 @@ public class LeagueAPI extends KernelService {
 
         League data;
         if(leagueId == null) {
-            final String endpoint = LEAGUE_ENDPOINTS.get(tier) + queue;
+            final String endpoint = LEAGUE_ENDPOINTS.get(tier) + queue.getTag();
             data = get(League.class, endpoint, ImmutableMap.of("platform", platform.getTag()));
         } else {
             final String endpoint = "lol/league/v4/leagues/" + leagueId;
@@ -121,7 +121,7 @@ public class LeagueAPI extends KernelService {
                         return null;
                     }
 
-                    final String endpoint = LEAGUE_ENDPOINTS.get(tier) + queue;
+                    final String endpoint = LEAGUE_ENDPOINTS.get(tier) + queue.getTag();
                     data = get(League.class, endpoint, ImmutableMap.of("platform", platform.getTag()));
                 } else {
                     final String leagueId = (String)iterator.next();

@@ -137,7 +137,7 @@ public class Example {
         Champion randomChampion = champions.get((int)(Math.random() * champions.size()));
         System.out.println("He enjoys playing champions such as " + randomChampion.getName());
 
-        League challengerLeague = Orianna.challengerLeagueInQueue(Queue.RANKED_SOLO_5x5).get();
+        League challengerLeague = Orianna.challengerLeagueInQueue(Queue.RANKED_SOLO).get();
         Summoner bestNA = challengerLeague.get(0).getSummoner();
         System.out.println("He's not as good as " + bestNA.getName() + " at League, but probably a better Java programmer!");
     }

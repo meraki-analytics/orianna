@@ -58,7 +58,7 @@ public class LeagueAPI extends RiotAPIService {
 
         LeagueList data;
         if(leagueId == null) {
-            final String endpoint = LEAGUE_LIST_ENDPOINTS.get(tier) + queue;
+            final String endpoint = LEAGUE_LIST_ENDPOINTS.get(tier) + queue.getTag();
             data = get(LeagueList.class, endpoint, platform, LEAGUE_LIST_ENDPOINTS.get(tier) + "/queue");
         } else {
             final String endpoint = "lol/league/v4/leagues/" + leagueId;
@@ -69,7 +69,7 @@ public class LeagueAPI extends RiotAPIService {
         }
 
         if(data.getQueue() == null && queue != null) {
-            data.setQueue(queue.toString());
+            data.setQueue(queue.getTag());
         }
         data.setPlatform(platform.getTag());
         return data;
@@ -133,11 +133,11 @@ public class LeagueAPI extends RiotAPIService {
                         return null;
                     }
 
-                    final String endpoint = LEAGUE_LIST_ENDPOINTS.get(tier) + queue;
+                    final String endpoint = LEAGUE_LIST_ENDPOINTS.get(tier) + queue.getTag();
                     data = get(LeagueList.class, endpoint, platform, LEAGUE_LIST_ENDPOINTS.get(tier) + "/queue");
 
                     if(data != null && data.getQueue() == null && queue != null) {
-                        data.setQueue(queue.toString());
+                        data.setQueue(queue.getTag());
                     }
                 } else {
                     final String leagueId = (String)iterator.next();

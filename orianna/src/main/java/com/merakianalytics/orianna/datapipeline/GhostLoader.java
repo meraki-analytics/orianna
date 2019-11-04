@@ -276,7 +276,7 @@ public class GhostLoader extends AbstractDataSource {
             league.setId(leagueId);
         } else {
             league.setTier(tier.name());
-            league.setQueue(queue.name());
+            league.setQueue(queue.getTag());
         }
         return new League(league);
     }
@@ -614,7 +614,7 @@ public class GhostLoader extends AbstractDataSource {
                     data.setId((String)iterator.next());
                 } else {
                     data.setTier(tier.name());
-                    data.setQueue(((Queue)iterator.next()).name());
+                    data.setQueue(((Queue)iterator.next()).getTag());
                 }
                 return new League(data);
             }
