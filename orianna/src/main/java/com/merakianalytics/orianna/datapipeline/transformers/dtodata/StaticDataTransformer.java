@@ -1988,7 +1988,7 @@ public class StaticDataTransformer extends AbstractDataTransformer {
     public ReforgedRuneTree transformTree(final com.merakianalytics.orianna.types.dto.staticdata.ReforgedRuneTree item, final PipelineContext context) {
         final ReforgedRuneTree tree = new ReforgedRuneTree();
         for(final com.merakianalytics.orianna.types.dto.staticdata.ReforgedRunePath path : item) {
-            final RunePath p = RunePath.valueOf(path.getName().toUpperCase());
+            final RunePath p = RunePath.withId(path.getId());
             switch(p) {
                 case DOMINATION:
                     tree.setDomination(transform(path, context));
