@@ -49,6 +49,7 @@ public class StatusTransformer extends AbstractDataTransformer {
         }
         message.setTranslations(translations);
         message.setUpdated(DateTime.parse(item.getUpdated_at(), FORMATTER));
+        message.setHeading(item.getHeading());
         return message;
     }
 
@@ -87,7 +88,7 @@ public class StatusTransformer extends AbstractDataTransformer {
         final Translation translation = new Translation();
         translation.setContent(item.getContent());
         translation.setLocale(item.getLocale());
-        translation.setUpdated(DateTime.parse(item.getUpdated_at(), FORMATTER));
+        translation.setHeading(item.getHeading());
         return translation;
     }
 
@@ -119,6 +120,7 @@ public class StatusTransformer extends AbstractDataTransformer {
         }
         message.setTranslations(translations);
         message.setUpdated_at(item.getUpdated().toString(FORMATTER));
+        message.setHeading(item.getHeading());
         return message;
     }
 
@@ -158,7 +160,7 @@ public class StatusTransformer extends AbstractDataTransformer {
         final com.merakianalytics.orianna.types.dto.status.Translation translation = new com.merakianalytics.orianna.types.dto.status.Translation();
         translation.setContent(item.getContent());
         translation.setLocale(item.getLocale());
-        translation.setUpdated_at(item.getUpdated().toString(FORMATTER));
+        translation.setHeading(item.getHeading());
         return translation;
     }
 }

@@ -3,13 +3,9 @@ package com.merakianalytics.orianna.types.dto.status;
 import com.merakianalytics.orianna.types.dto.DataObject;
 
 public class Translation extends DataObject {
-    private static final long serialVersionUID = -3556616770908178015L;
-    private String locale, content, updated_at;
+    private static final long serialVersionUID = 4262012226331057196L;
+    private String locale, content, heading;
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(final Object obj) {
         if(this == obj) {
@@ -29,18 +25,18 @@ public class Translation extends DataObject {
         } else if(!content.equals(other.content)) {
             return false;
         }
+        if(heading == null) {
+            if(other.heading != null) {
+                return false;
+            }
+        } else if(!heading.equals(other.heading)) {
+            return false;
+        }
         if(locale == null) {
             if(other.locale != null) {
                 return false;
             }
         } else if(!locale.equals(other.locale)) {
-            return false;
-        }
-        if(updated_at == null) {
-            if(other.updated_at != null) {
-                return false;
-            }
-        } else if(!updated_at.equals(other.updated_at)) {
             return false;
         }
         return true;
@@ -54,30 +50,26 @@ public class Translation extends DataObject {
     }
 
     /**
+     * @return the heading
+     */
+    public String getHeading() {
+        return heading;
+    }
+
+    /**
      * @return the locale
      */
     public String getLocale() {
         return locale;
     }
 
-    /**
-     * @return the updated_at
-     */
-    public String getUpdated_at() {
-        return updated_at;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + (content == null ? 0 : content.hashCode());
+        result = prime * result + (heading == null ? 0 : heading.hashCode());
         result = prime * result + (locale == null ? 0 : locale.hashCode());
-        result = prime * result + (updated_at == null ? 0 : updated_at.hashCode());
         return result;
     }
 
@@ -90,18 +82,18 @@ public class Translation extends DataObject {
     }
 
     /**
+     * @param heading
+     *        the heading to set
+     */
+    public void setHeading(final String heading) {
+        this.heading = heading;
+    }
+
+    /**
      * @param locale
      *        the locale to set
      */
     public void setLocale(final String locale) {
         this.locale = locale;
-    }
-
-    /**
-     * @param updated_at
-     *        the updated_at to set
-     */
-    public void setUpdated_at(final String updated_at) {
-        this.updated_at = updated_at;
     }
 }

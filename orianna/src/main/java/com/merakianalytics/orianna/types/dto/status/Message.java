@@ -5,14 +5,10 @@ import java.util.List;
 import com.merakianalytics.orianna.types.dto.DataObject;
 
 public class Message extends DataObject {
-    private static final long serialVersionUID = 1419856168249235794L;
-    private String severity, author, created_at, updated_at, content, id;
+    private static final long serialVersionUID = -1954565591482726959L;
+    private String severity, author, created_at, updated_at, content, id, heading;
     private List<Translation> translations;
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(final Object obj) {
         if(this == obj) {
@@ -44,6 +40,13 @@ public class Message extends DataObject {
                 return false;
             }
         } else if(!created_at.equals(other.created_at)) {
+            return false;
+        }
+        if(heading == null) {
+            if(other.heading != null) {
+                return false;
+            }
+        } else if(!heading.equals(other.heading)) {
             return false;
         }
         if(id == null) {
@@ -99,6 +102,13 @@ public class Message extends DataObject {
     }
 
     /**
+     * @return the heading
+     */
+    public String getHeading() {
+        return heading;
+    }
+
+    /**
      * @return the id
      */
     public String getId() {
@@ -126,10 +136,6 @@ public class Message extends DataObject {
         return updated_at;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -137,6 +143,7 @@ public class Message extends DataObject {
         result = prime * result + (author == null ? 0 : author.hashCode());
         result = prime * result + (content == null ? 0 : content.hashCode());
         result = prime * result + (created_at == null ? 0 : created_at.hashCode());
+        result = prime * result + (heading == null ? 0 : heading.hashCode());
         result = prime * result + (id == null ? 0 : id.hashCode());
         result = prime * result + (severity == null ? 0 : severity.hashCode());
         result = prime * result + (translations == null ? 0 : translations.hashCode());
@@ -166,6 +173,14 @@ public class Message extends DataObject {
      */
     public void setCreated_at(final String created_at) {
         this.created_at = created_at;
+    }
+
+    /**
+     * @param heading
+     *        the heading to set
+     */
+    public void setHeading(final String heading) {
+        this.heading = heading;
     }
 
     /**

@@ -7,9 +7,9 @@ import org.joda.time.DateTime;
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class Message extends CoreData {
-    private static final long serialVersionUID = -1970222775356690224L;
+    private static final long serialVersionUID = -8814273304853296172L;
     private DateTime created, updated;
-    private String severity, author, content, id;
+    private String severity, author, content, id, heading;
     private Map<String, Translation> translations;
 
     @Override
@@ -43,6 +43,13 @@ public class Message extends CoreData {
                 return false;
             }
         } else if(!created.equals(other.created)) {
+            return false;
+        }
+        if(heading == null) {
+            if(other.heading != null) {
+                return false;
+            }
+        } else if(!heading.equals(other.heading)) {
             return false;
         }
         if(id == null) {
@@ -98,6 +105,13 @@ public class Message extends CoreData {
     }
 
     /**
+     * @return the heading
+     */
+    public String getHeading() {
+        return heading;
+    }
+
+    /**
      * @return the id
      */
     public String getId() {
@@ -132,6 +146,7 @@ public class Message extends CoreData {
         result = prime * result + (author == null ? 0 : author.hashCode());
         result = prime * result + (content == null ? 0 : content.hashCode());
         result = prime * result + (created == null ? 0 : created.hashCode());
+        result = prime * result + (heading == null ? 0 : heading.hashCode());
         result = prime * result + (id == null ? 0 : id.hashCode());
         result = prime * result + (severity == null ? 0 : severity.hashCode());
         result = prime * result + (translations == null ? 0 : translations.hashCode());
@@ -161,6 +176,14 @@ public class Message extends CoreData {
      */
     public void setCreated(final DateTime created) {
         this.created = created;
+    }
+
+    /**
+     * @param heading
+     *        the heading to set
+     */
+    public void setHeading(final String heading) {
+        this.heading = heading;
     }
 
     /**

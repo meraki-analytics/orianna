@@ -11,7 +11,7 @@ import com.google.common.base.Suppliers;
 import com.merakianalytics.orianna.types.core.OriannaObject;
 
 public class Message extends OriannaObject<com.merakianalytics.orianna.types.data.status.Message> {
-    private static final long serialVersionUID = -5235637338340977481L;
+    private static final long serialVersionUID = 4358755936137676315L;
 
     private final Supplier<Map<String, Translation>> translations = Suppliers.memoize(new Supplier<Map<String, Translation>>() {
         @Override
@@ -41,6 +41,10 @@ public class Message extends OriannaObject<com.merakianalytics.orianna.types.dat
 
     public DateTime getCreated() {
         return coreData.getCreated();
+    }
+
+    public String getHeading() {
+        return coreData.getHeading();
     }
 
     public String getId() {

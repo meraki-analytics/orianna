@@ -1,13 +1,10 @@
 package com.merakianalytics.orianna.types.data.status;
 
-import org.joda.time.DateTime;
-
 import com.merakianalytics.orianna.types.data.CoreData;
 
 public class Translation extends CoreData {
-    private static final long serialVersionUID = 5006746492830237615L;
-    private String locale, content;
-    private DateTime updated;
+    private static final long serialVersionUID = -2766073434420174632L;
+    private String locale, content, heading;
 
     @Override
     public boolean equals(final Object obj) {
@@ -28,18 +25,18 @@ public class Translation extends CoreData {
         } else if(!content.equals(other.content)) {
             return false;
         }
+        if(heading == null) {
+            if(other.heading != null) {
+                return false;
+            }
+        } else if(!heading.equals(other.heading)) {
+            return false;
+        }
         if(locale == null) {
             if(other.locale != null) {
                 return false;
             }
         } else if(!locale.equals(other.locale)) {
-            return false;
-        }
-        if(updated == null) {
-            if(other.updated != null) {
-                return false;
-            }
-        } else if(!updated.equals(other.updated)) {
             return false;
         }
         return true;
@@ -53,17 +50,17 @@ public class Translation extends CoreData {
     }
 
     /**
+     * @return the heading
+     */
+    public String getHeading() {
+        return heading;
+    }
+
+    /**
      * @return the locale
      */
     public String getLocale() {
         return locale;
-    }
-
-    /**
-     * @return the updated
-     */
-    public DateTime getUpdated() {
-        return updated;
     }
 
     @Override
@@ -71,8 +68,8 @@ public class Translation extends CoreData {
         final int prime = 31;
         int result = 1;
         result = prime * result + (content == null ? 0 : content.hashCode());
+        result = prime * result + (heading == null ? 0 : heading.hashCode());
         result = prime * result + (locale == null ? 0 : locale.hashCode());
-        result = prime * result + (updated == null ? 0 : updated.hashCode());
         return result;
     }
 
@@ -85,18 +82,18 @@ public class Translation extends CoreData {
     }
 
     /**
+     * @param heading
+     *        the heading to set
+     */
+    public void setHeading(final String heading) {
+        this.heading = heading;
+    }
+
+    /**
      * @param locale
      *        the locale to set
      */
     public void setLocale(final String locale) {
         this.locale = locale;
-    }
-
-    /**
-     * @param updated
-     *        the updated to set
-     */
-    public void setUpdated(final DateTime updated) {
-        this.updated = updated;
     }
 }
