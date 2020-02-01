@@ -242,14 +242,19 @@ public class MatchTransformer extends AbstractDataTransformer {
         runes.trimToSize();
         converted.setRuneStats(runes);
         final com.merakianalytics.orianna.types.dto.match.Player player = (com.merakianalytics.orianna.types.dto.match.Player)context.get("player");
-        converted.setAccountId(player.getAccountId());
-        converted.setCurrentAccountId(player.getCurrentAccountId());
-        converted.setCurrentPlatform(player.getCurrentPlatformId());
-        converted.setMatchHistoryURI(player.getMatchHistoryUri());
-        converted.setPlatform(player.getPlatformId());
-        converted.setProfileIconId(player.getProfileIcon());
-        converted.setSummonerId(player.getSummonerId());
-        converted.setSummonerName(player.getSummonerName());
+        if(player != null) {
+            converted.setAccountId(player.getAccountId());
+            converted.setCurrentAccountId(player.getCurrentAccountId());
+            converted.setCurrentPlatform(player.getCurrentPlatformId());
+            converted.setMatchHistoryURI(player.getMatchHistoryUri());
+            converted.setPlatform(player.getPlatformId());
+            converted.setProfileIconId(player.getProfileIcon());
+            converted.setSummonerId(player.getSummonerId());
+            converted.setSummonerName(player.getSummonerName());
+        } else {
+            converted.setCurrentPlatform((String)context.get("platform"));
+            converted.setPlatform((String)context.get("platform"));
+        }
         return converted;
     }
 
