@@ -8,6 +8,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.net.ssl.SSLProtocolException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -294,6 +296,12 @@ public class HTTPClient {
                             bytes = responseBody.bytes();
                         }
                     }
+                } catch(final SSLProtocolException e) {
+                    if(e.getCause() instanceof SocketTimeoutException) {
+                        // The SocketTimeoutException is wrapped in an SSLProtocolException if the timeout is during the handshake
+                        throw new TimeoutException("HTTP GET request timed out!", Type.HTTP);
+                    }
+                    throw e;
                 } catch(final SocketTimeoutException e) {
                     throw new TimeoutException("HTTP GET request timed out!", Type.HTTP);
                 }
