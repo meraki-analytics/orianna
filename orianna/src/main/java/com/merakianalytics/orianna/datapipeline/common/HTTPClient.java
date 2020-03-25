@@ -297,7 +297,7 @@ public class HTTPClient {
                         }
                     }
                 } catch(final SSLProtocolException e) {
-                    if(e.getCause() instanceof SocketTimeoutException) {
+                    if(e.getCause() != null && e.getCause() instanceof SocketTimeoutException) {
                         // The SocketTimeoutException is wrapped in an SSLProtocolException if the timeout is during the handshake
                         throw new TimeoutException("HTTP GET request timed out!", Type.HTTP);
                     }
