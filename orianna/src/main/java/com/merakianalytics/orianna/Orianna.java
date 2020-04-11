@@ -450,7 +450,7 @@ public abstract class Orianna {
         try {
             return new Settings(getConfiguration(
                 Resources.asCharSource(Resources.getResource("com/merakianalytics/orianna/default-orianna-config.json"), Charset.forName("UTF-8"))));
-        } catch(final OriannaException e) {
+        } catch(final IllegalArgumentException | OriannaException e) {
             LOGGER.error("Failed to load default configuration from resources! Using default constuctor instead.");
             return new Settings(new Configuration());
         }
