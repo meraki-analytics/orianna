@@ -1,6 +1,7 @@
 package com.merakianalytics.orianna.types.common;
 
 public enum WardType {
+        CONTROL_WARD,
         SIGHT_WARD,
         TEEMO_MUSHROOM,
         UNDEFINED,
