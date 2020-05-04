@@ -342,12 +342,12 @@ public class RiotAPIService extends AbstractDataSource {
                 final OriannaException e) {
                 final Collection<String> retryAfterHeaders = response.getHeaders().get("Retry-After");
                 if(retryAfterHeaders == null || retryAfterHeaders.isEmpty()) {
-                    backupStrategy.onFailedRequest(service, context, response, e);
+                    return backupStrategy.onFailedRequest(service, context, response, e);
                 }
 
                 final long retryAfter = Long.parseLong(retryAfterHeaders.iterator().next());
                 if(retryAfter <= 0) {
-                    backupStrategy.onFailedRequest(service, context, response, e);
+                    return backupStrategy.onFailedRequest(service, context, response, e);
                 }
                 final String type = response.getHeaders().get("X-Rate-Limit-Type").iterator().next();
 
