@@ -24,6 +24,7 @@ public class RiotAPI extends CompositeDataSource {
         private static final FailedRequestStrategy DEFAULT_429_STRATEGY = new FailedRequestStrategy.RetryFromHeaders();
         private static final FailedRequestStrategy DEFAULT_500_STRATEGY = new FailedRequestStrategy.ExponentialBackoff();
         private static final FailedRequestStrategy DEFAULT_503_STRATEGY = new FailedRequestStrategy.ExponentialBackoff();
+        private static final FailedRequestStrategy DEFAULT_504_STRATEGY = new FailedRequestStrategy.ExponentialBackoff();
         private static final String DEFAULT_API_KEY = System.getenv("RIOT_API_KEY");
         private static final FailedRequestStrategy DEFAULT_HTTP_TIMEOUT_STRATEGY = new FailedRequestStrategy.ExponentialBackoff();
         private static final double DEFAULT_LIMITING_SHARE = 1.0;
@@ -32,20 +33,20 @@ public class RiotAPI extends CompositeDataSource {
         private static final HTTPClient.Configuration DEFAULT_REQUESTS = new HTTPClient.Configuration();
         private static final Set<Class<? extends RiotAPIService>> DEFAULT_SERVICES = ImmutableSet.of(ChampionAPI.class, ChampionMasteryAPI.class,
             LeagueAPI.class, MatchAPI.class, SpectatorAPI.class, StatusAPI.class, SummonerAPI.class, ThirdPartyCodeAPI.class);
-
         private String apiKey = DEFAULT_API_KEY;
         private FailedRequestStrategy http404Strategy = DEFAULT_404_STRATEGY;
+
         private FailedRequestStrategy http429Strategy = DEFAULT_429_STRATEGY;
         private FailedRequestStrategy http500Strategy = DEFAULT_500_STRATEGY;
         private FailedRequestStrategy http503Strategy = DEFAULT_503_STRATEGY;
+        private FailedRequestStrategy http504Strategy = DEFAULT_504_STRATEGY;
         private FailedRequestStrategy httpTimeoutStrategy = DEFAULT_HTTP_TIMEOUT_STRATEGY;
-
         private double limitingShare = DEFAULT_LIMITING_SHARE;
         private Type limitingType = DEFAULT_LIMITING_TYPE;
+
         private FailedRequestStrategy rateLimiterTimeoutStrategy = DEFAULT_RATE_LIMITER_TIMEOUT_STRATEGY;
         private HTTPClient.Configuration requests = DEFAULT_REQUESTS;
         private Set<Class<? extends RiotAPIService>> services = DEFAULT_SERVICES;
-
         @Override
         public boolean equals(final Object obj) {
             if(this == obj) {
@@ -166,6 +167,13 @@ public class RiotAPI extends CompositeDataSource {
         }
 
         /**
+         * @return the http504Strategy
+         */
+        public FailedRequestStrategy getHttp504Strategy() {
+            return http504Strategy;
+        }
+
+        /**
          * @return the httpTimeoutStrategy
          */
         public FailedRequestStrategy getHttpTimeoutStrategy() {
@@ -265,6 +273,14 @@ public class RiotAPI extends CompositeDataSource {
          */
         public void setHttp503Strategy(final FailedRequestStrategy http503Strategy) {
             this.http503Strategy = http503Strategy;
+        }
+
+        /**
+         * @param http504Strategy
+         *        the http504Strategy to set
+         */
+        public void setHttp504Strategy(final FailedRequestStrategy http504Strategy) {
+            this.http504Strategy = http504Strategy;
         }
 
         /**

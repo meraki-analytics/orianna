@@ -94,9 +94,9 @@ public class MatchTransformer extends AbstractDataTransformer {
             byId.put(participant.getParticipantId(), participant);
         }
         final Object previousPlayer = context.get("player");
-        for(int i = 0; i < item.getParticipantIdentities().size(); i++) {
-            final int participantId = item.getParticipantIdentities().get(i).getParticipantId();
-            final com.merakianalytics.orianna.types.dto.match.Player player = item.getParticipantIdentities().get(i).getPlayer();
+        for(final ParticipantIdentity element : item.getParticipantIdentities()) {
+            final int participantId = element.getParticipantId();
+            final com.merakianalytics.orianna.types.dto.match.Player player = element.getPlayer();
             final com.merakianalytics.orianna.types.dto.match.Participant participant = byId.get(participantId);
             context.put("player", player);
             players.add(transform(participant, context));

@@ -36,6 +36,7 @@ import com.merakianalytics.orianna.datapipeline.common.rates.RateLimiter;
 import com.merakianalytics.orianna.datapipeline.riotapi.RiotAPI.Configuration;
 import com.merakianalytics.orianna.datapipeline.riotapi.exceptions.BadRequestException;
 import com.merakianalytics.orianna.datapipeline.riotapi.exceptions.ForbiddenException;
+import com.merakianalytics.orianna.datapipeline.riotapi.exceptions.GatewayTimeoutException;
 import com.merakianalytics.orianna.datapipeline.riotapi.exceptions.InternalServerErrorException;
 import com.merakianalytics.orianna.datapipeline.riotapi.exceptions.NotFoundException;
 import com.merakianalytics.orianna.datapipeline.riotapi.exceptions.RateLimitExceededException;
@@ -494,6 +495,7 @@ public class RiotAPIService extends AbstractDataSource {
     private final FailedRequestStrategy http429Strategy;
     private final FailedRequestStrategy http500Strategy;
     private final FailedRequestStrategy http503Strategy;
+    private final FailedRequestStrategy http504Strategy;
     private final FailedRequestStrategy httpTimeoutStrategy;
     private final FailedRequestStrategy limiterTimeoutStrategy;
     private final double limitingShare;
@@ -511,6 +513,7 @@ public class RiotAPIService extends AbstractDataSource {
         http429Strategy = config.getHttp429Strategy();
         http500Strategy = config.getHttp500Strategy();
         http503Strategy = config.getHttp503Strategy();
+        http504Strategy = config.getHttp504Strategy();
         httpTimeoutStrategy = config.getHttpTimeoutStrategy();
         limiterTimeoutStrategy = config.getRateLimiterTimeoutStrategy();
         limitingShare = config.getLimitingShare();
@@ -741,6 +744,11 @@ public class RiotAPIService extends AbstractDataSource {
                 return http503Strategy.onFailedRequest(this, context, response,
                     new ServiceUnavailableException("A Riot API request to " + host + "/" + context.endpoint
                         + " returned \"Service Unavailable\". This Riot API Service is likely to be down for a short period of time, and can't be used in the meantime."));
+            case 504:
+                LOGGER.error("Got \"Gateway Timeout\" from " + host + "/" + context.endpoint + "!");
+                return http504Strategy.onFailedRequest(this, context, response,
+                    new GatewayTimeoutException("A Riot API request to " + host + "/" + context.endpoint
+                        + " returned \"Gateway Timeout\". This Riot API Service is likely under heavy load and may be unreliable for a short time."));
             default:
                 if(response.getStatusCode() >= 400) {
                     LOGGER.error("Get request to " + host + "/" + context.endpoint + " returned " + response.getStatusCode() + ": " + response.getBody());

@@ -4,204 +4,221 @@
     "unit": "HOURS"
   },
   "pipeline": {
-    "elements": [{
-      "className": "com.merakianalytics.orianna.datapipeline.InMemoryCache",
-      "config": {
-        "expirationPeriods": {
-          "com.merakianalytics.orianna.types.core.champion.ChampionRotation": {
-            "period": 6,
-            "unit": "HOURS"
-          },
-          "com.merakianalytics.orianna.types.core.championmastery.ChampionMastery": {
-            "period": 15,
-            "unit": "MINUTES"
-          },
-          "com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries": {
-            "period": 15,
-            "unit": "MINUTES"
-          },
-          "com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore": {
-            "period": 15,
-            "unit": "MINUTES"
-          },
-          "com.merakianalytics.orianna.types.core.staticdata.Champion": {
-            "period": 6,
-            "unit": "HOURS"
-          },
-          "com.merakianalytics.orianna.types.core.staticdata.Champions": {
-            "period": 6,
-            "unit": "HOURS"
-          },
-          "com.merakianalytics.orianna.types.core.spectator.CurrentMatch": {
-            "period": 5,
-            "unit": "MINUTES"
-          },
-          "com.merakianalytics.orianna.types.core.spectator.FeaturedMatches": {
-            "period": 5,
-            "unit": "MINUTES"
-          },
-          "com.merakianalytics.orianna.types.core.staticdata.Item": {
-            "period": 6,
-            "unit": "HOURS"
-          },
-          "com.merakianalytics.orianna.types.core.staticdata.Items": {
-            "period": 6,
-            "unit": "HOURS"
-          },
-          "com.merakianalytics.orianna.types.core.staticdata.LanguageStrings": {
-            "period": 6,
-            "unit": "HOURS"
-          },
-          "com.merakianalytics.orianna.types.core.staticdata.Languages": {
-            "period": 6,
-            "unit": "HOURS"
-          },
-          "com.merakianalytics.orianna.types.core.league.League": {
-            "period": 15,
-            "unit": "MINUTES"
-          },
-          "com.merakianalytics.orianna.types.core.league.LeaguePositions": {
-            "period": 15,
-            "unit": "MINUTES"
-          },
-          "com.merakianalytics.orianna.types.core.staticdata.Map": {
-            "period": 6,
-            "unit": "HOURS"
-          },
-          "com.merakianalytics.orianna.types.core.staticdata.Maps": {
-            "period": 6,
-            "unit": "HOURS"
-          },
-          "com.merakianalytics.orianna.types.core.staticdata.Mastery": {
-            "period": 6,
-            "unit": "HOURS"
-          },
-          "com.merakianalytics.orianna.types.core.staticdata.Masteries": {
-            "period": 6,
-            "unit": "HOURS"
-          },
-          "com.merakianalytics.orianna.types.core.match.Match": {
-            "period": 6,
-            "unit": "HOURS"
-          },
-          "com.merakianalytics.orianna.types.core.staticdata.Patch": {
-            "period": 6,
-            "unit": "HOURS"
-          },
-          "com.merakianalytics.orianna.types.core.staticdata.Patches": {
-            "period": 6,
-            "unit": "HOURS"
-          },
-          "com.merakianalytics.orianna.types.core.staticdata.ProfileIcon": {
-            "period": 6,
-            "unit": "HOURS"
-          },
-          "com.merakianalytics.orianna.types.core.staticdata.ProfileIcons": {
-            "period": 6,
-            "unit": "HOURS"
-          },
-          "com.merakianalytics.orianna.types.core.staticdata.Realm": {
-            "period": 6,
-            "unit": "HOURS"
-          },
-          "com.merakianalytics.orianna.types.core.staticdata.ReforgedRune": {
-            "period": 6,
-            "unit": "HOURS"
-          },
-          "com.merakianalytics.orianna.types.core.staticdata.ReforgedRunes": {
-            "period": 6,
-            "unit": "HOURS"
-          },
-          "com.merakianalytics.orianna.types.core.staticdata.Rune": {
-            "period": 6,
-            "unit": "HOURS"
-          },
-          "com.merakianalytics.orianna.types.core.staticdata.Runes": {
-            "period": 6,
-            "unit": "HOURS"
-          },
-          "com.merakianalytics.orianna.types.core.status.ShardStatus": {
-            "period": 15,
-            "unit": "MINUTES"
-          },
-          "com.merakianalytics.orianna.types.core.staticdata.SummonerSpell": {
-            "period": 6,
-            "unit": "HOURS"
-          },
-          "com.merakianalytics.orianna.types.core.staticdata.SummonerSpells": {
-            "period": 6,
-            "unit": "HOURS"
-          },
-          "com.merakianalytics.orianna.types.core.summoner.Summoner": {
-            "period": 1,
-            "unit": "HOURS"
-          },
-          "com.merakianalytics.orianna.types.core.match.Timeline": {
-            "period": 6,
-            "unit": "HOURS"
-          },
-          "com.merakianalytics.orianna.types.core.match.TournamentMatches": {
-            "period": 6,
-            "unit": "HOURS"
-          },
-          "com.merakianalytics.orianna.types.core.thirdpartycode.VerificationString": {
-            "period": 3,
-            "unit": "MINUTES"
-          },
-          "com.merakianalytics.orianna.types.core.staticdata.Versions": {
-            "period": 6,
-            "unit": "HOURS"
+    "elements": [
+      {
+        "className": "com.merakianalytics.orianna.datapipeline.InMemoryCache",
+        "config": {
+          "expirationPeriods": {
+            "com.merakianalytics.orianna.types.core.champion.ChampionRotation": {
+              "period": 6,
+              "unit": "HOURS"
+            },
+            "com.merakianalytics.orianna.types.core.championmastery.ChampionMastery": {
+              "period": 15,
+              "unit": "MINUTES"
+            },
+            "com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries": {
+              "period": 15,
+              "unit": "MINUTES"
+            },
+            "com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore": {
+              "period": 15,
+              "unit": "MINUTES"
+            },
+            "com.merakianalytics.orianna.types.core.staticdata.Champion": {
+              "period": 6,
+              "unit": "HOURS"
+            },
+            "com.merakianalytics.orianna.types.core.staticdata.Champions": {
+              "period": 6,
+              "unit": "HOURS"
+            },
+            "com.merakianalytics.orianna.types.core.spectator.CurrentMatch": {
+              "period": 5,
+              "unit": "MINUTES"
+            },
+            "com.merakianalytics.orianna.types.core.spectator.FeaturedMatches": {
+              "period": 5,
+              "unit": "MINUTES"
+            },
+            "com.merakianalytics.orianna.types.core.staticdata.Item": {
+              "period": 6,
+              "unit": "HOURS"
+            },
+            "com.merakianalytics.orianna.types.core.staticdata.Items": {
+              "period": 6,
+              "unit": "HOURS"
+            },
+            "com.merakianalytics.orianna.types.core.staticdata.LanguageStrings": {
+              "period": 6,
+              "unit": "HOURS"
+            },
+            "com.merakianalytics.orianna.types.core.staticdata.Languages": {
+              "period": 6,
+              "unit": "HOURS"
+            },
+            "com.merakianalytics.orianna.types.core.league.League": {
+              "period": 15,
+              "unit": "MINUTES"
+            },
+            "com.merakianalytics.orianna.types.core.league.LeaguePositions": {
+              "period": 15,
+              "unit": "MINUTES"
+            },
+            "com.merakianalytics.orianna.types.core.staticdata.Map": {
+              "period": 6,
+              "unit": "HOURS"
+            },
+            "com.merakianalytics.orianna.types.core.staticdata.Maps": {
+              "period": 6,
+              "unit": "HOURS"
+            },
+            "com.merakianalytics.orianna.types.core.staticdata.Mastery": {
+              "period": 6,
+              "unit": "HOURS"
+            },
+            "com.merakianalytics.orianna.types.core.staticdata.Masteries": {
+              "period": 6,
+              "unit": "HOURS"
+            },
+            "com.merakianalytics.orianna.types.core.match.Match": {
+              "period": 6,
+              "unit": "HOURS"
+            },
+            "com.merakianalytics.orianna.types.core.staticdata.Patch": {
+              "period": 6,
+              "unit": "HOURS"
+            },
+            "com.merakianalytics.orianna.types.core.staticdata.Patches": {
+              "period": 6,
+              "unit": "HOURS"
+            },
+            "com.merakianalytics.orianna.types.core.staticdata.ProfileIcon": {
+              "period": 6,
+              "unit": "HOURS"
+            },
+            "com.merakianalytics.orianna.types.core.staticdata.ProfileIcons": {
+              "period": 6,
+              "unit": "HOURS"
+            },
+            "com.merakianalytics.orianna.types.core.staticdata.Realm": {
+              "period": 6,
+              "unit": "HOURS"
+            },
+            "com.merakianalytics.orianna.types.core.staticdata.ReforgedRune": {
+              "period": 6,
+              "unit": "HOURS"
+            },
+            "com.merakianalytics.orianna.types.core.staticdata.ReforgedRunes": {
+              "period": 6,
+              "unit": "HOURS"
+            },
+            "com.merakianalytics.orianna.types.core.staticdata.Rune": {
+              "period": 6,
+              "unit": "HOURS"
+            },
+            "com.merakianalytics.orianna.types.core.staticdata.Runes": {
+              "period": 6,
+              "unit": "HOURS"
+            },
+            "com.merakianalytics.orianna.types.core.status.ShardStatus": {
+              "period": 15,
+              "unit": "MINUTES"
+            },
+            "com.merakianalytics.orianna.types.core.staticdata.SummonerSpell": {
+              "period": 6,
+              "unit": "HOURS"
+            },
+            "com.merakianalytics.orianna.types.core.staticdata.SummonerSpells": {
+              "period": 6,
+              "unit": "HOURS"
+            },
+            "com.merakianalytics.orianna.types.core.summoner.Summoner": {
+              "period": 1,
+              "unit": "HOURS"
+            },
+            "com.merakianalytics.orianna.types.core.match.Timeline": {
+              "period": 6,
+              "unit": "HOURS"
+            },
+            "com.merakianalytics.orianna.types.core.match.TournamentMatches": {
+              "period": 6,
+              "unit": "HOURS"
+            },
+            "com.merakianalytics.orianna.types.core.thirdpartycode.VerificationString": {
+              "period": 3,
+              "unit": "MINUTES"
+            },
+            "com.merakianalytics.orianna.types.core.staticdata.Versions": {
+              "period": 6,
+              "unit": "HOURS"
+            }
           }
-        }
-      },
-      "configClassName": "com.merakianalytics.orianna.datapipeline.InMemoryCache$Configuration"
-    }, {
-      "className": "com.merakianalytics.orianna.datapipeline.GhostLoader"
-    }, {
-      "className": "com.merakianalytics.orianna.datapipeline.MerakiAnalyticsCDN",
-      "config": {
-        "host": "cdn.merakianalytics.com",
-        "cacheDuration": {
-          "period": 6,
-          "unit": "HOURS"
         },
-        "requests": {
-          "connectTimeout": 3,
-          "connectTimeoutUnit": "SECONDS",
-          "rateLimiterTimeout": -1,
-          "rateLimiterTimeoutUnit": "DAYS",
-          "readTimeout": 3,
-          "readTimeoutUnit": "SECONDS",
-          "https": true
-        }
+        "configClassName": "com.merakianalytics.orianna.datapipeline.InMemoryCache$Configuration"
       },
-      "configClassName": "com.merakianalytics.orianna.datapipeline.MerakiAnalyticsCDN$Configuration"
-    }, {
-      "className": "com.merakianalytics.orianna.datapipeline.DataDragon",
-      "config": {
-        "cacheDuration": {
-          "period": 6,
-          "unit": "HOURS"
-        },
-        "requests": {
-          "connectTimeout": 3,
-          "connectTimeoutUnit": "SECONDS",
-          "rateLimiterTimeout": -1,
-          "rateLimiterTimeoutUnit": "DAYS",
-          "readTimeout": 3,
-          "readTimeoutUnit": "SECONDS",
-          "https": true
-        }
+      {
+        "className": "com.merakianalytics.orianna.datapipeline.GhostLoader"
       },
-      "configClassName": "com.merakianalytics.orianna.datapipeline.DataDragon$Configuration"
-    }, {
-      "className": "com.merakianalytics.orianna.datapipeline.riotapi.RiotAPI",
-      "config": {
-        "http404Strategy": {
-          "type": "RETURN_NULL"
+      {
+        "className": "com.merakianalytics.orianna.datapipeline.MerakiAnalyticsCDN",
+        "config": {
+          "host": "cdn.merakianalytics.com",
+          "cacheDuration": {
+            "period": 6,
+            "unit": "HOURS"
+          },
+          "requests": {
+            "connectTimeout": 3,
+            "connectTimeoutUnit": "SECONDS",
+            "rateLimiterTimeout": -1,
+            "rateLimiterTimeoutUnit": "DAYS",
+            "readTimeout": 3,
+            "readTimeoutUnit": "SECONDS",
+            "https": true
+          }
         },
-        "http429Strategy": {
-          "backupStrategy": {
+        "configClassName": "com.merakianalytics.orianna.datapipeline.MerakiAnalyticsCDN$Configuration"
+      },
+      {
+        "className": "com.merakianalytics.orianna.datapipeline.DataDragon",
+        "config": {
+          "cacheDuration": {
+            "period": 6,
+            "unit": "HOURS"
+          },
+          "requests": {
+            "connectTimeout": 3,
+            "connectTimeoutUnit": "SECONDS",
+            "rateLimiterTimeout": -1,
+            "rateLimiterTimeoutUnit": "DAYS",
+            "readTimeout": 3,
+            "readTimeoutUnit": "SECONDS",
+            "https": true
+          }
+        },
+        "configClassName": "com.merakianalytics.orianna.datapipeline.DataDragon$Configuration"
+      },
+      {
+        "className": "com.merakianalytics.orianna.datapipeline.riotapi.RiotAPI",
+        "config": {
+          "http404Strategy": {
+            "type": "RETURN_NULL"
+          },
+          "http429Strategy": {
+            "backupStrategy": {
+              "backoff": 1,
+              "backoffUnit": "SECONDS",
+              "backupStrategy": {
+                "type": "THROW_EXCEPTION"
+              },
+              "maxAttempts": 4,
+              "backoffFactor": 2,
+              "type": "EXPONENTIAL_BACKOFF"
+            },
+            "type": "RETRY_FROM_HEADERS"
+          },
+          "http500Strategy": {
             "backoff": 1,
             "backoffUnit": "SECONDS",
             "backupStrategy": {
@@ -211,85 +228,95 @@
             "backoffFactor": 2,
             "type": "EXPONENTIAL_BACKOFF"
           },
-          "type": "RETRY_FROM_HEADERS"
-        },
-        "http500Strategy": {
-          "backoff": 1,
-          "backoffUnit": "SECONDS",
-          "backupStrategy": {
+          "http503Strategy": {
+            "backoff": 1,
+            "backoffUnit": "SECONDS",
+            "backupStrategy": {
+              "type": "THROW_EXCEPTION"
+            },
+            "maxAttempts": 4,
+            "backoffFactor": 2,
+            "type": "EXPONENTIAL_BACKOFF"
+          },
+          "http504Strategy": {
+            "backoff": 1,
+            "backoffUnit": "SECONDS",
+            "backupStrategy": {
+              "type": "THROW_EXCEPTION"
+            },
+            "maxAttempts": 4,
+            "backoffFactor": 2,
+            "type": "EXPONENTIAL_BACKOFF"
+          },
+          "httpTimeoutStrategy": {
+            "backoff": 1,
+            "backoffUnit": "SECONDS",
+            "backupStrategy": {
+              "type": "THROW_EXCEPTION"
+            },
+            "maxAttempts": 4,
+            "backoffFactor": 2,
+            "type": "EXPONENTIAL_BACKOFF"
+          },
+          "limitingShare": 1.0,
+          "limitingType": "BURST",
+          "rateLimiterTimeoutStrategy": {
             "type": "THROW_EXCEPTION"
           },
-          "maxAttempts": 4,
-          "backoffFactor": 2,
-          "type": "EXPONENTIAL_BACKOFF"
-        },
-        "http503Strategy": {
-          "backoff": 1,
-          "backoffUnit": "SECONDS",
-          "backupStrategy": {
-            "type": "THROW_EXCEPTION"
+          "requests": {
+            "connectTimeout": 3,
+            "connectTimeoutUnit": "SECONDS",
+            "rateLimiterTimeout": -1,
+            "rateLimiterTimeoutUnit": "DAYS",
+            "readTimeout": 3,
+            "readTimeoutUnit": "SECONDS",
+            "https": true
           },
-          "maxAttempts": 4,
-          "backoffFactor": 2,
-          "type": "EXPONENTIAL_BACKOFF"
+          "services": [
+            "com.merakianalytics.orianna.datapipeline.riotapi.ChampionAPI",
+            "com.merakianalytics.orianna.datapipeline.riotapi.ChampionMasteryAPI",
+            "com.merakianalytics.orianna.datapipeline.riotapi.LeagueAPI",
+            "com.merakianalytics.orianna.datapipeline.riotapi.MatchAPI",
+            "com.merakianalytics.orianna.datapipeline.riotapi.SpectatorAPI",
+            "com.merakianalytics.orianna.datapipeline.riotapi.StatusAPI",
+            "com.merakianalytics.orianna.datapipeline.riotapi.SummonerAPI",
+            "com.merakianalytics.orianna.datapipeline.riotapi.ThirdPartyCodeAPI"
+          ]
         },
-        "httpTimeoutStrategy": {
-          "backoff": 1,
-          "backoffUnit": "SECONDS",
-          "backupStrategy": {
-            "type": "THROW_EXCEPTION"
-          },
-          "maxAttempts": 4,
-          "backoffFactor": 2,
-          "type": "EXPONENTIAL_BACKOFF"
-        },
-        "limitingShare": 1.0,
-        "limitingType": "BURST",
-        "rateLimiterTimeoutStrategy": {
-          "type": "THROW_EXCEPTION"
-        },
-        "requests": {
-          "connectTimeout": 3,
-          "connectTimeoutUnit": "SECONDS",
-          "rateLimiterTimeout": -1,
-          "rateLimiterTimeoutUnit": "DAYS",
-          "readTimeout": 3,
-          "readTimeoutUnit": "SECONDS",
-          "https": true
-        },
-        "services": [
-          "com.merakianalytics.orianna.datapipeline.riotapi.ChampionAPI",
-          "com.merakianalytics.orianna.datapipeline.riotapi.ChampionMasteryAPI",
-          "com.merakianalytics.orianna.datapipeline.riotapi.LeagueAPI",
-          "com.merakianalytics.orianna.datapipeline.riotapi.MatchAPI",
-          "com.merakianalytics.orianna.datapipeline.riotapi.SpectatorAPI",
-          "com.merakianalytics.orianna.datapipeline.riotapi.StatusAPI",
-          "com.merakianalytics.orianna.datapipeline.riotapi.SummonerAPI",
-          "com.merakianalytics.orianna.datapipeline.riotapi.ThirdPartyCodeAPI"
-        ]
+        "configClassName": "com.merakianalytics.orianna.datapipeline.riotapi.RiotAPI$Configuration"
       },
-      "configClassName": "com.merakianalytics.orianna.datapipeline.riotapi.RiotAPI$Configuration"
-    }, {
-      "className": "com.merakianalytics.orianna.datapipeline.ImageDownloader"
-    }],
-    "transformers": [{
-      "className": "com.merakianalytics.orianna.datapipeline.transformers.dtodata.ChampionMasteryTransformer"
-    }, {
-      "className": "com.merakianalytics.orianna.datapipeline.transformers.dtodata.ChampionTransformer"
-    }, {
-      "className": "com.merakianalytics.orianna.datapipeline.transformers.dtodata.LeagueTransformer"
-    }, {
-      "className": "com.merakianalytics.orianna.datapipeline.transformers.dtodata.MatchTransformer"
-    }, {
-      "className": "com.merakianalytics.orianna.datapipeline.transformers.dtodata.SpectatorTransformer"
-    }, {
-      "className": "com.merakianalytics.orianna.datapipeline.transformers.dtodata.StaticDataTransformer"
-    }, {
-      "className": "com.merakianalytics.orianna.datapipeline.transformers.dtodata.StatusTransformer"
-    }, {
-      "className": "com.merakianalytics.orianna.datapipeline.transformers.dtodata.SummonerTransformer"
-    }, {
-      "className": "com.merakianalytics.orianna.datapipeline.transformers.dtodata.ThirdPartyCodeTransformer"
-    }]
+      {
+        "className": "com.merakianalytics.orianna.datapipeline.ImageDownloader"
+      }
+    ],
+    "transformers": [
+      {
+        "className": "com.merakianalytics.orianna.datapipeline.transformers.dtodata.ChampionMasteryTransformer"
+      },
+      {
+        "className": "com.merakianalytics.orianna.datapipeline.transformers.dtodata.ChampionTransformer"
+      },
+      {
+        "className": "com.merakianalytics.orianna.datapipeline.transformers.dtodata.LeagueTransformer"
+      },
+      {
+        "className": "com.merakianalytics.orianna.datapipeline.transformers.dtodata.MatchTransformer"
+      },
+      {
+        "className": "com.merakianalytics.orianna.datapipeline.transformers.dtodata.SpectatorTransformer"
+      },
+      {
+        "className": "com.merakianalytics.orianna.datapipeline.transformers.dtodata.StaticDataTransformer"
+      },
+      {
+        "className": "com.merakianalytics.orianna.datapipeline.transformers.dtodata.StatusTransformer"
+      },
+      {
+        "className": "com.merakianalytics.orianna.datapipeline.transformers.dtodata.SummonerTransformer"
+      },
+      {
+        "className": "com.merakianalytics.orianna.datapipeline.transformers.dtodata.ThirdPartyCodeTransformer"
+      }
+    ]
   }
 }
