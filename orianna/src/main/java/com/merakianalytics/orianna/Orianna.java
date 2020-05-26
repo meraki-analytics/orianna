@@ -259,7 +259,7 @@ public abstract class Orianna {
             Supplier<String> supplier = new Supplier<String>() {
                 @Override
                 public String get() {
-                    return platform.getRealm().getVersion();
+                    return Versions.withPlatform(platform).get().getBestMatch(platform.getRealm().getVersion());
                 }
             };
 

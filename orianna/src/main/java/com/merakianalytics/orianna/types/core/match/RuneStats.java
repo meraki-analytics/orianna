@@ -20,7 +20,7 @@ public class RuneStats extends OriannaObject<com.merakianalytics.orianna.types.d
             if(coreData.getId() == 0) {
                 return null;
             }
-            final String version = Versions.withPlatform(Platform.withTag(coreData.getPlatform())).get().truncate(coreData.getVersion());
+            final String version = Versions.withPlatform(Platform.withTag(coreData.getPlatform())).get().getBestMatch(coreData.getVersion());
             return ReforgedRune.withId(coreData.getId()).withPlatform(Platform.withTag(coreData.getPlatform())).withVersion(version).get();
         }
     });

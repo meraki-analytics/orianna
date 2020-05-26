@@ -116,6 +116,41 @@ public class Versions extends GhostObject.ListProxy<String, String, com.merakian
         return !coreData.isEmpty();
     }
 
+    public String getBestMatch(final String targetVersion) {
+        String[] parts = targetVersion.split("\\.");
+
+        final int targetMajor = Integer.parseInt(parts[0]);
+        final int targetMinor = Integer.parseInt(parts[1]);
+
+        for(final String version : this) {
+            if(targetVersion.equals(version)) {
+                return version;
+            }
+
+            parts = version.split("\\.");
+            if(parts.length != 3) {
+                continue;
+            }
+
+            final int major = Integer.parseInt(parts[0]);
+            if(major > targetMajor) {
+                continue;
+            }
+
+            final int minor = Integer.parseInt(parts[1]);
+            if(minor > targetMinor) {
+                continue;
+            }
+
+            // We're going to ignore the patch version and just go with the most recent for the major/minor.
+            // As I understand it, the ddragon patch version numbers don't necessarily align with the game server version exactly, and there have been a lot of
+            // inconsistencies in the patch versioning.
+
+            return version; // Since the versions are ordered, this is the first version <= the target.
+        }
+        return null;
+    }
+
     @Override
     protected List<String> getLoadGroups() {
         return Arrays.asList(new String[] {
@@ -150,42 +185,5 @@ public class Versions extends GhostObject.ListProxy<String, String, com.merakian
             default:
                 break;
         }
-    }
-
-    public String truncate(final String targetVersion) {
-        String[] parts = targetVersion.split("\\.");
-
-        final int targetMajor = Integer.parseInt(parts[0]);
-        final int targetMinor = Integer.parseInt(parts[1]);
-        final int targetPatch = Integer.parseInt(parts[2]);
-
-        for(int i = 0; i < size(); i++) {
-            if(targetVersion.equals(this.get(i))) {
-                return this.get(i);
-            }
-
-            parts = this.get(i).split("\\.");
-            if(parts.length != 3) {
-                continue;
-            }
-
-            final int major = Integer.parseInt(parts[0]);
-            if(major > targetMajor) {
-                continue;
-            }
-
-            final int minor = Integer.parseInt(parts[1]);
-            if(minor > targetMinor) {
-                continue;
-            }
-
-            final int patch = Integer.parseInt(parts[2]);
-            if(patch > targetPatch) {
-                continue;
-            }
-
-            return this.get(i); // Since the versions are ordered, this is the first version <= the target.
-        }
-        return null;
     }
 }

@@ -96,7 +96,7 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
                 }
                 Champion.Builder builder = Champion.withId(coreData.getChampionId()).withPlatform(Platform.withTag(coreData.getCurrentPlatform()));
                 if(coreData.getVersion() != null) {
-                    final String version = Versions.withPlatform(Platform.withTag(coreData.getCurrentPlatform())).get().truncate(coreData.getVersion());
+                    final String version = Versions.withPlatform(Platform.withTag(coreData.getCurrentPlatform())).get().getBestMatch(coreData.getVersion());
                     builder = builder.withVersion(version);
                 }
                 return builder.get();
@@ -110,7 +110,7 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
                 if(coreData.getItems() == null) {
                     return null;
                 }
-                final String version = Versions.withPlatform(Platform.withTag(coreData.getCurrentPlatform())).get().truncate(coreData.getVersion());
+                final String version = Versions.withPlatform(Platform.withTag(coreData.getCurrentPlatform())).get().getBestMatch(coreData.getVersion());
                 return SearchableLists.unmodifiableFrom(
                     Items.withIds(coreData.getItems()).withPlatform(Platform.withTag(coreData.getCurrentPlatform())).withVersion(version).get());
             }
@@ -134,7 +134,7 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
                 if(coreData.getProfileIconId() == -1) {
                     return null;
                 }
-                final String version = Versions.withPlatform(Platform.withTag(coreData.getCurrentPlatform())).get().truncate(coreData.getVersion());
+                final String version = Versions.withPlatform(Platform.withTag(coreData.getCurrentPlatform())).get().getBestMatch(coreData.getVersion());
                 return ProfileIcon.withId(coreData.getProfileIconId()).withPlatform(Platform.withTag(coreData.getCurrentPlatform())).withVersion(version)
                     .get();
             }
@@ -191,7 +191,7 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
                 if(coreData.getSummonerSpellDId() == 0) {
                     return null;
                 }
-                final String version = Versions.withPlatform(Platform.withTag(coreData.getCurrentPlatform())).get().truncate(coreData.getVersion());
+                final String version = Versions.withPlatform(Platform.withTag(coreData.getCurrentPlatform())).get().getBestMatch(coreData.getVersion());
                 return SummonerSpell.withId(coreData.getSummonerSpellDId()).withPlatform(Platform.withTag(coreData.getCurrentPlatform())).withVersion(version)
                     .get();
             }
@@ -204,7 +204,7 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
                 if(coreData.getSummonerSpellFId() == 0) {
                     return null;
                 }
-                final String version = Versions.withPlatform(Platform.withTag(coreData.getCurrentPlatform())).get().truncate(coreData.getVersion());
+                final String version = Versions.withPlatform(Platform.withTag(coreData.getCurrentPlatform())).get().getBestMatch(coreData.getVersion());
                 return SummonerSpell.withId(coreData.getSummonerSpellFId()).withPlatform(Platform.withTag(coreData.getCurrentPlatform())).withVersion(version)
                     .get();
             }
@@ -342,7 +342,7 @@ public class Match extends GhostObject<com.merakianalytics.orianna.types.data.ma
                 if(coreData.getBans() == null) {
                     return null;
                 }
-                final String version = Versions.withPlatform(Platform.withTag(coreData.getPlatform())).get().truncate(coreData.getVersion());
+                final String version = Versions.withPlatform(Platform.withTag(coreData.getPlatform())).get().getBestMatch(coreData.getVersion());
                 return SearchableLists.unmodifiableFrom(
                     Champions.withIds(coreData.getBans()).withPlatform(Platform.withTag(coreData.getPlatform())).withVersion(version).get());
             }
