@@ -66,7 +66,7 @@
 		<maven.license.version>1.17</maven.license.version>
 		<maven.shade.version>3.2.1</maven.shade.version>
 		<maven.helper.version>3.0.0</maven.helper.version>
-		<junit.version>4.12</junit.version>
+		<junit.version>4.13.1</junit.version>
 		<hamcrest.version>2.1</hamcrest.version>
 		<slf4j.version>1.7.25</slf4j.version>
 		<datapipelines.version>1.0.4</datapipelines.version>
