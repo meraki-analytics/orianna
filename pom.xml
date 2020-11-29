@@ -61,6 +61,7 @@
 		<maven.surefire.version>2.22.1</maven.surefire.version>
 		<maven.source.version>3.0.1</maven.source.version>
 		<maven.javadoc.version>3.0.1</maven.javadoc.version>
+		<maven.jar.version>3.2.0</maven.jar.version>
 		<maven.gpg.version>1.6</maven.gpg.version>
 		<maven.nexus.version>1.6.8</maven.nexus.version>
 		<maven.license.version>1.17</maven.license.version>
@@ -203,7 +204,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.4</version>
+				<version>${maven.jar.version}</version>
 				<configuration>
 					<archive>
 						<manifestEntries>
