@@ -61,6 +61,7 @@
 		<maven.surefire.version>2.22.1</maven.surefire.version>
 		<maven.source.version>3.0.1</maven.source.version>
 		<maven.javadoc.version>3.0.1</maven.javadoc.version>
+		<maven.jar.version>3.2.0</maven.jar.version>
 		<maven.gpg.version>1.6</maven.gpg.version>
 		<maven.nexus.version>1.6.8</maven.nexus.version>
 		<maven.license.version>1.17</maven.license.version>
@@ -72,7 +73,7 @@
 		<datapipelines.version>1.0.4</datapipelines.version>
 		<guava.version>20.0</guava.version>
 		<okhttp.version>3.13.1</okhttp.version>
-		<jackson.version>2.10.0.pr1</jackson.version>
+		<jackson.version>2.12.0</jackson.version>
 		<msgpack.version>0.8.16</msgpack.version>
 		<joda.version>2.10.1</joda.version>
 		<cache2k.version>1.2.3.Final</cache2k.version>
@@ -199,6 +200,18 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>${maven.jar.version}</version>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Automatic-Module-Name>${project.groupId}</Automatic-Module-Name>
+						</manifestEntries>
+					</archive>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
