@@ -330,9 +330,7 @@ public enum Queue {
          * Nexus Blitz
          * <p>
          * Nexus Blitz games
-         * <p>
          */
-        @Deprecated
         NEXUS_BLITZ(1300, "NEXUS_BLITZ"),
 
         /**
