@@ -325,6 +325,15 @@ public enum Queue {
          */
         @Deprecated
         DEPRECATED_NEXUS_BLITZ(1200, "NEXUS_BLITZ"),
+                
+         /**
+         * Nexus Blitz
+         * <p>
+         * Nexus Blitz games
+         * <p>
+         */
+        @Deprecated
+        NEXUS_BLITZ(1300, "NEXUS_BLITZ"),
 
         /**
          * Summoner's Rift
