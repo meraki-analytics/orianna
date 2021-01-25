@@ -324,7 +324,7 @@ public enum Queue {
          * Deprecated in patch 9.2
          */
         @Deprecated
-        DEPRECATED_NEXUS_BLITZ(1200, "NEXUS_BLITZ"),
+        DEPRECATED_NEXUS_BLITZ(1200, "DEPRECATED_NEXUS_BLITZ"),
                 
          /**
          * Nexus Blitz
