@@ -321,6 +321,7 @@ public class MatchTransformer extends AbstractDataTransformer {
         stats.setPhysicalDamageTaken((int)item.getPhysicalDamageTaken());
         stats.setPinkWardsPurchased(item.getVisionWardsBoughtInGame());
         stats.setQuadraKills(item.getQuadraKills());
+        stats.setPentaKills(item.getPentaKills());
         stats.setScore(item.getTotalPlayerScore());
         stats.setScoreRank(item.getTotalScoreRank());
         stats.setTeamObjectives(item.getTeamObjective());
