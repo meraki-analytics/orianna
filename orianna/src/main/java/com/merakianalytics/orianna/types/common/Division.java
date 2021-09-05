@@ -27,4 +27,8 @@ public enum Division {
     public int compare(final Division o) {
         return Integer.compare(level, o.level);
     }
+
+    public int getLevel() {
+        return level;
+    }
 }
