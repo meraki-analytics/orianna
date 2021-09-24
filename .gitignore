@@ -28,3 +28,10 @@ hs_err_pid*
 *target/
 /.metadata/
 *dependency-reduced-pom.xml
+
+# MacOS
+.DS_Store
+
+# IntelliJ
+.idea/
+*.iml
