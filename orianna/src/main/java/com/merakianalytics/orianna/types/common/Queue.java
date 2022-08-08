@@ -334,6 +334,13 @@ public enum Queue {
         NEXUS_BLITZ(1300, "NEXUS_BLITZ"),
 
         /**
+         * Ultimate Spellbook
+         * <p>
+         * Ultimate Spellbook games
+         */
+        ULTBOOK(1400, "Ultimate Spellbook"),
+
+        /**
          * Summoner's Rift
          * <p>
          * Nexus Siege games
