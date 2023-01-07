@@ -17,7 +17,12 @@ public enum Region {
         NORTH_AMERICA("NA", "en_US"),
         OCEANIA("OCE", "en_AU"),
         RUSSIA("RU", "ru_RU"),
-        TURKEY("TR", "tr_TR");
+        TURKEY("TR", "tr_TR"),
+        PHILIPPINES("PH", "en_PH"),
+        SINGAPORE("SG", "en_SG"),
+        THAILAND("TH", "th_TH"),
+        TAIWAN("TW", "zh_TW"),
+        VIETNAM("VN", "vn_VN");
 
     private final String defaultLocale;
     private final String tag;
