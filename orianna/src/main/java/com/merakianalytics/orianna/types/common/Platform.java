@@ -19,7 +19,12 @@ public enum Platform {
         NORTH_AMERICA("NA1", "en_US"),
         OCEANIA("OC1", "en_AU"),
         RUSSIA("RU", "ru_RU"),
-        TURKEY("TR1", "tr_TR");
+        TURKEY("TR1", "tr_TR"),
+        PHILIPPINES("PH2", "en_PH"),
+        SINGAPORE("SG2", "en_SG"),
+        THAILAND("TH2", "th_TH"),
+        TAIWAN("TW2", "zh_TW"),
+        VIETNAM("VN2", "vn_VN");
 
     private static final java.util.Map<String, Platform> BY_TAG = getByTag();
 
