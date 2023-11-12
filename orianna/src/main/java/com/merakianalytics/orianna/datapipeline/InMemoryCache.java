@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import com.merakianalytics.orianna.types.core.account.Account;
 import org.cache2k.Cache;
 import org.cache2k.Cache2kBuilder;
 import org.cache2k.CacheEntry;
@@ -77,6 +78,7 @@ public class InMemoryCache extends AbstractDataStore {
         private static final long DEFAULT_EXPIRATION_PERIOD_MAX = 6L;
         private static final TimeUnit DEFAULT_EXPIRATION_PERIOD_UNIT_MAX = TimeUnit.HOURS;
         private static final java.util.Map<String, ExpirationPeriod> DEFAULT_EXPIRATION_PERIODS = ImmutableMap.<String, ExpirationPeriod> builder()
+            .put(Account.class.getCanonicalName(), ExpirationPeriod.create(1L, TimeUnit.HOURS))
             .put(ChampionRotation.class.getCanonicalName(), ExpirationPeriod.create(6L, TimeUnit.HOURS))
             .put(ChampionMastery.class.getCanonicalName(), ExpirationPeriod.create(15L, TimeUnit.MINUTES))
             .put(ChampionMasteries.class.getCanonicalName(), ExpirationPeriod.create(15L, TimeUnit.MINUTES))
@@ -1440,6 +1442,13 @@ public class InMemoryCache extends AbstractDataStore {
         }
     }
 
+    @PutMany(Account.class)
+    public void putManyAccount(final Iterable<Account> accounts, final PipelineContext context) {
+        for (final Account account : accounts) {
+            putAccount(account, context);
+        }
+    }
+
     @PutMany(Summoner.class)
     public void putManySummoner(final Iterable<Summoner> summoners, final PipelineContext context) {
         for(final Summoner summoner : summoners) {
@@ -1716,6 +1725,26 @@ public class InMemoryCache extends AbstractDataStore {
     public void putShardStatus(final ShardStatus status, final PipelineContext context) {
         final int key = UniqueKeys.forShardStatus(status);
         cache.put(key, status);
+    }
+
+    @Put(Account.class)
+    public void putAccount(final Account account, final PipelineContext context) {
+        final int[] keys = UniqueKeys.forAccount(account);
+
+        if (keys.length > 1) {
+            final LoadHook hook = new LoadHook() {
+                @Override
+                public void call() {
+                    putAccount(account, null);
+                }
+            };
+
+            account.registerGhostLoadHook(hook, Account.ACCOUNT_LOAD_GROUP);
+
+            for(final int key : keys) {
+                cache.put(key, account);
+            }
+        }
     }
 
     @Put(Summoner.class)

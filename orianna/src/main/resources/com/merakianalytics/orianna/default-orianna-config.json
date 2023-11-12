@@ -9,6 +9,10 @@
         "className": "com.merakianalytics.orianna.datapipeline.InMemoryCache",
         "config": {
           "expirationPeriods": {
+            "com.merakianalytics.orianna.types.core.account.Account": {
+              "period": 1,
+              "unit": "HOURS"
+            },
             "com.merakianalytics.orianna.types.core.champion.ChampionRotation": {
               "period": 6,
               "unit": "HOURS"
@@ -273,6 +277,7 @@
             "https": true
           },
           "services": [
+            "com.merakianalytics.orianna.datapipeline.riotapi.AccountAPI",
             "com.merakianalytics.orianna.datapipeline.riotapi.ChampionAPI",
             "com.merakianalytics.orianna.datapipeline.riotapi.ChampionMasteryAPI",
             "com.merakianalytics.orianna.datapipeline.riotapi.LeagueAPI",
@@ -290,6 +295,9 @@
       }
     ],
     "transformers": [
+      {
+        "className": "com.merakianalytics.orianna.datapipeline.transformers.dtodata.AccountTransformer"
+      },
       {
         "className": "com.merakianalytics.orianna.datapipeline.transformers.dtodata.ChampionMasteryTransformer"
       },

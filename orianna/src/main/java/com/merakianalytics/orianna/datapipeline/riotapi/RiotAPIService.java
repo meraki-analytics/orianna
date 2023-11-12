@@ -457,6 +457,7 @@ public class RiotAPIService extends AbstractDataSource {
         public Platform platform;
         public String rateLimiterName;
         public Class<T> type;
+        public boolean isRegionalRequest;
 
         public RequestContext(final Class<T> type, final String endpoint, final Platform platform, final Multimap<String, String> parameters,
             final String rateLimiterName) {
@@ -466,6 +467,18 @@ public class RiotAPIService extends AbstractDataSource {
             this.parameters = parameters;
             this.rateLimiterName = rateLimiterName;
             this.attemptCount = 1;
+            this.isRegionalRequest = false;
+        }
+
+        public RequestContext(final Class<T> type, final String endpoint, final Platform platform, final Multimap<String, String> parameters,
+                final String rateLimiterName, final boolean isRegionalRequest) {
+            this.type = type;
+            this.endpoint = endpoint;
+            this.platform = platform;
+            this.parameters = parameters;
+            this.rateLimiterName = rateLimiterName;
+            this.attemptCount = 1;
+            this.isRegionalRequest = true;
         }
     }
 
@@ -670,9 +683,16 @@ public class RiotAPIService extends AbstractDataSource {
         return get(context);
     }
 
+    protected <T extends DataObject> T get(final Class<T> type, final String endpoint, final Platform platform, final String rateLimiterName,
+            final boolean isRegionalRequest) {
+        final RequestContext<T> context = new RequestContext<>(type, endpoint, platform, null, rateLimiterName, isRegionalRequest);
+        return get(context);
+    }
+
     private <T extends DataObject> T get(final RequestContext<T> context) {
         context.attemptCount += 1;
-        final String host = context.platform.getTag().toLowerCase() + ".api.riotgames.com";
+        final String platform = context.isRegionalRequest ? context.platform.getRegionalRoute().toLowerCase() : context.platform.getTag().toLowerCase();
+        final String host = platform + ".api.riotgames.com";
 
         Response response = null;
         MultiRateLimiter limiter = getRateLimiter(context.platform, context.rateLimiterName);

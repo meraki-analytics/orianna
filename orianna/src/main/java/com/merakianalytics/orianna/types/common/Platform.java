@@ -9,22 +9,22 @@ import com.merakianalytics.orianna.types.core.staticdata.Versions;
 import com.merakianalytics.orianna.types.core.status.ShardStatus;
 
 public enum Platform {
-        BRAZIL("BR1", "pt_BR"),
-        EUROPE_NORTH_EAST("EUN1", "en_GB"),
-        EUROPE_WEST("EUW1", "en_GB"),
-        JAPAN("JP1", "ja_JP"),
-        KOREA("KR", "ko_KR"),
-        LATIN_AMERICA_NORTH("LA1", "es_MX"),
-        LATIN_AMERICA_SOUTH("LA2", "es_AR"),
-        NORTH_AMERICA("NA1", "en_US"),
-        OCEANIA("OC1", "en_AU"),
-        RUSSIA("RU", "ru_RU"),
-        TURKEY("TR1", "tr_TR"),
-        PHILIPPINES("PH2", "en_PH"),
-        SINGAPORE("SG2", "en_SG"),
-        THAILAND("TH2", "th_TH"),
-        TAIWAN("TW2", "zh_TW"),
-        VIETNAM("VN2", "vn_VN");
+    BRAZIL("BR1", "pt_BR", "AMERICAS"),
+    EUROPE_NORTH_EAST("EUN1", "en_GB", "EUROPE"),
+    EUROPE_WEST("EUW1", "en_GB", "EUROPE"),
+    JAPAN("JP1", "ja_JP", "ASIA"),
+    KOREA("KR", "ko_KR", "ASIA"),
+    LATIN_AMERICA_NORTH("LA1", "es_MX", "AMERICAS"),
+    LATIN_AMERICA_SOUTH("LA2", "es_AR", "AMERICAS"),
+    NORTH_AMERICA("NA1", "en_US", "AMERICAS"),
+    OCEANIA("OC1", "en_AU", "SEA"),
+    RUSSIA("RU", "ru_RU", "EUROPE"),
+    TURKEY("TR1", "tr_TR", "EUROPE"),
+    PHILIPPINES("PH2", "en_PH", "SEA"),
+    SINGAPORE("SG2", "en_SG", "SEA"),
+    THAILAND("TH2", "th_TH", "SEA"),
+    TAIWAN("TW2", "zh_TW", "SEA"),
+    VIETNAM("VN2", "vn_VN", "SEA");
 
     private static final java.util.Map<String, Platform> BY_TAG = getByTag();
 
@@ -42,10 +42,12 @@ public enum Platform {
 
     private final String defaultLocale;
     private final String tag;
+    private final String regionalRoute;
 
-    private Platform(final String tag, final String defaultLocale) {
+    private Platform(final String tag, final String defaultLocale, String regionalRoute) {
         this.tag = tag;
         this.defaultLocale = defaultLocale;
+        this.regionalRoute = regionalRoute;
     }
 
     public String getDefaultLocale() {
@@ -79,4 +81,6 @@ public enum Platform {
     public Versions getVersions() {
         return Versions.withPlatform(this).get();
     }
+
+    public String getRegionalRoute() { return regionalRoute; }
 }

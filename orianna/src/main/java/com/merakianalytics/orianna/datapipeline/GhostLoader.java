@@ -19,6 +19,7 @@ import com.merakianalytics.orianna.datapipeline.common.Utilities;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Queue;
 import com.merakianalytics.orianna.types.common.Tier;
+import com.merakianalytics.orianna.types.core.account.Account;
 import com.merakianalytics.orianna.types.core.champion.ChampionRotation;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
@@ -64,6 +65,23 @@ public class GhostLoader extends AbstractDataSource {
         final com.merakianalytics.orianna.types.dto.staticdata.Realm realm =
             context.getPipeline().get(com.merakianalytics.orianna.types.dto.staticdata.Realm.class, ImmutableMap.<String, Object> of("platform", platform));
         return realm.getV();
+    }
+
+    @Get(Account.class)
+    public Account getAccount(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform)query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
+        final String puuid = (String)query.get("puuid");
+        final String gameName = (String)query.get("gameName");
+        final String tagLine = (String)query.get("tagLine");
+        Utilities.checkAtLeastOneNotNull(puuid, "puuid", gameName, "gameName", tagLine, "tagLine");
+
+        final com.merakianalytics.orianna.types.data.account.Account data = new com.merakianalytics.orianna.types.data.account.Account();
+        data.setPlatform(platform.getTag());
+        data.setPuuid(puuid);
+        data.setGameName(gameName);
+        data.setTagLine(tagLine);
+        return new Account(data);
     }
 
     @SuppressWarnings("unchecked")
@@ -292,6 +310,69 @@ public class GhostLoader extends AbstractDataSource {
         data.setPlatform(platform.getTag());
         data.setSummonerId(summonerId);
         return new LeaguePositions(data);
+    }
+
+    @SuppressWarnings("unchecked")
+    @GetMany(Account.class)
+    public CloseableIterator<Account> getManyAccount(final java.util.Map<String, Object> query, final PipelineContext context) {
+        final Platform platform = (Platform) query.get("platform");
+        Utilities.checkNotNull(platform, "platform");
+        final Iterable<String> puuids = (Iterable<String>)query.get("puuids");
+        final Iterable<java.util.Map.Entry<String, String>> riotIds = (Iterable<java.util.Map.Entry<String, String>>)query.get("riotIds");
+        Utilities.checkAtLeastOneNotNull(puuids, "puuids", riotIds, "riotIds");
+
+        final Iterator<String> puuidsIterator;
+        final Iterator<java.util.Map.Entry<String, String>> riotIdsIterator;
+
+        if (puuids != null) {
+            puuidsIterator = puuids.iterator();
+            riotIdsIterator = null;
+        }
+        else if (riotIds != null) {
+            puuidsIterator = null;
+            riotIdsIterator = riotIds.iterator();
+        }
+        else {
+            return null;
+        }
+
+        return CloseableIterators.from(new Iterator<Account>() {
+            @Override
+            public boolean hasNext() {
+                if (puuidsIterator != null) {
+                    return puuidsIterator.hasNext();
+                }
+                if (riotIdsIterator != null) {
+                    return riotIdsIterator.hasNext();
+                }
+                return false;
+            }
+
+            @Override
+            public Account next() {
+                final com.merakianalytics.orianna.types.data.account.Account data = new com.merakianalytics.orianna.types.data.account.Account();
+                data.setPlatform(platform.getTag());
+
+                if (puuidsIterator != null) {
+                    data.setPuuid(puuidsIterator.next());
+                }
+                else if (riotIdsIterator != null) {
+                    final java.util.Map.Entry<String, String> next = riotIdsIterator.next();
+                    data.setGameName(next.getKey());
+                    data.setTagLine(next.getValue());
+                }
+                else {
+                    return null;
+                }
+
+                return new Account(data);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")
