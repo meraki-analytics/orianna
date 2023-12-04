@@ -82,5 +82,12 @@ public enum Platform {
         return Versions.withPlatform(this).get();
     }
 
-    public String getRegionalRoute() { return regionalRoute; }
+    public String getRegionalRoute(String endpoint) {
+        // "There are three routing values for account-v1; americas, asia, and europe. You can query for any account in
+        // any region. We recommend using the nearest cluster." - https://developer.riotgames.com/apis#account-v1/
+        if (endpoint.startsWith("riot/account/v1/") && regionalRoute.equalsIgnoreCase("SEA")) {
+            return JAPAN.regionalRoute;
+        }
+        return regionalRoute;
+    }
 }
