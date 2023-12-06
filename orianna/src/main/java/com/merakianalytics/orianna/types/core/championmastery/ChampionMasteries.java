@@ -39,7 +39,7 @@ public class ChampionMasteries extends GhostObject.ListProxy<ChampionMastery, co
                 }
 
                 final ImmutableMap.Builder<String, Object> builder =
-                    ImmutableMap.<String, Object> builder().put("platform", summoner.getPlatform()).put("summonerId", summoner.getId()).put("championIds", ids);
+                    ImmutableMap.<String, Object> builder().put("platform", summoner.getPlatform()).put("puuid", summoner.getPuuid()).put("championIds", ids);
 
                 final CloseableIterator<ChampionMastery> result =
                     Orianna.getSettings().getPipeline().getMany(ChampionMastery.class, builder.build(), streaming);
@@ -60,7 +60,7 @@ public class ChampionMasteries extends GhostObject.ListProxy<ChampionMastery, co
 
         public ChampionMasteries get() {
             final ImmutableMap.Builder<String, Object> builder =
-                ImmutableMap.<String, Object> builder().put("platform", summoner.getPlatform()).put("summonerId", summoner.getId());
+                ImmutableMap.<String, Object> builder().put("platform", summoner.getPlatform()).put("puuid", summoner.getPuuid());
 
             return Orianna.getSettings().getPipeline().get(ChampionMasteries.class, builder.build());
         }
@@ -92,18 +92,18 @@ public class ChampionMasteries extends GhostObject.ListProxy<ChampionMastery, co
             }
 
             final Platform platform = summoner.getPlatform();
-            ids.add(summoner.getId());
+            ids.add(summoner.getPuuid());
             while(iterator.hasNext()) {
                 summoner = iterator.next();
 
                 if(platform != summoner.getPlatform()) {
                     throw new IllegalArgumentException("All summoners must be from the same platform/region!");
                 }
-                ids.add(summoner.getId());
+                ids.add(summoner.getPuuid());
             }
 
             final ImmutableMap.Builder<String, Object> builder =
-                ImmutableMap.<String, Object> builder().put("platform", platform).put("summonerIds", ids);
+                ImmutableMap.<String, Object> builder().put("platform", platform).put("puuids", ids);
 
             final CloseableIterator<ChampionMasteries> result =
                 Orianna.getSettings().getPipeline().getMany(ChampionMasteries.class, builder.build(), streaming);
@@ -133,10 +133,10 @@ public class ChampionMasteries extends GhostObject.ListProxy<ChampionMastery, co
     private final Supplier<Summoner> summoner = Suppliers.memoize(new Supplier<Summoner>() {
         @Override
         public Summoner get() {
-            if(coreData.getSummonerId() == null) {
+            if(coreData.getPuuid() == null) {
                 return null;
             }
-            return Summoner.withId(coreData.getSummonerId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
+            return Summoner.withPuuid(coreData.getPuuid()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
         }
     });
 
@@ -181,8 +181,8 @@ public class ChampionMasteries extends GhostObject.ListProxy<ChampionMastery, co
                 if(coreData.getPlatform() != null) {
                     builder.put("platform", Platform.withTag(coreData.getPlatform()));
                 }
-                if(coreData.getSummonerId() != null) {
-                    builder.put("summonerId", coreData.getSummonerId());
+                if(coreData.getPuuid() != null) {
+                    builder.put("puuid", coreData.getPuuid());
                 }
                 final com.merakianalytics.orianna.types.data.championmastery.ChampionMasteries data =
                     Orianna.getSettings().getPipeline().get(com.merakianalytics.orianna.types.data.championmastery.ChampionMasteries.class, builder.build());

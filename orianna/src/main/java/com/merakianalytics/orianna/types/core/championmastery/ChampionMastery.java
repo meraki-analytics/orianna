@@ -27,7 +27,7 @@ public class ChampionMastery extends GhostObject<com.merakianalytics.orianna.typ
 
             public ChampionMastery get() {
                 final ImmutableMap.Builder<String, Object> builder =
-                    ImmutableMap.<String, Object> builder().put("platform", summoner.getPlatform()).put("summonerId", summoner.getId()).put("championId",
+                    ImmutableMap.<String, Object> builder().put("platform", summoner.getPlatform()).put("puuid", summoner.getPuuid()).put("championId",
                         champion.getId());
 
                 return Orianna.getSettings().getPipeline().get(ChampionMastery.class, builder.build());
@@ -65,10 +65,10 @@ public class ChampionMastery extends GhostObject<com.merakianalytics.orianna.typ
     private final Supplier<Summoner> summoner = Suppliers.memoize(new Supplier<Summoner>() {
         @Override
         public Summoner get() {
-            if(coreData.getSummonerId() == null) {
+            if(coreData.getPuuid() == null) {
                 return null;
             }
-            return Summoner.withId(coreData.getSummonerId()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
+            return Summoner.withPuuid(coreData.getPuuid()).withPlatform(Platform.withTag(coreData.getPlatform())).get();
         }
     });
 
@@ -173,8 +173,8 @@ public class ChampionMastery extends GhostObject<com.merakianalytics.orianna.typ
         switch(group) {
             case CHAMPION_MASTERY_LOAD_GROUP:
                 builder = ImmutableMap.builder();
-                if(coreData.getSummonerId() != null) {
-                    builder.put("summonerId", coreData.getSummonerId());
+                if(coreData.getPuuid() != null) {
+                    builder.put("puuid", coreData.getPuuid());
                 }
                 if(coreData.getChampionId() != 0) {
                     builder.put("championId", coreData.getChampionId());

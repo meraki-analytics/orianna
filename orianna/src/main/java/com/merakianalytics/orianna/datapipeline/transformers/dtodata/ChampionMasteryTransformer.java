@@ -18,7 +18,7 @@ public class ChampionMasteryTransformer extends AbstractDataTransformer {
             masteries.add(transform(mastery, context));
         }
         masteries.setPlatform(item.getPlatform());
-        masteries.setSummonerId(item.getSummonerId());
+        masteries.setPuuid(item.getPuuid());
         return masteries;
     }
 
@@ -34,7 +34,7 @@ public class ChampionMasteryTransformer extends AbstractDataTransformer {
         mastery.setChestGranted(item.isChestGranted());
         mastery.setLastPlayTime(item.getLastPlayed().getMillis());
         mastery.setPlatform(item.getPlatform());
-        mastery.setSummonerId(item.getSummonerId());
+        mastery.setPuuid(item.getPuuid());
         mastery.setTokensEarned(item.getTokens());
         return mastery;
     }
@@ -46,7 +46,7 @@ public class ChampionMasteryTransformer extends AbstractDataTransformer {
             new com.merakianalytics.orianna.types.dto.championmastery.ChampionMasteryScore();
         score.setPlatform(item.getPlatform());
         score.setScore(item.getScore());
-        score.setSummonerId(item.getSummonerId());
+        score.setPuuid(item.getPuuid());
         return score;
     }
 
@@ -57,7 +57,7 @@ public class ChampionMasteryTransformer extends AbstractDataTransformer {
             masteries.add(transform(mastery, context));
         }
         masteries.setPlatform(item.getPlatform());
-        masteries.setSummonerId(item.getSummonerId());
+        masteries.setPuuid(item.getPuuid());
         return masteries;
     }
 
@@ -69,7 +69,7 @@ public class ChampionMasteryTransformer extends AbstractDataTransformer {
         mastery.setLastPlayed(new DateTime(item.getLastPlayTime()));
         mastery.setLevel(item.getChampionLevel());
         mastery.setPlatform(item.getPlatform());
-        mastery.setSummonerId(item.getSummonerId());
+        mastery.setPuuid(item.getPuuid());
         mastery.setPoints(item.getChampionPoints());
         mastery.setPointsSinceLastLevel((int)item.getChampionPointsSinceLastLevel());
         mastery.setPointsUntilNextLevel((int)item.getChampionPointsUntilNextLevel());
@@ -83,7 +83,7 @@ public class ChampionMasteryTransformer extends AbstractDataTransformer {
         final ChampionMasteryScore score = new ChampionMasteryScore();
         score.setPlatform(item.getPlatform());
         score.setScore(item.getScore());
-        score.setSummonerId(item.getSummonerId());
+        score.setPuuid(item.getPuuid());
         return score;
     }
 }

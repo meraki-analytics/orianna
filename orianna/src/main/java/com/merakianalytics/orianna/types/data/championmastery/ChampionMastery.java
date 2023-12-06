@@ -9,7 +9,7 @@ public class ChampionMastery extends CoreData {
     private boolean chestGranted;
     private DateTime lastPlayed;
     private int level, points, tokens, championId, pointsUntilNextLevel, pointsSinceLastLevel;
-    private String platform, summonerId;
+    private String platform, puuid;
 
     @Override
     public boolean equals(final Object obj) {
@@ -55,11 +55,11 @@ public class ChampionMastery extends CoreData {
         if(pointsUntilNextLevel != other.pointsUntilNextLevel) {
             return false;
         }
-        if(summonerId == null) {
-            if(other.summonerId != null) {
+        if(puuid == null) {
+            if(other.puuid != null) {
                 return false;
             }
-        } else if(!summonerId.equals(other.summonerId)) {
+        } else if(!puuid.equals(other.puuid)) {
             return false;
         }
         if(tokens != other.tokens) {
@@ -118,10 +118,10 @@ public class ChampionMastery extends CoreData {
     }
 
     /**
-     * @return the summonerId
+     * @return the puuid
      */
-    public String getSummonerId() {
-        return summonerId;
+    public String getPuuid() {
+        return puuid;
     }
 
     /**
@@ -143,7 +143,7 @@ public class ChampionMastery extends CoreData {
         result = prime * result + points;
         result = prime * result + pointsSinceLastLevel;
         result = prime * result + pointsUntilNextLevel;
-        result = prime * result + (summonerId == null ? 0 : summonerId.hashCode());
+        result = prime * result + (puuid == null ? 0 : puuid.hashCode());
         result = prime * result + tokens;
         return result;
     }
@@ -220,11 +220,11 @@ public class ChampionMastery extends CoreData {
     }
 
     /**
-     * @param summonerId
-     *        the summonerId to set
+     * @param puuid
+     *        the puuid to set
      */
-    public void setSummonerId(final String summonerId) {
-        this.summonerId = summonerId;
+    public void setPuuid(final String puuid) {
+        this.puuid = puuid;
     }
 
     /**

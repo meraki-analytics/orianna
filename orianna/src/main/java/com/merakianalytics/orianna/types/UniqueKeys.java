@@ -215,53 +215,53 @@ public abstract class UniqueKeys {
     public static int forChampionMasteries(final ChampionMasteries masteries) {
         final com.merakianalytics.orianna.types.data.championmastery.ChampionMasteries data = masteries.getCoreData();
         return Arrays.hashCode(new Object[] {
-            ChampionMasteries.class.getCanonicalName(), data.getPlatform(), data.getSummonerId()
+            ChampionMasteries.class.getCanonicalName(), data.getPlatform(), data.getPuuid()
         });
     }
 
     public static int forChampionMasteriesData(final com.merakianalytics.orianna.types.data.championmastery.ChampionMasteries masteries) {
         return Arrays.hashCode(new Object[] {
             com.merakianalytics.orianna.types.data.championmastery.ChampionMasteries.class.getCanonicalName(), masteries.getPlatform(),
-            masteries.getSummonerId()
+            masteries.getPuuid()
         });
     }
 
     public static int forChampionMasteriesDataQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             com.merakianalytics.orianna.types.data.championmastery.ChampionMasteries.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-            query.get("summonerId")
+            query.get("puuid")
         });
     }
 
     public static int forChampionMasteriesDto(final com.merakianalytics.orianna.types.dto.championmastery.ChampionMasteries masteries) {
         return Arrays.hashCode(new Object[] {
-            com.merakianalytics.orianna.types.dto.championmastery.ChampionMasteries.class.getCanonicalName(), masteries.getPlatform(), masteries.getSummonerId()
+            com.merakianalytics.orianna.types.dto.championmastery.ChampionMasteries.class.getCanonicalName(), masteries.getPlatform(), masteries.getPuuid()
         });
     }
 
     public static int forChampionMasteriesDtoQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             com.merakianalytics.orianna.types.dto.championmastery.ChampionMasteries.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-            query.get("summonerId")
+            query.get("puuid")
         });
     }
 
     public static int forChampionMasteriesQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
-            ChampionMasteries.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), query.get("summonerId")
+            ChampionMasteries.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), query.get("puuid")
         });
     }
 
     public static int forChampionMastery(final ChampionMastery mastery) {
         final com.merakianalytics.orianna.types.data.championmastery.ChampionMastery data = mastery.getCoreData();
         return Arrays.hashCode(new Object[] {
-            ChampionMastery.class.getCanonicalName(), data.getPlatform(), data.getSummonerId(), data.getChampionId()
+            ChampionMastery.class.getCanonicalName(), data.getPlatform(), data.getPuuid(), data.getChampionId()
         });
     }
 
     public static int forChampionMasteryData(final com.merakianalytics.orianna.types.data.championmastery.ChampionMastery mastery) {
         return Arrays.hashCode(new Object[] {
-            com.merakianalytics.orianna.types.data.championmastery.ChampionMastery.class.getCanonicalName(), mastery.getPlatform(), mastery.getSummonerId(),
+            com.merakianalytics.orianna.types.data.championmastery.ChampionMastery.class.getCanonicalName(), mastery.getPlatform(), mastery.getPuuid(),
             mastery.getChampionId()
         });
     }
@@ -269,14 +269,14 @@ public abstract class UniqueKeys {
     public static int forChampionMasteryDataQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             com.merakianalytics.orianna.types.data.championmastery.ChampionMastery.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-            query.get("summonerId"),
+            query.get("puuid"),
             ((Number)query.get("championId")).longValue()
         });
     }
 
     public static int forChampionMasteryDto(final com.merakianalytics.orianna.types.dto.championmastery.ChampionMastery mastery) {
         return Arrays.hashCode(new Object[] {
-            com.merakianalytics.orianna.types.dto.championmastery.ChampionMastery.class.getCanonicalName(), mastery.getPlatform(), mastery.getSummonerId(),
+            com.merakianalytics.orianna.types.dto.championmastery.ChampionMastery.class.getCanonicalName(), mastery.getPlatform(), mastery.getPuuid(),
             mastery.getChampionId()
         });
     }
@@ -284,14 +284,14 @@ public abstract class UniqueKeys {
     public static int forChampionMasteryDtoQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             com.merakianalytics.orianna.types.dto.championmastery.ChampionMastery.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-            query.get("summonerId"),
+            query.get("puuid"),
             ((Number)query.get("championId")).longValue()
         });
     }
 
     public static int forChampionMasteryQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
-            ChampionMastery.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), query.get("summonerId"),
+            ChampionMastery.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), query.get("puuid"),
             ((Number)query.get("championId")).intValue()
         });
     }
@@ -299,39 +299,39 @@ public abstract class UniqueKeys {
     public static int forChampionMasteryScore(final ChampionMasteryScore score) {
         final com.merakianalytics.orianna.types.data.championmastery.ChampionMasteryScore data = score.getCoreData();
         return Arrays.hashCode(new Object[] {
-            ChampionMasteryScore.class.getCanonicalName(), data.getPlatform(), data.getSummonerId()
+            ChampionMasteryScore.class.getCanonicalName(), data.getPlatform(), data.getPuuid()
         });
     }
 
     public static int forChampionMasteryScoreData(final com.merakianalytics.orianna.types.data.championmastery.ChampionMasteryScore score) {
         return Arrays.hashCode(new Object[] {
-            com.merakianalytics.orianna.types.data.championmastery.ChampionMasteryScore.class.getCanonicalName(), score.getPlatform(), score.getSummonerId()
+            com.merakianalytics.orianna.types.data.championmastery.ChampionMasteryScore.class.getCanonicalName(), score.getPlatform(), score.getPuuid()
         });
     }
 
     public static int forChampionMasteryScoreDataQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             com.merakianalytics.orianna.types.data.championmastery.ChampionMasteryScore.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-            query.get("summonerId")
+            query.get("puuid")
         });
     }
 
     public static int forChampionMasteryScoreDto(final com.merakianalytics.orianna.types.dto.championmastery.ChampionMasteryScore score) {
         return Arrays.hashCode(new Object[] {
-            com.merakianalytics.orianna.types.dto.championmastery.ChampionMasteryScore.class.getCanonicalName(), score.getPlatform(), score.getSummonerId()
+            com.merakianalytics.orianna.types.dto.championmastery.ChampionMasteryScore.class.getCanonicalName(), score.getPlatform(), score.getPuuid()
         });
     }
 
     public static int forChampionMasteryScoreDtoQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
             com.merakianalytics.orianna.types.dto.championmastery.ChampionMasteryScore.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(),
-            query.get("summonerId")
+            query.get("puuid")
         });
     }
 
     public static int forChampionMasteryScoreQuery(final java.util.Map<String, Object> query) {
         return Arrays.hashCode(new Object[] {
-            ChampionMasteryScore.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), query.get("summonerId")
+            ChampionMasteryScore.class.getCanonicalName(), ((Platform)query.get("platform")).getTag(), query.get("puuid")
         });
     }
 

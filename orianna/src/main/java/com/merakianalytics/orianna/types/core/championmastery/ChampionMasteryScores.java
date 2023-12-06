@@ -34,18 +34,18 @@ public abstract class ChampionMasteryScores {
             }
 
             final Platform platform = summoner.getPlatform();
-            ids.add(summoner.getId());
+            ids.add(summoner.getPuuid());
             while(iterator.hasNext()) {
                 summoner = iterator.next();
 
                 if(platform != summoner.getPlatform()) {
                     throw new IllegalArgumentException("All summoners must be from the same platform/region!");
                 }
-                ids.add(summoner.getId());
+                ids.add(summoner.getPuuid());
             }
 
             final ImmutableMap.Builder<String, Object> builder =
-                ImmutableMap.<String, Object> builder().put("platform", platform).put("summonerIds", ids);
+                ImmutableMap.<String, Object> builder().put("platform", platform).put("puuids", ids);
 
             final CloseableIterator<ChampionMasteryScore> result =
                 Orianna.getSettings().getPipeline().getMany(ChampionMasteryScore.class, builder.build(), streaming);

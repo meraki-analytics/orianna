@@ -4,7 +4,7 @@ import com.merakianalytics.orianna.types.dto.DataObject;
 
 public class ChampionMasteries extends DataObject.ListProxy<ChampionMastery> {
     private static final long serialVersionUID = 1227811809749905862L;
-    private String platform, summonerId;
+    private String platform, puuid;
 
     public ChampionMasteries() {
         super();
@@ -33,11 +33,11 @@ public class ChampionMasteries extends DataObject.ListProxy<ChampionMastery> {
         } else if(!platform.equals(other.platform)) {
             return false;
         }
-        if(summonerId == null) {
-            if(other.summonerId != null) {
+        if(puuid == null) {
+            if(other.puuid != null) {
                 return false;
             }
-        } else if(!summonerId.equals(other.summonerId)) {
+        } else if(!puuid.equals(other.puuid)) {
             return false;
         }
         return true;
@@ -51,10 +51,10 @@ public class ChampionMasteries extends DataObject.ListProxy<ChampionMastery> {
     }
 
     /**
-     * @return the summonerId
+     * @return the puuid
      */
-    public String getSummonerId() {
-        return summonerId;
+    public String getPuuid() {
+        return puuid;
     }
 
     @Override
@@ -62,7 +62,7 @@ public class ChampionMasteries extends DataObject.ListProxy<ChampionMastery> {
         final int prime = 31;
         int result = super.hashCode();
         result = prime * result + (platform == null ? 0 : platform.hashCode());
-        result = prime * result + (summonerId == null ? 0 : summonerId.hashCode());
+        result = prime * result + (puuid == null ? 0 : puuid.hashCode());
         return result;
     }
 
@@ -75,10 +75,10 @@ public class ChampionMasteries extends DataObject.ListProxy<ChampionMastery> {
     }
 
     /**
-     * @param summonerId
-     *        the summonerId to set
+     * @param puuid
+     *        the puuid to set
      */
-    public void setSummonerId(final String summonerId) {
-        this.summonerId = summonerId;
+    public void setPuuid(final String puuid) {
+        this.puuid = puuid;
     }
 }
