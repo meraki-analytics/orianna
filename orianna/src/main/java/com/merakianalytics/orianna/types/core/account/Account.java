@@ -50,7 +50,6 @@ public class Account extends GhostObject<com.merakianalytics.orianna.types.data.
                 builder.put("tagLine", tagLine);
             }
 
-            System.out.println(gameName + tagLine + puuid);
             return Orianna.getSettings().getPipeline().get(Account.class, builder.build());
         }
 

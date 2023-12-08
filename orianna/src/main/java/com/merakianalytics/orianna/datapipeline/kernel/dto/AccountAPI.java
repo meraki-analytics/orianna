@@ -95,7 +95,6 @@ public class AccountAPI extends KernelService {
         final String tagLine = (String)query.get("tagLine");
         Utilities.checkAtLeastOneNotNull(puuid, "puuid", gameName, "gameName", tagLine, "tagLine");
 
-        System.out.println("dto " + puuid + gameName + tagLine);
         String endpoint;
         if (puuid != null) {
             endpoint = "riot/account/v1/accounts/by-puuid/" + puuid;

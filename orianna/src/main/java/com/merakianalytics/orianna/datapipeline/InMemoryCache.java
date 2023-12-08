@@ -1731,7 +1731,7 @@ public class InMemoryCache extends AbstractDataStore {
     public void putAccount(final Account account, final PipelineContext context) {
         final int[] keys = UniqueKeys.forAccount(account);
 
-        if (keys.length > 1) {
+        if (keys.length < 3) {
             final LoadHook hook = new LoadHook() {
                 @Override
                 public void call() {
