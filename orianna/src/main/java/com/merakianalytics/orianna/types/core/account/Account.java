@@ -28,7 +28,7 @@ public class Account extends GhostObject<com.merakianalytics.orianna.types.data.
         }
 
         public Account get() {
-            if (puuid == null && (gameName == null && tagLine == null)) {
+            if (puuid == null && (gameName == null || tagLine == null)) {
                 throw new IllegalStateException("Must set a puuid, or a game name and a tag line for the Account!");
             }
 
