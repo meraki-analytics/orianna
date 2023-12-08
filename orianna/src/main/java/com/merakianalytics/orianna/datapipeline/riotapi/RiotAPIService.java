@@ -691,7 +691,7 @@ public class RiotAPIService extends AbstractDataSource {
 
     private <T extends DataObject> T get(final RequestContext<T> context) {
         context.attemptCount += 1;
-        final String platform = context.isRegionalRequest ? context.platform.getRegionalRoute().toLowerCase() : context.platform.getTag().toLowerCase();
+        final String platform = context.isRegionalRequest ? context.platform.getRegionalRoute(context.endpoint).toLowerCase() : context.platform.getTag().toLowerCase();
         final String host = platform + ".api.riotgames.com";
 
         Response response = null;
