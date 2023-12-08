@@ -8,6 +8,9 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
+import com.merakianalytics.orianna.datapipeline.transformers.dtodata.AccountTransformer;
+import com.merakianalytics.orianna.types.core.account.Account;
+import com.merakianalytics.orianna.types.core.account.Accounts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -105,6 +108,7 @@ public abstract class Orianna {
             final PipelineConfiguration config = new PipelineConfiguration();
 
             final Set<TransformerConfiguration> transformers = ImmutableSet.of(
+                TransformerConfiguration.defaultConfiguration(AccountTransformer.class),
                 TransformerConfiguration.defaultConfiguration(ChampionMasteryTransformer.class),
                 TransformerConfiguration.defaultConfiguration(ChampionTransformer.class),
                 TransformerConfiguration.defaultConfiguration(LeagueTransformer.class),
@@ -1022,6 +1026,18 @@ public abstract class Orianna {
 
     public static ShardStatus.Builder shardStatusWithRegion(final Region region) {
         return ShardStatus.withRegion(region);
+    }
+
+    public static Account.Builder accountWithPuuid(final String puuid) { return Account.withPuuid(puuid); }
+
+    public static Account.Builder accountWithRiotId(final String gameName, final String tagLine) {
+        return Account.withRiotId(gameName, tagLine);
+    }
+
+    public static Accounts.Builder accountsWithPuuids(final String... puuids) { return Accounts.withPuuids(puuids); }
+
+    public static Accounts.Builder accountsWithRiotIds(final List<java.util.Map.Entry<String, String>> riotIds) {
+        return Accounts.withRiotIds(riotIds);
     }
 
     public static Summoner.Builder summonerNamed(final String name) {

@@ -24,7 +24,7 @@ public class Kernel extends CompositeDataSource {
         private static final boolean DEFAULT_MSGPACK = true;
         private static final int DEFAULT_PORT = 80;
         private static final HTTPClient.Configuration DEFAULT_REQUESTS = new HTTPClient.Configuration();
-        private static final Set<Class<? extends KernelService>> DEFAULT_SERVICES = ImmutableSet.of(ChampionAPI.class, ChampionMasteryAPI.class,
+        private static final Set<Class<? extends KernelService>> DEFAULT_SERVICES = ImmutableSet.of(AccountAPI.class, ChampionAPI.class, ChampionMasteryAPI.class,
             LeagueAPI.class, MatchAPI.class, SpectatorAPI.class, StatusAPI.class, SummonerAPI.class, ThirdPartyCodeAPI.class);
 
         private String host = DEFAULT_HOST;

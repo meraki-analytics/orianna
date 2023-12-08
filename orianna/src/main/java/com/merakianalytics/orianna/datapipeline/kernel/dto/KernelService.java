@@ -400,12 +400,21 @@ public class KernelService extends AbstractDataSource {
         public String endpoint;
         public Multimap<String, String> parameters;
         public Class<T> type;
+        public boolean isRegionalRequest;
 
         public RequestContext(final Class<T> type, final String endpoint, final Multimap<String, String> parameters) {
             this.type = type;
             this.endpoint = endpoint;
             this.parameters = parameters;
             this.attemptCount = 1;
+            this.isRegionalRequest = false;
+        }
+        public RequestContext(final Class<T> type, final String endpoint, final Multimap<String, String> parameters, final boolean isRegionalRequest) {
+            this.type = type;
+            this.endpoint = endpoint;
+            this.parameters = parameters;
+            this.attemptCount = 1;
+            this.isRegionalRequest = isRegionalRequest;
         }
     }
 
@@ -449,6 +458,11 @@ public class KernelService extends AbstractDataSource {
 
     protected <T extends DataObject> T get(final Class<T> type, final String endpoint, final Map<String, String> parameters) {
         final RequestContext<T> context = new RequestContext<>(type, endpoint, parameters == null ? null : ImmutableListMultimap.copyOf(parameters.entrySet()));
+        return get(context);
+    }
+
+    protected <T extends DataObject> T get(final Class<T> type, final String endpoint, final Map<String, String> parameters, final boolean isRegionalRequest) {
+        final RequestContext<T> context = new RequestContext<>(type, endpoint, parameters == null ? null : ImmutableListMultimap.copyOf(parameters.entrySet()), isRegionalRequest);
         return get(context);
     }
 

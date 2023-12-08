@@ -8,6 +8,7 @@ import com.google.common.collect.ImmutableSet;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Queue;
 import com.merakianalytics.orianna.types.common.Tier;
+import com.merakianalytics.orianna.types.core.account.Account;
 import com.merakianalytics.orianna.types.core.champion.ChampionRotation;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
@@ -4284,6 +4285,34 @@ public abstract class UniqueKeys {
         return Arrays.hashCode(new Object[] {
             ShardStatus.class.getCanonicalName(), ((Platform)query.get("platform")).getTag()
         });
+    }
+
+    public static int[] forAccount(final Account account) {
+        final com.merakianalytics.orianna.types.data.account.Account data = account.getCoreData();
+        int count = 0;
+
+        if (data.getPuuid() != null) {
+            count++;
+        }
+        if (data.getTagLine() != null && data.getGameName() != null) {
+            count++;
+        }
+
+        final int[] keys = new int[count];
+        count = 0;
+
+        if (data.getPuuid() != null) {
+            keys[count++] = Arrays.hashCode(new Object[] {
+                    Account.class.getCanonicalName(), data.getPlatform(), data.getPuuid()
+            });
+        }
+        if (data.getTagLine() != null && data.getGameName() != null) {
+            keys[count++] = Arrays.hashCode(new Object[] {
+                    Account.class.getCanonicalName(), data.getPlatform(), data.getTagLine(), data.getGameName()
+            });
+        }
+
+        return keys;
     }
 
     public static int[] forSummoner(final Summoner summoner) {
