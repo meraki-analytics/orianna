@@ -33,4 +33,8 @@ public enum Tier {
     public int compare(final Tier o) {
         return Integer.compare(level, o.level);
     }
+
+    public int getLevel() {
+        return level;
+    }
 }

@@ -7,5 +7,6 @@ public enum WardType {
         UNDEFINED,
         VISION_WARD,
         YELLOW_TRINKET,
-        YELLOW_TRINKET_UPGRADE;
+        YELLOW_TRINKET_UPGRADE,
+        BLUE_TRINKET;
 }
